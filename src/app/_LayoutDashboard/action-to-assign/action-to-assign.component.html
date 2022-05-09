@@ -1,0 +1,94 @@
+<!-- New Task Assigning Form -->
+<div id="mysideInfobar" class="sideInfobar animate-right offcanvas">
+    <div class="p-4">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5" kt-hidden-height="40">
+            <h3 class="font-weight-bold m-0">Assign Task/Project</h3>
+            <a href="javascript:void(0)" class="btn btn-xs btn-icon btn-hover-primary" (click)="closeInfo()">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+        <div class="form-group">
+            <label>Project Type : <span class="text-danger">*</span></label>
+            <mat-select [(ngModel)]="selectedProjectType" placeholder="Select Project Type" class="form-control">
+                <mat-option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
+                    {{item.Exec_BlockName}}
+                </mat-option>   
+            </mat-select>
+        </div>
+        <div class="form-group">
+            <label> Task/Project Name : <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter Task Name" aria-describedby="basic-addon1"
+                [(ngModel)]="_taskName" >
+        </div>
+        <div class="form-group">
+            <label>Description : <span class="text-danger">*</span></label>
+            <textarea class="form-control" aria-describedby="basic-addon1" [(ngModel)]="_description"
+                style="height: 139px"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Assign To : <strong></strong> <span class="text-danger">*</span> </label>
+            <ng-multiselect-dropdown [placeholder]="'Select Employee'" [settings]="dropdownSettings_Employee"
+                [data]="EmployeeList" [(ngModel)]="SelectedEmplList" (onSelect)="EmployeeOnSelect($event)"
+                (onDeSelect)="EmployeeOnDeselect($event)">
+            </ng-multiselect-dropdown>
+        </div>
+
+        <div class="form-group">
+            <label>Start Date : <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                    placeholder="Start Date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>End Date :<span class="text-danger">*</span></label>
+            <div class="input-group">
+                <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="disablePreviousDate" [(ngModel)]="_EndDate"
+                    placeholder="End Date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" [hidden]="selectedProjectType!='003'">
+            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission Type"
+                class="form-control">
+                <mat-option [value]="0">Select Type</mat-option>
+                <mat-option [value]="1">Daily</mat-option>
+                <mat-option [value]="2">Weekly</mat-option>
+                <mat-option [value]="4">Monthly</mat-option>
+                <mat-option [value]="8">Quarterly</mat-option>
+                <mat-option [value]="10">HalfYearly</mat-option>
+                <mat-option [value]="16">Annually</mat-option>
+            </mat-select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Remarks</label>
+            <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+                style="height: 111px;"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="custom-file pl-1">
+                <label for="exampleFormControlFile1">Reference</label>
+                <!-- <input type="file" class="form-control-file" id="uploadFile" accept="application/pdf"
+                    [(ngModel)]="_inputAttachments"> -->
+                <input type="file" class="form-control-file" id="uploadFile" accept="application/pdf"
+                    (change)="onFileChangeATP($event)">
+            </div>
+        </div>
+
+        <div class="form-group mb-1">
+            <button type="submit" class="btn btn-primary"
+            [disabled]="!selectedProjectType || !_description || !_taskName || !SelectedEmplList || !_StartDate || !_EndDate"
+                (click)="OnAssignTask_Submit()" style="width: 150px;">Submit
+            </button>
+        </div>
+    </div>
+</div>

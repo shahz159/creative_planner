@@ -1,0 +1,11 @@
+@media only screen and (min-width: 1024px) {
+    .h-100{
+        height: 100vh !important;
+    }
+}
+
+#kt_login_signin_submit {
+    background-color: #5867dd;
+    border-color: #5867dd;
+    color: #fff;
+}

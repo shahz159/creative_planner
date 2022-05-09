@@ -1,0 +1,752 @@
+<!-- <h4>{{projectCode}}</h4> -->
+<div id="mysideInfobar" class="sideInfobar animate-right offcanvas" [hidden]="_openInfoSideBar">
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-bold m-0">
+                Project Details
+            </h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeInfo()"><i
+                    class="fa fa-times"></i></a>
+        </div>
+    </div>
+    <div class="card-body" *ngFor="let item of ProjectInfo_List">
+        <div class="d-flex align-items-center mb-3">
+            <div class="d-flex flex-grow-1 align-items-center">
+                <div class="name-box text-center">
+                    {{initials}}
+                </div>
+                <div class="w-100 names-response">
+                    <span clas="fs-10">Responsible</span>
+                    <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-info btn-sm py-1 pr-2" (click)="bttn_RACI()">RACI
+                    <i class="ml-2 fa fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Raci Details -->
+        <div class="card border-0 shadow-sm mb-3" [hidden]="_raciDetails" id="raciDetails">
+            <div class="card-body">
+                <div class="my-2"><label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACI
+                        Details</label></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Project_Owner}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mt-2 mb-1 text-muted fs-7">Authority</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Team_Autho}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mt-2 mb-1 text-muted fs-7">Coordinator</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Team_Coor}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mt-2 mb-1 text-muted fs-7">Informer</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Team_Informer}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mt-2 mb-1 text-muted fs-7">Support</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Team_Support}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Raci Ends -->
+        <div class=" border-top">
+            <div class="d-flex  align-items-center justify-content-between mt-3">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-clone mr-2"></i> {{item.Exec_BlockName}}
+                        </label>
+                    </div>
+
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm py-1" (click)="moreDetails()">
+                        <i class="fa fa-chart-bar"></i>More Info
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex mt-3 flex-column">
+                <h5 class="fs-3 mb-2">{{item.Project_Name}}</h5>
+
+                <span class="text-muted fs-5">{{item.Project_Description}}</span>
+            </div>
+            <div class="card-body">
+                <!-- Percentage Bar -->
+                <div class="progress_bar">
+                    <div *ngIf="ProjectStatus=='Not Started'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                {{ProjectStatus}}
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="0" data-percentage-value="0"></span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="ProjectStatus=='Just Started'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                {{ProjectStatus}}
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="10" data-percentage-value="10"></span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="ProjectStatus=='InProcess'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                {{ProjectStatus}}
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="40" data-percentage-value="40"></span>
+                        </div>
+                    </div>
+                    <div *ngIf="ProjectStatus=='UnderCompletion'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                {{ProjectStatus}}
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="90" data-percentage-value="90"></span>
+                        </div>
+                    </div>
+                    <div *ngIf="ProjectStatus=='Completed'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                {{ProjectStatus}}
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="100" data-percentage-value="100"></span>
+                        </div>
+                    </div>
+                    <div *ngIf="ProjectStatus=='ProjDuration0'">
+                        <div class="pro-bar">
+                            <small class="progress_bar_title">
+                                Just Started
+                                <span class="progress_number">{{ProjectPercentage}}</span>
+                            </small>
+                            <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
+                                data-value="100" data-percentage-value="100"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.DPG|date:'dd-MM-yyyy'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' else EndDate" class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Submission Type</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.SubmissionType1}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #EndDate>
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <!--  -->
+                    <div *ngIf="item.Exec_BlockName !='Standard Tasks'" class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{Difference_In_Days}} days</h5>
+                                <!-- <p>{{item.Duration/8| number: '1.0-0'}} days <p>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-4 pricevalues text-left"
+                    *ngIf="item.Duration<8 && item.Exec_BlockName !='Standard Tasks'">
+                    <p>DURATION</p>
+                    <h5>{{item.Duration}} days</h5>
+                </div> -->
+
+                    <div *ngIf="item.Exec_BlockName=='Standard Tasks'" class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
+                        <!-- <h5>{{item.StandardDuration}}</h5> -->
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">Continuous</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- New Column -->
+                    <div *ngIf="item.Exec_BlockName!='Standard Tasks'" class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Duration}} Hrs </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="item.Exec_BlockName=='Standard Tasks'" class="col-4 pricevalues text-left pt-3">
+                        <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <!-- <h5>{{item.StandardDuration}}</h5> -->
+                                <h5 class="my-1 font-14">{{item.StandardDuration}} </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-wallet  fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Project_Cost |currency:'SAR '}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="_MainProjectStatus=='Delay';else other" class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Status</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14 text-danger">{{_MainProjectStatus}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #other>
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Status</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <div *ngIf="item.Status=='Under Approval'">
+                                        <h5 class="my-1 font-14 text-info">{{item.Status}}</h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Delay'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='InProcess'">
+                                        <h5 class="my-1 font-14 text-warning">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='ToDo InProcess'">
+                                        <h5 class="my-1 font-14 text-primary">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='New Project'">
+                                        <h5 class="my-1 font-14 text-primary">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='New Project Rejected'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}</h5>
+
+                                    </div>
+
+                                    <div *ngIf="item.Status=='Project Hold'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='ToDo Completed'">
+                                        <h5 class="my-1 font-14 text-primary">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='New Todo'">
+                                        <h5 class="my-1 font-14 text-primary">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='Completion Under Approval'">
+                                        <h5 class="my-1 font-14 text-warning">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='Completed'">
+                                        <h5 class="my-1 font-14 text-success">{{item.Status}}
+                                        </h5>
+
+                                    </div>
+                                    <div *ngIf="item.Status=='Forward Under Approval'">
+                                        <h5 class="my-1 font-14 text-warning">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Complete Rejected'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Enactive Under Approval'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Version'">
+                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                        <h5 class="my-1 font-14 text-info">{{item.Status}}</h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Holded'">
+                                        <h5 style="color: #c0b5dc;" class="my-1 font-14 ">
+                                            {{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                        <h5 style="color: #c0b5dc;" class="my-1 font-14 ">
+                                            {{item.Status}}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Client</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-briefcase  fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.Client_Name}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Category</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle  fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{item.ReportType}} </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-8 pricevalues text-left pt-3" *ngIf="ifcategoryZero=='0';else Reporttype">
+                    <p>Category</p>
+                    <h5>
+                        <b>NA</b>
+                    </h5>
+                </div>
+                <ng-template #Reporttype>
+                    <div class="col-8 pricevalues text-left pt-3">
+                        <p>Category</p>
+                        <h5>
+                            <b>NA</b>
+                        </h5>
+                    </div>
+                </ng-template> -->
+                </div>
+
+                <!-- <div class="text-left mt-2">
+                <p class="mb-2">CLIENT</p>
+                <h5>{{item.Client_Name}}</h5>
+            </div> -->
+            </div>
+        </div>
+        <!-- ADD DMS  -->
+        <div class=" border-top">
+            <div class="d-flex  align-items-center justify-content-between mt-3">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-file-alt mr-2"></i> DMS Link
+                        </label>
+                    </div>
+
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
+                        <i class="fa fa-chart-bar"></i>Add DMS
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="fs-6">
+                    <table class="table">
+                        <tbody>
+                            <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
+                                <td>
+                                    <a href="javascript:void(0)" (click)="openUrl(itemMemos.Url)">
+                                        {{itemMemos.Subject}}</a>
+                                </td>
+                                <td class="align-top curser-pointer"
+                                    (click)="deleteMemos(itemMemos.MailId,item.Project_Code)">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        <p style="color:gray">{{_MemosNotFound}}</p>
+                    </table>
+                </div>
+            </div>
+            <!-- <div class="text-left">
+                <ul class="dms-links">
+                    <li
+                        *ngFor="let item of _MemosSubjectList; let i=index">
+                        <a href="javascript:void(0)"
+                            (click)="openUrl(item.Url)"
+                            class="curser-pointer">
+                            {{item.Subject}}</a>
+                    </li>
+                    <p style="color:gray">{{_MemosNotFound}}</p>
+                </ul>
+            </div> -->
+        </div>
+
+        <!-- Subtask List -->
+        <div class=" border-top" *ngFor="let task of Subtask_List;let i=index">
+            <div class="d-flex  align-items-center justify-content-between mt-3">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-window-restore mr-2"></i> Sub Task {{i+1}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex mt-3 flex-column">
+                <h5 class="fs-4 mb-1">{{task.SubProject_Name}}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{task.Subtask_Owner}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Responsible</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{task.Subtask_Res}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Status</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-star  fs-3 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <div *ngIf="task.SubProject_Status=='Under Approval'">
+                                    <h5 class="1 my-1 font-14 text-info">
+                                        {{task.SubProject_Status}}</h5>
+                                    <!-- <span class="bg-success">{{item.Status}}</span> -->
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Delay'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+                                    <!-- <span class="font-weight-400">{{item.Status}}</span> -->
+                                </div>
+                                <!-- Other Status -->
+                                <div *ngIf="task.SubProject_Status=='InProcess'">
+                                    <h5 class="my-1 font-14 text-warning">
+                                        {{task.SubProject_Status}}</h5>
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='ToDo InProcess'">
+                                    <h5 class="my-1 font-14 text-primary">
+                                        {{task.SubProject_Status}}</h5>
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='New Project'">
+                                    <h5 class="my-1 font-14 text-primary">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='New Project Rejected'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+
+                                <div *ngIf="task.SubProject_Status=='Project Hold'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='ToDo Completed'">
+                                    <h5 class="my-1 font-14 text-primary">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='New Todo'">
+                                    <h5 class="my-1 font-14 text-primary">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Completion Under Approval'">
+                                    <h5 class="my-1 font-14 text-warning">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Completed'">
+                                    <h5 class="my-1 font-14 text-success">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Forward Under Approval'">
+                                    <h5 class="my-1 font-14 text-warning">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Project Complete Rejected'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Enactive Under Approval'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+
+                                <div *ngIf="task.SubProject_Status=='Version'">
+                                    <h5 class="my-1 font-14 text-danger">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Deadline Extend Under Approval'">
+                                    <h5 class="my-1 font-14 text-info">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Project Holded'">
+                                    <h5 style="color: #c0b5dc;" class="my-1 font-14 ">
+                                        {{task.SubProject_Status}}</h5>
+
+                                </div>
+                                <div *ngIf="task.SubProject_Status=='Project Hold Under Approval'">
+                                    <h5 style="color: #c0b5dc;">
+                                        {{task.SubProject_Status}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{task.StartDate|date:'dd-MM-yyyy'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-wallet  fs-2 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 class="my-1 font-14">{{task.Project_Cost|currency:'SAR '}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Completed Task  -->
+        <div class="border-top">
+            <div class="d-block align-items-center justify-content-between mt-3">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-list mr-2"></i> Subtask's Done List
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="" *ngFor="let task of CompletedList;let i=index">
+                <div class="text-left mt-3">
+                    <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                        <i class="fa fa-window-restore mr-2"></i>Sub Task {{i+1}}
+                    </label>
+                </div>
+                <div class="text-left my-3">
+                    <!-- <p class="mb-2">CLIENT</p> -->
+                    <h5>{{task.SubProject_Name}}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{task.Subtask_Owner}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Responsible</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{task.Subtask_Res}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Status</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14 text-success">Done</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{task.StartDate|date:'dd-MM-yyyy'}}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-wallet  fs-2 text-muted mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{task.Project_Cost|currency:'SAR '}}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link memos Template -->
+
+<div id="LinkSideBar" class="sideInfobar animate-right" [hidden]="_LinkSideBar">
+    <div class="kt-portlet__head p-3 bg-blued">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right btn btn-xs btn-icon btn-hover-primary"
+                (click)="closeLinkSideBar()"><i class="fa fa-times"></i> </a>
+            <h5 class="title-sidebar mb-0 text-primary">
+                <i class="fa fa-link"></i> Link Project
+            </h5>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+            <p class="text-primary">
+                {{_displayProjName}}</p>
+            <div class="M_fsize">
+                Total
+                <div class="badge badge-pill badge-outline-info">
+                    {{_totalMemos}}</div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{_mappedMemos}}</div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="d-flex">
+                <!-- Working... -->
+                <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                    [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                    (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                </ng-multiselect-dropdown>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+            </div>
+        </li>
+        <li class="kt-nav__foot"></li>
+    </ul>
+</div>

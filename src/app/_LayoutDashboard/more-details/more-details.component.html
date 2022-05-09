@@ -1,0 +1,1393 @@
+<div class="kt-container  kt-container--fluid p-0 kt-grid__item kt-grid__item--fluid text-dark project-info-page"
+    id="moredet">
+    <!-- <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            <strong>dr.CAFE-206, Olaya St, Al Nuruji Project
+                            </strong>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="px-4 py-2">
+        <div class="row">
+            <div class="col-lg-12 project-description pt-2">
+                <div class="d-flex align-items-center mb-2 cir-icon">
+                    <i class="fas fa-code-branch"></i>
+                    <h4 class="fs-3 text-info mb-0 mx-3">{{URL_ProjectCode}}</h4>
+                    <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-danger':Status=='Delay',
+                    'bg-success':Status=='Completed',
+                    'bg-info':Status=='InProcess',
+                    'bg-warning':Status=='Under Approval',
+                    'bg-primary':Status=='Completion Under Approval'}">{{Status}}</label>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="flex-grow-1">
+                        <h4 class="mb-1 pro-nm">{{ProjectName}}</h4>
+                    </div>
+                    <div class=" pro-act">
+                        <button class="btn22" (click)="sideviw()">Project Actions</button>
+                    </div>
+                    <!-- <span>{{StartDate|date:'dd-MM-yyyy'}}</span> -->
+                </div>
+                <p class="ml-3 text-justify">{{Description}}</p>
+            </div>
+
+            <div class="col-lg-12 project-details">
+                <div class="row d-nsone">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label bg-coral">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg width="22" height="22" viewBox="0 0 40 40" aria-hidden="true"
+                                                focusable="false">
+                                                <path
+                                                    d="M30.5,9h-7.8l-3.6-3.6C18.2,4.5,16.9,4,15.6,4h-5.1C6.9,4,4,6.9,4,10.5v19c0,3.6,2.9,6.5,6.5,6.5h19c3.6,0,6.5-2.9,6.5-6.5v-15C36,11.5,33.5,9,
+                                            30.5,9z M33,29.5c0,1.9-1.6,3.5-3.5,3.5h-19C8.6,33,7,31.4,7,29.5v-19C7,8.6,8.6,7,10.5,7h5.1c0.5,0,1,0.2,1.4,0.6l4.1,4c0.3,0.3,0.7,0.4,1.1,0.4h8.4c1.4,
+                                            0,2.5,1.1,2.5,2.5L33,29.5L33,29.5z M13.5,13L13.5,13c0.8,0,1.5,0.7,1.5,1.5v13c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-13C12,13.7,12.7,13,13.5,13z
+                                             M25.5,18L25.5,18c0.8,0,1.5,0.7,1.5,1.5v8c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-8C24,18.7,24.7,18,25.5,18z M19.5,22L19.5,22c0.8,0,1.5,0.7,1.5,1
+                                             .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Project Type</h6>
+                                    <h5 class="mt-1">{{ProjectBlockName}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-info">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-calendar-week" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                                <path
+                                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Project Duration</h6>
+                                    <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}
+                                    </h5>
+                                    <progress value="50" max="100" class="project-duration-bar d-none"></progress>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-dangr">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                fill="currentColor" class="bi bi-clock-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content d-flex align-items-center">
+                                    <div class="">
+                                        <h6 class="txtm-cus pt-1">Allocated</h6>
+                                        <h5 class="mt-1">18 Hours</h5>
+                                    </div>
+                                    <div class="px-4">
+                                        <i class=" la la-arrows-h mx-3 text-dangr fs-4 font-weight-bold"></i>
+                                    </div>
+                                    <div class="">
+                                        <h6 class="txtm-cus pt-1">Duration</h6>
+                                        <h5 class="mt-1">15 days</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-success-1">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                                <path
+                                                    d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Project Budget</h6>
+                                    <h5 class="mt-1">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                    <progress value="50" max="100" class="project-budget-bar d-none"></progress>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-purple">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Client</h6>
+                                    <h5 class="mt-1">Devbox Software Ltd</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label blue-munsell">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-bookmarks-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4z" />
+                                                <path
+                                                    d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1H4.268z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Category</h6>
+                                    <h5 class="mt-1">Development</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-warning">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                                <path
+                                                    d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Responsible</h6>
+                                    <h5 class="mt-1">{{Responsible}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label caledon-green">
+                                        <span class="svg-icon svg-icon-2x svg-icon-white">
+                                            <i class="fas fa-prescription-bottle"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="action-content">
+                                    <h6 class="txtm-cus pt-1">Owner</h6>
+                                    <h5 class="mt-1">{{Owner}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 project-duration d-none">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Project Duration</h6>
+                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}</h5>
+                                <progress value="50" max="100" class="project-duration-bar"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 project-budget d-none">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Project Budget</h6>
+                                <h5 class="mb-3">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                <progress value="50" max="100" class="project-budget-bar"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-none">
+                        <!-- <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid"> -->
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="initial-box">{{InitR}}</div>
+                                    <div class="owner-details">
+                                        <p class="text-dark text-hover-primary user-name mb-0">
+                                            <strong>{{Responsible}}</strong>
+                                        </p>
+                                        <span class="text-muted">(Responsible)</span>
+                                    </div>
+                                </div>
+                                <p class="mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-none">
+
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Project Type</h6>
+                                <h5 class="mb-3">{{ProjectBlockName}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Project Duration</h6>
+                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}</h5>
+                                <progress value="50" max="100" class="project-duration-bar"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-budget">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Project Budget</h6>
+                                <h5 class="mb-3">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                <progress value="50" max="100" class="project-budget-bar"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Client</h6>
+                                <h5 class="mb-3">Devbox Software Ltd</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <!-- <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid"> -->
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="initial-box">{{InitR}}</div>
+                                    <div class="owner-details">
+                                        <p class="text-dark text-hover-primary user-name mb-0">
+                                            <strong>{{Responsible}}</strong>
+                                        </p>
+                                        <span class="text-muted">(Responsible)</span>
+                                    </div>
+                                </div>
+                                <p class="mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Owner</h6>
+                                <h5 class="mb-3">{{Owner}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Category</h6>
+                                <h5 class="mb-3">Software Support</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 project-duration">
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body p-3">
+                                <h6 class="mb-2">Duration</h6>
+                                <h5 class="mb-3">15 days</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-section shadow-sm mt-5">
+        <div class="row d-none">
+            <div class="col-md-12">
+                <hr class="mt-1" />
+            </div>
+        </div>
+
+        <!-- <div class="row pt-2 nav-buttons">
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn active">Overview</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Tasks</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Milestones</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">DMS</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Links</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Files</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Timeline</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Notes</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Comments</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">People</button>
+        </div>
+        <div class="col-lg-1 col-md-2">
+            <button type="button" class="btn">Meeting</button>
+        </div>
+    </div> -->
+
+        <div class="row m-0">
+            <div class="col-lg-12">
+                <div class="tabs-sticky">
+                    <ul class="nav navtab-bg nav-pills px-3 mb-3 space-tabs" id="myTab2" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" id="Overview1" data-toggle="tab"
+                                href="#Overview"><span class="nav-text">Overview</span></a></li>
+                        <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
+                                data-toggle="tab" href="#Tasks" aria-controls="profile"><span
+                                    class="nav-text">Tasks</span></a></li>
+                        <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
+                                href="#Milestones"><span class="nav-text">Milestones</span></a></li>
+                        <li class="nav-item" (click)="GetDMS_Memos()"><a class="nav-link" id="DMS1" data-toggle="tab"
+                                href="#DMS" aria-controls="profile"><span class="nav-text">DMS</span></a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" id="Links1" data-toggle="tab" href="#Links"><span
+                            class="nav-text">Links</span></a></li> -->
+                        <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
+                                data-toggle="tab" href="#Files" aria-controls="profile"><span
+                                    class="nav-text">Files</span></a></li>
+                        <li class="nav-item"><a class="nav-link" id="Timeline1" data-toggle="tab" href="#Timeline"><span
+                                    class="nav-text">Timeline</span></a></li>
+                        <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
+                                aria-controls="profile"><span class="nav-text">Notes</span></a></li>
+                        <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
+                                data-toggle="tab" href="#Comments"><span class="nav-text">Comments</span></a></li>
+                        <li class="nav-item"><a class="nav-link" id="People1" data-toggle="tab" href="#People"
+                                aria-controls="profile"><span class="nav-text">People</span></a></li>
+                        <li class="nav-item"><a class="nav-link" id="Meeting1" data-toggle="tab" href="#Meeting"><span
+                                    class="nav-text">Meeting</span></a></li>
+                    </ul>
+                </div>
+                <div class="tab-content p-2 mt-5" id="myTabContent2">
+                    <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ul class="nav nav-pills px-3" id="myTab1" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab-1" data-toggle="tab" href="#Summary">
+                                            <span class="nav-text">Summary</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="act-tab-1" data-toggle="tab" href="#Activity">
+                                            <!-- <span class="nav-text">Activity</span> -->
+                                            <span class="nav-text">Activity</span>
+
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-3" id="myTabContent1">
+                                    <div class="tab-pane fade show active" id="Summary" role="tabpanel"
+                                        aria-labelledby="home-tab-1">
+
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12">
+                                                <h4>Tasks</h4>
+                                                <div class="row">
+                                                    <div class="col-lg-7">
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <h5><strong>DAR Summary</strong></h5>
+                                                                <h6>Total Max Duration : <span><b>{{maxDuration}}
+                                                                            Hrs</b></span> </h6>
+                                                                <div id="DARSummary" style="width: 100%; height: 400px">
+                                                                </div>
+
+                                                                <!-- <div id="ProjectCompleteChart" style="width: 100%; height: 200px">
+                                                                </div> -->
+                                                                <!-- <div id="pieChatDiv"></div> -->
+                                                                <!-- <div id="pieChatDiv" style="width: 100%; height: 300px">
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <h5><strong>All Tasks</strong></h5>
+
+                                                                <div id="alltaskdiv" style="width: 100%; height: 150px">
+                                                                </div>projecttrenddiv
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-lg-4">
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <h5><strong>Milestones</strong></h5>
+                                                                <p>Breakdown Achievement for Project</p>
+
+                                                                <div class="progress_bar">
+                                                                    <div class="pro-bar">
+                                                                        <small class="progress_bar_title">
+                                                                            Late
+                                                                            <span class="progress_number">50%</span>
+                                                                        </small>
+                                                                        <span class="progress-bar-inner bg-late"
+                                                                            style="width: 50%;" data-value="50"
+                                                                            data-percentage-value="50"></span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress_bar">
+                                                                    <div class="pro-bar">
+                                                                        <small class="progress_bar_title">
+                                                                            Today
+                                                                            <span class="progress_number">70%</span>
+                                                                        </small>
+                                                                        <span class="progress-bar-inner bg-today"
+                                                                            style="width: 70%;" data-value="70"
+                                                                            data-percentage-value="70"></span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress_bar">
+                                                                    <div class="pro-bar">
+                                                                        <small class="progress_bar_title">
+                                                                            Upcoming
+                                                                            <span class="progress_number">80%</span>
+                                                                        </small>
+                                                                        <span class="progress-bar-inner bg-upcoming"
+                                                                            style="width: 80%;" data-value="80"
+                                                                            data-percentage-value="80"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                                <!-- Row 2 -->
+                                                <!-- <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <h4>Project Trend</h4>
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <h5><strong>Project Trend Graph</strong></h5>
+                                                                <div id="ProjectTrendchart"
+                                                                    style="width: 80%; height: 400px">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4>People on the project (RACIS)</h4>
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item active">Subtask Legends
+                                                                    </li>
+                                                                    <li class="list-group-item"
+                                                                        *ngFor="let dar of DarGraphDataList;let i=index">
+                                                                        <span class="text-primary">
+                                                                            <b>{{dar.category}}</b> </span>
+                                                                        {{dar.Project_Name}}
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <!-- Row 3 -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4>Breakdown</h4>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Responsible}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>38%</strong></h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Authority}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>25%</strong></h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Coordinator}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>25%</strong></h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Informer}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>45%</strong></h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Support}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>35%</strong></h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-sm-4">
+                                                        <div class="kt-portlet mb-3">
+                                                            <div class="kt-portlet__body px-3">
+                                                                <img src="assets/images/user2.png" alt=""
+                                                                    class="breakdown-user" />
+                                                                <p class="mb-2">
+                                                                    <small><strong>{{Owner}}</strong></small>
+                                                                </p>
+                                                                <h5><strong>10%</strong></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="Activity" role="tabpanel"
+                                        aria-labelledby="act-tab-1">
+                                        <h3>Standard Charts</h3>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div
+                                                    class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                    <div class="kt-portlet__body px-3">
+                                                        <h5><strong>Project Monthly Summary</strong></h5>
+                                                        <div id="StandardChart" style="width: 100%; height: 400px">
+                                                        </div>
+
+                                                        <!-- <div id="ProjectCompleteChart" style="width: 100%; height: 200px">
+                                                    </div> -->
+                                                        <!-- <div id="pieChatDiv"></div> -->
+                                                        <!-- <div id="pieChatDiv" style="width: 100%; height: 300px">
+                                                    </div> -->
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Tasks" role="tabpanel" aria-labelledby="Tasks1">
+
+                        <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
+                                    <span class="nav-text">Subtasks</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="charts-1" data-toggle="tab" href="#charts_1">
+                                    <span class="nav-text">Charts</span>
+
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="task-tabbview">
+                            <div class="tab-pane fade show active" id="tasks_1" role="tabpanel"
+                                aria-labelledby="tasks-1">
+
+                                <div class="tasks_views">
+
+
+
+                                    <div class=" ribbon-box my-3" *ngIf="Subtask_List">
+                                        <div class="ribbon-info ribbon float-start">Inprocess</div>
+                                        <div class="clearfix"></div>
+                                        <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+                                            [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
+                                            <input type="radio" name="Subtask" class="subtask-radio"
+                                                (change)="OnSubtaskClick(item)"
+                                                [hidden]="item.Team_Autho!=Current_user_ID" />
+                                            <div class="col-lg-11">
+                                                <p
+                                                    class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
+                                                    <span class="mr-2" id="SpanProjName_{{item.id}}">
+                                                        {{item.Project_Name}}</span>
+                                                    <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
+                                                    <span class="text-info" [hidden]="Editbutton"
+                                                        id="EidtBtn_{{item.id}}"
+                                                        (click)="OnEditProject(item.id,item.Project_Name)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                    <span class="kt-inbox__subject" style="display:none;"
+                                                        id="spanTextbox_{{item.id}}">
+                                                        <div class="d-flex">
+                                                            <input type="text" class="form-control text-"
+                                                                id="textboxfocus_{{item.id}}"
+                                                                [(ngModel)]="_modelProjectName"
+                                                                style="width: 78%;height: 32px;"
+                                                                (keydown.enter)="OnProject_Rename(item.id)">
+                                                            <div class="d-inline-block ml-3" id="button-addon4">
+                                                                <button (click)="OnProject_Rename(item.id)"
+                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                <button class=" btn btn-secondary btn btn-sm"
+                                                                    (click)="onCancel(item.id)">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </p>
+                                                <p class="mb-3">
+                                                    <span class="mr-2" id="Span_DescName_{{item.id}}">
+                                                        {{item.Project_Description}}</span>
+                                                    <span class="text-info" [hidden]="Editbutton"
+                                                        (click)="OnEditProject_Desc(item.id,item.Project_Description)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                    <span class="kt-inbox__subject" style="display:none;"
+                                                        id="spanTextarea_{{item.id}}">
+                                                        <div class="d-flex">
+                                                            <input type="text" class="form-control"
+                                                                id="textareafocus_{{item.id}}"
+                                                                [(ngModel)]="_modelProjDesc"
+                                                                style="width: 78%;height: 32px;"
+                                                                (keydown.enter)="OnProject_Rename(item.id)">
+                                                            <div class="d-inline-block ml-3" id="button-addon4">
+                                                                <button (click)="OnProject_Rename(item.id)"
+                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                <button class=" btn btn-secondary btn btn-sm"
+                                                                    (click)="onCancel(item.id)">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+
+                                                </p>
+
+                                                <p class="mb-1">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                                        <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
+                                                    </span>
+                                                    <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                                        <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                        *ngIf="item.Project_Cost">
+                                                        <i class="fas fa-wallet text-muted mr-1"></i>
+                                                        <b>{{item.Project_Cost|currency:'SAR '}}</b>
+                                                    </span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fab fa-dev text-muted mr-1"></i>
+                                                        <b> {{item.Subtask_Res}}</b>
+                                                    </span>
+
+                                                    <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
+                                        'text-Completed':item.SubProject_Status=='Completed',
+                                        'text-warning':item.SubProject_Status=='InProcess',
+                                        'text-underApp':item.SubProject_Status=='Under Approval',
+                                        'text-info':item.SubProject_Status=='Completion Under Approval',
+                                        'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                        'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                        'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                        'text-primary':item.SubProject_Status=='New Project',
+                                        'text-success':item.SubProject_Status=='Completion Under Approval',
+                                        'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
+                                        'text-Todo':item.SubProject_Status=='ToDo Completed'}">
+                                                        {{item.SubProject_Status}}
+                                                    </span>
+                                                </p>
+                                                <p class="mb-1" *ngIf="item.CompleteProofDoc">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-paperclip text-muted mr-1"></i>
+                                                        <b>{{item.CompleteProofDoc}}</b>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                        *ngIf="item.Remarks">
+                                                        <i class="fas fa-registered text-muted mr-1"></i>
+                                                        <b>{{item.Remarks}}</b>
+                                                    </span>
+                                                </p>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" ribbon-box my-3" *ngIf="CompletedList">
+                                        <div class="ribbon-success  ribbon float-start">Completed</div>
+                                        <div class="clearfix"></div>
+                                        <!-- bg-custom   --- For grey background use (bg-custom) class -->
+                                        <div class="subtask-list" *ngFor="let item of CompletedList">
+                                            <div class="col-lg-11">
+                                                <p
+                                                    class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
+                                                    <span class="mr-2" id="SpanProjName_{{item.id}}">
+                                                        {{item.Project_Name}}</span>
+                                                    <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
+                                                    <span class="text-info" [hidden]="Editbutton"
+                                                        id="EidtBtn_{{item.id}}"
+                                                        (click)="OnEditProject(item.id,item.Project_Name)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                    <span class="kt-inbox__subject" style="display:none;"
+                                                        id="spanTextbox_{{item.id}}">
+                                                        <div class="d-flex">
+                                                            <input type="text" class="form-control text-"
+                                                                id="textboxfocus_{{item.id}}"
+                                                                [(ngModel)]="_modelProjectName"
+                                                                style="width: 78%;height: 32px;"
+                                                                (keydown.enter)="OnProject_Rename(item.id)">
+                                                            <div class="d-inline-block ml-3" id="button-addon4">
+                                                                <button (click)="OnProject_Rename(item.id)"
+                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                <button class=" btn btn-secondary btn btn-sm"
+                                                                    (click)="onCancel(item.id)">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </p>
+                                                <p class="mb-3">
+                                                    <span class="mr-2" id="Span_DescName_{{item.id}}">
+                                                        {{item.Project_Description}}</span>
+                                                    <span class="text-info" [hidden]="Editbutton"
+                                                        (click)="OnEditProject_Desc(item.id,item.Project_Description)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                    <span class="kt-inbox__subject" style="display:none;"
+                                                        id="spanTextarea_{{item.id}}">
+                                                        <div class="d-flex">
+                                                            <input type="text" class="form-control"
+                                                                id="textareafocus_{{item.id}}"
+                                                                [(ngModel)]="_modelProjDesc"
+                                                                style="width: 78%;height: 32px;"
+                                                                (keydown.enter)="OnProject_Rename(item.id)">
+                                                            <div class="d-inline-block ml-3" id="button-addon4">
+                                                                <button (click)="OnProject_Rename(item.id)"
+                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                <button class=" btn btn-secondary btn btn-sm"
+                                                                    (click)="onCancel(item.id)">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+
+                                                </p>
+
+                                                <p class="mb-1">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                                        <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
+                                                    </span>
+                                                    <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                                        <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                        *ngIf="item.Project_Cost">
+                                                        <i class="fas fa-wallet text-muted mr-1"></i>
+                                                        <b>{{item.Project_Cost|currency:'SAR '}}</b>
+                                                    </span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fab fa-dev text-muted mr-1"></i>
+                                                        <b> {{item.Subtask_Res}}</b>
+                                                    </span>
+
+                                                    <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
+                                        'text-Completed':item.SubProject_Status=='Completed',
+                                        'text-warning':item.SubProject_Status=='InProcess',
+                                        'text-underApp':item.SubProject_Status=='Under Approval',
+                                        'text-info':item.SubProject_Status=='Completion Under Approval',
+                                        'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                        'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                        'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                        'text-primary':item.SubProject_Status=='New Project',
+                                        'text-success':item.SubProject_Status=='Completion Under Approval',
+                                        'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
+                                        'text-Todo':item.SubProject_Status=='ToDo Completed'}">
+                                                        {{item.SubProject_Status}}
+                                                    </span>
+                                                </p>
+                                                <p class="mb-1" *ngIf="item.CompleteProofDoc">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <i class="fas fa-paperclip text-muted mr-1"></i>
+                                                        <b>{{item.CompleteProofDoc}}</b>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                        *ngIf="item.Remarks">
+                                                        <i class="fas fa-registered text-muted mr-1"></i>
+                                                        <b>{{item.Remarks}}</b>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="charts_1" role="tabpanel" aria-labelledby="charts-1">
+
+
+                                <!-- Subtask Chart -->
+
+                                <!-- Hours and Percentage -->
+                                <div class="row" *ngIf="IsData!=null">
+                                    <div class="col-lg-12">
+                                        <div
+                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid bg-none shadow-none">
+                                            <div class="kt-portlet__body px-3">
+                                                <h5><strong>Subtask Hour and Percentage</strong></h5>
+                                                <!-- <div id="SummaryChart" style="width: 100%; height: 500px">
+                                        </div> -->
+                                                <!-- <h5><strong>Hybrid Graph</strong></h5>-->
+                                                <div id="Hybridchartdiv" style="width: 100%; height: 400px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Summary Chart -->
+                                <div class="row" *ngIf="IsData!=null">
+                                    <div class="col-lg-12">
+                                        <div
+                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid bg-none shadow-none">
+                                            <div class="kt-portlet__body px-3">
+                                                <h5><strong>Subtask Summary</strong></h5>
+                                                <div id="SummaryChart" style="width: 100%; height: 500px">
+                                                </div>
+                                                <!-- <h5><strong>Hybrid Graph</strong></h5>
+                                         -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Milestones" role="tabpanel" aria-labelledby="Milestones1">Milestones
+                    </div>
+                    <!--  DMS Working Area -->
+
+                    <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
+                        <div class="bg-white p-3 mb-2">
+                            <table class="table">
+                                <tbody>
+                                    <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
+                                        <td>
+                                            <a href="javascript:void(0)" (click)="openUrl(itemMemos.Url)">
+                                                {{itemMemos.Subject}}</a>
+                                        </td>
+                                        <td class="align-top curser-pointer" (click)="deleteMemos(itemMemos.MailId)">
+                                            <i class="fas fa-trash-alt text-primary"></i>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                                <p style="color:gray">{{_MemosNotFound}}</p>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
+                    <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
+                        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+                            <div class="kt-container w-100 px-0">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">
+                                        Files
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="ProjectBlock=='003' else others">
+                            <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
+                                <div class="kt-portlet mb-2">
+                                    <div class="kt-portlet__body">
+                                        <div class="kt-widget__files">
+                                            <a class="d-flex">
+                                                <div class="kt-widget__media mr-3">
+                                                    <img class="kt-widget__img kt-hidden-" src="assets/images/pdf.svg"
+                                                        alt="image">
+                                                </div>
+                                                <div>
+                                                    <span class="kt-widget__desc pt-1"
+                                                        (click)="openPDF_Standard(item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</span>
+                                                    <div class="kt-widget__desc pt-1">
+                                                        <small>{{item.Reportdate|date:'medium'}}</small>
+                                                    </div>
+                                                    <div class="kt-widget__desc pt-1" style="color:  #FFA500;">
+                                                        <small>{{item.Remarks}}</small>
+                                                    </div>
+                                                    <div class="kt-widget__desc pt-1">
+                                                        <small>Submitted By : {{item.SubmittedBy}}</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #others>
+                            <div class="row">
+                                <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
+                                    <div class="kt-portlet mb-2">
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-widget__files">
+                                                <a class="d-flex">
+                                                    <div class="kt-widget__media mr-3">
+                                                        <img class="kt-widget__img kt-hidden-"
+                                                            src="assets/images/pdf.svg" alt="image">
+                                                    </div>
+                                                    <div>
+                                                        <span class="kt-widget__desc pt-1"
+                                                            (click)="openPDF(item.CD,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
+                                                        <div class="kt-widget__desc pt-1">
+                                                            <small>{{item.CD|date:'medium'}}</small>
+                                                        </div>
+                                                        <div class="kt-widget__desc pt-1" style="color:  #FFA500;">
+                                                            <small>{{item.Remarks}}</small>
+                                                        </div>
+                                                        <div class="kt-widget__desc pt-1">
+                                                            <small>Submitted By : {{item.SubmittedBy}}</small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">Timeline</div>
+                    <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">Notes</div>
+                    <div class="tab-pane fade" id="Comments" role="tabpanel" aria-labelledby="Comments1">
+                        <div class="card cust-card py-3">
+                            <div class="comments-list">
+                                <div class="card-body p-0 cust-bd1">
+                                    <ul class="commentul pr-2 px-0 pl-0">
+                                        <ng-container *ngFor="let item of _CommentsList">
+                                            <div *ngIf="(item.Send_From == 'WS') then even;">
+                                            </div>
+                                            <div *ngIf="(item.Send_From != 'WS') then odd;">
+                                            </div>
+                                            <ng-template #odd>
+                                                <li class="comment-list">
+                                                    <div class="d-flex">
+                                                        <div class="">
+                                                            <span class="name-box text-center">{{item.Initial}}</span>
+                                                        </div>
+                                                        <div class="d-flex flex-column flex-grow-1">
+                                                            <span class="comment-info">{{item.Emp_name}}</span>
+                                                            <div class="comment-text">
+                                                                <span>{{item.Req_Coments}}</span>
+                                                            </div>
+                                                            <div class="blw mt-2">
+                                                                <span
+                                                                    class="kt-badge kt-badge--inline kt-badge--unified-info">{{item.Req_Type}}</span>
+                                                                <span
+                                                                    class="comment-info dt kt-badge kt-badge--inline kt-badge--unified-dark">{{item.Req_DL}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ng-template>
+                                            <ng-template #even>
+                                                <li class="comment-list odd">
+                                                    <div class="d-flex flex-row-reverse">
+                                                        <div class="">
+                                                            <span class="name-box text-center">{{item.Initial}}</span>
+                                                        </div>
+                                                        <div class="d-flex flex-column flex-grow-1 align-items-end">
+                                                            <span class="comment-info">{{item.Emp_name}}</span>
+                                                            <div class="comment-text">
+                                                                <span>{{item.Req_Coments}}</span>
+                                                            </div>
+                                                            <div class="mt-2">
+                                                                <span
+                                                                    class="kt-badge kt-badge--inline kt-badge--unified-info">{{item.Req_Type}}</span>
+                                                                <span
+                                                                    class="kt-badge kt-badge--inline kt-badge--unified-dark comment-info dt">{{item.Req_DL}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ng-template>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                                <div class="card-footer d-none">
+                                    <ul class="commentlt">
+                                        <li class="comment-list">
+                                            <div class="d-flex align-items-center">
+                                                <div class="">
+                                                    <span class="name-box text-center">RK</span>
+                                                </div>
+                                                <div class="flex-grow-1 ml-2">
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <button class="btn btn-sm ml-2 btn-info"><i
+                                                        class="far fa-paper-plane"></i>Send</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="People" role="tabpanel" aria-labelledby="People1">
+                        <h4>People on the project (RACIS)</h4>
+                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                            <div class="kt-portlet__body px-3 project-people">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-1">{{InitOwn}}
+                                            </div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Owner)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Owner}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-2">{{InitR}}
+                                            </div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Responsible)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Responsible}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-3">{{InitAut}}
+                                            </div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Authority)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Authority}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-4">
+                                                {{InitCoor}}
+                                            </div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Coordinator)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Coordinator}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-5">
+                                                {{InitInformer}}</div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Informer)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Informer}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="initial-box color-6">
+                                                {{InitSupp}}
+                                            </div>
+                                            <div class="owner-details">
+                                                <span class="text-muted">(Support)</span>
+                                                <p class="text-dark text-hover-primary mb-0">
+                                                    <strong>{{Support}}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted"><strong></strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">Meeting</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+<div class="sideInfobar animate-right" id="mysideInfobar">
+    <div class="card">
+        <div class="card-body">
+            <div class="">
+                <button class="float-right  btn-hover-danger btn btn-sm" (click)="closeInfo()"><i
+                        class="fas fa-times mr-0"></i>
+                </button>
+                <h5 class="det-text pro-nm text-dark mb-1">Project Actions</h5>
+                <h5 class="mb-1 kt-portlet__head-title text-blue">Dear Sir, Please Approve Portfolio Module</h5>
+            </div>
+        </div>
+    </div>
+    <div class="py-3 px-4">
+        <div class="proctdetls d-flex justify-content-between align-items-center" id="ProjectDetails_Main">
+            <div class="d-flex align-items-center">
+                <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2"><svg width="24" height="24"
+                            viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                            <path
+                                d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
+                            </path>
+                        </svg></span></div>
+                <div class="action-content">
+                    <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
+                    <h5 class="mt-1 text-blue">30/11/2021</h5>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class=""><span class="svg-icon svg-icon-2x text-info mr-2"><svg _ngcontent-jrv-c350="" width="24"
+                            height="24" viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                            <path _ngcontent-jrv-c350="" d="M30.5,9h-7.8l-3.6-3.6C18.2,4.5,16.9,4,15.6,4h-5.1C6.9,4,4,6.9,4,10.5v19c0,3.6,2.9,6.5,6.5,6.5h19c3.6,0,6.5-2.9,6.5-6.5v-15C36,11.5,33.5,9,
+                    30.5,9z M33,29.5c0,1.9-1.6,3.5-3.5,3.5h-19C8.6,33,7,31.4,7,29.5v-19C7,8.6,8.6,7,10.5,7h5.1c0.5,0,1,0.2,1.4,0.6l4.1,4c0.3,0.3,0.7,0.4,1.1,0.4h8.4c1.4,
+                    0,2.5,1.1,2.5,2.5L33,29.5L33,29.5z M13.5,13L13.5,13c0.8,0,1.5,0.7,1.5,1.5v13c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-13C12,13.7,12.7,13,13.5,13z
+                     M25.5,18L25.5,18c0.8,0,1.5,0.7,1.5,1.5v8c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-8C24,18.7,24.7,18,25.5,18z M19.5,22L19.5,22c0.8,0,1.5,0.7,1.5,1
+                     .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z"></path>
+                        </svg></span></div>
+                <div class="action-content">
+                    <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
+                    <h5 class="mt-1 text-blue">New Project</h5>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class=""><span class="svg-icon svg-icon-2x text-dangr mr-2"><svg width="24" height="24"
+                            viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                            <path
+                                d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
+                            </path>
+                        </svg></span></div>
+                <div class="action-content">
+                    <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
+                    <h5 class="mt-1 text-blue">13/12/2021</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- accordian_section-->
+
+    <div class="px-4 m-auto">
+
+
+        <div class="mt-3">
+            <div class="card-title mb-0">
+                <!-- <div class="card-title mb-0" data-toggle="collapse" data-target="#proj_act_acc" aria-expanded="true" aria-controls="proj_act_acc"> -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="det-text pro-nm pl-1 text-blue">Project Actions</span>
+                    <i class="fas fa-chevron-up text-info1 mr-2 d-none"></i>
+                </div>
+            </div>
+
+            <div id="proj_act_acc" class="collapse show px-1">
+
+                <div class="pro_act_div card-body px-0">
+                    <div class="form-group mb-2">
+                        <div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label lbl-suc btn-app">
+                                    <input id="rdbButtons_0" type="radio" class="form-check-input" name="rdbButtons"
+                                        value="1" checked="checked">Accept
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label lbl-war btn-app">
+                                    <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
+                                        value="2">Hold
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label lbl-dan btn-app">
+                                    <input id="rdbButtons_2" type="radio" class="form-check-input" name="rdbButtons"
+                                        value="3">Reject
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-grow-1r">
+                        <div class="col-md-12 checked-rad pl-1 pt-3">
+                            <div class="appr-comts">
+                                <div class="form-group">
+                                    <label class="mb-2">Enter your Comment</label>
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="mb-2">Select Comment</label>
+                                    <select class="form-control">
+                                        <option>Select Comment</option>
+                                        <option>Comment 1</option>
+                                        <option>Comment 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-info mr-2">Submit</button>
+                                <button class="btn btn-sm btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="none-checked margin-auto">
+                            <img src="assets/images/bg-no.jpg" height="300px" alt="select project actions">
+                            <div class="text-black h5 mt-3">To Manage Project , select Project Actions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

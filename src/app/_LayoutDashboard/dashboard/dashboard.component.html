@@ -1,0 +1,873 @@
+<div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
+    <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
+        <h4 class="pl-4 pt-4">Main Dashboard</h4>
+    </div>
+    <!-- end: Header Menu -->
+    <!-- begin:: Header Topbar -->
+    <div class="kt-header__topbar">
+        <div class="kt-header__topbar-item dropdown">
+            <!-- <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i class="flaticon2-bell-alarm-symbol"></i></span>
+                <span class="kt-badge kt-badge--danger">4</span>
+            </div> -->
+            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                <form>
+                    <!--begin: Head -->
+                    <div class="kt-head kt-head--skin-light kt-head--fit-x">
+                        <h3 class="kt-head__title">
+                            Notifications &nbsp;
+                            <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">4 new</span>
+                        </h3>
+                    </div>
+                    <!--end: Head -->
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
+                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true"
+                                data-height="300" data-mobile-height="200">
+                                <a class="kt-notification__item">
+                                    <div class="kt-notification__item-icon">
+                                        <i class="flaticon2-line-chart kt-font-success"></i>
+                                    </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title">
+                                            Subtask Created For Dr Cafe.
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            2 hrs ago
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="kt-notification__item">
+                                    <div class="kt-notification__item-icon">
+                                        <i class="flaticon2-box-1 kt-font-brand"></i>
+                                    </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title">
+                                            Creative Planner Project
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            3 hrs ago
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="kt-notification__item">
+                                    <div class="kt-notification__item-icon">
+                                        <i class="flaticon2-chart2 kt-font-danger"></i>
+                                    </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title">
+                                            RunWay Module Subtask Added
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            3 hrs ago
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="kt-notification__item">
+                                    <div class="kt-notification__item-icon">
+                                        <i class="flaticon2-image-file kt-font-warning"></i>
+                                    </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title">
+                                            Process Detail Module Subtask Added
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            5 hrs ago
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0" id="kt_content">
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!--begin:: Widgets/Authors Profit-->
+                <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid d-none">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Main Dashboard
+                            </h3>
+                            
+                        </div>
+                        <a class="text-dark kt-portlet__head-label" href="#notifymodal" data-toggle="modal">
+                            <i class="fas fa-bell bell-icon kt-portlet__head-title" data-count="5"
+                                style="font-size: 20px;">
+                            </i>
+                        </a>
+                        <!-- {{NotificationCount}} -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mb-1">
+                <div class="d-flex justify-content-between">
+                    <h5 class="kt-portlet__head-title">Need Your Action</h5>
+                    <!-- <h3 [ngStyle]="{'color':'GREEN'}"> Testing Ng Style Color</h3> -->
+                    <button class="btn btn-info btn-sm mb-2" type="button" data-toggle="collapse"
+                        data-target="#multiCollapse1" aria-expanded="false"
+                        aria-controls="multiCollapse1">DAR Status
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+                <div class="row card-spacer">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="Delay_Click()">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                <span class="symbol-label  bg-dangr">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">                                               
+                                        <i class="fas fa-prescription-bottle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <!-- (click)="Delay_Click()" [routerLink]="['ViewProjects','Delay']"-->
+                            <div class="action-content">
+                                <!-- <a target="_blank" routerLink="/ProjectsSummary">Click Me to aNother Page</a> -->
+                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{DelayCount}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5"> Delay Projects</div>
+                                <!-- <p class="mb-0"><span>It will effect your DAR</span></p> -->
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="ExpiryInOneMonth_Click()">                            
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                <span class="symbol-label bg-coral">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="fas fa-calendar-day"></i> 
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryInMonth}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5">Delay In One Month</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="Not_Started()">
+                            <div class="d-flex align-items-center"><div class="symbol me-5">
+                                <span class="symbol-label bg-light-nav">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="far fa-stop-circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotStarted}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5"> Projects not Started</div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="AssignedTask_Click()">
+                            <div class="d-flex align-items-center"><div class="symbol me-5">
+                                <span class="symbol-label  bg-info">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="far fa-file-alt"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{AssignedProjects}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5">Assigned Projects</div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="Not_Working()">
+                            <div class="d-flex align-items-center"><div class="symbol me-5">
+                                <span class="symbol-label  bg-light-nav">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="fas fa-calendar-times"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotWorking}} <span class="fs-6">Projects</span></h3>
+                                <div class="fw-bolder text-muted pt-3 fs-6"> Not Working from 1 Month</div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="Rejected_Click()">
+                            <div class="d-flex align-items-center"><div class="symbol me-5">
+                                <span class="symbol-label  bg-dangr">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{RejectedCount}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5"> Rejected Projects</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="action-count" role="button" (click)="UnderApproval_Click()">
+                            <div class="d-flex align-items-center"><div class="symbol me-5">
+                                <span class="symbol-label  bg-warning">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="fas fa-spinner"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{CompletedCount}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5"> Under Approval Projects</div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6" (click)="Portfolio_Click()">
+                        <div class="action-count" role="button">
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                <span class="symbol-label  bg-dangr">
+                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">    
+                                        <i class="fab fa-empire"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="action-content">
+                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryPortfolio}}</h3>
+                                <div class="fw-bolder text-muted pt-3 fs-5"> Delay Portfolios</div>
+                                <!-- <div *ngIf="!TotalExpiryPortfolio; else Count">
+                                <h3 class="mt-2">0</h3>
+                            </div> -->
+                                <!-- <ng-template>
+                                <h3 class="mt-2">{{TotalExpiryPortfolio}}</h3>
+                            </ng-template> -->
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mb-2 collapse multi-collapse" id="multiCollapse1">
+                <h5 class="kt-portlet__head-title">DAR Status</h5>
+                <div class="row">
+                    <!-- DAR Start -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card card-stretch shadow-sm mb-3 mb-xxl-8">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol me-5">
+                                        <span class="symbol-label bg-success-1">
+                                            <span class="svg-icon svg-icon-2x ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="#ffffff" class="bi bi-hourglass-split"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <!-- <a href="#" class="fs-4 text-white text-hover-primary fw-bolder">Expired Memos</a> -->
+                                        <div class="fs-3 text-info-cus opacity-75 fw-bold mt-1">{{TodaysDARAchievement}}
+                                            Hrs</div>
+                                            <div class="fw-bolder text-muted pt-1 fs-5">
+                                                <span class="d-block">Todays DAR Achievement
+                                                </span>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card card-stretch shadow-sm mb-3 mb-xxl-8">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol me-5">
+                                        <span class="symbol-label  bg-warning">
+                                            <span class="svg-icon svg-icon-2x">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="#ffffff" class="bi bi-clock" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                    <path
+                                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div class="fs-3 text-info-cus opacity-75 fw-bold mt-1">{{YesterdaysDAR_Status}}
+                                        </div>
+                                        <div class="fw-bolder text-muted pt-1 fs-5">
+                                            <span class="d-block">Yesterday's DAR Status</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card card-stretch shadow-sm mb-3 mb-xxl-8">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol me-5">
+                                        <span class="symbol-label  bg-coral">
+                                            <span class="svg-icon svg-icon-2x">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="#ffffff" class="bi bi-stack" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z" />
+                                                    <path
+                                                        d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div class="fs-3 text-info-cus opacity-75 fw-bold mt-1">{{TotalDARSubmitted}}
+                                        </div>
+                                        <div class="fw-bolder text-muted pt-1 fs-5">
+                                            <span class="d-block">DAR Under Approval</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card card-stretch shadow-sm mb-3 mb-xxl-8">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol me-5">
+                                        <span class="symbol-label  bg-dangr">
+                                            <span class="svg-icon svg-icon-2x">                                               
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div class="fs-3 text-info-cus opacity-75 fw-bold mt-1">{{TotalDARRejected}}
+                                        </div>
+                                        <div class="fw-bolder text-muted pt-1 fs-5">
+                                            <span class="d-block"> DAR Rejected</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-lg-12">
+                <span class="kt-portlet__head-icon d-flex justify-content-between">
+                    <!-- <i class="far fa-calendar-alt"></i> -->
+                    <h5 class="kt-portlet__head-title mr-3">
+                        <i class="far fa-calendar-alt"></i> My Calendar
+                    </h5>
+
+                    <div class="dropdown">
+                        <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">{{Project_Mode}}</a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" (click)="userProjects()">My</a>
+                            <a class="dropdown-item" (click)="teamProjects()">My Team</a>
+                            <a class="dropdown-item" (click)="allProjects()">All</a>
+                        </div>
+                    </div>
+                </span>
+
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+
+                    <div class="kt-portlet__body">
+                        <!-- <div id="kt_calendar"></div> -->
+                        <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
+                        <full-calendar [options]="calendarOptions"></full-calendar>
+                    </div>
+                </div>
+                <!--end::Portlet-->
+            </div>
+            <!-- Calendar Ends -->
+            <!-- Activities -->
+            <div class="col-lg-7">
+                <!--begin:: Widgets/Authors Profit-->
+                <div class="kt-portlet kt-portlet--height-fluid">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Activities<br>
+                                <span class="dashboard-subtitle">Date Range : Last One Week</span>
+                            </h3>
+                        </div>
+                        <!-- Tabs -->
+                        <!-- <div class="kt-portlet__head-toolbar">
+                        <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_widget5_tab1_content" role="tab"
+                                    (click)="OnClickProjAct()">
+                                    Project - Activity
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_widget5_tab2_content" role="tab"
+                                    (click)="OnClickDarAct()">
+                                    DAR - Activity
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                        <!-- Tabs Ends -->
+                    </div>
+                    <div class="kt-portlet__body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="kt_widget5_tab1_content" aria-expanded="true"
+                                [hidden]="projectactivity_Div">
+                                <!-- <h5>Project - Activity</h5> -->
+                                <div class="kt-widget5 height-adjust">
+                                    <!-- ------------------ Request Activity -------------------->
+
+                                    <div class="kt-widget5__item" *ngFor="let item of _RequestActivity; let i=index">
+                                        <div *ngIf="item.Req_Type=='Project Forward'">
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-primary align-self-stretch mr-3"></span>
+                                            <!-- <span class="bullet bullet-bar bg-primary align-self-stretch mr-3"></span> -->
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Approved Project'">
+                                            <!-- <span class="bullet bullet-bar bg-success align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-success align-self-stretch mr-3"></span>
+
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='New Project Rejected'">
+                                            <!-- <span class="bullet bullet-bar bg-danger align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='New Project'">
+                                            <!-- <span class="bullet bullet-bar bg-info align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-info align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Project Hold'">
+                                            <!-- <span class="bullet bullet-bar bg-warning align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-warning align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Project Complete'">
+                                            <!-- <span class="bullet bullet-bar align-self-stretch mr-3"
+                                            style="background-color: #28a745;"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-success align-self-stretch mr-3"
+                                                style="background-color: #28a745;"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Deadline Extend'">
+                                            <!-- <span class="bullet bullet-bar bg-primary align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Task Complete'">
+                                            <!-- <span class="bullet bullet-bar bg-primary align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-primary align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Not Achieved'">
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                            <!-- <span class="bullet bullet-bar bg-warning align-self-stretch mr-3"></span> -->
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Information'">
+                                            <!-- <span class="bullet bullet-bar bg-info align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-info align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='New Project Reject Release'">
+                                            <!-- <span class="bullet bullet-bar bg-danger align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-warning align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='KPI Achieved'">
+                                            <!-- <span class="bullet bullet-bar bg-success align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-info align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Forward Reject'">
+                                            <!-- <span class="bullet bullet-bar bg-danger align-self-stretch mr-3"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='StandardTask Completed'">
+                                            <!-- <span class="bullet bullet-bar dar-border-height align-self-stretch mr-3"
+                                            style="background-color: #95BED9;"></span> -->
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-success align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.Req_Type=='Standardtask Enactive'">
+                                            <!-- <span class="bullet bullet-bar dar-border-height align-self-stretch mr-3"
+                                            style="background-color: #95BED9;"></span> -->
+                                            <span class="bullet bullet-bar dar-border-height align-self-stretch mr-3"
+                                                style="background-color: #C0B5DC;"></span>
+                                        </div>
+                                        <div class="kt-widget5__content">
+                                            <div class="kt-widget5__section">
+                                                <p class="kt-widget5__title Activity-title mb-1">
+                                                    <span>Request Type :</span> {{item.Req_Type}}
+                                                    <small>({{item.Exec_BlockName}})</small>
+                                                </p>
+                                                <!-- <p class="kt-widget5__desc">
+                                                {{item.Exec_BlockName}}
+                                            </p> -->
+                                                <p class="kt-widget5__desc mb-0">
+                                                    {{item.Project_Name}}
+                                                </p>
+                                                <p class="kt-widget5__desc mb-0" title="{{item.Req_Coments}}">
+                                                    Comments : {{item.Req_Coments}}
+                                                </p>
+                                                <p class="kt-widget5__desc mb-0">
+                                                    <span>To: </span>
+                                                    <span class="Activity-title"> {{item.SubmittedTo}}</span>
+                                                </p>
+                                                <p class="kt-widget5__desc mb-0">
+                                                    <span>By: </span>
+                                                    <span class="Activity-title">{{item.SubmittedBy}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="kt-widget5__content">
+                                            <div class="kt-widget5__info Activity-date">
+                                                <span><b>On : </b></span>
+                                                <span class="kt-font-info">{{item.Rec_Date |date:'dd-MM-yyyy'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ------------------ DAR Activity -------------------->
+
+                                    <div class="kt-widget5__item" *ngFor="let item of _DarActivityList; let i=index">
+                                        <!-- <span class="bullet bullet-bar bg-success align-self-stretch mr-3"></span> -->
+                                        <div *ngIf="item.DARStatus=='Submitted'">
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-success align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.DARStatus=='Rejected'">
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div *ngIf="item.DARStatus=='Suspend'">
+                                            <span class="bullet bullet-bar dar-border-height  align-self-stretch mr-3"
+                                                style="background-color: #F5C293;"></span>
+                                        </div>
+                                        <div *ngIf="item.DARStatus=='Accepted'">
+                                            <span
+                                                class="bullet bullet-bar dar-border-height bg-primary align-self-stretch mr-3"></span>
+                                        </div>
+                                        <div class="kt-widget5__content">
+                                            <div class="kt-widget5__section">
+                                                <span class="kt-widget5__title">
+                                                    DAR Status : {{item.DARStatus}}
+                                                </span>
+                                                <p class="kt-widget5__desc">
+                                                    DAR Code - {{item.Emp_Rep_No}}
+                                                </p>
+                                                <p class="kt-widget5__desc mb-0">
+                                                    <span>To: </span>
+                                                    <span class="Activity-title"> {{item.SubmittedTo}}</span>
+                                                </p>
+                                                <p class="kt-widget5__desc mb-0">
+                                                    <span>By: </span>
+                                                    <span class="Activity-title">{{item.SubmittedBy}}</span>
+                                                </p>
+                                                <!-- <div class="kt-widget5__info">
+                                                <span>To: </span>
+                                                <span class="kt-font-info">{{item.SubmittedTo}}</span>
+                                                <br>
+                                                <span>By:</span>
+                                                <span class="kt-font-info">{{item.SubmittedBy}}</span>
+                                            </div> -->
+                                            </div>
+                                            <div class="kt-widget5__content">
+                                                <div class="kt-widget5__info Activity-date">
+                                                    <span><b>On : </b></span>
+                                                    <span class="kt-font-info">{{item.submissiondate|date:'dd-MM-yyyy'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="kt-widget5__content">
+                                        <div class="kt-widget5__info Activity-date">
+                                            <span><b>On : </b></span>
+                                            <span class="kt-font-info">{{item.submissiondate|date}}</span>
+                                        </div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane active" id="kt_widget5_tab2_content" [hidden]="DARactivity_Div">
+                                <!-- <h5>DAR - Activity</h5>-->
+                                <!-- <div class="kt-widget5 height-adjust">
+                                <div class="kt-widget5__item" *ngFor="let item of _DarActivityList; let i=index">
+                                    <div *ngIf="item.DARStatus=='Submitted'">
+                                        <span
+                                            class="bullet bullet-bar dar-border-height bg-success align-self-stretch mr-3"></span>
+                                    </div>
+                                    <div *ngIf="item.DARStatus=='Rejected'">
+                                        <span
+                                            class="bullet bullet-bar dar-border-height bg-danger align-self-stretch mr-3"></span>
+                                    </div>
+                                    <div *ngIf="item.DARStatus=='Suspend'">
+                                        <span class="bullet bullet-bar dar-border-height  align-self-stretch mr-3"
+                                            style="background-color: #F5C293;"></span>
+                                    </div>
+                                    <div *ngIf="item.DARStatus=='Accepted'">
+                                        <span
+                                            class="bullet bullet-bar dar-border-height bg-primary align-self-stretch mr-3"></span>
+                                    </div>
+                                    <div class="kt-widget5__content">
+                                        <div class="kt-widget5__section">
+                                            <span class="kt-widget5__title">
+                                                DAR Status : {{item.DARStatus}}
+                                            </span>
+                                            <p class="kt-widget5__desc">
+                                                DAR Code - {{item.Emp_Rep_No}}
+                                            </p>
+                                            <p class="kt-widget5__desc mb-0">
+                                                <span>To: </span>
+                                                <span class="Activity-title"> {{item.SubmittedTo}}</span>
+                                            </p>
+                                            <p class="kt-widget5__desc mb-0">
+                                                <span>By: </span>
+                                                <span class="Activity-title">{{item.SubmittedBy}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="kt-widget5__content">
+                                        <div class="kt-widget5__info Activity-date">
+                                            <span><b>On : </b></span>
+                                            <span class="kt-font-info">{{item.submissiondate|date}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Portfolio Activity -->
+            <div class="col-lg-5">
+                <div class="kt-portlet kt-portlet--height-fluid">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Portfolios<br>
+                                <span class="dashboard-subtitle"></span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
+                        <div class="kt-widget5 height-adjust">
+                            <div class="kt-widget5__item no-border" *ngFor="let item of _ListProjStat; let i=index">
+                                <div class="kt-widget5__content">
+                                    <div class="kt-widget5__section">
+                                        <span class="kt-widget5__title">
+                                            <div [hidden]="messageForEmpty">
+                                                <h4 style="color: lightgrey;text-align: center;">No Portfolio's has
+                                                    created</h4>
+                                            </div>
+                                            <div class="mr-2">
+                                                <i class="fas fa-circle mr-2" [ngClass]="{'text-danger':item.Status=='Delay',
+                                            'text-Completed':item.Status=='Completed',
+                                            'text-warning':item.Status=='InProcess',
+                                            'text-underApp':item.Status=='Under Approval',
+                                            'text-info':item.Status=='Completion Under Approval',
+                                            'text-Rejected':item.Status=='New Project Rejected',
+                                            'text-underApproval':item.Status=='Enactive Under Approval',
+                                            'text-underApproval':item.Status=='Forward Under Approval',
+                                            'text-primary':item.Status=='New Project',
+                                            'text-success':item.Status=='Completion Under Approval',
+                                            'text-CompleteRejected':item.Status=='Project Complete Rejected',
+                                            'text-Todo':item.Status=='ToDo Completed',
+                                            'text-info':item.Status=='New Todo'}">
+                                                </i>
+                                                <a role="button"
+                                                    (click)="redirectTo_Portfolio(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">{{item.Portfolio_Name}}</a>
+                                                <!-- routerLink="/backend/Portfolio" -->
+                                            </div>
+                                        </span>
+                                        <div class="kt-widget5__info">
+                                            <!-- <span class="kt-font-info">{{item.SubmittedTo}}</span> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-widget5__content">
+                                    <div *ngIf="item.Status=='Delay';else Inprocess">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Delaydays}} Days Delay</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='InProcess'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-warning kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}} </span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Holded'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}} </span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Completion Under Approval'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}} </span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Forward Under Approval'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}} </span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}} </span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Complete Rejected'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Project Hold'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Under Approval'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='Completed'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                    <div *ngIf="item.Status=='New Todo'">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            {{item.Status}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end:: Widgets/Best Sellers-->
+            </div>
+
+        </div>
+
+        <!-- Side Information Bar -->
+
+
+        <!-- New Side InformationBar -->
+        <div id="mysideInfobar" class="sideInfobar animate-right">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<!-- Notification Modal -->
+<div class="modal fade" id="notifymodal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notifylabel">Notifications</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item">Subtask Created For Dr Cafe.</li>
+                    <li class="list-group-item">Creative Planner Project</li>
+                    <li class="list-group-item">RunWay Module Subtask Added</li>
+                    <li class="list-group-item">Process Detail Module Subtask Added</li>
+                    <li class="list-group-item">Dashboard Notifications Click to view Details</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Clear All</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link memos Template -->
+
+<div id="LinkSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="closeLinkSideBar()">&times;</a>
+            <h5 class="title-sidebar mb-0 text-white">
+                <i class="fa fa-link"></i> Link Project
+            </h5>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+
+            <p class="text-primary">
+                {{_displayProjName}}</p>
+            <div class="M_fsize">
+                Total
+                <div class="badge badge-pill badge-outline-info">
+                    {{_totalMemos}}</div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{_mappedMemos}}</div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="d-flex">
+                <!-- Working... -->
+                <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                    [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                    (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                </ng-multiselect-dropdown>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+            </div>
+        </li>
+        <li class="kt-nav__foot"></li>
+    </ul>
+</div>
