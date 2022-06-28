@@ -31,7 +31,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
   panelOpenState: boolean = false;
-
+  _selectedcatname: any;
+  _selectedcatid: any;
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
 
@@ -254,7 +255,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   //   alert(this._SelectedEmpNo);
   // }
   //---------- Insert Assign Task ----------------//
- 
+
   clearFeilds() {
     this._description = "";
     this._StartDate = null;
@@ -265,10 +266,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
   }
-
+  CallOnSubmitCategory() {
+    this.OnCategoryClick(this._selectedcatid,this._selectedcatname);
+  }
   Mdl_CategoryName: string = "";
   CategoryList: any;
   OnSubmitCategory(CtgryName) {
+    
     if (this.Mdl_CategoryName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "CategoryInsert";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
@@ -295,6 +299,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
   OnCategoryClick(C_id, C_Name) {
+    this._selectedcatname=C_Name;
+    this._selectedcatid=C_id;
     document.getElementById("mysideInfobar").style.width = "0px";
 
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";

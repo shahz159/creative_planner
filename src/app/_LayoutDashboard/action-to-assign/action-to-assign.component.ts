@@ -6,6 +6,7 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
 
 @Component({
   selector: 'app-action-to-assign',
@@ -40,7 +41,8 @@ export class ActionToAssignComponent implements OnInit {
   constructor(private notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
     private dateAdapter: DateAdapter<Date>,
-    private BsService: BsServiceService) {
+    private BsService: BsServiceService
+    ,public _projectunplanned:ProjectUnplannedTaskComponent) {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -55,7 +57,7 @@ export class ActionToAssignComponent implements OnInit {
         this.txtdisabled = true;
       }
     });
-    this._inputAttachments=[];
+    this._inputAttachments = [];
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class ActionToAssignComponent implements OnInit {
     this._SelectedEmpNo = null;
     this.selectedEmployee = this._SelectedEmpNo;
   }
- 
+
   onFileChangeATP(e) {
     // this._inputAttachments = <File>e.target.files[0];
     this._inputAttachments = [...this._inputAttachments, {
@@ -94,9 +96,9 @@ export class ActionToAssignComponent implements OnInit {
       Files: e.target.files[0]
     }];
   }
-  
+
   OnAssignTask_Submit() {
-    debugger
+
 
     this._ObjAssigntaskDTO.TaskName = this._taskName;
     this._ObjAssigntaskDTO.TaskDescription = this._description;
@@ -119,7 +121,7 @@ export class ActionToAssignComponent implements OnInit {
     this._ObjAssigntaskDTO.AssignId = this.task_id;
     this._ObjAssigntaskDTO.ProjectType = this.selectedProjectType;
     this._ObjAssigntaskDTO.Remarks = this._remarks;
-    if(this._inputAttachments.length>0){
+    if (this._inputAttachments.length > 0) {
       this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
     }
     var datestrStart = (new Date(this._StartDate)).toUTCString();
@@ -130,14 +132,15 @@ export class ActionToAssignComponent implements OnInit {
 
     fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
     if (this._inputAttachments.length > 0) {
-      fd.append("Attachment","true");
+      debugger
+      fd.append("Attachment", "true");
       fd.append('file', this._inputAttachments[0].Files);
     }
-    else{
-      fd.append("Attachment","false");
+    else {
+      fd.append("Attachment", "false");
       fd.append('file', "");
     }
-    
+
     fd.append("TaskName", this._taskName);
     fd.append("Desc", this._description);
     fd.append("StartDate", datestrStart);
@@ -154,8 +157,10 @@ export class ActionToAssignComponent implements OnInit {
       (data) => {
         let message: string = data['Message'];
         this.notifyService.showSuccess("Task sent to assign projects", message);
+        this._projectunplanned.CallOnSubmitCategory();
         this.clearFeilds();
-        this.closeInfo()
+        this.closeInfo();
+        this._inputAttachments = [];
       });
   }
 
@@ -165,7 +170,7 @@ export class ActionToAssignComponent implements OnInit {
 
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("rightbar-overlay").style.display = "none";
+    // document.getElementById("rightbar-overlay").style.display = "none";
     this.clearFeilds();
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     //document.getElementById("mysideInfobar").style.width = "0px";
