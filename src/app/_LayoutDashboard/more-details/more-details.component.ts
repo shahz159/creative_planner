@@ -35,6 +35,7 @@ export class MoreDetailsComponent implements OnInit {
   URL_ProjectCode: string
   IsData: string;
   ngOnInit(): void {
+    
     this.Current_user_ID = localStorage.getItem('EmpNo');
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {

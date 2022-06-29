@@ -82,10 +82,18 @@
                                         </span>
                                     </span>
                                 </div>
-                                <div class="action-content">
+                                <div class="action-content" >
                                     <h6 class="txtm-cus pt-1">Project Duration</h6>
-                                    <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}
-                                    </h5>
+                                   <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks'); then othertask;"></ng-container>
+                                   <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks'); then standardtask;"></ng-container>
+                                    <ng-template #standardtask>
+                                        <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}}
+                                        </h5>
+                                    </ng-template>
+                                    <ng-template #othertask>
+                                        <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}
+                                        </h5>
+                                    </ng-template>
                                     <progress value="50" max="100" class="project-duration-bar d-none"></progress>
                                 </div>
                             </div>

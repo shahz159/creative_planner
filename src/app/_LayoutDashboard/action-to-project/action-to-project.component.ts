@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service'
 import { UserDetailsDTO } from 'src/app/_Models/user-details-dto';
-
+import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
 @Component({
   selector: 'app-action-to-project',
   templateUrl: './action-to-project.component.html',
@@ -41,7 +41,8 @@ export class ActionToProjectComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     private notifyService: NotificationService,
     private router: Router,
-    private BsService: BsServiceService
+    private BsService: BsServiceService,
+    public _projectunplanned:ProjectUnplannedTaskComponent
   ) {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO = new SubTaskDTO;
@@ -235,6 +236,7 @@ export class ActionToProjectComponent implements OnInit {
         this.service._InsertNewSubtask(fd).subscribe(data => {
         });
         this.notifyService.showInfo("Created Successfully", "Action");
+        this._projectunplanned.CallOnSubmitCategory();
         this.closeInfo();
       });
     }

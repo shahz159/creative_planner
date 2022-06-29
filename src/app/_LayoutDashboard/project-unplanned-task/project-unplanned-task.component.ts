@@ -269,6 +269,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CallOnSubmitCategory() {
     this.OnCategoryClick(this._selectedcatid,this._selectedcatname);
   }
+
   Mdl_CategoryName: string = "";
   CategoryList: any;
   OnSubmitCategory(CtgryName) {
@@ -342,6 +343,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   selectedEmployee: string = "";
   selectedProjectType: string;
   public task_id: number;
+
+  
   GetProjectTypeList(taskName, id) {
     this._taskName = taskName;
     this.task_id = id;
@@ -371,6 +374,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   selectedProjectCodelist = [];
 
   _AssignId: number;
+
+
+
+
   ActionToProject_Click(taskName, Assignid) {
     this._taskName = taskName;
     this._AssignId = Assignid;
