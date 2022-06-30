@@ -24,7 +24,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
-// import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
+//  import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
 //import { ToDoProjectsComponent } from './_LayoutDashboard/to-do-projects/to-do-projects.component';
 //import { FilterPipeSearchPipe } from './Shared/filter-pipe-search.pipe';
 //import { ProjectInfoComponent } from "src/app/_LayoutDashboard/project-info/project-info.component";
@@ -67,7 +67,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     
   ],
   providers:
-    [AuthGuard],
+    [AuthGuard
+      // ,ProjectUnplannedTaskComponent
+     ],
 
   bootstrap: [AppComponent]
 })

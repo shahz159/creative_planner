@@ -20,6 +20,7 @@ import { add } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { Router } from '@angular/router';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+// import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
 
 @Component({
   selector: 'app-project-unplanned-task',
@@ -31,16 +32,30 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
   panelOpenState: boolean = false;
-  _selectedcatname: any;
-  _selectedcatid: any;
+  public _selectedcatname: string;
+  public _selectedcatid: string;
+  // private _bar: boolean = false;
+  get selectedcatname(): string {
+      return this._selectedcatname;
+  }
+  set selectedcatname(value: string) {
+      this._selectedcatname = value;
+  }
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
 
-  constructor(private notifyService: NotificationService,
+  constructor(public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
-    private router: Router,
-    private dialog: MatDialog, private dateAdapter: DateAdapter<Date>,
-    private BsService: BsServiceService) {
+    public router: Router,
+    public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
+    public BsService: BsServiceService
+    // ,_Id
+    // ,_Name
+  ) {
+    // this._Id='0';
+    // this._Name='NA';
+   
+  
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.ObjUserDetails = new UserDetailsDTO();
@@ -267,13 +282,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.selectedProjectCodelist = [];
   }
   CallOnSubmitCategory() {
-    this.OnCategoryClick(this._selectedcatid,this._selectedcatname);
+    console.log('A');
+    debugger
+    alert(this._selectedcatid + "-" + this._selectedcatname);
+    this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
   }
 
   Mdl_CategoryName: string = "";
   CategoryList: any;
   OnSubmitCategory(CtgryName) {
-    
+
     if (this.Mdl_CategoryName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "CategoryInsert";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
@@ -300,10 +318,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
   OnCategoryClick(C_id, C_Name) {
-    this._selectedcatname=C_Name;
-    this._selectedcatid=C_id;
-    document.getElementById("mysideInfobar").style.width = "0px";
+    // _Id = C_id;
+    // _Name = C_Name;
+    this._selectedcatname = C_Name;
+    this._selectedcatid = C_id;
 
+    document.getElementById("mysideInfobar").style.width = "0px";
+    alert(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
 
     this._CategoryActive = true;
@@ -344,7 +365,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   selectedProjectType: string;
   public task_id: number;
 
-  
+
   GetProjectTypeList(taskName, id) {
     this._taskName = taskName;
     this.task_id = id;

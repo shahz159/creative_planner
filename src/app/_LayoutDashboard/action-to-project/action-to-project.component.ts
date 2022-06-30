@@ -1,19 +1,23 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service'
 import { UserDetailsDTO } from 'src/app/_Models/user-details-dto';
 import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
+import { DateAdapter } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-action-to-project',
   templateUrl: './action-to-project.component.html',
   styleUrls: ['./action-to-project.component.css']
 })
-export class ActionToProjectComponent implements OnInit {
+export class ActionToProjectComponent extends ProjectUnplannedTaskComponent implements OnInit {
+  // @ViewChild(ProjectUnplannedTaskComponent ) _projectunplanned !:any ;
+
   Sub_ProjectName: string;
   _Description: string;
   _StartDate: Date;
@@ -38,12 +42,23 @@ export class ActionToProjectComponent implements OnInit {
   public filterText: any;
   _ProjectDataList: any;
 
-  constructor(public service: ProjectTypeService,
-    private notifyService: NotificationService,
-    private router: Router,
-    private BsService: BsServiceService,
-    public _projectunplanned:ProjectUnplannedTaskComponent
+  constructor(
+    public notifyService: NotificationService,
+    public ProjectTypeService: ProjectTypeService,
+    public router: Router,
+    public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
+    public BsService: BsServiceService,
+     public service: ProjectTypeService
+    // public notifyService: NotificationService,
+    // public router: Router,
+    //  public dateAdapter: DateAdapter<Date>,
+    // public BsService: BsServiceService
+     
+    //,public _projectunplanned: ProjectUnplannedTaskComponent
   ) {
+    
+    super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
+    alert(super._selectedcatname);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO = new SubTaskDTO;
     this.ObjUserDetails = new UserDetailsDTO();
@@ -99,7 +114,7 @@ export class ActionToProjectComponent implements OnInit {
         };
       });
   }
-  
+
   onFilterChange(event) {
     this.filterText = event
     this.GetProjectsByUserName();
@@ -138,7 +153,7 @@ export class ActionToProjectComponent implements OnInit {
       // console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
-  
+
   onFileChange(e) {
     this._inputAttachments = [...this._inputAttachments, {
       FileName: e.target.files[0].name,
@@ -159,7 +174,7 @@ export class ActionToProjectComponent implements OnInit {
 
 
   OnSubmit() {
-    
+
     if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
       this.notifyService.showInfo("", 'Star(*) mark feilds required ')
     }
@@ -173,7 +188,7 @@ export class ActionToProjectComponent implements OnInit {
       }
       this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
         debugger
-        
+
         this.Sub_ProjectCode = data['SubTask_ProjectCode'];
         this.EmpNo_Autho = data['Team_Autho'];
 
@@ -202,23 +217,23 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
         this.ObjSubTaskDTO.Remarks = this._remarks;
         // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-        if(this._inputAttachments.length>0){
+        if (this._inputAttachments.length > 0) {
           this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
         }
         var datestrStart = (new Date(this._StartDate)).toUTCString();
         var datestrEnd = (new Date(this._EndDate)).toUTCString();
-        
+
 
         const fd = new FormData();
         fd.append("Project_Code", this.Sub_ProjectCode);
         fd.append("Team_Autho", this.EmpNo_Autho);
         // fd.append('file', this._inputAttachments[0].Files);
         if (this._inputAttachments.length > 0) {
-          fd.append("Attachment","true");
+          fd.append("Attachment", "true");
           fd.append('file', this._inputAttachments[0].Files);
         }
-        else{
-          fd.append("Attachment","false");
+        else {
+          fd.append("Attachment", "false");
           fd.append('file', "");
         }
         fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
@@ -234,14 +249,21 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("EmployeeName", localStorage.getItem('UserfullName'))
         fd.append("AssignId", this.task_id.toString())
         this.service._InsertNewSubtask(fd).subscribe(data => {
+          this.notifyService.showInfo("Created Successfully", "Action");
+          super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
+          // this.closeInfo();
         });
-        this.notifyService.showInfo("Created Successfully", "Action");
-        this._projectunplanned.CallOnSubmitCategory();
-        this.closeInfo();
+        
+        // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
+        // setTimeout(function () {
+        //   this.loadsubcateg();
+        // }, 3000);
+        // this._projectunplanned.CallOnSubmitCategory();
+      
       });
     }
   }
-
+ 
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
     this.Clear_Feilds();
@@ -252,8 +274,8 @@ export class ActionToProjectComponent implements OnInit {
     this._StartDate = null;
     this._EndDate = null;
     this._remarks = "";
-    this._inputAttachments = null;
-    this._inputAttachments2 = null;
+    this._inputAttachments = [];
+    this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
   }

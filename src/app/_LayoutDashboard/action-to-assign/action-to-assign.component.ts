@@ -170,7 +170,7 @@ export class ActionToAssignComponent implements OnInit {
 
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0px";
-    // document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("rightbar-overlay").style.display = "none";
     this.clearFeilds();
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     //document.getElementById("mysideInfobar").style.width = "0px";

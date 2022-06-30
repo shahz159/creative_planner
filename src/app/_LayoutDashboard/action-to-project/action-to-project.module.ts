@@ -6,7 +6,7 @@ import { ActionToProjectRoutingModule } from './action-to-project-routing.module
 import { ActionToProjectComponent } from './action-to-project.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { NotificationService } from 'src/app/_Services/notification.service';
 
 @NgModule({
   declarations: [ActionToProjectComponent],
@@ -17,6 +17,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule
+  ],exports:[
+    ActionToProjectComponent
+  ],
+  providers:[
+    NotificationService
   ]
 })
 export class ActionToProjectModule { }

@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TaskDateAgoPipe } from './task-date-ago.pipe';
+import { NotificationService } from 'src/app/_Services/notification.service';
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -32,8 +33,11 @@ import { TaskDateAgoPipe } from './task-date-ago.pipe';
     MatSelectModule,
     NgMultiSelectDropDownModule
   ],
-  //   providers: [ 
-  //     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } } 
-  // ] 
+  exports:[
+    ProjectUnplannedTaskComponent
+  ],
+    providers: [ 
+      NotificationService
+  ] 
 })
 export class ProjectUnplannedTaskModule { }
