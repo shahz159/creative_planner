@@ -87,7 +87,7 @@
                                    <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks'); then othertask;"></ng-container>
                                    <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks'); then standardtask;"></ng-container>
                                     <ng-template #standardtask>
-                                        <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}}
+                                        <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}} / {{SubmissionName}}
                                         </h5>
                                     </ng-template>
                                     <ng-template #othertask>
@@ -117,14 +117,14 @@
                                 <div class="action-content d-flex align-items-center">
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
-                                        <h5 class="mt-1">18 Hours</h5>
+                                        <h5 class="mt-1">{{StandardDuration}}</h5>
                                     </div>
                                     <div class="px-4">
                                         <i class=" la la-arrows-h mx-3 text-dangr fs-4 font-weight-bold"></i>
                                     </div>
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Duration</h6>
-                                        <h5 class="mt-1">15 days</h5>
+                                        <h5 class="mt-1">Continuous</h5>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Project Budget</h6>
-                                    <h5 class="mt-1">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                    <h5 class="mt-1"> <span>{{Cost|currency:'SAR '}}</span></h5>
                                     <progress value="50" max="100" class="project-budget-bar d-none"></progress>
                                 </div>
                             </div>
@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Client</h6>
-                                    <h5 class="mt-1">Devbox Software Ltd</h5>
+                                    <h5 class="mt-1">{{Owner}}</h5>
                                 </div>
                             </div>
                         </div>
