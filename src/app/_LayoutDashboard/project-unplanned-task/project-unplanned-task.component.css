@@ -1804,3 +1804,8 @@ mat-icon {
 .input-group-text>.mat-icon-button {
     line-height: 35px !important;
 }
+.badge-img{
+    width: 18px;
+    padding: 2px 0px;
+    margin-right: 4px;
+}

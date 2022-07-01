@@ -339,7 +339,7 @@ export class MoreDetailsComponent implements OnInit {
           console.log("No Memos linked For This Project...")
         }
       });
-    document.getElementById("LinkSideBar").style.width = "100%";
+    document.getElementById("LinkSideBar").style.width = "50%";
   }
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
@@ -2204,4 +2204,13 @@ export class MoreDetailsComponent implements OnInit {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
+
+  
+  closeLinkSideBar() {
+    document.getElementById("LinkSideBar").style.width = "0";
+   
+  }
+
+
+
 }
