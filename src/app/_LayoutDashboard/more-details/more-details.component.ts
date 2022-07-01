@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { Tooltip } from 'chart.js';
+import * as moment from 'moment';
 am4core.useTheme(am4themes_animated);
 
 
@@ -101,6 +102,7 @@ export class MoreDetailsComponent implements OnInit {
   Sub_Autho: string;
   Sub_Status: string;
   _remarks: string = "";
+
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
     this._Subtaskname = item.Project_Name;
@@ -159,14 +161,19 @@ export class MoreDetailsComponent implements OnInit {
   EndDate: string;
   Cost: string;
   Owner: string;
-
+   Client:string;
   Responsible: string;
   Authority: string;
   Coordinator: string;
   Informer: string;
   Support: string;
   ProjectBlock: string;
-
+  dateResut: any;
+  Difference_In_Days: number;
+  date1: any;
+  date2: any;
+  Category:any;
+  Project_Responsible;
   InitR: string;
   InitOwn: string;
   InitAut: string;
@@ -191,6 +198,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
+          this.Client=this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
@@ -199,6 +207,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Coordinator = this.ProjectInfo_List[0]['Team_Coor'];
           this.Informer = this.ProjectInfo_List[0]['Team_Informer'];
           this.Support = this.ProjectInfo_List[0]['Team_Support'];
+          this.Category=this.ProjectInfo_List[0]['ReportType'];
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
@@ -208,6 +217,16 @@ export class MoreDetailsComponent implements OnInit {
           var fullname_R = this.Responsible.split(' ');
           this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
           this.InitR.toUpperCase();
+          this.date1 = this.ProjectInfo_List[0]['DPG'];
+          this.date2 = this.ProjectInfo_List[0]['DeadLine'];
+
+          //console.log("Date In ----->", this.date1, this.date2)
+          this.Project_Responsible = this.ProjectInfo_List[0]['Team_Res'];
+
+          // Date Diff In Days...
+          this.date1 = moment(this.date1);
+          this.date2 = moment(this.date2);
+          this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
 
 
           var fullname_Own = this.Owner.split(' ');

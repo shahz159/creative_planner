@@ -124,7 +124,8 @@
                                     </div>
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Duration</h6>
-                                        <h5 class="mt-1">Continuous</h5>
+                                        <h5 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{Difference_In_Days}} days</h5>
+                                        <h5 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h5>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +173,7 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Client</h6>
-                                    <h5 class="mt-1">{{Owner}}</h5>
+                                    <h5 class="mt-1">{{Client}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +197,7 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
-                                    <h5 class="mt-1">Development</h5>
+                                    <h5 class="mt-1">{{Category}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -256,7 +257,7 @@
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body p-3">
                                 <h6 class="mb-2">Project Budget</h6>
-                                <h5 class="mb-3">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                <h5 class="mb-3"> <span>{{Cost|currency:'SAR '}}</span></h5>
                                 <progress value="50" max="100" class="project-budget-bar"></progress>
                             </div>
                         </div>
@@ -303,7 +304,7 @@
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body p-3">
                                 <h6 class="mb-2">Project Budget</h6>
-                                <h5 class="mb-3">1500.00 / <span>{{Cost|currency:'SAR '}}</span></h5>
+                                <h5 class="mb-3"> <span>{{Cost|currency:'SAR '}}</span></h5>
                                 <progress value="50" max="100" class="project-budget-bar"></progress>
                             </div>
                         </div>
@@ -312,7 +313,7 @@
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body p-3">
                                 <h6 class="mb-2">Client</h6>
-                                <h5 class="mb-3">Devbox Software Ltd</h5>
+                                <h5 class="mb-3">{{Client}}</h5>
                             </div>
                         </div>
                     </div>

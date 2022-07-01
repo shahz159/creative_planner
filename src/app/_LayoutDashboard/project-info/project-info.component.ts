@@ -108,6 +108,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             { StartDate: this.ProjectInfo_List[0]['DPG'] },
             { EndDate: this.ProjectInfo_List[0]['DeadLine'] },
             { Cost: this.ProjectInfo_List[0]['Project_Cost'] },
+            {Client:this.ProjectInfo_List[0]['Client_Name']},
             { Owner: this.ProjectInfo_List[0]['Project_Owner'] },
             { Responsible: this.ProjectInfo_List[0]['Team_Res'] },
             { Authority: this.ProjectInfo_List[0]['Team_Autho'] },
@@ -117,6 +118,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             { ProjectType: this.ProjectInfo_List[0]['Project_Block'] },
             { Authorty_EmpNo: this.ProjectInfo_List[0]['Authority'] },
             { Responisble_EmpNo: this.ProjectInfo_List[0]['Responsible'] },
+            {Category:this.ProjectInfo_List[0]['ReportType']},
             { Owner_EmpNo: this.ProjectInfo_List[0]['OwnerEmpNo'] },
 
           ]
