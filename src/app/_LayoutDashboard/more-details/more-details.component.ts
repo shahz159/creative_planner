@@ -16,6 +16,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { Tooltip } from 'chart.js';
 import * as moment from 'moment';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
 
 
@@ -33,8 +34,10 @@ export class MoreDetailsComponent implements OnInit {
     private dialog: MatDialog) {
     this.ObjSubTaskDTO = new SubTaskDTO();
   }
+  projectCode: string;
   URL_ProjectCode: string
   IsData: string;
+  _LinkSideBar: boolean = true;
   ngOnInit(): void {
     
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -252,6 +255,91 @@ export class MoreDetailsComponent implements OnInit {
           this.InitSupp = "SU";
         }
       });
+  }
+  AddDms() {
+    
+    this._LinkSideBar = false;
+    this._onRowClick(this.projectCode);
+  }
+  GetMemosByEmployeeId() {
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
+      subscribe((data) => {
+
+        this.Memos_List = JSON.parse(data['JsonData']);
+        this._ActualMemoslist = JSON.parse(data['JsonData']);
+        // console.log("Actual Memo List By EmpId--->", this._ActualMemoslist)
+        this._totalMemos = this._ActualMemoslist.length;
+        // console.log("Memos List", JSON.parse(data['JsonData']));
+        this.dropdownSettings_Memo = {
+          singleSelection: false,
+          idField: 'MailId',
+          textField: 'Subject',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 1,
+          allowSearchFilter: true
+        };
+      });
+  }
+  _dbMemoIdList: any;
+  _SelectedIdsfromDb: any;
+  _JsonString: string;
+  Selected_Projectcode: string;
+  Memos_List: any;
+  _ActualMemoslist: any;
+  _totalMemos: number;
+  _mappedMemos: number;
+
+  dropdownSettings_Memo: IDropdownSettings = {};
+  ngDropdwonMemo: any;
+  _onRowClick(projectCode) {
+    this._SelectedIdsfromDb = [];
+    this.Selected_Projectcode = projectCode;
+    // console.log("projt Code------->",projectCode);
+    // this._displayProjName = ProjName;
+    this.GetMemosByEmployeeId();
+    this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
+      subscribe((data) => {
+        let Table_data: any = data;
+
+        // console.log("Memos Id Form DB--->", data);
+        if (Table_data.length > 0) {
+          this._JsonString = JSON.stringify(data[0]['JsonData']);
+          //console.log("Memos Ids-------->", (this._JsonString));
+          this._dbMemoIdList = JSON.parse(data[0]['JsonData']);
+          let arr1: any = this._ActualMemoslist;
+          // console.log("Actula Memo List On Row Click--->", this._ActualMemoslist);
+          let arr2: any = this._dbMemoIdList;
+          this._SelectedIdsfromDb = _.map(arr2, (d) => { return d.MailId });
+          //Rejecting Same Ids 
+          this.Memos_List = _.reject(arr1, (d) => {
+            var findId = _.find(this._SelectedIdsfromDb, (sId) => { return sId === d.MailId });
+            if (findId) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          })
+          let arr = [];
+          this._SelectedIdsfromDb.forEach(item => {
+            arr.push({ MailId: item })
+            this._SelectedIdsfromDb = arr;
+          });
+          if (this._dbMemoIdList == undefined) {
+            this._mappedMemos = 0;
+          }
+          else {
+            this._mappedMemos = this._dbMemoIdList.length;
+          }
+          //   // console.log("On Row Click----selectedIdfrom DB---->",this._SelectedIdsfromDb);
+        }
+        else {
+          this._mappedMemos = 0;
+          console.log("No Memos linked For This Project...")
+        }
+      });
+    document.getElementById("LinkSideBar").style.width = "100%";
   }
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
@@ -1898,7 +1986,7 @@ export class MoreDetailsComponent implements OnInit {
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
-  _JsonString: string;
+ 
 
   _CommentsList: any;
   _EvenRecordsList: any

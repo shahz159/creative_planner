@@ -31,9 +31,9 @@
                         <h4 class="mb-1 pro-nm">{{ProjectName}}</h4>
                     </div>
                     <div class=" pro-act">
-                        <button class="btn22" (click)="sideviw()">Project Actions</button>
+                        <button class="btn22" (click)="sideviw()" *ngIf="Status !='Under Approval'">Project Actions</button>
                     </div>
-                    <!-- <span>{{StartDate|date:'dd-MM-yyyy'}}</span> -->
+                    
                 </div>
                 <p class="ml-3 text-justify">{{Description}}</p>
             </div>
@@ -990,6 +990,11 @@
 
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
                         <div class="bg-white p-3 mb-2">
+                            <div>
+                                <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
+                                    <i class="fa fa-chart-bar"></i>Add DMS
+                                </button>
+                            </div>
                             <table class="table">
                                 <tbody>
                                     <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
@@ -1397,6 +1402,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>
