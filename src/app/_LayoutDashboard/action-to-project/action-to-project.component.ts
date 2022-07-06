@@ -54,11 +54,11 @@ export class ActionToProjectComponent extends ProjectUnplannedTaskComponent impl
     //  public dateAdapter: DateAdapter<Date>,
     // public BsService: BsServiceService
      
-    //,public _projectunplanned: ProjectUnplannedTaskComponent
+    // ,public _projectunplanned: ProjectUnplannedTaskComponent
   ) {
     
     super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
-    alert(super._selectedcatname);
+    // alert(super._selectedcatname);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO = new SubTaskDTO;
     this.ObjUserDetails = new UserDetailsDTO();

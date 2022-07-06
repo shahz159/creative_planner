@@ -134,11 +134,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       (data) => {
         //console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-        // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        //console.log(this.ActionedAssigned_Josn)
+        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        console.log(this.ActionedAssigned_Josn)
 
       });
   }
@@ -284,7 +284,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CallOnSubmitCategory() {
     console.log('A');
     debugger
-    alert(this._selectedcatid + "-" + this._selectedcatname);
+    // alert(this._selectedcatid + "-" + this._selectedcatname);
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
   }
 
@@ -317,6 +317,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _CategoryName: string;
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
+
+
+  
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
@@ -324,7 +327,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._selectedcatid = C_id;
 
     document.getElementById("mysideInfobar").style.width = "0px";
-    alert(this._selectedcatname);
+    // alert(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
 
     this._CategoryActive = true;
@@ -453,7 +456,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
     this.selectedProjectCode = obj['Project_Code'];
     this.BsService.setSelectedProjectCodeFromRunwayTask(this.selectedProjectCode);
-    alert(this.selectedProjectCode)
+    // alert(this.selectedProjectCode)
     this.ProjectTypeService.SubTaskDetailsService(this.selectedProjectCode).subscribe(
       (data) => {
         let ProjectInfo_List: any;
@@ -468,7 +471,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.ProjectType_DB = ProjectInfo_List[0]['Project_Block'];
 
         this.BsService.setProjectAuthoity(this.RACI_Autho);
-        alert(this.RACI_Autho)
+        // alert(this.RACI_Autho)
       });
   }
   ProjectOnDeselect(obj) {
