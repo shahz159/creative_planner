@@ -21,6 +21,7 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { Router } from '@angular/router';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
+import tippy from 'node_modules/tippy.js';
 
 @Component({
   selector: 'app-project-unplanned-task',
@@ -75,6 +76,33 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
     this.GetTodoProjects();
     this.GetAssignFormEmployeeDropdownList();
+    
+
+    
+    window.addEventListener("load", function (event) {
+    tippy('#tippy1', {
+      arrow: true,
+      animation: 'scale-extreme',
+      //animation: 'tada',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
+    });
+
+    
+    tippy('#myButton', {
+      content: "Enter Rack Name",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
+
+  });
 
   }
   _Demotext: string = "";
@@ -354,7 +382,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0px";
-    this.clearFeilds();
+    this.clearFeilds();    
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
 
@@ -647,6 +676,15 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       }
     });
   }
+
+  
+  openInfo() {
+    document.getElementById("mysideInfobar").style.width = "50%";
+    document.getElementById("rightbar-overlay").style.display = "block";
+
+  }
+
+
 }
 
   // else {
