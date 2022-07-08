@@ -15,7 +15,8 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './action-to-project.component.html',
   styleUrls: ['./action-to-project.component.css']
 })
-export class ActionToProjectComponent extends ProjectUnplannedTaskComponent implements OnInit {
+export class ActionToProjectComponent implements OnInit {
+  // extends ProjectUnplannedTaskComponent
   // @ViewChild(ProjectUnplannedTaskComponent ) _projectunplanned !:any ;
 
   Sub_ProjectName: string;
@@ -48,16 +49,11 @@ export class ActionToProjectComponent extends ProjectUnplannedTaskComponent impl
     public router: Router,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
-     public service: ProjectTypeService
-    // public notifyService: NotificationService,
-    // public router: Router,
-    //  public dateAdapter: DateAdapter<Date>,
-    // public BsService: BsServiceService
-     
-    // ,public _projectunplanned: ProjectUnplannedTaskComponent
+     public service: ProjectTypeService,
+     public _projectunplanned: ProjectUnplannedTaskComponent
   ) {
     
-    super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
+    // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     // alert(super._selectedcatname);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO = new SubTaskDTO;
@@ -250,15 +246,19 @@ export class ActionToProjectComponent extends ProjectUnplannedTaskComponent impl
         fd.append("AssignId", this.task_id.toString())
         this.service._InsertNewSubtask(fd).subscribe(data => {
           this.notifyService.showInfo("Created Successfully", "Action");
-          super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
+          // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
           // this.closeInfo();
+          this._projectunplanned.CallOnSubmitCategory();
+        this.Clear_Feilds();
+        this.closeInfo();
+        this._inputAttachments = [];
         });
         
-        // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
-        // setTimeout(function () {
-        //   this.loadsubcateg();
-        // }, 3000);
-        // this._projectunplanned.CallOnSubmitCategory();
+        setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
+        setTimeout(function () {
+          this.loadsubcateg();
+        }, 3000);
+        this._projectunplanned.CallOnSubmitCategory();
       
       });
     }
