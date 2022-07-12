@@ -79,7 +79,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     
 
     
-    window.addEventListener("load", function (event) {
     tippy('#tippy1', {
       arrow: true,
       animation: 'scale-extreme',
@@ -92,7 +91,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     });
 
     
-    tippy('#myButton', {
+    tippy('.myButton', {
       content: "Enter Rack Name",
       arrow: true,
       animation: 'scale-extreme',
@@ -102,7 +101,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     });
 
 
-  });
 
   }
   _Demotext: string = "";
@@ -678,10 +676,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   
-  openInfo() {
+  openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
-    document.getElementById("rightbar-overlay").style.display = "block";
-
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // alert(pcode)
+    // this.router.navigate(["UnplannedTask/ActionToProject/"]);
+    this.router.navigate(["UnplannedTask/projectinfo/",pcode]);
   }
 
 

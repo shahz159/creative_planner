@@ -294,6 +294,10 @@
                                                         <span class="kt-inbox__subject">{{item.Task_Name}}</span>
                                                     </div>
                                                     <div class="mt-2">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
+                                                            <!-- <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div> -->
+                                                            <div> Delay</div>
+                                                        </span>
                                                         <span
                                                             class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                             <div>
@@ -336,9 +340,14 @@
                                                 <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-3 w-75">
                                                     <div
                                                         class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
-                                                        <span class="kt-inbox__subject">{{item.Task_Name}}</span>
+                                                        <span class="kt-inbox__subject mybutton">{{item.Task_Name}}</span>
                                                     </div>
                                                     <div class="mt-2">
+                                                        
+                                                        <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
+                                                            <!-- <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div> -->
+                                                            <div> {{item.Status}}</div>
+                                                        </span>
                                                         <span
                                                             class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
@@ -347,7 +356,7 @@
                                                             </div>
                                                         </span>
                                                         <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline mybutton" (click)="openInfo()">
+                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline " (click)="openInfo(item.Project_Code,item.Project_Name)">
                                                             Assigned Task/Project
                                                             <mat-icon color='success' class="ml-2 mr-2">task_alt
                                                             </mat-icon>
@@ -613,6 +622,7 @@
     <div id="mysideInfobar" class="sideInfobar animate-right">
         <router-outlet></router-outlet>
     </div>
+    
 </div>
 
 <!--end::Modal-->

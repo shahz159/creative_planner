@@ -12,6 +12,10 @@ const routes: Routes = [{
     {
       path:'ActionToAssign',
       loadChildren: () => import('../action-to-assign/action-to-assign.module').then(m => m.ActionToAssignModule)
+    },
+    {
+      path: 'projectinfo/:projectcode',
+      loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
     }
   ] 
 }];

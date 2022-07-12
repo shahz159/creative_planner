@@ -53,6 +53,10 @@ export const DEFAULT_ROUTES: Routes = [
           loadChildren: () => import('../_LayoutDashboard/view-dashboard-projects/view-dashboard-projects.module').then(m => m.ViewDashboardProjectsModule)
      },
      // {
+     //      path: 'projectinfo/:projectcode',
+     //      loadChildren: () => import('../_LayoutDashboard/project-info/project-info.module').then(m => m.ProjectInfoModule)
+     //    },
+     // {
      //      path: 'ViewProjects/:Mode',component:ViewDashboardProjectsComponent,
      //      children: [
      //           {
