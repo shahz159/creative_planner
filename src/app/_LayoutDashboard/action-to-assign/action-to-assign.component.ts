@@ -43,6 +43,7 @@ export class ActionToAssignComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     private BsService: BsServiceService
     ,public _projectunplanned:ProjectUnplannedTaskComponent) {
+      
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -61,6 +62,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getProjectTypeList();
     this.GetAssignFormEmployeeDropdownList();
