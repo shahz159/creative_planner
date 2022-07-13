@@ -679,7 +679,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
     // document.getElementById("rightbar-overlay").style.display = "block";
-    // alert(pcode)
+    //alert(pcode)
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
     this.router.navigate(["UnplannedTask/projectinfo/",pcode]);
   }
