@@ -134,6 +134,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   ActionedAssigned_Josn = [];
 
   GetAssigned_SubtaskProjects() {
+    
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
@@ -152,6 +153,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   GetTodoProjects() {
+    
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
@@ -347,6 +349,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   
   OnCategoryClick(C_id, C_Name) {
+    
     // _Id = C_id;
     // _Name = C_Name;
     this._selectedcatname = C_Name;

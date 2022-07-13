@@ -14,8 +14,6 @@ const routes: Routes = [
     path:'backend',component:BackendLayoutComponent,children:BACKEND_ROUTES,
     canActivate:[AuthGuard],
   }
- 
-
 ];
 
 @NgModule({

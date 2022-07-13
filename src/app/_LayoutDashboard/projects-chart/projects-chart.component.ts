@@ -29,7 +29,6 @@ export class ProjectsChartComponent implements OnInit {
 
   //loadingBar_state = this.loadingBar.useRef('http');
   ngOnInit(): void {
-
     //this.loadingBar_state.start();
     this.Current_user_ID = localStorage.getItem('EmpNo');
   }
