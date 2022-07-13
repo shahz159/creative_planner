@@ -7,6 +7,7 @@ import { ProjectAssignTaskRoutingModule } from './project-assign-task-routing.mo
 import {MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
  import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 //import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
@@ -23,6 +24,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ProjectAssignTaskRoutingModule,
     //MatAutocompleteModule
    
+  ],
+  providers:[
+    ProjectUnplannedTaskComponent
   ]
 })
 export class ProjectAssignTaskModule { }
