@@ -7,6 +7,7 @@ import { ActionToAssignComponent } from './action-to-assign.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { MatSelectModule } from '@angular/material/select';
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
+    NgSelectModule
   ]
 })
 export class ActionToAssignModule { }

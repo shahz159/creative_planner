@@ -43,6 +43,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   exports: [
@@ -88,7 +90,9 @@ import {MatTreeModule} from '@angular/material/tree';
     MatTooltipModule,
     MatTreeModule,
     PortalModule,
-    ScrollingModule
+    ScrollingModule,
+
+    NgSelectModule
   ]
 })
 export class MaterialModule {}

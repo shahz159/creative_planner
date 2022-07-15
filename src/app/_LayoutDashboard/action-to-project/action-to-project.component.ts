@@ -10,6 +10,8 @@ import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-
 import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 
+
+
 @Component({
   selector: 'app-action-to-project',
   templateUrl: './action-to-project.component.html',
@@ -26,8 +28,8 @@ export class ActionToProjectComponent implements OnInit {
   _remarks: string;
   _inputAttachments: any = [];
   _inputAttachments2: any;
-  selectedEmpNo: string = null;
-  _MainPrjectName: string = null;
+  selectedEmpNo: string = "";
+  _MainPrjectName: string = "";
   //selected_Employee: any[];
   dropdownSettings_EMP = {};
   disablePreviousDate = new Date();
@@ -42,6 +44,7 @@ export class ActionToProjectComponent implements OnInit {
   ObjUserDetails: UserDetailsDTO;
   public filterText: any;
   _ProjectDataList: any;
+
 
   constructor(
     public notifyService: NotificationService,
@@ -105,11 +108,15 @@ export class ActionToProjectComponent implements OnInit {
           idField: 'Emp_No',
           textField: 'DisplayName',
           itemsShowLimit: 2,
-          allowSearchFilter: true,
+          
           closeDropDownOnSelection: true,
+          allowSearchFilter: true,
+        
+          
         };
       });
   }
+
 
   onFilterChange(event) {
     this.filterText = event
@@ -143,7 +150,8 @@ export class ActionToProjectComponent implements OnInit {
         searchPlaceholderText: "Search by project name",
         maxHeight: "500px",
         allowRemoteDataSearch: true,
-        noDataAvailablePlaceholderText: 'Please wait..'
+        noDataAvailablePlaceholderText: 'Please wait..',
+        
 
       };
       // console.log("Project List for Dropdown...",this._ProjectDataList);
@@ -159,9 +167,12 @@ export class ActionToProjectComponent implements OnInit {
   }
   selected_Employee = [];
   EmployeeOnSelect(obj) {
-    this.selectedEmpNo = obj['Emp_No'];
+    debugger
+    // this.selectedEmpNo = obj['Emp_No'];
     //alert(this.selectedEmpNo);
+    this.selectedEmpNo = obj;
   }
+
   EmployeeOnDeselect(obj) {
     this.selectedEmpNo = null;
   }

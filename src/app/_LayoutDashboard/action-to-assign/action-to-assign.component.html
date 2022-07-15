@@ -25,13 +25,23 @@
             <textarea class="form-control" aria-describedby="basic-addon1" [(ngModel)]="_description"
                 style="height: 139px"></textarea>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label>Assign To : <strong></strong> <span class="text-danger">*</span> </label>
             <ng-multiselect-dropdown [placeholder]="'Select Employee'" [settings]="dropdownSettings_Employee"
                 [data]="EmployeeList" [(ngModel)]="SelectedEmplList" (onSelect)="EmployeeOnSelect($event)"
                 (onDeSelect)="EmployeeOnDeselect($event)">
             </ng-multiselect-dropdown>
+        </div> -->
+
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+            <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
+            <ng-select (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select Employee" >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+                    {{item.DisplayName}}
+                </ng-option>
+            </ng-select>
         </div>
+
 
         <div class="form-group">
             <label>Start Date : <span class="text-danger">*</span></label>

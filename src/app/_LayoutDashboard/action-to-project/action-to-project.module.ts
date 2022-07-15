@@ -8,6 +8,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NotificationService } from 'src/app/_Services/notification.service';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
 @NgModule({
   declarations: [ActionToProjectComponent],
   imports: [
@@ -16,7 +18,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
     NgMultiSelectDropDownModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,NgSelectModule
   ],exports:[
     ActionToProjectComponent
   ],
