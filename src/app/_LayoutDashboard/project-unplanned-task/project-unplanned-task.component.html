@@ -273,7 +273,7 @@
                                                         </span> -->
                                                         <span class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                             <div>
-                                                                {{item.Modified_DT|date:'medium'}}
+                                                                {{item.Modified_DT|date}}
                                                             </div>
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
@@ -288,6 +288,19 @@
                                                         </mat-icon>
                                                         <b>{{item.Assigned_Name}}</b>
                                                     </span>
+                                                    <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        <div><img src="../assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                        <div> {{item.Start_Date|date}}</div>
+                                                    </span>
+                                                    <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        <div><img src="../assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                        <div> {{item.End_Date|date}}</div>
+                                                    </span>
+                                                    <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
+                                                        <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
+                                                        <div> Jun 29, 2022</div>
+                                                    </span>
+
                                                     </div>
                                                 </div>
                                                 <div class="kt-inbox__datetime">
@@ -317,7 +330,7 @@
                                                         <span class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
-                                                                {{item.Modified_DT|date:'medium'}}
+                                                                {{item.Modified_DT|date}}
                                                             </div>
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status !='Pending'" (click)="openInfo(item.Project_Code,item.Project_Name)">
@@ -347,11 +360,11 @@
                                                         </span> -->
                                                         <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Start_Date}}</div>
+                                                            <div> {{item.Start_Date|date}}</div>
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.End_Date}}</div>
+                                                            <div> {{item.End_Date|date}}</div>
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
