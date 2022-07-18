@@ -79,6 +79,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     
 
     
+    window.onload = () => {
     tippy('#tippy1', {
       arrow: true,
       animation: 'scale-extreme',
@@ -90,16 +91,53 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       // delay: [1000, 200]
     });
 
-    
-    tippy('.myButton', {
-      content: "Enter Rack Name",
+    tippy('#tippy2', {
       arrow: true,
       animation: 'scale-extreme',
+      //animation: 'tada',
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
     });
 
+    tippy('.tippy3', {
+      arrow: true,
+      animation: 'scale-extreme',
+      //animation: 'tada',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
+    });
+
+    
+    tippy('.tippy4', {
+      content: "Enter Rack Name",
+      arrow: true,
+      animation: 'scale-extreme',
+      //animation: 'tada',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
+    });
+
+    tippy('.mybutton', {
+      content: "Enter Rack Name",
+      arrow: true,
+      animation: 'scale-extreme',
+      //animation: 'tada',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
+    });
+  }
 
 
   }
@@ -382,9 +420,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       });
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0px";
+    document.getElementById("mysideInfobar").style.width = "0px";    
     this.clearFeilds();    
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("prodetbar").style.width = "0px";
   }
 
 
@@ -423,6 +462,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "60%";
 
   }
+  detailsbar(){
+    document.getElementById("prodetbar").style.width = "60%";
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  
   // ---------------- Action To Project For Subtask Creation -------------------- //
   selectedProjectCode: string;
   selectedProjectCodelist = [];
