@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit, DoCheck} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -28,7 +28,7 @@ import tippy from 'node_modules/tippy.js';
   templateUrl: './project-unplanned-task.component.html',
   styleUrls: ['./project-unplanned-task.component.css']
 })
-export class ProjectUnplannedTaskComponent implements OnInit, DoCheck {
+export class ProjectUnplannedTaskComponent implements OnInit {
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
@@ -90,6 +90,7 @@ export class ProjectUnplannedTaskComponent implements OnInit, DoCheck {
     
 
     
+// <<<<<<< HEAD
     window.onload = () => {
     tippy('#tippy1', {
       arrow: true,
@@ -140,22 +141,22 @@ export class ProjectUnplannedTaskComponent implements OnInit, DoCheck {
     });
   }
 
+  //   window.onload = () => {
+  //   tippy('#tippy1', {
+  //     arrow: true,
+  //     animation: 'scale-extreme',
+  //     //animation: 'tada',
+  //     theme: 'gradient',
+  //     animateFill: true,
+  //     inertia: true,
+  //     // trigger: 'click',
+  //     // delay: [1000, 200]
+  //   });
+  // }
 
   }
 
-  ngDoCheck(){
-    tippy('#tippy2', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
 
-  }
 
   _Demotext: string = "";
   _TodoList = [];
