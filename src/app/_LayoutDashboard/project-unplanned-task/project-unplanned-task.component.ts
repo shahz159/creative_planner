@@ -90,65 +90,18 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     
 
     
-    window.onload = () => {
-    tippy('#tippy1', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    tippy('#tippy2', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    tippy('.tippy3', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    
-    tippy('.tippy4', {
-      content: "Enter Rack Name",
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    tippy('.mybutton', {
-      content: "Enter Rack Name",
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-  }
+  //   window.onload = () => {
+  //   tippy('#tippy1', {
+  //     arrow: true,
+  //     animation: 'scale-extreme',
+  //     //animation: 'tada',
+  //     theme: 'gradient',
+  //     animateFill: true,
+  //     inertia: true,
+  //     // trigger: 'click',
+  //     // delay: [1000, 200]
+  //   });
+  // }
 
 
   }
