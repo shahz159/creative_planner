@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterContentChecked  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -70,7 +70,18 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   IfNoCategoryFound: string;
   IfNoTaskFound: string = "Please select category to view task's";
   IfNoCompletedTaskFound: string;
+  // ngAfterContentChecked() {
+  //   // alert(1)
+  //   tippy('.Start_Date', {
+  //     content: "Enter qwerty Name",
+  //     arrow: true,
+  //     animation: 'scale-extreme',
+  //     theme: 'gradient',
+  //     animateFill: true,
+  //     inertia: true,
+  //   });
 
+  // }
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
 
@@ -90,7 +101,17 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       // delay: [1000, 200]
     });
 
-    
+    tippy('#tippy2', {
+      arrow: true,
+      animation: 'scale-extreme',
+      //animation: 'tada',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      // trigger: 'click',
+      // delay: [1000, 200]
+    });
+
     tippy('.myButton', {
       content: "Enter Rack Name",
       arrow: true,
@@ -99,7 +120,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       animateFill: true,
       inertia: true,
     });
-
+   
 
 
   }
