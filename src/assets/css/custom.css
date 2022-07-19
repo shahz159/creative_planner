@@ -728,3 +728,6 @@ transform: rotate(45deg);
       opacity: 0;
       animation: effect  linear 0.4s;;
     }
+    .ver-m{
+        vertical-align: middle;
+    }
