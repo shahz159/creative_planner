@@ -1138,8 +1138,19 @@ ul {
     right: -11px;
     z-index: 3;
 }
+.fa-clone{
+    padding: 4px 0px;
+    font-size: 13px;
+}
+.desc{
+        color: grey;
+        font-size: 13px;
+        font-weight: 400;
+}
+.remks{
+    font-size: 12px;
 
-
+}
 /* .icons-filter .kt-todo__icon:hover{
   background-color: #73a1f7 !important;
   color: #fff !important
@@ -1810,7 +1821,7 @@ mat-icon {
 }
 
 .badge-img {
-    width: 18px;
+    width: 16px;
     padding: 2px 0px;
     margin-right: 4px;
 }
