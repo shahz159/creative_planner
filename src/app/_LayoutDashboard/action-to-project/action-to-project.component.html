@@ -34,7 +34,7 @@
         </div> -->
         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
             <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-            <ng-select (change)="EmployeeOnSelect($event)" placeholder="Select Employee" >
+            <ng-select (Change)="EmployeeOnSelect($event)" placeholder="Select Employee" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of _EmployeeListForDropdown">
                     {{item.DisplayName}}
                 </ng-option>
