@@ -81,6 +81,8 @@ export class ToDoProjectsComponent implements OnInit {
   Coor: string; EmpNo_Coor: string;
   Support: string; EmpNo_Supp: string;
   Comp_No: string; ProjectBlock: string;
+
+  
   GetProjectsByUserName() {
     this.ObjUserDetails.PageNumber = 1;
     this.ObjUserDetails.PageSize = 30;
@@ -282,6 +284,8 @@ export class ToDoProjectsComponent implements OnInit {
   clicks: number = 0;
   A2Z: boolean = true;
   Z2A: boolean = false;
+
+
   _SortProjectList() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -733,6 +737,7 @@ export class ToDoProjectsComponent implements OnInit {
   }
   _filtersMessage2: string;
   _filtersMessage: string;
+
   applyFilters_Old() {
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;

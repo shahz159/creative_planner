@@ -174,7 +174,7 @@
                         (keydown.enter)="search($event.target.value)" style="background-color:#E5E7E9;">
                 </div>
             </div>
-            <div class="sidebar scrollbar">
+            <div class="sidebar scrollbar" >
                 <ul class="side-bar-box">
                     <li *ngFor="let item of _ProjectDataList">
                         <a (click)="OnProjectClick(item.Project_Code,item.Project_Name,item.Project_Owner,
@@ -230,7 +230,7 @@
                             <i class="fa fa-info-circle mr-0"></i>
                         </button>
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"  [hidden]="addbutton_hidden"
-                            (click)="OnAddTaskClick()" title="Create New Subtask">
+                            (click)="OnAddTaskClick()" title="Create New Subtask" *ngIf="item.Status == 'Completed'">
                             <i class="fas fa-plus mr-0"></i>
                         </button>
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
@@ -317,7 +317,7 @@
                             </span>
                             <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck == 'Standard Tasks'">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
-                                <b>{{SubmissionName}}</b>
+                                <b>{{SubmissionType}}</b>
                             </span>
                             <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-clock text-muted mr-1"></i>

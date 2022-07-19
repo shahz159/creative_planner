@@ -81,7 +81,7 @@ export class ActionToAssignComponent implements OnInit {
 
   selectedEmployee: string = "";
   EmployeeOnSelect(obj) {
-    this._SelectedEmpNo = obj['Emp_No'];
+    this._SelectedEmpNo = obj;
     this.selectedEmployee = this._SelectedEmpNo;
     // alert(this._SelectedEmpNo);
   }
