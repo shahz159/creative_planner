@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,AfterContentChecked  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -90,57 +90,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     
 
     
-// <<<<<<< HEAD
-    window.onload = () => {
-    tippy('#tippy1', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    tippy('#tippy2', {
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
- 
-    
-    tippy('.tippy4', {
-      content: "Enter Rack Name",
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-
-    tippy('.mybutton', {
-      content: "Enter Rack Name",
-      arrow: true,
-      animation: 'scale-extreme',
-      //animation: 'tada',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-      // trigger: 'click',
-      // delay: [1000, 200]
-    });
-  }
-
   //   window.onload = () => {
   //   tippy('#tippy1', {
   //     arrow: true,
@@ -154,10 +103,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   //   });
   // }
 
+
   }
-
-
-
   _Demotext: string = "";
   _TodoList = [];
   _CompletedList = [];
