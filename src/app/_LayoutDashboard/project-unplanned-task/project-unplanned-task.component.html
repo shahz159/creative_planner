@@ -296,12 +296,12 @@
                                                         </mat-icon>
                                                         <b>{{item.Assigned_Name}}</b>
                                                     </span>
-                                                    <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                        <div ><img src="../assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
-                                                        <div> {{item.Start_Date|date}}</div>
+                                                    <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        <div ><img src="../testcreativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                        <div > {{item.Start_Date|date}}</div>
                                                     </span>
-                                                    <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                        <div><img src="../assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                    <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        <div><img src="../testcreativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                         <div> {{item.End_Date|date}}</div>
                                                     </span>
                                                     <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
@@ -333,8 +333,8 @@
                                                     </div>
                                                     <div class="mt-2">
 
-                                                        <span class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../testcreativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
                                                                 {{item.Modified_DT|date}}
                                                             </div>
@@ -364,12 +364,18 @@
                                                             <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
                                                             <div> {{item.Creation_Date}}</div>
                                                         </span> -->
-                                                        <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline tippy4">
-                                                            <div><img src="../assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../testcreativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                            <div>
+                                                                {{item.Creation_Date|date}}
+                                                            </div>
+                                                        </span>
+                                                        <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../testcreativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                             <div> {{item.Start_Date|date}}</div>
                                                         </span>
-                                                        <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../testcreativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                             <div> {{item.End_Date|date}}</div>
                                                         </span>
                                                         <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
