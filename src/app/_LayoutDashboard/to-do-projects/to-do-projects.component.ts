@@ -73,6 +73,7 @@ export class ToDoProjectsComponent implements OnInit {
   searchText: string;
   ObjUserDetails: UserDetailsDTO;
   CurrentUser_ID: string;
+  SubmissionType: string;
   //Racis Properties
   Owner: string; EmpNo_Own: string;
   Resp: string; EmpNo_Res: string;
@@ -84,6 +85,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   
   GetProjectsByUserName() {
+
     this.ObjUserDetails.PageNumber = 1;
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
@@ -127,11 +129,11 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, Client_Name, Remarks, ReportType, Attachments, pid, SourceFile) {
+    PCost, duration, Client_Name, Remarks, ReportType, Attachments, pid, SourceFile, SubmissionType) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
-
+    this.SubmissionType = SubmissionType;
     this.Pid = pid;
     this.activeClass = true;
     this._topbar = false;
@@ -153,7 +155,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.Comp_No = Comp_No;
     this.ProjectBlock = proj_Block;
     this.Proj_ExecBlck = PExecBlck;
-    
+
     this.Proj_Desc = PDesc;
     this.PstDT = PStDT;
     this.PEndDT = PendDT;
@@ -366,14 +368,14 @@ export class ToDoProjectsComponent implements OnInit {
   //Subtask Creation//
 
   // OnSubmit() {
-    
+
   //   if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
   //     this.notifyService.showInfo("", 'Star(*) mark feilds required ')
   //   }
   //   else {
   //     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
   //       console.log("-ProjectCode Generated------->", data);
- 
+
   //       this.ObjSubTaskDTO.MasterCode = this._MasterCode;
   //       this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName;
   //       this.ObjSubTaskDTO.SubtaskDescription = this._Description;
@@ -396,14 +398,14 @@ export class ToDoProjectsComponent implements OnInit {
   //       this.ObjSubTaskDTO.Remarks = this._remarks;
   //       this.ObjSubTaskDTO.Attachments = this._inputAttachments;
 
-       
+
   //       this.service._InsertNewSubtask(this.ObjSubTaskDTO).subscribe(data => {
   //         this.GetSubtask_Details();
   //         this.notifyService.showInfo("Created Successfully", "Action")
-          
+
   //       });
   //     });
-     
+
 
   //   }
   // }
@@ -474,7 +476,7 @@ export class ToDoProjectsComponent implements OnInit {
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.EmpNo_Autho);
     fd.append("Remarks", this._remarks);
-    fd.append("Projectblock",this.ProjectBlock);
+    fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
     this.service._fileuploadService(fd).
       subscribe(event => {
@@ -505,7 +507,7 @@ export class ToDoProjectsComponent implements OnInit {
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
       fd.append("Team_Autho", this.EmpNo_Autho);
-      fd.append("Projectblock",this.ProjectBlock);
+      fd.append("Projectblock", this.ProjectBlock);
       fd.append("Remarks", this._remarks);
       fd.append('file', this.selectedFile);
       // this.ObjSubTaskDTO.Formdata = fd;

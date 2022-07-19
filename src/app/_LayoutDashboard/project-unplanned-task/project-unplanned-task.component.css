@@ -1144,8 +1144,12 @@ ul {
 }
 .desc{
         color: grey;
-        font-size: small;
+        font-size: 13px;
         font-weight: 400;
+}
+.remks{
+    font-size: 12px;
+
 }
 /* .icons-filter .kt-todo__icon:hover{
   background-color: #73a1f7 !important;

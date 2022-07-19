@@ -323,6 +323,7 @@ export class ProjectTypeService {
   SubTaskDetailsService_ToDo_Page(prjCode, compCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Comp_No = compCode;
+    
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   objColumnChartDTO: ColumnChartDTO;
