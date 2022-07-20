@@ -171,6 +171,7 @@ export class ActionToProjectComponent implements OnInit {
     // this.selectedEmpNo = obj['Emp_No'];
     //alert(this.selectedEmpNo);
     this.selectedEmpNo = obj;
+    alert(obj)
   }
 
   EmployeeOnDeselect(obj) {
@@ -251,6 +252,7 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("EndDate", datestrEnd);
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
         fd.append("Emp_No", this.CurrentUser_ID);
+        alert(this.selectedEmpNo);
         fd.append("AssignTo", this.selectedEmpNo);
         fd.append("Remarks", this._remarks);
         fd.append("EmployeeName", localStorage.getItem('UserfullName'))
@@ -280,7 +282,7 @@ export class ActionToProjectComponent implements OnInit {
     this.Clear_Feilds();
   }
   Clear_Feilds() {
-    this.Sub_ProjectName = "";
+    this.Sub_ProjectCode = "";
     this._Description = "";
     this._StartDate = null;
     this._EndDate = null;
@@ -289,6 +291,9 @@ export class ActionToProjectComponent implements OnInit {
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
+    this.selectedProjectCodelist=[];
+   
+    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
   }
 
 }

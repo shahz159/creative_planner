@@ -275,11 +275,13 @@
                                                             <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                             <div> Delay</div>
                                                         </span> -->
-                                                        <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
-                                                                {{item.Modified_DT|date}}
+                                                                {{item.Creation_Date|date}}
                                                             </div>
                                                         </span>
+                                                      
                                                         <span class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                 Action Added To
                                                                 <mat-icon color='primary' class="ml-2 mr-2">task_alt
@@ -294,9 +296,17 @@
                                                             </mat-icon>
                                                             <b>{{item.Assigned_Name}}</b>
                                                         </span>
+                                                        <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div>
+                                                                {{item.Modified_DT|date}}
+                                                            </div>
+                                                        </span>
                                                     </div>
                                                     <div class="">
-                                                        
+                                                        <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"  data-tippy-content="Another Tooltip">
+                                                            <!-- <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div> -->
+                                                            <div> {{item.Status}}</div>
+                                                        </span>
                                                         <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                             <div ><img src="../assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                             <div > {{item.Start_Date|date}}</div>
@@ -311,7 +321,7 @@
                                                         </span> -->
                                                     </div>
                                                     <div class="mt-1">                                                        
-                                                        <span class="desc remks ml-2">Remarks here Shebaz and EP Team on Runway modifications</span>
+                                                        <span class="desc remks ml-2">{{item.Remarks}}</span>
                                                     </div>
                                                 </div>
                                                 <div class="kt-inbox__datetime">
@@ -405,7 +415,7 @@
                                                             </span>
                                                     </div>
                                                     <div class="mt-1">                                                        
-                                                        <span class="desc remks ml-2">Remarks here Shebaz and EP Team on Runway modifications</span>
+                                                        <span class="desc remks ml-2">{{item.Remarks}}</span>
                                                     </div>
                                                 </div>
                                                 <div class="kt-inbox__datetime">

@@ -1,5 +1,5 @@
 import { flatten } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
@@ -37,12 +37,14 @@ export class ActionToAssignComponent implements OnInit {
   _inputAttachments: any = [];
   selectedFile: any = null;
   typeoftask: any = "";
+ 
 
   constructor(private notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
     private dateAdapter: DateAdapter<Date>,
     private BsService: BsServiceService
     ,public _projectunplanned:ProjectUnplannedTaskComponent) {
+  
       
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
@@ -60,6 +62,7 @@ export class ActionToAssignComponent implements OnInit {
     });
     this._inputAttachments = [];
   }
+ 
 
   ngOnInit(): void {
    
@@ -69,6 +72,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   _ObjCompletedProj: CompletedProjectsDTO;
+
   getProjectTypeList() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -143,6 +147,7 @@ export class ActionToAssignComponent implements OnInit {
       fd.append('file', "");
     }
 
+
     fd.append("TaskName", this._taskName);
     fd.append("Desc", this._description);
     fd.append("StartDate", datestrStart);
@@ -180,6 +185,10 @@ export class ActionToAssignComponent implements OnInit {
   clearFeilds() {
     this._description = "";
     this._StartDate = null;
+    this._remarks = null;
+    this._inputAttachments = null;
+    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+    //document.getElementById("uploadFile").Value = null;
     this._EndDate = null;
     this._SelectedEmpNo = "";
     this.selectedProjectType = null;
