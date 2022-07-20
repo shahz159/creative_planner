@@ -54,6 +54,7 @@ export class ToDoProjectsComponent implements OnInit {
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
 
+  edited: boolean = false;
 
   ngOnInit() {
 
@@ -681,7 +682,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Type = [];
   isTypeChecked(item) {
@@ -706,7 +712,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Emp = [];
   isEmpChecked(item) {
@@ -731,6 +742,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   //Apply Filters
   SearchbyText() {
@@ -809,6 +826,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
+    this.edited=false;
 
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;

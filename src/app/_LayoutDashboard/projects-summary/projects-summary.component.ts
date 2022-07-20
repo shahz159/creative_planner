@@ -11,8 +11,8 @@ import { Router, RouterLink } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import * as _ from 'underscore';
-import { object, string } from '@amcharts/amcharts4/core';
-import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+// import { object, string } from '@amcharts/amcharts4/core';
+// import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ParameterService } from "src/app/_Services/parameter.service";
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -28,6 +28,9 @@ export class ProjectsSummaryComponent implements OnInit {
 
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
+
+  edited: boolean = false;
+
 
   _ObjCompletedProj: CompletedProjectsDTO;
   constructor(public service: ProjectTypeService,
@@ -49,6 +52,7 @@ export class ProjectsSummaryComponent implements OnInit {
   _raciDetails: boolean = true;
 
   ngOnInit() {
+   
     this._raciDetails = true;
     this.A2Z = true;
     this.Z2A = false;
@@ -59,7 +63,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.getDropdownsDataFromDB();
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
-    Memos_List: any;
+  Memos_List: any;
   _ActualMemoslist: any;
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -382,7 +386,9 @@ export class ProjectsSummaryComponent implements OnInit {
   selectedStatus_String: string;
   selectedItem_Status = [];
   isStatusChecked(item) {
+    
     let arr = [];
+    this.edited = true;
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Status: element.Name });
@@ -403,12 +409,20 @@ export class ProjectsSummaryComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Type = [];
   isTypeChecked(item) {
+    
     let arr = [];
     this.TypeContInFilter.forEach(element => {
+      
       if (element.checked == true) {
         arr.push({ Block_No: element.Block_No });
         return this.checkedItems_Type = arr;
@@ -416,6 +430,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     let arr2 = [];
     this.TypeContInFilter.filter((item) => {
+      
       if (item.checked == true) {
         this.applyFilters();
         return arr2.push(item);
@@ -423,17 +438,26 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     this.selectedItem_Type.push(arr2);
     this.TypeContInFilter.forEach(element => {
+      
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
       }
     });
-
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Emp = [];
   isEmpChecked(item) {
+    
     let arr = [];
+    this.edited = true;
     this.EmpCountInFilter.forEach(element => {
+      
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
         return this.checkedItems_Emp = arr;
@@ -441,6 +465,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     let arr2 = [];
     this.EmpCountInFilter.filter((item) => {
+      
       if (item.checked == true) {
         this.applyFilters();
         return arr2.push(item);
@@ -448,11 +473,18 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     this.selectedItem_Emp.push(arr2);
     this.EmpCountInFilter.forEach(element => {
+      
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   //Apply Filters
@@ -506,6 +538,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
+    this.edited=false;
 
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
@@ -528,6 +561,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
     this.resetFilters();
+
   }
   Subtask_List: SubTaskDTO[];
   subtaskNotFoundMsg: string;
@@ -546,7 +580,7 @@ export class ProjectsSummaryComponent implements OnInit {
   _MainProjectStatus: string;
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
-    this.router.navigate(["../backend/ProjectsSummary/projectinfo",pcode]);
+    this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
   }
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
@@ -672,8 +706,8 @@ export class ProjectsSummaryComponent implements OnInit {
   AddDms() {
     this._onRowClick(this.pCode, this.pName);
   }
-  search(event){
+  search(event) {
     this.SearchbyText();
-   //console.log("Searh Text---->",event)
+    //console.log("Searh Text---->",event)
   }
 }

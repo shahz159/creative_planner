@@ -70,6 +70,8 @@ export class HomeComponent implements OnInit {
   _SelectedEmployees: any = [];
   _SelectedEmpIds_String: string;
 
+  edited:boolean = false;
+
   ObjUserDetails: UserDetailsDTO;
   _obj: PortfolioDTO;
   ProjectTypelist: ProjecttypeDTO[];
@@ -362,6 +364,7 @@ export class HomeComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.Portfolio_CurrentPage = 1;
+    this.edited=false;
 
     if (this.selectedItem_Company.length == 0) {
       this.selectedCom_String = null;
@@ -378,6 +381,14 @@ export class HomeComponent implements OnInit {
       this.checkedItems_Emp = [];
     }
     this.applyFilters();
+  }
+  resetAll() {
+    this.txtSearch = '';
+    this.selectedItem_Company.length = 0;
+    this.selectedItem_Status.length = 0;
+    this.selectedItem_Emp.length = 0
+    this.resetFilters();
+
   }
 
   StatusSelect(PortfolioProjStatus) {
@@ -514,6 +525,13 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
+
   }
   selectedItem_Company = [];
   isCompanychecked(item) {
@@ -540,6 +558,12 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Emp = [];
@@ -565,6 +589,12 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedCom_String: any;
