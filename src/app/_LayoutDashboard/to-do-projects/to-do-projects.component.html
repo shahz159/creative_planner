@@ -75,7 +75,7 @@
                         <div class="stores-sec mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="dropdown"><i
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
                                             class="fas fa-ellipsis-v mr-0"></i></a>
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
