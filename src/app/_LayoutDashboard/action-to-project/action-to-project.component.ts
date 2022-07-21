@@ -252,7 +252,6 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("EndDate", datestrEnd);
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
         fd.append("Emp_No", this.CurrentUser_ID);
-        alert(this.selectedEmpNo);
         fd.append("AssignTo", this.selectedEmpNo);
         fd.append("Remarks", this._remarks);
         fd.append("EmployeeName", localStorage.getItem('UserfullName'))
