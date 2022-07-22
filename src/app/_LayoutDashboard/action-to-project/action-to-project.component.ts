@@ -9,7 +9,7 @@ import { UserDetailsDTO } from 'src/app/_Models/user-details-dto';
 import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
 import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -44,7 +44,7 @@ export class ActionToProjectComponent implements OnInit {
   ObjUserDetails: UserDetailsDTO;
   public filterText: any;
   _ProjectDataList: any;
-
+ ProjectDeadLineDate:Date;
 
   constructor(
     public notifyService: NotificationService,
@@ -72,6 +72,11 @@ export class ActionToProjectComponent implements OnInit {
       else {
         this._MasterCode = p;
         this.ProjectsDropdownBoolean = true;
+        this.selectedProjectCode = p;
+        this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data=>{
+         this.ProjectDeadLineDate=data["DeadLine"];
+        //  alert(data["DeadLine"])
+        })
       }
     });
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
@@ -124,8 +129,11 @@ export class ActionToProjectComponent implements OnInit {
   }
   selectedProjectCode: string;
   ProjectOnSelect(obj) {
-
     this.selectedProjectCode = obj['Project_Code'];
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data=>{
+     this.ProjectDeadLineDate=data["DeadLine"];
+    //  alert(data["DeadLine"])
+    })
 
   }
   ProjectOnDeselect(obj) {
@@ -167,11 +175,11 @@ export class ActionToProjectComponent implements OnInit {
   }
   selected_Employee = [];
   EmployeeOnSelect(obj) {
-    debugger
+
     // this.selectedEmpNo = obj['Emp_No'];
     //alert(this.selectedEmpNo);
     this.selectedEmpNo = obj;
-    alert(obj)
+    // alert(obj)
   }
 
   EmployeeOnDeselect(obj) {
@@ -182,6 +190,8 @@ export class ActionToProjectComponent implements OnInit {
 
 
   OnSubmit() {
+
+  
 
     if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
       this.notifyService.showInfo("", 'Star(*) mark feilds required ')
@@ -195,8 +205,7 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.MasterCode = this._MasterCode;
       }
       this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-        debugger
-
+   
         this.Sub_ProjectCode = data['SubTask_ProjectCode'];
         this.EmpNo_Autho = data['Team_Autho'];
 
@@ -252,7 +261,7 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("EndDate", datestrEnd);
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
         fd.append("Emp_No", this.CurrentUser_ID);
-        alert(this.selectedEmpNo);
+  
         fd.append("AssignTo", this.selectedEmpNo);
         fd.append("Remarks", this._remarks);
         fd.append("EmployeeName", localStorage.getItem('UserfullName'))
@@ -262,6 +271,7 @@ export class ActionToProjectComponent implements OnInit {
           // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
           // this.closeInfo();
           this._projectunplanned.CallOnSubmitCategory();
+         
         this.Clear_Feilds();
         this.closeInfo();
         this._inputAttachments = [];
@@ -276,6 +286,42 @@ export class ActionToProjectComponent implements OnInit {
       });
     }
   }
+
+  sweetAlert() {
+    var datestrEnd = (new Date(this._EndDate)).toUTCString();
+    var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
+    const dateOne = new Date(this._EndDate);
+const dateTwo = new Date(this.ProjectDeadLineDate);
+console.log(dateOne)
+console.log(dateTwo)
+    // debugger
+    if (dateTwo<=dateOne){
+      Swal.fire({
+        title: 'Action DeadLine is Greater then Main Project DeadLine ?',
+        text: 'Do you Want to Continue For Selection Of Date After Main Project DeadLine!!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+        this.OnSubmit();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Action is Not Created',
+            'error'
+          )
+        }
+      });
+
+    }
+    else {
+      this.OnSubmit();
+    }
+   
+  }
+
  
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
@@ -283,6 +329,7 @@ export class ActionToProjectComponent implements OnInit {
   }
   Clear_Feilds() {
     this.Sub_ProjectCode = "";
+    this.Sub_ProjectName= "";
     this._Description = "";
     this._StartDate = null;
     this._EndDate = null;

@@ -153,6 +153,11 @@ export class ProjectTypeService {
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "Projects/NewGetProjectsForRunwayTask", this.ObjUserDetails);
   }
+  GetDeadlineByProjectCode(Project_Code) {
+    this.ObjUserDetails.Project_Code = Project_Code;
+    return this.http.post(this.rootUrl + "Notification/NewGetDeadLineByProjectCode", this.ObjUserDetails);
+
+  }
 
   GetProjectsFor_ProjectsChart(EmpNo) {
     this.ObjUserDetails.Emp_No = EmpNo;

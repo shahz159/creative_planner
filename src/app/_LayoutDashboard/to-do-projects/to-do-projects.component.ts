@@ -234,6 +234,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   GetSubtask_Details() {
     //alert(this.Comp_No)
+    // alert(1256)
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         // this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
@@ -503,7 +504,7 @@ export class ToDoProjectsComponent implements OnInit {
     }
     //debugger
     else {
-      debugger
+      // debugger
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
