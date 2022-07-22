@@ -415,11 +415,11 @@
                                 </p>
 
                                 <p class="mb-1">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                         <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
                                     </span>
-                                    <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="End Date!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                         <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                     </span>
@@ -500,9 +500,19 @@
                                                     class="mr-2 text-nowrap  d-inline-block badge bg-light text-success">Completed</span>
                                             </p>
                                             <p class="mb-2">
-                                                <span class="mr-3 text-nowrap d-inline-block"><i
+                                                <span  data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap d-inline-block"><i
+                                                    class="fas fa-calendar-alt text-muted mr-1"></i>{{item.StartDate | 
+                                                date}}</span>  
+                                               
+                                                <span  data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap d-inline-block"><i
+                                                    class="fas fa-calendar-alt text-muted mr-1"></i>{{item.SubProject_DeadLine | 
+                                                date}}</span> 
+
+                                                <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap d-inline-block"><i
                                                         class="fas fa-calendar-alt text-muted mr-1"></i>{{item.CD |
-                                                    date:'d/M/yy, h:mm a'}}</span>
+                                                    date}}</span>
+                                                            
+
                                                 <span class="mr-3  text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-clock text-muted mr-1"></i>
                                                     <b>{{item.Duration}} Hrs</b>
