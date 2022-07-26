@@ -130,6 +130,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     else {
       this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
     }
+    this.clearFeilds() 
+   
   }
 
   ActionedSubtask_Json = [];
@@ -152,6 +154,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
 
       });
+  }
+  LoadDocument(url: string){
+    var myWindow = window.open(url);
+    myWindow.focus();
   }
 
   GetTodoProjects() {
@@ -310,6 +316,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.selectedProjectCode = "";
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
+    this._Demotext="";
   }
   CallOnSubmitCategory() {
     console.log('A');
