@@ -37,7 +37,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DefaultLayoutComponent,
     HeaderComponent,
     SidebarComponent,
-    ConfirmDialogComponent,
+    ConfirmDialogComponent
     
     
 
