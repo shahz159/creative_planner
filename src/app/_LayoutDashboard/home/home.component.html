@@ -18,10 +18,10 @@
                                             <input type="text" class="form-control kt-quick-search__input pl-3"
                                                 placeholder="Search Portfolio" [(ngModel)]="PortfolioSearch"
                                                 name="PortfolioSearch" style="width: 270px;"
-                                                (input)="ServerSide_Search(PortfolioSearch)">
+                                                (keyup.enter)="ServerSide_Search(PortfolioSearch)">
                                             <!-- (input)="Search()" -->
                                             <div class="input-group-prepend"><span class="input-group-text"><i
-                                                        class="flaticon2-search-1"></i></span></div>
+                                                        class="flaticon2-search-1" (click)="ServerSide_Search(PortfolioSearch)"> </i></span></div>
                                         </div>
                                     </form>
                                 </div>
