@@ -1423,28 +1423,30 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
             <p class="text-primary">
-                Display Name</p>
+                {{_displayProjName}}</p>
             <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
-                    5</div>
+                    {{_totalMemos}} </div>
                 Linked
                 <div class="badge badge-pill badge-outline-success">
-                    1</div>
+                    {{_mappedMemos}}  </div>
             </div>
             <div class="kt-nav__separator"></div>
         </li>
         <li class="kt-nav__item px-4">
             <div class="d-flex input-group">
                 <!-- Working... -->
-                <select class="form-control">
-                    <option>Select</option>
-                </select>
-                <div class="input-group-append">
-                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text">Link</button>
-                  </div>
+                <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                    [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                    (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                </ng-multiselect-dropdown>
+                <!-- <div class="input-group-append"> -->
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text" (click)="_AddLink()">Link</button>
+                  <!-- </div> -->
                 
-            </div>
+                </div>
         </li>
         <li class="kt-nav__foot"></li>
     </ul>

@@ -189,7 +189,8 @@
                                                             Action Added To
                                                             <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
                                                         </span>
-
+                                                    
+                                                    
                                                     </div>
                                                 </div>
 
@@ -300,18 +301,13 @@
                                                     </div>
                                                     <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                     <div class="my-2">
-                                                        <label
-                                                            class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
-                                                                class="fa fa-clone mr-2"></i> Standard Tasks </label>
+                                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i class="fa fa-clone mr-2"></i>{{item.Project_Type}} </label>
                                                         <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
                                                             <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                             <div> Delay</div>
                                                         </span> -->
-                                                        <span data-toggle="tooltip" title="Created Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/create2.png"
-                                                                    alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
                                                                 {{item.Creation_Date|date}}
                                                             </div>
@@ -347,18 +343,12 @@
                                                             <!-- <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div> -->
                                                             <div> {{item.Status}}</div>
                                                         </span>
-                                                        <span data-toggle="tooltip" title="Start Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/strat-prim.png"
-                                                                    alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Start_Date|date}}</div>
+                                                        <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <div ><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                            <div > {{item.Start_Date|date}}</div>
                                                         </span>
-                                                        <span data-toggle="tooltip" title="End Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/end-prim.png"
-                                                                    alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                             <div> {{item.End_Date|date}}</div>
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer"  (click)="LoadDocument(item.Reference)">
@@ -410,11 +400,8 @@
                                                             <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
                                                             <div> {{item.Creation_Date}}</div>
                                                         </span> -->
-                                                        <span data-toggle="tooltip" title="Created Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/create2.png"
-                                                                    alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
                                                                 {{item.Creation_Date|date}}
                                                             </div>
@@ -427,11 +414,8 @@
                                                             <b> {{item.AssignedTo}}</b>
                                                         </span>
 
-                                                        <span data-toggle="tooltip" title="Assigned Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/create1.png"
-                                                                    alt="actiondate" class="badge-img"></div>
+                                                        <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                            <div><img src="../creativeplanner/assets/icons/create1.png" alt="actiondate" class="badge-img"></div>
                                                             <div>
                                                                 {{item.Modified_DT|date}}
                                                             </div>
@@ -452,44 +436,32 @@
                                                             <!-- <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div> -->
                                                             <div> {{item.Status}}</div>
                                                         </span>
-
-                                                        <span data-toggle="tooltip" title="Start Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/strat-prim.png"
-                                                                    alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Start_Date|date}}</div>
-                                                        </span>
-                                                        <span data-toggle="tooltip" title="End Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img
-                                                                    src="../testcreativeplanner/assets/icons/end-prim.png"
-                                                                    alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.End_Date|date}}</div>
-                                                        </span>
-                                                        <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
+    
+                                                            <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> {{item.Start_Date|date}}</div>
+                                                            </span>
+                                                            <span data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> {{item.End_Date|date}}</div>
+                                                            </span>
+                                                            <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> Jun 29, 2022</div>
                                                             </span> -->
-
-
-                                                        <span
-                                                            class="kt-inbox__label kt-badge text-white kt-badge-light-bold bg-coral kt-badge--inline cursor-pointer"
-                                                            *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                            (click)="openInfo(item.Project_Code,item.Project_Name)">
-                                                            <div><i class="fas fa-code-branch mr-2"></i></div>
-                                                            <div>{{item.Project_Code}}
-                                                            </div>
-                                                        </span>
-
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer"
-                                                            (click)="LoadDocument(doc.ImageUrl,doc.ContentType)">{{item.FileName}}
-                                                            >
-                                                            <div><i class="fas fa-link mr-2"></i></div>
-                                                            <div>{{item.FileName}}
-                                                            </div>
-                                                        </span>
+                                                            
+                                                          
+                                                            <span class="kt-inbox__label kt-badge text-white kt-badge-light-bold bg-coral kt-badge--inline cursor-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="openInfo(item.Project_Code,item.Project_Name)">
+                                                                <div><i class="fas fa-code-branch mr-2"></i></div>
+                                                                <div>{{item.Project_Code}}
+                                                                </div>
+                                                            </span>
+                                                          
+                                                            <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" (click)="LoadDocument(item.Reference)">
+                                                                <div><i class="fas fa-link mr-2"></i></div>
+                                                                <div >{{item.FileName}}
+                                                                </div>
+                                                            </span>
                                                     </div>
                                                     <div class="mt-1">
                                                         <span class="desc remks ml-2">{{item.Remarks}}</span>

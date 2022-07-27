@@ -360,7 +360,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   _AddLink() {
-    debugger
     let _ProjectCode: string = this.Selected_Projectcode;
     //alert(this.Global_Projectcode);
     let appId: number = 101;//this._ApplicationId;

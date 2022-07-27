@@ -292,6 +292,33 @@ export class MoreDetailsComponent implements OnInit {
 
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
+
+  Empty_MemoDropdown: any;
+  _SelectedMemos: any;
+  Mail_Id: number;
+  Memo_Select(selecteditems) {
+    //console.log("Selected Item---->",selecteditems)
+    let arr = [];
+    this.Empty_MemoDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_MemoDropdown.forEach(element => {
+      arr.push({ MailId: element.MailId })
+      this._SelectedMemos = arr;
+    });
+    //console.log("Selected Memos In Array--->", arr)
+  }
+  Memo_Deselect() {
+    let arr = [];
+    this.Empty_MemoDropdown = this.ngDropdwonMemo;
+    this.Empty_MemoDropdown.forEach(element => {
+      arr.push({ MailId: element.MailId })
+      this._SelectedMemos = arr;
+    });
+    //console.log("Deselect Memos--->", this._SelectedMemos)
+  }
+
+
+
   _onRowClick(projectCode) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -336,7 +363,7 @@ export class MoreDetailsComponent implements OnInit {
         }
         else {
           this._mappedMemos = 0;
-          console.log("No Memos linked For This Project...")
+          // console.log("No Memos linked For This Project...")
         }
       });
     document.getElementById("LinkSideBar").style.width = "50%";
@@ -1983,6 +2010,8 @@ export class MoreDetailsComponent implements OnInit {
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(100, 30);
   }
+
+  _displayProjName: string;
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
@@ -2086,6 +2115,44 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
   }
+
+
+  _AddLink() {
+    let _ProjectCode: string = this.Selected_Projectcode;
+    //alert(this.Global_Projectcode);
+    let appId: number = 101;//this._ApplicationId;
+    //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
+    if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
+      // console.log("Table Ids-->", this._SelectedIdsfromDb);
+      this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
+      console.log("After Joins Final Output=======>", this.memoId);
+    }
+    else {
+      this.memoId = JSON.stringify(this._SelectedMemos);
+      console.log("Ëlse Block...Executed---->", this.memoId);
+    }
+    let UserId = this.Current_user_ID;
+    if (this._SelectedMemos.length > 0) {
+      this._LinkService.InsertMemosOn_ProjectCode(_ProjectCode, appId, this.memoId, UserId).
+        subscribe((data) => {
+          this.UpdateMemos(this.projectCode)
+          this.GetMemosByEmployeeId();
+          //this.GetProjectsByUserName();
+          let Returndata: any = data['Message'];
+          this.notifyService.showSuccess("", Returndata);
+          this.ngDropdwonMemo = [];
+          this._SelectedMemos = [];
+        });
+    }
+    else {
+      this.notifyService.showInfo("Request Cancelled", "Please select memo(s) to link");
+    }
+    this.closeLinkSideBar();
+    // this._openInfoSideBar = false;
+    // this._LinkSideBar=true;
+  }
+
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);
