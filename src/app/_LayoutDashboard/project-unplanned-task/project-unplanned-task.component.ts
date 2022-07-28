@@ -162,6 +162,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _Demotext: string = "";
   _TodoList = [];
   _CompletedList = [];
+
+  
   EnterSubmit(_Demotext) {
     if (_Demotext != "") {
       this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
@@ -371,6 +373,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
     this._Demotext="";
+    this.Mdl_CategoryName= "";
   }
   CallOnSubmitCategory() {
     console.log('A');
@@ -382,12 +385,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   Mdl_CategoryName: string = "";
   CategoryList: any;
 
-  OnSubmitCategory(CtgryName) {
+  OnSubmitCategory(Mdl_CategoryName) {
 
     if (this.Mdl_CategoryName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "CategoryInsert";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
-      this._ObjAssigntaskDTO.CategoryName = CtgryName;
+      this._ObjAssigntaskDTO.CategoryName = Mdl_CategoryName;
       this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
         (data) => {
           //console.log(data);
@@ -398,7 +401,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
           this.notifyService.showSuccess("Successfully", message);
 
-          this.Mdl_CategoryName = "";
+          // this.Mdl_CategoryName = "";
 
 
         });
@@ -406,7 +409,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     else {
       this.notifyService.showInfo("Category Name Required", "");
     }
-
+    this.clearFeilds()
 
   }
   _Categoryid: number;
