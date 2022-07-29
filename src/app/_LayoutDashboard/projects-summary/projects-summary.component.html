@@ -23,13 +23,17 @@
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()" type="submit">
                                                     <i class="flaticon2-search-1"></i>
+                                                    
                                                 </button>
+                                                
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="mr-3">
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
@@ -87,6 +91,7 @@
                                                 </div>
                                             </div>
                                             <hr />
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
@@ -188,6 +193,9 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
+                                        
+                                        <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
+                                        
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
                                             style="width: 0px;">
                                             <thead>

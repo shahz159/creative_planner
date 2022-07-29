@@ -31,6 +31,8 @@ export class ProjectsSummaryComponent implements OnInit {
 
   edited: boolean = false;
 
+  searchResult: Boolean = false;
+
 
   _ObjCompletedProj: CompletedProjectsDTO;
   constructor(public service: ProjectTypeService,
@@ -489,6 +491,7 @@ export class ProjectsSummaryComponent implements OnInit {
   }
   //Apply Filters
   SearchbyText() {
+    this.searchResult = true;
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
@@ -707,6 +710,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this._onRowClick(this.pCode, this.pName);
   }
   search(event) {
+    this.searchResult = true;
     this.SearchbyText();
     //console.log("Searh Text---->",event)
   }

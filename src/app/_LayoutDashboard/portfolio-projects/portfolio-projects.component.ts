@@ -1050,6 +1050,9 @@ export class PortfolioProjectsComponent implements OnInit {
   // }
 
   _CloseshareBar() {
+
+    this.Close_ShareModel();
+    
     document.getElementById("shareBar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
   }

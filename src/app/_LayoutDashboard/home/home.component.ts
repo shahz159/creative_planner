@@ -71,6 +71,7 @@ export class HomeComponent implements OnInit {
   _SelectedEmpIds_String: string;
 
   edited:boolean = false;
+  searchResult: boolean = false;
 
   ObjUserDetails: UserDetailsDTO;
   _obj: PortfolioDTO;
@@ -317,6 +318,7 @@ export class HomeComponent implements OnInit {
     //console.log(event.target.value);
   }
   ServerSide_Search(value) {
+    this.searchResult= true;
     this.searchText = value;
     this.applyFilters();
     // console.log(this.searchText);
@@ -610,6 +612,7 @@ export class HomeComponent implements OnInit {
   public _filtersMessage2: string;
   public _CurrentpageRecords: number;
   applyFilters() {
+    
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Employee;
     }).join(',');
@@ -631,7 +634,7 @@ export class HomeComponent implements OnInit {
     this._objStatusDTO.SelectedEmployee = this.selectedEmp_String;
     this._objStatusDTO.SelectedCompany = this.selectedCom_String;
     this._objStatusDTO.Emp_No = this.Current_user_ID;
-    this._objStatusDTO.PageNumber = 1;
+    this._objStatusDTO.PageNumber = this.CurrentPageNo;
     this._objStatusDTO.RowsOfPage = 30;
     this._objStatusDTO.SearchText = this.searchText;
 
@@ -641,35 +644,46 @@ export class HomeComponent implements OnInit {
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
+        
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
         this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
         this.NoOfPages = data[0]['NoOfPages'];
         this.countAll = data[0]['Total'];
-        console.log("total values", this.countAll);
+        // console.log("total values", this.countAll);
+
+        if (this._ListProjStat) {
+          this._CurrentpageRecords = this.countAll; 
+        }
 
         if (this.selectedItem_Emp.length == 0) {
           this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
+          this._CurrentpageRecords = this.selectedItem_Emp.length;
         }
         else {
           this.Employeelist_Json = this.selectedItem_Emp[0];
         }
+        this._CurrentpageRecords = this._ListProjStat.length;
         //Type
         if (this.selectedItem_Company.length == 0) {
           this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
+          this._CurrentpageRecords = this.selectedItem_Company.length;
         }
         else {
           this.Companylist_Json = this.selectedItem_Company[0];
         }
+        this._CurrentpageRecords = this._ListProjStat.length;
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
+          this._CurrentpageRecords = this.selectedItem_Status.length;
 
         }
         else {
           this.Statuslist_Json = this.selectedItem_Status[0];
         }
+        this._CurrentpageRecords = this._ListProjStat.length;
 
 
         // this.countAll = this._ListProjStat.length;
@@ -677,13 +691,12 @@ export class HomeComponent implements OnInit {
         if (this._ListProjStat.length == 0) {
           this._filtersMessage = "No Portfolio Found";
           this._filtersMessage2 = "Please use clear for clearing filters & try again";
-
+         
         }
         else {
           this._filtersMessage = "";
           this._filtersMessage2 = "";
         }
-
       });
 
     //Filtering Checkbox de
@@ -1717,7 +1730,7 @@ export class HomeComponent implements OnInit {
               this._ActualPortfolioList_ForShare = JSON.parse(data[0]['PortfolioList_Json']);
               this._ActualPListFor_All = JSON.parse(data[0]['PortfolioList_Json']);
               this.AllPortfolioslist = this._ListProjStat;
-              // this.countAll = this._ListProjStat.length;
+              this.countAll = this._ListProjStat.length;
               let Listown: any = this._ListProjStat.filter(i => (i.CreatedName == this._CurrentUserFullName));
               this.countOwners = Listown.length;
               let ListShare: any = this._ListProjStat.filter(i => (i.CreatedName != this._CurrentUserFullName));
