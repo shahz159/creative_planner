@@ -684,10 +684,6 @@ export class HomeComponent implements OnInit {
           this._filtersMessage2 = "";
         }
 
-
-
-
-
       });
 
     //Filtering Checkbox de

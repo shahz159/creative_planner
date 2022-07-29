@@ -555,13 +555,16 @@ export class ToDoProjectsComponent implements OnInit {
   _modelProjectName: string;
   _modelProjDesc: string;
   OnEditProject(id, Pname) {
+    
     this._modelProjectName = Pname;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
-  }
+  
+  
+}
   OnEditProject_Desc(id, Desc) {
     this._modelProjDesc = Desc;
     this.Editbutton = true;

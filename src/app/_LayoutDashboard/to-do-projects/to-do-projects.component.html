@@ -253,8 +253,8 @@
                         </label>
                         <!--   [hidden]="EmpNo_Own!=CurrentUser_ID"-->
                         <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-                            id="EidtBtn_{{Pid}}">
-                            <i class="fas fa-edit ml-2 mb-1"></i>
+                            id="EidtBtn_{{Pid}}" *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho">
+                            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mt-2 pl-30px" style="display:none;" id="spanTextbox_{{Pid}}">
                             <div class="d-flex">
@@ -271,9 +271,9 @@
                         </span>
                         <p class="mb-3 mt-1 pl-30px h5" style="color:grey; font-size: small;">
                             <span id="Span_DescName_{{Pid}}">{{Proj_Desc}}</span>
-                            <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
+                            <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
                                 id="EidtBtn_{{Pid}}">
-                                <i class="fas fa-edit ml-2 mb-1"></i>
+                                <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                             </span>
                             <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
                                 <div class="d-flex">
