@@ -260,6 +260,14 @@ export class MoreDetailsComponent implements OnInit {
           this.InitSupp = "SU";
         }
       });
+      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data1 => {
+        
+        // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+
+        //  console.log(data[0]['RemainingHours']);
+        //console.log("MaxDu....", MaxDuration);
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);})
   }
 
   AddDms() {
