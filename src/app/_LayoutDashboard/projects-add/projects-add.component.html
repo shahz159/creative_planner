@@ -204,6 +204,7 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
+                                        <div *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found.</div>
                                         <table class="table table-hover dataTable no-footer dtr-inline" id="project-4"
                                             role="grid" style="width: 0px;">
                                             <thead>
