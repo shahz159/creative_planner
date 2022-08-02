@@ -443,7 +443,7 @@
                                                         <b> {{item.AssignedTo}}</b>
                                                     </span> -->
                                                     </div>
-                                                    <div class="" >
+                                                    <div class="my-1" >
 
                                                         <span
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
@@ -475,7 +475,15 @@
                                                           
                                                            
                                                     </div>
-                                                    <div class="mt-1">
+                                                    <div class="mt-2">
+
+                                                        <!--more details-->
+                                                        <a data-toggle="tooltip" title="Project Details!" class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
+                                                        (click)="openInfo(item.Project_Code,item.Project_Name)"> 
+                                                            <i class="fas fa-info-circle mr-1"></i> More Details 
+                                                            
+                                                        </a>
+                                                        
                                                         <!-- <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" *ngIf="item.FileName != ''"  (click)="LoadDocument(item.Reference)">
                                                             <div ><i class="fas fa-link mr-2"></i></div>
                                                             <div >{{item.FileName}}
@@ -489,16 +497,12 @@
 
                                                         <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
 
-                                                        <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
+                                                        <span  data-toggle="tooltip" title="Remarks!" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
                                                             <i class="fas fa-registered text-muted mr-1"></i>
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
+                                                        
 
-                                                        <span data-toggle="tooltip" title="Project Details!" class="text-nowrap mb-2 d-inline-block" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
-                                                        (click)="openInfo(item.Project_Code,item.Project_Name)"> &nbsp;&nbsp;
-                                                            <i class="fas fa-info-circle text-muted mr-1"></i>
-                                                            
-                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="kt-inbox__datetime">
