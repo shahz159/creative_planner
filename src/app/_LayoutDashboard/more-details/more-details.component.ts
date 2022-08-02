@@ -38,6 +38,10 @@ export class MoreDetailsComponent implements OnInit {
   URL_ProjectCode: string
   IsData: string;
   _LinkSideBar: boolean = true;
+
+  maxDuration: any;
+  SubmissionName:string;
+
   ngOnInit(): void {
     
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -217,6 +221,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
+          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
           var fullname_R = this.Responsible.split(' ');
           this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
           this.InitR.toUpperCase();
@@ -255,7 +260,16 @@ export class MoreDetailsComponent implements OnInit {
           this.InitSupp = "SU";
         }
       });
+      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data1 => {
+        
+        // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+
+        //  console.log(data[0]['RemainingHours']);
+        //console.log("MaxDu....", MaxDuration);
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);})
   }
+
   AddDms() {
     
     this._LinkSideBar = false;
@@ -388,6 +402,7 @@ export class MoreDetailsComponent implements OnInit {
         console.log("data1 Testong---->", data);
         data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
         this.DarGraphDataList = data1;
+        console.log(this.DarGraphDataList);
         //console.log("DarGraphDataList---->",this.DarGraphDataList);
 
         let root = am5.Root.new("chartdiv");
@@ -1832,15 +1847,22 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  maxDuration: any;
+  
   DARSummaryChart() {
+    
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
+        
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
 
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
+       
+
+       
+        
+        
 
         let chart = am4core.create("DARSummary", am4charts.PieChart3D);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
