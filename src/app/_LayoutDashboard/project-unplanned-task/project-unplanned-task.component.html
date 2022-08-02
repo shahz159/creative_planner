@@ -363,7 +363,7 @@
                                                             <div >{{item.FileName}}
                                                             </div>
                                                         </span> -->
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
+                                                        <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
                                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                                         <a class="text-info curser-pointer" title="Click To Open File"
                                                             ><b>{{item.FileName}}</b></a></span>
@@ -371,7 +371,7 @@
 
                                                         <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
 
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
+                                                        <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
                                                             <i class="fas fa-registered text-muted mr-1"></i>
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
@@ -481,7 +481,7 @@
                                                             <div >{{item.FileName}}
                                                             </div>
                                                         </span> -->
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
+                                                        <span data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
                                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                                         <a class="text-info curser-pointer" title="Click To Open File"
                                                             (click)="LoadDocument(item.Reference)"><b>{{item.FileName}}</b></a></span>
@@ -489,12 +489,12 @@
 
                                                         <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
 
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
+                                                        <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !=''">
                                                             <i class="fas fa-registered text-muted mr-1"></i>
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
 
-                                                        <span class="text-nowrap mb-2 d-inline-block" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
+                                                        <span data-toggle="tooltip" title="Project Details!" class="text-nowrap mb-2 d-inline-block" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
                                                         (click)="openInfo(item.Project_Code,item.Project_Name)"> &nbsp;&nbsp;
                                                             <i class="fas fa-info-circle text-muted mr-1"></i>
                                                             
