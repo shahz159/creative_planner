@@ -393,6 +393,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardSummaryCount", this.ObjNotificationDto);
   }
   _GetCompletedProjects(objDTO: CompletedProjectsDTO) {
+   
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
     this._ObjCompletedProj.Mode = objDTO.Mode;
     this._ObjCompletedProj.PageNumber = objDTO.PageNumber;

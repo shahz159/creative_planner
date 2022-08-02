@@ -201,7 +201,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        //console.log("Data---->", data);
+        // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -224,7 +224,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        //console.log("Data---->", data);
+        // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -377,7 +377,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
   CallOnSubmitCategory() {
     console.log('A');
-    debugger
+    
     // alert(this._selectedcatid + "-" + this._selectedcatname);
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
   }
@@ -446,6 +446,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
+       
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
