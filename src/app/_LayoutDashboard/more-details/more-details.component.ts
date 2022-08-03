@@ -41,6 +41,12 @@ export class MoreDetailsComponent implements OnInit {
 
   maxDuration: any;
   SubmissionName:string;
+  noRecords: boolean= false;
+  noMilestones: boolean = true;
+  noFiles: boolean = false;
+  noTimeline:boolean = true;
+  noNotes:boolean = true;
+  noMeeting:boolean = true;
 
   ngOnInit(): void {
     
@@ -2187,6 +2193,9 @@ export class MoreDetailsComponent implements OnInit {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         //console.log("Attachments---->", this.AttachmentList);
       });
+      if(this.AttachmentList == null){
+          this.noFiles = true;
+      }
   }
   _day: any;
   _month: any;
@@ -2244,6 +2253,12 @@ export class MoreDetailsComponent implements OnInit {
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         console.log("Completed--------->", this.CompletedList);
+
+        if((this.Subtask_List == null) && (this.CompletedList == null)){
+          this.noRecords = true;
+          console.log("No records.");
+
+        }
       });
   }
   OnTabTask_Click() {
