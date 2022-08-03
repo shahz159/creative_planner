@@ -70,12 +70,14 @@ export class ActionToProjectComponent implements OnInit {
         this._MasterCode = null;
       }
       else {
+       
         this._MasterCode = p;
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data=>{
+          // debugger
          this.ProjectDeadLineDate=data["DeadLine"];
-        //  alert(data["DeadLine"])
+          // alert(data["DeadLine"])
         })
       }
     });
@@ -129,10 +131,11 @@ export class ActionToProjectComponent implements OnInit {
   }
   selectedProjectCode: string;
   ProjectOnSelect(obj) {
+    debugger
     this.selectedProjectCode = obj['Project_Code'];
     this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data=>{
      this.ProjectDeadLineDate=data["DeadLine"];
-    //  alert(data["DeadLine"])
+  // alert(data["DeadLine"])
     })
 
   }
@@ -288,6 +291,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   sweetAlert() {
+    // debugger
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
     const dateOne = new Date(this._EndDate);
