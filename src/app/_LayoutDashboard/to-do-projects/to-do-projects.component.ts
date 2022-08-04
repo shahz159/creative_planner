@@ -123,6 +123,7 @@ export class ToDoProjectsComponent implements OnInit {
   Duration: any;
   Client_Name: string;
   Remarks: string = "";
+  Remarkss:string ="";
   ReportType: string;
   Attachments: string = "";
   FileName: string = null;
@@ -130,7 +131,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, Client_Name, Remarks, ReportType, Attachments, pid, SourceFile, SubmissionType) {
+    PCost, duration, Client_Name, Remarks,Remarkss, ReportType, Attachments, pid, SourceFile, SubmissionType) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
@@ -166,6 +167,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.Duration = duration;
     this.Client_Name = Client_Name;
     this.Remarks = Remarks;
+    this.Remarkss= Remarkss;
     this.ReportType = ReportType;
     this.Attachments = Attachments;
     this.FileName = SourceFile;

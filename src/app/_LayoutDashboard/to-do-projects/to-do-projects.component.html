@@ -183,7 +183,7 @@
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
                         item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,
-                        item.Client_Name,item.Remarks,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
+                        item.Client_Name,item.Remarks,item.Remarkss,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
                             </p>
@@ -353,9 +353,13 @@
                                 <i class="fas fa-paperclip text-muted mr-1"></i>
                                 <a (click)="LoadDocument(Attachments)">{{FileName}}</a>
                             </span> -->
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks">
+                            <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks">
                                 <i class="fas fa-registered text-muted mr-1"></i>
                                 <b>{{Remarks}}</b>
+                            </span>
+                            <span data-toggle="tooltip" title="Latest comments!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarkss">
+                                <i class="fas fa-registered text-muted mr-1"></i>
+                                <b>{{Remarkss}}</b>
                             </span>
                         </p>
                     </div>

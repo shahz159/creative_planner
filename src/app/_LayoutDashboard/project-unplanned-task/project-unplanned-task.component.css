@@ -1841,3 +1841,7 @@ mat-icon {
     z-index: 2;
     cursor: pointer;
 }
+.kt-badge.kt-badge--unified-warning1 {
+    color: #F3AA0F;
+    background: rgb(255 184 34 / 25%);
+}
