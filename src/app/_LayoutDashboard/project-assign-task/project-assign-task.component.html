@@ -254,7 +254,7 @@
                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                         <a class="text-info curser-pointer"
                                             (click)="LoadDocument(Reference)"><b>{{FileName}}</b></a></span>
-                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks != ''" >
+                                        <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks != ''" >
                                             <i class="fas fa-registered text-muted mr-1"></i>
                                             <b>{{Remarks}}</b>
                                         </span>

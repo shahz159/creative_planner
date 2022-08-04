@@ -346,19 +346,19 @@
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" ><i
-                                class="fas fa-file-pdf text-muted mr-1" *ngIf="FileName != ''"></i>
+                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
+                                class="fas fa-file-pdf text-muted mr-1" ></i>
                             <a class="text-info curser-pointer" title="Click To Open File"  
                                 (click)="LoadDocument(Attachments)" ><b>{{FileName}}</b></a></span>
                             <!-- <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-paperclip text-muted mr-1"></i>
                                 <a (click)="LoadDocument(Attachments)">{{FileName}}</a>
                             </span> -->
-                            <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks">
+                            <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks!='' && Remarks!= 'undefined'">
                                 <i class="fas fa-registered text-muted mr-1"></i>
                                 <b>{{Remarks}}</b>
                             </span>
-                            <span data-toggle="tooltip" title="Latest comments!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarkss">
+                            <span data-toggle="tooltip" title="Latest comments!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarkss && Remarkss!= 'undefined'">
                                 <i class="fas fa-registered text-muted mr-1"></i>
                                 <b>{{Remarkss}}</b>
                             </span>
@@ -460,11 +460,11 @@
                                     </span>
                                 </p>
                                 <p class="mb-1">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"><i
-                                            class="fas fa-file-pdf text-muted mr-1" *ngIf="item.Sourcefile != ''"></i>
+                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
+                                            class="fas fa-file-pdf text-muted mr-1"></i>
                                         <a class="text-info curser-pointer"
                                             (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks">
+                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != 'undefined' && item.Remarks != ''">
                                         <i class="fas fa-registered text-muted mr-1"></i>
                                         <b>{{item.Remarks}}</b>
                                     </span>
@@ -530,7 +530,7 @@
                                                     <a class="text-info curser-pointer"
                                                         (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
 
-                                                <span class="mr-3 text-nowrap  d-inline-block" *ngIf="item.Remarks">
+                                                <span class="mr-3 text-nowrap  d-inline-block" *ngIf="item.Remarks != 'undefined' && item.Remarks != ''">
                                                     <i class="fas fa-registered text-muted mr-1"></i>
                                                     <b>{{item.Remarks}}</b>
                                                 </span>
