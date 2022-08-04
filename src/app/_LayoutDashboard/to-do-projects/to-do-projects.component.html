@@ -230,8 +230,9 @@
                             (click)="ProjectInfoDetails()" title="Project Infomation">
                             <i class="fa fa-info-circle mr-0"></i>
                         </button>
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" *ngIf="Project_Status != 'Completed'" [hidden]="addbutton_hidden"
-                            (click)="OnAddTaskClick()" title="Create New Subtask" >
+                        <!-- *ngIf="Project_Status != 'Completed'" -->
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"   [hidden]="addbutton_hidden"
+                            (click)="sweetAlert()" title="Create New Subtask" >
                             <i class="fas fa-plus mr-0"></i>
                         </button>
                         
