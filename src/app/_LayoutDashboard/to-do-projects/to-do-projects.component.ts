@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 //import { ContentObserver } from '@angular/cdk/observers';
 import { MatDialog } from '@angular/material/dialog';
 import { ResizeButton } from '@amcharts/amcharts4/core';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-to-do-projects',
   templateUrl: './to-do-projects.component.html',
@@ -856,6 +857,38 @@ export class ToDoProjectsComponent implements OnInit {
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
     this.resetFilters();
+  }
+
+
+  
+  sweetAlert() {
+  
+  
+    if (this.Project_Status=='Completed'){
+      Swal.fire({
+        title: 'This Project is Compelted !!',
+        text: 'Do You Want To Reopen This Project ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+        this.OnAddTaskClick();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Action is Not Created',
+            'error'
+          )
+        }
+      });
+
+    }
+    else {
+      this.OnAddTaskClick();
+    }
+   
   }
 
   // OpenDialog(){

@@ -291,6 +291,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   sweetAlert() {
+  
     // debugger
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
