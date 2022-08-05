@@ -183,7 +183,7 @@
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
                         item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,
-                        item.Client_Name,item.Remarks,item.Remarkss,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
+                        item.Client_Name,item.Remarks,item.Remarkss,item.CD,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
                             </p>
@@ -340,9 +340,13 @@
                                 <i class="fas fa-wallet text-muted mr-1"></i>
                                 <b>{{Client_Name}}</b>
                             </span>
-                            <span class="text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
+                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
                                 <i class="fas fa-info-circle text-muted mr-1"></i>
                                 <b>{{ReportType}}</b>
+                            </span>
+                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="CD">
+                                <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                <b>{{CD | date:'dd-MM-yyyy'}}</b>
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
