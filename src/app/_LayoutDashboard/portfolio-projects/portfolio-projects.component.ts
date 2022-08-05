@@ -403,6 +403,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.EmployeeDropdown = emp['Emp_No'];
     //console.log("Selected Employees---->", JSON.stringify(this.ngEmployeeDropdown));
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
+    
     this.ngEmployeeDropdown2.forEach(element => {
       arr.push({ Emp_No: element.Emp_No })
       this._SelectedEmployees = (arr);

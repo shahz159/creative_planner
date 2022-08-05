@@ -497,7 +497,10 @@
                                 data-parent="#accordionExample5">
                                 <div class="card-body">
                                     <div class="subtask-list" *ngFor="let item of CompletedList; let i =index">
-                                        <input type="radio" class="subtask-radio" checked />
+                                        <div class="form-check form-check-success">
+                                            <input type="radio" class="subtask-radio form-check-input" checked>
+                                        </div>
+                                        <!-- <input type="radio" class="form -check-input subtask-radio form-check-success" checked /> -->
                                         <div>
                                             <p
                                                 class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
