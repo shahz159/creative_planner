@@ -369,7 +369,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="scrollbar scrollbar1 card-body py-0 px-2 mt-4">
+                <div class="scrollbar scrollbar1 card-body py-0 px-2 mt-4" >
                     <div id="Subtask_Details" [hidden]="_subtaskDetails">
                         <div class="subtask-list" *ngFor="let item of Subtask_List; let i =index"
                             [ngClass]="{'bg-custom': item.Team_Autho==CurrentUser_ID}">
@@ -460,7 +460,8 @@
                                     'text-success':item.SubProject_Status=='Completion Under Approval',
                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}">
-                                        {{item.SubProject_Status}}
+                                       <p class="text-Completed "  *ngIf="Project_Status == 'Completed'"> Completed</p>
+                                       <p  *ngIf="Project_Status != 'Completed'"> {{item.SubProject_Status}}</p>
                                     </span>
                                 </p>
                                 <p class="mb-1">
