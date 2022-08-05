@@ -38,6 +38,16 @@ export class MoreDetailsComponent implements OnInit {
   URL_ProjectCode: string
   IsData: string;
   _LinkSideBar: boolean = true;
+
+  maxDuration: any;
+  SubmissionName:string;
+  noRecords: boolean= false;
+  noMilestones: boolean = true;
+  noFiles: boolean = false;
+  noTimeline:boolean = true;
+  noNotes:boolean = true;
+  noMeeting:boolean = true;
+
   ngOnInit(): void {
     
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -217,6 +227,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
+          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
           var fullname_R = this.Responsible.split(' ');
           this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
           this.InitR.toUpperCase();
@@ -255,7 +266,16 @@ export class MoreDetailsComponent implements OnInit {
           this.InitSupp = "SU";
         }
       });
+      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data1 => {
+        
+        // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+
+        //  console.log(data[0]['RemainingHours']);
+        //console.log("MaxDu....", MaxDuration);
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);})
   }
+
   AddDms() {
     
     this._LinkSideBar = false;
@@ -292,6 +312,33 @@ export class MoreDetailsComponent implements OnInit {
 
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
+
+  Empty_MemoDropdown: any;
+  _SelectedMemos: any;
+  Mail_Id: number;
+  Memo_Select(selecteditems) {
+    //console.log("Selected Item---->",selecteditems)
+    let arr = [];
+    this.Empty_MemoDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_MemoDropdown.forEach(element => {
+      arr.push({ MailId: element.MailId })
+      this._SelectedMemos = arr;
+    });
+    //console.log("Selected Memos In Array--->", arr)
+  }
+  Memo_Deselect() {
+    let arr = [];
+    this.Empty_MemoDropdown = this.ngDropdwonMemo;
+    this.Empty_MemoDropdown.forEach(element => {
+      arr.push({ MailId: element.MailId })
+      this._SelectedMemos = arr;
+    });
+    //console.log("Deselect Memos--->", this._SelectedMemos)
+  }
+
+
+
   _onRowClick(projectCode) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -336,7 +383,7 @@ export class MoreDetailsComponent implements OnInit {
         }
         else {
           this._mappedMemos = 0;
-          console.log("No Memos linked For This Project...")
+          // console.log("No Memos linked For This Project...")
         }
       });
     document.getElementById("LinkSideBar").style.width = "50%";
@@ -361,6 +408,7 @@ export class MoreDetailsComponent implements OnInit {
         console.log("data1 Testong---->", data);
         data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
         this.DarGraphDataList = data1;
+        console.log(this.DarGraphDataList);
         //console.log("DarGraphDataList---->",this.DarGraphDataList);
 
         let root = am5.Root.new("chartdiv");
@@ -1805,15 +1853,22 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  maxDuration: any;
+  
   DARSummaryChart() {
+    
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
+        
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
 
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
+       
+
+       
+        
+        
 
         let chart = am4core.create("DARSummary", am4charts.PieChart3D);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
@@ -1983,6 +2038,8 @@ export class MoreDetailsComponent implements OnInit {
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(100, 30);
   }
+
+  _displayProjName: string;
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
@@ -2086,6 +2143,44 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
   }
+
+
+  _AddLink() {
+    let _ProjectCode: string = this.Selected_Projectcode;
+    //alert(this.Global_Projectcode);
+    let appId: number = 101;//this._ApplicationId;
+    //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
+    if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
+      // console.log("Table Ids-->", this._SelectedIdsfromDb);
+      this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
+      console.log("After Joins Final Output=======>", this.memoId);
+    }
+    else {
+      this.memoId = JSON.stringify(this._SelectedMemos);
+      console.log("Ëlse Block...Executed---->", this.memoId);
+    }
+    let UserId = this.Current_user_ID;
+    if (this._SelectedMemos.length > 0) {
+      this._LinkService.InsertMemosOn_ProjectCode(_ProjectCode, appId, this.memoId, UserId).
+        subscribe((data) => {
+          this.UpdateMemos(this.projectCode)
+          this.GetMemosByEmployeeId();
+          //this.GetProjectsByUserName();
+          let Returndata: any = data['Message'];
+          this.notifyService.showSuccess("", Returndata);
+          this.ngDropdwonMemo = [];
+          this._SelectedMemos = [];
+        });
+    }
+    else {
+      this.notifyService.showInfo("Request Cancelled", "Please select memo(s) to link");
+    }
+    this.closeLinkSideBar();
+    // this._openInfoSideBar = false;
+    // this._LinkSideBar=true;
+  }
+
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);
@@ -2098,6 +2193,9 @@ export class MoreDetailsComponent implements OnInit {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         //console.log("Attachments---->", this.AttachmentList);
       });
+      if(this.AttachmentList == null){
+          this.noFiles = true;
+      }
   }
   _day: any;
   _month: any;
@@ -2155,6 +2253,12 @@ export class MoreDetailsComponent implements OnInit {
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         console.log("Completed--------->", this.CompletedList);
+
+        if((this.Subtask_List == null) && (this.CompletedList == null)){
+          this.noRecords = true;
+          console.log("No records.");
+
+        }
       });
   }
   OnTabTask_Click() {

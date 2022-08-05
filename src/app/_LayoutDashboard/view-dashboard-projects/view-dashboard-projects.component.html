@@ -19,7 +19,7 @@
                                             <input type="text"
                                                 class="form-control project-search kt-quick-search__input pl-3"
                                                 placeholder="Search Projects" [(ngModel)]="searchText" autofocus
-                                                style="width: 300px">
+                                                style="width: 300px" (keydown.enter)="SearchbyText()">
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()"
                                                     (keydown.enter)="$event">
@@ -216,25 +216,41 @@
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
                                             <thead>
                                                 <tr>
+                                                    <th> </th>
                                                     <th><strong>Task Name</strong></th>
                                                     <th><strong>Description</strong></th>
                                                     <th><strong>Type</strong></th>
                                                     <th><strong>Employee</strong></th>
                                                     <th><strong>Start Date</strong></th>
                                                     <th><strong>End Date</strong></th>
+                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let item of _AssignedProjectsList; let i=index">
-                                                    <td class="kt-widget__title mb-0"> {{item.Task_Name}}</td>
-                                                    <td class="kt-widget__title mb-0" style="width: 25%;">
-                                                        {{item.Task_Description}}</td>
+                                                    <!-- Project details info column -->
+                                                    <td class="kt-widget__title mb-0">
+                                                        <a data-toggle="tooltip" title="Project Details!" class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
+                                                        (click)="openInfo(item.Project_Code,item.Project_Name)"> 
+                                                            <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;      
+                                                        </a>    
+                                                    </td>
+                                                    <td class="kt-widget__title mb-0" > {{item.Task_Name}}</td>
+                                                    <td class="kt-widget__title mb-0" style="width: 25px;">{{item.Task_Description}}</td>
+                                                   <!-- style:width="25%" -->
                                                     <td class="kt-widget__title mb-0">{{item.ProjectType}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Employee}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Start_Date
                                                         |date:'dd-MM-yyyy'}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.End_Date
                                                         |date:'dd-MM-yyyy'}}</td>
+                                                    <td class="kt-widget__title mb-0" 
+                                                    
+                                                        [ngClass]="{'text-danger font-weight-400':item.Status=='Rejected',
+                                                            'text-success font-weight-400':item.Status=='Accepted',
+                                                             'text-warning font-weight-400':item.Status=='Pending'}">
+                                                         {{item.Status}}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

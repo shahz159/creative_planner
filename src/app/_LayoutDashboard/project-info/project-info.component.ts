@@ -11,6 +11,10 @@ import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
 import * as _ from 'underscore';
+
+
+
+
 @Component({
   selector: 'app-project-info',
   templateUrl: './project-info.component.html',
@@ -363,11 +367,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
       // console.log("Table Ids-->", this._SelectedIdsfromDb);
       this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
-      // console.log("After Joins Final Output=======>", this.memoId);
+      console.log("After Joins Final Output=======>", this.memoId);
     }
     else {
       this.memoId = JSON.stringify(this._SelectedMemos);
-      // console.log("Ëlse Block...Executed---->", this.memoId);
+      console.log("Ëlse Block...Executed---->", this.memoId);
     }
     let UserId = this.Current_user_ID;
     if (this._SelectedMemos.length > 0) {

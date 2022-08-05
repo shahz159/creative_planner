@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div>
-                <button type="button" class="btn btn-info btn-sm py-1 pr-2" (click)="bttn_RACI()">RACI
+                <button type="button" class="btn btn-info btn-sm py-1 pr-2" (click)="bttn_RACI()">RACIS
                     <i class="ml-2 fa fa-chevron-down"></i>
                 </button>
             </div>
@@ -29,7 +29,7 @@
         <!-- Raci Details -->
         <div class="card border-0 shadow-sm mb-3" [hidden]="_raciDetails" id="raciDetails">
             <div class="card-body">
-                <div class="my-2"><label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACI
+                <div class="my-2"><label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACIS
                         Details</label></div>
                 <div class="row">
                     <div class="col-md-6">
@@ -744,6 +744,7 @@
                     [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
                     (onDeSelect)="Memo_Deselect()" style="flex: 3;">
                 </ng-multiselect-dropdown>
+                
                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
             </div>
         </li>

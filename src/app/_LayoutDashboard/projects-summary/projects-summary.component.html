@@ -16,23 +16,31 @@
                                 <div class="kt-quick-search kt-quick-search--inline">
                                     <div class="kt-quick-search__form">
                                         <div class="input-group">
-                                            <input type="text" class="form-control project-search kt-quick-search__input pl-3" placeholder="Search Projects" [(ngModel)]="searchText" autofocus style="width: 300px" (keydown.enter)="search($event.target.value)">
+                                            <input type="text"
+                                                class="form-control project-search kt-quick-search__input pl-3"
+                                                placeholder="Search Projects" [(ngModel)]="searchText" autofocus
+                                                style="width: 300px" (keydown.enter)="search($event.target.value)">
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()" type="submit">
                                                     <i class="flaticon2-search-1"></i>
+                                                    
                                                 </button>
+                                                
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="mr-3">
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
                             </ng-container>
                             <ng-container *ngIf="CurrentPageNo!=1">
-                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords * CurrentPageNo}}
+                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                CurrentPageNo}}
                             </ng-container>
                             of
                             <span> {{_totalProjectsCount}}</span>
@@ -43,16 +51,21 @@
                                 {{CurrentPageNo}}</span>
                         </div> -->
 
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()" [disabled]="_CurrentpageRecords<30">
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
+                            [disabled]="_CurrentpageRecords<30">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-2">
-                            <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Asc">
+                            <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Asc">
                                 <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
                             </a>
-                            <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Desc">
+                            <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Desc">
                                 <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
                             </a>
                         </div>
@@ -60,8 +73,9 @@
                         <div class="stores-sec mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="dropdown"><i
-                                            class="fas fa-ellipsis-v mr-0"></i></a>
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                            class="fas fa-ellipsis-v mr-0 "></i>
+                                    </a>
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
@@ -77,9 +91,12 @@
                                                 </div>
                                             </div>
                                             <hr />
+
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input type="text" class="form-control kt-quick-search__input pl-3" placeholder="Search Filters" [(ngModel)]="txtSearch" style="width: 100%;">
+                                                    <input type="text" class="form-control kt-quick-search__input pl-3"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        style="width: 100%;">
                                                 </div>
                                             </div>
                                             <br>
@@ -87,8 +104,9 @@
                                                 <div class="col-md-4">
                                                     <div class="count-height">
                                                         <p><strong>Project Type</strong></p>
-                                                        <div class="d-flex justify-content-between" *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox">
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox"  >
                                                                 <input type="checkbox" (change)="isTypeChecked(item)"
                                                                     [(ngModel)]="item.checked">
                                                                 {{item.Name}}
@@ -101,7 +119,8 @@
                                                 <div class="col-md-4">
                                                     <div class="count-height">
                                                         <p><strong>Status</strong></p>
-                                                        <div class="d-flex justify-content-between" *ngFor="let item of StatusCountFilter|filter:txtSearch">
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
@@ -115,7 +134,8 @@
                                                 <div class="col-md-4">
                                                     <div class="count-height">
                                                         <p><strong>Employees</strong></p>
-                                                        <div class="d-flex justify-content-between" *ngFor="let item of EmpCountInFilter|filter:txtSearch">
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isEmpChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
@@ -132,8 +152,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-10">
-                                                <button class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2" data-toggle="dropdown">Submit</button>
-                                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2" (click)="resetAll()">Reset
+                                                <button
+                                                    class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown">Submit</button>
+                                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll()">Reset
                                                 </button>
                                             </div>
                                         </div>
@@ -144,7 +167,7 @@
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -170,37 +193,67 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                                        
+                                        <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
+                                        
+                                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
+                                            style="width: 0px;">
                                             <thead>
                                                 <tr role="row">
-                                                    <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending">
+                                                    <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label=": activate to sort column descending">
                                                     </th>
                                                     <th></th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="Project_Name" tabindex="0" aria-controls="project-4" class="curser-pointer" rowspan="1" colspan="1" style="width: 0px;" (click)="_SortPortfoliolist()" aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
-                                                        <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Project_Name" tabindex="0" aria-controls="project-4"
+                                                        class="curser-pointer" rowspan="1" colspan="1"
+                                                        style="width: 0px;" (click)="_SortPortfoliolist()"
+                                                        aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                        <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
                                                             <i class="fas fa-sort-alpha-up"></i>
                                                         </a>
-                                                        <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                        <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
                                                         ProjectName
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-label="Project Type: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> ProjectType
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="ReportType" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer" aria-label="Category: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="ReportType" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Category: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Category
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="TM_DisplayName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1" aria-label="User Name: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-label="User Name: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> EmployeeName
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="DeadLine" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer" aria-label="End Date: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Deadline
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="DeadLine" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer" aria-label="End Date: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> LastUpdate
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc" data-name="Status" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer" aria-label="Status: activate to sort column ascending">
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Status
                                                     </th>
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
@@ -211,23 +264,32 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd" *ngFor="let item of _ProjectDataList;let i=index;">
+                                                <tr role="row" class="odd"
+                                                    *ngFor="let item of _ProjectDataList;let i=index;">
                                                     <!-- Information Icon -->
                                                     <!-- <td></td> -->
                                                     <td align="center">
-                                                        <a tabindex="0" class="btn mr-2" role="button" placement="right" data-trigger="focus">
-                                                            <i class="fa fa-info-circle info-icon-cir" (click)="openInfo(item.Project_Code,item.Project_Name)"></i>
+                                                        <a tabindex="0" class="btn mr-2" role="button" placement="right"
+                                                            data-trigger="focus">
+                                                            <i class="fa fa-info-circle info-icon-cir"
+                                                                (click)="openInfo(item.Project_Code,item.Project_Name)"></i>
                                                         </a>
                                                         <!-- vali  works-->
 
                                                     </td>
                                                     <td>
                                                         <div *ngIf="item.Link_Status==1;else not_Linked">
-                                                            <a class="curser-pointer" (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" title="Linked"></a>
+                                                            <a class="curser-pointer"
+                                                                (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
+                                                                    width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
 
                                                         </div>
                                                         <ng-template #not_Linked>
-                                                            <a><img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" title="Not Linked"></a>
+                                                            <a><img width="19px" class="black-white"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
                                                         </ng-template>
                                                     </td>
                                                     <td>
@@ -249,16 +311,21 @@
                                                     <td><span class="kt-widget__other">{{item.TM_DisplayName}}</span>
                                                     </td>
                                                     <td>
-                                                        <div *ngIf="item.Exec_BlockName=='Standard Tasks';else Projecttype">
-                                                            <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
+                                                        <div
+                                                            *ngIf="item.Exec_BlockName=='Standard Tasks';else Projecttype">
+                                                            <span
+                                                                class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">
                                                                 {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                         </ng-template>
                                                     </td>
-                                                    <td data-toggle="tooltip" data-placement="top" title="{{item.LastUpdate|date:'medium'}}">
-                                                        <span href="javascript:void(0)" class="kt-widget__other text-info curser-pointer" (click)="OpenDARinfo(item.Project_Code)">
+                                                    <td data-toggle="tooltip" data-placement="top"
+                                                        title="{{item.LastUpdate|date:'medium'}}">
+                                                        <span href="javascript:void(0)"
+                                                            class="kt-widget__other text-info curser-pointer"
+                                                            (click)="OpenDARinfo(item.Project_Code)">
                                                             {{item.LastUpdate|dateAgo}}</span>
                                                     </td>
                                                     <td>
@@ -341,11 +408,13 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
-                                                            <span class="font-weight-400" style="color: #c0b5dc;">Project Holded
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Project Holded
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                                            <span class="font-weight-400" style="color: #c0b5dc;">Project Hold Under Approval
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Project Hold Under Approval
                                                             </span>
                                                         </div>
                                                     </td>
@@ -381,7 +450,8 @@
 <div id="MemosSideBar" class="sideInfobar animate-right">
     <div class="kt-portlet__head p-3 bg-primary">
         <div class="kt-portlet__head-label">
-            <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="_CloseMemosidebar()">&times;</a>
+            <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
                     <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos

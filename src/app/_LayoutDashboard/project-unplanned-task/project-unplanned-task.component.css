@@ -1830,3 +1830,18 @@ mat-icon {
     transform: rotate(180deg) scaleX(-1);
     vertical-align: middle;
 }
+.overlay-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 2;
+    cursor: pointer;
+}
+.kt-badge.kt-badge--unified-warning1 {
+    color: #F3AA0F;
+    background: rgb(255 184 34 / 25%);
+}

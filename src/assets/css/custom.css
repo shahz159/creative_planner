@@ -790,3 +790,14 @@ transform: rotate(45deg);
         padding-left: 1.5rem !important;
         padding-right: 0.5rem !important;
     }
+    .filter-dot:after {
+        content: "•";
+       position: absolute;
+       top: -3px;
+       right: 1px;
+       font-size: 30px;
+       color: #CD5C5C;
+   }
+   .filter-dot {
+       position: relative;
+   } 

@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 //import { ContentObserver } from '@angular/cdk/observers';
 import { MatDialog } from '@angular/material/dialog';
 import { ResizeButton } from '@amcharts/amcharts4/core';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-to-do-projects',
   templateUrl: './to-do-projects.component.html',
@@ -54,6 +55,7 @@ export class ToDoProjectsComponent implements OnInit {
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
 
+  edited: boolean = false;
 
   ngOnInit() {
 
@@ -82,6 +84,8 @@ export class ToDoProjectsComponent implements OnInit {
   Coor: string; EmpNo_Coor: string;
   Support: string; EmpNo_Supp: string;
   Comp_No: string; ProjectBlock: string;
+
+  
   GetProjectsByUserName() {
 
     this.ObjUserDetails.PageNumber = 1;
@@ -120,6 +124,7 @@ export class ToDoProjectsComponent implements OnInit {
   Duration: any;
   Client_Name: string;
   Remarks: string = "";
+  Remarkss:string ="";
   ReportType: string;
   Attachments: string = "";
   FileName: string = null;
@@ -127,7 +132,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, Client_Name, Remarks, ReportType, Attachments, pid, SourceFile, SubmissionType) {
+    PCost, duration, Client_Name, Remarks,Remarkss, ReportType, Attachments, pid, SourceFile, SubmissionType) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
@@ -163,6 +168,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.Duration = duration;
     this.Client_Name = Client_Name;
     this.Remarks = Remarks;
+    this.Remarkss= Remarkss;
     this.ReportType = ReportType;
     this.Attachments = Attachments;
     this.FileName = SourceFile;
@@ -231,6 +237,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   GetSubtask_Details() {
     //alert(this.Comp_No)
+    // alert(1256)
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         // this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
@@ -284,6 +291,8 @@ export class ToDoProjectsComponent implements OnInit {
   clicks: number = 0;
   A2Z: boolean = true;
   Z2A: boolean = false;
+
+
   _SortProjectList() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -498,7 +507,7 @@ export class ToDoProjectsComponent implements OnInit {
     }
     //debugger
     else {
-      debugger
+      // debugger
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
@@ -549,13 +558,16 @@ export class ToDoProjectsComponent implements OnInit {
   _modelProjectName: string;
   _modelProjDesc: string;
   OnEditProject(id, Pname) {
+    
     this._modelProjectName = Pname;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
-  }
+  
+  
+}
   OnEditProject_Desc(id, Desc) {
     this._modelProjDesc = Desc;
     this.Editbutton = true;
@@ -677,7 +689,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Type = [];
   isTypeChecked(item) {
@@ -702,7 +719,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Emp = [];
   isEmpChecked(item) {
@@ -727,6 +749,12 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   //Apply Filters
   SearchbyText() {
@@ -735,6 +763,7 @@ export class ToDoProjectsComponent implements OnInit {
   }
   _filtersMessage2: string;
   _filtersMessage: string;
+
   applyFilters_Old() {
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
@@ -804,6 +833,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
+    this.edited=false;
 
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
@@ -827,6 +857,38 @@ export class ToDoProjectsComponent implements OnInit {
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
     this.resetFilters();
+  }
+
+
+  
+  sweetAlert() {
+  
+  
+    if (this.Project_Status=='Completed'){
+      Swal.fire({
+        title: 'This Project is Compelted !!',
+        text: 'Do You Want To Reopen This Project ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+        this.OnAddTaskClick();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Action is Not Created',
+            'error'
+          )
+        }
+      });
+
+    }
+    else {
+      this.OnAddTaskClick();
+    }
+   
   }
 
   // OpenDialog(){

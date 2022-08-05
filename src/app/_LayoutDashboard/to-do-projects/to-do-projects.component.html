@@ -75,7 +75,7 @@
                         <div class="stores-sec mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="dropdown"><i
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
                                             class="fas fa-ellipsis-v mr-0"></i></a>
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
@@ -173,8 +173,9 @@
                         placeholder="Search Projects" [(ngModel)]="searchText" autofocus style="width: 100%"
                         (keydown.enter)="search($event.target.value)" style="background-color:#E5E7E9;">
                 </div>
+                
             </div>
-            <div class="sidebar scrollbar">
+            <div class="sidebar scrollbar" >
                 <ul class="side-bar-box">
                     <li *ngFor="let item of _ProjectDataList">
                         <a (click)="OnProjectClick(item.Project_Code,item.Project_Name,item.Project_Owner,
@@ -182,7 +183,7 @@
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
                         item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,
-                        item.Client_Name,item.Remarks,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
+                        item.Client_Name,item.Remarks,item.Remarkss,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
                             </p>
@@ -229,10 +230,12 @@
                             (click)="ProjectInfoDetails()" title="Project Infomation">
                             <i class="fa fa-info-circle mr-0"></i>
                         </button>
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"  [hidden]="addbutton_hidden"
-                            (click)="OnAddTaskClick()" title="Create New Subtask">
+                        <!-- *ngIf="Project_Status != 'Completed'" -->
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"   [hidden]="addbutton_hidden"
+                            (click)="sweetAlert()" title="Create New Subtask" >
                             <i class="fas fa-plus mr-0"></i>
                         </button>
+                        
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
                             <i class="fas fa-sort-alpha-up fa-lg mr-0"></i>
                         </button>
@@ -251,9 +254,9 @@
                             <span></span>
                         </label>
                         <!--   [hidden]="EmpNo_Own!=CurrentUser_ID"-->
-                        <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-                            id="EidtBtn_{{Pid}}">
-                            <i class="fas fa-edit ml-2 mb-1"></i>
+                        <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
+                            id="EidtBtn_{{Pid}}" *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho">
+                            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mt-2 pl-30px" style="display:none;" id="spanTextbox_{{Pid}}">
                             <div class="d-flex">
@@ -270,9 +273,9 @@
                         </span>
                         <p class="mb-3 mt-1 pl-30px h5" style="color:grey; font-size: small;">
                             <span id="Span_DescName_{{Pid}}">{{Proj_Desc}}</span>
-                            <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
+                            <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
                                 id="EidtBtn_{{Pid}}">
-                                <i class="fas fa-edit ml-2 mb-1"></i>
+                                <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                             </span>
                             <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
                                 <div class="d-flex">
@@ -343,17 +346,21 @@
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block"><i
-                                class="fas fa-file-pdf text-muted mr-1"></i>
-                            <a class="text-info curser-pointer" title="Click To Open File"
-                                (click)="LoadDocument(Attachments)"><b>{{FileName}}</b></a></span>
+                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
+                                class="fas fa-file-pdf text-muted mr-1" ></i>
+                            <a class="text-info curser-pointer" title="Click To Open File"  
+                                (click)="LoadDocument(Attachments)" ><b>{{FileName}}</b></a></span>
                             <!-- <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-paperclip text-muted mr-1"></i>
                                 <a (click)="LoadDocument(Attachments)">{{FileName}}</a>
                             </span> -->
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks">
+                            <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarks!='' && Remarks!= 'undefined'">
                                 <i class="fas fa-registered text-muted mr-1"></i>
                                 <b>{{Remarks}}</b>
+                            </span>
+                            <span data-toggle="tooltip" title="Latest comments!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Remarkss && Remarkss!= 'undefined'">
+                                <i class="fas fa-registered text-muted mr-1"></i>
+                                <b>{{Remarkss}}</b>
                             </span>
                         </p>
                     </div>
@@ -414,11 +421,11 @@
                                 </p>
 
                                 <p class="mb-1">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                         <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
                                     </span>
-                                    <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="End Date!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                         <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                     </span>
@@ -453,11 +460,11 @@
                                     </span>
                                 </p>
                                 <p class="mb-1">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"><i
+                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                         <a class="text-info curser-pointer"
                                             (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks">
+                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != 'undefined' && item.Remarks != ''">
                                         <i class="fas fa-registered text-muted mr-1"></i>
                                         <b>{{item.Remarks}}</b>
                                     </span>
@@ -502,21 +509,31 @@
                                                     class="mr-2 text-nowrap  d-inline-block badge bg-light text-success">Completed</span>
                                             </p>
                                             <p class="mb-2">
-                                                <span class="mr-3 text-nowrap d-inline-block"><i
+                                                <span  data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap d-inline-block"><i
+                                                    class="fas fa-calendar-alt text-muted mr-1"></i>{{item.StartDate | 
+                                                date}}</span>  
+                                               
+                                                <span  data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap d-inline-block"><i
+                                                    class="fas fa-calendar-alt text-muted mr-1"></i>{{item.SubProject_DeadLine | 
+                                                date}}</span> 
+
+                                                <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap d-inline-block"><i
                                                         class="fas fa-calendar-alt text-muted mr-1"></i>{{item.CD |
-                                                    date:'d/M/yy, h:mm a'}}</span>
+                                                    date}}</span>
+                                                            
+
                                                 <span class="mr-3  text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-clock text-muted mr-1"></i>
                                                     <b>{{item.Duration}} Hrs</b>
                                                 </span>
                                             </p>
                                             <p class="mb-2">
-                                                <span class="mr-3 text-nowrap mb-2 d-inline-block"><i
-                                                        class="fas fa-file-pdf text-muted mr-1"></i>
+                                                <span class="mr-3 text-nowrap mb-2 d-inline-block" ><i
+                                                        class="fas fa-file-pdf text-muted mr-1" *ngIf="item.Sourcefile != ''"></i>
                                                     <a class="text-info curser-pointer"
                                                         (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
 
-                                                <span class="mr-3 text-nowrap  d-inline-block" *ngIf="item.Remarks">
+                                                <span class="mr-3 text-nowrap  d-inline-block" *ngIf="item.Remarks != 'undefined' && item.Remarks != ''">
                                                     <i class="fas fa-registered text-muted mr-1"></i>
                                                     <b>{{item.Remarks}}</b>
                                                 </span>

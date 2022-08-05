@@ -31,7 +31,7 @@
                         <h4 class="mb-1 pro-nm">{{ProjectName}}</h4>
                     </div>
                     <div class=" pro-act">
-                        <button class="btn22" (click)="sideviw()" *ngIf="Status !='Under Approval'">Project Actions</button>
+                        <button class="btn22" (click)="sideviw()" *ngIf="Status =='Under Approval'">Project Actions</button>
                     </div>
                     
                 </div>
@@ -41,7 +41,8 @@
             <div class="col-lg-12 project-details">
                 <div class="row d-nsone">
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label bg-coral">
@@ -67,7 +68,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count">
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-info">
@@ -101,7 +103,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-dangr">
@@ -117,8 +120,9 @@
                                 <div class="action-content d-flex align-items-center">
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
-                                        <h5 class="mt-1">{{StandardDuration}}</h5>
+                                        <h5 class="mt-1">{{maxDuration}}Hrs</h5>
                                     </div>
+                                    
                                     <div class="px-4">
                                         <i class=" la la-arrows-h mx-3 text-dangr fs-4 font-weight-bold"></i>
                                     </div>
@@ -133,7 +137,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-success-1">
@@ -158,7 +163,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-purple">
@@ -180,7 +186,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label blue-munsell">
@@ -204,7 +211,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-warning">
@@ -228,7 +236,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button">
+                        <!-- <div class="action-count" role="button"> -->
+                            <div class="action-count" >
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label caledon-green">
@@ -412,9 +421,10 @@
                     <ul class="nav navtab-bg nav-pills px-3 mb-3 space-tabs" id="myTab2" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="Overview1" data-toggle="tab"
                                 href="#Overview"><span class="nav-text">Overview</span></a></li>
-                        <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
+                        <li class="nav-item"(click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile"><span
                                     class="nav-text">Tasks</span></a></li>
+                                    
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
                                 href="#Milestones"><span class="nav-text">Milestones</span></a></li>
                         <li class="nav-item" (click)="GetDMS_Memos()"><a class="nav-link" id="DMS1" data-toggle="tab"
@@ -695,13 +705,15 @@
                     </div>
                     <div class="tab-pane fade" id="Tasks" role="tabpanel" aria-labelledby="Tasks1">
 
-                        <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist">
-                            <li class="nav-item">
+                        <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist" >
+                            <li><h4 *ngIf="noRecords == true">No Records Found.</h4></li>
+                            <li class="nav-item" *ngIf="noRecords == false">
                                 <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
-                                    <span class="nav-text">Subtasks</span>
+                                    <span class="nav-text" >Subtasks</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            
+                            <li class="nav-item" *ngIf="noRecords == false">
                                 <a class="nav-link" id="charts-1" data-toggle="tab" href="#charts_1">
                                     <span class="nav-text">Charts</span>
 
@@ -711,16 +723,19 @@
                         <div class="tab-content" id="task-tabbview">
                             <div class="tab-pane fade show active" id="tasks_1" role="tabpanel"
                                 aria-labelledby="tasks-1">
+                                
 
                                 <div class="tasks_views">
 
 
 
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
+                                        
                                         <div class="ribbon-info ribbon float-start">Inprocess</div>
                                         <div class="clearfix"></div>
                                         <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                             [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
+                                            
                                             <input type="radio" name="Subtask" class="subtask-radio"
                                                 (change)="OnSubtaskClick(item)"
                                                 [hidden]="item.Team_Autho!=Current_user_ID" />
@@ -984,7 +999,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="Milestones" role="tabpanel" aria-labelledby="Milestones1">Milestones
+                    <div class="tab-pane fade" id="Milestones" role="tabpanel" aria-labelledby="Milestones1">
+                        <h3 *ngIf="noMilestones == false">Milestones</h3>
+                        <h4 *ngIf="noMilestones == true">No Records Found.</h4>
                     </div>
                     <!--  DMS Working Area -->
 
@@ -1013,13 +1030,12 @@
                         </div>
                     </div>
                     <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
-                    <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
+                    <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1" >
                         <div class="kt-subheader   kt-grid__item" id="kt_subheader">
                             <div class="kt-container w-100 px-0">
                                 <div class="kt-subheader__main">
-                                    <h3 class="kt-subheader__title">
-                                        Files
-                                    </h3>
+                                    <h3 class="kt-subheader__title" *ngIf="noFiles == false">Files</h3>
+                                    <h4 class="kt-subheader__title" *ngIf="noFiles == true">No Records Found.</h4>
                                 </div>
                             </div>
                         </div>
@@ -1084,8 +1100,14 @@
                             </div>
                         </ng-template>
                     </div>
-                    <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">Timeline</div>
-                    <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">Notes</div>
+                    <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
+                     <h3 *ngIf="noTimeline == false"> Timeline</h3>
+                     <h4 *ngIf="noTimeline == true">No Records Found.</h4>
+                    </div>
+                    <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">
+                        <h3 *ngIf="noNotes == false"> Notes</h3>
+                        <h4 *ngIf="noNotes == true">No Records Found.</h4>
+                    </div>
                     <div class="tab-pane fade" id="Comments" role="tabpanel" aria-labelledby="Comments1">
                         <div class="card cust-card py-3">
                             <div class="comments-list">
@@ -1271,7 +1293,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">Meeting</div>
+                    <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">
+                       <h3 *ngIf="noMeeting == false">Meeting</h3>
+                       <h4  *ngIf="noMeeting == true">No Records Found.</h4>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1423,28 +1448,30 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
             <p class="text-primary">
-                Display Name</p>
+                {{_displayProjName}}</p>
             <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
-                    5</div>
+                    {{_totalMemos}} </div>
                 Linked
                 <div class="badge badge-pill badge-outline-success">
-                    1</div>
+                    {{_mappedMemos}}  </div>
             </div>
             <div class="kt-nav__separator"></div>
         </li>
         <li class="kt-nav__item px-4">
             <div class="d-flex input-group">
                 <!-- Working... -->
-                <select class="form-control">
-                    <option>Select</option>
-                </select>
-                <div class="input-group-append">
-                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text">Link</button>
-                  </div>
+                <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                    [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                    (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                </ng-multiselect-dropdown>
+                <!-- <div class="input-group-append"> -->
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text" (click)="_AddLink()">Link</button>
+                  <!-- </div> -->
                 
-            </div>
+                </div>
         </li>
         <li class="kt-nav__foot"></li>
     </ul>

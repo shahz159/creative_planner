@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit,AfterContentChecked  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -37,10 +37,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   public _selectedcatid: string;
   // private _bar: boolean = false;
   get selectedcatname(): string {
-      return this._selectedcatname;
+    return this._selectedcatname;
   }
   set selectedcatname(value: string) {
-      this._selectedcatname = value;
+    this._selectedcatname = value;
   }
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
@@ -55,8 +55,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   ) {
     // this._Id='0';
     // this._Name='NA';
-   
-  
+
+
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.ObjUserDetails = new UserDetailsDTO();
@@ -70,6 +70,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   IfNoCategoryFound: string;
   IfNoTaskFound: string = "Please select category to view task's";
   IfNoCompletedTaskFound: string;
+
   // ngAfterContentChecked() {
   //   // alert(1)
   //   tippy('.Start_Date', {
@@ -87,27 +88,82 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
     this.GetTodoProjects();
     this.GetAssignFormEmployeeDropdownList();
-    
 
-    
-  //   window.onload = () => {
-  //   tippy('#tippy1', {
-  //     arrow: true,
-  //     animation: 'scale-extreme',
-  //     //animation: 'tada',
-  //     theme: 'gradient',
-  //     animateFill: true,
-  //     inertia: true,
-  //     // trigger: 'click',
-  //     // delay: [1000, 200]
-  //   });
-  // }
 
+
+    // <<<<<<< HEAD
+    window.onload = () => {
+      tippy('#tippy1', {
+        arrow: true,
+        animation: 'scale-extreme',
+        //animation: 'tada',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        // trigger: 'click',
+        // delay: [1000, 200]
+      });
+
+      tippy('#tippy2', {
+        arrow: true,
+        animation: 'scale-extreme',
+        //animation: 'tada',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        // trigger: 'click',
+        // delay: [1000, 200]
+      });
+
+
+
+      tippy('.tippy4', {
+        content: "Enter Rack Name",
+        arrow: true,
+        animation: 'scale-extreme',
+        //animation: 'tada',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        // trigger: 'click',
+        // delay: [1000, 200]
+      });
+
+      tippy('.mybutton', {
+        content: "Enter Rack Name",
+        arrow: true,
+        animation: 'scale-extreme',
+        //animation: 'tada',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        // trigger: 'click',
+        // delay: [1000, 200]
+      });
+    }
+
+    //   window.onload = () => {
+    //   tippy('#tippy1', {
+    //     arrow: true,
+    //     animation: 'scale-extreme',
+    //     //animation: 'tada',
+    //     theme: 'gradient',
+    //     animateFill: true,
+    //     inertia: true,
+    //     // trigger: 'click',
+    //     // delay: [1000, 200]
+    //   });
+    // }
 
   }
+
+
+
   _Demotext: string = "";
   _TodoList = [];
   _CompletedList = [];
+
+  
   EnterSubmit(_Demotext) {
     if (_Demotext != "") {
       this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
@@ -130,20 +186,22 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     else {
       this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
     }
+    this.clearFeilds() 
+   
   }
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
 
   GetAssigned_SubtaskProjects() {
-    
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        //console.log("Data---->", data);
+        // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -153,16 +211,20 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
       });
   }
+  LoadDocument(url: string){
+    var myWindow = window.open(url);
+    myWindow.focus();
+  }
 
   GetTodoProjects() {
-    
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        //console.log("Data---->", data);
+        // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -310,22 +372,25 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.selectedProjectCode = "";
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
+    this._Demotext="";
+    this.Mdl_CategoryName= "";
   }
   CallOnSubmitCategory() {
     console.log('A');
-    debugger
+    
     // alert(this._selectedcatid + "-" + this._selectedcatname);
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
   }
 
   Mdl_CategoryName: string = "";
   CategoryList: any;
-  OnSubmitCategory(CtgryName) {
+
+  OnSubmitCategory(Mdl_CategoryName) {
 
     if (this.Mdl_CategoryName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "CategoryInsert";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
-      this._ObjAssigntaskDTO.CategoryName = CtgryName;
+      this._ObjAssigntaskDTO.CategoryName = Mdl_CategoryName;
       this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
         (data) => {
           //console.log(data);
@@ -336,12 +401,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
           this.notifyService.showSuccess("Successfully", message);
 
-          this.Mdl_CategoryName = "";
+          // this.Mdl_CategoryName = "";
+
+
         });
     }
     else {
       this.notifyService.showInfo("Category Name Required", "");
     }
+    this.clearFeilds()
+
   }
   _Categoryid: number;
   _CategoryName: string;
@@ -349,9 +418,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _CategoryActive: boolean;
 
 
-  
+
   OnCategoryClick(C_id, C_Name) {
-    
+
     // _Id = C_id;
     // _Name = C_Name;
     this._selectedcatname = C_Name;
@@ -377,6 +446,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
+       
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
@@ -384,8 +454,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       });
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0px";    
-    this.clearFeilds();    
+    document.getElementById("mysideInfobar").style.width = "0px";
+    this.clearFeilds();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("prodetbar").style.width = "0px";
   }
@@ -426,11 +496,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "60%";
 
   }
-  detailsbar(){
+  detailsbar() {
     document.getElementById("prodetbar").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
   }
-  
+
   // ---------------- Action To Project For Subtask Creation -------------------- //
   selectedProjectCode: string;
   selectedProjectCodelist = [];
@@ -686,13 +756,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     });
   }
 
-  
+
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
     // document.getElementById("rightbar-overlay").style.display = "block";
     //alert(pcode)
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
-    this.router.navigate(["UnplannedTask/projectinfo/",pcode]);
+    this.router.navigate(["UnplannedTask/projectinfo/", pcode]);
   }
 
 

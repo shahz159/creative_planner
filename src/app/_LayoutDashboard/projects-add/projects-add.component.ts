@@ -47,6 +47,8 @@ export class ProjectsAddComponent implements OnInit {
   str_portName: string;
   StoredPortfolio_ID: number;
 
+  searchResult: boolean = false;
+
   // textMessage:boolean=true;
 
   constructor(
@@ -308,6 +310,7 @@ export class ProjectsAddComponent implements OnInit {
   }
   //Apply Filters
   SearchbyText() {
+    this.searchResult = true;
     this.CurrentPageNo = 1;
     this.applyFilters();
   }

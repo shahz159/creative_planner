@@ -728,3 +728,17 @@ transform: rotate(45deg);
       opacity: 0;
       animation: effect  linear 0.4s;;
     }
+    .ver-m{
+        vertical-align: middle;
+    }
+    .filter-dot:after {
+        content: "•";
+       position: absolute;
+       top: -3px;
+       right: 1px;
+       font-size: 30px;
+       color: #CD5C5C;
+   }
+   .filter-dot {
+       position: relative;
+   } 
