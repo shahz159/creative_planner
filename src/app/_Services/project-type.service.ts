@@ -331,6 +331,12 @@ export class ProjectTypeService {
     
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
+  SubTaskStatusCheck(Project_Code) {
+    this.ObjSubTaskDTO.Project_Code = Project_Code;
+
+    
+    return this.http.post(this.rootUrl + "Notification/NewGetSubtaskStatusCheck", this.ObjSubTaskDTO);
+  }
   objColumnChartDTO: ColumnChartDTO;
   ColumnChartData(emp) {
     //alert(emp);

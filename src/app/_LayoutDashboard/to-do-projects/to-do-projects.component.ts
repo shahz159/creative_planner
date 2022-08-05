@@ -85,7 +85,7 @@ export class ToDoProjectsComponent implements OnInit {
   Support: string; EmpNo_Supp: string;
   Comp_No: string; ProjectBlock: string;
 
-  
+
   GetProjectsByUserName() {
 
     this.ObjUserDetails.PageNumber = 1;
@@ -124,8 +124,8 @@ export class ToDoProjectsComponent implements OnInit {
   Duration: any;
   Client_Name: string;
   Remarks: string = "";
-  Remarkss:string ="";
-  CD:string="";
+  Remarkss: string = "";
+  CD: string = "";
   ReportType: string;
   Attachments: string = "";
   FileName: string = null;
@@ -133,7 +133,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, Client_Name, Remarks,Remarkss,CD, ReportType, Attachments, pid, SourceFile, SubmissionType) {
+    PCost, duration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
@@ -169,8 +169,8 @@ export class ToDoProjectsComponent implements OnInit {
     this.Duration = duration;
     this.Client_Name = Client_Name;
     this.Remarks = Remarks;
-    this.Remarkss= Remarkss;
-    this.CD=CD;
+    this.Remarkss = Remarkss;
+    this.CD = CD;
     this.ReportType = ReportType;
     this.Attachments = Attachments;
     this.FileName = SourceFile;
@@ -462,17 +462,43 @@ export class ToDoProjectsComponent implements OnInit {
   //   this.router.navigate(["../backend/ToDoProjects/projectinfo", pcode]);
   // }
   OnClickCheckboxProjectUpdate(value) {
-    this.Checkbox_checked = value;
-    if (value == true) {
-      document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
-      document.getElementById("rightbar-overlay").style.display = "block";
-    }
-    else {
-      document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
-      document.getElementById("rightbar-overlay").style.display = "none";
-    }
-    document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("mysideInfobar_Update").style.width = "0px";
+
+    this.service.SubTaskStatusCheck(this._ProjectCode).subscribe(
+      (data) => {
+debugger
+        if (data['Message'] == 1) {
+          Swal.fire({
+            title: 'Unable To Complete This Project !!',
+            text: 'SubTask Status Are In Rejected or Pending ?',
+            icon: 'warning',
+            showCancelButton: true
+            
+            
+          });
+
+
+        }
+        else {
+
+          this.Checkbox_checked = value;
+          if (value == true) {
+            document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
+            document.getElementById("rightbar-overlay").style.display = "block";
+          }
+          else {
+            document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
+            document.getElementById("rightbar-overlay").style.display = "none";
+          }
+          document.getElementById("mysideInfobar").style.width = "0px";
+          document.getElementById("mysideInfobar_Update").style.width = "0px";
+
+
+        }
+
+      });
+
+
+
   }
 
   //Project Update
@@ -560,16 +586,16 @@ export class ToDoProjectsComponent implements OnInit {
   _modelProjectName: string;
   _modelProjDesc: string;
   OnEditProject(id, Pname) {
-    
+
     this._modelProjectName = Pname;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
-  
-  
-}
+
+
+  }
   OnEditProject_Desc(id, Desc) {
     this._modelProjDesc = Desc;
     this.Editbutton = true;
@@ -691,11 +717,11 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   selectedItem_Type = [];
@@ -721,11 +747,11 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   selectedItem_Emp = [];
@@ -751,11 +777,11 @@ export class ToDoProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   //Apply Filters
@@ -835,7 +861,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
-    this.edited=false;
+    this.edited = false;
 
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
@@ -862,11 +888,11 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
 
-  
+
   sweetAlert() {
-  
-  
-    if (this.Project_Status=='Completed'){
+
+
+    if (this.Project_Status == 'Completed') {
       Swal.fire({
         title: 'This Project is Compelted !!',
         text: 'Do You Want To Reopen This Project ?',
@@ -876,7 +902,7 @@ export class ToDoProjectsComponent implements OnInit {
         cancelButtonText: 'No'
       }).then((response: any) => {
         if (response.value) {
-        this.OnAddTaskClick();
+          this.OnAddTaskClick();
         } else if (response.dismiss === Swal.DismissReason.cancel) {
           Swal.fire(
             'Cancelled',
@@ -890,7 +916,7 @@ export class ToDoProjectsComponent implements OnInit {
     else {
       this.OnAddTaskClick();
     }
-   
+
   }
 
   // OpenDialog(){
