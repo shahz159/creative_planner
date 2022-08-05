@@ -486,17 +486,14 @@
                             <div class="card-header" id="headingOne5">
                                 <div class="card-title" data-toggle="collapse" data-target="#collapseOne5"
                                     aria-expanded="true" aria-controls="collapseOne5">
-                                    Completed check
+                                    Completed
                                 </div>
                             </div>
                             <div id="collapseOne5" class="collapse show" aria-labelledby="headingOne5"
                                 data-parent="#accordionExample5">
                                 <div class="card-body">
                                     <div class="subtask-list" *ngFor="let item of CompletedList; let i =index">
-                                        <div class="form-check form-check-success">
-                                            <input type="radio" class="subtask-radio form-check-input" checked>
-                                        </div>
-                                        <!-- <input type="radio" class="subtask-radio" checked /> -->
+                                        <input type="radio" class="subtask-radio" checked />
                                         <div>
                                             <p
                                                 class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
