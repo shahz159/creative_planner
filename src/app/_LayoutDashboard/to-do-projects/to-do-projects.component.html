@@ -344,7 +344,7 @@
                                 <i class="fas fa-info-circle text-muted mr-1"></i>
                                 <b>{{ReportType}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="CD">
+                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="CD && Project_Status=='Completed' ">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{CD | date:'dd-MM-yyyy'}}</b>
                             </span>
@@ -522,7 +522,7 @@
                                                     class="fas fa-calendar-alt text-muted mr-1"></i>{{item.SubProject_DeadLine | 
                                                 date}}</span> 
 
-                                                <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap d-inline-block"><i
+                                                <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap d-inline-block" *ngIf="item.SubProject_Status=='Completed' && item.CD"><i
                                                         class="fas fa-calendar-alt text-muted mr-1"></i>{{item.CD |
                                                     date}}</span>
                                                             
