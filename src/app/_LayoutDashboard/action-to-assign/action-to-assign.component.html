@@ -16,12 +16,14 @@
             </mat-select>
         </div>
         <div class="form-group">
-            <label> Task/Project Name : <span class="text-danger">*</span></label>
+            <label> Task/Project Name : </label>
+            <!-- <span class="text-danger">*</span> -->
             <input type="text" class="form-control" placeholder="Enter Task Name" aria-describedby="basic-addon1"
                 [(ngModel)]="_taskName" >
         </div>
         <div class="form-group">
-            <label>Description : <span class="text-danger">*</span></label>
+            <label>Description : </label>
+            <!-- <span class="text-danger">*</span> -->
             <textarea class="form-control" aria-describedby="basic-addon1" [(ngModel)]="_description"
                 style="height: 139px"></textarea>
         </div>
@@ -44,7 +46,8 @@
 
 
         <div class="form-group">
-            <label>Start Date : <span class="text-danger">*</span></label>
+            <label>Start Date : </label>
+            <span class="text-danger">*</span>
             <div class="input-group">
                 <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
                     placeholder="Start Date" class="form-control">
@@ -56,7 +59,8 @@
         </div>
 
         <div class="form-group">
-            <label>End Date :<span class="text-danger">*</span></label>
+            <label>End Date :</label>
+            <!-- <span class="text-danger">*</span> -->
             <div class="input-group">
                 <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="disablePreviousDate" [(ngModel)]="_EndDate"
                     placeholder="End Date" class="form-control">
@@ -96,7 +100,7 @@
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-primary"
-            [disabled]="!selectedProjectType || !_description || !_taskName || !SelectedEmplList || !_StartDate || !_EndDate"
+            [disabled]="!selectedProjectType || !SelectedEmplList"
                 (click)="OnAssignTask_Submit()" style="width: 150px;">Submit
             </button>
         </div>

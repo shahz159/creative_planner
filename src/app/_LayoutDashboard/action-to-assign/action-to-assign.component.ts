@@ -37,7 +37,8 @@ export class ActionToAssignComponent implements OnInit {
   _inputAttachments: any = [];
   selectedFile: any = null;
   typeoftask: any = "";
- 
+  Difference_In_Time:any;
+  Difference_In_Days:any;
 
   constructor(private notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -105,16 +106,23 @@ export class ActionToAssignComponent implements OnInit {
 
   OnAssignTask_Submit() {
 
-
+    debugger
     this._ObjAssigntaskDTO.TaskName = this._taskName;
     this._ObjAssigntaskDTO.TaskDescription = this._description;
     this._ObjAssigntaskDTO.StartDate = this._StartDate;
     this._ObjAssigntaskDTO.EndDate = this._EndDate;
-    // console.log(this._StartDate, this._EndDate);
+    console.log(this._StartDate, this._EndDate);
 
-    var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    this._ObjAssigntaskDTO.ProjectDays = (-Difference_In_Days);
+    if(this._StartDate != null || this._EndDate != null){
+      this.Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
+      this.Difference_In_Days = this.Difference_In_Time / (1000 * 3600 * 24);
+      this._ObjAssigntaskDTO.ProjectDays = (-this.Difference_In_Days);
+    }
+    else{
+      this._ObjAssigntaskDTO.ProjectDays =0;
+    }
+
+   
     //for hours Un-Comment Below Line
     //this._ObjAssigntaskDTO.ProjectDays = this._ObjAssigntaskDTO.ProjectDays * 8 / 1;
     this.BsService.bs_TypeofTask.subscribe(t => {
@@ -130,8 +138,17 @@ export class ActionToAssignComponent implements OnInit {
     if (this._inputAttachments.length > 0) {
       this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
     }
-    var datestrStart = (new Date(this._StartDate)).toUTCString();
-    var datestrEnd = (new Date(this._EndDate)).toUTCString();
+    var datestrStart;
+    var datestrEnd;
+
+    if(this._StartDate != null || this._EndDate != null){
+      datestrStart = (new Date(this._StartDate)).toUTCString();
+      datestrEnd = (new Date(this._EndDate)).toUTCString();
+    }
+    else{
+      datestrStart =new Date().toUTCString();
+      datestrEnd =new Date().toUTCString();
+    }
     //console.log("Sending Obj..",this._ObjAssigntaskDTO)
 
     const fd = new FormData();
