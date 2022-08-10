@@ -731,6 +731,65 @@ transform: rotate(45deg);
     .ver-m{
         vertical-align: middle;
     }
+
+    .form-check-input:checked[type=radio] {
+        background-image: url('../../assets/images/bgwh.png');
+    }
+    .form-check-input:checked {
+        background-color: #5867dd;
+        border-color: #5867dd;
+    }
+    .form-check-info .form-check-input:checked {
+        background-color: #2786fb;
+        border-color: #2786fb;
+    }
+    .form-check-primary .form-check-input:checked {
+        background-color: #5867dd;
+        border-color: #5867dd;
+    }
+    .form-check-success .form-check-input:checked {
+        background-color: #1dc9b7;
+        border-color: #1dc9b7;
+    }
+    .form-check-danger .form-check-input:checked {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .form-check-warning .form-check-input:checked {
+        background-color: #ffb822;
+        border-color: #ffb822;
+    }
+    .form-check-dark .form-check-input:checked {
+        background-color: #282a3c;
+        border-color: #282a3c;
+    }
+    .form-check-input[type=radio] {
+        border-radius: 50%;
+    }
+    .form-check .form-check-input {
+        float: left;
+        margin-left: -1.643em;
+    }
+    .form-check-input {
+        width: 1.143em;
+        height: 1.143em;
+        margin-top: 0.1785em;
+        vertical-align: top;
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border: 1px solid #adb5bd;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .subtask-list .form-check{
+        padding-left: 1.5rem !important;
+        padding-right: 0.5rem !important;
+    }
     .filter-dot:after {
         content: "•";
        position: absolute;
