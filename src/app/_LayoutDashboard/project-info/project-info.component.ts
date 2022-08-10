@@ -78,7 +78,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
         //console.log("Project Details---->", data);
-        debugger
+        // debugger
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
 

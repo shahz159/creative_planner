@@ -111,7 +111,7 @@ export class ActionToAssignComponent implements OnInit {
     this._ObjAssigntaskDTO.TaskDescription = this._description;
     this._ObjAssigntaskDTO.StartDate = this._StartDate;
     this._ObjAssigntaskDTO.EndDate = this._EndDate;
-    console.log(this._StartDate, this._EndDate);
+   
 
     if(this._StartDate != null || this._EndDate != null){
       this.Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
@@ -133,8 +133,10 @@ export class ActionToAssignComponent implements OnInit {
     this._ObjAssigntaskDTO.AssignTo = this.selectedEmployee;
     this._ObjAssigntaskDTO.Assigned_By = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = this.task_id;
+    
     this._ObjAssigntaskDTO.ProjectType = this.selectedProjectType;
     this._ObjAssigntaskDTO.Remarks = this._remarks;
+    console.log(this.selectedProjectType);
     if (this._inputAttachments.length > 0) {
       this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
     }
