@@ -36,6 +36,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   ProjectInfo_List: any;
   Subtask_List: SubTaskDTO[];
+
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
   TotalWork_Hours: any;
@@ -69,12 +70,15 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   date1: any;
   date2: any;
   CompletedList: any;
+  AssigntaskList: any;
+
   ifcategoryZero: any;
   fun_LoadProjectDetails() {
+   
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
         //console.log("Project Details---->", data);
-
+        debugger
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
 
@@ -83,8 +87,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+         
+          this.AssigntaskList = JSON.parse(data[0]['AssigntaskDetails_Json']);
+          
           // this.CompletedList.push(this.Subtask_List);
-          //console.log("subtask Details--->",this.Subtask_List)
+          console.log("subtask Details--->",this.Subtask_List);
+          console.log("Assign Details--->",this.AssigntaskList);
           this.TotalWork_Hours = data[0]['TotalHours'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];

@@ -3,11 +3,16 @@ export class SubTaskDTO {
   Project_Code:string;
   SubProject_Name :string;
   StartDate :Date;
+  Start_Date: Date; 
+
+  End_Date: Date;
+  Modified_DT: Date;
   SubProject_DeadLine:Date;
   SubProject_Status :string;
   Project_Cost:number;
   TotalHours:number;
   SubtaskDetails_Json:string;
+  AssigntaskDetails_Json:string;
   ProjectPercentage:number;
   ProjectStatus:string;
 
@@ -15,6 +20,7 @@ export class SubTaskDTO {
   MasterCode:string;
   SubTask_ProjectCode:string;
   AssignTo:string;
+  AssignedTo:string;
   Attachments:string;
   FileToUpload:File;
   Formdata:FormData;
