@@ -673,25 +673,42 @@
         </div>
     </div>
     <div class="p-4">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-upload" viewBox="0 0 16 16">
-                        <path
-                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                        <path
-                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                    </svg>
-                </span>
+        <div class="">
+            <div class="d-flex align-items-center justify-content-between mt-0">
+              <div>
+                <div class="my-2">
+                  <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                    <i class="fa fa-clone mr-2"></i> Core Tasks </label>
+                </div>
+              </div>
             </div>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
-                    (change)="onFileChange($event)">
-                <label class="custom-file-label" for="_pdf">Choose file</label>
+            <div class="d-flex mt-3 flex-column">
+              <h5 class="fs-3 mb-2">Profiling in TRTM for promoters123</h5>
+              <span class="text-muted fs-5">To develop profiling page for TRTM promoters</span>
             </div>
         </div>
-        <span class="text-info"> *Accept only pdf files </span>
+        <div class="form-group mt-3">
+            <label>Attachments</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-upload" viewBox="0 0 16 16">
+                            <path
+                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
+                        (change)="onFileChange($event)">
+                    <label class="custom-file-label" for="_pdf">Choose file</label>
+                </div>
+            </div>
+            <span class="text-info"> *Accept only pdf files </span>
+        </div>
         <!-- <div class="form-group">
             <label>Attachments 1 </label>
             <div></div>
@@ -736,8 +753,37 @@
                 <i class="fa fa-times"></i></a>
         </div>
     </div>
-    <div class="p-4">
-        <div class="form-group">
+    <div class="p-4">        
+        <div class="">
+            <div class="d-flex flex-column">
+              <h5 class="fs-3 mb-2">Subtask Name</h5>
+              <span class="text-muted fs-5">Subtask description</span>
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <label>Attachments</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-upload" viewBox="0 0 16 16">
+                            <path
+                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="uploadFile" accept="application/pdf"
+                        (change)="onFileChange($event)">
+                    <label class="custom-file-label" for="uploadFile">Choose file</label>
+                </div>
+            </div>
+            <span class="text-info"> *Accept only pdf files </span>
+        </div>
+        
+        <!-- <div class="form-group">
             <label>Attachments</label>
             <div></div>
             <div class="custom-file">
@@ -745,6 +791,7 @@
                     (change)="onFileChange($event)">
             </div>
         </div>
+         -->
         <div class="form-group">
             <label for="exampleFormControlFile1"><span class="text-danger">*</span> Remarks</label>
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
