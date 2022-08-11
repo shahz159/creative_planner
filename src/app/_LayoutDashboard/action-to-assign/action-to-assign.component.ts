@@ -136,7 +136,7 @@ export class ActionToAssignComponent implements OnInit {
     
     this._ObjAssigntaskDTO.ProjectType = this.selectedProjectType;
     this._ObjAssigntaskDTO.Remarks = this._remarks;
-    console.log(this.selectedProjectType);
+    // console.log(this.selectedProjectType);
     if (this._inputAttachments.length > 0) {
       this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
     }

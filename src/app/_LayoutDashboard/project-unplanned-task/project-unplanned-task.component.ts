@@ -376,7 +376,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.Mdl_CategoryName= "";
   }
   CallOnSubmitCategory() {
-    console.log('A');
+    // console.log('A');
     
     // alert(this._selectedcatid + "-" + this._selectedcatname);
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
