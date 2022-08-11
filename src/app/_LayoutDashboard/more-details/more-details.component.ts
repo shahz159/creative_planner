@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
+import { Router } from '@angular/router';
 
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
@@ -29,6 +30,7 @@ export class MoreDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
+    private router: Router,
     public service: ProjectTypeService,
     private notifyService: NotificationService,
     private dialog: MatDialog) {
@@ -43,7 +45,7 @@ export class MoreDetailsComponent implements OnInit {
   SubmissionName:string;
   noRecords: boolean= false;
   noMilestones: boolean = true;
-  noFiles: boolean = false;
+  noFiles: boolean;
   noTimeline:boolean = true;
   noNotes:boolean = true;
   noMeeting:boolean = true;
@@ -2187,15 +2189,23 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   AttachmentList: any;
+  data1:any;
   getAttachments() {
+    
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
+        this.data1 =(data[0]['Attachments_Json']);
+         if(this.data1 != ''){
+        this.noFiles = false;
+      }
+      else{
+        this.noFiles = true;
+      }
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         //console.log("Attachments---->", this.AttachmentList);
       });
-      if(this.AttachmentList == null){
-          this.noFiles = true;
-      }
+     
+     
   }
   _day: any;
   _month: any;
@@ -2315,6 +2325,17 @@ export class MoreDetailsComponent implements OnInit {
    
   }
 
+  OnAddTaskClick() {
+    this.router.navigate(["./MoreDetails/:projectcode/ActionToProject"]);
+    document.getElementById("mysideInfobar1").style.width = "60%";
 
+    // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
+    // document.getElementById("mysideInfobar_Update").style.width = "0px";
+    // document.getElementById("rightbar-overlay").style.display = "block";
+
+    // this.MatInput = false;
+    // this.ButtonAdd = false;
+    // this.GetAllEmployeesForAssignDropdown();
+  }
 
 }

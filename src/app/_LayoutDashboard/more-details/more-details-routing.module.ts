@@ -3,7 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MoreDetailsComponent } from './more-details.component';
 
-const routes: Routes = [{ path: '', component: MoreDetailsComponent }];
+const routes: Routes = [{ path: '', component: MoreDetailsComponent,
+
+children:[
+  {
+    path: ':projectcode/ActionToProject',
+    loadChildren: () => import('../action-to-project/action-to-project.module').then(m => m.ActionToProjectModule)
+  }
+
+]
+
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
