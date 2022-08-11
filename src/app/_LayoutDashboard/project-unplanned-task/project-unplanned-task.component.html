@@ -466,7 +466,7 @@
                                                         (click)="openInfo(item.Project_Code,item.Project_Name)"> 
                                                             <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;      
                                                         </a>
-                                                        <label data-toggle="tooltip" title="Project Type!"
+                                                        <label data-toggle="tooltip" title="Project Type!" *ngIf="item.Project_type"
                                                         class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                             class="fa fa-clone mr-2"></i>
                                                         {{item.Project_type}}</label>

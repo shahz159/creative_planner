@@ -615,13 +615,13 @@
                                 [settings]="dropdownSettings_Emp" [data]="EmployeeList"
                                 (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
                             </ng-multiselect-dropdown>
-                            <!-- <ng-select (change)="OnEmpSelect($event)" [(ngModel)]="ngEmployeeDropdown" placeholder="TM Name" >
-                                <ng-template ng-optgroup-tmp [value]="item.Emp_No" *ngFor="let item of EmployeeList" let-index="index">
-                                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{item.TM_DisplayName}} -->
-                                <!-- <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList" >
-                                    
-                                </ng-option> -->
-                            <!-- </ng-template>
+                             <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
+                             bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
+                            
+                                <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
+                                    {{item.TM_DisplayName}}
+                                </ng-option>
+                            
                             </ng-select> -->
 
                         </div>
