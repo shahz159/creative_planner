@@ -666,3 +666,18 @@ label.prol {
         max-width: 50%;
     }   
 }
+.d-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.blank-txt {
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 600;
+    color: #0b0e1f;
+    margin-bottom: 0;
+}
+.tab-section{
+    min-height: calc(100vh - 348px);
+}
