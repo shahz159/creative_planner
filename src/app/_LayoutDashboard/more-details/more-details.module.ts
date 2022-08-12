@@ -5,6 +5,7 @@ import { MoreDetailsRoutingModule } from './more-details-routing.module';
 import { MoreDetailsComponent } from './more-details.component';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ActionToProjectModule } from '../action-to-project/action-to-project.module';
 
  
 
@@ -15,7 +16,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CommonModule,
     FormsModule,
     MoreDetailsRoutingModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    ActionToProjectModule
   ]
 })
 export class MoreDetailsModule { }

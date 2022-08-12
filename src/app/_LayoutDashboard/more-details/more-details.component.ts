@@ -3,7 +3,6 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
 import { Router } from '@angular/router';
-
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -2325,8 +2324,8 @@ export class MoreDetailsComponent implements OnInit {
    
   }
 
-  OnAddTaskClick() {
-    this.router.navigate(["./MoreDetails/:projectcode/ActionToProject"]);
+  OnAddTaskClick(pcode) {
+    this.router.navigate(["./MoreDetails",pcode,'/ActionToProject']);
     document.getElementById("mysideInfobar1").style.width = "60%";
 
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
