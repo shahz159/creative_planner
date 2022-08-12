@@ -684,7 +684,7 @@
             </div>
             <div class="d-flex mt-3 flex-column">
               <h5 class="fs-3 mb-2">{{this._ProjectName}}</h5>
-              <span class="text-muted fs-5">To develop profiling page for TRTM promoters</span>Project_Description
+              <span class="text-muted fs-5">{{this.Proj_Desc}}</span>
             </div>
         </div>
         <div class="form-group mt-3">
@@ -746,7 +746,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between">
 
             <h5 class="title-sidebar w-90 mb-0 text-white">
-                {{this._Subtaskname}}
+                Action to Completion 
             </h5>
             <a href="javascript:void(0)" class="text-hover-primary closebtn pull-right ml-2 text-white"
                 (click)="closeInfo()">
@@ -756,8 +756,8 @@
     <div class="p-4">        
         <div class="">
             <div class="d-flex flex-column">
-              <h5 class="fs-3 mb-2">Subtask Name</h5>
-              <span class="text-muted fs-5">Subtask description</span>
+              <h5 class="fs-3 mb-2">{{this._Subtaskname}}</h5>
+              <span class="text-muted fs-5">{{this.Sub_Desc}}</span>
             </div>
         </div>
         <div class="form-group mt-3">

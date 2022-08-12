@@ -15,7 +15,7 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 //import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 //import { ContentObserver } from '@angular/cdk/observers';
 import { MatDialog } from '@angular/material/dialog';
-import { ResizeButton } from '@amcharts/amcharts4/core';
+import { ResizeButton, string } from '@amcharts/amcharts4/core';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-to-do-projects',
@@ -253,14 +253,16 @@ export class ToDoProjectsComponent implements OnInit {
         if (data[0]['SubtaskDetails_Json'] == null) {
           this._subtaskDetails = true;
           this._projectDetails = false;
+         
         }
         else {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this._subtaskDetails = false;
           this._projectDetails = true;
+          
           // console.log("To Do Completed---->", this.CompletedList);
-          // console.log("to Incomplete---->", this.Subtask_List);
+           console.log("to Incomplete---->", this.Subtask_List);
         }
         if (data[0]['CompletedTasks_Json'] == null) {
           this._CompletedDetails = true;
@@ -278,14 +280,17 @@ export class ToDoProjectsComponent implements OnInit {
   Sub_EndDT: Date;
   Sub_Autho: string;
   Sub_Status: string;
+  Sub_Desc:string;
   OnSubtaskClick(item) {
 
     this.Sub_ProjectCode = item.Project_Code;
+    this.Sub_Desc=item.Project_Description;
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
+    
 
     document.getElementById("mysideInfobar_Update").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
