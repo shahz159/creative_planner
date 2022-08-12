@@ -3,6 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
 import { Router } from '@angular/router';
+
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -64,7 +65,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
         this.IsData = (data[0]['DARGraphCalculations_Json']);
-        console.log("data isnull/not---->", this.IsData);
+        //console.log("data isnull/not---->", this.IsData);
         if (projectType == '001' || projectType == '002') {
           // document.getElementById('act-tab-1').classList.add("d-none");
           // document.getElementById('Activity').classList.remove("show", "active");
@@ -2259,13 +2260,14 @@ export class MoreDetailsComponent implements OnInit {
     //alert(this.Comp_No)
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
       (data) => {
+        // console.log(this.noRecords);
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-        console.log("Completed--------->", this.CompletedList);
+        // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
 
-        if((this.Subtask_List == null) && (this.CompletedList == null)){
+        if((this.Subtask_List == '') && (this.CompletedList == null)){
           this.noRecords = true;
-          console.log("No records.");
+          // console.log(this.noRecords);
 
         }
       });
@@ -2324,9 +2326,9 @@ export class MoreDetailsComponent implements OnInit {
    
   }
 
-  OnAddTaskClick(pcode) {
-    this.router.navigate(["./MoreDetails",pcode,'/ActionToProject']);
-    document.getElementById("mysideInfobar1").style.width = "60%";
+  // OnAddTaskClick(URL_ProjectCode) {
+  //   this.router.navigate(['./MoreDetails/',this.URL_ProjectCode,'/ActionToProject']);
+  //   document.getElementById("mysideInfobar1").style.width = "60%";
 
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
@@ -2335,6 +2337,6 @@ export class MoreDetailsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
-  }
+  // }
 
 }
