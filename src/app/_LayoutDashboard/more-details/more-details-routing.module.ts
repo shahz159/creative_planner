@@ -5,9 +5,11 @@ import { MoreDetailsComponent } from './more-details.component';
 
 const routes: Routes = [{ path: '', component: MoreDetailsComponent,
 
+// path: ':projectcode/ActionToProject', component: ActionToProjectComponent,
+
 children:[
   {
-    path: ':projectcode/ActionToProject',
+    path: 'ActionToProject',
     loadChildren: () => import('../action-to-project/action-to-project.module').then(m => m.ActionToProjectModule)
   }
 
