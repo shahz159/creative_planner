@@ -64,6 +64,13 @@ export class ToDoProjectsComponent implements OnInit {
     this.GetProjectsByUserName();
     this.getDropdownsDataFromDB();
     // alert("To do Loaded");
+
+
+    //uploaded file name
+    $(document).on('change', '.custom-file-input', function (event) {
+      $(this).next('.custom-file-label').html(event.target.files[0].name);
+    });
+
   }
 
   _ProjectDataList: any;
@@ -281,9 +288,9 @@ export class ToDoProjectsComponent implements OnInit {
     this.Sub_Status = item.SubProject_Status;
 
     document.getElementById("mysideInfobar_Update").style.width = "60%";
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_ProjectAction").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
     // document
     // this.Block3 = false;

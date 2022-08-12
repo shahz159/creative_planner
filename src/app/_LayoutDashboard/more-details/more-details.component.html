@@ -22,8 +22,8 @@
                     <h4 class="fs-3 text-info mb-0 mx-3">{{URL_ProjectCode}}</h4>
                     <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-danger':Status=='Delay',
                     'bg-success':Status=='Completed',
-                    'bg-info':Status=='InProcess',
-                    'bg-warning':Status=='Under Approval',
+                    'bg-warning':Status=='InProcess',
+                    'bg-grey':Status=='Under Approval',
                     'bg-primary':Status=='Completion Under Approval'}">{{Status}}</label>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -502,7 +502,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col-lg-4">
+                                                    <div class="col-lg-4">
                                                         <div
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
@@ -546,10 +546,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div> -->
+                                                    </div>
                                                 </div>
                                                 <!-- Row 2 -->
-                                                <!-- <div class="row">
+                                                <div class="row">
                                                     <div class="col-lg-8">
                                                         <h4>Project Trend</h4>
                                                         <div
@@ -580,7 +580,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div> -->
+                                                </div>
                                                 <!-- Row 3 -->
                                             </div>
                                         </div>
@@ -588,12 +588,12 @@
                                             <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <h4>Breakdown</h4>
+                                                        <h4>Breakdown - [RACIS]</h4>
                                                     </div>
 
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -607,7 +607,7 @@
 
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Authority!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -620,7 +620,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Coordinator!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -634,7 +634,7 @@
 
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Informer!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -648,7 +648,7 @@
 
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Support!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -662,7 +662,7 @@
 
                                                     <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Owner!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
                                                                 <p class="mb-2">
@@ -688,11 +688,11 @@
                                                         <div id="StandardChart" style="width: 100%; height: 400px">
                                                         </div>
 
-                                                        <!-- <div id="ProjectCompleteChart" style="width: 100%; height: 200px">
-                                                    </div> -->
-                                                        <!-- <div id="pieChatDiv"></div> -->
-                                                        <!-- <div id="pieChatDiv" style="width: 100%; height: 300px">
-                                                    </div> -->
+                                                        <div id="ProjectCompleteChart" style="width: 100%; height: 200px">
+                                                    </div>
+                                                        <div id="pieChatDiv"></div>
+                                                        <div id="pieChatDiv" style="width: 100%; height: 300px">
+                                                    </div>
                                                     </div>
                                                 </div>
 
@@ -731,7 +731,10 @@
 
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
                                         
-                                        <div class="ribbon-info ribbon float-start">Inprocess</div>
+                                        <div class="ribbon-info ribbon float-start" *ngIf="noRecords == false">Inprocess</div>
+                                        <div class="text-right">
+                                            <!-- (click)="OnAddTaskClick()" -->
+                                        <button title="Create New Subtask"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"><i class="fas fa-plus mr-0"></i></button></div>
                                         <div class="clearfix"></div>
                                         <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                             [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
@@ -829,6 +832,7 @@
                                                         {{item.SubProject_Status}}
                                                     </span>
                                                 </p>
+                            
                                                 <p class="mb-1" *ngIf="item.CompleteProofDoc">
                                                     <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                         <i class="fas fa-paperclip text-muted mr-1"></i>
@@ -840,7 +844,21 @@
                                                         <b>{{item.Remarks}}</b>
                                                     </span>
                                                 </p>
-
+                                                <p class="mb-2">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Allocated</h6>
+                                                        <h6 class="mt-1">{{maxDuration}}Hrs</h6>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Duration</h6>
+                                                         <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{Difference_In_Days}} days</h6>
+                                                        <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h6>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Percentage</h6>
+                                                        <h6 class="mt-1">15%</h6>
+                                                    </span>
+                                                </p>
 
 
 
@@ -928,7 +946,7 @@
                                                     </span>
 
                                                     <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                        'text-Completed':item.SubProject_Status=='Completed',
+                                        'text-success':item.SubProject_Status=='Completed',
                                         'text-warning':item.SubProject_Status=='InProcess',
                                         'text-underApp':item.SubProject_Status=='Under Approval',
                                         'text-info':item.SubProject_Status=='Completion Under Approval',
@@ -951,6 +969,21 @@
                                                         *ngIf="item.Remarks">
                                                         <i class="fas fa-registered text-muted mr-1"></i>
                                                         <b>{{item.Remarks}}</b>
+                                                    </span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Allocated</h6>
+                                                        <h6 class="mt-1">{{maxDuration}}Hrs</h6>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Duration</h6>
+                                                         <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{Difference_In_Days}} days</h6>
+                                                        <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h6>
+                                                    </span>
+                                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <h6 class=" pt-1">Percentage</h6>
+                                                        <h6 class="mt-1">15%</h6>
                                                     </span>
                                                 </p>
                                             </div>
@@ -1099,6 +1132,44 @@
                                 </div>
                             </div>
                         </ng-template>
+
+                        <!--no records found-->
+                        <div>
+                            <div class="d-flex-center">
+                              <div class="m-auto">
+                                <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="148" height="136" viewBox="0 0 148 136">
+                                  <g clip-path="url(#a)">
+                                    <path d="M25.532 24.814c-17.957 22.26-21.952 59.119 1.09 81.273 28.633 27.534 63.831 26.132 92.703 9.462 32.184-18.573 21.146-69.442 12.563-83.971-25.269-42.77-80.228-39.154-106.356-6.764Z" fill="#E7EBF1" opacity=".5"></path>
+                                    <path d="M2.168 32.184c4.055 44.656 59.34 23.353 56.364-2.453C53.969-9.658-1.42-7.257 2.168 32.184Z" fill="#79E3AA"></path>
+                                    <path d="M37.58 19.274a2.666 2.666 0 0 0-1.721.95c-5.712 6.35-4.682 7.359-10.103 13.926-.978-.8-1.945-1.609-2.846-2.502a11.285 11.285 0 0 1-1.46-1.938c-1.595-2.772-6.365.168-4.206 3.094 1.1 1.868 6.935 7.79 9.111 7.535 3.855-.453 7.075-9.63 13.555-16.821a2.62 2.62 0 0 0-2.348-4.244h.018Z" fill="#fff"></path>
+                                    <path d="M141.844 41.842c1.7-3.02 1.111-32.59 1.024-32.696.038-1.454-.778-1.493-1.665-1.493-15.048.067-48.952-.483-49.79-.122h-.052a1.107 1.107 0 0 0-.733.26.875.875 0 0 0-.319.62c-.42 4.74.596 28.805.596 33.557l50.939-.126Z" fill="#4DA2F8"></path>
+                                    <path d="M144.22 31.907c0-10.408.067-15.917-.066-16.82.094-1.028-.207-1.729-1.178-1.665-8.323-.701-21.453-.151-25.196-.642-.505-.68-1.027-2.684-1.566-3.329-.54-.645-1.802-2.218-2.387-3.073-.894-1.45-1.665-1.517-4.773-1.402-16.575.49-18.629-.4-19.642.302-1.696 3.952-.277 44.22-.182 44.35-.042 1.91.778 1.963 1.665 1.96 15.047-.074 50.974.672 51.811.2h.067a1.017 1.017 0 0 0 .732-.351c.192-.232.3-.523.305-.824.438-6.224.417-12.475.41-18.706Z" fill="#63C0F9"></path>
+                                    <path opacity=".6" d="M98.916 13.362c-2.31 0-4.237 0-4.762-.066a1.116 1.116 0 0 1 .245-2.219c1.002.105 9.374.032 14.75-.045a1.11 1.11 0 0 1 .815 1.884 1.113 1.113 0 0 1-.78.337c-.883.021-6.182.098-10.268.11Z" fill="#fff"></path>
+                                    <path d="M45.023 135.513a2.644 2.644 0 0 0 2.724.197 2.64 2.64 0 0 0 1.435-2.324c0 .031-1.682-7.391 1.914-7.556 7.969-.35 17.395-3.357 17.13-10.832-.484-13.544-.225-25.522-5.629-30.07-7.065-5.958-21.226-2.043-33.312-.968-18.314 1.63-23.546 3.75-22.127 21.664a57.15 57.15 0 0 0 2.804 14.214c3.907 10.524 12.013 7.394 23.577 7.317 1.16 0 1.64 1.391 11.484 8.358Z" fill="#FFD56A"></path>
+                                    <path d="M22.595 107.741a1.57 1.57 0 0 1-1.693-1.353 1.59 1.59 0 0 1 1.346-1.776c5.06-.48 28.511-2.888 33.554-3.231a1.582 1.582 0 0 1 .424 3.129 1.283 1.283 0 0 1-.263 0c-5.01.543-28.27 2.758-33.29 3.21l-.078.021ZM21.884 99.74a1.567 1.567 0 0 1-1.383-2.515 1.591 1.591 0 0 1 1.036-.614c5.056-.48 28.511-2.887 33.55-3.23a1.581 1.581 0 0 1 .428 3.132 1.647 1.647 0 0 1-.263 0c-5.011.543-28.27 2.754-33.291 3.21l-.077.018ZM23.597 115.293a1.541 1.541 0 1 1-.27-3.073l21.104-1.991a1.6 1.6 0 0 1 .616.018 1.598 1.598 0 0 1 .986.702 1.58 1.58 0 0 1-1.354 2.42l-21.089 1.987.007-.063Z" fill="#CE8D4F"></path>
+                                    <path d="M106.822 90.49c2.642 4.979 22.68 25.157 22.708 25.181 9.781 7.741 22.547-9.714 12.286-16.708-.028-.021-24.106-14.719-29.647-15.745" fill="#727491"></path>
+                                    <path d="m96.968 93.328 6.307 4.643a4.908 4.908 0 0 0 6.61-.74c3.592-4.117 6.521-8.792 9.482-13.442a4.906 4.906 0 0 0-1.051-6.445c-1.882-1.524-3.427-2.87-6.062-4.808-3.827 7.748-9.886 14.053-15.286 20.792Z" fill="#727491"></path>
+                                    <path d="M37.611 80.453c29.034 52.397 96.187 11.119 77.513-35.685-5.19-13.026-17.77-22.73-31.651-24.72-32.121-4.604-61.898 31.466-45.862 60.405Z" fill="#B3B9CE"></path>
+                                    <path d="M47.07 75.922c21.919 39.557 72.613 8.41 58.522-26.942-3.922-9.83-13.418-17.171-23.896-18.66-24.254-3.477-46.73 23.759-34.627 45.602Z" fill="#E2F6FE"></path>
+                                    <g opacity=".3" fill="#63C0F9">
+                                      <path opacity=".3" d="M87.467 66.456a.718.718 0 0 1-.95-.407.701.701 0 0 1 .25-.85.732.732 0 0 1 .988 1.068.8.8 0 0 1-.288.19ZM85.754 81.402a.796.796 0 0 1-.833-.123.835.835 0 0 1-.25-.35.05.05 0 0 0 0-.02.798.798 0 0 1 .294-.986.841.841 0 0 1 1.125 1.238.912.912 0 0 1-.336.241ZM97.77 89.452a.772.772 0 0 1-.417.052.795.795 0 0 1-.606-.494v-.024a.768.768 0 0 1 .815-1.055.792.792 0 0 1 .513 1.293.84.84 0 0 1-.305.228ZM112.103 83.147a.754.754 0 0 1-.788-.114.783.783 0 0 1-.235-.327.038.038 0 0 1 0-.021.762.762 0 0 1 .276-.929.794.794 0 0 1 1.235.641.79.79 0 0 1-.183.523.839.839 0 0 1-.305.227ZM114.328 69.431a.77.77 0 0 1-.943-.252.784.784 0 0 1-.162-.54.784.784 0 0 1 .24-.511.794.794 0 0 1 1.051-.053.786.786 0 0 1-.182 1.353l-.004.004ZM101.902 60.352a.751.751 0 1 1-.529-1.401.75.75 0 0 1 .753.185v.017a.75.75 0 0 1 .194.663.744.744 0 0 1-.436.536h.018Z"></path>
+                                    </g>
+                                    <path opacity=".8" d="M97.024 49.905a25.344 25.344 0 0 0-35.632-3.826" stroke="#fff" stroke-width="7.36" stroke-miterlimit="10" stroke-linecap="round"></path>
+                                  </g>
+                                  <defs>
+                                    <clipPath id="a">
+                                      <path fill="#fff" d="M0 0h148v136H0z"></path>
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                                <div class="bnk-txt mt-3">
+                                  <h3 class="blank-txt">No Results Found</h3>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    <!--no records found end-->
+
                     </div>
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                      <h3 *ngIf="noTimeline == false"> Timeline</h3>
@@ -1303,6 +1374,11 @@
     </div>
 </div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+<div id="mysideInfobar1" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
+
 
 <div class="sideInfobar animate-right" id="mysideInfobar">
     <div class="card">
