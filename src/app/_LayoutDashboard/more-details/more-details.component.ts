@@ -63,7 +63,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
         this.IsData = (data[0]['DARGraphCalculations_Json']);
-        //console.log("data isnull/not---->", this.IsData);
+        console.log("data isnull/not---->", this.IsData);
         if (projectType == '001' || projectType == '002') {
           // document.getElementById('act-tab-1').classList.add("d-none");
           // document.getElementById('Activity').classList.remove("show", "active");
