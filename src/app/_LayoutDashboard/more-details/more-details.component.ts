@@ -19,6 +19,8 @@ import { Tooltip } from 'chart.js';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
+import Swal from 'sweetalert2';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 
 
 @Component({
@@ -33,7 +35,8 @@ export class MoreDetailsComponent implements OnInit {
     private router: Router,
     public service: ProjectTypeService,
     private notifyService: NotificationService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
   }
   projectCode: string;
@@ -42,16 +45,16 @@ export class MoreDetailsComponent implements OnInit {
   _LinkSideBar: boolean = true;
 
   maxDuration: any;
-  SubmissionName:string;
-  noRecords: boolean= false;
+  SubmissionName: string;
+  noRecords: boolean = false;
   noMilestones: boolean = true;
   noFiles: boolean;
-  noTimeline:boolean = true;
-  noNotes:boolean = true;
-  noMeeting:boolean = true;
+  noTimeline: boolean = true;
+  noNotes: boolean = true;
+  noMeeting: boolean = true;
 
   ngOnInit(): void {
-    
+
     this.Current_user_ID = localStorage.getItem('EmpNo');
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
@@ -117,19 +120,23 @@ export class MoreDetailsComponent implements OnInit {
   Sub_Autho: string;
   Sub_Status: string;
   _remarks: string = "";
+  Sub_Desc: string;
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
+    this.Sub_Desc = item.Project_Description;
+
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
 
-    document.getElementById("mysideInfobar_Update").style.width = "350px";
+    document.getElementById("mysideInfobar_Update").style.width = "60%";
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
     // document
     // this.Block3 = false;
@@ -176,7 +183,7 @@ export class MoreDetailsComponent implements OnInit {
   EndDate: string;
   Cost: string;
   Owner: string;
-   Client:string;
+  Client: string;
   Responsible: string;
   Authority: string;
   Coordinator: string;
@@ -187,7 +194,7 @@ export class MoreDetailsComponent implements OnInit {
   Difference_In_Days: number;
   date1: any;
   date2: any;
-  Category:any;
+  Category: any;
   Project_Responsible;
   InitR: string;
   InitOwn: string;
@@ -213,7 +220,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
-          this.Client=this.ProjectInfo_List[0]['Client_Name']
+          this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
@@ -222,7 +229,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Coordinator = this.ProjectInfo_List[0]['Team_Coor'];
           this.Informer = this.ProjectInfo_List[0]['Team_Informer'];
           this.Support = this.ProjectInfo_List[0]['Team_Support'];
-          this.Category=this.ProjectInfo_List[0]['ReportType'];
+          this.Category = this.ProjectInfo_List[0]['ReportType'];
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
@@ -236,6 +243,11 @@ export class MoreDetailsComponent implements OnInit {
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
 
+
+          //add data to service
+          this.BsService.SetNewPojectCode(this.URL_ProjectCode);
+          this.BsService.SetNewPojectName(this.ProjectName);
+          
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectInfo_List[0]['Team_Res'];
 
@@ -268,18 +280,19 @@ export class MoreDetailsComponent implements OnInit {
           this.InitSupp = "SU";
         }
       });
-      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+    this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        
+
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
 
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
-        this.maxDuration = (data1[0]['ProjectMaxDuration']);})
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);
+      })
   }
 
   AddDms() {
-    
+
     this._LinkSideBar = false;
     this._onRowClick(this.projectCode);
   }
@@ -392,6 +405,10 @@ export class MoreDetailsComponent implements OnInit {
   }
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
+    document.getElementById("mysideInfobar_Update").style.width = "0";
+    document.getElementById("mysideInfobar1").style.width = "0";
+
+    // document.getElementById("mysideInfobar1").classList.remove("side--on");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
@@ -1855,22 +1872,22 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  
+
   DARSummaryChart() {
-    
+
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        
+
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
 
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
-       
 
-       
-        
-        
+
+
+
+
 
         let chart = am4core.create("DARSummary", am4charts.PieChart3D);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
@@ -2045,7 +2062,7 @@ export class MoreDetailsComponent implements OnInit {
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
- 
+
 
   _CommentsList: any;
   _EvenRecordsList: any
@@ -2189,23 +2206,23 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   AttachmentList: any;
-  data1:any;
+  data1: any;
   getAttachments() {
-    
+
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
-        this.data1 =(data[0]['Attachments_Json']);
-         if(this.data1 != ''){
-        this.noFiles = false;
-      }
-      else{
-        this.noFiles = true;
-      }
+        this.data1 = (data[0]['Attachments_Json']);
+        if (this.data1 != '') {
+          this.noFiles = false;
+        }
+        else {
+          this.noFiles = true;
+        }
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         //console.log("Attachments---->", this.AttachmentList);
       });
-     
-     
+
+
   }
   _day: any;
   _month: any;
@@ -2256,6 +2273,11 @@ export class MoreDetailsComponent implements OnInit {
   }
   Subtask_List: any;
   CompletedList: any;
+  noInprocess: boolean = false;
+  noCompleted: boolean = false;
+  inProcessCount: number;
+  completedCount: number;
+  subTaskCount: number;
   GetSubtask_Details() {
     //alert(this.Comp_No)
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
@@ -2265,11 +2287,21 @@ export class MoreDetailsComponent implements OnInit {
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
 
-        if((this.Subtask_List == '') && (this.CompletedList == null)){
+        if ((this.Subtask_List == '') && (this.CompletedList == '')) {
           this.noRecords = true;
           // console.log(this.noRecords);
 
         }
+        if (this.Subtask_List == '') {
+          this.noInprocess = true;
+        }
+        if (this.CompletedList == '') {
+          this.noCompleted = true;
+        }
+        this.inProcessCount = this.Subtask_List.length;
+        this.completedCount = this.CompletedList.length;
+        this.subTaskCount = this.inProcessCount + this.completedCount;
+        console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
       });
   }
   OnTabTask_Click() {
@@ -2320,15 +2352,15 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  
+
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
-   
+
   }
 
-  // OnAddTaskClick(URL_ProjectCode) {
-  //   this.router.navigate(['./MoreDetails/',this.URL_ProjectCode,'/ActionToProject']);
-  //   document.getElementById("mysideInfobar1").style.width = "60%";
+  OnAddTaskClick() {
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode, "ActionToProject"]);
+    document.getElementById("mysideInfobar1").style.width = "60%";
 
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
@@ -2337,6 +2369,40 @@ export class MoreDetailsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
-  // }
+  }
 
+  selectedFile: any = null;
+  onFileChange(e) {
+    this.selectedFile = <File>e.target.files[0];
+    //console.log("--------------->",this.selectedFile)
+  }
+  sweetAlert() {
+
+
+    if (this.Status == 'Completed') {
+      Swal.fire({
+        title: 'This Project is Compelted !!',
+        text: 'Do You Want To Reopen This Project ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          this.OnAddTaskClick();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Action is Not Created',
+            'error'
+          )
+        }
+      });
+
+    }
+    else {
+      this.OnAddTaskClick();
+    }
+
+  }
 }

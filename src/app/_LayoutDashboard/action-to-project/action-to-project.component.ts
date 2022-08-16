@@ -55,7 +55,7 @@ export class ActionToProjectComponent implements OnInit {
      public service: ProjectTypeService,
      public _projectunplanned: ProjectUnplannedTaskComponent
   ) {
-    
+    debugger
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     // alert(super._selectedcatname);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
@@ -332,6 +332,8 @@ console.log(dateTwo)
  
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar1").style.width = "0";
+
     this.Clear_Feilds();
   }
   Clear_Feilds() {
