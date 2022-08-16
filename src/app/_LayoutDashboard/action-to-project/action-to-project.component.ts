@@ -55,7 +55,7 @@ export class ActionToProjectComponent implements OnInit {
      public service: ProjectTypeService,
      public _projectunplanned: ProjectUnplannedTaskComponent
   ) {
-    
+    debugger
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     // alert(super._selectedcatname);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
