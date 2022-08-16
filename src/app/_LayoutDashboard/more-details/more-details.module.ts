@@ -5,7 +5,7 @@ import { MoreDetailsRoutingModule } from './more-details-routing.module';
 import { MoreDetailsComponent } from './more-details.component';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ActionToProjectModule } from '../action-to-project/action-to-project.module';
+import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 
  
 
@@ -16,8 +16,8 @@ import { ActionToProjectModule } from '../action-to-project/action-to-project.mo
     CommonModule,
     FormsModule,
     MoreDetailsRoutingModule,
-    NgMultiSelectDropDownModule,
-    ActionToProjectModule
-  ]
+    NgMultiSelectDropDownModule
+  ],
+  providers:[ProjectUnplannedTaskComponent]
 })
 export class MoreDetailsModule { }

@@ -332,6 +332,8 @@ console.log(dateTwo)
  
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar1").style.width = "0";
+
     this.Clear_Feilds();
   }
   Clear_Feilds() {

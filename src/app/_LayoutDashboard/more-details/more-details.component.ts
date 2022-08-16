@@ -19,6 +19,7 @@ import { Tooltip } from 'chart.js';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -117,19 +118,23 @@ export class MoreDetailsComponent implements OnInit {
   Sub_Autho: string;
   Sub_Status: string;
   _remarks: string = "";
+  Sub_Desc: string;
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
+    this.Sub_Desc=item.Project_Description;
+
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
 
-    document.getElementById("mysideInfobar_Update").style.width = "350px";
+    document.getElementById("mysideInfobar_Update").style.width = "60%";
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
     // document
     // this.Block3 = false;
@@ -392,6 +397,10 @@ export class MoreDetailsComponent implements OnInit {
   }
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
+    document.getElementById("mysideInfobar_Update").style.width = "0";
+    document.getElementById("mysideInfobar1").style.width="0";
+
+    // document.getElementById("mysideInfobar1").classList.remove("side--on");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
@@ -2256,6 +2265,11 @@ export class MoreDetailsComponent implements OnInit {
   }
   Subtask_List: any;
   CompletedList: any;
+  noInprocess: boolean = false;
+  noCompleted: boolean = false;
+  inProcessCount: number;
+  completedCount: number;
+  subTaskCount: number;
   GetSubtask_Details() {
     //alert(this.Comp_No)
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
@@ -2264,12 +2278,22 @@ export class MoreDetailsComponent implements OnInit {
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
-
-        if((this.Subtask_List == '') && (this.CompletedList == null)){
+        
+        if((this.Subtask_List == '') && (this.CompletedList == '')){
           this.noRecords = true;
           // console.log(this.noRecords);
 
         }
+        if(this.Subtask_List == ''){
+            this.noInprocess = true;
+        }
+        if(this.CompletedList == ''){
+          this.noCompleted = true;
+        }
+        this.inProcessCount = this.Subtask_List.length;
+        this.completedCount = this.CompletedList.length;
+        this.subTaskCount = this.inProcessCount + this.completedCount;
+        console.log('inprocess=',this.inProcessCount,'completed',this.completedCount,'total=',this.subTaskCount);
       });
   }
   OnTabTask_Click() {
@@ -2326,9 +2350,9 @@ export class MoreDetailsComponent implements OnInit {
    
   }
 
-  // OnAddTaskClick(URL_ProjectCode) {
-  //   this.router.navigate(['./MoreDetails/',this.URL_ProjectCode,'/ActionToProject']);
-  //   document.getElementById("mysideInfobar1").style.width = "60%";
+  OnAddTaskClick() {
+    this.router.navigate(["./MoreDetails",this.URL_ProjectCode,"ActionToProject"]);
+    document.getElementById("mysideInfobar1").style.width = "60%";
 
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
@@ -2337,6 +2361,40 @@ export class MoreDetailsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
-  // }
+  }
+  
+   selectedFile: any = null;
+  onFileChange(e) {
+    this.selectedFile = <File>e.target.files[0];
+    //console.log("--------------->",this.selectedFile)
+  }
+  sweetAlert() {
 
+
+    if (this.Status == 'Completed') {
+      Swal.fire({
+        title: 'This Project is Compelted !!',
+        text: 'Do You Want To Reopen This Project ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          this.OnAddTaskClick();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Action is Not Created',
+            'error'
+          )
+        }
+      });
+
+    }
+    else {
+      this.OnAddTaskClick();
+    }
+
+  }
 }
