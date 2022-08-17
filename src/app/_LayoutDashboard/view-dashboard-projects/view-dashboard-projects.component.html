@@ -229,14 +229,14 @@
                                             <tbody>
                                                 <tr *ngFor="let item of _AssignedProjectsList; let i=index">
                                                     <!-- Project details info column -->
-                                                    <td class="kt-widget__title mb-0">
+                                                    <td class="kt-widget__title mb-0 ">
                                                         <a data-toggle="tooltip" title="Project Details!" class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
                                                         (click)="openInfo(item.Project_Code,item.Project_Name)"> 
                                                             <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;      
                                                         </a>    
                                                     </td>
-                                                    <td class="kt-widget__title mb-0" > {{item.Task_Name}}</td>
-                                                    <td class="kt-widget__title mb-0" style="width: 25px;">{{item.Task_Description}}</td>
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px" > {{item.Task_Name}}</td>
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px">{{item.Task_Description}}</td>
                                                    <!-- style:width="25%" -->
                                                     <td class="kt-widget__title mb-0">{{item.ProjectType}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Employee}}</td>

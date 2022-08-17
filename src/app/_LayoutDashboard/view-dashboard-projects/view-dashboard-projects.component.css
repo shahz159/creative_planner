@@ -1040,7 +1040,6 @@
 .bg-today {
   background-color: #342bf0 !important;
 }
-
 @media only screen and (max-width: 768px) {
   .dropdown-menu-md.bg-ground{
     width: 80vw;

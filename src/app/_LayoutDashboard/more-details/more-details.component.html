@@ -25,6 +25,14 @@
                     'bg-warning':Status=='InProcess',
                     'bg-grey':Status=='Under Approval',
                     'bg-primary':Status=='Completion Under Approval'}">{{Status}}</label>
+
+                    <!--inprocess button-->
+                    <div class="d-flex"   *ngIf="Status != 'Completed'" >
+                        <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">InProcess</label>
+                        <div class="task-status__divider"></div>
+                        <button class="task-status__controls " (click)="OnClickCheckboxProjectUpdate()"></button>
+                    </div>
+                    <!--inprocess button-->
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="flex-grow-1">
@@ -32,8 +40,8 @@
                     </div>
                     <div class=" pro-act">
                         <button class="btn22" (click)="sideviw()" *ngIf="Status =='Under Approval'">Project Actions</button>
-                    </div>&nbsp;
-                    <div class=" pro-act">
+                    </div>
+                    <div class=" pro-act ml-2">
                         <button class="btn22" *ngIf="Status != 'Completed'"
                         (click)="OnClickCheckboxProjectUpdate()" >
                         Project Completion
