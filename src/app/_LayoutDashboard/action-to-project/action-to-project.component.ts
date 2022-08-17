@@ -25,6 +25,7 @@ export class ActionToProjectComponent implements OnInit {
   _StartDate: Date;
   _EndDate: Date;
   _remarks: string;
+  _allocated:number;
   _inputAttachments: any = [];
   _inputAttachments2: any;
   selectedEmpNo: string = "";
@@ -178,6 +179,7 @@ export class ActionToProjectComponent implements OnInit {
   EmpNo_Autho: any;
 
   OnSubmit() {
+  
     if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
       this.notifyService.showInfo("", 'Star(*) mark feilds required ')
     }
@@ -206,14 +208,16 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
         this.ObjSubTaskDTO.StartDate = this._StartDate;
         this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
-        var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
-        this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
+        // var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
+        // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+        // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
+        // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
         //If we are using 8 hours format then divide by 3 for HourDifference.
         this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
         this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
         this.ObjSubTaskDTO.Remarks = this._remarks;
+        this.ObjSubTaskDTO.Duration= this._allocated;
+        
         // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
         if (this._inputAttachments.length > 0) {
           this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
@@ -310,6 +314,7 @@ export class ActionToProjectComponent implements OnInit {
     this._StartDate = null;
     this._EndDate = null;
     this._remarks = "";
+    this._allocated=0;
     this._inputAttachments = [];
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
