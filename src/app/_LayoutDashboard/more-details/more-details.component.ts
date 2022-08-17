@@ -2357,6 +2357,15 @@ export class MoreDetailsComponent implements OnInit {
   OnClickCheckboxProjectUpdate() {
     this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
       (data) => {
+        if (data['Message'] == 1) {
+          Swal.fire({
+            title: 'Unable To Complete This Project !!',
+            text: 'SubTask Status Are In Rejected or Pending ?',
+            icon: 'warning',
+            showCancelButton: true       
+          });
+        }
+        else {
         // applying sidebar from mysideInfobar_ProjectsUpdate in html
         document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
         // placing the backgorund dim on opening sidebar
@@ -2365,6 +2374,7 @@ export class MoreDetailsComponent implements OnInit {
         document.getElementById("moredet").classList.add("position-fixed");
         document.getElementById("mysideInfobar").style.width = "0px";
         document.getElementById("mysideInfobar_Update").style.width = "0px";
+        }
       });
   }
 

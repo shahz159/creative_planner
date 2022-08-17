@@ -744,7 +744,7 @@
                                             <!-- (click)="OnAddTaskClick()" -->
                                         <button *ngIf="noInprocess == false" (click)="sweetAlert()" title="Create New Subtask"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"><i class="fas fa-plus mr-0"></i></button></div>
                                         
-                                        <div class="ribbon-content scrollbar1">
+                                        <div class="ribbon-content scrollbar1" *ngIf="noInprocess == false">
                                             <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                                 [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
                                                 
@@ -879,7 +879,7 @@
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
                                         <div class="ribbon-success  ribbon float-start" *ngIf="noCompleted == false">Completed</div>
-                                        <div class="ribbon-content scrollbar1">
+                                        <div class="ribbon-content scrollbar1" *ngIf="noCompleted == false">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
                                             <div class="subtask-list" *ngFor="let item of CompletedList">
                                                 <div class="col-lg-11">

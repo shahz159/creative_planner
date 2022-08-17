@@ -460,8 +460,9 @@
                                     'text-success':item.SubProject_Status=='Completion Under Approval',
                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}">
-                                       <p class="text-Completed "  *ngIf="Project_Status == 'Completed'"> Completed</p>
-                                       <p  *ngIf="Project_Status != 'Completed'"> {{item.SubProject_Status}}</p>
+                                       <!-- <p class="text-Completed "  *ngIf="Project_Status == 'Completed'"> Completed</p> -->
+                                       <!-- <p  *ngIf="Project_Status != 'Completed'"> {{item.SubProject_Status}}</p> -->
+                                       <p> {{item.SubProject_Status}}</p>
                                     </span>
                                 </p>
                                 <p class="mb-1">
