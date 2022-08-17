@@ -835,7 +835,7 @@
                                                         </span>
     
                                                         <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                            'text-Completed':item.SubProject_Status=='Completed',
+                                            'text-success':item.SubProject_Status=='Completed',
                                             'text-warning':item.SubProject_Status=='InProcess',
                                             'text-underApp':item.SubProject_Status=='Under Approval',
                                             'text-info':item.SubProject_Status=='Completion Under Approval',
@@ -843,8 +843,8 @@
                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                             'text-underApproval':item.SubProject_Status=='Forward Under Approval',
                                             'text-primary':item.SubProject_Status=='New Project',
-                                            'text-success':item.SubProject_Status=='Completion Under Approval',
-                                            'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
+                                            'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                            'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
                                             'text-Todo':item.SubProject_Status=='ToDo Completed'}">
                                                             {{item.SubProject_Status}}
                                                         </span>
@@ -864,7 +864,7 @@
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">{{maxDuration}}Hrs</h6>
+                                                            <h6 class="mt-1">{{item.ProjectDuration}}Hrs</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
@@ -974,8 +974,8 @@
                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                             'text-underApproval':item.SubProject_Status=='Forward Under Approval',
                                             'text-primary':item.SubProject_Status=='New Project',
-                                            'text-success':item.SubProject_Status=='Completion Under Approval',
-                                            'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
+                                            'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                            'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
                                             'text-Todo':item.SubProject_Status=='ToDo Completed'}">
                                                             {{item.SubProject_Status}}
                                                         </span>
@@ -994,7 +994,7 @@
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">{{maxDuration}}Hrs</h6>
+                                                            <h6 class="mt-1">{{item.ProjectDuration}}Hrs</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
