@@ -9,34 +9,27 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 //import { CalendarOptions } from '@fullcalendar/angular';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-
 import * as _ from 'underscore';
-
-
-
 
 @Component({
   selector: 'app-project-info',
   templateUrl: './project-info.component.html',
   styleUrls: ['./project-info.component.css']
 })
-export class ProjectInfoComponent implements OnInit,OnDestroy {
 
+export class ProjectInfoComponent implements OnInit,OnDestroy {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
     private ShareParameter_Service: ParameterService,
     private route: ActivatedRoute,
     private elementRef: ElementRef) {
-
   }
+
   @Input() inputFromParent: string;
-
   projectCode: string;
-
   ProjectInfo_List: any;
   Subtask_List: SubTaskDTO[];
-
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
   TotalWork_Hours: any;
@@ -45,24 +38,20 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _MainProjectStatus: string;
   _subtaskDiv: boolean;
   Current_user_ID: string;
-
   _LinkSideBar: boolean = true;
   _openInfoSideBar: boolean = false;
   interval: any;
   MoreDetailsList: any;
+
   ngOnInit() {
-    //alert('12345')
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
-      // alert("From Info" + Pcode)
       this.fun_LoadProjectDetails();
     });
   }
-  // ngAfterViewInit(){
 
-  // }
   initials: string;
   Project_Responsible;
   dateResut: any;
@@ -71,45 +60,35 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   date2: any;
   CompletedList: any;
   AssigntaskList: any;
-
   ifcategoryZero: any;
-  fun_LoadProjectDetails() {
-   
+
+  fun_LoadProjectDetails() { 
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
         //console.log("Project Details---->", data);
-        // debugger
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
-         
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-         
-          this.AssigntaskList = JSON.parse(data[0]['AssigntaskDetails_Json']);
-          
-          // this.CompletedList.push(this.Subtask_List);
-          console.log("subtask Details--->",this.Subtask_List);
-          console.log("Assign Details--->",this.AssigntaskList);
+          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);         
+          this.AssigntaskList = JSON.parse(data[0]['AssigntaskDetails_Json']);          
+          // // this.CompletedList.push(this.Subtask_List);
+          // console.log("subtask Details--->",this.Subtask_List);
+          // console.log("Assign Details--->",this.AssigntaskList);
           this.TotalWork_Hours = data[0]['TotalHours'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];
           this._MainProjectStatus = data[0]['MainProjectStatus'];
-
           //console.log("ProjectDetails-->", this.ProjectInfo_List);
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
-
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectInfo_List[0]['Team_Res'];
-
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
-
           this.subtaskNotFoundMsg = "";
           this._subtaskDiv = false;
           // For  More Details Component...
@@ -132,11 +111,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             { Responisble_EmpNo: this.ProjectInfo_List[0]['Responsible'] },
             {Category:this.ProjectInfo_List[0]['ReportType']},
             { Owner_EmpNo: this.ProjectInfo_List[0]['OwnerEmpNo'] },
-
           ]
+
           let List_string: any = JSON.stringify(this.MoreDetailsList);
           localStorage.setItem("moreDetails", List_string);
-
           const fullName = this.Project_Responsible.split(' ');
           this.initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials= this.initials.toUpperCase();
@@ -146,22 +124,24 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.subtaskNotFoundMsg = "No Subtask found";
         }
       });
-
     this._OpenMemosInfo(this.projectCode);
-
   }
+
   ngOnDestroy() {
   }
+
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     this.ngOnDestroy();
   }
+
   AddDms() {
     this._openInfoSideBar = true;
     this._LinkSideBar = false;
     this._onRowClick(this.projectCode);
   }
+
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -170,13 +150,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _ActualMemoslist: any;
   _totalMemos: number;
   _mappedMemos: number;
-
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
+
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
-
         this.Memos_List = JSON.parse(data['JsonData']);
         this._ActualMemoslist = JSON.parse(data['JsonData']);
         // console.log("Actual Memo List By EmpId--->", this._ActualMemoslist)
@@ -193,9 +172,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         };
       });
   }
+
   Empty_MemoDropdown: any;
   _SelectedMemos: any;
   Mail_Id: number;
+
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
@@ -207,6 +188,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     });
     //console.log("Selected Memos In Array--->", arr)
   }
+
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
@@ -226,7 +208,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
       subscribe((data) => {
         let Table_data: any = data;
-
         // console.log("Memos Id Form DB--->", data);
         if (Table_data.length > 0) {
           this._JsonString = JSON.stringify(data[0]['JsonData']);
@@ -266,6 +247,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       });
     document.getElementById("LinkSideBar").style.width = "100%";
   }
+
   moreDetails() {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -273,7 +255,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     var myWindow = window.open(myurl, this.projectCode);
     myWindow.focus();
   }
+
   _raciDetails: boolean = true;
+
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
@@ -282,6 +266,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
+
   _OpenMemosInfo(_projectCode) {
     this._dbMemoIdList = [];
     // this._displayProjName = _projectName;
@@ -289,15 +274,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       subscribe((data) => {
         let Table_data: any = data;
         // console.log("---->Table Data", Table_data);
-
         // let Dbdata: any = JSON.parse(data[0]['JsonData']);
-
         // if (Dbdata == '[]') {
         //   this._MemosSubjectList = [];
         //   this._MemosNotFound = "No memos linked";
         // }
         if (Table_data.length > 0 && data[0]['JsonData'] != '[]') {
-          // alert("Table Data > 0")
           this._MemosNotFound = "";
           this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
           this._JsonString = data[0]['JsonData'];
@@ -318,6 +300,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   memoId: any;
+
   deleteMemos(memoId, pcode) {
     this._MemosSubjectList = [];
     let _DeleteSelectedMemo = [];
@@ -369,7 +352,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
-    //alert(this.Global_Projectcode);
     let appId: number = 101;//this._ApplicationId;
     //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
@@ -401,11 +383,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this._openInfoSideBar = false;
     // this._LinkSideBar=true;
   }
+
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
     this._LinkSideBar = true;
     this._openInfoSideBar = false;
   }
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);

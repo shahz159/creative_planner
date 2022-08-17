@@ -46,7 +46,6 @@ export class ActionToAssignComponent implements OnInit {
     private BsService: BsServiceService
     ,public _projectunplanned:ProjectUnplannedTaskComponent) {
   
-      
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -55,18 +54,15 @@ export class ActionToAssignComponent implements OnInit {
       if (this._taskName == null) {
         this.txtdisabled = false;
         this._taskName = null;
-
       }
       else {
         this.txtdisabled = true;
       }
     });
     this._inputAttachments = [];
-  }
- 
+  } 
 
   ngOnInit(): void {
-   
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getProjectTypeList();
     this.GetAssignFormEmployeeDropdownList();
@@ -85,11 +81,12 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   selectedEmployee: string = "";
+
   EmployeeOnSelect(obj) {
     this._SelectedEmpNo = obj;
     this.selectedEmployee = this._SelectedEmpNo;
-    // alert(this._SelectedEmpNo);
   }
+
   EmployeeOnDeselect(obj) {
     this._SelectedEmpNo = null;
     this.selectedEmployee = this._SelectedEmpNo;
@@ -105,13 +102,10 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   OnAssignTask_Submit() {
-
-    // debugger
     this._ObjAssigntaskDTO.TaskName = this._taskName;
     this._ObjAssigntaskDTO.TaskDescription = this._description;
     this._ObjAssigntaskDTO.StartDate = this._StartDate;
     this._ObjAssigntaskDTO.EndDate = this._EndDate;
-   
 
     if(this._StartDate != null || this._EndDate != null){
       this.Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
@@ -121,19 +115,15 @@ export class ActionToAssignComponent implements OnInit {
     else{
       this._ObjAssigntaskDTO.ProjectDays =0;
     }
-
-   
     //for hours Un-Comment Below Line
     //this._ObjAssigntaskDTO.ProjectDays = this._ObjAssigntaskDTO.ProjectDays * 8 / 1;
     this.BsService.bs_TypeofTask.subscribe(t => {
       this.typeoftask = t;
     });
     this._ObjAssigntaskDTO.TypeOfTask = this.typeoftask;
-
     this._ObjAssigntaskDTO.AssignTo = this.selectedEmployee;
     this._ObjAssigntaskDTO.Assigned_By = this.CurrentUser_ID;
-    this._ObjAssigntaskDTO.AssignId = this.task_id;
-    
+    this._ObjAssigntaskDTO.AssignId = this.task_id; 
     this._ObjAssigntaskDTO.ProjectType = this.selectedProjectType;
     this._ObjAssigntaskDTO.Remarks = this._remarks;
     // console.log(this.selectedProjectType);
@@ -152,12 +142,9 @@ export class ActionToAssignComponent implements OnInit {
       datestrEnd =new Date().toUTCString();
     }
     //console.log("Sending Obj..",this._ObjAssigntaskDTO)
-
     const fd = new FormData();
-
     fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
     if (this._inputAttachments.length > 0) {
-      debugger
       fd.append("Attachment", "true");
       fd.append('file', this._inputAttachments[0].Files);
     }
@@ -165,8 +152,6 @@ export class ActionToAssignComponent implements OnInit {
       fd.append("Attachment", "false");
       fd.append('file', "");
     }
-
-
     fd.append("TaskName", this._taskName);
     fd.append("Desc", this._description);
     fd.append("StartDate", datestrStart);
@@ -189,7 +174,6 @@ export class ActionToAssignComponent implements OnInit {
         this._inputAttachments = [];
       });
   }
-
   // this.OnCategoryClick(this._Categoryid, this._CategoryName);
   // this._TodoList = JSON.parse(data['TodoList']);
   // this._CompletedList = JSON.parse(data['CompletedList']);
@@ -201,6 +185,7 @@ export class ActionToAssignComponent implements OnInit {
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     //document.getElementById("mysideInfobar").style.width = "0px";
   }
+
   clearFeilds() {
     this._description = "";
     this._StartDate = null;
@@ -215,6 +200,7 @@ export class ActionToAssignComponent implements OnInit {
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
   }
+  
   GetAssignFormEmployeeDropdownList() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;

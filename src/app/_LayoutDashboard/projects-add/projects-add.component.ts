@@ -143,7 +143,6 @@ export class ProjectsAddComponent implements OnInit {
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
-    //debugger
     this._objDropdownDTO.PortfolioId = parseInt(this._portfolioId, 10);
     this.service.GetDropDownsData(this._objDropdownDTO)
       .subscribe((data) => {
@@ -393,22 +392,18 @@ export class ProjectsAddComponent implements OnInit {
   _objStatusDTO: StatusDTO;
   //Save Portfolio
   OnSave() {
-    debugger
     this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
     let LengthOfSelectedItems: any;
     LengthOfSelectedItems = JSON.stringify(this.selectedItemsList.length);
     this.Obj_Portfolio_DTO.SelectedProjects = this.selectedItemsList;
     this.service.SavePortfolio(this.Obj_Portfolio_DTO)
       .subscribe(data => {
-
         this._portfolioId = data['Portfolio_ID'];
-        //alert(this._portfolioId+" "+this.Url_portfolioId);
         this._objStatusDTO.Emp_No = this.Current_user_ID;
         //console.log("Return value--------->", this._portfolioId);
         this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
           (data) => {
             this._ListProjStat = data as StatusDTO[];
-
             //console.log("ListForStatus", this._ListProjStat);
             //Owners Portfolios
             let Listown: any = this._ListProjStat.filter(i => (i.CreatedName));
@@ -464,18 +459,15 @@ export class ProjectsAddComponent implements OnInit {
     var url = document.baseURI + name;
     console.log("URl Portfolio ID :", this._portfolioId);
     if (!this.Url_portfolioId) {
-      // alert("Not Found");
       this.router.navigate(['backend/Portfolio']);
       //this.router.navigate(["../backend/Portfolio"]);
       //var myWindow = window.open(url);
       //myWindow.focus();
       // var myurl = `${Url2}`;
       // var myWindow = window.open(myurl);
-
     }
     else {
       this.router.navigate(['portfolioprojects/', this.Url_portfolioId]);
-      //alert("Found");
       // var myurl = `${url}/${this._portfolioId}`;
       // var myWindow = window.open(myurl, this._portfolioId);
 
@@ -516,13 +508,11 @@ export class ProjectsAddComponent implements OnInit {
         })
       }
       else {
-        //debugger
         this.notifyService.showInfo("Action Cancelled ", '');
         //checking again if delete Cancel
         this._ProjectDataList.forEach(element => {
           if (element.checked == false && element.id == Proj_id) {
             return element.checked = true;
-
           }
         });
       }

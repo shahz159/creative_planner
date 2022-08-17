@@ -12,7 +12,6 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { Shareportfolio_DTO } from 'src/app/_Models/shareportfolio';
 import * as _ from 'underscore';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 import { ChartDTO } from 'src/app/_Models/chart-dto';
@@ -44,6 +43,7 @@ import { LinkService } from 'src/app/_Services/link.service';
   templateUrl: './portfolio-projects.component.html',
   styleUrls: ['./portfolio-projects.component.css']
 })
+
 export class PortfolioProjectsComponent implements OnInit {
   _PortProjStatus: string;
   _ShareDetailsList: any;
@@ -88,7 +88,6 @@ export class PortfolioProjectsComponent implements OnInit {
   PreferenceTpye: any;
   With_Data: any;
   Share_preferences: boolean;
-
   _objStatusDTO: StatusDTO;
   ObjSharePortfolio: Shareportfolio_DTO;
   _objDropdownDTO: DropdownDTO;
@@ -113,11 +112,13 @@ export class PortfolioProjectsComponent implements OnInit {
     this.ObjSharePortfolio = new Shareportfolio_DTO();
     this._objDropdownDTO = new DropdownDTO();
   }
+
   _PortFolio_Namecardheader: string;
   _Portfolio_CreatedDT: string;
   // LoadingBar_state = this.loadingBar.useRef('http');
   Max50Char: boolean;
   Url_portfolioId: number;
+
   ngOnInit(): void {
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
@@ -129,8 +130,10 @@ export class PortfolioProjectsComponent implements OnInit {
     });
     this.GetPortfolioProjectsByPid();
   }
+
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
+
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
@@ -142,10 +145,8 @@ export class PortfolioProjectsComponent implements OnInit {
     // console.log(this._PortFolio_Namecardheader, this._Pid, this.Current_user_ID);
     // this._PortfolioListTable = false;
     this.PortfolioList = true;
-
     this.Obj_Portfolio_DTO.Portfolio_ID = this._Pid;
     //this._Pid = P_id;
-
     //this._PortFolio_Namecardheader = P_Name;
     this.Obj_Portfolio_DTO.Portfolio_Name = this._PortFolio_Namecardheader;
     //Get Projects
@@ -155,11 +156,9 @@ export class PortfolioProjectsComponent implements OnInit {
       .subscribe((data) => {
         this._MessageIfNotOwner = data[0]['message'];
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
-
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
-
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
@@ -270,7 +269,6 @@ export class PortfolioProjectsComponent implements OnInit {
           unSelectAllText: 'UnSelect All',
           itemsShowLimit: 1,
           allowSearchFilter: true,
-
         };
         this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
         if (this._ShareDetailsList == 0) {
@@ -295,25 +293,29 @@ export class PortfolioProjectsComponent implements OnInit {
         }
       });
   }
+
   btnEdit() {
     this.Max50Char = true;
   }
+
   _raciDetails: boolean = true;
+
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
+
   clearSession(): void {
     localStorage.clear();
     sessionStorage.clear();
   }
+
   returnProjectsUrl: string;
+
   populateForm() {
     this.Obj_Portfolio_DTO.Portfolio_ID;
     let _Portid: any = this.Obj_Portfolio_DTO.Portfolio_ID;
     // localStorage.setItem('_PortfolioId', _Portid);
     //console.log("Populate Form Id", _Portid);
-    //alert(this.Obj_Portfolio_DTO.Portfolio_Name);
-
     localStorage.setItem('_PortfolioName', this._PortFolio_Namecardheader);
     // this.returnProjectsUrl = 'CreatePortfolio';
     // this.router.navigate([this.returnProjectsUrl]);
@@ -322,9 +324,10 @@ export class PortfolioProjectsComponent implements OnInit {
     var myurl = `${url}/${_Portid}`;
     var myWindow = window.open(myurl, _Portid);
     myWindow.focus();
-    //alert(_Portid);
   }
+
   Rename_PortfolioName: string;
+
   RenamePortfolio() {
     if (this.Rename_PortfolioName.length > 50) {
       this.Max50Char = false;
@@ -349,19 +352,22 @@ export class PortfolioProjectsComponent implements OnInit {
       });
     }
   }
+
   hideDropdown: boolean;
   activeClass_NewPortfolio: boolean;
   _portfolioName: string;
   alreadyExists: string;
+
   resetInputText() {
-    //debugger
     this._portfolioName = '';
     this.alreadyExists = '';
     this.activeClass_NewPortfolio = false;
   }
+
   DropdownOpen() {
     this.activeClass_NewPortfolio = true;
   }
+
   EmployeeList: EmployeeDTO[];
   Company_List: CompanyDTO[];
   selectedItems = [];
@@ -375,6 +381,7 @@ export class PortfolioProjectsComponent implements OnInit {
   dropdownsettings_Page: IDropdownSettings = {};
   _SelectedEmployees: any = [];
   _SelectedEmpIds_String: string;
+
   GetCompanies() {
     this.service.GetCompanies().subscribe(res => {
       this.Company_List = res as CompanyDTO[];
@@ -389,32 +396,32 @@ export class PortfolioProjectsComponent implements OnInit {
       };
     })
   }
+
   //Employee DropDown Bind
   ngEmployeeDropdown: any;
   ngEmployeeDropdown2: any = [];
   EmployeeDropdown: string;
-
   _ErrorMessage_comp: string;
   _ErrorMessage_User: string;
   _ErrorMessage_Pref: string;
+
   OnEmpSelect(emp: string) {
     this._ErrorMessage_User = "";
     let arr = [];
     this.EmployeeDropdown = emp['Emp_No'];
     //console.log("Selected Employees---->", JSON.stringify(this.ngEmployeeDropdown));
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
-    
+
     this.ngEmployeeDropdown2.forEach(element => {
       arr.push({ Emp_No: element.Emp_No })
       this._SelectedEmployees = (arr);
     });
-
     //Make Comma Separate..
     this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
       return select.Emp_No;
     }).join(',');
-    // alert(this._SelectedEmpIds_String);
   }
+
   OnEmpDeselect() {
     let arr = [];
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
@@ -425,7 +432,6 @@ export class PortfolioProjectsComponent implements OnInit {
     this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
       return select.Emp_No;
     }).join(',');
-    //alert(this._SelectedEmpIds_String);
   }
 
   _CompanyNo: string;
@@ -434,23 +440,23 @@ export class PortfolioProjectsComponent implements OnInit {
   preferences: any;
   CompanyDropdown: string;
   ngCompanyDropdown: any;
+
   share_Users() {
     document.getElementById("shareBar").style.width = "400px";
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
     //SnackBar Dismiss
   }
+
   OnCompanySelect(CompNo: string) {
-    this.ngEmployeeDropdown=null;
+    this.ngEmployeeDropdown = null;
     this._ErrorMessage_comp = "";
     this._CompanyNo = CompNo['Com_No'];
     this.CompanyDropdown = this._CompanyNo;
-    // alert(this.CompanyDropdown);
     // let PortfolioId: any = localStorage.getItem('Pid');
-    
     this.service.GetEmployeesby_CompNo(this._CompanyNo, this.Url_portfolioId)
       .subscribe((data) => {
-        console.log("Portfolio Id-------->",this.Url_portfolioId,this._CompanyNo)
+        console.log("Portfolio Id-------->", this.Url_portfolioId, this._CompanyNo)
         console.log("-Employees--->", data);
         this.EmployeeList = data as EmployeeDTO[];
         //console.log("employee lst",this.EmployeeList);
@@ -466,39 +472,47 @@ export class PortfolioProjectsComponent implements OnInit {
         };
       });
   }
+
   OnCmpDeselect() {
     //this.ngCompanyDropdown = [{}];
     this.ngCompanyDropdown = "";
   }
+
   BarChartEmpNo: string;
+
   EmpChartOnSelect(emp) {
     this.BarChartEmpNo = emp['Emp_No'];
     this.LoadBarChart();
     // this.barchartData = this.barchartData.filter(i => this.BarChartEmpNo.includes(i.Emp_No));
   }
+
   EmpChartOnDeselect() {
     this.BarChartEmpNo = null;
     this.LoadBarChart();
   }
+
   Current_user: string;
   _PortfolioList: PortfolioDTO[];
   _ExistingPortfolioOfProjects = [];
   // Current_user_ID: string;
+
   GetUserDetails() {
     this.service.NewGetUserDetails(this.Current_user);
   }
+
   GetPortfolioByEmployee() {
     this.service.GetPortfolioByEmployee()
       .subscribe(
         (data) => {
-          // alert(JSON.stringify(data));
           this._PortfolioList = data as PortfolioDTO[];
           this._ExistingPortfolioOfProjects = this._PortfolioList;
           //console.log("Portfolio:", this._ExistingPortfolioOfProjects);
           this.cdr.detectChanges();
         });
   }
+
   _PreferencesList: any;
+
   _PortfolioListTable_Bttn() {
     this._ShareDetailsList = [];
     this._ProjectsListBy_Pid = [];
@@ -506,10 +520,12 @@ export class PortfolioProjectsComponent implements OnInit {
     this.PortfolioList = false;
     this._PreferencesList = [];
   }
+
   Radio_View_fullaccess(val: string) {
     this._ErrorMessage_Pref = "";
     this._Preferences = val;
   }
+
   share() {
     if (this.CompanyDropdown == undefined) {
       return this._ErrorMessage_comp = "* Please Select Company";
@@ -573,8 +589,10 @@ export class PortfolioProjectsComponent implements OnInit {
   //   //   this.LoadingBar_state.stop();
   //   // }
   // }
+
   deletedBy: string;
   Count_ToDoAchieved: any;
+
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
     //if (createdBy == this.Current_user_ID) {
@@ -687,6 +705,7 @@ export class PortfolioProjectsComponent implements OnInit {
     //   this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');
     // }
   }
+
   messagefav: string;
   countFav: number;
 
@@ -714,9 +733,11 @@ export class PortfolioProjectsComponent implements OnInit {
       this.notifyService.showInfo("Action Cancelled", '');
     }
   }
+
   labelAll() {
     this._PortProjStatus = "";
   }
+
   labelInprocess() {
     this._PortProjStatus = "InProcess"
   }
@@ -724,20 +745,24 @@ export class PortfolioProjectsComponent implements OnInit {
   labelDelay() {
     this._PortProjStatus = "Delay";
   }
+
   labelCompleted() {
     this._PortProjStatus = "Completed";
   }
+
   labelNewProject() {
     this._PortProjStatus = "New Project";
     if (this._PortProjStatus.includes('New Project')) {
       this._PortProjStatus = 'New Project';
     }
   }
+
   labelRejecteds() {
     this._PortProjStatus = "Rejected";
     this._PortProjStatus.includes('Rejected');
     //this._PortProjStatus.includes('New Project Rejected');
   }
+
   labelToDoAchieved() {
     this._PortProjStatus = "ToDo Achieved";
     // this._PortProjStatus.includes('ToDo Achieved');
@@ -747,14 +772,17 @@ export class PortfolioProjectsComponent implements OnInit {
     this._PortProjStatus = "Under Approval";
     this._PortProjStatus.includes('Under Approval')
   }
+
   labelProjectHold() {
     this._PortProjStatus = "Project Hold";
     this._PortProjStatus.includes('Project Hold');
   }
+
   //Sorting.....
   clicks: number = 0;
   A2Z: boolean = true;
   Z2A: boolean = false;
+
   _SortProjectList() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -766,11 +794,12 @@ export class PortfolioProjectsComponent implements OnInit {
       this.Z2A = true;
     }
   }
+
   _ChartData: ChartDTO[];
   ObjChartDTO: ChartDTO;
   Project_Graph: string;
-  ProjectsGraphsClick() {
 
+  ProjectsGraphsClick() {
     // this.snackBarRef.dismiss();
     if (this.Project_Graph == "Graphs") {
       this.Project_Graph = "Projects";
@@ -781,8 +810,10 @@ export class PortfolioProjectsComponent implements OnInit {
       this.ProjectsClick();
     }
   }
+
   HideProjects: boolean;
   pieBarCharts: boolean;
+
   Graphs() {
     this.pieBarCharts = false;
     this.HideStatusDropdown = true;
@@ -792,12 +823,14 @@ export class PortfolioProjectsComponent implements OnInit {
     this.LoadPieChart();
     this.LoadBarChart();
   }
+
   ProjectsClick() {
     this.HideProjects = false;
     this.pieBarCharts = true;
     this.HideStatusDropdown = false;
     // this.BarChartEmp = [];
   }
+
   LoadPieChart() {
     am4core.options.autoDispose = true;
     let PieChart = am4core.create("chartdiv2", am4charts.PieChart3D);
@@ -817,9 +850,11 @@ export class PortfolioProjectsComponent implements OnInit {
         PieChart.legend.reverseOrder = true;
       });
   }
+
   ObjBarchartDTO: BarChartDTO;
   barchartData: BarChartDTO[];
   BarChartEmp: any;
+
   LoadBarChart() {
     am4core.options.autoDispose = true;
     let BarChart = am4core.create("chartdiv1", am4charts.XYChart3D);
@@ -829,7 +864,6 @@ export class PortfolioProjectsComponent implements OnInit {
         //this.LoadingBar_state.start();
         this.barchartData = data as BarChartDTO[];
         //console.log("BarChartData", this.barchartData);
-
         BarChart.data = this.barchartData;
         //legend start
         BarChart.legend = new am4charts.Legend();
@@ -953,10 +987,12 @@ export class PortfolioProjectsComponent implements OnInit {
         series9.columns.template.width = am4core.percent(50);
       });
   }
+
   _MemosSubjectList: any;
   _JsonString: any;
   _displayProjName: string;
   _MemosNotFound: string;
+
   _OpenMemosInfo(_projectCode, _projectName) {
     this._displayProjName = _projectName;
     this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
@@ -989,6 +1025,7 @@ export class PortfolioProjectsComponent implements OnInit {
     //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
   }
+
   _CloseMemosidebar() {
     document.getElementById("MemosSideBar").style.width = "0";
   }
@@ -998,6 +1035,7 @@ export class PortfolioProjectsComponent implements OnInit {
     // console.log("Url----------->", memo_Url);
     window.open(Url);
   }
+
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
   _subtaskDiv: boolean;
@@ -1022,8 +1060,8 @@ export class PortfolioProjectsComponent implements OnInit {
     var myWindow = window.open(myurl, this.pCode);
     myWindow.focus();
   }
-  _MainProjectStatus: string;
 
+  _MainProjectStatus: string;
   _loadChildComponent = false;
   parentToChild: string;
   // openInfo(pcode, pName) {
@@ -1034,8 +1072,6 @@ export class PortfolioProjectsComponent implements OnInit {
   // }
 
   openInfo2(pcode) {
-    //debugger
-    //alert(pcode)
     this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     //document.getElementById("mysideInfobar").style.width = "410px";
     document.getElementById("mysideInfobar").style.width = "70%";
@@ -1051,9 +1087,7 @@ export class PortfolioProjectsComponent implements OnInit {
   // }
 
   _CloseshareBar() {
-
     this.Close_ShareModel();
-    
     document.getElementById("shareBar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
   }
@@ -1086,12 +1120,14 @@ export class PortfolioProjectsComponent implements OnInit {
         };
       });
   }
+
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   Selected_Projectcode: string;
   Empty_MemoDropdown: any;
   _SelectedMemos: any;
   Mail_Id: number;
+
   Memo_Select(selecteditems) {
     let arr = [];
     this.Empty_MemoDropdown = selecteditems;
@@ -1100,6 +1136,7 @@ export class PortfolioProjectsComponent implements OnInit {
       this._SelectedMemos = arr;
     });
   }
+
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
@@ -1108,6 +1145,7 @@ export class PortfolioProjectsComponent implements OnInit {
       this._SelectedMemos = arr;
     });
   }
+
   SearchMemo: string;
 
   _onRowClick(projectCode, ProjName) {
@@ -1152,6 +1190,7 @@ export class PortfolioProjectsComponent implements OnInit {
       });
     document.getElementById("LinkSideBar").style.width = "360px";
   }
+
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
   }
@@ -1159,7 +1198,9 @@ export class PortfolioProjectsComponent implements OnInit {
   AddDms() {
     this._onRowClick(this.pCode, this.pName);
   }
+
   memoId: any;
+
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
     let appId: number = 101;//this._ApplicationId;
@@ -1190,8 +1231,6 @@ export class PortfolioProjectsComponent implements OnInit {
 
   //Delete Memos 162942  CRS26428
   deleteMemos(memoId, pcode) {
-
-    //alert(memoId + "  "+ pcode);
     // memoId = 162942;
     // pcode = 'CRS26428';
     this._MemosSubjectList = [];
@@ -1201,7 +1240,6 @@ export class PortfolioProjectsComponent implements OnInit {
     let arr2: any = _DeleteSelectedMemo;
     // console.log("DB Memo List=--------->", this._DBMemosIDList);
     // console.log("_DeleteSelectedMemo List------------>", _DeleteSelectedMemo);
-
     let result = arr1.filter(o1 => !arr2.some(o2 => o1.MailId === o2.MailId));
     this._DBMemosIDList = _.map(arr2, (d) => { return d.MailId });
     this.memoId = JSON.stringify(result);
@@ -1214,6 +1252,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.notifyService.showInfo("", Returndata);
       });
   }
+
   UpdateMemos(pcode) {
     this._MemosSubjectList = [];
     this._LinkService._GetOnlyMemoIdsByProjectCode(pcode).

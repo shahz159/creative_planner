@@ -28,6 +28,7 @@ import tippy from 'node_modules/tippy.js';
   templateUrl: './project-unplanned-task.component.html',
   styleUrls: ['./project-unplanned-task.component.css']
 })
+
 export class ProjectUnplannedTaskComponent implements OnInit {
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
@@ -55,8 +56,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   ) {
     // this._Id='0';
     // this._Name='NA';
-
-
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.ObjUserDetails = new UserDetailsDTO();
@@ -72,7 +71,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   IfNoCompletedTaskFound: string;
 
   // ngAfterContentChecked() {
-  //   // alert(1)
   //   tippy('.Start_Date', {
   //     content: "Enter qwerty Name",
   //     arrow: true,
@@ -83,14 +81,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   //   });
 
   // }
+
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
-
     this.GetTodoProjects();
     this.GetAssignFormEmployeeDropdownList();
-
-
-
+    
     // <<<<<<< HEAD
     window.onload = () => {
       tippy('#tippy1', {
@@ -114,8 +110,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // trigger: 'click',
         // delay: [1000, 200]
       });
-
-
 
       tippy('.tippy4', {
         content: "Enter Rack Name",
@@ -157,13 +151,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   }
 
-
-
   _Demotext: string = "";
   _TodoList = [];
   _CompletedList = [];
 
-  
   EnterSubmit(_Demotext) {
     if (_Demotext != "") {
       this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
@@ -176,25 +167,21 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this._TodoList = JSON.parse(data['TodoList']);
           let message: string = data['Message'];
           this._Demotext = "";
-
           //this.GetAssignTask();
           this.notifyService.showSuccess("Successfully", "Added");
           // this.closeInfo();
         });
-
     }
     else {
       this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
     }
-    this.clearFeilds() 
-   
+    this.clearFeilds(); 
   }
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
 
   GetAssigned_SubtaskProjects() {
-
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
@@ -207,17 +194,15 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-
-
       });
   }
+
   LoadDocument(url: string){
     var myWindow = window.open(url);
     myWindow.focus();
   }
 
   GetTodoProjects() {
-
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
@@ -230,10 +215,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        console.log(this.ActionedAssigned_Josn)
-
+        // console.log(this.ActionedAssigned_Josn)
       });
   }
+
   OnRadioClick(id) {
     this._ObjAssigntaskDTO.TypeOfTask = "Update";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
@@ -245,12 +230,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data['CompletedList']);
         let message: string = data['Message'];
         this._Demotext = "";
-
         //this.GetAssignTask();
         this.notifyService.showSuccess("", message);
         // this.closeInfo();
       });
   }
+
   On_Uncheck(id) {
     this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
@@ -262,12 +247,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data['CompletedList']);
         let message: string = data['Message'];
         this._Demotext = "";
-
         //this.GetAssignTask();
         this.notifyService.showInfo("", message);
         // this.closeInfo();
       });
   }
+
   _Deletetask(id, name) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -297,6 +282,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       }
     });
   }
+
   public EmployeeList: any;
   public filterText: any;
   // GetActionToProjectEmployeeDropdownList() {
@@ -317,12 +303,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   //     })
   // }
-  onFilterChange(event) {
 
+  onFilterChange(event) {
     this.filterText = event
     //console.log("---Event------>", this.filterText);
     this.GetProjectsByUserName();
   }
+
   //Fetching Employee For Assigning Projects
   GetAssignFormEmployeeDropdownList() {
     this._ObjCompletedProj.PageNumber = 1;
@@ -342,24 +329,26 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         };
       });
   }
+
   _EndDate: Date = null;
   _StartDate: Date = null;
   _Description: string;
   _SelectedEmpNo: string = '';
   SelectedEmplList = [];
   _remarks: string = "";
+
   EmployeeOnSelect(obj) {
     this._SelectedEmpNo = obj['Emp_No'];
     this.selectedEmployee = this._SelectedEmpNo;
-    // alert(this._SelectedEmpNo);
   }
+
   EmployeeOnDeselect(obj) {
     this._SelectedEmpNo = "";
     this.selectedEmployee = this._SelectedEmpNo;
   }
+
   // onEmpChange(selectedEmpNo) {
   //   this._SelectedEmpNo = selectedEmpNo;
-  //   alert(this._SelectedEmpNo);
   // }
   //---------- Insert Assign Task ----------------//
 
@@ -375,10 +364,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._Demotext="";
     this.Mdl_CategoryName= "";
   }
+
   CallOnSubmitCategory() {
     // console.log('A');
-    
-    // alert(this._selectedcatid + "-" + this._selectedcatname);
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
   }
 
@@ -386,7 +374,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CategoryList: any;
 
   OnSubmitCategory(Mdl_CategoryName) {
-
     if (this.Mdl_CategoryName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "CategoryInsert";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
@@ -398,38 +385,28 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this.GetTodoProjects();
           // this.CategoryList = JSON.parse(data['CategoryList']);
           let message: string = data['Message'];
-
           this.notifyService.showSuccess("Successfully", message);
-
           // this.Mdl_CategoryName = "";
-
-
         });
     }
     else {
       this.notifyService.showInfo("Category Name Required", "");
     }
     this.clearFeilds()
-
   }
+
   _Categoryid: number;
   _CategoryName: string;
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
 
-
-
   OnCategoryClick(C_id, C_Name) {
-
     // _Id = C_id;
     // _Name = C_Name;
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
-
     document.getElementById("mysideInfobar").style.width = "0px";
-    // alert(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
-
     this._CategoryActive = true;
     this.IfNoTaskFound = "";
     this._Categoryid = C_id;
@@ -446,20 +423,19 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
-       
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       });
   }
+
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0px";
     this.clearFeilds();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("prodetbar").style.width = "0px";
   }
-
 
   ProjectTypelist: any;
   _taskName: string = "";
@@ -471,16 +447,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   selectedProjectType: string;
   public task_id: number;
 
-
   GetProjectTypeList(taskName, id) {
     this._taskName = taskName;
     this.task_id = id;
     this.BsService.SetNewAssignId(this.task_id);
     this.BsService.SetNewAssignedName(this._taskName);
-
     let typeoftask: any = "IFRT";
     this.BsService.setNewTypeofTask(typeoftask);
-
 
     // this._ObjCompletedProj.PageNumber = 1;
     // this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -494,8 +467,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
     this.router.navigate(["UnplannedTask/ActionToAssign/"]);
     document.getElementById("mysideInfobar").style.width = "60%";
-
   }
+
   detailsbar() {
     document.getElementById("prodetbar").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -504,20 +477,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   // ---------------- Action To Project For Subtask Creation -------------------- //
   selectedProjectCode: string;
   selectedProjectCodelist = [];
-
   _AssignId: number;
-
-
-
 
   ActionToProject_Click(taskName, Assignid) {
     this._taskName = taskName;
     this._AssignId = Assignid;
-
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
-
-
     this.router.navigate(["UnplannedTask/ActionToProject/"]);
     document.getElementById("mysideInfobar").style.width = "60%";
     //this.GetProjectsByUserName();
@@ -527,6 +493,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _ProjectDataList: any;
   dropdownSettings_Projects = {};
   dropdownSettings_Employee = {};
+
   GetProjectsByUserName() {
     // this.LoadingBar.start();
     this.ObjUserDetails.PageNumber = 1;
@@ -534,7 +501,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.ObjUserDetails.SearchText = this.filterText;
     this.ProjectTypeService.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
-
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -547,7 +513,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         maxHeight: "500px",
         allowRemoteDataSearch: true,
         noDataAvailablePlaceholderText: 'Please wait..'
-
       };
       // console.log("Project List for Dropdown...",this._ProjectDataList);
     });
@@ -561,10 +526,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   RACI_Owner: any;
 
   ProjectOnSelect(obj) {
-
     this.selectedProjectCode = obj['Project_Code'];
     this.BsService.setSelectedProjectCodeFromRunwayTask(this.selectedProjectCode);
-    // alert(this.selectedProjectCode)
     this.ProjectTypeService.SubTaskDetailsService(this.selectedProjectCode).subscribe(
       (data) => {
         let ProjectInfo_List: any;
@@ -577,21 +540,20 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.RACI_Owner = ProjectInfo_List[0]['OwnerEmpNo'];
         this.Comp_No = ProjectInfo_List[0]['Emp_Comp_No'];
         this.ProjectType_DB = ProjectInfo_List[0]['Project_Block'];
-
         this.BsService.setProjectAuthoity(this.RACI_Autho);
-        // alert(this.RACI_Autho)
       });
   }
+
   ProjectOnDeselect(obj) {
     this.selectedProjectCode = "";
   }
+
   Maximum_ProjectCodeFrom_DB: string;
 
   SplittedProject_Number: number;
   public Subproj_Code: string;
   Comp_No: string;
   ProjectType_DB: any;
-
   ObjSubTaskDTO: SubTaskDTO;
   _inputAttachments: string;
 
@@ -601,22 +563,17 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       this.ObjSubTaskDTO.AssignId = this._AssignId;
       this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
       this.ObjSubTaskDTO.SubTask_ProjectCode = this.Subproj_Code;
-
       this.ObjSubTaskDTO.SubProject_Name = this._taskName;
       this.ObjSubTaskDTO.SubtaskDescription = this._description;
       this.ObjSubTaskDTO.ProjectBlock = this.ProjectType_DB;
-
       //this._StartDate = (moment(this._StartDate)).format('DD-MMM-YYYY HH:mm:ss')
       this.ObjSubTaskDTO.StartDate = this._StartDate;
-
       // this._EndDate = (moment(this._StartDate)).format('DD-MMM-YYYY HH:mm:ss')
       this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
-
       var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
       this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
-
       this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
       this.ObjSubTaskDTO.Comp_No = this.Comp_No;
       this.ObjSubTaskDTO.Team_Res = this.RACI_Resp;;
@@ -628,7 +585,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       this.ObjSubTaskDTO.AssignTo = this._SelectedEmpNo;
       this.ObjSubTaskDTO.Remarks = this._remarks;
       this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-
       this.ProjectTypeService._InsertNewSubtask(this.ObjSubTaskDTO).subscribe(data => {
         this.notifyService.showInfo("Created Successfully", '');
         this.closeInfo();
@@ -652,6 +608,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   Label_TaskName: boolean = false;
   Textbox_EditTaskName: boolean = true;
+
   OnEditNameClick(name, id) {
     this._taskName = name;
     this._AssignId = id;
@@ -681,26 +638,31 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "block";
-
   }
+
   Cat_Name: string;
   hideMenuOfCategory: boolean = false;
+
   OnCategoryEdit_Click(Cid, Cname) {
     (<HTMLInputElement>document.getElementById("TextboxCat_" + Cid)).style.display = "block";
     (<HTMLInputElement>document.getElementById("LabelCat_" + Cid)).style.display = "none";
     this.Cat_Name = Cname;
     this.hideMenuOfCategory = true;
   }
+
   OnCat_Cancel(Cid) {
     (<HTMLInputElement>document.getElementById("TextboxCat_" + Cid)).style.display = "none";
     (<HTMLInputElement>document.getElementById("LabelCat_" + Cid)).style.display = "block";
     this.hideMenuOfCategory = false;
   }
+
   ObjCategoryDTO: CategoryDTO;
+
   OnCategoryRename(Cid) {
     if (this.Cat_Name != "") {
       this.ObjCategoryDTO.Mode = "Rename";
@@ -721,6 +683,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
+
   OnDeleteCategory(Cid, Cname) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -756,18 +719,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     });
   }
 
-
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
     // document.getElementById("rightbar-overlay").style.display = "block";
-    //alert(pcode)
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
     this.router.navigate(["UnplannedTask/projectinfo/", pcode]);
   }
-
-
 }
-
   // else {
   //   let NewDemoTasksList = {
   //     id: 4,

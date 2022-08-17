@@ -8,19 +8,18 @@ import { HttpClient } from "@angular/common/http"
 import { Router } from '@angular/router';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 
-
 @Component({
   selector: 'app-project-assign-task',
   templateUrl: './project-assign-task.component.html',
   styleUrls: ['./project-assign-task.component.css']
 })
+
 export class ProjectAssignTaskComponent implements OnInit {
   dropdownList = [];
   selectedItems = [];
   selectedItems_Employee = [];
   dropdownSettings = {};
   dropdownSettings_EMP = {};
-
   //dropdownSettings_forProjectType: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   _ObjCompletedProj: CompletedProjectsDTO;
   searchText: string;
@@ -32,8 +31,6 @@ export class ProjectAssignTaskComponent implements OnInit {
   selectedEmployee: string = "";
   _ObjAssigntaskDTO: AssigntaskDTO;
   _remarks: string;
-
-
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
   @Input() min: any;
@@ -45,15 +42,16 @@ export class ProjectAssignTaskComponent implements OnInit {
     private BsService: BsServiceService) {
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this._ObjAssigntaskDTO = new AssigntaskDTO();
-
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disablePreviousDate.getDate());
   }
+
   Assigntask_List: any;
   ProjectTypelist = [];
   EmployeeList: any;
   CurrentUser_ID: string;
+
   ngOnInit() {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.GetAssignTask();
@@ -106,6 +104,7 @@ export class ProjectAssignTaskComponent implements OnInit {
   countNotStarted: any;
   NotfoundAssignedTask: string;
   FilteredText: string = "";
+
   GetAssignTask() {
     this.Div_TaskDetails = true;
     this.FilteredText = "ALL";
@@ -138,6 +137,7 @@ export class ProjectAssignTaskComponent implements OnInit {
         this.countRejected = (data[0]['CountRejected']);
       });
   }
+
   GetAccepted() {
     this.Div_TaskDetails = true;
     this.FilteredText = "Accepted";
@@ -170,6 +170,7 @@ export class ProjectAssignTaskComponent implements OnInit {
         this.countRejected = (data[0]['CountRejected']);
       });
   }
+
   GetInProcess() {
     this.Div_TaskDetails = true;
     this.FilteredText = "In Process";
@@ -202,6 +203,7 @@ export class ProjectAssignTaskComponent implements OnInit {
         this.countRejected = (data[0]['CountRejected']);
       });
   }
+
   GetRejected() {
     this.Div_TaskDetails = true;
     this.FilteredText = "Rejected";
@@ -234,6 +236,7 @@ export class ProjectAssignTaskComponent implements OnInit {
         this.countRejected = (data[0]['CountRejected']);
       });
   }
+
   GetNotStarted() {
     this.Div_TaskDetails = true;
     this.FilteredText = "Not Started";
@@ -265,9 +268,10 @@ export class ProjectAssignTaskComponent implements OnInit {
         this.countNotStarted = (data[0]['CountNotStarted']);
         this.countRejected = (data[0]['CountRejected']);
       });
-
   }
+
   _AssignTaskSearch: any;
+
   Search() {
     if (this._AssignTaskSearch != "") {
       this.Assigntask_List = this.Assigntask_List.filter(res => {
@@ -282,18 +286,23 @@ export class ProjectAssignTaskComponent implements OnInit {
   ProjectTypeOnSelect(obj) {
     this.selectedProjectType = obj['Exec_BlockNo'];
   }
+
   ProjectTypeOnDeselect(obj) {
     this.selectedProjectType = "Not Selected";
   }
+
   EmpOnSelect(obj) {
     this.selectedEmployee = obj['Emp_No'];
   }
+
   EmpOnDeselect(obj) {
     this.selectedEmployee = "Not Selected"
   }
+
   search(value) {
     value = this.searchText;
   }
+
   ShowForm() {
     this.paragraph_msg = true;
     this._DisplayForm = false;
@@ -304,13 +313,14 @@ export class ProjectAssignTaskComponent implements OnInit {
     this.router.navigate(["AssignTask/ActionToAssign/"]);
     document.getElementById("mysideInfobar").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
-
   }
+
   closeInfo() {
     this.Clearfeilds();
     document.getElementById("mysideInfobar").style.width = "0px";
     document.getElementById("rightbar-overlay").style.display = "none";
   }
+
   Task_Name: string;
   ProjectType: string;
   Start_Date: Date;
@@ -324,6 +334,7 @@ export class ProjectAssignTaskComponent implements OnInit {
   public ProjectCode: string = null;
   Remarks: string;
   FileName: string;
+
   OnAssigntaskClick(Emp, Edt, Ptype, Sdt, TDesc, TName, ABy, CBy, IsAct, Reject,
     RejCommts, Status, Ref, Dur, Cr_DT, Sub_type, Mdy_DT, pCode, Remarks, FileName) {
     this.paragraph_msg = true;
@@ -351,15 +362,19 @@ export class ProjectAssignTaskComponent implements OnInit {
     this.FileName = FileName;
     this.closeInfo();
   }
+
   onFileChange(filepath) {
     this._fileName = filepath.replace("C:\\fakepath\\", "");
   }
+
   src: any;
+
   LoadDocument(url: string) {
     this.src = url;
     var myWindow = window.open(url);
     myWindow.focus();
   }
+
   _taskName: string = "";
   _description: string = "";
   _projectDays: number;
@@ -385,7 +400,6 @@ export class ProjectAssignTaskComponent implements OnInit {
   //     this._ObjAssigntaskDTO.ProjectDays = (-Difference_In_Days);
   //     //this._ObjAssigntaskDTO.ProjectDays = this._ObjAssigntaskDTO.ProjectDays * 8 / 1;
   //     this._ObjAssigntaskDTO.Reference = this._fileName;
-
   //     this.ProjectTypeService._InsertAssignTaskServie(this._ObjAssigntaskDTO).subscribe(
   //       (data) => {
   //         this.GetAssignTask();
@@ -397,6 +411,7 @@ export class ProjectAssignTaskComponent implements OnInit {
   //     this.notifyService.showInfo("Empty Inputs Found,   ...", "Try Again");
   //   }
   // }
+
   Clearfeilds() {
     this.selectedProjectType = "";
     this._taskName = "";
@@ -409,8 +424,10 @@ export class ProjectAssignTaskComponent implements OnInit {
     this.selectedItems = [];
     this.selectedItems_Employee = [];
   }
+
   _DemoVersion: boolean = true;
   _Demotext: string;
+
   DemoView() {
     this.paragraph_msg = true;
     this.Div_TaskDetails = true;
@@ -418,11 +435,11 @@ export class ProjectAssignTaskComponent implements OnInit {
     this.NotfoundAssignedTask = "";
     this.closeInfo();
   }
+
   public DemoTasksList: any[] = [
     {
       id: 1,
       name: 'Creative Planner Single User Login.'
-
     },
     {
       id: 2,
@@ -458,8 +475,8 @@ export class ProjectAssignTaskComponent implements OnInit {
       // console.log(this.filename22)
     }
   }
+
   submit() {
-    debugger
     const formData = new FormData();
     formData.append('file', this.filename22);
     //"http://localhost:4200/backend/dashboard"
@@ -468,15 +485,16 @@ export class ProjectAssignTaskComponent implements OnInit {
     this.http.post(url, formData)
       .subscribe(res => {
         console.log(res);
-        // alert('Uploaded Successfully.');
       })
   }
+
   ProjectInfoDetails() {
     console.log("For Accept", this.ProjectCode);
     document.getElementById("mysideInfobar").style.width = "60%";
     //document.getElementById("rightbar-overlay").style.display = "block";
     this.router.navigate(["AssignTask/projectinfo", this.ProjectCode]);
   }
+
   moreDetails() {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;

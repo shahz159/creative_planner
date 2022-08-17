@@ -53,6 +53,7 @@ import { LinkService } from 'src/app/_Services/link.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
+
 export class HomeComponent implements OnInit {
 
   isFavorite: boolean = true;
@@ -70,7 +71,7 @@ export class HomeComponent implements OnInit {
   _SelectedEmployees: any = [];
   _SelectedEmpIds_String: string;
 
-  edited:boolean = false;
+  edited: boolean = false;
   searchResult: boolean = false;
 
   ObjUserDetails: UserDetailsDTO;
@@ -116,7 +117,6 @@ export class HomeComponent implements OnInit {
   // btnAddPortfolio: string = "Add Portfolio";
   Custom_chkbxvalue: boolean;
   matprogressbar: boolean;
-
   p: number = 1; //Paging
 
   //objLoginComp: LoginComponent;
@@ -221,10 +221,10 @@ export class HomeComponent implements OnInit {
   _ActualPListFor_All: any;
   _portfolioName: string = "";
   pageList: any;
-
   Companylist_Json: any;
   Statuslist_Json: any;
   Employeelist_Json: any;
+
   ngOnInit() {
     this._raciDetails = true;
     this.A2Z = true;
@@ -246,7 +246,6 @@ export class HomeComponent implements OnInit {
     this.Max50Char = true;
     this.HideStatusDropdown = false;
     //this.HideProjects = false;
-
     // this.isLoading = false;
     this._btnShareDetails = true;
     this.messageForEmpty = true;
@@ -259,7 +258,6 @@ export class HomeComponent implements OnInit {
     this._CurrentUserFullName = localStorage.getItem('UserfullName');
     this.Current_user = localStorage.getItem('_Currentuser');
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    ///alert(this.Current_user_ID)
     this.searchText = '';
     this.search_Team = [];
     this.search_Type = [];
@@ -271,8 +269,10 @@ export class HomeComponent implements OnInit {
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this.getPortfolio_List();
   }
+
   NoOfRecordsPerPage: number = 0;
   NoOfPages: number = 1;
+
   getPortfolio_List() {
     this._objStatusDTO.PageNumber = this.Portfolio_CurrentPage;
     this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
@@ -280,13 +280,11 @@ export class HomeComponent implements OnInit {
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
         this.NoOfRecordsPerPage = this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
-
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
         this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
         // this._ActualPortfolioList_ForShare = JSON.parse(data[0]['PortfolioList_Json']);
         // this._ActualPListFor_All = JSON.parse(data[0]['PortfolioList_Json']);
-
         this.countAll = data[0]['Total'];
         this.countOwners = data[0]['Owners'];
         this.countShare = data[0]['Shared'];
@@ -312,17 +310,20 @@ export class HomeComponent implements OnInit {
   //     this.getPortfolio_List();
   //   }
   // }
+
   onKeyDownEvent(event: any) {
     this.searchText = event.target.value;
     this.applyFilters();
     //console.log(event.target.value);
   }
+
   ServerSide_Search(value) {
-    this.searchResult= true;
+    this.searchResult = true;
     this.searchText = value;
     this.applyFilters();
     // console.log(this.searchText);
   }
+
   Search() {
     if (this.PortfolioSearch != "") {
       this.Portfolio_CurrentPage = 1;
@@ -334,6 +335,7 @@ export class HomeComponent implements OnInit {
       this.ngOnInit();
     }
   }
+
   filterProjects(searchString: string) {
     return this.un_FilteredProjects.filter(p =>
       p.Project_Name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
@@ -351,12 +353,10 @@ export class HomeComponent implements OnInit {
   filterList_Type = [];
   filterList_Status = [];
   filterList_Emp = [];
-
   _searchFilterList: any;
   public filerpipe = new GrdFilterPipePipe();
   def_filter: boolean = true;
   public filtered;
-
   selected_arr_Type = [];
   selected_arr_status = [];
   selected_arr_Emp = [];
@@ -366,7 +366,7 @@ export class HomeComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.Portfolio_CurrentPage = 1;
-    this.edited=false;
+    this.edited = false;
 
     if (this.selectedItem_Company.length == 0) {
       this.selectedCom_String = null;
@@ -384,17 +384,16 @@ export class HomeComponent implements OnInit {
     }
     this.applyFilters();
   }
+
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Company.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
     this.resetFilters();
-
   }
 
   StatusSelect(PortfolioProjStatus) {
-    //debugger
     this._PortProjStatus = PortfolioProjStatus['StatusCountDB'];
     if (this._PortProjStatus.includes('Delay')) {
       this._PortProjStatus = 'Delay';
@@ -402,11 +401,9 @@ export class HomeComponent implements OnInit {
     if (this._PortProjStatus.includes('InProcess')) {
       this._PortProjStatus = 'InProcess';
     }
-
     if (this._PortProjStatus.includes('Completed')) {
       this._PortProjStatus = 'Completed';
     }
-
     if (this._PortProjStatus.includes('Project Complete Rejected')) {
       this._PortProjStatus = 'Project Complete Rejected';
     }
@@ -438,21 +435,26 @@ export class HomeComponent implements OnInit {
       this._PortProjStatus = 'Deadline Extend Under Approval';
     }
   }
+
   labelInprocess() {
     this._PortProjStatus = "InProcess"
   }
+
   labelDelay() {
     this._PortProjStatus = "Delay";
   }
+
   labelCompleted() {
     this._PortProjStatus = "Completed";
   }
+
   labelNewProject() {
     this._PortProjStatus = "New Project";
     if (this._PortProjStatus.includes('New Project')) {
       this._PortProjStatus = 'New Project';
     }
   }
+
   labelRejecteds() {
     this._PortProjStatus = "Rejected";
     this._PortProjStatus.includes('Rejected');
@@ -463,16 +465,20 @@ export class HomeComponent implements OnInit {
     this._PortProjStatus = "Under Approval";
     this._PortProjStatus.includes('Under Approval')
   }
+
   labelProjectHold() {
     this._PortProjStatus = "Project Hold";
     this._PortProjStatus.includes('Project Hold');
   }
+
   labelAll() {
     this._PortProjStatus = "";
   }
+
   StatusDeselect() {
     this._PortProjStatus = "";
   }
+
   totalProjs: number;
   HCountRejected: boolean;
   HCountDelay: boolean;
@@ -503,8 +509,8 @@ export class HomeComponent implements OnInit {
   checkedItems_Company = [];
   checkedItems_Emp = [];
   selectedItem_Status = [];
+
   isStatusChecked(item) {
-    //debugger
     let arr = [];
     this.Statuslist_Json.forEach(element => {
       if (element.checked == true) {
@@ -527,15 +533,16 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Company.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
-
   }
+
   selectedItem_Company = [];
+
   isCompanychecked(item) {
     let arr = [];
     this.Companylist_Json.forEach(element => {
@@ -560,15 +567,16 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Company.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
-
   }
+
   selectedItem_Emp = [];
+
   isEmpChecked(item) {
     let arr = [];
     this.Employeelist_Json.forEach(element => {
@@ -591,14 +599,14 @@ export class HomeComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Company.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Company.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
-
   }
+
   selectedCom_String: any;
   selectedEmp_String: any;
   selectedStatus_String: any;
@@ -608,22 +616,20 @@ export class HomeComponent implements OnInit {
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
+
   public _filtersMessage: string = "";
   public _filtersMessage2: string;
   public _CurrentpageRecords: number;
+
   applyFilters() {
-    
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Employee;
     }).join(',');
-
     // console.log("Emp--->",this.selectedEmp_String);
     this.selectedCom_String = this.checkedItems_Company.map(select => {
       return select.Company;
     }).join(',');
-
     // console.log("Comp--->",this.selectedType_String);
-
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
     }).join(',');
@@ -644,7 +650,6 @@ export class HomeComponent implements OnInit {
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
-        
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
@@ -654,7 +659,7 @@ export class HomeComponent implements OnInit {
         // console.log("total values", this.countAll);
 
         if (this._ListProjStat) {
-          this._CurrentpageRecords = this.countAll; 
+          this._CurrentpageRecords = this.countAll;
         }
 
         if (this.selectedItem_Emp.length == 0) {
@@ -685,25 +690,24 @@ export class HomeComponent implements OnInit {
         }
         this._CurrentpageRecords = this._ListProjStat.length;
 
-
         // this.countAll = this._ListProjStat.length;
 
         if (this._ListProjStat.length == 0) {
           this._filtersMessage = "No Portfolio Found";
           this._filtersMessage2 = "Please use clear for clearing filters & try again";
-         
         }
         else {
           this._filtersMessage = "";
           this._filtersMessage2 = "";
         }
       });
-
     //Filtering Checkbox de
     //this.getDropdownsDataFromDB();
   }
+
   ActualDataList: any;
   un_FilteredProjects: any = [];
+
   GetProjectsByUserName() {
     //this.LoadingBar_state.start();
     this.ObjUserDetails.PageNumber = this.p;
@@ -731,8 +735,8 @@ export class HomeComponent implements OnInit {
   //loadrstop: any = this.LoadingBar_state.stop();
   hidetotalProjects: boolean = false;
   PortfolioName: any;
-  Displayprojectlist() {
 
+  Displayprojectlist() {
     if (this._portfolioName != "") {
       this._portfolioName = this._portfolioName.trim();
       localStorage.setItem("_PortfolioName", this._portfolioName);
@@ -773,8 +777,10 @@ export class HomeComponent implements OnInit {
       // }
     }
   }
+
   public _totalProjectsCount: any;
   BarChartEmp: any;
+
   CloseBttn() {
     this.p = 1;
     this.Share_preferences = true;
@@ -806,6 +812,7 @@ export class HomeComponent implements OnInit {
       //console.log("selectedList------>", this.selectedItemsList);
     }
   }
+
   checkboxclick() {
     for (let value of Object.values(this._ProjectDataList)) {
       if (value['checked'] === true) {
@@ -819,6 +826,7 @@ export class HomeComponent implements OnInit {
       }
     }
   }
+
   fetchSelectedItems() {
     this.selectedItemsList = this._ProjectDataList.filter((checkboxes) => {
       return checkboxes.checked == true;
@@ -839,10 +847,12 @@ export class HomeComponent implements OnInit {
       this.matCard = false;
     }
   }
+
   GetProjectDetails() {
     this.service.GetProjects_EPDB().subscribe(res =>
       this.service.ProjectDetails_List = res as ProjectDetailsDTO[]);
   }
+
   DropdownEmployeeForChart: any;
   dropdownSettings_forEmpChart: {};
   MaxDelays: any;
@@ -867,6 +877,7 @@ export class HomeComponent implements OnInit {
   snackBarRef: any;
   EmpDropdwn = [];
   PortfolioCreated_UserName: string;
+
   OnCardClick(P_id: any, P_Name: string, CreatedName: string) {
     sessionStorage.setItem('portfolioId', P_id);
     sessionStorage.setItem('portfolioname', P_Name);
@@ -881,6 +892,7 @@ export class HomeComponent implements OnInit {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
   dummy_function(name, id) {
     var url = document.baseURI + name;
     var myurl = `${url}/${id}`;
@@ -889,6 +901,7 @@ export class HomeComponent implements OnInit {
   }
 
   returnProjectsUrl: string;
+
   populateForm() {
     this.Obj_Portfolio_DTO.Portfolio_ID;
     let _Portid: any = this.Obj_Portfolio_DTO.Portfolio_ID;
@@ -899,7 +912,9 @@ export class HomeComponent implements OnInit {
     this.returnProjectsUrl = 'backend/CreatePortfolio';
     this.router.navigate([this.returnProjectsUrl]);
   }
+
   Rename_PortfolioName: string;
+
   RenamePortfolio() {
     if (this.Rename_PortfolioName.length > 50) {
       this.Max50Char = false;
@@ -927,14 +942,16 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
   hideDropdown: boolean;
   activeClass_NewPortfolio: boolean;
+
   resetInputText() {
-    //debugger
     this._portfolioName = '';
     this.alreadyExists = '';
     this.activeClass_NewPortfolio = false;
   }
+
   DropdownOpen() {
     this.activeClass_NewPortfolio = true;
   }
@@ -952,9 +969,11 @@ export class HomeComponent implements OnInit {
       };
     })
   }
+
   //Employee DropDown Bind
   ngEmployeeDropdown: any;
   ngEmployeeDropdown2: any = [];
+
   OnEmpSelect(emp: string) {
     this._ErrorMessage_User = "";
     let arr = [];
@@ -965,13 +984,12 @@ export class HomeComponent implements OnInit {
       arr.push({ Emp_No: element.Emp_No })
       this._SelectedEmployees = (arr);
     });
-
     //Make Comma Separate..
     this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
       return select.Emp_No;
     }).join(',');
-    // alert(this._SelectedEmpIds_String);
   }
+
   OnEmpDeselect() {
     let arr = [];
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
@@ -982,13 +1000,12 @@ export class HomeComponent implements OnInit {
     this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
       return select.Emp_No;
     }).join(',');
-    //alert(this._SelectedEmpIds_String);
   }
+
   OnCompanySelect(CompNo: string) {
     this._ErrorMessage_comp = "";
     this._CompanyNo = CompNo['Com_No'];
     this.CompanyDropdown = this._CompanyNo;
-    // alert(this.CompanyDropdown);
     let PortfolioId: any = localStorage.getItem('Pid');
     this.service.GetEmployeesby_CompNo(this._CompanyNo, PortfolioId)
       .subscribe((data) => {
@@ -1005,28 +1022,32 @@ export class HomeComponent implements OnInit {
         };
       });
   }
+
   OnCmpDeselect() {
     //this.ngCompanyDropdown = [{}];
     this.ngCompanyDropdown = "";
   }
+
   funforGetComp_Users() {
     this.GetCompanies();
     //SnackBar Dismiss
   }
+
   GetUserDetails() {
     this.service.NewGetUserDetails(this.Current_user);
   }
+
   GetPortfolioByEmployee() {
     this.service.GetPortfolioByEmployee()
       .subscribe(
         (data) => {
-          // alert(JSON.stringify(data));
           this._PortfolioList = data as PortfolioDTO[];
           this._ExistingPortfolioOfProjects = this._PortfolioList;
           //console.log("Portfolio:", this._ExistingPortfolioOfProjects);
           this.cdr.detectChanges();
         });
   }
+
   _PortfolioListTable_Bttn() {
     this._ShareDetailsList = [];
     this._ProjectsListBy_Pid = [];
@@ -1034,10 +1055,12 @@ export class HomeComponent implements OnInit {
     this.PortfolioList = false;
     this._PreferencesList = [];
   }
+
   Radio_View_fullaccess(val: string) {
     this._ErrorMessage_Pref = "";
     this._Preferences = val;
   }
+
   share() {
     //
     if (this.CompanyDropdown == undefined) {
@@ -1068,6 +1091,7 @@ export class HomeComponent implements OnInit {
       this.cdr.detectChanges();
     }
   }
+
   Close_ShareModel() {
     this.CompanyDropdown = "";
     this.EmployeeDropdown = "";
@@ -1079,6 +1103,7 @@ export class HomeComponent implements OnInit {
     this.ngCompanyDropdown = [];
     this.ngEmployeeDropdown = [];
   }
+
   GetDateDiff() {
     var date2 = new Date("06/30/2019");
     var date1 = new Date("07/30/2019");
@@ -1089,6 +1114,7 @@ export class HomeComponent implements OnInit {
       alert("less than Date 1")
     }
   }
+
   BackBttn() {
     //
     //Working
@@ -1106,6 +1132,7 @@ export class HomeComponent implements OnInit {
     //   this.LoadingBar_state.stop();
     // }
   }
+
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
     //if (createdBy == this.Current_user_ID) {
@@ -1117,6 +1144,7 @@ export class HomeComponent implements OnInit {
         message1: proj_Name
       }
     });
+
     confirmDialog.afterClosed().subscribe(result => {
       if (result === true) {
         this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
@@ -1217,7 +1245,9 @@ export class HomeComponent implements OnInit {
     //   this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');
     // }
   }
+
   messagefav: string;
+
   AddFavourites(portfolioId, isfav) {
     // this.LoadingBar_state.start();
     this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
@@ -1252,6 +1282,7 @@ export class HomeComponent implements OnInit {
     })
     // this.isLoading = true
   }
+
   deleteSharedUsers(p_id, empid, Sharedby) {
     var deleteProject = window.confirm('Are you sure you want to Remove ?');
     if (deleteProject) {
@@ -1276,12 +1307,14 @@ export class HomeComponent implements OnInit {
       this.notifyService.showInfo("Action Cancelled", '');
     }
   }
+
   activeClassOwners: boolean
   activeClassAll: boolean
   activeClassShare: boolean
   activeClassFav: boolean
   NoSharedmsg: boolean;
   Nofavmsg: boolean;
+
   Favourite_Portfolios() {
     this.Portfolio_CurrentPage = 1;
     this.NoSharedmsg = true;
@@ -1290,7 +1323,6 @@ export class HomeComponent implements OnInit {
     this.activeClassOwners = false;
     this.activeClassShare = false;
     this.activeClass_NewPortfolio = false;
-    //
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
         this._ListProjStat = JSON.parse(data[0]['Portfolio_FavouritesList']);
@@ -1309,8 +1341,6 @@ export class HomeComponent implements OnInit {
           this.Nofavmsg = false;
         }
       });
-
-
     // this._ListProjStat = this.AllPortfolioslist.filter(i => (i.CreatedName == this._CurrentUserFullName));
     // this._ListProjStat = this._ListProjStat.filter(x => x.IsFavourite);
     // if (this._ListProjStat.length > 0) {
@@ -1321,6 +1351,7 @@ export class HomeComponent implements OnInit {
     //   this.Nofavmsg = false;
     // }
   }
+
   Shared_Portfolios() {
     this.Portfolio_CurrentPage = 1;
     this.Nofavmsg = true;
@@ -1329,7 +1360,6 @@ export class HomeComponent implements OnInit {
     this.activeClassOwners = false;
     this.activeClassFav = false;
     this.activeClass_NewPortfolio = false;
-
     // this._ListProjStat = this._ActualPortfolioList_ForShare.filter(i => (i.CreatedName != this._CurrentUserFullName));
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
@@ -1351,6 +1381,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
   Owners_Portfolios() {
     this.Portfolio_CurrentPage = 1;
     this.Nofavmsg = true;
@@ -1373,7 +1404,9 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
   AllPortfolioslist: any;
+
   All_Portfolio() {
     this.Portfolio_CurrentPage = 1;
     this.Nofavmsg = true;
@@ -1398,6 +1431,7 @@ export class HomeComponent implements OnInit {
       });
     //this._ListProjStat = this._ActualPListFor_All;
   }
+
   pieBarCharts: boolean;
   HideStatusDropdown: boolean;
   HideProjects: boolean;
@@ -1406,6 +1440,7 @@ export class HomeComponent implements OnInit {
   _ChartData: ChartDTO[];
   ObjChartDTO: ChartDTO;
   Project_Graph: string;
+
   ProjectsGraphsClick() {
     // this.snackBarRef.dismiss();
     if (this.Project_Graph == "Graphs") {
@@ -1417,6 +1452,7 @@ export class HomeComponent implements OnInit {
       this.ProjectsClick();
     }
   }
+
   Graphs() {
     this.pieBarCharts = false;
     this.HideStatusDropdown = true;
@@ -1426,12 +1462,14 @@ export class HomeComponent implements OnInit {
     this.LoadPieChart();
     this.LoadBarChart();
   }
+
   ProjectsClick() {
     this.HideProjects = false;
     this.pieBarCharts = true;
     this.HideStatusDropdown = false;
     // this.BarChartEmp = [];
   }
+
   LoadPieChart() {
     am4core.options.autoDispose = true;
     let PieChart = am4core.create("chartdiv2", am4charts.PieChart3D);
@@ -1451,8 +1489,10 @@ export class HomeComponent implements OnInit {
         PieChart.legend.reverseOrder = true;
       });
   }
+
   ObjBarchartDTO: BarChartDTO;
   barchartData: BarChartDTO[];
+
   LoadBarChart() {
     am4core.options.autoDispose = true;
     let BarChart = am4core.create("chartdiv1", am4charts.XYChart3D);
@@ -1588,16 +1628,20 @@ export class HomeComponent implements OnInit {
         series9.columns.template.width = am4core.percent(50);
       });
   }
+
   BarChartEmpNo: string;
+
   EmpChartOnSelect(emp) {
     this.BarChartEmpNo = emp['Emp_No'];
     this.LoadBarChart();
     // this.barchartData = this.barchartData.filter(i => this.BarChartEmpNo.includes(i.Emp_No));
   }
+
   EmpChartOnDeselect() {
     this.BarChartEmpNo = null;
     this.LoadBarChart();
   }
+
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
   _subtaskDiv: boolean;
@@ -1610,10 +1654,9 @@ export class HomeComponent implements OnInit {
   TotalWork_Hours: any;
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
-
   Subtask_List: SubTaskDTO[];
+
   openInfo2(pcode, pName, pDes, ptype, pStDt, pEnDT, pStat, pCost, pCom, pCli, pOwn, pRes, pAut, pCoor, pInf, pSup, pReportType) {
-    //debugger
     this.pName = pName;
     this.pDesc = pDes;
     this.pType = ptype;
@@ -1621,7 +1664,6 @@ export class HomeComponent implements OnInit {
     this.pEndDT = pEnDT;
     this.pStat = pStat;
     this.pCost = pCost;
-    //alert(this.pCost);
     this.pComp = pCom;
     this.pClient = pCli;
     this.Powner = pOwn;
@@ -1634,13 +1676,11 @@ export class HomeComponent implements OnInit {
     this.PInfo = pInf;
     this.pSupprt = pSup;
     this.pRType = pReportType;
-
     //More Details------
     this.MoreDetailsList = [
       { ProjectCode: pcode },
       { ProjectName: pName },
       { Description: pDes },
-
       { StartDate: pStDt },
       { EndDate: pEnDT },
       { Cost: pCost },
@@ -1689,22 +1729,28 @@ export class HomeComponent implements OnInit {
   closeInfo2() {
     document.getElementById("InfoContent2").style.width = "0";
   }
+
   btnEdit() {
     this.Max50Char = true;
   }
+
   _ItemsPerpage: number;
   Portfolio_CurrentPage: number = 1;
+
   _Showentries(event) {
     this._ItemsPerpage = event;
     this.Portfolio_CurrentPage = 1;
   }
+
   alreadyExists: string;
   NotMatched: boolean;
+
   _ontextChange() {
     this.alreadyExists = '';
   }
   //deleteDisable: boolean = true;
   deletedBy: string;
+
   _deletePortfolio(pid: number, portName: string, createdBy: string, createdDT: Date, ProjCount: number, status: string) {
     //if (createdBy == this.Current_user_ID) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -1766,6 +1812,7 @@ export class HomeComponent implements OnInit {
   clicks: number = 0;
   A2Z: boolean;
   Z2A: boolean;
+
   _SortPortfoliolist() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -1779,6 +1826,7 @@ export class HomeComponent implements OnInit {
       this._ListProjStat = this._ListProjStat.sort((a, b) => (a.Portfolio_ID > b.Portfolio_ID) ? 1 : -1);
     }
   }
+
   _SortProjectList() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -1792,10 +1840,12 @@ export class HomeComponent implements OnInit {
       this._ProjectsListBy_Pid = this._ProjectsListBy_Pid.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
     }
   }
+
   _MemosSubjectList: any;
   _JsonString: any;
   _displayProjName: string;
   _MemosNotFound: string;
+
   _OpenMemosInfo(_projectCode, _projectName) {
     this._displayProjName = _projectName;
     this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
@@ -1819,6 +1869,7 @@ export class HomeComponent implements OnInit {
     //Displaying Right Side Bar... 
     document.getElementById("MemosSideBar").style.width = "350px";
   }
+
   _CloseMemosidebar() {
     document.getElementById("MemosSideBar").style.width = "0";
   }
@@ -1828,10 +1879,13 @@ export class HomeComponent implements OnInit {
     console.log("Url----------->", memo_Url);
     window.open(Url);
   }
+
   _raciDetails: boolean = true;
+
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
+
   //Filter Box Counts Functionality
   CountsOf_Emp_Status_ProjectType() {
     //Employee Count
@@ -1862,6 +1916,7 @@ export class HomeComponent implements OnInit {
     });
     this.StatusCountFilter = this.StatusCountFilter.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
   }
+
   GetCounts_On_Filter() {
     //Emp
     let Emp = {};
@@ -1897,7 +1952,6 @@ export class HomeComponent implements OnInit {
     });
     this.StatusCountFilter = arr3.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
   }
-
 
   _fromGetProjectsbyusername() {
     var rez = {};

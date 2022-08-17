@@ -17,24 +17,22 @@ import { ParameterService } from "src/app/_Services/parameter.service";
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 //import { ViewChild } from '@angular/core';
+
 @Component({
   selector: 'app-projects-summary',
   templateUrl: './projects-summary.component.html',
   styleUrls: ['./projects-summary.component.css']
 })
+
 export class ProjectsSummaryComponent implements OnInit {
   // maskEditorAppliedMessage: string;
   // @ViewChild('popOver') public popover: NgbPopover;
-
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
-
   edited: boolean = false;
-
   searchResult: Boolean = false;
-
-
   _ObjCompletedProj: CompletedProjectsDTO;
+
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private ShareParameter: ParameterService,
@@ -46,6 +44,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
   }
+
   _subtaskDiv: boolean;
   keyword = 'Subject';
   countries: any;
@@ -54,7 +53,6 @@ export class ProjectsSummaryComponent implements OnInit {
   _raciDetails: boolean = true;
 
   ngOnInit() {
-   
     this._raciDetails = true;
     this.A2Z = true;
     this.Z2A = false;
@@ -65,8 +63,10 @@ export class ProjectsSummaryComponent implements OnInit {
     this.getDropdownsDataFromDB();
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
+
   Memos_List: any;
   _ActualMemoslist: any;
+
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
@@ -86,10 +86,12 @@ export class ProjectsSummaryComponent implements OnInit {
         };
       });
   }
+
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
   Selected_Projectcode: string;
+
   _onRowClick(projectCode, ProjName) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -133,19 +135,22 @@ export class ProjectsSummaryComponent implements OnInit {
         }
         else {
           this._mappedMemos = 0;
-          console.log("No Memos linked For This Project...")
+          // console.log("No Memos linked For This Project...")
         }
       });
     document.getElementById("LinkSideBar").style.width = "360px";
   }
+
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
   }
+
   //Get Application Details
   _ApplicationUrl: string;
   _ApplicationName: string;
   _ApplicationId: number;
   _AppIcon
+
   GetApplicationDetails() {
     let AppData: any;
     this._LinkService.GetApplicationDetails().
@@ -160,9 +165,11 @@ export class ProjectsSummaryComponent implements OnInit {
         //console.log(this._ApplicationUrl);
       });
   }
+
   Empty_MemoDropdown: any;
   _SelectedMemos: any;
   Mail_Id: number;
+
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
@@ -174,6 +181,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     //console.log("Selected Memos In Array--->", arr)
   }
+
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
@@ -183,6 +191,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     //console.log("Deselect Memos--->", this._SelectedMemos)
   }
+
   SearchMemo: string;
   // search(value: string) { 
   //   let filter = value.toLowerCase();
@@ -191,7 +200,6 @@ export class ProjectsSummaryComponent implements OnInit {
   // onKey(value) { 
   //   this.Memos_List = this.search(value);
   //   }
-
 
   deleteMemos(memoId, pcode) {
     this._MemosSubjectList = [];
@@ -241,10 +249,11 @@ export class ProjectsSummaryComponent implements OnInit {
         }
       });
   }
+
   memoId: any;
+
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
-    //alert(this.Global_Projectcode);
     let appId: number = 101;//this._ApplicationId;
     //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
@@ -273,6 +282,7 @@ export class ProjectsSummaryComponent implements OnInit {
     }
     this.closeLinkSideBar();
   }
+
   onFocused(e) {
     // do something when input is focused
   }
@@ -286,7 +296,6 @@ export class ProjectsSummaryComponent implements OnInit {
   searchText: string;
   txtSearch: string;
   public _totalProjectsCount: number;
-
   portfolioName: string;
   submitted: boolean;
   public _ListProjStat: any[];
@@ -321,6 +330,7 @@ export class ProjectsSummaryComponent implements OnInit {
   portfolioId: number;
   count_LinkedProjects: number;
   Current_user_ID: string;
+
   GetProjectsByUserName() {
     // this.LoadingBar.start();
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
@@ -329,7 +339,6 @@ export class ProjectsSummaryComponent implements OnInit {
       this._ProjectDataList = data;
       // console.log("Summary Data---->", this._ProjectDataList);
       // this.count_LinkedProjects= this._ProjectDataList.filter(x => x.Link_Status === true).length 
-
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
         // this.LoadingBar.stop();
@@ -341,6 +350,7 @@ export class ProjectsSummaryComponent implements OnInit {
       }
     });
   }
+
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -353,11 +363,9 @@ export class ProjectsSummaryComponent implements OnInit {
         //Emp
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
-
         }
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
-
         }
         //Type
         if (this.selectedItem_Type.length == 0) {
@@ -378,8 +386,8 @@ export class ProjectsSummaryComponent implements OnInit {
         this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
         //console.log(this._totalProjectsCount)
       });
-
   }
+
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
@@ -387,8 +395,8 @@ export class ProjectsSummaryComponent implements OnInit {
   selectedEmp_String: string;
   selectedStatus_String: string;
   selectedItem_Status = [];
+
   isStatusChecked(item) {
-    
     let arr = [];
     this.edited = true;
     this.StatusCountFilter.forEach(element => {
@@ -417,14 +425,13 @@ export class ProjectsSummaryComponent implements OnInit {
     else{
       this.edited=true;
     }
-
   }
+
   selectedItem_Type = [];
+
   isTypeChecked(item) {
-    
     let arr = [];
     this.TypeContInFilter.forEach(element => {
-      
       if (element.checked == true) {
         arr.push({ Block_No: element.Block_No });
         return this.checkedItems_Type = arr;
@@ -432,15 +439,13 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     let arr2 = [];
     this.TypeContInFilter.filter((item) => {
-      
       if (item.checked == true) {
         this.applyFilters();
         return arr2.push(item);
       }
     });
     this.selectedItem_Type.push(arr2);
-    this.TypeContInFilter.forEach(element => {
-      
+    this.TypeContInFilter.forEach(element => {      
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
@@ -453,13 +458,13 @@ export class ProjectsSummaryComponent implements OnInit {
       this.edited=true;
     }
   }
+
   selectedItem_Emp = [];
-  isEmpChecked(item) {
-    
+
+  isEmpChecked(item) {  
     let arr = [];
     this.edited = true;
-    this.EmpCountInFilter.forEach(element => {
-      
+    this.EmpCountInFilter.forEach(element => {     
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
         return this.checkedItems_Emp = arr;
@@ -467,15 +472,13 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     let arr2 = [];
     this.EmpCountInFilter.filter((item) => {
-      
       if (item.checked == true) {
         this.applyFilters();
         return arr2.push(item);
       }
     });
     this.selectedItem_Emp.push(arr2);
-    this.EmpCountInFilter.forEach(element => {
-      
+    this.EmpCountInFilter.forEach(element => {     
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
         this.resetFilters();
@@ -487,33 +490,29 @@ export class ProjectsSummaryComponent implements OnInit {
     else{
       this.edited=true;
     }
-
   }
+
   //Apply Filters
   SearchbyText() {
     this.searchResult = true;
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
+
   applyFilters() {
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
-
     this.selectedType_String = this.checkedItems_Type.map(select => {
       return select.Block_No;
     }).join(',');
-
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
     }).join(',');
-
     //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
-
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
-
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
@@ -524,7 +523,6 @@ export class ProjectsSummaryComponent implements OnInit {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
         this._CurrentpageRecords = this._ProjectDataList.length;
-
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
           this._filtersMessage2 = " Clear the filters & try again";
@@ -537,12 +535,12 @@ export class ProjectsSummaryComponent implements OnInit {
     //Filtering Checkbox de
     this.getDropdownsDataFromDB();
   }
+
   resetFilters() {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
     this.edited=false;
-
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -558,14 +556,15 @@ export class ProjectsSummaryComponent implements OnInit {
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
+
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
     this.resetFilters();
-
   }
+
   Subtask_List: SubTaskDTO[];
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
@@ -581,13 +580,16 @@ export class ProjectsSummaryComponent implements OnInit {
   standardDuration: any;
   days: any;
   _MainProjectStatus: string;
+
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").style.width = "50%";
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
   }
+
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
   }
+
   _totalMemos: number;
   _mappedMemos: number;
   _leftMemos: number;
@@ -595,6 +597,7 @@ export class ProjectsSummaryComponent implements OnInit {
   _displayProjName: string;
   _MemosNotFound: string = "";
   _DBMemosIDList: any;
+
   _OpenMemosInfo(_projectCode, _projectName) {
     this._dbMemoIdList = [];
     this._displayProjName = _projectName;
@@ -628,18 +631,23 @@ export class ProjectsSummaryComponent implements OnInit {
     //Displaying Right Side Bar... 
     document.getElementById("MemosSideBar").style.width = "350px";
   }
+
   _CloseMemosidebar() {
     document.getElementById("MemosSideBar").style.width = "0";
   }
+
   Mode: string;
   // LoadingBar = this.loadingBar.useRef('http');
+
   BackBttn() {
     this._ProjectDataList = [];
     this.service.Mode = "";
     // this.LoadingBar.stop();
     this.router.navigate(['/MainDashboard']);
   }
+
   clicks: number = 0;
+
   _SortProjectList() {
     this.clicks += 1;
     if (this.clicks != 1) {
@@ -653,12 +661,15 @@ export class ProjectsSummaryComponent implements OnInit {
       this._ProjectDataList = this._ProjectDataList.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
     }
   }
+
   //_ProjectCode:string;
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     //console.log("Url----------->", memo_Url);
     window.open(Url);
   }
+
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
@@ -682,9 +693,11 @@ export class ProjectsSummaryComponent implements OnInit {
       });
     document.getElementById("DARSideBar").style.width = "350px";
   }
+
   _CloseDARSideBar() {
     document.getElementById("DARSideBar").style.width = "0";
   }
+
   clicks1: number = 0;
   A2Z1: boolean = true;
   Z2A1: boolean = false;
@@ -699,6 +712,7 @@ export class ProjectsSummaryComponent implements OnInit {
       this.Z2A1 = true;
     }
   }
+
   moreDetails() {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -706,9 +720,11 @@ export class ProjectsSummaryComponent implements OnInit {
     var myWindow = window.open(myurl, this.pCode);
     myWindow.focus();
   }
+
   AddDms() {
     this._onRowClick(this.pCode, this.pName);
   }
+
   search(event) {
     this.searchResult = true;
     this.SearchbyText();

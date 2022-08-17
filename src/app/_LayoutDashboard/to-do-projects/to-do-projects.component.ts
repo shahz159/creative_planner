@@ -17,11 +17,13 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 import { MatDialog } from '@angular/material/dialog';
 import { ResizeButton, string } from '@amcharts/amcharts4/core';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-to-do-projects',
   templateUrl: './to-do-projects.component.html',
   styleUrls: ['./to-do-projects.component.css']
 })
+
 export class ToDoProjectsComponent implements OnInit {
   campaignOne: FormGroup;
   campaignTwo: FormGroup;
@@ -38,7 +40,6 @@ export class ToDoProjectsComponent implements OnInit {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-
     this.campaignOne = new FormGroup({
       start: new FormControl,
       end: new FormControl
@@ -48,29 +49,24 @@ export class ToDoProjectsComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disablePreviousDate.getDate());
   }
+
   // @Input() max: any;
   // @Input() min: any;
   minDate: any;
   maxDate: any;
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
-
   edited: boolean = false;
 
   ngOnInit() {
-
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     //this._ProjectName = "Project Name"
     this.GetProjectsByUserName();
     this.getDropdownsDataFromDB();
-    // alert("To do Loaded");
-
-
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
-
   }
 
   _ProjectDataList: any;
@@ -92,9 +88,7 @@ export class ToDoProjectsComponent implements OnInit {
   Support: string; EmpNo_Supp: string;
   Comp_No: string; ProjectBlock: string;
 
-
   GetProjectsByUserName() {
-
     this.ObjUserDetails.PageNumber = 1;
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
@@ -105,6 +99,7 @@ export class ToDoProjectsComponent implements OnInit {
       }
     });
   }
+
   _ProjectName: string;
   _ProjectCode: string;
   Proj_Desc: string;
@@ -112,7 +107,6 @@ export class ToDoProjectsComponent implements OnInit {
   PEndDT: string;
   Proj_ExecBlck: string;
   Project_Status: string;
-
   lengthOfRACIS: number;
   onradioclick: boolean = false;
   titles: boolean = true;
@@ -151,11 +145,9 @@ export class ToDoProjectsComponent implements OnInit {
     this.paragraph_msg = true;
     this.Proj_checkbox = false;
     this.addbutton_hidden = false;
-    //alert(Comp_No + proj_Block);
     this.onradioclick = true;
     this._ProjectCode = Pcode;
     this._MasterCode = Pcode;
-
     this._ProjectName = Pname;
     this.Owner = Owner; this.EmpNo_Own = EmpNo_Own;
     this.Resp = Res; this.EmpNo_Res = EmpNo_Res;
@@ -166,7 +158,6 @@ export class ToDoProjectsComponent implements OnInit {
     this.Comp_No = Comp_No;
     this.ProjectBlock = proj_Block;
     this.Proj_ExecBlck = PExecBlck;
-
     this.Proj_Desc = PDesc;
     this.PstDT = PStDT;
     this.PEndDT = PendDT;
@@ -195,8 +186,8 @@ export class ToDoProjectsComponent implements OnInit {
     }
     this.closeInfo();
   }
-  ProjectInfoDetails() {
 
+  ProjectInfoDetails() {
     // var myWindow = window.open(myurl);
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
@@ -208,10 +199,11 @@ export class ToDoProjectsComponent implements OnInit {
 
   selected_Employee = [];
   selectedEmpNo: string = null;
+
   EmployeeOnSelect(obj) {
     this.selectedEmpNo = obj['Emp_No'];
-    //alert(this.selectedEmpNo);
   }
+
   EmployeeOnDeselect(obj) {
     this.selectedEmpNo = null;
   }
@@ -245,24 +237,20 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   GetSubtask_Details() {
-    //alert(this.Comp_No)
-    // alert(1256)
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         // this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
         if (data[0]['SubtaskDetails_Json'] == null) {
           this._subtaskDetails = true;
           this._projectDetails = false;
-         
         }
         else {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this._subtaskDetails = false;
-          this._projectDetails = true;
-          
+          this._projectDetails = true;     
           // console.log("To Do Completed---->", this.CompletedList);
-           console.log("to Incomplete---->", this.Subtask_List);
+          //  console.log("to Incomplete---->", this.Subtask_List);
         }
         if (data[0]['CompletedTasks_Json'] == null) {
           this._CompletedDetails = true;
@@ -274,6 +262,7 @@ export class ToDoProjectsComponent implements OnInit {
         }
       });
   }
+
   _Subtaskname: string;
   Block3: boolean = true;
   Sub_StartDT: Date;
@@ -281,8 +270,8 @@ export class ToDoProjectsComponent implements OnInit {
   Sub_Autho: string;
   Sub_Status: string;
   Sub_Desc:string;
-  OnSubtaskClick(item) {
 
+  OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
     this.Sub_Desc=item.Project_Description;
     this._Subtaskname = item.Project_Name;
@@ -291,7 +280,6 @@ export class ToDoProjectsComponent implements OnInit {
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
     
-
     document.getElementById("mysideInfobar_Update").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar_ProjectAction").style.width = "0px";
@@ -301,11 +289,9 @@ export class ToDoProjectsComponent implements OnInit {
     // this.Block3 = false;
   }
 
-
   clicks: number = 0;
   A2Z: boolean = true;
   Z2A: boolean = false;
-
 
   _SortProjectList() {
     this.clicks += 1;
@@ -320,27 +306,29 @@ export class ToDoProjectsComponent implements OnInit {
       this._ProjectDataList = this._ProjectDataList.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
     }
   }
+
   AddTask: boolean = false;
   MatInput: boolean = true;
   ButtonAdd: boolean = true;
   TaskName: string = "";
+
   OnAddTaskClick() {
     this.router.navigate(["./backend/ToDoProjects/ActionToProject/"]);
     document.getElementById("mysideInfobar").style.width = "60%";
-
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
     // document.getElementById("rightbar-overlay").style.display = "block";
-
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
   }
+
   // OnADDClick() {
   //   this.AddTask = false;
   //   this.MatInput = true;
   //   this.ButtonAdd = true;
   // }
+
   _inputAttachments: string;
   _inputAttachments2: string;
   _remarks: string = "";
@@ -352,6 +340,7 @@ export class ToDoProjectsComponent implements OnInit {
   fileToUpload: File | null = null;
   _IsPdf: boolean;
   src: any;
+
   LoadDocument(url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
@@ -362,6 +351,7 @@ export class ToDoProjectsComponent implements OnInit {
     // else if (contenttype == ".jpg" || contenttype == ".png" || contenttype == ".PNG" || contenttype == ".jpeg") {
     //   this._IsPdf = false;
     // }
+
     this.src = url;
     var myWindow = window.open(url);
     myWindow.focus();
@@ -382,19 +372,14 @@ export class ToDoProjectsComponent implements OnInit {
     //console.log("--------------->",this.selectedFile)
   }
 
-
-
   //Subtask Creation//
-
   // OnSubmit() {
-
   //   if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
   //     this.notifyService.showInfo("", 'Star(*) mark feilds required ')
   //   }
   //   else {
   //     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
   //       console.log("-ProjectCode Generated------->", data);
-
   //       this.ObjSubTaskDTO.MasterCode = this._MasterCode;
   //       this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName;
   //       this.ObjSubTaskDTO.SubtaskDescription = this._Description;
@@ -416,16 +401,11 @@ export class ToDoProjectsComponent implements OnInit {
   //       this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
   //       this.ObjSubTaskDTO.Remarks = this._remarks;
   //       this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-
-
   //       this.service._InsertNewSubtask(this.ObjSubTaskDTO).subscribe(data => {
   //         this.GetSubtask_Details();
   //         this.notifyService.showInfo("Created Successfully", "Action")
-
   //       });
   //     });
-
-
   //   }
   // }
 
@@ -438,6 +418,7 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
     this.Clear_Feilds();
   }
+
   Clear_Feilds() {
     this.Sub_ProjectName = "";
     this._Description = "";
@@ -449,18 +430,22 @@ export class ToDoProjectsComponent implements OnInit {
     this.selectedEmpNo = '';
     this.selected_Employee = [];
   }
+
   closeInfoProject() {
     this.OnClickCheckboxProjectUpdate(0)
     this.Clear_Feilds();
   }
+
   // SearchbyText() {
   //   this.CurrentPageNo = 1;
   //   this.applyFilters();
   // }
+
   search(event) {
     this.SearchbyText();
     // console.log("Searh Text---->", event);
   }
+
   test() {
     const datepipe: DatePipe = new DatePipe('en-US')
     let formattedDate = datepipe.transform(this._StartDate, 'DD-MMM-YYYY HH:mm:ss')
@@ -469,29 +454,24 @@ export class ToDoProjectsComponent implements OnInit {
     // console.log("after Convert--->", formattedDate)
     //console.log(this._EndDate = (moment(this._EndDate)).format('DD-MMM-YYYY HH:mm:ss'))
   }
+
   // openInfo(pcode, pName) {
   //   document.getElementById("mysideInfobar").style.width = "400px";
   //   this.router.navigate(["../backend/ToDoProjects/projectinfo", pcode]);
   // }
-  OnClickCheckboxProjectUpdate(value) {
 
+  OnClickCheckboxProjectUpdate(value) {
     this.service.SubTaskStatusCheck(this._ProjectCode).subscribe(
       (data) => {
-debugger
         if (data['Message'] == 1) {
           Swal.fire({
             title: 'Unable To Complete This Project !!',
             text: 'SubTask Status Are In Rejected or Pending ?',
             icon: 'warning',
-            showCancelButton: true
-            
-            
+            showCancelButton: true       
           });
-
-
         }
         else {
-
           this.Checkbox_checked = value;
           if (value == true) {
             document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
@@ -503,14 +483,8 @@ debugger
           }
           document.getElementById("mysideInfobar").style.width = "0px";
           document.getElementById("mysideInfobar_Update").style.width = "0px";
-
-
         }
-
       });
-
-
-
   }
 
   //Project Update
@@ -541,13 +515,10 @@ debugger
 
   //Subtask Update 
   OnUpdateSubtask() {
-
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
-    //debugger
     else {
-      // debugger
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
@@ -564,7 +535,6 @@ debugger
         .subscribe(data => {
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.GetSubtask_Details();
-          //alert("Successfully Updated")
         });
       this.notifyService.showInfo("Successfully Updated", '');
       this.closeInfo();
@@ -580,6 +550,7 @@ debugger
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
   Btn_AssignTask() {
     let name: string = "AssignTask";
     var url = document.baseURI + name;
@@ -587,6 +558,7 @@ debugger
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
   Btn_UnplannedTask() {
     let name: string = "UnplannedTask";
     var url = document.baseURI + name;
@@ -594,20 +566,20 @@ debugger
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
-  OnEditProject(id, Pname) {
 
+  OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
-
-
   }
+
   OnEditProject_Desc(id, Desc) {
     this._modelProjDesc = Desc;
     this.Editbutton = true;
@@ -615,6 +587,7 @@ debugger
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
@@ -649,6 +622,7 @@ debugger
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
+
   moreDetails() {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -658,11 +632,11 @@ debugger
   }
 
   ////////////////------------------------------- Filters ------------------------------///////////////
-
   EmpCountInFilter = [];
   TypeContInFilter = [];
   StatusCountFilter = [];
   count_LinkedProjects: number;
+  
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.CurrentUser_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -698,8 +672,8 @@ debugger
         this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
         //console.log(this._totalProjectsCount)
       });
-
   }
+  
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
@@ -707,6 +681,7 @@ debugger
   selectedEmp_String: string;
   selectedStatus_String: string;
   selectedItem_Status = [];
+
   isStatusChecked(item) {
     let arr = [];
     this.StatusCountFilter.forEach(element => {
@@ -736,7 +711,9 @@ debugger
       this.edited = true;
     }
   }
+
   selectedItem_Type = [];
+
   isTypeChecked(item) {
     let arr = [];
     this.TypeContInFilter.forEach(element => {
@@ -766,7 +743,9 @@ debugger
       this.edited = true;
     }
   }
+
   selectedItem_Emp = [];
+
   isEmpChecked(item) {
     let arr = [];
     this.EmpCountInFilter.forEach(element => {
@@ -801,6 +780,7 @@ debugger
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
+
   _filtersMessage2: string;
   _filtersMessage: string;
 
@@ -821,25 +801,21 @@ debugger
       }
     });
   }
+
   applyFilters() {
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
-
     this.selectedType_String = this.checkedItems_Type.map(select => {
       return select.Block_No;
     }).join(',');
-
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
     }).join(',');
-
     //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
-
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
-
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
@@ -855,7 +831,6 @@ debugger
         }
         // this._ProjectDataList = data;
         // this._CurrentpageRecords = this._ProjectDataList.length;
-
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
           this._filtersMessage2 = " Clear the filters & try again";
@@ -868,13 +843,14 @@ debugger
     //Filtering Checkbox de
     this.getDropdownsDataFromDB();
   }
+
   search_Type: any[];
+
   resetFilters() {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
     this.edited = false;
-
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -899,11 +875,7 @@ debugger
     this.resetFilters();
   }
 
-
-
   sweetAlert() {
-
-
     if (this.Project_Status == 'Completed') {
       Swal.fire({
         title: 'This Project is Compelted !!',
@@ -923,12 +895,10 @@ debugger
           )
         }
       });
-
     }
     else {
       this.OnAddTaskClick();
     }
-
   }
 
   // OpenDialog(){

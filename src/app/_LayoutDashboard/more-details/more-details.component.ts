@@ -3,6 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
 import { Router } from '@angular/router';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
@@ -28,8 +29,8 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
   templateUrl: './more-details.component.html',
   styleUrls: ['./more-details.component.css']
 })
-export class MoreDetailsComponent implements OnInit {
 
+export class MoreDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     private router: Router,
@@ -39,12 +40,13 @@ export class MoreDetailsComponent implements OnInit {
     private BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
   }
+
   projectCode: string;
   URL_ProjectCode: string
   IsData: string;
   _LinkSideBar: boolean = true;
-
   maxDuration: any;
+  totalPercent: number = 1;
   SubmissionName: string;
   noRecords: boolean = false;
   noMilestones: boolean = true;
@@ -52,18 +54,18 @@ export class MoreDetailsComponent implements OnInit {
   noTimeline: boolean = true;
   noNotes: boolean = true;
   noMeeting: boolean = true;
+  checked: any;
 
   ngOnInit(): void {
-
     this.Current_user_ID = localStorage.getItem('EmpNo');
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
+      this._MasterCode = pcode;
     });
 
     this.GetProjectDetails();
-
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -72,8 +74,6 @@ export class MoreDetailsComponent implements OnInit {
         if (projectType == '001' || projectType == '002') {
           // document.getElementById('act-tab-1').classList.add("d-none");
           // document.getElementById('Activity').classList.remove("show", "active");
-
-
           // document.getElementById('sum-tab-1').classList.remove("d-none");
           // document.getElementById('sum-tab-1').classList.add("active");
           // document.getElementById('Summary').classList.add("show", "active");
@@ -83,21 +83,22 @@ export class MoreDetailsComponent implements OnInit {
           // document.getElementById('act-tab-1').classList.remove("d-none");
           // document.getElementById('act-tab-1').classList.add("active");
           // document.getElementById('Activity').classList.add("show", "active");
-
-
           // document.getElementById('sum-tab-1').classList.add("d-none");
           // document.getElementById('Summary').classList.remove("show", "active");
           this.OtherCharts();
         }
       });
+    //uploaded file name
+    $(document).on('change', '.custom-file-input', function (event) {
+      $(this).next('.custom-file-label').html(event.target.files[0].name);
+    });
   }
-  CoreSecodaryCharts() {
 
+  CoreSecodaryCharts() {
     //this.TaskChart();
     //this.UserGraphs();
     this.DARSummaryChart();
     this.ProjectCompletionChart();
-
     if (this.IsData != null) {
       this.HybridDrillChart();
       this.SubtaskSummaryChart();
@@ -105,14 +106,15 @@ export class MoreDetailsComponent implements OnInit {
     // this.ProjectCompleteChart();
     // this.GetDMS_Memos();
     //this.getAttachments();
-
     this.ProjectTrendChart();
     // this.dummyChart();
   }
+
   OtherCharts() {
     this.GetProjectDetails();
     this.StandardTask();
   }
+
   _Subtaskname: string;
   Sub_ProjectCode: string;
   Sub_StartDT: Date;
@@ -125,7 +127,6 @@ export class MoreDetailsComponent implements OnInit {
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
     this.Sub_Desc = item.Project_Description;
-
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
@@ -134,6 +135,8 @@ export class MoreDetailsComponent implements OnInit {
 
     document.getElementById("mysideInfobar_Update").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
+    // For page top div position fix
+    document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
     // document.getElementById("rightbar-overlay").style.display = "block";
@@ -141,41 +144,21 @@ export class MoreDetailsComponent implements OnInit {
     // document
     // this.Block3 = false;
   }
+
   // closeInfo() {
   //   document.getElementById("mysideInfobar_Update").style.width = "0";
   // }
+
   _inputAttachments: string;
+  _inputAttachments2: string;
+
   onFileChangeUST(e) {
     this._inputAttachments = e.target.files[0].name;
   }
+
   //Subtask Update 
   ObjSubTaskDTO: SubTaskDTO;
   _MasterCode: string;
-  OnUpdateClick() {
-    if (this._remarks == "") {
-      this.notifyService.showInfo("Remarks Cannot be Empty", '');
-    }
-    //debugger
-    else {
-      this._MasterCode = this.URL_ProjectCode;
-      this.ObjSubTaskDTO.MasterCode = this._MasterCode;
-      this.ObjSubTaskDTO.SubTask_ProjectCode = this.Sub_ProjectCode;
-      this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-      this.ObjSubTaskDTO.Remarks = this._remarks;
-
-      this.service._UpdateSubtaskByProjectCode(this.ObjSubTaskDTO)
-        .subscribe(data => {
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-          this.GetSubtask_Details();
-          //alert("Successfully Updated")
-        });
-      this.notifyService.showInfo("Successfully Updated", '');
-      this.closeInfo();
-      this._remarks = "";
-      this._inputAttachments = "";
-    }
-  }
-
   List: any;
   ProjectName: string;
   Description: string;
@@ -202,7 +185,6 @@ export class MoreDetailsComponent implements OnInit {
   InitCoor: string;
   InitInformer: string;
   InitSupp: string;
-
   Responsible_EmpNo: string;
   Authority_EmpNo: string;
   Owner_EmpNo: string;
@@ -210,12 +192,13 @@ export class MoreDetailsComponent implements OnInit {
   StandardDuration: any;
   ProjectBlockName: any;
   Status: any;
+
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-          console.log("Test---->", this.ProjectInfo_List);
+          // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
@@ -242,20 +225,15 @@ export class MoreDetailsComponent implements OnInit {
           this.InitR.toUpperCase();
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
-
-
           //add data to service
           this.BsService.SetNewPojectCode(this.URL_ProjectCode);
           this.BsService.SetNewPojectName(this.ProjectName);
-          
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectInfo_List[0]['Team_Res'];
-
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
-
 
           var fullname_Own = this.Owner.split(' ');
           this.InitOwn = fullname_Own.shift().charAt(0) + fullname_Own.pop().charAt(0);
@@ -268,12 +246,10 @@ export class MoreDetailsComponent implements OnInit {
           var fullname_Coor = this.Coordinator.split(' ');
           this.InitCoor = fullname_Coor.shift().charAt(0) + fullname_Coor.pop().charAt(0);
           this.InitCoor.toUpperCase();
-
           // var fullname_Inf = this.Informer.split(' ');
           // this.InitInformer = fullname_Inf.shift().charAt(0) + fullname_Inf.pop().charAt(0);
           // this.InitInformer.toUpperCase();
           this.InitInformer = "IN";
-
           // var fullname_Supp = this.Support.split(' ');
           // this.InitSupp = fullname_Supp.shift().charAt(0) + fullname_Supp.pop().charAt(0);
           // this.InitSupp.toUpperCase();
@@ -282,9 +258,7 @@ export class MoreDetailsComponent implements OnInit {
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
-
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
@@ -292,14 +266,13 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   AddDms() {
-
     this._LinkSideBar = false;
     this._onRowClick(this.projectCode);
   }
+
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
-
         this.Memos_List = JSON.parse(data['JsonData']);
         this._ActualMemoslist = JSON.parse(data['JsonData']);
         // console.log("Actual Memo List By EmpId--->", this._ActualMemoslist)
@@ -316,6 +289,7 @@ export class MoreDetailsComponent implements OnInit {
         };
       });
   }
+
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -324,13 +298,12 @@ export class MoreDetailsComponent implements OnInit {
   _ActualMemoslist: any;
   _totalMemos: number;
   _mappedMemos: number;
-
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
-
   Empty_MemoDropdown: any;
   _SelectedMemos: any;
   Mail_Id: number;
+
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
@@ -342,6 +315,7 @@ export class MoreDetailsComponent implements OnInit {
     });
     //console.log("Selected Memos In Array--->", arr)
   }
+
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
@@ -352,8 +326,6 @@ export class MoreDetailsComponent implements OnInit {
     //console.log("Deselect Memos--->", this._SelectedMemos)
   }
 
-
-
   _onRowClick(projectCode) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -363,7 +335,6 @@ export class MoreDetailsComponent implements OnInit {
     this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
       subscribe((data) => {
         let Table_data: any = data;
-
         // console.log("Memos Id Form DB--->", data);
         if (Table_data.length > 0) {
           this._JsonString = JSON.stringify(data[0]['JsonData']);
@@ -403,14 +374,17 @@ export class MoreDetailsComponent implements OnInit {
       });
     document.getElementById("LinkSideBar").style.width = "50%";
   }
+
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar1").style.width = "0";
-
+    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
     // document.getElementById("mysideInfobar1").classList.remove("side--on");
+    // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    this.Clear_Feilds();
   }
 
   sideviw() {
@@ -420,16 +394,16 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   DarGraphDataList: any;
+
   TaskChart() {
     let data1: any;
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
-        console.log("data1 Testong---->", data);
+        // console.log("data1 Testong---->", data);
         data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
         this.DarGraphDataList = data1;
-        console.log(this.DarGraphDataList);
+        // console.log(this.DarGraphDataList);
         //console.log("DarGraphDataList---->",this.DarGraphDataList);
-
         let root = am5.Root.new("chartdiv");
         let chart = root.container.children.push(am5xy.XYChart.new(root, {
           panX: false,
@@ -438,7 +412,6 @@ export class MoreDetailsComponent implements OnInit {
           wheelY: "zoomX",
           layout: root.verticalLayout
         }));
-
         let legend = chart.children.push(
           am5.Legend.new(root, {
             centerX: am5.p50,
@@ -471,10 +444,9 @@ export class MoreDetailsComponent implements OnInit {
         //   "meast": 0.9,
         //   "africa": 0.5
         // }];
-
-
         // Create axes
         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+
         let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
           categoryField: 'category',
           renderer: am5xy.AxisRendererX.new(root, {
@@ -485,12 +457,9 @@ export class MoreDetailsComponent implements OnInit {
         }));
 
         xAxis.data.setAll(data1);
-
         let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
           renderer: am5xy.AxisRendererY.new(root, {})
         }));
-
-
         // Add series
         // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
         function makeSeries(name, fieldName) {
@@ -509,7 +478,6 @@ export class MoreDetailsComponent implements OnInit {
           });
 
           series.data.setAll(data1);
-
           // Make stuff animate on load
           // https://www.amcharts.com/docs/v5/concepts/animations/
           series.appear();
@@ -528,31 +496,22 @@ export class MoreDetailsComponent implements OnInit {
           });
           //series.set("fill", am5.color(0xff0000)); // set Series color to red
           //  series.set("fill", am5.color("#00ff00")); // set Series color to green
-
           legend.data.push(series);
         }
-
-
-
-
         makeSeries("Used Hours In DAR", "DARUsedHours");
         makeSeries("Remaining Hours In DAR", "RemainingHours");
         makeSeries("Total DAR Hours", "TotalDARHours");
 
-
-
         // Make stuff animate on load
         // https://www.amcharts.com/docs/v5/concepts/animations/
         chart.appear(1000, 100);
-
       });
   }
+
   ProjectTrendChart() {
     let chart = am4core.create("ProjectTrendchart", am4charts.XYChart);
-
     //let chart = am4core.create("chartdiv", am4charts.XYChart);
     chart.paddingRight = 20;
-
     // Add data
     chart.data = [{
       "year": "1950",
@@ -655,6 +614,7 @@ export class MoreDetailsComponent implements OnInit {
 
     chart.cursor = new am4charts.XYCursor();
   }
+
   dummyChart() {
     // let chart = am4core.create("projecttrenddiv", am4charts.XYChart);
     //let chart = am4core.create("chartdiv", am4charts.XYChart);
@@ -1018,7 +978,6 @@ export class MoreDetailsComponent implements OnInit {
       }
     };
 
-
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
     let root = am5.Root.new("projecttrenddiv");
@@ -1031,18 +990,15 @@ export class MoreDetailsComponent implements OnInit {
         { number: 1e6, suffix: "M" },
         { number: 1e9, suffix: "B" }
       ],
-
       // Do not use small number prefixes at all
       smallNumberPrefixes: []
     });
 
     let stepDuration = 2000;
 
-
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
     // root.setThemes([am5themes_Animated.new(root)]);
-
 
     // Create chart
     // https://www.amcharts.com/docs/v5/charts/xy-chart/
@@ -1053,10 +1009,8 @@ export class MoreDetailsComponent implements OnInit {
       wheelY: "none"
     }));
 
-
     // We don't want zoom-out button to appear while animating, so we hide it at all
     chart.zoomOutButton.set("forceHidden", true);
-
 
     // Create axes
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
@@ -1064,6 +1018,7 @@ export class MoreDetailsComponent implements OnInit {
       minGridDistance: 20,
       inversed: true
     });
+
     // hide grid
     yRenderer.grid.template.set("visible", false);
 
@@ -1084,7 +1039,6 @@ export class MoreDetailsComponent implements OnInit {
     xAxis.set("interpolationDuration", stepDuration / 10);
     xAxis.set("interpolationEasing", am5.ease.linear);
 
-
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     let series = chart.series.push(am5xy.ColumnSeries.new(root, {
@@ -1098,9 +1052,6 @@ export class MoreDetailsComponent implements OnInit {
     series.columns.template.setAll({ cornerRadiusBR: 5, cornerRadiusTR: 5 });
 
     // Make each column to be of a different color
-
-
-
 
     // Add label bullet
     series.bullets.push(function () {
@@ -1187,7 +1138,6 @@ export class MoreDetailsComponent implements OnInit {
         clearInterval(interval);
         clearInterval(sortInterval);
       }
-
       updateData();
     }, stepDuration);
 
@@ -1197,7 +1147,6 @@ export class MoreDetailsComponent implements OnInit {
 
     function setInitialData() {
       let d = allData[year];
-
       for (var n in d) {
         series.data.push({ network: n, value: d[n] });
         yAxis.data.push({ network: n });
@@ -1231,7 +1180,6 @@ export class MoreDetailsComponent implements OnInit {
             easing: am5.ease.linear
           });
         });
-
         yAxis.zoom(0, itemsWithNonZero / yAxis.dataItems.length);
       }
     }
@@ -1247,6 +1195,7 @@ export class MoreDetailsComponent implements OnInit {
     series.appear(1000);
     chart.appear(1000, 100);
   }
+
   UserGraphs() {
     let chart = am4core.create("userchartdiv", am4charts.XYChart);
     chart.paddingRight = 20;
@@ -1450,6 +1399,7 @@ export class MoreDetailsComponent implements OnInit {
       }
       return fill;
     })
+
     let range = valueAxis.createSeriesRange(series);
     range.value = 0;
     range.endValue = -1000;
@@ -1472,14 +1422,12 @@ export class MoreDetailsComponent implements OnInit {
         // data1 = (JSON.parse(data[0]['DARGraphCalculations_Json']));
         data2 = (JSON.parse(data[0]['ProjectCompletionChart']));
         // console.log(data[0]['RemainingHours']);
-
         //  let data2 = [{
         //     size: 82,
         //     sector: "UnderApproval",
         //     }]
 
         let chartData = data2;
-
         // Create root element
         // https://www.amcharts.com/docs/v5/getting-started/#Root_element
 
@@ -1488,8 +1436,6 @@ export class MoreDetailsComponent implements OnInit {
         // Set themes
         // https://www.amcharts.com/docs/v5/concepts/themes/
 
-
-
         // Create chart
         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
         let chart = root.container.children.push(am5percent.PieChart.new(root, {
@@ -1497,16 +1443,13 @@ export class MoreDetailsComponent implements OnInit {
           layout: root.verticalLayout
         }));
 
-
         // Create series
         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
         let series = chart.series.push(am5percent.PieSeries.new(root, {
           valueField: "size",
           categoryField: "sector",
           tooltipText: "{sector}: {size}%"
-
         }));
-
 
         // Set data
         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
@@ -1515,7 +1458,6 @@ export class MoreDetailsComponent implements OnInit {
         // Play initial series animation
         // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
         series.appear(1000, 100);
-
 
         // Add label
         let label = root.tooltipContainer.children.push(am5.Label.new(root, {
@@ -1526,7 +1468,6 @@ export class MoreDetailsComponent implements OnInit {
           fill: am5.color(0x000000),
           fontSize: 50
         }));
-
 
         // Animate chart data
         // let currentYear = 1995;
@@ -1548,10 +1489,9 @@ export class MoreDetailsComponent implements OnInit {
         }
         loop();
       });
-
   }
-  HybridDrillChart() {
 
+  HybridDrillChart() {
     // let data22 = [{
     //   category: "Critical",
     //   value: 89,
@@ -1610,13 +1550,12 @@ export class MoreDetailsComponent implements OnInit {
     //     value: 10
     //   }]
     // }]
+
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
         // console.log("data1---->",data);
         let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         //console.log("---->",data);
-
-
         let root = am5.Root.new("Hybridchartdiv");
         // Create wrapper container
         let container = root.container.children.push(am5.Container.new(root, {
@@ -1624,12 +1563,9 @@ export class MoreDetailsComponent implements OnInit {
           height: am5.p100,
           layout: root.horizontalLayout
         }));
-
-
         // ==============================================
         // Column chart
         // ==============================================
-
         // Create chart
         // https://www.amcharts.com/docs/v5/charts/xy-chart/
         let columnChart = container.children.push(am5xy.XYChart.new(root, {
@@ -1640,7 +1576,6 @@ export class MoreDetailsComponent implements OnInit {
           wheelY: "none",
           layout: root.verticalLayout
         }));
-
         // Create axes
         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
         let yAxis = columnChart.yAxes.push(am5xy.CategoryAxis.new(root, {
@@ -1648,13 +1583,10 @@ export class MoreDetailsComponent implements OnInit {
           renderer: am5xy.AxisRendererY.new(root, {})
         }));
 
-
-
         let xAxis = columnChart.xAxes.push(am5xy.ValueAxis.new(root, {
           renderer: am5xy.AxisRendererX.new(root, {})
         }));
         xAxis.data.setAll(data);
-
         // Add series
         // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
         let columnSeries = columnChart.series.push(am5xy.ColumnSeries.new(root, {
@@ -1668,13 +1600,10 @@ export class MoreDetailsComponent implements OnInit {
         columnSeries.columns.template.setAll({
           tooltipText: "{categoryY}: {valueX}"
         });
-
         //series.data.setAll(data);
-
         // Make stuff animate on load
         // https://www.amcharts.com/docs/v5/concepts/animations/
         columnChart.appear(1000, 100);
-
 
         // ==============================================
         // Column chart
@@ -1721,20 +1650,14 @@ export class MoreDetailsComponent implements OnInit {
             stroke: slice.get("fill")
           });
 
-
-
           columnSeries.data.setAll(data);
           yAxis.data.setAll(data);
-          //});
-
           currentSlice = slice;
         });
 
         pieSeries.labels.template.set("forceHidden", true);
         pieSeries.ticks.template.set("forceHidden", true);
-
         pieSeries.data.setAll(data);
-
 
         // Add label
         let label1 = pieChart.seriesContainer.children.push(am5.Label.new(root, {
@@ -1759,6 +1682,7 @@ export class MoreDetailsComponent implements OnInit {
 
       });
   }
+
   SubtaskSummaryChart() {
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
@@ -1831,7 +1755,6 @@ export class MoreDetailsComponent implements OnInit {
         createSeries('TotalDARHours', 'Total Hours');
 
         function arrangeColumns() {
-
           let series = chart.series.getIndex(0);
 
           let w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
@@ -1864,42 +1787,27 @@ export class MoreDetailsComponent implements OnInit {
                 series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
                 series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
               })
-
             }
           }
         }
       });
-
   }
 
-
   DARSummaryChart() {
-
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-
         // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
-
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
-
-
-
-
-
-
         let chart = am4core.create("DARSummary", am4charts.PieChart3D);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
         chart.legend = new am4charts.Legend();
-
         chart.data =
           [
             {
               name: "Remaining Hours",
               value: (data1[0]['RemainingHours']),
-
             },
             {
               name: "Total Hours Used In DAR",
@@ -1912,10 +1820,10 @@ export class MoreDetailsComponent implements OnInit {
         ));
         series.dataFields.value = "value";
         series.dataFields.category = "name";
-
         series.autoDispose = true;
       });
   }
+
   /// Standard Task //////////////
   StandardTask() {
     let root = am5.Root.new("StandardChart");
@@ -2035,7 +1943,6 @@ export class MoreDetailsComponent implements OnInit {
       });
 
       series.data.setAll(data);
-
       legend.data.push(series);
 
       series.on("visible", function (visible, target) {
@@ -2062,10 +1969,9 @@ export class MoreDetailsComponent implements OnInit {
   _MemosSubjectList: any;
   _MemosNotFound: string;
   _DBMemosIDList: any;
-
-
   _CommentsList: any;
   _EvenRecordsList: any
+
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2075,12 +1981,12 @@ export class MoreDetailsComponent implements OnInit {
         // console.log("Comments-List--------->",this._CommentsList)
       });
   }
+
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data) => {
         let Table_data: any = data;
         if (Table_data.length > 0 && data[0]['JsonData'] != '[]') {
-          // alert("Table Data > 0")
           this._MemosNotFound = "";
           this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
           this._JsonString = data[0]['JsonData'];
@@ -2088,7 +1994,7 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              // console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
@@ -2097,8 +2003,10 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
   }
+
   Current_user_ID: string;
   memoId: any;
+
   deleteMemos(memoId) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -2163,20 +2071,18 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
-    //alert(this.Global_Projectcode);
     let appId: number = 101;//this._ApplicationId;
     //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
       // console.log("Table Ids-->", this._SelectedIdsfromDb);
       this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
-      console.log("After Joins Final Output=======>", this.memoId);
+      // console.log("After Joins Final Output=======>", this.memoId);
     }
     else {
       this.memoId = JSON.stringify(this._SelectedMemos);
-      console.log("Ëlse Block...Executed---->", this.memoId);
+      // console.log("Ëlse Block...Executed---->", this.memoId);
     }
     let UserId = this.Current_user_ID;
     if (this._SelectedMemos.length > 0) {
@@ -2199,7 +2105,6 @@ export class MoreDetailsComponent implements OnInit {
     // this._LinkSideBar=true;
   }
 
-
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);
@@ -2207,8 +2112,8 @@ export class MoreDetailsComponent implements OnInit {
 
   AttachmentList: any;
   data1: any;
-  getAttachments() {
 
+  getAttachments() {
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
         this.data1 = (data[0]['Attachments_Json']);
@@ -2221,11 +2126,11 @@ export class MoreDetailsComponent implements OnInit {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         //console.log("Attachments---->", this.AttachmentList);
       });
-
-
   }
+
   _day: any;
   _month: any;
+
   openPDF_Standard(repDate: Date, proofDoc) {
     repDate = new Date(repDate);
     let FileUrl: string;
@@ -2248,8 +2153,8 @@ export class MoreDetailsComponent implements OnInit {
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
     window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
   }
+
   openPDF(cd_date, docName) {
-    //alert(this.Responsible_EmpNo);
     cd_date = new Date(cd_date);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -2271,6 +2176,7 @@ export class MoreDetailsComponent implements OnInit {
     var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
     window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + "/" + docName);
   }
+
   Subtask_List: any;
   CompletedList: any;
   noInprocess: boolean = false;
@@ -2278,19 +2184,17 @@ export class MoreDetailsComponent implements OnInit {
   inProcessCount: number;
   completedCount: number;
   subTaskCount: number;
+
   GetSubtask_Details() {
-    //alert(this.Comp_No)
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
       (data) => {
         // console.log(this.noRecords);
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
-
         if ((this.Subtask_List == '') && (this.CompletedList == '')) {
           this.noRecords = true;
           // console.log(this.noRecords);
-
         }
         if (this.Subtask_List == '') {
           this.noInprocess = true;
@@ -2301,15 +2205,47 @@ export class MoreDetailsComponent implements OnInit {
         this.inProcessCount = this.Subtask_List.length;
         this.completedCount = this.CompletedList.length;
         this.subTaskCount = this.inProcessCount + this.completedCount;
-        console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+        // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
       });
   }
+
+  OnUpdateClick() {
+    if (this._remarks == "") {
+      this.notifyService.showInfo("Remarks Cannot be Empty", '');
+    }
+    else {
+      const fd = new FormData();
+      fd.append("Project_Code", this.Sub_ProjectCode);
+      fd.append("Master_Code", this._MasterCode);
+      fd.append("Team_Autho", this.Authority);
+      fd.append("Projectblock", this.ProjectBlock);
+      fd.append("Remarks", this._remarks);
+      fd.append('file', this.selectedFile);
+      // this._MasterCode = this.URL_ProjectCode;
+      // this.ObjSubTaskDTO.MasterCode = this._MasterCode;
+      // this.ObjSubTaskDTO.SubTask_ProjectCode = this.Sub_ProjectCode;
+      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
+      // this.ObjSubTaskDTO.Remarks = this._remarks;
+      this.service._UpdateSubtaskByProjectCode(fd)
+        .subscribe(data => {
+          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this.GetSubtask_Details();
+        });
+      this.notifyService.showInfo("Successfully Updated", '');
+      this.closeInfo();
+      this._remarks = "";
+      this._inputAttachments = "";
+    }
+  }
+
   OnTabTask_Click() {
     this.GetSubtask_Details();
   }
+
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
+
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
     this.Editbutton = true;
@@ -2318,6 +2254,7 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
   }
+
   OnEditProject_Desc(id, Desc) {
     this._modelProjDesc = Desc;
     this.Editbutton = true;
@@ -2325,6 +2262,7 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
@@ -2337,7 +2275,9 @@ export class MoreDetailsComponent implements OnInit {
     this._modelProjectName = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
+
   _Message: string;
+
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
       this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
@@ -2352,7 +2292,6 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
 
@@ -2361,24 +2300,23 @@ export class MoreDetailsComponent implements OnInit {
   OnAddTaskClick() {
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode, "ActionToProject"]);
     document.getElementById("mysideInfobar1").style.width = "60%";
-
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
-    // document.getElementById("rightbar-overlay").style.display = "block";
-
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("moredet").classList.add("position-fixed");
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
   }
 
   selectedFile: any = null;
+
   onFileChange(e) {
     this.selectedFile = <File>e.target.files[0];
     //console.log("--------------->",this.selectedFile)
   }
+
   sweetAlert() {
-
-
     if (this.Status == 'Completed') {
       Swal.fire({
         title: 'This Project is Compelted !!',
@@ -2398,11 +2336,81 @@ export class MoreDetailsComponent implements OnInit {
           )
         }
       });
-
     }
     else {
       this.OnAddTaskClick();
     }
+  }
 
+  closeInfoProject() {
+    // For closing sidebar on 'X' buttton
+    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    // For sidebar overlay background removing the slide on 'X' button
+    document.getElementById("rightbar-overlay").style.display = "none";
+    // For page top div removing fixed
+    document.getElementById("moredet").classList.remove("position-fixed");
+    this.selectedFile = "";
+    // this.OnClickCheckboxProjectUpdate();
+    this.Clear_Feilds();
+  }
+
+  OnClickCheckboxProjectUpdate() {
+    this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
+      (data) => {
+        // applying sidebar from mysideInfobar_ProjectsUpdate in html
+        document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
+        // placing the backgorund dim on opening sidebar
+        document.getElementById("rightbar-overlay").style.display = "block";
+        // Fixing the scrollbar for sidebar
+        document.getElementById("moredet").classList.add("position-fixed");
+        document.getElementById("mysideInfobar").style.width = "0px";
+        document.getElementById("mysideInfobar_Update").style.width = "0px";
+      });
+  }
+
+  Sub_ProjectName: string = "";
+  _Description: string;
+  _EndDate: Date = null;
+  _StartDate: Date = null;
+  selected_Employee = [];
+  selectedEmpNo: string = null;
+
+  Clear_Feilds() {
+    this.Sub_ProjectName = "";
+    this._Description = "";
+    this._StartDate = null;
+    this._EndDate = null;
+    this._remarks = "";
+    this._inputAttachments = null;
+    this._inputAttachments2 = null;
+    this.selectedEmpNo = '';
+    this.selected_Employee = [];
+    this.selectedFile = " ";
+  }
+
+  //Project Update
+  progress: any;
+
+  updateMainProject() {
+    const fd = new FormData();
+    fd.append("Project_Code", this._MasterCode);
+    fd.append("Team_Autho", this.Authority);
+    fd.append("Remarks", this._remarks);
+    fd.append("Projectblock", this.ProjectBlock);
+    fd.append('file', this.selectedFile);
+    this.service._fileuploadService(fd).
+      subscribe(event => {
+        //console.log(event);
+        if (event.type == HttpEventType.UploadProgress) {
+          this.progress = Math.round(event.loaded / event.total * 100);
+          this.notifyService.showSuccess("", "File uploaded successfully");
+          this.notifyService.showInfo("", "Project Updated");
+        }
+        else if (event.type === HttpEventType.Response) {
+          //console.log(event);
+        }
+        this.closeInfo();
+        this.GetSubtask_Details();
+      });
   }
 }
