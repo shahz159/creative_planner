@@ -733,3 +733,36 @@ z-index: 998;
 .scrollbar1::-webkit-scrollbar-thumb:hover {
     background: #ccc;
 }
+
+.task-status__divider {
+    width: 1px;
+    height: 30px;
+    margin: -2px 0;
+    background: #fff;
+}
+
+.task-status__controls {
+    position: relative;
+    flex-shrink: 0;
+    width: 25px;
+    border-radius: 0rem 2rem 2rem 0rem;
+    border: none;
+    background-color: rgb(255 184 34);
+}
+
+.task-status__controls:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 4px;
+    border-left-color: #fff;
+    top: 9px;
+    left: 10px;
+}
+.br-cr{
+    border-radius: 2rem 0rem 0rem 2rem;
+}
