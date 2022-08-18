@@ -756,21 +756,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="mt-2 mb-1 text-muted fs-7">Attachments</p>
+                                <div class="col-md-4" *ngIf="item.FileName">
+                                    <p class="mt-2 mb-1 text-muted fs-7" *ngIf="item.FileName">Attachments</p>
                                     <div class="d-flex align-items-center">
 
                                         <div class="w-100">
-                                            <i class="fas fa-file-pdf text-muted mr-1">{{item.FileName}}</i>
+                                            <i class="fas fa-file-pdf text-muted mr-1" *ngIf="item.FileName">{{item.FileName}}</i>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
+                                <div class="col-md-4" *ngIf="item.Remarks != '' && item.Remarks!='null'">
+                                    <p class="mt-2 mb-1 text-muted fs-7" *ngIf="item.Remarks != '' && item.Remarks!='null'">Remarks</p>
                                     <div class="d-flex align-items-center">
 
                                         <div class="w-100">
-                                            <i class="fas fa-registered text-muted mr-1 my-1 font-14" >{{item.Remarks}}</i>
+                                            <i class="fas fa-registered text-muted mr-1 my-1 font-14" *ngIf="item.Remarks != '' && item.Remarks!='null'">{{item.Remarks}}</i>
                                             
                                         </div>
                                     </div>
