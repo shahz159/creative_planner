@@ -22,6 +22,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
 import Swal from 'sweetalert2';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { ConditionalExpr } from '@angular/compiler';
 
 
 @Component({
@@ -63,6 +64,30 @@ export class MoreDetailsComponent implements OnInit {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
+
+      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
+        (data) => {
+          // console.log(this.noRecords);
+          this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
+          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+          // console.log(this.Subtask_Res_List);
+          if ((this.Subtask_List == '') && (this.CompletedList == '')) {
+            this.noRecords = true;
+            // console.log(this.noRecords);
+          }
+          if (this.Subtask_List == '') {
+            this.noInprocess = true;
+          }
+          if (this.CompletedList == '') {
+            this.noCompleted = true;
+          }
+          this.inProcessCount = this.Subtask_List.length;
+          this.completedCount = this.CompletedList.length;
+          this.subTaskCount = this.inProcessCount + this.completedCount;
+          //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+        });
     });
 
     this.GetProjectDetails();
@@ -168,6 +193,7 @@ export class MoreDetailsComponent implements OnInit {
   Owner: string;
   Client: string;
   Responsible: string;
+  Subtask_Res_List: any;
   Authority: string;
   Coordinator: string;
   Informer: string;
@@ -2192,6 +2218,8 @@ export class MoreDetailsComponent implements OnInit {
         this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
+        this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+        console.log(this.Subtask_Res_List);
         if ((this.Subtask_List == '') && (this.CompletedList == '')) {
           this.noRecords = true;
           // console.log(this.noRecords);
@@ -2239,6 +2267,9 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   OnTabTask_Click() {
+    this.GetSubtask_Details();
+  }
+  OnOverview_Click(){
     this.GetSubtask_Details();
   }
 

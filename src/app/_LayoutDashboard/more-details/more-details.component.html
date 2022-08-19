@@ -28,7 +28,7 @@
 
                     <!--inprocess button-->
                     <div class="d-flex"   *ngIf="Status != 'Completed'" >
-                        <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">InProcess</label>
+                        <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label>
                         <div class="task-status__divider"></div>
                         <button class="task-status__controls " (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
@@ -603,25 +603,26 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <h4>Breakdown - [RACIS]</h4>
+                                                    <div class="col-lg-12" *ngIf="subTaskCount != 0">
+                                                        <h4>Breakdown</h4> 
                                                     </div>
-
-                                                    <div class="col-lg-2 col-sm-4">
+                                                    <div  *ngFor="let item of Subtask_Res_List">
+                                                    <div class="col-lg-2 col-sm-4" >
                                                         <div class="kt-portlet mb-3">
                                                             <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!">
                                                                 <img src="assets/images/user2.png" alt=""
                                                                     class="breakdown-user" />
-                                                                <p class="mb-2">
-                                                                    <small><strong>{{Responsible}}</strong></small>
+                                                                <p class="mb-2"> 
+                                                                    <small><strong>{{item.TM_DisplayName}}</strong></small>
                                                                 </p>
-                                                                <h5><strong>38%</strong></h5>
+                                                                <h5><strong >{{(item.EmpCount / subTaskCount) | percent:'.1-2'}}</strong></h5>
 
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-lg-2 col-sm-4">
+                                                    <!-- <div class="col-lg-2 col-sm-4">
                                                         <div class="kt-portlet mb-3">
                                                             <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Authority!">
                                                                 <img src="assets/images/user2.png" alt=""
@@ -687,7 +688,7 @@
                                                                 <h5><strong>10%</strong></h5>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>

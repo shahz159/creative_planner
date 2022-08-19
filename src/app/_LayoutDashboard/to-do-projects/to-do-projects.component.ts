@@ -249,8 +249,8 @@ export class ToDoProjectsComponent implements OnInit {
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this._subtaskDetails = false;
           this._projectDetails = true;     
-          console.log("To Do Completed---->", this.CompletedList);
-           console.log("to Incomplete---->", this.Subtask_List);
+          // console.log("To Do Completed---->", this.CompletedList);
+          //  console.log("to Incomplete---->", this.Subtask_List);
         }
         if (data[0]['CompletedTasks_Json'] == null) {
           this._CompletedDetails = true;
@@ -260,8 +260,8 @@ export class ToDoProjectsComponent implements OnInit {
           // console.log("To Do Completed---->", this.CompletedList);
           this._CompletedDetails = false;
         }
-        console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
-        console.log(this.Subtask_List,this.CompletedList,"Same");
+        // console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
+        // console.log(this.Subtask_List,this.CompletedList,"Same");
       });
   }
 
