@@ -514,7 +514,7 @@ transform: rotate(45deg);
 /* Ribbons  */
 .ribbon-box {
     position: relative;
-    z-index: 9999;
+    z-index: 998;
 }
 .ribbon {
     position: relative;
@@ -578,6 +578,9 @@ transform: rotate(45deg);
 }
 .ribbon-box .ribbon-success:before {
     border-color: #008080 transparent transparent;
+}
+.ribbon-box .ribbon-content {
+    clear: both;
 }
 .rounded {
     border-radius: 0.25rem!important;
@@ -801,3 +804,35 @@ transform: rotate(45deg);
    .filter-dot {
        position: relative;
    } 
+
+   .sideInfobar {
+    box-shadow: 0 1px 9px -3px rgb(0 0 0 / 75%) !important;
+   }
+   .bg-blued {
+    background: #516c8d !important;
+}
+.swal2-icon.swal2-icon-show {
+    margin-left: auto;
+    margin-right: auto;
+}
+.text-ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+.w-100px{
+  width: 100px;
+}
+.w-200px{
+  width: 200px;
+}
+.w-max-100px{
+  max-width: 100px;
+}
+.w-max-180px{
+  max-width: 180px;
+}
+.w-max-200px{
+  max-width: 200px;
+}
