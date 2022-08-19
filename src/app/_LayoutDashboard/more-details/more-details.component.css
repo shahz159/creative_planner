@@ -694,14 +694,14 @@ z-index: 998;
     margin-left: 50px;
 }
 .scrollbar1{
-    height: calc(100vh - 178px);
+    max-height: calc(100vh - 178px);
     overflow: hidden;
     overflow-y: auto;
 }
 
 
 .scrollbar1 {
-    height: calc(100vh - 138px);
+    max-height: calc(100vh - 138px);
     overflow-y: auto;
 }
 
@@ -747,9 +747,20 @@ z-index: 998;
     width: 25px;
     border-radius: 0rem 2rem 2rem 0rem;
     border: none;
-    background-color: rgb(255 184 34);
+    /* background-color: rgb(255 184 34); */
 }
-
+.bg-info ~ .task-status__controls {
+    background-color: #2786fb !important;
+}
+.bg-primary ~ .task-status__controls {
+    background-color: #5867dd !important;
+}
+.bg-warning ~ .task-status__controls {
+    background-color: #ffb822 !important;
+}
+.bg-danger ~ .task-status__controls {
+    background-color: #dc3545 !important;
+}
 .task-status__controls:after {
     content: "";
     display: block;
