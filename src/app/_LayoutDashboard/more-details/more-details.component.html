@@ -35,7 +35,7 @@
                     <!--inprocess button-->
                     <!--progress bar start-->
                     <div class="d-flex flex-column w-100 ml-3">
-                        <!-- <span class="text-dark fs-6 font-bold">Progress</span> -->
+                        <span class="text-dark fs-6 font-bold">Progress</span>
                         <div class="d-flex align-items-center w-200px">
                             <div class="progress h-6px w-100 bg-light-warning">
                                 <div class="progress-bar bg-warning" role="progressbar" style="width: 46%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
@@ -627,7 +627,7 @@
                                                                 <p class="mb-2"> 
                                                                     <small><strong *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small>
                                                                 </p>
-                                                                <h5><strong *ngIf="item.TM_DisplayName">{{(item.SubtaskCount / subTaskCount) | percent:'.1-2'}}</strong></h5>
+                                                                <h5><strong *ngIf="item.TM_DisplayName">{{(item.RespDuration / totalSubtaskHours ) | percent:'.1-2'}}</strong></h5>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1265,8 +1265,8 @@
                                             <div class="owner-details" > 
                                                 <span class="text-muted">(Owner)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Owner}} - </strong>
-                                                    <strong>0%</strong>
+                                                    <strong>{{Owner}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>                                        
                                             </div>
                                         </div>
@@ -1283,8 +1283,8 @@
                                             <div class="owner-details">
                                                 <span class="text-muted">(Responsible)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Responsible}} - </strong>
-                                                    <strong>0%</strong>
+                                                    <strong>{{Responsible}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>
                                                 <!-- <span class="text-muted">(ACtion's Responsible)</span>
                                                 <p class="text-muted" *ngFor="let item of Subtask_Res_List">
@@ -1306,8 +1306,8 @@
                                             <div class="owner-details">
                                                 <span class="text-muted">(Authority)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Authority}} - </strong>
-                                                    <strong>0%</strong>                                                 
+                                                    <strong>{{Authority}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>
                                             </div>
                                         </div>
@@ -1325,8 +1325,8 @@
                                             <div class="owner-details">
                                                 <span class="text-muted">(Coordinator)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Coordinator}} - </strong>
-                                                    <strong>0%</strong>
+                                                    <strong>{{Coordinator}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>                                                
                                             </div>
                                         </div>
@@ -1343,8 +1343,8 @@
                                             <div class="owner-details">
                                                 <span class="text-muted">(Informer)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Informer}} - </strong>
-                                                    <strong>0%</strong>
+                                                    <strong>{{Informer}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>                                                
                                             </div>
                                         </div>
@@ -1362,8 +1362,8 @@
                                             <div class="owner-details">
                                                 <span class="text-muted">(Support)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
-                                                    <strong>{{Support}} - </strong>
-                                                    <strong>0%</strong>
+                                                    <strong>{{Support}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>    
                                             </div>
                                         </div>

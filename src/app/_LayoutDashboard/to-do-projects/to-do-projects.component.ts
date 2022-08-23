@@ -192,9 +192,11 @@ export class ToDoProjectsComponent implements OnInit {
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
     this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").style.width = "75%";
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("todo").classList.add("position-fixed");
   }
 
   selected_Employee = [];
@@ -421,6 +423,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("todo").classList.remove("position-fixed");
+    // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
 
@@ -437,7 +441,8 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   closeInfoProject() {
-    this.OnClickCheckboxProjectUpdate(0)
+    this.OnClickCheckboxProjectUpdate(0);
+    document.getElementById("todo").classList.remove("position-fixed");
     this.Clear_Feilds();
   }
 
