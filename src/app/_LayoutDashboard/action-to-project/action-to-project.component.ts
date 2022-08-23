@@ -45,6 +45,7 @@ export class ActionToProjectComponent implements OnInit {
   public filterText: any;
   _ProjectDataList: any;
   ProjectDeadLineDate: Date;
+  maxAllocation: number;
 
   constructor(
     public notifyService: NotificationService,
@@ -178,10 +179,23 @@ export class ActionToProjectComponent implements OnInit {
   Sub_ProjectCode: any;
   EmpNo_Autho: any;
 
+  maxlimit: boolean = true;
+
   OnSubmit() {
-  
-    if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null) {
-      this.notifyService.showInfo("", 'Star(*) mark feilds required ')
+    // if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null || this._allocated == null) {
+    //   this.notifyService.showInfo("", 'Star(*) mark feilds required ')
+    // }
+    var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    this.maxAllocation = (-Difference_In_Days) * 8 / 1;
+    if(this._allocated > this.maxAllocation){
+      this.maxlimit = false;
+      Swal.fire({
+        title: 'Unable To Create Action !!',
+        text: 'Allocated hours cannot exceed ' + this.maxAllocation + ' hours! Allocation per day limit is 8 hours.' ,
+        icon: 'warning',
+        showCancelButton: true,   
+      });
     }
     else {
       if (this._MasterCode == null) {
@@ -208,17 +222,18 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
         this.ObjSubTaskDTO.StartDate = this._StartDate;
         this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
-        // var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-        // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+           
         // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
         // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
         //If we are using 8 hours format then divide by 3 for HourDifference.
+        
+        this.maxAllocation = this.maxAllocation * 8 / 1;
         this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
         this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
         this.ObjSubTaskDTO.Remarks = this._remarks;
         this.ObjSubTaskDTO.Duration= this._allocated;
-        
-        // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
+        // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
+
         if (this._inputAttachments.length > 0) {
           this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
         }
@@ -244,6 +259,7 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("StartDate", datestrStart);
         fd.append("EndDate", datestrEnd);
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+        fd.append("Allocated", this.maxAllocation.toString());
         fd.append("Emp_No", this.CurrentUser_ID);
         fd.append("AssignTo", this.selectedEmpNo);
         fd.append("Remarks", this._remarks);
@@ -265,6 +281,14 @@ export class ActionToProjectComponent implements OnInit {
         this._projectunplanned.CallOnSubmitCategory();
       });
     }
+  }
+
+  alertMaxAllocation(){
+    Swal.fire(
+      'Cancelled',
+      'Allocated hours cannot exceed the difference',
+      'error'
+    )
   }
 
   sweetAlert() {

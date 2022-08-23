@@ -582,12 +582,17 @@ export class ProjectsSummaryComponent implements OnInit {
   _MainProjectStatus: string;
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").style.width = "50%";
+    document.getElementById("mysideInfobar").style.width = "75%";
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
+    document.getElementById("rightbar-overlay").style.display = "block";
+        document.getElementById("sumdet").classList.add("position-fixed");
   }
 
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
+    
+    document.getElementById("rightbar-overlay").style.display = "none";
+        document.getElementById("sumdet").classList.remove("position-fixed");
   }
 
   _totalMemos: number;

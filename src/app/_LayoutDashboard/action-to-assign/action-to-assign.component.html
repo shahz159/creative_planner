@@ -38,11 +38,12 @@
 
         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
             <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-            <ng-select (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select Employee" >
+            <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select Employee" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
                     {{item.DisplayName}}
                 </ng-option>
             </ng-select>
+            <span *ngIf="assign.touched && !SelectedEmplList" style="color:red">Assign To required!</span>
         </div>
 
 

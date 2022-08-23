@@ -33,6 +33,17 @@
                         <button class="task-status__controls " (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
                     <!--inprocess button-->
+                    <!--progress bar start-->
+                    <div class="d-flex flex-column w-100 ml-3">
+                        <span class="text-dark fs-6 font-bold">Progress</span>
+                        <div class="d-flex align-items-center w-200px">
+                            <div class="progress h-6px w-100 bg-light-warning">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 46%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="text-muted fs-7 fw-bold pl-2">46%</span>
+                        </div>
+                    </div>
+                    <!--progress bar end -->
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="flex-grow-1">
@@ -42,8 +53,9 @@
                         <button class="btn22" (click)="sideviw()" *ngIf="Status =='Under Approval'">Project Actions</button>
                     </div>
                     <div class=" pro-act ml-2">
-                        <button class="btn22" *ngIf="Status != 'Completed'"
+                        <button class="btn  btn22 btn-pill" *ngIf="Status != 'Completed'"
                         (click)="OnClickCheckboxProjectUpdate()" >
+                        <i  class="fas fa-check mr-2"></i>
                         Project Completion
                     </button>
                     </div>
@@ -134,7 +146,7 @@
                                 <div class="action-content d-flex align-items-center">
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
-                                        <h5 class="mt-1">{{maxDuration}}Hrs</h5>
+                                        <h5 class="mt-1">{{totalSubtaskHours    }}Hrs</h5>
                                     </div>
                                     
                                     <div class="px-4">
@@ -584,12 +596,12 @@
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
                                                                 <ul class="list-group">
-                                                                    <li class="list-group-item active">Subtask Legends
+                                                                    <li class="list-group-item active">Action Legends
                                                                     </li>
                                                                     <li class="list-group-item"
                                                                         *ngFor="let dar of DarGraphDataList;let i=index">
                                                                         <span class="text-primary">
-                                                                            <b>{{dar.category}}</b> </span>
+                                                                            <b>{{dar.category}}: </b> </span>
                                                                         {{dar.Project_Name}}
                                                                     </li>
                                                                 </ul>
@@ -607,16 +619,15 @@
                                                         <h4>Breakdown</h4> 
                                                     </div>
                                                     <div  *ngFor="let item of Subtask_Res_List">
-                                                    <div class="col-lg-2 col-sm-4" >
+                                                    <div class="col-lg-2 col-sm-4" *ngIf="item.TM_DisplayName">
                                                         <div class="kt-portlet mb-3">
-                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!">
+                                                            <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!" >
                                                                 <img src="assets/images/user2.png" alt=""
-                                                                    class="breakdown-user" />
+                                                                    class="breakdown-user" *ngIf="item.TM_DisplayName" />
                                                                 <p class="mb-2"> 
-                                                                    <small><strong>{{item.TM_DisplayName}}</strong></small>
+                                                                    <small><strong *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small>
                                                                 </p>
-                                                                <h5><strong >{{(item.EmpCount / subTaskCount) | percent:'.1-2'}}</strong></h5>
-
+                                                                <h5><strong *ngIf="item.TM_DisplayName">{{(item.RespDuration / totalSubtaskHours ) | percent:'.1-2'}}</strong></h5>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -726,7 +737,7 @@
                             <!-- <li><h4 *ngIf="noRecords == true">No Records Found.</h4></li> -->
                             <li class="nav-item">
                                 <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
-                                    <span class="nav-text" >Subtasks</span>
+                                    <span class="nav-text" >Actions</span>
                                 </a>
                             </li>
                             
@@ -751,7 +762,7 @@
                                         <div class="ribbon-info ribbon float-start" *ngIf="noInprocess == false">Inprocess</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
-                                        <button *ngIf="noInprocess == false" (click)="sweetAlert()" title="Create New Subtask"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"><i class="fas fa-plus mr-0"></i></button></div>
+                                        <button *ngIf="noInprocess == false" (click)="sweetAlert()" title="Create New Action"  class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i class="fas fa-plus mr-2"></i>New Action</button></div>
                                         
                                         <div class="ribbon-content scrollbar1" *ngIf="noInprocess == false">
                                             <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
@@ -865,17 +876,17 @@
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">{{item.ProjectDuration}}Hrs</h6>
+                                                            <h6 class="mt-1">{{item.SubtaskAllocated}}Hrs</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
-                                                             <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{Difference_In_Days}} days</h6>
+                                                             <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{item.SubtaskDuration}} days</h6>
                                                             <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Percentage</h6>
-                                                            <h6 class="mt-1" *ngIf="maxDuration != 0">{{(maxDuration / subTaskCount) / maxDuration | percent:'.1-2'}}</h6>
-                                                            <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6>
+                                                            <h6 class="mt-1">{{(item.SubtaskAllocated / totalSubtaskHours) | percent:'.1-2'}}</h6>
+                                                            <!-- <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
                                                     </p>
     
@@ -995,17 +1006,17 @@
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">{{item.ProjectDuration}}Hrs</h6>
+                                                            <h6 class="mt-1">{{item.SubtaskAllocated}}Hrs</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
-                                                             <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{Difference_In_Days}} days</h6>
+                                                             <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">{{item.SubtaskDuration}} days</h6>
                                                             <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Percentage</h6>
-                                                            <h6 class="mt-1" *ngIf="maxDuration != 0">{{(maxDuration / subTaskCount) / maxDuration | percent:'.1-2'}}</h6>
-                                                            <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6>
+                                                            <h6 class="mt-1">{{(item.SubtaskAllocated / totalSubtaskHours) | percent:'.1-2'}}</h6>
+                                                            <!-- <h6 class="mt-1" >{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
                                                     </p>
                                                 </div>
@@ -1251,11 +1262,12 @@
                                         <div class="d-flex align-items-center">
                                             <div class="initial-box color-1">{{InitOwn}}
                                             </div>
-                                            <div class="owner-details">
+                                            <div class="owner-details" > 
                                                 <span class="text-muted">(Owner)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Owner}}</strong>
-                                                </p>
+                                                    <!-- <strong>0%</strong> -->
+                                                </p>                                        
                                             </div>
                                         </div>
                                     </div>
@@ -1272,7 +1284,13 @@
                                                 <span class="text-muted">(Responsible)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Responsible}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>
+                                                <!-- <span class="text-muted">(ACtion's Responsible)</span>
+                                                <p class="text-muted" *ngFor="let item of Subtask_Res_List">
+                                                    <strong>{{item.TM_DisplayName}}</strong>
+                                                    <strong *ngIf="item.TM_DisplayName">{{(item.EmpCount / subTaskCount) | percent:'.1-2'}}</strong>
+                                                </p>                                               -->
                                             </div>
                                         </div>
                                     </div>
@@ -1289,6 +1307,7 @@
                                                 <span class="text-muted">(Authority)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Authority}}</strong>
+                                                    <!-- <strong>0%</strong> -->
                                                 </p>
                                             </div>
                                         </div>
@@ -1307,7 +1326,8 @@
                                                 <span class="text-muted">(Coordinator)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Coordinator}}</strong>
-                                                </p>
+                                                    <!-- <strong>0%</strong> -->
+                                                </p>                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1324,7 +1344,8 @@
                                                 <span class="text-muted">(Informer)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Informer}}</strong>
-                                                </p>
+                                                    <!-- <strong>0%</strong> -->
+                                                </p>                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1342,7 +1363,8 @@
                                                 <span class="text-muted">(Support)</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Support}}</strong>
-                                                </p>
+                                                    <!-- <strong>0%</strong> -->
+                                                </p>    
                                             </div>
                                         </div>
                                     </div>
@@ -1352,6 +1374,9 @@
                                 </div>
                             </div>
                         </div>
+                        <ng-template #zeroPercent>
+                            <p><strong>0%</strong></p>
+                        </ng-template>
                     </div>
                     <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">
                        <h3 *ngIf="noMeeting == false; else noResultsFound">Meeting</h3>
@@ -1408,17 +1433,15 @@
 
 <!-- For Update Project-->
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
-    <div class="kt-portlet__head p-3 bg-blued">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between">
-            <h5 class="title-sidebar w-90 mb-0 text-white">
-                Completion Of Project
-            </h5>
-            <a href="javascript:void(0)" class="text-hover-primary closebtn pull-right ml-2 text-white"
-                (click)="closeInfoProject()">
-                <i class="fa fa-times"></i></a>
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+          <h4 class="font-weight-bold m-0">Project Completion</h4>
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"  (click)="closeInfoProject()">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
-    </div>
-    <div class="p-4">
+      </div>
+    <div class="px-4 pt-2">
         <div class="">
             <div class="d-flex align-items-center justify-content-between mt-0">
               <div>
@@ -1486,19 +1509,15 @@
 </div>
 <!-- For Update Subtask -->
 <div id="mysideInfobar_Update" class="sideInfobar animate-right offcanvas">
-    <div class="kt-portlet__head p-3 bg-blued">
-        <!-- <h3 class="font-weight m-0 text-white">Update Action</h3> -->
-        <div class="offcanvas-header d-flex align-items-center justify-content-between">
-
-            <h5 class="title-sidebar w-90 mb-0 text-white">
-                Action to Completion 
-            </h5>
-            <a href="javascript:void(0)" class="text-hover-primary closebtn pull-right ml-2 text-white"
-                (click)="closeInfo()">
-                <i class="fa fa-times"></i></a>
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+          <h4 class="font-weight-bold m-0"> Action Completion  </h4>
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"  (click)="closeInfo()">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
-    </div>
-    <div class="p-4">        
+      </div>
+    <div class="px-4 pt-2">        
         <div class="">
             <div class="d-flex flex-column">
               <h5 class="fs-3 mb-2">{{this._Subtaskname}}</h5>

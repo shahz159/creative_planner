@@ -698,8 +698,6 @@ z-index: 998;
     overflow: hidden;
     overflow-y: auto;
 }
-
-
 .scrollbar1 {
     max-height: calc(100vh - 138px);
     overflow-y: auto;
@@ -776,4 +774,7 @@ z-index: 998;
 }
 .br-cr{
     border-radius: 2rem 0rem 0rem 2rem;
+}
+.progress {
+    background-color: #d4daeb;
 }

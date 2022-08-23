@@ -192,9 +192,11 @@ export class ToDoProjectsComponent implements OnInit {
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
     this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").style.width = "75%";
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("todo").classList.add("position-fixed");
   }
 
   selected_Employee = [];
@@ -236,6 +238,8 @@ export class ToDoProjectsComponent implements OnInit {
       });
   }
 
+  totalSubtaskHours:number;
+  
   GetSubtask_Details() {
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
@@ -247,6 +251,7 @@ export class ToDoProjectsComponent implements OnInit {
         else {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this._subtaskDetails = false;
           this._projectDetails = true;     
           // console.log("To Do Completed---->", this.CompletedList);
@@ -418,6 +423,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("todo").classList.remove("position-fixed");
+    // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
 
@@ -434,7 +441,8 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   closeInfoProject() {
-    this.OnClickCheckboxProjectUpdate(0)
+    this.OnClickCheckboxProjectUpdate(0);
+    document.getElementById("todo").classList.remove("position-fixed");
     this.Clear_Feilds();
   }
 
