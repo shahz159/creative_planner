@@ -236,6 +236,8 @@ export class ToDoProjectsComponent implements OnInit {
       });
   }
 
+  totalSubtaskHours:number;
+  
   GetSubtask_Details() {
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
@@ -247,6 +249,7 @@ export class ToDoProjectsComponent implements OnInit {
         else {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this._subtaskDetails = false;
           this._projectDetails = true;     
           // console.log("To Do Completed---->", this.CompletedList);

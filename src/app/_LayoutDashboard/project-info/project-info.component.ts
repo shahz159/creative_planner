@@ -33,6 +33,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
   TotalWork_Hours: any;
+  totalSubtaskHours: number;
   ProjectPercentage: any; ProjectStatus: string;
   standardDuration: any;
   _MainProjectStatus: string;
@@ -76,6 +77,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           // // this.CompletedList.push(this.Subtask_List);
           // console.log("subtask Details--->",this.Subtask_List);
           // console.log("Assign Details--->",this.AssigntaskList);
+          this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this.TotalWork_Hours = data[0]['TotalHours'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];

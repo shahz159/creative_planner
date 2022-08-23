@@ -56,6 +56,8 @@ export class MoreDetailsComponent implements OnInit {
   noNotes: boolean = true;
   noMeeting: boolean = true;
   checked: any;
+  totalSubtaskHours : any;
+  actionResponsibles: any = [];
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -65,6 +67,14 @@ export class MoreDetailsComponent implements OnInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
 
+      let data1: any;
+      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+        .subscribe(data => {
+          // console.log("data1 Testong---->", data);
+          data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
+          this.DarGraphDataList = data1;
+          console.log(this.DarGraphDataList);
+        });
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
         (data) => {
           // console.log(this.noRecords);
@@ -72,7 +82,15 @@ export class MoreDetailsComponent implements OnInit {
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-          // console.log(this.Subtask_Res_List);
+          
+          
+          // console.log(this.actionResponsibles,"test");
+          // for(var val of this.Subtask_Res_List){
+          //   this.actionResponsibles = this.Subtask_Res_List[val]['TM_DisplayName'];
+          // }
+          
+          this.totalSubtaskHours = (data[0]['SubtaskHours']);
+          // console.log(this.totalSubtaskHours,"Total subhours");
           if ((this.Subtask_List == '') && (this.CompletedList == '')) {
             this.noRecords = true;
             // console.log(this.noRecords);
@@ -428,7 +446,7 @@ export class MoreDetailsComponent implements OnInit {
         // console.log("data1 Testong---->", data);
         data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
         this.DarGraphDataList = data1;
-        // console.log(this.DarGraphDataList);
+        console.log(this.DarGraphDataList);
         //console.log("DarGraphDataList---->",this.DarGraphDataList);
         let root = am5.Root.new("chartdiv");
         let chart = root.container.children.push(am5xy.XYChart.new(root, {
@@ -2219,7 +2237,7 @@ export class MoreDetailsComponent implements OnInit {
         this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
         // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
         this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-        console.log(this.Subtask_Res_List);
+        // console.log(this.Subtask_Res_List);
         if ((this.Subtask_List == '') && (this.CompletedList == '')) {
           this.noRecords = true;
           // console.log(this.noRecords);
