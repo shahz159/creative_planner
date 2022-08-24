@@ -47,6 +47,7 @@ export class ActionToProjectComponent implements OnInit {
   _ProjectDataList: any;
   ProjectDeadLineDate: Date;
   maxAllocation: number;
+  Current_user_ID: string;
 
   constructor(
     public notifyService: NotificationService,
@@ -88,6 +89,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
   }
 
@@ -189,13 +191,13 @@ export class ActionToProjectComponent implements OnInit {
     // }
     var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    this.maxAllocation = (-Difference_In_Days) * 8 / 1;
+    this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     if(this._allocated > this.maxAllocation){
       this.maxlimit = false;
       Swal.fire({
         title: 'Unable To Create Action !!',
-        text: 'Allocated hours cannot exceed ' + this.maxAllocation + ' hours! Allocation per day limit is 8 hours.' ,
-        icon: 'warning',
+        text: 'Allocated hours cannot exceed ' + this.maxAllocation + ' hours! Allocation per day limit is 10 hours.' ,
+        // icon: 'warning',
         showCancelButton: true,   
       });
     }
@@ -208,6 +210,7 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.MasterCode = this._MasterCode;
       }
       this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+        debugger
         this.Sub_ProjectCode = data['SubTask_ProjectCode'];
         this.EmpNo_Autho = data['Team_Autho'];
         this.ProjectBlock = data['ProjectBlock'];
@@ -260,13 +263,21 @@ export class ActionToProjectComponent implements OnInit {
         fd.append("Projectblock", this.ProjectBlock);
         fd.append("StartDate", datestrStart);
         fd.append("EndDate", datestrEnd);
-        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
-        fd.append("Allocated", this.maxAllocation.toString());
+      
+        // fd.append("Allocated", this.maxAllocation.toString());
         fd.append("Emp_No", this.CurrentUser_ID);
         fd.append("AssignTo", this.selectedEmpNo);
         fd.append("Remarks", this._remarks);
         fd.append("EmployeeName", localStorage.getItem('UserfullName'))
         fd.append("AssignId", this.task_id.toString())
+
+        if(this.ObjSubTaskDTO.Duration != null){
+          fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+        }
+        else{
+          this.ObjSubTaskDTO.Duration = 0;
+        }
+
         this.service._InsertNewSubtask(fd).subscribe(data => {
           this.notifyService.showInfo("Created Successfully", "Action");
           // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);

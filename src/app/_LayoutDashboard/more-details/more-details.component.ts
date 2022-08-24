@@ -58,6 +58,8 @@ export class MoreDetailsComponent implements OnInit {
   checked: any;
   totalSubtaskHours : any;
   actionResponsibles: any = [];
+  ProjectStatus: string;
+  ProjectPercentage: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -82,6 +84,8 @@ export class MoreDetailsComponent implements OnInit {
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+          this.ProjectStatus = data[0]['ProjectStatus'];
+          this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           
           
           // console.log(this.actionResponsibles,"test");

@@ -71,10 +71,10 @@
         </div>
 
         <div class="form-group">
-            <label>Allocated Hours<span class="text-danger">*</span></label>
+            <label>Allocated Hours<span class="text-danger" *ngIf="selectedEmpNo == Current_user_ID">*</span></label>
             <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
             <input #allocated="ngModel" required type="number" class="form-control" [(ngModel)]="_allocated"/>
-            <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
+            <span *ngIf="selectedEmpNo == Current_user_ID && allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
             <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
         </div>
 
@@ -91,8 +91,11 @@
             </div>
         </div>
         <div class="form-group mb-1">
-            <button type="submit" class="btn btn-primary"  (click)="sweetAlert()"
+            <button type="submit" class="btn btn-primary"  (click)="sweetAlert()" *ngIf="selectedEmpNo == Current_user_ID"
                 [disabled]="!selectedProjectCodelist || !Sub_ProjectName || !_Description || !selected_Employee || !_StartDate || !_EndDate || !_allocated">Submit
+            </button>
+            <button type="submit" class="btn btn-primary"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
+                [disabled]="!selectedProjectCodelist || !Sub_ProjectName || !_Description || !selected_Employee || !_StartDate || !_EndDate ">Submit
             </button>
         </div>
     </div>
