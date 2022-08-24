@@ -10,7 +10,7 @@ import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-
 import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { ToDoProjectsComponent } from 'src/app/_LayoutDashboard/to-do-projects/to-do-projects.component';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 
 @Component({
   selector: 'app-action-to-project',
