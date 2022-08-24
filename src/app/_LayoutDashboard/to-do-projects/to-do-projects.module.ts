@@ -38,6 +38,10 @@ import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule
   ]
-,providers:[ProjectUnplannedTaskComponent]
+,providers:[ProjectUnplannedTaskComponent],
+
+exports:[
+    ToDoProjectsComponent
+  ]
 })
 export class ToDoProjectsModule { }

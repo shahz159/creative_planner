@@ -66,6 +66,7 @@ export class ToDoProjectsComponent implements OnInit {
     //this._ProjectName = "Project Name"
     this.GetProjectsByUserName();
     this.getDropdownsDataFromDB();
+   
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -190,8 +191,10 @@ export class ToDoProjectsComponent implements OnInit {
     this.closeInfo();
   }
   CallOnSubmitAction() {
-     console.log('A');
+    //  console.log('A');
     this.GetSubtask_Details();
+    this. GetProjectsByUserName();
+    this.getDropdownsDataFromDB();
   }
 
   ProjectInfoDetails() {
@@ -248,6 +251,7 @@ export class ToDoProjectsComponent implements OnInit {
   totalSubtaskHours:number;
   
   GetSubtask_Details() {
+    // alert(1233)
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         // this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
@@ -299,6 +303,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar_ProjectAction").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
+   
+    
     // document
     // this.Block3 = false;
   }
@@ -426,13 +432,16 @@ export class ToDoProjectsComponent implements OnInit {
   Subproj_Code: string;
 
   closeInfo() {
+    debugger
+    this.Clear_Feilds();
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
     // document.getElementById("todo").classList.remove("position-fixed");
     // document.getElementById("rightbar-overlay").style.display = "none";
-    this.Clear_Feilds();
+   
+    
   }
 
   Clear_Feilds() {
@@ -445,6 +454,7 @@ export class ToDoProjectsComponent implements OnInit {
     this._inputAttachments2 = null;
     this.selectedEmpNo = '';
     this.selected_Employee = [];
+ 
   }
 
   closeInfoProject() {
@@ -527,6 +537,8 @@ export class ToDoProjectsComponent implements OnInit {
         }
         this.closeInfo();
         this.GetSubtask_Details();
+        this. GetProjectsByUserName();
+        this.getDropdownsDataFromDB();
       });
   }
 
@@ -550,14 +562,26 @@ export class ToDoProjectsComponent implements OnInit {
       // this.ObjSubTaskDTO.Remarks = this._remarks;
       this.service._UpdateSubtaskByProjectCode(fd)
         .subscribe(data => {
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          debugger
+            this._remarks = "";
+          this._inputAttachments = "";
+       
+          //this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.GetSubtask_Details();
+        
+          this.notifyService.showInfo("Successfully Updated", '');
+          document.getElementById("mysideInfobar").style.width = "0";
+          document.getElementById("rightbar-overlay").style.display = "none";
+          document.getElementById("mysideInfobar_Update").style.width = "0";
+          document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+     
+         
+         
         });
-      this.notifyService.showInfo("Successfully Updated", '');
-      this.closeInfo();
-      this._remarks = "";
-      this._inputAttachments = "";
+         
+        
     }
+   
   }
 
   Btn_NewProjectCreation() {
