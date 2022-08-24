@@ -10,6 +10,7 @@ import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-
 import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { ToDoProjectsComponent } from 'src/app/_LayoutDashboard/to-do-projects/to-do-projects.component';
 
 @Component({
   selector: 'app-action-to-project',
@@ -54,7 +55,8 @@ export class ActionToProjectComponent implements OnInit {
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
     public service: ProjectTypeService,
-    public _projectunplanned: ProjectUnplannedTaskComponent
+    public _projectunplanned: ProjectUnplannedTaskComponent,
+    public _Todoproject: ToDoProjectsComponent
   ) {
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
@@ -269,6 +271,7 @@ export class ActionToProjectComponent implements OnInit {
           this.notifyService.showInfo("Created Successfully", "Action");
           // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
           // this.closeInfo();
+          this._Todoproject.CallOnSubmitAction();
           this._projectunplanned.CallOnSubmitCategory();
           this.Clear_Feilds();
           this.closeInfo();
@@ -279,6 +282,11 @@ export class ActionToProjectComponent implements OnInit {
           this.loadsubcateg();
         }, 3000);
         this._projectunplanned.CallOnSubmitCategory();
+        setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
+        setTimeout(function () {
+          this.loadsubcateg();
+        }, 3000);
+        this._Todoproject.CallOnSubmitAction();
       });
     }
   }

@@ -28,6 +28,9 @@ export class ToDoProjectsComponent implements OnInit {
   campaignOne: FormGroup;
   campaignTwo: FormGroup;
   _objDropdownDTO: DropdownDTO;
+ 
+
+
   constructor(public service: ProjectTypeService,
     private notifyService: NotificationService,
     private router: Router,
@@ -185,6 +188,10 @@ export class ToDoProjectsComponent implements OnInit {
       this.addbutton_hidden = true;
     }
     this.closeInfo();
+  }
+  CallOnSubmitAction() {
+     console.log('A');
+    this.GetSubtask_Details();
   }
 
   ProjectInfoDetails() {
