@@ -20,24 +20,23 @@
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <i class="fas fa-code-branch"></i>
                     <h4 class="fs-3 text-info mb-0 mx-3">{{URL_ProjectCode}}</h4>
-                    <label *ngIf="Status == 'Completed'"
+                    <label *ngIf="Status == 'Completed' || Status == 'Under Approval'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
-                        [ngClass]="{'bg-success':Status=='Completed'}">{{Status}}</label>
+                        [ngClass]="{'bg-success':Status=='Completed','bg-info':Status=='Under Approval'}">{{Status}}</label>
 
                     <!--inprocess button-->
-                    <div class="d-flex" *ngIf="Status != 'Completed'">
+                    <div class="d-flex" *ngIf="Status != 'Completed' && Status != 'Under Approval'">
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                         <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
                             [ngClass]="{'bg-danger':Status=='Delay',
                     'bg-warning':Status=='InProcess',
-                    'bg-info':Status=='Under Approval',
                     'bg-primary':Status=='Completion Under Approval'}">{{Status}}</label>
                         <div class="task-status__divider"></div>
-                        <button class="task-status__controls " (click)="OnClickCheckboxProjectUpdate()"></button>
+                        <button class="task-status__controls"  (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
                     <!--inprocess button-->
                     <!--progress bar start-->
-                    <div class="d-flex flex-column w-100 ml-3">
+                    <div class="d-flex flex-column ml-3">
                         <span class="fs-6 font-bold"
                         [ngClass]="{'text-dark':ProjectStatus=='Not Started',
                         'text-success':ProjectStatus=='Completed',
@@ -138,7 +137,7 @@
                             *ngIf="(Status =='Under Approval' || Status == 'Completion Under Approval')">Project
                             Actions</button>
                     </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay')" class=" pro-act ml-2">
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status == 'Completion Under Approval')" class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
                             <i class="fas fa-check mr-2"></i>
                             Project Completion
