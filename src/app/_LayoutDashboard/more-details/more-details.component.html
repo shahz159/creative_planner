@@ -20,32 +20,32 @@
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
                     <h4 class="fs-3 text-info mb-0 mr-3">{{URL_ProjectCode}}</h4>
-                    <label *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'"
-                        class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
-                        [ngClass]="{'bg-success':Status=='Completed',
+                    <label
+                        *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'"
+                        class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-success':Status=='Completed',
                         'bg-info':Status=='Under Approval',
                         'bg-primary':Status=='Completion Under Approval'}">
                         {{Status}}</label>
 
                     <!--inprocess button-->
-                    <div class="d-flex" *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'">
+                    <div class="d-flex"
+                        *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'">
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                         <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
                             [ngClass]="{'bg-danger':Status=='Delay',
                     'bg-warning':Status=='InProcess'}">{{Status}}</label>
                         <div class="task-status__divider"></div>
-                        <button class="task-status__controls"  (click)="OnClickCheckboxProjectUpdate()"></button>
+                        <button class="task-status__controls" (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
                     <!--inprocess button-->
                     <!--progress bar start-->
                     <div class="d-flex flex-column ml-3">
-                        <span class="fs-6 font-bold"
-                        [ngClass]="{'text-dark':ProjectStatus=='Not Started',
+                        <span class="fs-6 font-bold" [ngClass]="{'text-dark':ProjectStatus=='Not Started',
                         'text-success':ProjectStatus=='Completed',
                         'text-warning':ProjectStatus=='InProcess',
                         'text-underApp':ProjectStatus=='UnderCompletion',
-                        'text-info':ProjectStatus=='Just Started'}"> 
-                        {{ProjectStatus}}
+                        'text-info':ProjectStatus=='Just Started'}">
+                            {{ProjectStatus}}
                         </span>
                         <!-- text-dark - first div -->
                         <!-- <div class="d-flex align-items-center w-200px">
@@ -71,29 +71,29 @@
                             </div>
                         </div>
                         <div *ngIf="ProjectStatus=='Just Started'">
-                            <div class="d-flex align-items-center w-200px">                               
+                            <div class="d-flex align-items-center w-200px">
                                 <div class="progress h-6px w-100 bg-light-warning">
                                     <div class="progress-bar bg-warning" role="progressbar"
                                         [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
-                                </div>                                
+                                </div>
                                 <span class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                             </div>
                         </div>
                         <div *ngIf="ProjectStatus=='InProcess'">
-                            <div class="d-flex align-items-center w-200px">                                
+                            <div class="d-flex align-items-center w-200px">
                                 <div class="progress h-6px w-100 bg-light-warning">
                                     <div class="progress-bar bg-warning" role="progressbar"
                                         [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
-                                </div>                               
+                                </div>
                                 <span class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                             </div>
                         </div>
                         <div *ngIf="ProjectStatus=='UnderCompletion'">
-                            <div class="d-flex align-items-center w-200px">                                
+                            <div class="d-flex align-items-center w-200px">
                                 <div class="progress h-6px w-100 bg-light-warning">
                                     <div class="progress-bar bg-warning" role="progressbar"
                                         [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
@@ -104,18 +104,7 @@
                             </div>
                         </div>
                         <div *ngIf="ProjectStatus=='Completed'">
-                            <div class="d-flex align-items-center w-200px">                                
-                                <div class="progress h-6px w-100 bg-light-warning">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                        [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>                                
-                                <span class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
-                            </div>
-                        </div>
-                        <div *ngIf="ProjectStatus=='ProjDuration0'">
-                            <div class="d-flex align-items-center w-200px">                               
+                            <div class="d-flex align-items-center w-200px">
                                 <div class="progress h-6px w-100 bg-light-warning">
                                     <div class="progress-bar bg-warning" role="progressbar"
                                         [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
@@ -125,7 +114,18 @@
                                 <span class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                             </div>
                         </div>
-                        
+                        <div *ngIf="ProjectStatus=='ProjDuration0'">
+                            <div class="d-flex align-items-center w-200px">
+                                <div class="progress h-6px w-100 bg-light-warning">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        [ngStyle]='{ width : ProjectPercentage }' aria-valuenow="50" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <span class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!--progress bar end -->
@@ -135,8 +135,7 @@
                         <h4 class="mb-1 pro-nm">{{ProjectName}}</h4>
                     </div>
                     <div class=" pro-act">
-                        <button class="btn22" (click)="sideviw()"
-                            *ngIf="(Status =='Under Approval')">Project
+                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
                             Actions</button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay')" class=" pro-act ml-2">
@@ -719,8 +718,12 @@
                                                                         <small><strong
                                                                                 *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small>
                                                                     </p>
-                                                                    <h5><strong *ngIf="item.TM_DisplayName">{{(item.RespDuration / totalSubtaskHours ) | percent:'.1-2'}}</strong></h5>
-                                                                    <h5><strong *ngIf="totalSubtaskHours == 0"> 0% </strong></h5>
+                                                                    <h5><strong
+                                                                            *ngIf="item.TM_DisplayName">{{(item.RespDuration
+                                                                            / totalSubtaskHours ) |
+                                                                            percent:'.1-2'}}</strong></h5>
+                                                                    <h5><strong *ngIf="totalSubtaskHours == 0"> 0%
+                                                                        </strong></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -962,10 +965,13 @@
                                                         </span>
                                                     </p>
 
-                                                    <p class="mb-1" *ngIf="item.CompleteProofDoc">
+                                                    <p class="mb-1" *ngIf="item.Sourcefile">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <i class="fas fa-paperclip text-muted mr-1"></i>
-                                                            <b>{{item.CompleteProofDoc}}</b>
+                                                            <a class="text-info curser-pointer"
+                                                                title="Click To Open File"
+                                                                (click)="LoadDocument(item.CompleteProofDoc)">
+                                                                <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
                                                             *ngIf="item.Remarks">
@@ -987,7 +993,8 @@
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Percentage</h6>
-                                                            <h6 class="mt-1">{{(item.SubtaskAllocated / totalSubtaskHours) | percent:'.1-2'}}</h6>
+                                                            <h6 class="mt-1">{{(item.SubtaskAllocated /
+                                                                totalSubtaskHours) | percent:'.1-2'}}</h6>
                                                             <h6 class="mt-1" *ngIf="totalSubtaskHours == 0"> 0% </h6>
                                                             <!-- <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
@@ -1096,10 +1103,13 @@
                                                             {{item.SubProject_Status}}
                                                         </span>
                                                     </p>
-                                                    <p class="mb-1" *ngIf="item.CompleteProofDoc">
+                                                    <p class="mb-1" *ngIf="item.Sourcefile">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <i class="fas fa-paperclip text-muted mr-1"></i>
-                                                            <b>{{item.CompleteProofDoc}}</b>
+                                                            <a class="text-info curser-pointer"
+                                                                title="Click To Open File"
+                                                                (click)="LoadDocument(item.CompleteProofDoc)">
+                                                                <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
                                                             *ngIf="item.Remarks">

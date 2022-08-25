@@ -60,6 +60,7 @@ export class MoreDetailsComponent implements OnInit {
   actionResponsibles: any = [];
   ProjectStatus: string;
   ProjectPercentage: any;
+  src: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -2475,5 +2476,22 @@ export class MoreDetailsComponent implements OnInit {
         this.closeInfo();
         this.GetSubtask_Details();
       });
+  }
+  LoadDocument(url: string) {
+    // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
+    // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
+    // contenttype=".pdf";
+    // if (contenttype == ".PDF" || contenttype == ".pdf" || contenttype == "application/pdf") {
+    //   this._IsPdf = true;
+    // }
+    // else if (contenttype == ".jpg" || contenttype == ".png" || contenttype == ".PNG" || contenttype == ".jpeg") {
+    //   this._IsPdf = false;
+    // }
+
+    this.src = url;
+    var myWindow = window.open(url);
+    myWindow.focus();
+    //this.cd.detectChanges();
+    //$('#documentPreview').modal('toggle');
   }
 }
