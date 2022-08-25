@@ -7,7 +7,7 @@ import { MoreDetailsComponent } from './more-details.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 
- 
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 
 
 @NgModule({
@@ -18,6 +18,6 @@ import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project
     MoreDetailsRoutingModule,
     NgMultiSelectDropDownModule
   ],
-  providers:[ProjectUnplannedTaskComponent]
+  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent ]
 })
 export class MoreDetailsModule { }

@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TaskDateAgoPipe } from './task-date-ago.pipe';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -34,10 +35,10 @@ import { NotificationService } from 'src/app/_Services/notification.service';
     NgMultiSelectDropDownModule
   ],
   exports:[
-    ProjectUnplannedTaskComponent
+    ProjectUnplannedTaskComponent, 
   ],
     providers: [ 
-      NotificationService
+      NotificationService, ToDoProjectsComponent
   ] 
 })
 export class ProjectUnplannedTaskModule { }
