@@ -18,8 +18,8 @@
         <div class="row">
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
-                    <i class="fas fa-code-branch"></i>
-                    <h4 class="fs-3 text-info mb-0 mx-3">{{URL_ProjectCode}}</h4>
+                    <!-- <i class="fas fa-code-branch"></i> -->
+                    <h4 class="fs-3 text-info mb-0 mr-3">{{URL_ProjectCode}}</h4>
                     <label *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                         [ngClass]="{'bg-success':Status=='Completed',
@@ -719,10 +719,8 @@
                                                                         <small><strong
                                                                                 *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small>
                                                                     </p>
-                                                                    <h5><strong
-                                                                            *ngIf="item.TM_DisplayName">{{(item.RespDuration
-                                                                            / totalSubtaskHours ) |
-                                                                            percent:'.1-2'}}</strong></h5>
+                                                                    <h5><strong *ngIf="item.TM_DisplayName">{{(item.RespDuration / totalSubtaskHours ) | percent:'.1-2'}}</strong></h5>
+                                                                    <h5><strong *ngIf="totalSubtaskHours == 0"> 0% </strong></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -989,8 +987,8 @@
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Percentage</h6>
-                                                            <h6 class="mt-1">{{(item.SubtaskAllocated /
-                                                                totalSubtaskHours) | percent:'.1-2'}}</h6>
+                                                            <h6 class="mt-1">{{(item.SubtaskAllocated / totalSubtaskHours) | percent:'.1-2'}}</h6>
+                                                            <h6 class="mt-1" *ngIf="totalSubtaskHours == 0"> 0% </h6>
                                                             <!-- <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
                                                     </p>

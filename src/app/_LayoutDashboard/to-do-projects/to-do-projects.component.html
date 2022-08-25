@@ -206,15 +206,16 @@
                                     'text-Completed':item.Status=='Completed',
                                     'text-warning':item.Status=='InProcess',
                                     'text-underApp':item.Status=='Under Approval',
-                                    'text-info':item.Status=='Completion Under Approval',
+                                    'text-primary':item.Status=='Completion Under Approval',
                                     'text-Rejected':item.Status=='New Project Rejected',
                                     'text-underApproval':item.Status=='Enactive Under Approval',
                                     'text-underApproval':item.Status=='Forward Under Approval',
-                                    'text-primary':item.Status=='New Project',
-                                    'text-success':item.Status=='Completion Under Approval',
+                                    'text-info':item.Status=='New Project',
+                                    
                                     'text-CompleteRejected':item.Status=='Project Complete Rejected',
                                     'text-Todo':item.Status=='ToDo Completed'}">
                                     {{item.Status}}</p>
+                                    <!-- 'text-success':item.Status=='Completion Under Approval' -->
                                 <p class="mb-2">Date : {{item.DeadLine | date:'dd-MM-yyyy'}}</p>
                             </div>
                         </a>
@@ -310,16 +311,17 @@
                                     'text-Completed':Project_Status=='Completed',
                                     'text-warning':Project_Status=='InProcess',
                                     'text-underApp':Project_Status=='Under Approval',
-                                    'text-info':Project_Status=='Completion Under Approval',
+                                    'text-primary':Project_Status=='Completion Under Approval',
                                     'text-Rejected':Project_Status=='New Project Rejected',
                                     'text-underApproval':Project_Status=='Enactive Under Approval',
                                     'text-underApproval2':Project_Status=='Forward Under Approval',
-                                    'text-primary':Project_Status=='New Project',
-                                    'text-success':Project_Status=='Completion Under Approval',
+                                    'text-info':Project_Status=='New Project',
+                                    
                                     'text-CompleteRejected':Project_Status=='Project Complete Rejected',
                                     'text-Todo':Project_Status=='ToDo Completed'}">
                                 {{Project_Status}}
                             </span>
+                            <!-- 'text-success':Project_Status=='Completion Under Approval' -->
                             <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{PstDT | date:'dd-MM-yyyy'}}</b>
@@ -462,18 +464,19 @@
                                     'text-Completed':item.SubProject_Status=='Completed',
                                     'text-warning':item.SubProject_Status=='InProcess',
                                     'text-underApp':item.SubProject_Status=='Under Approval',
-                                    'text-info':item.SubProject_Status=='Completion Under Approval',
+                                    'text-primary':item.SubProject_Status=='Completion Under Approval',
                                     'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                     'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                    'text-primary':item.SubProject_Status=='New Project',
-                                    'text-success':item.SubProject_Status=='Completion Under Approval',
+                                    'text-info':item.SubProject_Status=='New Project',
+                                   
                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}">
                                        <!-- <p class="text-Completed "  *ngIf="Project_Status == 'Completed'"> Completed</p> -->
                                        <!-- <p  *ngIf="Project_Status != 'Completed'"> {{item.SubProject_Status}}</p> -->
                                        <p> {{item.SubProject_Status}}</p>
                                     </span>
+                                    <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                 </p>
                                 <p class="mb-1">
                                     <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
