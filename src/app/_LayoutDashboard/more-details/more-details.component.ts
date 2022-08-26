@@ -47,6 +47,7 @@ export class MoreDetailsComponent implements OnInit {
   IsData: string;
   _LinkSideBar: boolean = true;
   maxDuration: any;
+  standardDuration:any;
   totalPercent: number = 1;
   SubmissionName: string;
   noRecords: boolean = false;
@@ -241,6 +242,7 @@ export class MoreDetailsComponent implements OnInit {
   StandardDuration: any;
   ProjectBlockName: any;
   Status: any;
+  Pid:number;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -249,6 +251,7 @@ export class MoreDetailsComponent implements OnInit {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
+          this.Pid = this.ProjectInfo_List[0]['id'];
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
@@ -311,6 +314,9 @@ export class MoreDetailsComponent implements OnInit {
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
+        let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+        this.standardDuration= (data2[0]['DurationTime']);
+
       })
   }
 
@@ -2299,6 +2305,7 @@ export class MoreDetailsComponent implements OnInit {
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
+  
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;

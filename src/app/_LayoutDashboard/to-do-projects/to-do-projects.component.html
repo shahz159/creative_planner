@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height" id="todo">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="todo">
     <div class="row">
 
         <div class="col-lg-12">
@@ -192,7 +192,7 @@
                         item.Team_Res,item.Team_Autho,item.Team_Informer,item.Team_Coor,item.Team_Support,
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
-                        item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,
+                        item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,item.StandardDuration,
                         item.Client_Name,item.Remarks,item.Remarkss,item.CD,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
@@ -336,7 +336,8 @@
                             </span>
                             <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-clock text-muted mr-1"></i>
-                                <b>{{totalSubtaskHours}} Hrs</b>
+                                <b *ngIf="Proj_ExecBlck != 'Standard Tasks'">{{Duration}} Hrs</b>
+                                <b *ngIf="Proj_ExecBlck == 'Standard Tasks'">{{standardDuration}} Hrs</b>
                             </span>
                             <span class="text-nowrap mb-2 d-inline-block">
                                 <i class="fab fa-dev text-muted mr-1"></i>
@@ -449,7 +450,7 @@
                                         <i class="fas fa-clock text-muted mr-1"></i>
                                         <b>{{item.SubtaskAllocated}} Hrs</b>
                                     </span>
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Project_Cost">
+                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-wallet text-muted mr-1"></i>
                                         <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                     </span>
@@ -544,6 +545,10 @@
                                                 <span class="mr-3  text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-clock text-muted mr-1"></i>
                                                     <b>{{item.SubtaskAllocated}} Hrs</b>
+                                                </span>
+                                                <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                    <i class="fas fa-wallet text-muted mr-1"></i>
+                                                    <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                 </span>
                                             </p>
                                             <p class="mb-2">

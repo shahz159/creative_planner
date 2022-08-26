@@ -843,3 +843,6 @@ transform: rotate(45deg);
 .h-6px {
     height: 6px !important;
 }
+.d-inline-blck{
+    display: inline-block;
+}

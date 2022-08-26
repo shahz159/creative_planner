@@ -184,24 +184,22 @@ export class ActionToProjectComponent implements OnInit {
   EmpNo_Autho: any;
 
   maxlimit: boolean = true;
+  _message: string;
 
-  OnSubmit() {
-    // if (this.Sub_ProjectName == "" || this._StartDate == null || this._EndDate == null || this._allocated == null) {
-    //   this.notifyService.showInfo("", 'Star(*) mark feilds required ')
-    // }
-    var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    this.maxAllocation = (-Difference_In_Days) * 10 / 1;
-    if(this._allocated > this.maxAllocation){
-      this.maxlimit = false;
-      Swal.fire({
-        title: 'Unable To Create Action !!',
-        text: 'Allocated hours cannot exceed ' + this.maxAllocation + ' hours! Allocation per day limit is 10 hours.' ,
-        // icon: 'warning',
-        showCancelButton: true,   
-      });
+  alertMaxAllocation()
+  {
+    if(this._StartDate == null || this._EndDate == null){
+      this._message = "Start Date/End date missing!!"
     }
-    else {
+    else{
+      var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
+  }
+
+  
+  OnSubmit() {
       if (this._MasterCode == null) {
         this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
         this._MasterCode = this.selectedProjectCode;
@@ -210,7 +208,7 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.MasterCode = this._MasterCode;
       }
       this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-        debugger
+        // debugger
         this.Sub_ProjectCode = data['SubTask_ProjectCode'];
         this.EmpNo_Autho = data['Team_Autho'];
         this.ProjectBlock = data['ProjectBlock'];
@@ -299,15 +297,6 @@ export class ActionToProjectComponent implements OnInit {
         }, 3000);
         this._Todoproject.CallOnSubmitAction();
       });
-    }
-  }
-
-  alertMaxAllocation(){
-    Swal.fire(
-      'Cancelled',
-      'Allocated hours cannot exceed the difference',
-      'error'
-    )
   }
 
   sweetAlert() {
@@ -343,11 +332,11 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0";
-    document.getElementById("mysideInfobar1").style.width = "0";
-    document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
+    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("mysideInfobar1").style.width = "0";
   }
 
   Clear_Feilds() {

@@ -43,6 +43,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _openInfoSideBar: boolean = false;
   interval: any;
   MoreDetailsList: any;
+  
 
   ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -62,6 +63,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   CompletedList: any;
   AssigntaskList: any;
   ifcategoryZero: any;
+
+  _ProjectName: string;
+  EmpNo_Own:string;
+  EmpNo_Res:string;
+  EmpNo_Autho:string;
+  Pid: number;
+  _MasterCode:string;
 
   fun_LoadProjectDetails() { 
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
@@ -85,6 +93,16 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           //console.log("ProjectDetails-->", this.ProjectInfo_List);
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
+
+          this.Pid = this.ProjectInfo_List[0]['id'];
+          this._MasterCode = this.ProjectInfo_List[0]['Project_Code'];
+          this._ProjectName = this.ProjectInfo_List[0]['Project_Name'];
+          this.Proj_Desc = this.ProjectInfo_List[0]['Project_Description'];
+          this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
+          this.EmpNo_Own = this.ProjectInfo_List[0]['Project_Owner'];
+          this.EmpNo_Res = this.ProjectInfo_List[0]['Team_Res'];
+          this.EmpNo_Autho = this.ProjectInfo_List[0]['Team_Autho'];
+          
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectInfo_List[0]['Team_Res'];
           // Date Diff In Days...
@@ -135,6 +153,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
+     document.getElementById("todo").classList.remove("position-fixed");
     this.ngOnDestroy();
   }
 
@@ -396,4 +415,71 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     const Url = memo_Url;
     window.open(Url);
   }
+
+  Editbutton: boolean;
+  _modelProjectName: string;
+  _modelProjDesc: string;
+  _Message: string;
+  
+  Proj_Desc: string;
+  Comp_No: string
+
+
+  OnEditProject(id, Pname) {
+    this._modelProjectName = Pname;
+    this.Editbutton = true;
+    // (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
+    // (<HTMLInputElement>document.getElementById("textboxfocus_" + id)).focus();
+    
+    
+    (<HTMLInputElement>document.getElementById("pro_name_" +id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spanTextbox_single" +id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("textboxfocus_single" +id)).focus();
+    // (<HTMLInputElement>document.getElementById("EidtBtn_single" + id)).style.display = "none";
+  }
+
+  OnEditProject_Desc(id, Desc) {
+    this._modelProjDesc = Desc;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Span_Desc_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spanTextarea_single" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
+  }
+
+  onCancel(id) {
+    (<HTMLInputElement>document.getElementById("pro_name_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("spanTextbox_single" + id)).style.display = "none";
+    //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "inline-block";
+    this.Editbutton = false;
+    // For Description
+    (<HTMLInputElement>document.getElementById("Span_Desc_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("spanTextarea_single" + id)).style.display = "none";
+    this._modelProjDesc = null;
+    this._modelProjectName = null;
+    //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
+  }
+
+  OnProject_Rename(id, Pcode) {
+    if (this._modelProjectName != "" && this._modelProjDesc != "") {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "");
+        // this.GetSubtask_Details();
+        // this.GetProjectsByUserName();
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+          (data) => {
+            let list: any;
+            list = JSON.parse(data[0]['ProjectInfo']);
+            this._ProjectName = list[0]['Project_Name'];
+            this.Proj_Desc = list[0]['Project_Description'];
+          });
+      });
+      this.onCancel(id);
+    }
+    else {
+      this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+    }
+  }
+  
 }
