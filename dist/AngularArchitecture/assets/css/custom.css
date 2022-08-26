@@ -836,3 +836,10 @@ transform: rotate(45deg);
 .w-max-200px{
   max-width: 200px;
 }
+.offcanvas-header h4 {
+    color: #646c9a;
+    font-size: 1.4rem;
+}
+.h-6px {
+    height: 6px !important;
+}
