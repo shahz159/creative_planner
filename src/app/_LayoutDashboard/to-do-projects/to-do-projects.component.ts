@@ -71,6 +71,23 @@ export class ToDoProjectsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
+
+    // this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
+    //   (data) => {
+
+    //     this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+    //     this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+
+    //     if(this.Subtask_List == ''){
+    //       this._subtaskDetails= false;
+    //     }
+    //     if(this.CompletedList == ''){
+    //       this._CompletedDetails=false;
+    //     }
+    //     if(this.Subtask_List == '' && this.CompletedList ==''){
+    //       this._projectDetails=false;
+    //     }
+    //   });
   }
 
   _ProjectDataList: any;
@@ -127,6 +144,7 @@ export class ToDoProjectsComponent implements OnInit {
   Checkbox_checked: any;
   projectCost: any;
   Duration: any;
+  standardDuration:any;
   Client_Name: string;
   Remarks: string = "";
   Remarkss: string = "";
@@ -138,7 +156,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType) {
+    PCost, duration, standardduration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
@@ -169,6 +187,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.Checkbox_checked = checked;
     this.projectCost = PCost;
     this.Duration = duration;
+    this.standardDuration = standardduration;
     this.Client_Name = Client_Name;
     this.Remarks = Remarks;
     this.Remarkss = Remarkss;
@@ -206,7 +225,7 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);
     // document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("todo").classList.add("position-fixed");
+    document.getElementById("todo").classList.add("position-fixed");
   }
 
   selected_Employee = [];
@@ -254,8 +273,9 @@ export class ToDoProjectsComponent implements OnInit {
     // alert(1233)
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
-        // this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
-        if (data[0]['SubtaskDetails_Json'] == null) {
+        
+        this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
+        if (data[0]['SubtaskDetails_Json'] == ' ') {
           this._subtaskDetails = true;
           this._projectDetails = false;
         }
@@ -268,7 +288,7 @@ export class ToDoProjectsComponent implements OnInit {
           // console.log("To Do Completed---->", this.CompletedList);
           //  console.log("to Incomplete---->", this.Subtask_List);
         }
-        if (data[0]['CompletedTasks_Json'] == null) {
+        if (data[0]['CompletedTasks_Json'] == ' ') {
           this._CompletedDetails = true;
         }
         else {
@@ -276,7 +296,9 @@ export class ToDoProjectsComponent implements OnInit {
           // console.log("To Do Completed---->", this.CompletedList);
           this._CompletedDetails = false;
         }
-        // console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
+
+      
+        console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
         // console.log(this.Subtask_List,this.CompletedList,"Same");
       });
   }
@@ -337,7 +359,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "60%";
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
-    // document.getElementById("rightbar-overlay").style.display = "block";
+     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("todo").classList.add("position-fixed");
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
@@ -432,13 +455,13 @@ export class ToDoProjectsComponent implements OnInit {
   Subproj_Code: string;
 
   closeInfo() {
-    debugger
+    // debugger
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
-    // document.getElementById("todo").classList.remove("position-fixed");
+     document.getElementById("todo").classList.remove("position-fixed");
     // document.getElementById("rightbar-overlay").style.display = "none";
    
     
@@ -562,7 +585,7 @@ export class ToDoProjectsComponent implements OnInit {
       // this.ObjSubTaskDTO.Remarks = this._remarks;
       this.service._UpdateSubtaskByProjectCode(fd)
         .subscribe(data => {
-          debugger
+          // debugger
             this._remarks = "";
           this._inputAttachments = "";
        
@@ -574,6 +597,7 @@ export class ToDoProjectsComponent implements OnInit {
           document.getElementById("rightbar-overlay").style.display = "none";
           document.getElementById("mysideInfobar_Update").style.width = "0";
           document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+          document.getElementById("todo").classList.add("position-fixed");
      
          
          
