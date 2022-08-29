@@ -623,7 +623,7 @@ virtual-scroller {
   z-index: 999;
   top: 0;
   right: 0;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   border-left: 1px solid #b3bcff;
   overflow-x: hidden;
   transition: 0.5s;

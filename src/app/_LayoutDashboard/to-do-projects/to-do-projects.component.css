@@ -160,7 +160,7 @@ h5 {
     z-index: 999;
     top: 0;
     right: 0;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     border-left: 1px solid #f9f9fc;
     overflow-x: hidden;
     transition: 0.5s;
@@ -447,3 +447,6 @@ input[type="file"].cus-upload {
     border-radius: 5px;
     background: #fff;
   }
+  .bg-blued .closebtn i {
+    color: #fff;
+}
