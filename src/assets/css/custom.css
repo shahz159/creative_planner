@@ -807,6 +807,7 @@ transform: rotate(45deg);
 
    .sideInfobar {
     box-shadow: 0 1px 9px -3px rgb(0 0 0 / 75%) !important;
+    background: #fff;
    }
    .bg-blued {
     background: #516c8d !important;
@@ -845,4 +846,10 @@ transform: rotate(45deg);
 }
 .d-inline-blck{
     display: inline-block;
+}
+.bg-blued .closebtn i {
+    color: #fff;
+}
+.shadow-0 {
+    box-shadow: none !important;
 }
