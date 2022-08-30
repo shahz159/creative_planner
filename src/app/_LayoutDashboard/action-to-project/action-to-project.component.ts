@@ -310,7 +310,8 @@ export class ActionToProjectComponent implements OnInit {
       Swal.fire({
         title: 'Action DeadLine is Greater then Main Project DeadLine ?',
         text: 'Do you Want to Continue For Selection Of Date After Main Project DeadLine!!',
-        icon: 'warning',
+        // icon: 'warning',
+        // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'

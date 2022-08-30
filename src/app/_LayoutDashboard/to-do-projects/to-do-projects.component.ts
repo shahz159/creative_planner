@@ -207,6 +207,9 @@ export class ToDoProjectsComponent implements OnInit {
     else {
       this.addbutton_hidden = true;
     }
+    if(this.Project_Status == 'Completion Under Approval' || this.Project_Status == 'Under Approval'){
+      this.addbutton_hidden = true;
+    }
     this.closeInfo();
   }
   CallOnSubmitAction() {
@@ -517,7 +520,7 @@ export class ToDoProjectsComponent implements OnInit {
           Swal.fire({
             title: 'Unable To Complete This Project !!',
             text: 'SubTask Status Are In Rejected or Pending ?',
-            icon: 'warning',
+            // icon: 'warning',
             showCancelButton: true       
           });
         }
@@ -635,6 +638,7 @@ export class ToDoProjectsComponent implements OnInit {
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
+  _modelProjAlloc: number;
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
@@ -653,6 +657,15 @@ export class ToDoProjectsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
 
+  OnEditProject_Alloc(id, allocated){
+    this._modelProjAlloc = allocated;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
+    
+  }
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
@@ -663,12 +676,15 @@ export class ToDoProjectsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "none";
     this._modelProjDesc = null;
     this._modelProjectName = null;
+    // For Allocated Hours
+    (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "none";
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
 
   OnProject_Rename(id, Pcode) {
-    if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID).subscribe(data => {
+    if (this._modelProjectName != "" && this._modelProjDesc != "" && this._modelProjAlloc!= 0) {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID, this._modelProjAlloc).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
@@ -945,7 +961,8 @@ export class ToDoProjectsComponent implements OnInit {
       Swal.fire({
         title: 'This Project is Compelted !!',
         text: 'Do You Want To Reopen This Project ?',
-        icon: 'warning',
+        // icon: 'warning',
+        // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
