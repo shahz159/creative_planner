@@ -523,11 +523,12 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewCategoryRenameDelete", this.ObjCategoryDTO);
   }
 
-  _ProjectRenameService(id, pname, Desc, Currentuser) {
+  _ProjectRenameService(id, pname, Desc, Currentuser, Allocated) {
     this.ObjDto.Project_Id = id;
     this.ObjDto.Project_Name = pname;
     this.ObjDto.Project_Description = Desc;
     this.ObjDto.Emp_No = Currentuser;
+    this.ObjDto.Duration = Allocated;
     return this.http.post(this.rootUrl + "Category/NewProjectRename", this.ObjDto);
   }
 

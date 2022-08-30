@@ -62,6 +62,7 @@ export class MoreDetailsComponent implements OnInit {
   ProjectStatus: string;
   ProjectPercentage: any;
   src: any;
+  actionButton:boolean=false;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -243,6 +244,7 @@ export class MoreDetailsComponent implements OnInit {
   ProjectBlockName: any;
   Status: any;
   Pid:number;
+  Comp_No:string;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -254,6 +256,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Pid = this.ProjectInfo_List[0]['id'];
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
+          this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
@@ -306,6 +309,10 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp = fullname_Supp.shift().charAt(0) + fullname_Supp.pop().charAt(0);
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
+
+          if(this.Status =='Completion Under Approval' || this.Status == 'Under Approval'){
+            this.actionButton=true;
+          }
         }
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -2324,6 +2331,16 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
 
+  _modelProjAlloc: number =0;
+  OnEditProject_Alloc(id, allocated){
+    this._modelProjAlloc = allocated;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
+    
+  }
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
@@ -2339,12 +2356,34 @@ export class MoreDetailsComponent implements OnInit {
 
   _Message: string;
 
+  // OnProject_Rename(id, Pcode) {
+  //   if (this._modelProjectName != "" && this._modelProjDesc != "") {
+  //     this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
+  //       this._Message = data['message'];
+  //       this.notifyService.showSuccess(this._Message, "");
+  //       this.GetSubtask_Details();
+  //     });
+  //     this.onCancel(id);
+  //   }
+  //   else {
+  //     this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+  //   }
+  // }
+
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID,this._modelProjAlloc).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
+        // this.GetProjectsByUserName();
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+          (data) => {
+            let list: any;
+            list = JSON.parse(data[0]['ProjectInfo']);
+            this.ProjectName = list[0]['Project_Name'];
+            this.Description = list[0]['Project_Description'];
+          });
       });
       this.onCancel(id);
     }
@@ -2382,7 +2421,7 @@ export class MoreDetailsComponent implements OnInit {
       Swal.fire({
         title: 'This Project is Compelted !!',
         text: 'Do You Want To Reopen This Project ?',
-        icon: 'warning',
+        // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
@@ -2422,7 +2461,7 @@ export class MoreDetailsComponent implements OnInit {
           Swal.fire({
             title: 'Unable To Complete This Project !!',
             text: 'SubTask Status Are In Rejected or Pending ?',
-            icon: 'warning',
+            // icon: 'warning',
             showCancelButton: true       
           });
         }

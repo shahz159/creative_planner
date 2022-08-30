@@ -459,14 +459,15 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this._modelProjectName = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
-
+  _modelProjAlloc:number=0;
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID, this._modelProjAlloc).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         // this.GetSubtask_Details();
         // this.GetProjectsByUserName();
+        this.fun_LoadProjectDetails();
         this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
           (data) => {
             let list: any;

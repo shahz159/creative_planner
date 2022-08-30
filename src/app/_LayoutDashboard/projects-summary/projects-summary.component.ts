@@ -582,7 +582,7 @@ export class ProjectsSummaryComponent implements OnInit {
   _MainProjectStatus: string;
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").style.width = "75%";
+    document.getElementById("mysideInfobar").style.width = "65%";
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
         document.getElementById("sumdet").classList.add("position-fixed");
