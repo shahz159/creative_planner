@@ -1,3 +1,53 @@
+
+    <!-- Link memos Template -->
+
+    <div id="LinkSideBar" class="sideInfobar shadow-0 animate-right" [hidden]="_LinkSideBar">
+        <div class="px-4 pt-4 pb-1">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+              <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+              <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeLinkSideBar()">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+        <!-- <div class="kt-portlet__head p-3 bg-blued">
+            <div class="kt-portlet__head-label">
+                <a href="javascript:void(0)" class="closebtn pull-right btn btn-xs btn-icon btn-hover-primary"
+                    (click)="closeLinkSideBar()"><i class="fa fa-times"></i> </a>
+                <h5 class="title-sidebar mb-0 text-white">
+                    <i class="fa fa-link"></i> Link Project
+                </h5>
+            </div>
+        </div> -->
+        <ul class="kt-nav">
+            <li class="kt-nav__head d-block">
+                <p class="text-primary m-0">
+                    {{_displayProjName}}</p>
+                <div class="M_fsize">
+                    Total
+                    <div class="badge badge-pill badge-outline-info">
+                        {{_totalMemos}}</div>
+                    Linked
+                    <div class="badge badge-pill badge-outline-success">
+                        {{_mappedMemos}}</div>
+                </div>
+                <div class="kt-nav__separator"></div>
+            </li>
+            <li class="kt-nav__item px-4">
+                <div class="d-flex">
+                    <!-- Working... -->
+                    <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                        class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                        [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                        (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                    </ng-multiselect-dropdown>
+
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+                </div>
+            </li>
+            <li class="kt-nav__foot"></li>
+        </ul>
+    </div>
 <!-- <h4>{{projectCode}}</h4> -->
 <div id="mysideInfobar" class="sideInfobar animate-right offcanvas" [hidden]="_openInfoSideBar">
     <div class="px-4 pt-4 pb-1">
@@ -98,48 +148,49 @@
                 </div>
             </div>
 
-    <div class="mt-3">
-        <div class="align-items-center">
-            <h5 class="fs-3 mb-2 d-inline-blck" id="pro_name_{{Pid}}">{{item.Project_Name}}</h5>
-            <!--edit project name-->
-            <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-            id="EidtBtn_single{{Pid}}" *ngIf="this.Current_user_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho">
-            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
-            </span>
-            <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
-                <div class="d-flex">
-                    <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
-                        [(ngModel)]="_modelProjectName" style="width: 78%;height: 32px;"
-                        (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
-                    <div class="d-inline-block ml-3" id="button-addon4">
-                        <button (click)="OnProject_Rename(Pid,_MasterCode)"
-                            class="btn btn-primary btn btn-sm mr-2">Done</button>
-                        <button class=" btn btn-secondary btn btn-sm"
-                            (click)="onCancel(Pid)">Cancel</button>
-                    </div>
+            <div class="mt-3">
+                <div class="align-items-center">
+                    <h5 class="fs-3 mb-2 d-inline-blck" id="pro_name_{{Pid}}">{{item.Project_Name}}</h5>
+                    <!--edit project name-->
+                    <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
+                    id="EidtBtn_single{{Pid}}" *ngIf="this.Current_user_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho">
+                    <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                    </span>
+                    <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
+                                [(ngModel)]="_modelProjectName" style="width: 78%;height: 32px;"
+                                (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
+                            <div class="d-inline-block ml-3" id="button-addon4">
+                                <button (click)="OnProject_Rename(Pid,_MasterCode)"
+                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                <button class=" btn btn-secondary btn btn-sm"
+                                    (click)="onCancel(Pid)">Cancel</button>
+                            </div>
+                        </div>
+                    </span>
                 </div>
-            </span>
-        </div>
-            <!--edit project name end-->
-            <p><span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
-            <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
-            id="EidtBtn_single{{Pid}}">
-            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
-        </span>
-        <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
-            <div class="d-flex">
-                <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
-                    [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
-                    (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
-                <div class="d-inline-block ml-3" id="button-addon4">
-                    <button (click)="OnProject_Rename(Pid,_MasterCode)"
-                        class="btn btn-primary btn btn-sm mr-2">Done</button>
-                    <button class=" btn btn-secondary btn btn-sm"
-                        (click)="onCancel(Pid)">Cancel</button>
-                </div>
+                    <!--edit project name end-->
+                    <p>
+                        <span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
+                        <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)" id="EidtBtn_single{{Pid}}">
+                            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                        </span>
+                        <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
+                            <div class="d-flex">
+                                <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
+                                    [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
+                                    (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
+                                <div class="d-inline-block ml-3" id="button-addon4">
+                                    <button (click)="OnProject_Rename(Pid,_MasterCode)"
+                                        class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                    <button class=" btn btn-secondary btn btn-sm"
+                                        (click)="onCancel(Pid)">Cancel</button>
+                                </div>
+                            </div>
+                        </span>
+                    </p>
             </div>
-        </span></p>
-        </div>
         <div class="card-body">
                 <!-- Percentage Bar -->
                 <div class="progress_bar">
@@ -442,7 +493,7 @@
             </div> -->
             </div>
         </div>
-        </div>
+
         <!-- ADD DMS  -->
         <div class=" border-top">
             <div class="d-flex  align-items-center justify-content-between mt-3">
@@ -846,45 +897,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Link memos Template -->
-
-    <div id="LinkSideBar" class="sideInfobar shadow-0 animate-right" [hidden]="_LinkSideBar">
-        <div class="kt-portlet__head p-3 bg-blued">
-            <div class="kt-portlet__head-label">
-                <a href="javascript:void(0)" class="closebtn pull-right btn btn-xs btn-icon btn-hover-primary"
-                    (click)="closeLinkSideBar()"><i class="fa fa-times"></i> </a>
-                <h5 class="title-sidebar mb-0 text-white">
-                    <i class="fa fa-link"></i> Link Project
-                </h5>
-            </div>
-        </div>
-        <ul class="kt-nav">
-            <li class="kt-nav__head d-block">
-                <p class="text-primary">
-                    {{_displayProjName}}</p>
-                <div class="M_fsize">
-                    Total
-                    <div class="badge badge-pill badge-outline-info">
-                        {{_totalMemos}}</div>
-                    Linked
-                    <div class="badge badge-pill badge-outline-success">
-                        {{_mappedMemos}}</div>
-                </div>
-                <div class="kt-nav__separator"></div>
-            </li>
-            <li class="kt-nav__item px-4">
-                <div class="d-flex">
-                    <!-- Working... -->
-                    <ng-multiselect-dropdown [placeholder]="'Select Memo' "
-                        class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
-                        [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
-                        (onDeSelect)="Memo_Deselect()" style="flex: 3;">
-                    </ng-multiselect-dropdown>
-
-                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
-                </div>
-            </li>
-            <li class="kt-nav__foot"></li>
-        </ul>
+        
     </div>

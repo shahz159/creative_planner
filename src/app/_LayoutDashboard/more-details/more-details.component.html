@@ -1459,7 +1459,7 @@
                                             <div class="initial-box color-1">{{InitOwn}}
                                             </div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Owner)</span>
+                                                <span class="text-muted">Owner</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Owner}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1477,7 +1477,7 @@
                                             <div class="initial-box color-2">{{InitR}}
                                             </div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Responsible)</span>
+                                                <span class="text-muted">Responsible</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Responsible}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1500,7 +1500,7 @@
                                             <div class="initial-box color-3">{{InitAut}}
                                             </div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Authority)</span>
+                                                <span class="text-muted">Authority</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Authority}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1519,7 +1519,7 @@
                                                 {{InitCoor}}
                                             </div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Coordinator)</span>
+                                                <span class="text-muted">Coordinator</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Coordinator}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1537,7 +1537,7 @@
                                             <div class="initial-box color-5">
                                                 {{InitInformer}}</div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Informer)</span>
+                                                <span class="text-muted">Informer</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Informer}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1556,7 +1556,7 @@
                                                 {{InitSupp}}
                                             </div>
                                             <div class="owner-details">
-                                                <span class="text-muted">(Support)</span>
+                                                <span class="text-muted">Support</span>
                                                 <p class="text-dark text-hover-primary mb-0">
                                                     <strong>{{Support}}</strong>
                                                     <!-- <strong>0%</strong> -->
@@ -1924,18 +1924,17 @@
 <!-- Link memos Template -->
 
 <div id="LinkSideBar" class="sideInfobar animate-right">
-    <div class="kt-portlet__head p-3 bg-blued">
-        <div class="kt-portlet__head-label">
-            <a href="javascript:void(0)" class="closebtn pull-right btn btn-xs btn-icon btn-hover-primary"
-                (click)="closeLinkSideBar()"><i class="fa fa-times"></i> </a>
-            <h5 class="title-sidebar mb-0 text-white">
-                <i class="fa fa-link"></i> Link Project
-            </h5>
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+          <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeLinkSideBar()">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
-    </div>
+      </div>
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
-            <p class="text-primary">
+            <p class="text-primary m-0">
                 {{_displayProjName}}</p>
             <div class="M_fsize">
                 Total
