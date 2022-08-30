@@ -788,9 +788,9 @@
                     </span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input"   id="uploadFile" accept="application/pdf"
+                    <input  #myInput type="file" class="custom-file-input"   id="uploadFile" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="uploadFile">Choose file</label>
+                    <label class="custom-file-label" for="uploadFiles">Choose file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>
@@ -887,7 +887,8 @@
 
 <!-- Project Info Details -->
 <div id="mysideInfobar" class="sideInfobar animate-right">
-    <router-outlet></router-outlet>
+    <div><router-outlet></router-outlet></div>
+    
 </div>
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>

@@ -209,11 +209,11 @@ export class ToDoProjectsComponent implements OnInit {
     }
     this.closeInfo();
   }
-  CallOnSubmitAction() {
+ async CallOnSubmitAction() {
     //  console.log('A');
-    this.GetSubtask_Details();
-    this. GetProjectsByUserName();
-    this.getDropdownsDataFromDB();
+  let a= await this.GetSubtask_Details();
+    // this. GetProjectsByUserName();
+    // this.getDropdownsDataFromDB();
   }
 
   ProjectInfoDetails() {
@@ -270,7 +270,7 @@ export class ToDoProjectsComponent implements OnInit {
   totalSubtaskHours:number;
   
   GetSubtask_Details() {
-    // alert(1233)
+  
     this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         
@@ -325,7 +325,7 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar_ProjectAction").style.width = "0px";
     document.getElementById("mysideInfobar").style.width = "0px";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
-   
+   this.Clear_Feilds(); 
     
     // document
     // this.Block3 = false;
@@ -456,13 +456,14 @@ export class ToDoProjectsComponent implements OnInit {
 
   closeInfo() {
     // debugger
-    this.Clear_Feilds();
+  
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
      document.getElementById("todo").classList.remove("position-fixed");
     // document.getElementById("rightbar-overlay").style.display = "none";
+    this.Clear_Feilds();
    
     
   }

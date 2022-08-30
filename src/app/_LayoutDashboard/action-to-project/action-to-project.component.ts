@@ -11,6 +11,7 @@ import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
+//import { empty } from '@angular-devkit/schematics';
 
 @Component({
   selector: 'app-action-to-project',
@@ -21,15 +22,15 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 export class ActionToProjectComponent implements OnInit {
   // extends ProjectUnplannedTaskComponent
   // @ViewChild(ProjectUnplannedTaskComponent ) _projectunplanned !:any ;
-  Sub_ProjectName: string;
-  _Description: string;
-  _StartDate: Date;
-  _EndDate: Date;
+  Sub_ProjectName: string = null;
+  _Description: string = null;
+  _StartDate: Date =null;
+  _EndDate: Date=null;
   _remarks: string;
-  _allocated:number;
+  _allocated: number;
   _inputAttachments: any = [];
   _inputAttachments2: any;
-  selectedEmpNo: string = "";
+  selectedEmpNo: string = null;
   _MainPrjectName: string = "";
   //selected_Employee: any[];
   dropdownSettings_EMP = {};
@@ -48,7 +49,12 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   maxAllocation: number;
   Current_user_ID: string;
-
+  _projcode:boolean;
+  _desbool: boolean;
+  _subname:boolean;
+  _sdate:boolean;
+  _edate:boolean;
+  _selectemp:boolean;
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -86,9 +92,22 @@ export class ActionToProjectComponent implements OnInit {
       this.Sub_ProjectName = t
     });
     this._inputAttachments = [];
+    this._projcode = false;
+    this._desbool = false;
+    this._subname = false;
+    this._sdate = false;
+    this._edate = false;
+    this._selectemp = false;
   }
-
+ 
   ngOnInit() {
+    this._projcode = false;
+    this._desbool = false;
+    this._subname = false;
+    this._sdate = false;
+    this._edate = false;
+    this._selectemp = false;
+    
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
   }
@@ -143,8 +162,8 @@ export class ActionToProjectComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.filterText;
     this.service.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
-    this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
-    this.dropdownSettings_Projects = {
+      this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
+      this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
         textField: 'Project_Name',
@@ -186,117 +205,146 @@ export class ActionToProjectComponent implements OnInit {
   maxlimit: boolean = true;
   _message: string;
 
-  alertMaxAllocation()
-  {
-    if(this._StartDate == null || this._EndDate == null){
+  alertMaxAllocation() {
+    if (this._StartDate == null || this._EndDate == null) {
       this._message = "Start Date/End date missing!!"
     }
-    else{
+    else {
       var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     }
   }
-
   
+ 
+  
+ 
+
   OnSubmit() {
-      if (this._MasterCode == null) {
-        this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
-        this._MasterCode = this.selectedProjectCode;
+
+    if (this._MainPrjectName == "" || this._MainPrjectName == null || this._MainPrjectName == undefined) {
+      this._projcode = true;
+      return false;
+    }
+
+    if (this._Description == "" || this._Description == null || this._Description == undefined) {
+      this._desbool = true;
+      return false;
+    }
+    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+      this._subname = true;
+      return false;
+    }
+    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+      this._sdate = true;
+      return false;
+    }
+    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+      this._edate = true;
+      return false;
+    }
+    if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
+      this._selectemp = true;
+      return false;
+    }
+
+    if (this._MasterCode == null) {
+      this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
+      this._MasterCode = this.selectedProjectCode;
+    }
+    else {
+      this.ObjSubTaskDTO.MasterCode = this._MasterCode;
+    }
+    this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+      // debugger
+      this.Sub_ProjectCode = data['SubTask_ProjectCode'];
+      this.EmpNo_Autho = data['Team_Autho'];
+      this.ProjectBlock = data['ProjectBlock'];
+
+      if (this.task_id != null) {
+        this.ObjSubTaskDTO.AssignId = this.task_id;
       }
       else {
-        this.ObjSubTaskDTO.MasterCode = this._MasterCode;
+        this.task_id = 0;
       }
-      this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-        // debugger
-        this.Sub_ProjectCode = data['SubTask_ProjectCode'];
-        this.EmpNo_Autho = data['Team_Autho'];
-        this.ProjectBlock = data['ProjectBlock'];
 
-        if (this.task_id != null) {
-          this.ObjSubTaskDTO.AssignId = this.task_id;
-        }
-        else {
-          this.task_id = 0;
-        }
+      this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName;
+      this.ObjSubTaskDTO.SubtaskDescription = this._Description;
+      this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
+      this.ObjSubTaskDTO.StartDate = this._StartDate;
+      this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
 
-        this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName;
-        this.ObjSubTaskDTO.SubtaskDescription = this._Description;
-        this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
-        this.ObjSubTaskDTO.StartDate = this._StartDate;
-        this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
-           
-        // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
-        // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
-        //If we are using 8 hours format then divide by 3 for HourDifference.
-        
-        this.maxAllocation = this.maxAllocation * 8 / 1;
-        this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
-        this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
-        this.ObjSubTaskDTO.Remarks = this._remarks;
-        this.ObjSubTaskDTO.Duration= this._allocated;
-        // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
+      // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
+      // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
+      //If we are using 8 hours format then divide by 3 for HourDifference.
 
-        if (this._inputAttachments.length > 0) {
-          this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
-        }
-        var datestrStart = (new Date(this._StartDate)).toUTCString();
-        var datestrEnd = (new Date(this._EndDate)).toUTCString();
+      this.maxAllocation = this.maxAllocation * 8 / 1;
+      this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
+      this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
+      this.ObjSubTaskDTO.Remarks = this._remarks;
+      this.ObjSubTaskDTO.Duration = this._allocated;
+      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
 
-        const fd = new FormData();
-        fd.append("Project_Code", this.Sub_ProjectCode);
-        fd.append("Team_Autho", this.EmpNo_Autho);
-        // fd.append('file', this._inputAttachments[0].Files);
-        if (this._inputAttachments.length > 0) {
-          fd.append("Attachment", "true");
-          fd.append('file', this._inputAttachments[0].Files);
-        }
-        else {
-          fd.append("Attachment", "false");
-          fd.append('file', "");
-        }
-        fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
-        fd.append("SubtaskName", this.Sub_ProjectName);
-        fd.append("Desc", this._Description);
-        fd.append("Projectblock", this.ProjectBlock);
-        fd.append("StartDate", datestrStart);
-        fd.append("EndDate", datestrEnd);
-      
-        // fd.append("Allocated", this.maxAllocation.toString());
-        fd.append("Emp_No", this.CurrentUser_ID);
-        fd.append("AssignTo", this.selectedEmpNo);
-        fd.append("Remarks", this._remarks);
-        fd.append("EmployeeName", localStorage.getItem('UserfullName'))
-        fd.append("AssignId", this.task_id.toString())
+      if (this._inputAttachments.length > 0) {
+        this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
+      }
+      var datestrStart = (new Date(this._StartDate)).toUTCString();
+      var datestrEnd = (new Date(this._EndDate)).toUTCString();
 
-        if(this.ObjSubTaskDTO.Duration != null){
-          fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
-        }
-        else{
-          this.ObjSubTaskDTO.Duration = 0;
-        }
+      const fd = new FormData();
+      fd.append("Project_Code", this.Sub_ProjectCode);
+      fd.append("Team_Autho", this.EmpNo_Autho);
+      // fd.append('file', this._inputAttachments[0].Files);
+      if (this._inputAttachments.length > 0) {
+        fd.append("Attachment", "true");
+        fd.append('file', this._inputAttachments[0].Files);
+      }
+      else {
+        fd.append("Attachment", "false");
+        fd.append('file', "");
+      }
+      fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
+      fd.append("SubtaskName", this.Sub_ProjectName);
+      fd.append("Desc", this._Description);
+      fd.append("Projectblock", this.ProjectBlock);
+      fd.append("StartDate", datestrStart);
+      fd.append("EndDate", datestrEnd);
 
-        this.service._InsertNewSubtask(fd).subscribe(data => {
-          this.notifyService.showInfo("Created Successfully", "Action");
-          // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
-          // this.closeInfo();
-          this._Todoproject.CallOnSubmitAction();
-          this._projectunplanned.CallOnSubmitCategory();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        });
-        setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
-        setTimeout(function () {
-          this.loadsubcateg();
-        }, 3000);
-        this._projectunplanned.CallOnSubmitCategory();
-        setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
-        setTimeout(function () {
-          this.loadsubcateg();
-        }, 3000);
+      // fd.append("Allocated", this.maxAllocation.toString());
+      fd.append("Emp_No", this.CurrentUser_ID);
+      fd.append("AssignTo", this.selectedEmpNo);
+      fd.append("Remarks", this._remarks);
+      fd.append("EmployeeName", localStorage.getItem('UserfullName'))
+      fd.append("AssignId", this.task_id.toString())
+
+      if (this.ObjSubTaskDTO.Duration != null) {
+        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+      }
+      else {
+        this.ObjSubTaskDTO.Duration = 0;
+      }
+
+      this.service._InsertNewSubtask(fd).subscribe(data => {
+        this.notifyService.showInfo("Created Successfully", "Action");
+        // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
+        // this.closeInfo();
+       
         this._Todoproject.CallOnSubmitAction();
+        this._projectunplanned.CallOnSubmitCategory();
+        this.Clear_Feilds();
+        this.closeInfo();
+    
+        this._inputAttachments = [];
       });
+      setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
+
+      this._projectunplanned.CallOnSubmitCategory();
+      setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
+      // setTimeout(function () {
+      //   this.loadsubcateg();
+      // }, 3000);
+      this._Todoproject.CallOnSubmitAction();
+    });
   }
 
   sweetAlert() {
@@ -332,21 +380,30 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-    this.Clear_Feilds();
+    debugger
     document.getElementById("mysideInfobar").style.width = "0";
+    this.Clear_Feilds();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("mysideInfobar1").style.width = "0";
+    
   }
 
   Clear_Feilds() {
-    this.Sub_ProjectCode = "";
-    this.Sub_ProjectName = "";
-    this._Description = "";
+    debugger
+    this.Sub_ProjectCode = null;
+    this.Sub_ProjectName = null;
+    this._Description = null;
+    this._projcode =false;
+    this._desbool = false;
+    this._subname = false;
+    this._sdate = false;
+    this._edate = false;
+    this._selectemp = false;
     this._StartDate = null;
     this._EndDate = null;
     this._remarks = "";
-    this._allocated=0;
+    this._allocated = 0;
     this._inputAttachments = [];
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';

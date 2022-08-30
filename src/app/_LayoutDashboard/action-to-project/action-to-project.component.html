@@ -15,17 +15,17 @@
                 [data]="_ProjectDataList" [(ngModel)]="selectedProjectCodelist" (onSelect)="ProjectOnSelect($event)"
                 (onDeSelect)="ProjectOnDeselect($event)" (onFilterChange)="onFilterChange($event)">
             </ng-multiselect-dropdown>
-            <span *ngIf="name.required && name.touched" style="color:red">Project required!</span>
+            <span *ngIf ="_projcode == true" style="color:red">Project required!</span>
         </div>
         <div class="form-group">
             <label> Action Name <span class="text-danger">*</span></label>
             <input #name="ngModel" required type="text" class="form-control" [(ngModel)]="Sub_ProjectName" required />
-            <span *ngIf="name.touched && name.invalid" style="color:red">Action Name required!</span>
+            <span *ngIf ="_subname == true" style="color:red">Action Name required!</span>
         </div>
         <div class="form-group">
             <label>Description :<span class="text-danger">*</span></label>
             <textarea #description="ngModel" required class="form-control" [(ngModel)]="_Description" style="height: 139px"></textarea>
-            <span *ngIf="description.touched && description.invalid" style="color:red">Description required!</span>
+            <span *ngIf ="_desbool == true" style="color:red">Description required!</span>
         </div>
         <!-- <div class="form-group">
             <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
@@ -42,7 +42,7 @@
                     {{item.DisplayName}}
                 </ng-option>
             </ng-select>
-            <span *ngIf="assign.touched && !selectedEmpNo" style="color:red">Assign To required!</span>
+            <span *ngIf ="_selectemp == true" style="color:red">Assign To required!</span>
         </div>
       
         <div class="form-group">
@@ -55,7 +55,7 @@
                     <mat-datepicker #picker1></mat-datepicker>
                 </div>
             </div>
-            <span *ngIf="startdate.touched && startdate.invalid" style="color:red">Start Date required!</span>
+            <span *ngIf ="_sdate == true" style="color:red">Start Date required!</span>
         </div>
         <div class="form-group">
             <label>End Date :<span class="text-danger">*</span></label>
@@ -67,7 +67,7 @@
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
-            <span *ngIf="Enddate.touched && Enddate.invalid" style="color:red">End Date required!</span>    
+            <span *ngIf ="_edate == true" style="color:red">End Date required!</span>    
         </div>
 
         <div class="form-group">
@@ -100,6 +100,9 @@
             <button type="submit" class="btn btn-primary"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
                 [disabled]="!selectedProjectCodelist || !Sub_ProjectName || !_Description || !selected_Employee || !_StartDate || !_EndDate || (_allocated > maxAllocation)">Submit
             </button>
+            <!-- <button type="submit" class="btn btn-primary"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
+                >Submit
+            </button> -->
         </div>
     </div>
 </div>
