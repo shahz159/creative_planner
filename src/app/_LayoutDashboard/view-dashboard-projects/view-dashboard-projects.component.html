@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
     <!--Begin::Row    DIV ONE -->
     <div class="row">
         <div class="col-lg-12">
@@ -93,7 +93,7 @@
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox">
+                                                            <label class="kt-checkbox" >
 
                                                                 <!-- <mat-checkbox class="example-margin" color="primary"
                                                                 (change)="isTypeChecked(item)"
@@ -102,7 +102,7 @@
                                                                 </mat-checkbox> -->
                                                                 <!-- value="item.id" [attr.checked]="item.mode.indexOf(m.id) > -1 ? true : null"> -->
                                                                 <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                    [(ngModel)]="item.checked">
+                                                                    [(ngModel)]="item.checked" >
                                                                 {{item.Exec_BlockName}}
                                                                 <span></span>
                                                             </label>
@@ -545,4 +545,6 @@
     <!-- <app-project-info></app-project-info> -->
     <!-- <app-shared-projects-detail></app-shared-projects-detail> -->
 
+    <div id="rightbar-overlay" (click)="closeInfo()"></div>
 </div>
+

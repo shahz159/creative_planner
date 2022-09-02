@@ -76,10 +76,14 @@ export class DashboardComponent implements OnInit {
   handleEventClick(arg) {
     this.ProjectCode = arg.event._def.extendedProps.Project_Code;
     this.router.navigate(["../backend/dashboard/projectinfo", this.ProjectCode]);
-    document.getElementById("mysideInfobar").style.width = "70%";
+    document.getElementById("mysideInfobar").style.width = "70%";    
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar").style.width = "0";    
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
   _objStatusDTO: StatusDTO;
 

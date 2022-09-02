@@ -84,7 +84,7 @@
         </div>
     </div>
 </div>
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0" id="kt_content">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0 side_view" id="kt_content">
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -797,12 +797,14 @@
         <!-- Side Information Bar -->
 
 
-        <!-- New Side InformationBar -->
-        <div id="mysideInfobar" class="sideInfobar animate-right">
-            <router-outlet></router-outlet>
-        </div>
     </div>
 </div>
+
+<!-- New Side InformationBar -->
+<div id="mysideInfobar" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
+
 <!-- Notification Modal -->
 <div class="modal fade" id="notifymodal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel"
     aria-hidden="true">
@@ -871,3 +873,5 @@
         <li class="kt-nav__foot"></li>
     </ul>
 </div>
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>

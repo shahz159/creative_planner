@@ -52,6 +52,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.projectCode = Pcode;
       this.fun_LoadProjectDetails();
     });
+
+    // $(".asgn-colpse").on('click', function(event){
+    //   $('#mysideInfobar').animate({
+    //     scrollTop: $(".asgn-colpse").offset().top - 100 // Means Less header height
+    // },400);
+    // })
+
   }
 
   initials: string;
@@ -153,7 +160,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
-     document.getElementById("todo").classList.remove("position-fixed");
+    // document.getElementById("todo").classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
     this.ngOnDestroy();
   }
 
@@ -322,7 +331,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   memoId: any;
 
-  deleteMemos(memoId, pcode) {
+  deleteMemos(memoId) {
     this._MemosSubjectList = [];
     let _DeleteSelectedMemo = [];
     _DeleteSelectedMemo.push({ MailId: memoId })
@@ -337,12 +346,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     //console.log("-----Final O/p--->", this.memoId);
     let appId: number = 101;
     let UserId = this.Current_user_ID;
-    this._LinkService.InsertMemosOn_ProjectCode(pcode, appId, this.memoId, UserId).
+    this._LinkService.InsertMemosOn_ProjectCode(this.projectCode, appId, this.memoId, UserId).
       subscribe((data) => {
         // this._OpenMemosInfo(pcode,this.pName);
         //this.GetProjectsByUserName();
         let Returndata: any = data['Message'];
-        this.UpdateMemos(pcode);
+        this.UpdateMemos(this.projectCode);
         this.notifyService.showInfo("", Returndata);
       });
   }

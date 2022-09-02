@@ -133,8 +133,9 @@
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
                         <h4 class="mb-1 pro-nm d-inline-blck" id="SpanProjName_{{Pid}}">{{ProjectName}}</h4>
-                            <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
-                            id="EidtBtn_{{Pid}}" *ngIf="this.Current_user_ID == this.Owner || this.Responsible || this.Authority">
+                        <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
+                            id="EidtBtn_{{Pid}}"
+                            *ngIf="this.Current_user_ID == this.Owner || this.Responsible || this.Authority">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -150,7 +151,7 @@
                                 </div>
                             </div>
                         </span>
-                        
+
                     </div>
                     <div class=" pro-act">
                         <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
@@ -166,23 +167,22 @@
                 </div>
                 <p class="ml-3 text-justify">
                     <span id="Span_DescName_{{Pid}}">{{Description}}</span>
-                            <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
-                                id="EidtBtn_{{Pid}}">
-                                <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
-                            </span>
-                            <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
-                                <div class="d-flex">
-                                    <input type="text" class="form-control" id="textareafocus_{{Pid}}"
-                                        [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
-                                        (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
-                                    <div class="d-inline-block ml-3" id="button-addon4">
-                                        <button (click)="OnProject_Rename(Pid,_MasterCode)"
-                                            class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                        <button class=" btn btn-secondary btn btn-sm"
-                                            (click)="onCancel(Pid)">Cancel</button>
-                                    </div>
-                                </div>
-                            </span>
+                    <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
+                        id="EidtBtn_{{Pid}}">
+                        <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                    </span>
+                    <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="textareafocus_{{Pid}}"
+                                [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
+                                (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
+                            <div class="d-inline-block ml-3" id="button-addon4">
+                                <button (click)="OnProject_Rename(Pid,_MasterCode)"
+                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                <button class=" btn btn-secondary btn btn-sm" (click)="onCancel(Pid)">Cancel</button>
+                            </div>
+                        </div>
+                    </span>
                 </p>
             </div>
 
@@ -270,11 +270,13 @@
                                 <div class="action-content d-flex align-items-center">
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
-                                        <h5 class="mt-1" *ngIf="ProjectBlockName != 'Standard Tasks'">{{maxDuration}}Hrs</h5>
-                                        <h5 class="mt-1" *ngIf="ProjectBlockName == 'Standard Tasks'">{{standardDuration}}</h5>
+                                        <h5 class="mt-1" *ngIf="ProjectBlockName != 'Standard Tasks'">{{maxDuration}}Hrs
+                                        </h5>
+                                        <h5 class="mt-1" *ngIf="ProjectBlockName == 'Standard Tasks'">
+                                            {{standardDuration}}</h5>
                                     </div>
 
-                                    <div class="px-4">
+                                    <div class="px-1">
                                         <i class=" la la-arrows-h mx-3 text-dangr fs-4 font-weight-bold"></i>
                                     </div>
                                     <div class="">
@@ -586,8 +588,8 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span></a></li>
-                        <li class="nav-item"><a class="nav-link" id="Timeline1" data-toggle="tab" href="#Timeline"><span
-                                    class="nav-text">Timeline</span></a></li>
+                        <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
+                                data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span></a></li>
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
@@ -630,8 +632,11 @@
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
                                                                 <h5><strong>DAR Summary</strong></h5>
-                                                                <h6>Total Max Duration : <span *ngIf="ProjectBlockName != 'Standard Tasks'"><b>{{maxDuration}}Hrs</b></span>
-                                                                    <span *ngIf="ProjectBlockName == 'Standard Tasks'"><b>{{standardDuration}}</b></span></h6>
+                                                                <h6>Total Max Duration : <span
+                                                                        *ngIf="ProjectBlockName != 'Standard Tasks'"><b>{{maxDuration}}Hrs</b></span>
+                                                                    <span
+                                                                        *ngIf="ProjectBlockName == 'Standard Tasks'"><b>{{standardDuration}}</b></span>
+                                                                </h6>
                                                                 <div id="DARSummary" style="width: 100%; height: 400px">
                                                                 </div>
 
@@ -718,7 +723,8 @@
                                                     </div>
                                                     <div class="col-lg-4" *ngIf="ProjectBlockName != 'Standard Tasks'">
                                                         <h4>People on the project (RACIS)</h4>
-                                                        <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                                                        <div
+                                                            class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
                                                                 <ul class="list-group">
                                                                     <li class="list-group-item active">Action Legends
@@ -744,8 +750,10 @@
                                                         <h4>Breakdown</h4>
                                                         <div class="col-lg-2 col-sm-4">
                                                             <div class="kt-portlet mb-3">
-                                                                <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!">                                                                    
-                                                                    <img src="assets/images/user2.png" alt="" class="breakdown-user"/>      
+                                                                <div class="kt-portlet__body px-3" data-toggle="tooltip"
+                                                                    title="Responsible!">
+                                                                    <img src="assets/images/user2.png" alt=""
+                                                                        class="breakdown-user" />
                                                                     <p class="mb-2">
                                                                         <small><strong>{{Authority}}</strong></small>
                                                                     </p>
@@ -755,7 +763,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12" *ngIf="subTaskCount != 0">
-                                                        <h4>Breakdown</h4>                                                       
+                                                        <h4>Breakdown</h4>
                                                     </div>
                                                     <div *ngFor="let item of Subtask_Res_List">
                                                         <div class="col-lg-2 col-sm-4" *ngIf="item.TM_DisplayName">
@@ -912,8 +920,8 @@
                                             Inprocess</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
-                                            <button *ngIf="noInprocess == false" (click)="sweetAlert()" [hidden]="actionButton"
-                                                title="Create New Action"
+                                            <button *ngIf="noInprocess == false" (click)="sweetAlert()"
+                                                [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                     class="fas fa-plus mr-2"></i>New Action</button>
                                         </div>
@@ -1032,15 +1040,15 @@
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1"> 
+                                                            <h6 class="mt-1">
                                                                 {{item.SubtaskAllocated}} Hrs
-                                                              </h6>
+                                                            </h6>
                                                             <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
                                                                 {{item.SubtaskAllocated}} Hrs</h6>
                                                             <span class="text-info" [hidden]="Editbutton" 
                                                                 (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
                                                                 <i class="fas fa-edit" ></i> -->
-                                                        <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
+                                                            <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
                                                             <!-- </span>
                                                             <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">
                                                                 <div class="d-flex">
@@ -1079,9 +1087,6 @@
                                                             <!-- <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
                                                     </p>
-
-
-
                                                 </div>
                                             </div>
 
@@ -1156,7 +1161,7 @@
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">                                                            
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <i class="fas fa-wallet text-muted mr-1"></i>
                                                             <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                         </span>
@@ -1368,7 +1373,39 @@
 
                     </div>
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
-                        <h3 *ngIf="noTimeline == false; else noResultsFound"> Timeline</h3>
+                        <div *ngIf="noTimeline == false; else noResultsFound">
+                            <div class="px-3">
+                                <h5 style="color:cadetblue">Daily Achievement Reaport(DAR) - Timeline</h5>
+                                <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                                    <thead>
+                                        <tr>
+                                            <th><strong>S.No.</strong></th>
+                                            <th><strong>Employee</strong></th>
+                                            <th><strong>Project Name</strong></th>
+                                            <th><strong>Project Code</strong></th>
+                                            <th><strong>Submission Date</strong></th>
+                                            <th><strong>Work Achieved</strong></th>
+                                            <th><strong>Start Time</strong></th>
+                                            <th><strong>End Time</strong></th>
+                                            <th><strong>Duration</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of darList; let i=index">
+                                            <td class="kt-widget__title mb-0"> {{i+1}}</td>
+                                            <td class="kt-widget__title mb-0"><b>{{item.EmpName}}</b></td>
+                                            <td class="kt-widget__title mb-0">{{item.ProjectName}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.project_code}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.CreationDate |date:'dd-MM-yyyy'}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.WorkAchieved}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.starttime}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.endtime}}</td>
+                                            <td class="kt-widget__title mb-0">{{item.Duration}} Hrs</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
                     </div>
                     <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">
@@ -1926,12 +1963,13 @@
 <div id="LinkSideBar" class="sideInfobar animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-          <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
-          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeLinkSideBar()">
-            <i class="fa fa-times"></i>
-          </a>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
+                (click)="closeLinkSideBar()">
+                <i class="fa fa-times"></i>
+            </a>
         </div>
-      </div>
+    </div>
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
             <p class="text-primary m-0">

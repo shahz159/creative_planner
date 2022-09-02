@@ -937,3 +937,11 @@ svg.feather {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.d-flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.asgn-colpse.collapsed .fa-chevron-up:before {
+    content: "\f078";
+}

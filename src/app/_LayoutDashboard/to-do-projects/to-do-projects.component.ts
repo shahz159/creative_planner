@@ -566,6 +566,7 @@ export class ToDoProjectsComponent implements OnInit {
         this.GetSubtask_Details();
         this. GetProjectsByUserName();
         this.getDropdownsDataFromDB();
+        // this.OnProjectClick();
       });
   }
 

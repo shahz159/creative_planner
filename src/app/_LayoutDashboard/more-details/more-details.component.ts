@@ -53,7 +53,7 @@ export class MoreDetailsComponent implements OnInit {
   noRecords: boolean = false;
   noMilestones: boolean = true;
   noFiles: boolean;
-  noTimeline: boolean = true;
+  noTimeline: boolean;
   noNotes: boolean = true;
   noMeeting: boolean = true;
   checked: any;
@@ -63,6 +63,7 @@ export class MoreDetailsComponent implements OnInit {
   ProjectPercentage: any;
   src: any;
   actionButton:boolean=false;
+  darList:string;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -141,6 +142,19 @@ export class MoreDetailsComponent implements OnInit {
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
+    });
+  }
+
+
+  dar_details(){
+    this.noTimeline = false;
+    this.service._GetDARbyMasterCode(this.URL_ProjectCode)
+    .subscribe(data1 => {
+            this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+            // console.log(this.darList,"DAR");
+            if(this.darList == null){
+              this.noTimeline =true;
+            }
     });
   }
 
@@ -2213,13 +2227,15 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    window.open(proofDoc);
+    
   }
 
   openPDF(cd_date, docName) {
     cd_date = new Date(cd_date);
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
     let Day = cd_date.getDate();
     let Month = cd_date.getMonth() + 1;
     let Year = cd_date.getFullYear();
@@ -2236,7 +2252,8 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
-    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + "/" + docName);
+    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + "/" + docName);
+    window.open(docName);
   }
 
   Subtask_List: any;
