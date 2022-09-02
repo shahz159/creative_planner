@@ -447,6 +447,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
+    this.GetSubtask_Details();
   }
 
   sideviw() {
