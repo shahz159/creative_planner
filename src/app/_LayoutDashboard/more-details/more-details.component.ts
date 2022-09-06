@@ -146,11 +146,17 @@ export class MoreDetailsComponent implements OnInit {
   }
 
 
+  darList1: string;
+  submissiondateList: Date;
+
   dar_details(){
     this.noTimeline = false;
     this.service._GetDARbyMasterCode(this.URL_ProjectCode)
     .subscribe(data1 => {
             this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+            this.submissiondateList = JSON.parse(this.darList[0]['SubmissionDate']);
+            let data2 : string = JSON.parse(this.darList[0]['Dardata']);
+            this.darList1= data2;
             // console.log(this.darList,"DAR");
             if(this.darList == null){
               this.noTimeline =true;
@@ -324,7 +330,7 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if(this.Status =='Completion Under Approval' || this.Status == 'Under Approval'){
+          if(this.Status =='Completion Under Approval' || this.Status == 'Under Approval' || this.Status == 'New Project Rejected'){
             this.actionButton=true;
           }
         }
@@ -2310,13 +2316,17 @@ export class MoreDetailsComponent implements OnInit {
       // this.ObjSubTaskDTO.Remarks = this._remarks;
       this.service._UpdateSubtaskByProjectCode(fd)
         .subscribe(data => {
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          // this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this._remarks = "";
+          this._inputAttachments = "";
           this.GetSubtask_Details();
-        });
-      this.notifyService.showInfo("Successfully Updated", '');
-      this.closeInfo();
-      this._remarks = "";
-      this._inputAttachments = "";
+          this.GetProjectDetails();
+      // Rebinding    
+              
+          this.notifyService.showInfo("Successfully Updated", '');
+          this.closeInfo(); 
+                   
+    });
     }
   }
 
@@ -2539,6 +2549,7 @@ export class MoreDetailsComponent implements OnInit {
         }
         this.closeInfo();
         this.GetSubtask_Details();
+        this.GetProjectDetails();
       });
   }
   LoadDocument(url: string) {
@@ -2557,5 +2568,13 @@ export class MoreDetailsComponent implements OnInit {
     myWindow.focus();
     //this.cd.detectChanges();
     //$('#documentPreview').modal('toggle');
+  }
+
+  async CallOnSubmitAction() {
+    //  console.log('A');
+  let a= await this.GetSubtask_Details();
+  let b =await this.GetProjectDetails();
+    // this. GetProjectsByUserName();
+    // this.getDropdownsDataFromDB();
   }
 }

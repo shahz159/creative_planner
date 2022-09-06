@@ -21,19 +21,24 @@
                     <!-- <i class="fas fa-code-branch"></i> -->
                     <h4 class="fs-3 text-info mb-0 mr-3">{{URL_ProjectCode}}</h4>
                     <label
-                        *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'"
+                        *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || ProjectBlockName =='Standard Tasks'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-success':Status=='Completed',
                         'bg-info':Status=='Under Approval',
-                        'bg-primary':Status=='Completion Under Approval'}">
+                        'bg-primary':Status=='Completion Under Approval',
+                        'bg-warning':Status=='InProcess',
+                        'bg-rejected text-danger': Status=='New Project Rejected',
+                         'text-success' : Status=='ToDo Completed'}">
                         {{Status}}</label>
 
                     <!--inprocess button-->
                     <div class="d-flex"
-                        *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'">
+                        *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && ProjectBlockName != 'Standard Tasks'">
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                         <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
                             [ngClass]="{'bg-danger':Status=='Delay',
-                    'bg-warning':Status=='InProcess'}">{{Status}}</label>
+                                        'bg-warning':Status=='InProcess'}">{{Status}}</label>
                         <div class="task-status__divider"></div>
                         <button class="task-status__controls" (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
@@ -157,7 +162,7 @@
                         <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
                             Actions</button>
                     </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay')" class=" pro-act ml-2">
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')" class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
                             <i class="fas fa-check mr-2"></i>
                             Project Completion
@@ -931,7 +936,7 @@
                                                 [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
 
                                                 <input type="radio" name="Subtask" class="subtask-radio"
-                                                    (click)="OnSubtaskClick(item)"
+                                                    (click)="OnSubtaskClick(item)" *ngIf="item.SubProject_Status!='Under Approval'"
                                                     [hidden]="item.Team_Autho!=Current_user_ID" />
                                                 <div class="col-lg-11">
                                                     <p
@@ -1010,12 +1015,12 @@
                                                         <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
                                             'text-success':item.SubProject_Status=='Completed',
                                             'text-warning':item.SubProject_Status=='InProcess',
-                                            'text-underApp':item.SubProject_Status=='Under Approval',
+                                            'text-primary':item.SubProject_Status=='Under Approval',
                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                             'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                            'text-primary':item.SubProject_Status=='New Project',
+                                            'text-underApp':item.SubProject_Status=='New Project',
                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
                                             'text-Todo':item.SubProject_Status=='ToDo Completed'}">
@@ -1374,37 +1379,7 @@
                     </div>
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <div *ngIf="noTimeline == false; else noResultsFound">
-                            <div class="px-3">
-                                <h5 style="color:cadetblue">Daily Achievement Reaport(DAR) - Timeline</h5>
-                                <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
-                                    <thead>
-                                        <tr>
-                                            <th><strong>S.No.</strong></th>
-                                            <th><strong>Employee</strong></th>
-                                            <th><strong>Project Name</strong></th>
-                                            <th><strong>Project Code</strong></th>
-                                            <th><strong>Submission Date</strong></th>
-                                            <th><strong>Work Achieved</strong></th>
-                                            <th><strong>Start Time</strong></th>
-                                            <th><strong>End Time</strong></th>
-                                            <th><strong>Duration</strong></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let item of darList; let i=index">
-                                            <td class="kt-widget__title mb-0"> {{i+1}}</td>
-                                            <td class="kt-widget__title mb-0"><b>{{item.EmpName}}</b></td>
-                                            <td class="kt-widget__title mb-0">{{item.ProjectName}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.project_code}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.CreationDate |date:'dd-MM-yyyy'}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.WorkAchieved}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.starttime}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.endtime}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.Duration}} Hrs</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            
                         </div>
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
                     </div>
@@ -1787,7 +1762,7 @@
         </div>
         <div class="form-group mt-3">
             <label>Attachments</label>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3" #uploadFile>
                 <div class="input-group-prepend">
                     <span class="input-group-text">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
