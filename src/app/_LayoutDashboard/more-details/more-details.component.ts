@@ -147,16 +147,15 @@ export class MoreDetailsComponent implements OnInit {
 
 
   darList1: string;
-  submissiondateList: Date;
 
   dar_details(){
     this.noTimeline = false;
     this.service._GetDARbyMasterCode(this.URL_ProjectCode)
     .subscribe(data1 => {
             this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-            this.submissiondateList = JSON.parse(this.darList[0]['SubmissionDate']);
-            let data2 : string = JSON.parse(this.darList[0]['Dardata']);
-            this.darList1= data2;
+
+            // this.darList1 = (this.darList['Dardata']);
+            
             // console.log(this.darList,"DAR");
             if(this.darList == null){
               this.noTimeline =true;
