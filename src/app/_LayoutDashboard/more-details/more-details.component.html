@@ -27,8 +27,8 @@
                         'bg-info':Status=='Under Approval',
                         'bg-primary':Status=='Completion Under Approval',
                         'bg-warning':Status=='InProcess',
-                        'bg-rejected text-danger': Status=='New Project Rejected',
-                         'text-success' : Status=='ToDo Completed'}">
+                        'bg-rejected': Status=='New Project Rejected',
+                         'caledon-green' : Status=='ToDo Completed'}">
                         {{Status}}</label>
 
                     <!--inprocess button-->
@@ -1417,6 +1417,261 @@
                             </div>
                         </div>
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                        <div class="mb-3">
+                            <div class="list-header">
+                                <h4 class="header-date">
+                                    Tuesday, 06 September
+                                </h4>
+                            </div>
+                            <div class="">
+                                <table class="time-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Who</th>
+                                            <th>Description</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Billable</th>
+                                            <th>Billed</th>
+                                            <th>Type</th>
+                                            <th>Time</th>
+                                            <th>Hours</th>
+                                          </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-info">
+                                                        <span class="tags-name"> First Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-info">
+                                                        <span class="tags-name"> First Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx" checked></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-danger">
+                                                        <span class="tags-name"> Delay Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="time-totals">
+                                <ul class="time-totals-list" align="right">
+                                    <li class="totals-list--item">
+                                        <span><strong>Total: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    <li class="totals-list--item">
+                                        <span><strong>Estimated Time: </strong></span>
+                                        <span> 2h </span>
+                                        <span> (2.00)</span>
+                                    </li>
+                                    
+                                    <li class="totals-list--item">
+                                        <span><strong>Billable Time: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- second table -->
+                        <div class="mb-3">
+                            <div class="list-header">
+                                <h4 class="header-date">
+                                    Tuesday, 07 September
+                                </h4>
+                            </div>
+                            <div class="">
+                                <table class="time-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Who</th>
+                                            <th>Description</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Billable</th>
+                                            <th>Billed</th>
+                                            <th>Type</th>
+                                            <th>Time</th>
+                                            <th>Hours</th>
+                                          </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-info">
+                                                        <span class="tags-name"> First Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-info">
+                                                        <span class="tags-name"> First Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx" checked></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>17/05/2022</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-danger">
+                                                        <span class="tags-name"> Delay Project </span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>7:12PM	</td>
+                                            <td>7:42PM</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>30m</td>
+                                            <td>0.50Hrs</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="time-totals">
+                                <ul class="time-totals-list" align="right">
+                                    <li class="totals-list--item">
+                                        <span><strong>Total: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    <li class="totals-list--item">
+                                        <span><strong>Estimated Time: </strong></span>
+                                        <span> 2h </span>
+                                        <span> (2.00)</span>
+                                    </li>
+                                    
+                                    <li class="totals-list--item">
+                                        <span><strong>Billable Time: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">
                         <h3 *ngIf="noNotes == false; else noResultsFound"> Notes</h3>
