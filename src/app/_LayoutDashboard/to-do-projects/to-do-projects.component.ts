@@ -376,7 +376,7 @@ export class ToDoProjectsComponent implements OnInit {
   TaskName: string = "";
 
   OnAddTaskClick() {
-    this.router.navigate(["./backend/ToDoProjects/ActionToProject/"]);
+    this.router.navigate(["./backend/ToDoProjects/ActionToProject/1"]);
     document.getElementById("mysideInfobar").style.width = "60%";
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
@@ -488,8 +488,7 @@ export class ToDoProjectsComponent implements OnInit {
      $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
-    this.GetSubtask_Details();
-    this. GetProjectsByUserName();
+   
     
   }
 
@@ -589,8 +588,9 @@ export class ToDoProjectsComponent implements OnInit {
           //console.log(event);
         }
         this.closeInfo();
-        this.GetSubtask_Details();
         this.GetProjectsByUserName();
+        this.GetSubtask_Details();
+       
         //this.getDropdownsDataFromDB();
         // this.OnProjectClick();
       });

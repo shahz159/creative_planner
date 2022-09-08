@@ -10,7 +10,7 @@ const routes: Routes = [{
       loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
     },
     {
-      path: 'ActionToProject',
+      path: 'ActionToProject/:id',
       loadChildren: () => import('../action-to-project/action-to-project.module').then(m => m.ActionToProjectModule)
     }
   ]

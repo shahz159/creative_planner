@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
@@ -25,8 +25,8 @@ export class ActionToProjectComponent implements OnInit {
   // @ViewChild(ProjectUnplannedTaskComponent ) _projectunplanned !:any ;
   Sub_ProjectName: string = null;
   _Description: string = null;
-  _StartDate: Date =null;
-  _EndDate: Date=null;
+  _StartDate: Date = null;
+  _EndDate: Date = null;
   _remarks: string;
   _allocated: number;
   _inputAttachments: any = [];
@@ -50,12 +50,13 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   maxAllocation: number;
   Current_user_ID: string;
-  _projcode:boolean;
+  _projcode: boolean;
   _desbool: boolean;
-  _subname:boolean;
-  _sdate:boolean;
-  _edate:boolean;
-  _selectemp:boolean;
+  _subname: boolean;
+  _sdate: boolean;
+  _edate: boolean;
+  _selectemp: boolean;
+  _Urlid: any;
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -65,7 +66,8 @@ export class ActionToProjectComponent implements OnInit {
     public service: ProjectTypeService,
     public _projectunplanned: ProjectUnplannedTaskComponent,
     public _Todoproject: ToDoProjectsComponent,
-    public _MoreDetails: MoreDetailsComponent
+    public _MoreDetails: MoreDetailsComponent,
+    private route: ActivatedRoute
   ) {
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
@@ -101,7 +103,7 @@ export class ActionToProjectComponent implements OnInit {
     this._edate = false;
     this._selectemp = false;
   }
- 
+
   ngOnInit() {
     this._projcode = false;
     this._desbool = false;
@@ -109,7 +111,9 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
-    
+    this._Urlid = this.route.snapshot.params['id'];
+
+
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
   }
@@ -217,10 +221,10 @@ export class ActionToProjectComponent implements OnInit {
       this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     }
   }
-  
- 
-  
- 
+
+
+
+
 
   OnSubmit() {
 
@@ -330,28 +334,34 @@ export class ActionToProjectComponent implements OnInit {
         this.notifyService.showInfo("Created Successfully", "Action");
         // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
         // this.closeInfo();
+       
+        if (this._Urlid == 1) {
+          debugger
+          this._Todoproject.CallOnSubmitAction();
+
+        }
+        else {
+          this._MoreDetails.CallOnSubmitAction();
+          this._projectunplanned.CallOnSubmitCategory();
+
+        }
         this.closeInfo();
-        this.Clear_Feilds();
-        this._projectunplanned.CallOnSubmitCategory();
-        this._Todoproject.CallOnSubmitAction();
-        this._MoreDetails.CallOnSubmitAction();
-      
-        
-        
-    
+
+
+
+
+
         this._inputAttachments = [];
       });
-      setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
-
-      this._projectunplanned.CallOnSubmitCategory();
-      setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
+      // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
+      // this._projectunplanned.CallOnSubmitCategory();
+      // setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
       // setTimeout(function () {
       //   this.loadsubcateg();
       // }, 3000);
-      this._Todoproject.CallOnSubmitAction();
-      setTimeout(this._MoreDetails.CallOnSubmitAction, 3000);
-
-      this._MoreDetails.CallOnSubmitAction();
+      // this._Todoproject.CallOnSubmitAction();
+      // setTimeout(this._MoreDetails.CallOnSubmitAction, 3000);
+      // this._MoreDetails.CallOnSubmitAction();
     });
   }
 
@@ -391,21 +401,21 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-    debugger
+
     document.getElementById("mysideInfobar").style.width = "0";
     this.Clear_Feilds();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("mysideInfobar1").style.width = "0";
-    
+
   }
 
   Clear_Feilds() {
-    debugger
+  
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
     this._Description = null;
-    this._projcode =false;
+    this._projcode = false;
     this._desbool = false;
     this._subname = false;
     this._sdate = false;
