@@ -330,12 +330,14 @@ export class ActionToProjectComponent implements OnInit {
         this.notifyService.showInfo("Created Successfully", "Action");
         // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
         // this.closeInfo();
-       
+        this.closeInfo();
+        this.Clear_Feilds();
+        this._projectunplanned.CallOnSubmitCategory();
         this._Todoproject.CallOnSubmitAction();
         this._MoreDetails.CallOnSubmitAction();
-        this._projectunplanned.CallOnSubmitCategory();
-        this.Clear_Feilds();
-        this.closeInfo();
+      
+        
+        
     
         this._inputAttachments = [];
       });
@@ -361,7 +363,7 @@ export class ActionToProjectComponent implements OnInit {
     // console.log(dateOne)
     // console.log(dateTwo)
     if (dateTwo <= dateOne) {
-      
+
       Swal.fire({
         title: 'Action DeadLine is Greater then Main Project DeadLine ?',
         text: 'Do you Want to Continue For Selection Of Date After Main Project DeadLine!!',
