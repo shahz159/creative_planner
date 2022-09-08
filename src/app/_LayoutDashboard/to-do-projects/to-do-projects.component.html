@@ -257,10 +257,12 @@
                         </button>
                     </div>
                     <div class="col-lg-12">
-                        <label id="SpanProjName_{{Pid}}"
-                            class="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand text-info strong h5">
+                        <label data-toggle="tooltip" title="Project Name!" id="SpanProjName_{{Pid}}"
+                            class="text-info strong h5"
+                            [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval'
+                                         }">
                             <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
-                                [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'">
+                                [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" *ngIf="Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval'">
                             {{_ProjectName}}
                             <span></span>
                         </label>
@@ -283,7 +285,7 @@
                             </div>
                         </span>
                         <p class="mb-3 mt-1 pl-30px h5" style="color:grey; font-size: small;">
-                            <span id="Span_DescName_{{Pid}}">{{Proj_Desc}}</span>
+                            <span data-toggle="tooltip" title="Project Description!" id="Span_DescName_{{Pid}}">{{Proj_Desc}}</span>
                             <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
                                 id="EidtBtn_{{Pid}}">
                                 <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
@@ -303,11 +305,12 @@
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Project Type!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-project-diagram text-muted mr-1"></i>
                                 <b>{{Proj_ExecBlck}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':Project_Status=='Delay',
+                            <span data-toggle="tooltip" title="Project Status!"
+                                    class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':Project_Status=='Delay',
                                     'text-Completed':Project_Status=='Completed',
                                     'text-warning':Project_Status=='InProcess',
                                     'text-underApp':Project_Status=='Under Approval',
@@ -322,48 +325,48 @@
                                 {{Project_Status}}
                             </span>
                             <!-- 'text-success':Project_Status=='Completion Under Approval' -->
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{PstDT | date:'dd-MM-yyyy'}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck != 'Standard Tasks'">
+                            <span data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck != 'Standard Tasks'">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{PEndDT | date:'dd-MM-yyyy'}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck == 'Standard Tasks'">
+                            <span data-toggle="tooltip" title="Submission Type!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck == 'Standard Tasks'">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{SubmissionType}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Project Duration!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-clock text-muted mr-1"></i>
                                 <b *ngIf="Proj_ExecBlck != 'Standard Tasks'">{{Duration}} Hrs</b>
                                 <b *ngIf="Proj_ExecBlck == 'Standard Tasks'">{{standardDuration}} Hrs</b>
                             </span>
-                            <span class="text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Project Cost!" class="text-nowrap mb-2 d-inline-block">
                                 <i class="fab fa-dev text-muted mr-1"></i>
                                 <b>{{projectCost|currency:'SAR '}}</b>
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Project Responsible!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fab fa-dev text-muted mr-1"></i>
                                 <b>{{Resp}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                            <span data-toggle="tooltip" title="Client Name!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-wallet text-muted mr-1"></i>
                                 <b>{{Client_Name}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
+                            <span data-toggle="tooltip" title="Report Type!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
                                 <i class="fas fa-info-circle text-muted mr-1"></i>
                                 <b>{{ReportType}}</b>
                             </span>
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="CD && Project_Status=='Completed' ">
+                            <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="CD && Project_Status=='Completed' ">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{CD | date:'dd-MM-yyyy'}}</b>
                             </span>
                         </p>
                         <p class="mb-1 pl-30px">
-                            <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
+                            <span data-toggle="tooltip" title="Uploaded Document!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
                                 class="fas fa-file-pdf text-muted mr-1" ></i>
                             <a class="text-info curser-pointer" title="Click To Open File"  
                                 (click)="LoadDocument(Attachments)" ><b>{{FileName}}</b></a></span>
@@ -387,14 +390,14 @@
                         <div class="subtask-list" *ngFor="let item of Subtask_List; let i =index"
                             [ngClass]="{'bg-custom': item.Team_Autho==CurrentUser_ID}">
                             <input type="radio" name="Subtask" class="subtask-radio" (click)="OnSubtaskClick(item)"
-                                [hidden]="item.Team_Autho!=CurrentUser_ID" />
+                                [hidden]="item.Team_Autho!=CurrentUser_ID" *ngIf="item.SubProject_Status != 'Under Approval'" />
                             <!-- .Project_Code,item.Project_Name,item.StartDate,
                             item.SubProject_DeadLine,item.Subtask_Autho,item,SubProject_Status -->
 
                             <!-- INPROCESS TASKS -->
                             <div class="col-lg-11">
                                 <p class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
-                                    <span class="mr-2" id="SpanProjName_{{item.id}}"> {{item.Project_Name}}</span>
+                                    <span data-toggle="tooltip" title="Action Name!" class="mr-2" id="SpanProjName_{{item.id}}"> {{item.Project_Name}}</span>
                                     <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                     <span class="text-info" [hidden]="Editbutton" id="EidtBtn_{{item.id}}"
                                         (click)="OnEditProject(item.id,item.Project_Name)">
@@ -415,7 +418,7 @@
                                     </span>
                                 </p>
                                 <p class="mb-3">
-                                    <span class="mr-2" id="Span_DescName_{{item.id}}">
+                                    <span data-toggle="tooltip" title="Action Description!" class="mr-2" id="Span_DescName_{{item.id}}">
                                         {{item.Project_Description}}</span>
                                     <span class="text-info" [hidden]="Editbutton"
                                         (click)="OnEditProject_Desc(item.id,item.Project_Description)">
@@ -447,7 +450,7 @@
                                         <b >{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                     </span>
                                     
-                                    <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="Action Duration!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-clock text-muted mr-1" *ngIf="item.SubtaskAllocated == 0; else allocated" >
                                             <b><span class="mr-2" id="Span_DescName_all{{item.id}}">
                                             {{item.SubtaskAllocated}} Hrs</span></b>
@@ -473,14 +476,14 @@
                                             </div>
                                         </span></i>
                                         <ng-template #allocated>
-                                            <span  class="mr-3 text-nowrap mb-2 d-inline-block">
+                                            <span data-toggle="tooltip" title="Action Duration!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                                 <i class="fas fa-clock text-muted mr-1"></i>
                                                 <b>{{item.SubtaskAllocated}} Hrs</b>      
                                             </span>                                      
                                         </ng-template>
                                         
                                     </span>
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                    <span data-toggle="tooltip" title="Action Cost!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-wallet text-muted mr-1"></i>
                                         <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                     </span>
@@ -488,12 +491,13 @@
 
                         
                                 <p class="mb-2">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Subtask_Res">
+                                    <span data-toggle="tooltip" title="Action Responsible!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Subtask_Res">
                                         <i class="fab fa-dev text-muted mr-1"></i>
                                         <b> {{item.Subtask_Res}}</b>
                                     </span>
 
-                                    <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
+                                    <span data-toggle="tooltip" title="Action Status!"
+                                        class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
                                     'text-Completed':item.SubProject_Status=='Completed',
                                     'text-warning':item.SubProject_Status=='InProcess',
                                     'text-underApp':item.SubProject_Status=='Under Approval',
@@ -512,11 +516,11 @@
                                     <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                 </p>
                                 <p class="mb-1">
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
+                                    <span data-toggle="tooltip" title="Uploaded File!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                         <a class="text-info curser-pointer"
                                             (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
-                                    <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
+                                    <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
                                         <i class="fas fa-registered text-muted mr-1"></i>
                                         <b>{{item.Remarks}}</b>
                                     </span>
@@ -537,7 +541,7 @@
                         <div class="card">
                             <div class="card-header" id="headingOne5">
                                 <div class="card-title" data-toggle="collapse" data-target="#collapseOne5"
-                                    aria-expanded="true" aria-controls="collapseOne5">
+                                    aria-expanded="true" aria-controls="collapseOne5" >
                                     Completed
                                 </div>
                             </div>
@@ -550,14 +554,14 @@
                                         </div>
                                         <!-- <input type="radio" class="form -check-input subtask-radio form-check-success" checked /> -->
                                         <div>
-                                            <p
+                                            <p data-toggle="tooltip" title="Action Name!"
                                                 class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
                                                 <s>{{item.SubProject_Name}}</s>
                                             </p>
-                                            <p class="mb-1">{{item.Project_Description}}</p>
-                                            <p class="mb-2"><span class="mr-3 text-nowrap  d-inline-block"><i
+                                            <p data-toggle="tooltip" title="Action Description!" class="mb-1">{{item.Project_Description}}</p>
+                                            <p class="mb-2"><span data-toggle="tooltip" title="Action Responsible!" class="mr-3 text-nowrap  d-inline-block"><i
                                                         class="fab fa-dev text-muted mr-1"></i>{{item.Subtask_Res}}</span>
-                                                <span
+                                                <span data-toggle="tooltip" title="Action Status!"
                                                     class="mr-2 text-nowrap  d-inline-block badge bg-light text-success">Completed</span>
                                             </p>
                                             <p class="mb-2">
@@ -574,22 +578,23 @@
                                                     date}}</span>
                                                             
 
-                                                <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                                <span data-toggle="tooltip" title="Action Duration!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-clock text-muted mr-1"></i>
                                                     <b>{{item.SubtaskAllocated}} Hrs</b>
                                                 </span>
-                                                <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                <span data-toggle="tooltip" title="Action Cost!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-wallet text-muted mr-1"></i>
                                                     <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                 </span>
                                             </p>
                                             <p class="mb-2">
-                                                <span class="mr-3 text-nowrap mb-2 d-inline-block" ><i
+                                                <span data-toggle="tooltip" title="Uploaded File!" class="mr-3 text-nowrap mb-2 d-inline-block" ><i
                                                         class="fas fa-file-pdf text-muted mr-1" *ngIf="item.Sourcefile != ''"></i>
                                                     <a class="text-info curser-pointer"
                                                         (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
 
-                                                <span class="mr-3 text-nowrap  d-inline-block" *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
+                                                <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap  d-inline-block" 
+                                                    *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
                                                     <i class="fas fa-registered text-muted mr-1"></i>
                                                     <b>{{item.Remarks}}</b>
                                                 </span>
@@ -864,7 +869,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="_pdf">Choose file</label>
+                    <label class="custom-file-label" id="upload" for="_pdf">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>
@@ -931,9 +936,9 @@
                     </span>
                 </div>
                 <div class="custom-file">
-                    <input  #myInput type="file" class="custom-file-input"   id="uploadFile" accept="application/pdf"
+                    <input  #myInput type="file" class="custom-file-input"   id="uploadFile" accept="application/pdf" [(ngModel)]="_upload"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="uploadFiles">Choose file</label>
+                    <label class="custom-file-label" id="_upload" for="uploadFiles">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>

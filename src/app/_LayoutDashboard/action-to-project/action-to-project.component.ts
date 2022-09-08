@@ -11,6 +11,7 @@ import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
+import { MoreDetailsComponent } from '../more-details/more-details.component';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -63,7 +64,8 @@ export class ActionToProjectComponent implements OnInit {
     public BsService: BsServiceService,
     public service: ProjectTypeService,
     public _projectunplanned: ProjectUnplannedTaskComponent,
-    public _Todoproject: ToDoProjectsComponent
+    public _Todoproject: ToDoProjectsComponent,
+    public _MoreDetails: MoreDetailsComponent
   ) {
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
@@ -330,6 +332,7 @@ export class ActionToProjectComponent implements OnInit {
         // this.closeInfo();
        
         this._Todoproject.CallOnSubmitAction();
+        this._MoreDetails.CallOnSubmitAction();
         this._projectunplanned.CallOnSubmitCategory();
         this.Clear_Feilds();
         this.closeInfo();
@@ -344,6 +347,9 @@ export class ActionToProjectComponent implements OnInit {
       //   this.loadsubcateg();
       // }, 3000);
       this._Todoproject.CallOnSubmitAction();
+      setTimeout(this._MoreDetails.CallOnSubmitAction, 3000);
+
+      this._MoreDetails.CallOnSubmitAction();
     });
   }
 

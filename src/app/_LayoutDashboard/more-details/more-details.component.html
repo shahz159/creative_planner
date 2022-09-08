@@ -19,23 +19,29 @@
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
-                    <h4 class="fs-3 text-info mb-0 mr-3">{{URL_ProjectCode}}</h4>
-                    <label
-                        *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'"
+                    <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4>
+                    <label data-toggle="tooltip" title="Project Status!"
+                        *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || ProjectBlockName =='Standard Tasks'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-success':Status=='Completed',
                         'bg-info':Status=='Under Approval',
-                        'bg-primary':Status=='Completion Under Approval'}">
-                        {{Status}}</label>
+                        'bg-primary':Status=='Completion Under Approval',
+                        'bg-warning':Status=='InProcess',
+                        'bg-rejected': Status=='New Project Rejected',
+                         'bg-success-1' : Status=='ToDo Completed'}">
+                        {{Status}}</label> 
+                         <!-- caledon-green -->
 
                     <!--inprocess button-->
-                    <div class="d-flex"
-                        *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'">
+                    <div class="d-flex" 
+                        *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && ProjectBlockName != 'Standard Tasks'">
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
-                        <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
+                        <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr" data-toggle="tooltip" title="Project Status!"
                             [ngClass]="{'bg-danger':Status=='Delay',
-                    'bg-warning':Status=='InProcess'}">{{Status}}</label>
+                                        'bg-warning':Status=='InProcess'}">{{Status}}</label>
                         <div class="task-status__divider"></div>
-                        <button class="task-status__controls" (click)="OnClickCheckboxProjectUpdate()"></button>
+                        <button data-toggle="tooltip" title="Project Completion!" class="task-status__controls" (click)="OnClickCheckboxProjectUpdate()"></button>
                     </div>
                     <!--inprocess button-->
                     <!--progress bar start-->
@@ -44,7 +50,7 @@
                         'text-success':ProjectStatus=='Completed',
                         'text-warning':ProjectStatus=='InProcess',
                         'text-underApp':ProjectStatus=='UnderCompletion',
-                        'text-info':ProjectStatus=='Just Started'}">
+                        'text-info':ProjectStatus=='Just Started'}" data-toggle="tooltip" title="Progess Status!">
                             {{ProjectStatus}}
                         </span>
                         <!-- text-dark - first div -->
@@ -132,7 +138,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
-                        <h4 class="mb-1 pro-nm d-inline-blck" id="SpanProjName_{{Pid}}">{{ProjectName}}</h4>
+                        <h4 class="mb-1 pro-nm d-inline-blck" id="SpanProjName_{{Pid}}" data-toggle="tooltip" title="Project Name!">{{ProjectName}}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
                             *ngIf="this.Current_user_ID == this.Owner || this.Responsible || this.Authority">
@@ -157,7 +163,7 @@
                         <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
                             Actions</button>
                     </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay')" class=" pro-act ml-2">
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')" class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
                             <i class="fas fa-check mr-2"></i>
                             Project Completion
@@ -166,7 +172,7 @@
 
                 </div>
                 <p class="ml-3 text-justify">
-                    <span id="Span_DescName_{{Pid}}">{{Description}}</span>
+                    <span id="Span_DescName_{{Pid}}" data-toggle="tooltip" title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
@@ -600,7 +606,9 @@
                                     class="nav-text">Meeting</span></a></li>
                     </ul>
                 </div>
-                <div class="tab-content p-2 mt-5" id="myTabContent2">
+            <div class="tab-content p-2 mt-5" id="myTabContent2">
+                
+                <!-- Overview Section -->
                     <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
 
                         <div class="row">
@@ -768,8 +776,7 @@
                                                     <div *ngFor="let item of Subtask_Res_List">
                                                         <div class="col-lg-2 col-sm-4" *ngIf="item.TM_DisplayName">
                                                             <div class="kt-portlet mb-3">
-                                                                <div class="kt-portlet__body px-3" data-toggle="tooltip"
-                                                                    title="Responsible!">
+                                                                <div class="kt-portlet__body px-3" data-toggle="tooltip" title="Responsible!">
                                                                     <img src="assets/images/user2.png" alt=""
                                                                         class="breakdown-user"
                                                                         *ngIf="item.TM_DisplayName" />
@@ -887,6 +894,9 @@
                             </div>
                         </div>
                     </div>
+                <!-- Overview Section end-->
+
+                <!-- SubTasks Section -->
                     <div class="tab-pane fade" id="Tasks" role="tabpanel" aria-labelledby="Tasks1">
 
                         <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist"
@@ -916,7 +926,7 @@
 
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
 
-                                        <div class="ribbon-info ribbon float-start" *ngIf="noInprocess == false">
+                                        <div class="ribbon-info ribbon float-start" *ngIf="noInprocess == false" data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
@@ -931,12 +941,12 @@
                                                 [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
 
                                                 <input type="radio" name="Subtask" class="subtask-radio"
-                                                    (click)="OnSubtaskClick(item)"
+                                                    (click)="OnSubtaskClick(item)" *ngIf="item.SubProject_Status!='Under Approval'"
                                                     [hidden]="item.Team_Autho!=Current_user_ID" />
                                                 <div class="col-lg-11">
                                                     <p
                                                         class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
-                                                        <span class="mr-2" id="SpanProjName_{{item.id}}">
+                                                        <span class="mr-2" id="SpanProjName_{{item.id}}" data-toggle="tooltip" title="Action Name!">
                                                             {{item.Project_Name}}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                                         <span class="text-info" [hidden]="Editbutton"
@@ -962,7 +972,7 @@
                                                         </span>
                                                     </p>
                                                     <p class="mb-3">
-                                                        <span class="mr-2" id="Span_DescName_{{item.id}}">
+                                                        <span class="mr-2" id="Span_DescName_{{item.id}}" data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
@@ -988,21 +998,21 @@
                                                     </p>
 
                                                     <p class="mb-1">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="Start Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="End Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="Action Cost!">
                                                             <i class="fas fa-wallet text-muted mr-1"></i>
                                                             <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                         </span>
                                                     </p>
                                                     <p class="mb-2">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="Action Responsible!">
                                                             <i class="fab fa-dev text-muted mr-1"></i>
                                                             <b> {{item.Subtask_Res}}</b>
                                                         </span>
@@ -1010,15 +1020,15 @@
                                                         <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
                                             'text-success':item.SubProject_Status=='Completed',
                                             'text-warning':item.SubProject_Status=='InProcess',
-                                            'text-underApp':item.SubProject_Status=='Under Approval',
+                                            'text-primary':item.SubProject_Status=='Under Approval',
                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                             'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                            'text-primary':item.SubProject_Status=='New Project',
+                                            'text-underApp':item.SubProject_Status=='New Project',
                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}">
+                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}" data-toggle="tooltip" title="Action Status!">
                                                             {{item.SubProject_Status}}
                                                         </span>
                                                     </p>
@@ -1032,7 +1042,7 @@
                                                                 <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            *ngIf="item.Remarks">
+                                                            *ngIf="item.Remarks" data-toggle="tooltip" title="Remarks!">
                                                             <i class="fas fa-registered text-muted mr-1"></i>
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
@@ -1093,7 +1103,7 @@
                                         </div>
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
-                                        <div class="ribbon-success  ribbon float-start" *ngIf="noCompleted == false">
+                                        <div class="ribbon-success  ribbon float-start" *ngIf="noCompleted == false" data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div>
                                         <div class="ribbon-content scrollbar1" *ngIf="noCompleted == false">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
@@ -1101,7 +1111,7 @@
                                                 <div class="col-lg-11">
                                                     <p
                                                         class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
-                                                        <span class="mr-2" id="SpanProjName_{{item.id}}">
+                                                        <span class="mr-2" id="SpanProjName_{{item.id}}" data-toggle="tooltip" title="Action Name!">
                                                             {{item.Project_Name}}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                                         <span class="text-info" [hidden]="Editbutton"
@@ -1127,7 +1137,7 @@
                                                         </span>
                                                     </p>
                                                     <p class="mb-3">
-                                                        <span class="mr-2" id="Span_DescName_{{item.id}}">
+                                                        <span class="mr-2" id="Span_DescName_{{item.id}}" data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
@@ -1153,21 +1163,21 @@
                                                     </p>
 
                                                     <p class="mb-1">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="Start Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block" data-toggle="tooltip" title="End Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"data-toggle="tooltip" title="Action Cost!">
                                                             <i class="fas fa-wallet text-muted mr-1"></i>
                                                             <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                         </span>
                                                     </p>
                                                     <p class="mb-2">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"data-toggle="tooltip" title="Action Responsible!">
                                                             <i class="fab fa-dev text-muted mr-1"></i>
                                                             <b> {{item.Subtask_Res}}</b>
                                                         </span>
@@ -1183,7 +1193,7 @@
                                             'text-primary':item.SubProject_Status=='New Project',
                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}">
+                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}" data-toggle="tooltip" title="Action Status!">
                                                             {{item.SubProject_Status}}
                                                         </span>
                                                     </p>
@@ -1196,7 +1206,7 @@
                                                                 <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            *ngIf="item.Remarks">
+                                                            *ngIf="item.Remarks" data-toggle="tooltip" title="Remarks!">
                                                             <i class="fas fa-registered text-muted mr-1"></i>
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
@@ -1268,11 +1278,16 @@
                             </div>
                         </div>
                     </div>
+                <!-- SubTasks Section end-->
+
+                <!-- Milestones section -->
                     <div class="tab-pane fade" id="Milestones" role="tabpanel" aria-labelledby="Milestones1">
                         <h3 *ngIf="noMilestones == false; else noResultsFound">Milestones</h3>
                         <!-- <h4 *ngIf="noMilestones == true">No Records Found.</h4> -->
                     </div>
-                    <!--  DMS Working Area -->
+                <!-- Milestones section end-->
+
+                <!--  DMS Working Area -->
 
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
                         <div class="bg-white p-3 mb-2">
@@ -1298,6 +1313,9 @@
                             </table>
                         </div>
                     </div>
+                <!--  DMS Working Area end-->
+
+                <!-- Files Section -->
                     <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
                     <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -1368,50 +1386,141 @@
                                 </div>
                             </div>
                         </ng-template>
-
-
-
                     </div>
+                <!-- Files Section end -->
+
+                <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div class="px-3">
-                                <h5 style="color:cadetblue">Daily Achievement Reaport(DAR) - Timeline</h5>
-                                <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                                <h5 style="color:cadetblue"><strong>Daily Achievement Reaport(DAR) - Timeline</strong></h5><pre></pre>
+                                <div *ngFor="let item of darList">
+                                        <h5><strong><u>{{item.SubmissionDate | fullDate}}</u></strong></h5>
+                                        <!-- <div *ngFor="let dar of item.Dardata; let i=index">
+                                            <h6 class="mt-1">Work Achieved</h6>
+                                            <h5 class="mt-1">{{dar.WorkAchieved}}</h5>                                            
+                                        </div> -->
+                                    <div>  
+                                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th><strong>S.No.</strong></th>
+                                                    <th><strong>Submitted by</strong></th>
+                                                    <th><strong>Project Name</strong></th>
+                                                    <!-- <th><strong>Project Code</strong></th>                                                   -->
+                                                    <th><strong>Work Achieved</strong></th>
+                                                    <th><strong>Start Time</strong></th>
+                                                    <th><strong>End Time</strong></th>
+                                                    <th><strong>Duration</strong></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                        
+                                                <tr *ngFor="let dar of item.Dardata; let i=index">
+                                                    <td class="kt-widget__title mb-0"> {{i+1}}</td>
+                                                    <td class="kt-widget__title mb-0"><b>{{dar.EmpName}}</b></td>
+                                                    <td class="kt-widget__title mb-0">{{dar.ProjectName}}</td>
+                                                    <!-- <td class="kt-widget__title mb-0">{{dar.project_code}}</td>                                                    -->
+                                                    <td class="kt-widget__title mb-0">{{dar.WorkAchieved}}</td>
+                                                    <td class="kt-widget__title mb-0">{{dar.starttime}}</td>
+                                                    <td class="kt-widget__title mb-0">{{dar.endtime}}</td>
+                                                    <td class="kt-widget__title mb-0">{{dar.Duration}} Hrs</td>
+                                                </tr>
+                                        
+                                            </tbody><br>
+                                        </table>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                        <!-- <div class="mb-3">
+                         <div class="list-header" *ngFor="let item of darList">
+                                <h4 class="header-date">
+                                    {{item.SubmissionDate | fullDate}}
+                                </h4>
+                            
+                            <div class="">
+                                <table class="time-table">
                                     <thead>
                                         <tr>
-                                            <th><strong>S.No.</strong></th>
-                                            <th><strong>Employee</strong></th>
-                                            <th><strong>Project Name</strong></th>
-                                            <th><strong>Project Code</strong></th>
-                                            <th><strong>Submission Date</strong></th>
-                                            <th><strong>Work Achieved</strong></th>
-                                            <th><strong>Start Time</strong></th>
-                                            <th><strong>End Time</strong></th>
-                                            <th><strong>Duration</strong></th>
-                                        </tr>
+                                            <th>S.No.</th>
+                                            <th>Who</th>
+                                            <th>Description</th>
+                                            <th>Task List</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Billable</th>
+                                            <th>Billed</th>
+                                            <th>Type</th>
+                                            <th>Time</th>
+                                            <th>Hours</th>
+                                          </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of darList; let i=index">
-                                            <td class="kt-widget__title mb-0"> {{i+1}}</td>
-                                            <td class="kt-widget__title mb-0"><b>{{item.EmpName}}</b></td>
-                                            <td class="kt-widget__title mb-0">{{item.ProjectName}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.project_code}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.CreationDate |date:'dd-MM-yyyy'}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.WorkAchieved}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.starttime}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.endtime}}</td>
-                                            <td class="kt-widget__title mb-0">{{item.Duration}} Hrs</td>
+                                        <tr *ngFor="let dar of item.Dardata; let i=index">
+                                            <td>{{i+1}}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">{{dar.EmpName}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tags-wrap">
+                                                    <span class="tags_tag bg-info">
+                                                        <span class="tags-name">{{dar.ProjectName}}</span>
+                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                          </span>
+                                                        </a>
+                                                      </span>
+                                                </div>
+                                            </td>
+                                            <td>{{dar.WorkAchieved}}</td>
+                                            <td>{{dar.starttime}}</td>
+                                            <td>{{dar.endtime}}</td>
+                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                            <td>No</td>
+                                            <td>Current Task</td>
+                                            <td>{{dar.Duration}}</td>
+                                            <td>{{dar.Duration}} Hrs</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                            </div>
+                            <div class="time-totals">
+                                <ul class="time-totals-list" align="right">
+                                    <li class="totals-list--item">
+                                        <span><strong>Total: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    <li class="totals-list--item">
+                                        <span><strong>Estimated Time: </strong></span>
+                                        <span> 2h </span>
+                                        <span> (2.00)</span>
+                                    </li>
+                                    
+                                    <li class="totals-list--item">
+                                        <span><strong>Billable Time: </strong></span>
+                                        <span> 2m</span>
+                                        <span>(0.03)</span>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div> -->                       
                     </div>
+                 <!-- TimeLine Section end-->
+
+                <!-- Notes Section -->
                     <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">
                         <h3 *ngIf="noNotes == false; else noResultsFound"> Notes</h3>
                         <!-- <h4 *ngIf="noNotes == true">No Records Found.</h4> -->
                     </div>
+                <!-- Notes Section end-->
+
+                <!-- Comments Section -->
                     <div class="tab-pane fade" id="Comments" role="tabpanel" aria-labelledby="Comments1">
                         <div class="card cust-card py-3">
                             <div class="comments-list">
@@ -1486,6 +1595,9 @@
                             </div>
                         </div>
                     </div>
+                <!-- Comments Section end-->
+
+                <!-- People Section -->
                     <div class="tab-pane fade" id="People" role="tabpanel" aria-labelledby="People1">
                         <h4>People on the project (RACIS)</h4>
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
@@ -1611,10 +1723,14 @@
                             <p><strong>0%</strong></p>
                         </ng-template>
                     </div>
+                <!-- People Section end-->
+                    
+                <!-- Meetings section -->
                     <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">
                         <h3 *ngIf="noMeeting == false; else noResultsFound">Meeting</h3>
                         <!-- <h4  *ngIf="noMeeting == true">No Records Found.</h4> -->
                     </div>
+                <!-- Meetings section end-->
                 </div>
             </div>
         </div>
@@ -1683,7 +1799,7 @@
             </div>
         </div>
     </ng-template>
-    <!--no records found end-->
+<!--no records found end-->
 </div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!-- Action-To-Project-New_Subtask -->
@@ -1734,7 +1850,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="_pdf">Choose file</label>
+                    <label class="custom-file-label" id="upload" for="_pdf">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>
@@ -1787,7 +1903,7 @@
         </div>
         <div class="form-group mt-3">
             <label>Attachments</label>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3" #uploadFile>
                 <div class="input-group-prepend">
                     <span class="input-group-text">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -1802,7 +1918,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="uploadFile" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="uploadFile">Choose file</label>
+                    <label class="custom-file-label" id="_upload" for="uploadFile">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>

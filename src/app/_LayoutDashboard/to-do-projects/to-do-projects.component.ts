@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef  } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { UserDetailsDTO } from 'src/app/_Models/user-details-dto';
@@ -378,6 +378,7 @@ export class ToDoProjectsComponent implements OnInit {
   _inputAttachments: string;
   _inputAttachments2: string;
   _remarks: string = "";
+  _upload: File;
   Sub_ProjectCode: string;
   _MasterCode: string;
   ObjSubTaskDTO: SubTaskDTO;
@@ -415,7 +416,7 @@ export class ToDoProjectsComponent implements OnInit {
   selectedFile: any = null;
   onFileChange(e) {
     this.selectedFile = <File>e.target.files[0];
-    //console.log("--------------->",this.selectedFile)
+    console.log("--------------->",this.selectedFile)
   }
 
   //Subtask Creation//
@@ -465,6 +466,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
      document.getElementById("todo").classList.remove("position-fixed");
+     $('#uploadFile').val('');
+     $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
    
@@ -481,8 +484,12 @@ export class ToDoProjectsComponent implements OnInit {
     this._inputAttachments2 = null;
     this.selectedEmpNo = '';
     this.selected_Employee = [];
- 
-  }
+    $('#uploadFile').val('');
+    $('#_upload').html('Select a file'); 
+    $('#_pdf').val('');
+    $('#upload').html('Select a file'); 
+    
+    }
 
   closeInfoProject() {
     this.OnClickCheckboxProjectUpdate(0);
@@ -570,6 +577,10 @@ export class ToDoProjectsComponent implements OnInit {
       });
   }
 
+  // @ViewChild('uploadFile')
+  // myInput: ElementRef;
+
+  
   //Subtask Update 
   OnUpdateSubtask() {
     if (this._remarks == "") {
@@ -593,6 +604,7 @@ export class ToDoProjectsComponent implements OnInit {
           // debugger
             this._remarks = "";
           this._inputAttachments = "";
+          
        
           //this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.GetSubtask_Details();
@@ -602,12 +614,13 @@ export class ToDoProjectsComponent implements OnInit {
           document.getElementById("rightbar-overlay").style.display = "none";
           document.getElementById("mysideInfobar_Update").style.width = "0";
           document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
-          document.getElementById("todo").classList.add("position-fixed");
-     
+          document.getElementById("todo").classList.remove("position-fixed");
+          $('#uploadFile').val('');
+          $('#_upload').html('Select a file');
          
          
         });
-         
+        
         
     }
    
