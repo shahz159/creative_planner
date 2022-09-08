@@ -136,6 +136,7 @@ export class ToDoProjectsComponent implements OnInit {
   _projectDetails: boolean = true;
   _CompletedDetails: boolean = true;
   _EmployeeListForDropdown = [];
+  _Projecttest=[];
   Proj_checkbox: boolean = true;
   _topbar: boolean = true;
   paragraph_msg: boolean = false;
@@ -212,10 +213,13 @@ export class ToDoProjectsComponent implements OnInit {
     }
     this.closeInfo();
   }
- async CallOnSubmitAction() {
+ CallOnSubmitAction() {
     //  console.log('A');
-  let a= await this.GetSubtask_Details();
-    // this. GetProjectsByUserName();
+  this.GetSubtask_Details();
+  // this.OnProjectClick(this.Pcode,this.Pname, this.Owner, this.Res, this.Autho, this.Informer, this.Coor, this.Supp, this.EmpNo_Own, this.EmpNo_Res, this.EmpNo_Autho,
+  //   this.EmpNo_Coor, this.EmpNo_Info, this.EmpNo_Supp, this.Comp_No, this.proj_Block, this.PDesc, this.PStDT, this.PExecBlck, this.PendDT, this.Pstatus, this.checked,
+  //   this.PCost, this.duration, this.standardduration, this.Client_Name, this.Remarks, this.Remarkss, this.CD, this.ReportType, this.Attachments, this.pid, this.SourceFile, this.SubmissionType)
+     this.GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }
 
@@ -299,8 +303,22 @@ export class ToDoProjectsComponent implements OnInit {
           // console.log("To Do Completed---->", this.CompletedList);
           this._CompletedDetails = false;
         }
-
-      
+       
+        this._Projecttest=JSON.parse(data[0]["ProjectInfo"]);
+       
+         this._ProjectCode = this._Projecttest[0].Project_Code;
+         this._MasterCode = this._Projecttest[0].Project_Code;
+         this._ProjectName = this._Projecttest[0].Project_Name;
+         this.Proj_Desc = this._Projecttest[0].Project_Description;
+         this.Proj_ExecBlck =this._Projecttest[0].Exec_BlockName;
+         this.Project_Status=this._Projecttest[0].Status;
+         this.PstDT = this._Projecttest[0].DPG;
+         this.PEndDT = this._Projecttest[0].DeadLine;
+         this.projectCost=this._Projecttest[0].Project_Cost;
+         this.Duration=this._Projecttest[0].Duration;
+         this.Resp=this._Projecttest[0].Team_Res;
+         this.Client_Name=this._Projecttest[0].Client_Name;
+        
         console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
         // console.log(this.Subtask_List,this.CompletedList,"Same");
       });
@@ -470,7 +488,8 @@ export class ToDoProjectsComponent implements OnInit {
      $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
-   
+    this.GetSubtask_Details();
+    this. GetProjectsByUserName();
     
   }
 
@@ -570,8 +589,12 @@ export class ToDoProjectsComponent implements OnInit {
           //console.log(event);
         }
         this.closeInfo();
+<<<<<<< HEAD
         this.GetSubtask_Details();
         this.GetProjectsByUserName();
+=======
+       
+>>>>>>> 27fb8d9f9f2c751504df649cb427d2660790cc41
         this.getDropdownsDataFromDB();
         // this.OnProjectClick();
       });
