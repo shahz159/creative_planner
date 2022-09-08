@@ -869,7 +869,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="_pdf">Choose file</label>
+                    <label class="custom-file-label" id="upload" for="_pdf">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>
@@ -938,7 +938,7 @@
                 <div class="custom-file">
                     <input  #myInput type="file" class="custom-file-input"   id="uploadFile" accept="application/pdf" [(ngModel)]="_upload"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" id="_upload" for="uploadFiles">Choose file</label>
+                    <label class="custom-file-label" id="_upload" for="uploadFiles">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>

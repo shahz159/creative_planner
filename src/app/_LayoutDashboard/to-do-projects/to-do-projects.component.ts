@@ -466,7 +466,8 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
      document.getElementById("todo").classList.remove("position-fixed");
-    
+     $('#uploadFile').val('');
+     $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
    
@@ -483,8 +484,10 @@ export class ToDoProjectsComponent implements OnInit {
     this._inputAttachments2 = null;
     this.selectedEmpNo = '';
     this.selected_Employee = [];
-
-    
+    $('#uploadFile').val('');
+    $('#_upload').html('Select a file'); 
+    $('#_pdf').val('');
+    $('#upload').html('Select a file'); 
     
     }
 
@@ -612,7 +615,8 @@ export class ToDoProjectsComponent implements OnInit {
           document.getElementById("mysideInfobar_Update").style.width = "0";
           document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
           document.getElementById("todo").classList.remove("position-fixed");
-     
+          $('#uploadFile').val('');
+          $('#_upload').html('Select a file');
          
          
         });

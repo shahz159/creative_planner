@@ -28,8 +28,9 @@
                         'bg-primary':Status=='Completion Under Approval',
                         'bg-warning':Status=='InProcess',
                         'bg-rejected': Status=='New Project Rejected',
-                         'caledon-green' : Status=='ToDo Completed'}">
-                        {{Status}}</label>
+                         'bg-success-1' : Status=='ToDo Completed'}">
+                        {{Status}}</label> 
+                         <!-- caledon-green -->
 
                     <!--inprocess button-->
                     <div class="d-flex" 
@@ -605,7 +606,9 @@
                                     class="nav-text">Meeting</span></a></li>
                     </ul>
                 </div>
-                <div class="tab-content p-2 mt-5" id="myTabContent2">
+            <div class="tab-content p-2 mt-5" id="myTabContent2">
+                
+                <!-- Overview Section -->
                     <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
 
                         <div class="row">
@@ -891,6 +894,9 @@
                             </div>
                         </div>
                     </div>
+                <!-- Overview Section end-->
+
+                <!-- SubTasks Section -->
                     <div class="tab-pane fade" id="Tasks" role="tabpanel" aria-labelledby="Tasks1">
 
                         <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist"
@@ -1272,11 +1278,16 @@
                             </div>
                         </div>
                     </div>
+                <!-- SubTasks Section end-->
+
+                <!-- Milestones section -->
                     <div class="tab-pane fade" id="Milestones" role="tabpanel" aria-labelledby="Milestones1">
                         <h3 *ngIf="noMilestones == false; else noResultsFound">Milestones</h3>
                         <!-- <h4 *ngIf="noMilestones == true">No Records Found.</h4> -->
                     </div>
-                    <!--  DMS Working Area -->
+                <!-- Milestones section end-->
+
+                <!--  DMS Working Area -->
 
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
                         <div class="bg-white p-3 mb-2">
@@ -1302,6 +1313,9 @@
                             </table>
                         </div>
                     </div>
+                <!--  DMS Working Area end-->
+
+                <!-- Files Section -->
                     <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
                     <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -1373,13 +1387,15 @@
                             </div>
                         </ng-template>
                     </div>
+                <!-- Files Section end -->
 
+                <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div class="px-3">
                                 <h5 style="color:cadetblue"><strong>Daily Achievement Reaport(DAR) - Timeline</strong></h5><pre></pre>
                                 <div *ngFor="let item of darList">
-                                        <h5><strong><u>{{item.SubmissionDate}}</u></strong></h5>
+                                        <h5><strong><u>{{item.SubmissionDate | fullDate}}</u></strong></h5>
                                         <!-- <div *ngFor="let dar of item.Dardata; let i=index">
                                             <h6 class="mt-1">Work Achieved</h6>
                                             <h5 class="mt-1">{{dar.WorkAchieved}}</h5>                                            
@@ -1417,19 +1433,20 @@
                             </div>
                         </div>
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
-                        <div class="mb-3">
-                            <div class="list-header">
+                        <!-- <div class="mb-3">
+                         <div class="list-header" *ngFor="let item of darList">
                                 <h4 class="header-date">
-                                    Tuesday, 06 September
+                                    {{item.SubmissionDate | fullDate}}
                                 </h4>
-                            </div>
+                            
                             <div class="">
                                 <table class="time-table">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
+                                            <th>S.No.</th>
                                             <th>Who</th>
                                             <th>Description</th>
+                                            <th>Task List</th>
                                             <th>Start</th>
                                             <th>End</th>
                                             <th>Billable</th>
@@ -1440,17 +1457,17 @@
                                           </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>17/05/2022</td>
+                                        <tr *ngFor="let dar of item.Dardata; let i=index">
+                                            <td>{{i+1}}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
+                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">{{dar.EmpName}}</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="tags-wrap">
                                                     <span class="tags_tag bg-info">
-                                                        <span class="tags-name"> First Project </span>
+                                                        <span class="tags-name">{{dar.ProjectName}}</span>
                                                         <a href="javascript:;" class="tags-remove" title="Remove Tag">
                                                           <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
                                                           </span>
@@ -1458,69 +1475,18 @@
                                                       </span>
                                                 </div>
                                             </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
+                                            <td>{{dar.WorkAchieved}}</td>
+                                            <td>{{dar.starttime}}</td>
+                                            <td>{{dar.endtime}}</td>
                                             <td><span><input type="checkbox" class="form-control chckbx"></span></td>
                                             <td>No</td>
                                             <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
-                                        </tr>
-                                        <tr>
-                                            <td>17/05/2022</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-info">
-                                                        <span class="tags-name"> First Project </span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx" checked></span></td>
-                                            <td>No</td>
-                                            <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
-                                        </tr>
-                                        <tr>
-                                            <td>17/05/2022</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-danger">
-                                                        <span class="tags-name"> Delay Project </span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
-                                            <td>No</td>
-                                            <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
+                                            <td>{{dar.Duration}}</td>
+                                            <td>{{dar.Duration}} Hrs</td>
                                         </tr>
                                     </tbody>
-
                                 </table>
+                            </div>
                             </div>
                             <div class="time-totals">
                                 <ul class="time-totals-list" align="right">
@@ -1543,140 +1509,18 @@
                                     
                                 </ul>
                             </div>
-                        </div>
-                        <!-- second table -->
-                        <div class="mb-3">
-                            <div class="list-header">
-                                <h4 class="header-date">
-                                    Tuesday, 07 September
-                                </h4>
-                            </div>
-                            <div class="">
-                                <table class="time-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Who</th>
-                                            <th>Description</th>
-                                            <th>Start</th>
-                                            <th>End</th>
-                                            <th>Billable</th>
-                                            <th>Billed</th>
-                                            <th>Type</th>
-                                            <th>Time</th>
-                                            <th>Hours</th>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>17/05/2022</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-info">
-                                                        <span class="tags-name"> First Project </span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
-                                            <td>No</td>
-                                            <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
-                                        </tr>
-                                        <tr>
-                                            <td>17/05/2022</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-info">
-                                                        <span class="tags-name"> First Project </span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx" checked></span></td>
-                                            <td>No</td>
-                                            <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
-                                        </tr>
-                                        <tr>
-                                            <td>17/05/2022</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">vfx vm </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-danger">
-                                                        <span class="tags-name"> Delay Project </span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>7:12PM	</td>
-                                            <td>7:42PM</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
-                                            <td>No</td>
-                                            <td>Current Task</td>
-                                            <td>30m</td>
-                                            <td>0.50Hrs</td>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
-                            </div>
-                            <div class="time-totals">
-                                <ul class="time-totals-list" align="right">
-                                    <li class="totals-list--item">
-                                        <span><strong>Total: </strong></span>
-                                        <span> 2m</span>
-                                        <span>(0.03)</span>
-                                    </li>
-                                    <li class="totals-list--item">
-                                        <span><strong>Estimated Time: </strong></span>
-                                        <span> 2h </span>
-                                        <span> (2.00)</span>
-                                    </li>
-                                    
-                                    <li class="totals-list--item">
-                                        <span><strong>Billable Time: </strong></span>
-                                        <span> 2m</span>
-                                        <span>(0.03)</span>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-                        </div>
+                        </div> -->                       
                     </div>
+                 <!-- TimeLine Section end-->
+
+                <!-- Notes Section -->
                     <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="Notes1">
                         <h3 *ngIf="noNotes == false; else noResultsFound"> Notes</h3>
                         <!-- <h4 *ngIf="noNotes == true">No Records Found.</h4> -->
                     </div>
+                <!-- Notes Section end-->
+
+                <!-- Comments Section -->
                     <div class="tab-pane fade" id="Comments" role="tabpanel" aria-labelledby="Comments1">
                         <div class="card cust-card py-3">
                             <div class="comments-list">
@@ -1751,6 +1595,9 @@
                             </div>
                         </div>
                     </div>
+                <!-- Comments Section end-->
+
+                <!-- People Section -->
                     <div class="tab-pane fade" id="People" role="tabpanel" aria-labelledby="People1">
                         <h4>People on the project (RACIS)</h4>
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
@@ -1876,10 +1723,14 @@
                             <p><strong>0%</strong></p>
                         </ng-template>
                     </div>
+                <!-- People Section end-->
+                    
+                <!-- Meetings section -->
                     <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">
                         <h3 *ngIf="noMeeting == false; else noResultsFound">Meeting</h3>
                         <!-- <h4  *ngIf="noMeeting == true">No Records Found.</h4> -->
                     </div>
+                <!-- Meetings section end-->
                 </div>
             </div>
         </div>
@@ -1948,7 +1799,7 @@
             </div>
         </div>
     </ng-template>
-    <!--no records found end-->
+<!--no records found end-->
 </div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!-- Action-To-Project-New_Subtask -->
@@ -1999,7 +1850,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="_pdf">Choose file</label>
+                    <label class="custom-file-label" id="upload" for="_pdf">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>
@@ -2067,7 +1918,7 @@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="uploadFile" accept="application/pdf"
                         (change)="onFileChange($event)">
-                    <label class="custom-file-label" for="uploadFile">Choose file</label>
+                    <label class="custom-file-label" id="_upload" for="uploadFile">Select a file</label>
                 </div>
             </div>
             <span class="text-info"> *Accept only pdf files </span>

@@ -2523,6 +2523,11 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedEmpNo = '';
     this.selected_Employee = [];
     this.selectedFile = " ";
+    $('#uploadFile').val('');
+    $('#_upload').html('Select a file'); 
+    $('#_pdf').val('');
+    $('#upload').html('Select a file'); 
+    
   }
 
   //Project Update
