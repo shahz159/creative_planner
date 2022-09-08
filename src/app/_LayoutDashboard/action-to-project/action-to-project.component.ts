@@ -355,6 +355,7 @@ export class ActionToProjectComponent implements OnInit {
     // console.log(dateOne)
     // console.log(dateTwo)
     if (dateTwo <= dateOne) {
+      
       Swal.fire({
         title: 'Action DeadLine is Greater then Main Project DeadLine ?',
         text: 'Do you Want to Continue For Selection Of Date After Main Project DeadLine!!',
@@ -376,6 +377,7 @@ export class ActionToProjectComponent implements OnInit {
       });
     }
     else {
+
       this.OnSubmit();
     }
   }
