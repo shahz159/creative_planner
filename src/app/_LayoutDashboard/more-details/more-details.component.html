@@ -1105,6 +1105,13 @@
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
                                         <div class="ribbon-success  ribbon float-start" *ngIf="noCompleted == false" data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div>
+                                            <div class="text-right">
+                                                <!-- (click)="OnAddTaskClick()" -->
+                                                <button *ngIf="noInprocess == true" (click)="sweetAlert()"
+                                                    [hidden]="actionButton" title="Create New Action"
+                                                    class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                        class="fas fa-plus mr-2"></i>New Action</button>
+                                            </div>
                                         <div class="ribbon-content scrollbar1" *ngIf="noCompleted == false">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
                                             <div class="subtask-list" *ngFor="let item of CompletedList">
@@ -1392,22 +1399,17 @@
                 <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <div *ngIf="noTimeline == false; else noResultsFound">
-                            <div class="px-3">
+                            <!-- <div class="px-3">
                                 <h5 style="color:cadetblue"><strong>Daily Achievement Reaport(DAR) - Timeline</strong></h5><pre></pre>
                                 <div *ngFor="let item of darList">
-                                        <h5><strong><u>{{item.SubmissionDate | fullDate}}</u></strong></h5>
-                                        <!-- <div *ngFor="let dar of item.Dardata; let i=index">
-                                            <h6 class="mt-1">Work Achieved</h6>
-                                            <h5 class="mt-1">{{dar.WorkAchieved}}</h5>                                            
-                                        </div> -->
+                                        <h5><strong><u>{{item.SubmissionDate | date: 'fullDate'}}</u></strong></h5>
                                     <div>  
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
                                             <thead>
                                                 <tr>
                                                     <th><strong>S.No.</strong></th>
                                                     <th><strong>Submitted by</strong></th>
-                                                    <th><strong>Project Name</strong></th>
-                                                    <!-- <th><strong>Project Code</strong></th>                                                   -->
+                                                    <th><strong>Project Name</strong></th>                                                                                                  
                                                     <th><strong>Work Achieved</strong></th>
                                                     <th><strong>Start Time</strong></th>
                                                     <th><strong>End Time</strong></th>
@@ -1418,8 +1420,7 @@
                                                 <tr *ngFor="let dar of item.Dardata; let i=index">
                                                     <td class="kt-widget__title mb-0"> {{i+1}}</td>
                                                     <td class="kt-widget__title mb-0"><b>{{dar.EmpName}}</b></td>
-                                                    <td class="kt-widget__title mb-0">{{dar.ProjectName}}</td>
-                                                    <!-- <td class="kt-widget__title mb-0">{{dar.project_code}}</td>                                                    -->
+                                                    <td class="kt-widget__title mb-0">{{dar.ProjectName}}</td>                                                                                                       
                                                     <td class="kt-widget__title mb-0">{{dar.WorkAchieved}}</td>
                                                     <td class="kt-widget__title mb-0">{{dar.starttime}}</td>
                                                     <td class="kt-widget__title mb-0">{{dar.endtime}}</td>
@@ -1430,15 +1431,15 @@
                                         </table>
                                     </div> 
                                 </div>
-                            </div>
-                        </div>
+                            </div> -->
+                        
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
-                        <!-- <div class="mb-3">
-                         <div class="list-header" *ngFor="let item of darList">
+                        <div class="mb-3" *ngFor="let item of darList">
+                            <div class="list-header">
                                 <h4 class="header-date">
-                                    {{item.SubmissionDate | fullDate}}
-                                </h4>
-                            
+                                    {{item.SubmissionDate | date: 'fullDate'}}
+                                </h4><br>
+                            </div>
                             <div class="">
                                 <table class="time-table">
                                     <thead>
@@ -1480,22 +1481,22 @@
                                             <td>{{dar.endtime}}</td>
                                             <td><span><input type="checkbox" class="form-control chckbx"></span></td>
                                             <td>No</td>
-                                            <td>Current Task</td>
+                                            <td>{{ProjectBlockName}}</td>
                                             <td>{{dar.Duration}}</td>
                                             <td>{{dar.Duration}} Hrs</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            </div>
+                            
                             <div class="time-totals">
                                 <ul class="time-totals-list" align="right">
                                     <li class="totals-list--item">
-                                        <span><strong>Total: </strong></span>
-                                        <span> 2m</span>
-                                        <span>(0.03)</span>
+                                        <span><strong>Total Hours: </strong></span>
+                                        <span>{{item.TotalDuration}} : 00 Hrs</span>
+                                        <!-- <span>(0.03)</span> -->
                                     </li>
-                                    <li class="totals-list--item">
+                                    <!-- <li class="totals-list--item">
                                         <span><strong>Estimated Time: </strong></span>
                                         <span> 2h </span>
                                         <span> (2.00)</span>
@@ -1505,11 +1506,12 @@
                                         <span><strong>Billable Time: </strong></span>
                                         <span> 2m</span>
                                         <span>(0.03)</span>
-                                    </li>
+                                    </li> -->
                                     
                                 </ul>
                             </div>
-                        </div> -->                       
+                        </div>                       
+                        </div>
                     </div>
                  <!-- TimeLine Section end-->
 
