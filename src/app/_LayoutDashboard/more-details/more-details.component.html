@@ -22,20 +22,21 @@
                     <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4>
                     <label data-toggle="tooltip" title="Project Status!"
                         *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || ProjectBlockName =='Standard Tasks'"
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-success':Status=='Completed',
                         'bg-info':Status=='Under Approval',
                         'bg-primary':Status=='Completion Under Approval',
-                        'bg-warning':Status=='InProcess',
+                        'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
                         'bg-rejected': Status=='New Project Rejected',
-                         'bg-success-1' : Status=='ToDo Completed'}">
+                        'bg-success-1' : Status=='ToDo Completed',
+                        'bg-coral' :  Status== 'New Todo'}">
                         {{Status}}</label> 
                          <!-- caledon-green -->
 
                     <!--inprocess button-->
                     <div class="d-flex" 
                         *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && ProjectBlockName != 'Standard Tasks'">
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='Forward Under Approval' && ProjectBlockName != 'Standard Tasks'">
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                         <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr" data-toggle="tooltip" title="Project Status!"
                             [ngClass]="{'bg-danger':Status=='Delay',
@@ -582,8 +583,10 @@
                         <li class="nav-item"><a class="nav-link active" id="Overview1" data-toggle="tab"
                                 href="#Overview"><span class="nav-text">Overview</span></a></li>
                         <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
-                                data-toggle="tab" href="#Tasks" aria-controls="profile"><span
-                                    class="nav-text">Tasks</span></a></li>
+                                data-toggle="tab" href="#Tasks" aria-controls="profile">                                
+                                <span class="nav-text">Tasks</span>                                
+                                <span class="noti">{{subTaskCount}}</span>
+                            </a></li>
 
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
                                 href="#Milestones"><span class="nav-text">Milestones</span></a></li>
@@ -593,9 +596,11 @@
                             class="nav-text">Links</span></a></li> -->
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
-                                    class="nav-text">Files</span></a></li>
+                                    class="nav-text">Files</span>
+                                    <span  class="noti">{{TotalDocs}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
-                                data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span></a></li>
+                                data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
+                                <span  class="noti">{{totalRecords}}</span></a></li>                                    
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
@@ -1107,7 +1112,7 @@
                                             Completed</div>
                                             <div class="text-right">
                                                 <!-- (click)="OnAddTaskClick()" -->
-                                                <button *ngIf="noInprocess == true" (click)="sweetAlert()"
+                                                <button *ngIf="noInprocess == true && noCompleted == false" (click)="sweetAlert()"
                                                     [hidden]="actionButton" title="Create New Action"
                                                     class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                         class="fas fa-plus mr-2"></i>New Action</button>
@@ -1339,7 +1344,7 @@
                                     <div class="kt-portlet__body">
                                         <div class="kt-widget__files">
                                             <a class="d-flex">
-                                                <div class="kt-widget__media mr-3">
+                                                <div class="kt-widget__media mr-3" >
                                                     <img class="kt-widget__img kt-hidden-" src="assets/images/pdf.svg"
                                                         alt="image">
                                                 </div>
@@ -1434,83 +1439,89 @@
                             </div> -->
                         
                         <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
-                        <div class="mb-3" *ngFor="let item of darList">
-                            <div class="list-header">
-                                <h4 class="header-date">
-                                    {{item.SubmissionDate | date: 'fullDate'}}
-                                </h4><br>
-                            </div>
-                            <div class="">
-                                <table class="time-table">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No.</th>
-                                            <th>Who</th>
-                                            <th>Description</th>
-                                            <th>Task List</th>
-                                            <th>Start</th>
-                                            <th>End</th>
-                                            <th>Billable</th>
-                                            <th>Billed</th>
-                                            <th>Type</th>
-                                            <th>Time</th>
-                                            <th>Hours</th>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let dar of item.Dardata; let i=index">
-                                            <td>{{i+1}}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="initial-box color-7 b-50 mr-2">VV </div><span class="user--name">{{dar.EmpName}}</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tags-wrap">
-                                                    <span class="tags_tag bg-info">
-                                                        <span class="tags-name">{{dar.ProjectName}}</span>
-                                                        <a href="javascript:;" class="tags-remove" title="Remove Tag">
-                                                          <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
-                                                          </span>
-                                                        </a>
-                                                      </span>
-                                                </div>
-                                            </td>
-                                            <td>{{dar.WorkAchieved}}</td>
-                                            <td>{{dar.starttime}}</td>
-                                            <td>{{dar.endtime}}</td>
-                                            <td><span><input type="checkbox" class="form-control chckbx"></span></td>
-                                            <td>No</td>
-                                            <td>{{ProjectBlockName}}</td>
-                                            <td>{{dar.Duration}}</td>
-                                            <td>{{dar.Duration}} Hrs</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="time-totals">
-                                <ul class="time-totals-list" align="right">
-                                    <li class="totals-list--item">
-                                        <span><strong>Total Hours: </strong></span>
-                                        <span>{{item.TotalDuration}} : 00 Hrs</span>
-                                        <!-- <span>(0.03)</span> -->
-                                    </li>
-                                    <!-- <li class="totals-list--item">
-                                        <span><strong>Estimated Time: </strong></span>
-                                        <span> 2h </span>
-                                        <span> (2.00)</span>
-                                    </li>
-                                    
-                                    <li class="totals-list--item">
-                                        <span><strong>Billable Time: </strong></span>
-                                        <span> 2m</span>
-                                        <span>(0.03)</span>
-                                    </li> -->
-                                    
-                                </ul>
-                            </div>
-                        </div>                       
+                        <span><h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
+                        <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></span><pre></pre>
+                        <div class="item-b">
+                            <div class="mb-3 " *ngFor="let item of darList">
+                                <div class="list-header">
+                                    <h4 class="header-date">
+                                        {{item.SubmissionDate | date: 'fullDate'}}
+                                    </h4><br>
+                                </div>
+                                <div class="">
+                                    <table class="time-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;">S.No.</th>
+                                                <th style="width: 280px;">Who</th>
+                                                <!-- <th>Description</th> -->
+                                                <th>Achievement</th>
+                                                <th style="width: 80px;">Start</th>
+                                                <th style="width: 80px;">End</th>
+                                                <!-- <th>Billable</th>
+                                                <th>Billed</th> -->
+                                                <!-- <th>Type</th> -->
+                                                <th style="width: 80px;">Time</th>
+                                                <!-- <th>Hours</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let dar of item.Dardata; let i=index">
+                                                <td>{{i+1}}</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <div class="initial-box color-7 b-50 mr-2">{{InitR}} </div><span class="user--name">{{dar.EmpName}}</span>
+                                                    </div>
+                                                </td>
+                                                <!-- <td>
+                                                    <div class="tags-wrap">
+                                                        <span class="tags_tag bg-info">
+                                                            <span class="tags-name">{{dar.ProjectName}}</span>
+                                                            <a href="javascript:;" class="tags-remove" title="Remove Tag">
+                                                            <span class="u-common-icon color--inherit"><i class="fas fa-times m-0"></i>
+                                                            </span>
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </td> -->
+                                                <td>{{dar.WorkAchieved}}</td>
+                                                <td>{{dar.starttime}}</td>
+                                                <td>{{dar.endtime}}</td>
+                                                <!-- <td><span><input type="checkbox" class="form-control chckbx"></span></td>
+                                                <td>No</td> -->
+                                                <!-- <td>{{ProjectBlockName}}</td> -->
+                                                <td>{{dar.Duration}} Hrs</td>
+                                                <!-- <td>{{dar.Duration}} </td> -->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="time-totals">
+                                    <ul class="time-totals-list" align="right">
+                                        <li class="totals-list--item">
+                                            <span><strong>Total Hours: </strong></span>
+                                            <span>{{item.TotalDuration}}</span>
+                                            <!-- <span>(0.03)</span> -->
+                                        </li>
+                                        <!-- <li class="totals-list--item">
+                                            <span><strong>Estimated Time: </strong></span>
+                                            <span> 2h </span>
+                                            <span> (2.00)</span>
+                                        </li>
+                                        
+                                        <li class="totals-list--item">
+                                            <span><strong>Billable Time: </strong></span>
+                                            <span> 2m</span>
+                                            <span>(0.03)</span>
+                                        </li> -->
+                                        
+                                    </ul>
+                                </div>
+                            </div> 
+                        </div>     
+                        <!-- <div class="show1 more">Show More</div>
+                        <div class="show1 less">Show Less</div>                    -->
                         </div>
                     </div>
                  <!-- TimeLine Section end-->
