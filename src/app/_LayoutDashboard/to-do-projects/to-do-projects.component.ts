@@ -213,15 +213,21 @@ export class ToDoProjectsComponent implements OnInit {
     }
     this.closeInfo();
   }
- CallOnSubmitAction() {
-    //  console.log('A');
-  this.GetSubtask_Details();
-  // this.OnProjectClick(this.Pcode,this.Pname, this.Owner, this.Res, this.Autho, this.Informer, this.Coor, this.Supp, this.EmpNo_Own, this.EmpNo_Res, this.EmpNo_Autho,
-  //   this.EmpNo_Coor, this.EmpNo_Info, this.EmpNo_Supp, this.Comp_No, this.proj_Block, this.PDesc, this.PStDT, this.PExecBlck, this.PendDT, this.Pstatus, this.checked,
-  //   this.PCost, this.duration, this.standardduration, this.Client_Name, this.Remarks, this.Remarkss, this.CD, this.ReportType, this.Attachments, this.pid, this.SourceFile, this.SubmissionType)
-     this.GetProjectsByUserName();
-    // this.getDropdownsDataFromDB();
+
+  async CallOnSubmitAction() {
+   
+  let a= await this.GetSubtask_Details();
+  let b =await this.GetProjectsByUserName();
   }
+//  CallOnSubmitAction() {
+//     //  console.log('A');
+//   this.GetSubtask_Details();
+//   // this.OnProjectClick(this.Pcode,this.Pname, this.Owner, this.Res, this.Autho, this.Informer, this.Coor, this.Supp, this.EmpNo_Own, this.EmpNo_Res, this.EmpNo_Autho,
+//   //   this.EmpNo_Coor, this.EmpNo_Info, this.EmpNo_Supp, this.Comp_No, this.proj_Block, this.PDesc, this.PStDT, this.PExecBlck, this.PendDT, this.Pstatus, this.checked,
+//   //   this.PCost, this.duration, this.standardduration, this.Client_Name, this.Remarks, this.Remarkss, this.CD, this.ReportType, this.Attachments, this.pid, this.SourceFile, this.SubmissionType)
+//      this.GetProjectsByUserName();
+//     // this.getDropdownsDataFromDB();
+//   }
 
   ProjectInfoDetails() {
     // var myWindow = window.open(myurl);
@@ -276,9 +282,9 @@ export class ToDoProjectsComponent implements OnInit {
 
   totalSubtaskHours:number;
   
-  GetSubtask_Details() {
+ async GetSubtask_Details() {
   
-    this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
+    await this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
       (data) => {
         
         this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
