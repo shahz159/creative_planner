@@ -465,7 +465,7 @@
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Category</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-info-circle  fs-3 text-muted mr-2"></i>
+                            <i class="fas fa-bars  fs-3 text-muted mr-2"></i>
                             <div class="w-100">
                                 <h5 class="my-1 font-14">{{item.ReportType}} </h5>
                             </div>
@@ -544,6 +544,41 @@
                     <p style="color:gray">{{_MemosNotFound}}</p>
                 </ul>
             </div> -->
+        </div>
+        
+        <!-- ADD DMS  -->
+        <div class=" border-top">
+            <div class="d-flex  align-items-center justify-content-between mt-3">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-file-alt mr-2"></i> DMS Link
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="fs-6">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)">
+                                        Memo Subject</a>
+                                </td>
+                                <td class="align-top curser-pointer"
+                                    (click)="deleteMemos(itemMemos.MailId)">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        <p style="color:gray">Memos Not Found</p>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Subtask List -->
