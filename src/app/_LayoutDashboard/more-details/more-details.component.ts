@@ -81,6 +81,10 @@ export class MoreDetailsComponent implements OnInit {
           this.DarGraphDataList = data1;
           console.log(this.DarGraphDataList);
         });
+      
+        this.service._GetDARbyMasterCode(this.URL_ProjectCode)
+    .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
+
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
         (data) => {
           // console.log(this.noRecords);
@@ -115,8 +119,12 @@ export class MoreDetailsComponent implements OnInit {
           //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     });
+  
+    this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
+        .subscribe((data) => { this.TotalDocs=(data[0]['TotalDocs']);});
 
     this.GetProjectDetails();
+    
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -143,25 +151,55 @@ export class MoreDetailsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
+
+    // $(document).on('ready', function () {
+    //   var threshold = 3;
+    //   $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+  
+  
+    //   if ($("div.item-b").children().not(".show1").length > threshold) {
+    //     $(".show1.more").css("display", "block");
+    //   }
+     
+    //   $(".show1.more").on("click", function() {
+    //     $(this).parent().children().not(".show1").css("display", "block");
+    //     $(this).parent().find(".show1.less").css("display", "block");
+    //     $(this).hide();
+    //   });
+
+      
+    //   $(".show1.less").on("click", function() {
+    //     $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+    //     $(this).parent().find(".show1.more").css("display", "block");
+    //     $(this).hide();
+    //   });
+  
+    // });
+  
   }
 
-
-  darList1: string;
+  totalHours: any;
+  totalRecords: any;
 
   dar_details(){
     this.noTimeline = false;
     this.service._GetDARbyMasterCode(this.URL_ProjectCode)
     .subscribe(data1 => {
             this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-
-            // this.darList1 = (this.darList['Dardata']);
-            
-            // console.log(this.darList,"DAR");
+            this.totalHours = (data1[0]['Totalhours']);
+            this.totalRecords= (data1[0]['TotalRecords']);
             if(this.darList == null){
               this.noTimeline =true;
             }
     });
   }
+
+  time_convert(num)
+ { 
+  var hours = Math.floor(num / 60);  
+  var minutes = num % 60;
+  return hours + ":" + minutes;         
+}
 
   CoreSecodaryCharts() {
     //this.TaskChart();
@@ -343,7 +381,7 @@ export class MoreDetailsComponent implements OnInit {
         let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         this.standardDuration= (data2[0]['DurationTime']);
 
-      })
+      });
   }
 
   AddDms() {
@@ -2194,11 +2232,13 @@ export class MoreDetailsComponent implements OnInit {
 
   AttachmentList: any;
   data1: any;
+  TotalDocs: number;
 
   getAttachments() {
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
         this.data1 = (data[0]['Attachments_Json']);
+        this.TotalDocs=(data[0]['TotalDocs']);
         if (this.data1 != '') {
           this.noFiles = false;
         }
