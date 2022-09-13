@@ -83,7 +83,7 @@ export class MoreDetailsComponent implements OnInit {
         });
       
         this.service._GetDARbyMasterCode(this.URL_ProjectCode)
-    .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
+        .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
 
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
         (data) => {
@@ -119,10 +119,18 @@ export class MoreDetailsComponent implements OnInit {
           //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     });
-  
-    this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
-        .subscribe((data) => { this.TotalDocs=(data[0]['TotalDocs']);});
 
+    this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
+      (data) => {
+        if (data != null && data != undefined) {
+          this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];          
+          this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
+
+          this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
+            .subscribe((data) => {  this.TotalDocs=(data[0]['TotalDocs']);});
+        }});
+  
     this.GetProjectDetails();
     
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
