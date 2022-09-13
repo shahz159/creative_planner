@@ -328,13 +328,13 @@ export class ProjectTypeService {
   SubTaskDetailsService_ToDo_Page(prjCode, compCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Comp_No = compCode;
-    
+
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   SubTaskStatusCheck(Project_Code) {
     this.ObjSubTaskDTO.Project_Code = Project_Code;
 
-    
+
     return this.http.post(this.rootUrl + "Notification/NewGetSubtaskStatusCheck", this.ObjSubTaskDTO);
   }
   objColumnChartDTO: ColumnChartDTO;
@@ -399,7 +399,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardSummaryCount", this.ObjNotificationDto);
   }
   _GetCompletedProjects(objDTO: CompletedProjectsDTO) {
-   
+
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
     this._ObjCompletedProj.Mode = objDTO.Mode;
     this._ObjCompletedProj.PageNumber = objDTO.PageNumber;
@@ -495,7 +495,7 @@ export class ProjectTypeService {
     );
   }
   _InsertOnlyTaskServie(_ObjAssigntaskDTO) {
-   
+
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
     this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
     this._ObjAssigntaskDTO.ProjectType = _ObjAssigntaskDTO.ProjectType;
