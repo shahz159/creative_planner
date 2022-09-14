@@ -181,7 +181,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
-
+  CountsJson: any;
+  
   GetAssigned_SubtaskProjects() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -195,6 +196,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        
+        
       });
   }
 
@@ -400,6 +403,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _CategoryName: string;
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
+  CountsAccepted: any;
+  CountsPending: any;
+  CountsRejected: any;
 
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
@@ -421,13 +427,33 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
     this._ObjCompletedProj.Mode = 'Todo';
+    // alert(this._Categoryid);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']); 
+        let _Accepted =0;
+        let _Pending =0;
+        let _Rejected=0;
+        this.ActionedAssigned_Josn.forEach(element => {
+          if(element.Status=="Accepted"){
+            _Accepted=_Accepted+1;
+          }
+          else if(element.Status == "Pending"){
+            _Pending=_Pending+1;
+          }
+          else if(element.Status == "Rejected"){
+            _Rejected=_Rejected+1;
+          }
+        });
+        this.CountsAccepted= _Accepted;
+        this.CountsPending= _Pending;
+        this.CountsRejected= _Rejected;
+        // alert(this.CountsAccepted);
+        // console.log(this.CountsAccepted);
       });
   }
 
