@@ -120,26 +120,29 @@
                     <div class="col-lg-12">
                         <h3>{{_CategoryName}}</h3>
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2">
-                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedSubtask_Json.length}}</span>Action To Projects</div>
+                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white" >
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num" >{{ActionedSubtask_Json.length + ActionedAssigned_Josn.length + _CompletedList.length + _TodoList.length}}</span>Total </div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedAssigned_Josn.length}}</span>Assigned Task</div>
-                            </label>
-                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">22</span>InProcess</div>
-                            </label>
-                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">22</span>Under Approval</div>
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{_TodoList.length}}</span>Task</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
                                 <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{_CompletedList.length}}</span>Completed</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">22</span>Completed</div>
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedSubtask_Json.length}}</span>Action To Projects</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">22</span>Completed</div>
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedAssigned_Josn.length}}</span>Assigned Task</div>
+                            </label> 
+                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num" >{{CountsAccepted}}</span>Accepted</div>
+                            </label>
+                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{CountsPending}}</span>Pending</div>
+                            </label>
+                            <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{CountsRejected}}</span>Rejected</div>
                             </label>
                         </div>
                     </div>
