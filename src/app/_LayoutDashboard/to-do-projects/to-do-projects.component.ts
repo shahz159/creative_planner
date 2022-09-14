@@ -17,6 +17,7 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 import { MatDialog } from '@angular/material/dialog';
 import { ResizeButton, string } from '@amcharts/amcharts4/core';
 import Swal from 'sweetalert2';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Component({
   selector: 'app-to-do-projects',
@@ -281,11 +282,13 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   totalSubtaskHours:number;
+ 
   
- async GetSubtask_Details() {
-  
-    await this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
-      (data) => {
+
+ GetSubtask_Details() {
+     
+   this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
+       (data) => {
         
         this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
         if (data[0]['SubtaskDetails_Json'] == ' ') {

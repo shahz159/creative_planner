@@ -77,13 +77,15 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   EmpNo_Autho:string;
   Pid: number;
   _MasterCode:string;
-
+ _portfoliolist:any;
   fun_LoadProjectDetails() { 
+ 
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
         //console.log("Project Details---->", data);
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);

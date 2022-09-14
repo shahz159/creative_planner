@@ -322,6 +322,8 @@ export class ProjectTypeService {
   ObjSubTaskDTO: SubTaskDTO;
   SubTaskDetailsService(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjSubTaskDTO.Emp_No= EmpNo;
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   // New Subtask Page
