@@ -463,9 +463,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" *ngIf="item.ReportType">
                         <p class="mt-2 mb-1 text-muted fs-7">Category</p>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" >
                             <i class="fas fa-bars  fs-3 text-muted mr-2"></i>
                             <div class="w-100">
                                 <h5 class="my-1 font-14">{{item.ReportType}} </h5>
@@ -555,11 +555,14 @@
                             <i class="fa fa-file-alt mr-2"></i> Linked Portfolios
                         </label>
                     </div>
-                    <ng-container *ngFor="let tezz of _portfoliolist">
-                        <span>
-                          {{tezz.Portfolio_Name}}  
+                    <ng-container *ngFor="let tezz of _portfoliolist; let i=index">
+                        <span *ngIf="_portfoliolist; else NoPortfolio">
+                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b> | 
                         </span>
                     </ng-container>
+                    <ng-template #NoPortfolio>
+                        <p>No Portfolios linked.</p>
+                    </ng-template>
                 </div>
             </div>
 

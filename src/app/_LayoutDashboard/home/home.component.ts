@@ -1249,11 +1249,11 @@ export class HomeComponent implements OnInit {
   messagefav: string;
 
   AddFavourites(portfolioId, isfav) {
-    debugger
+    
     // this.LoadingBar_state.start();
     this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
       //  console.log("retrun Data----->",data1)
-      debugger
+     
       this._objStatusDTO.Emp_No = this.Current_user_ID;
       this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
         (data) => {
@@ -1268,7 +1268,7 @@ export class HomeComponent implements OnInit {
           // let ListFav: any = filter_ListFav.filter(i => (i.IsFavourite));
           // this.countFav = ListFav.length;
           this.cdr.detectChanges();
-          alert(isfav);
+          // alert(isfav);
           // alert(portfolioId);
           // this.LoadingBar_state.stop();
           if (isfav == false) {
