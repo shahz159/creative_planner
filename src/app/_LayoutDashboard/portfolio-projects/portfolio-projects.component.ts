@@ -160,7 +160,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
+        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this._PortfolioDetailsById);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         //console.log('JsonStatusCount------->', this._StatusCountDB);
