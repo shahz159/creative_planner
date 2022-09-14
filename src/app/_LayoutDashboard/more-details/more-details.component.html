@@ -19,8 +19,9 @@
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
-                    <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
-                    <label data-toggle="tooltip" title="Project Status!"
+                    <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4>
+                    <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
+                        <label data-toggle="tooltip" title="Project Status!"
                         *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
                                          || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks'"
                         class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill" [ngClass]="{'bg-success':Status=='Completed',
@@ -31,12 +32,19 @@
                         'bg-success-1' : Status=='ToDo Completed',
                         'bg-coral' :  Status== 'New Todo'}">
                         {{Status}}</label> 
+                    </ng-container>
+                    <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks')">
+                        {{SubmissionName}}
+                    </ng-container>
+                    
+                    
                          <!-- caledon-green -->
 
                     <!--inprocess button-->
                     <div class="d-flex" 
                         *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'
-                                && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='Forward Under Approval' && ProjectBlockName != 'Standard Tasks'">
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='Forward Under Approval' && ProjectBlockName != 'Standard Tasks'">
+                                             
                         <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                         <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr" data-toggle="tooltip" title="Project Status!"
                             [ngClass]="{'bg-danger':Status=='Delay',
@@ -585,7 +593,7 @@
                         <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile">                                
                                 <span class="nav-text">Tasks</span>                                
-                                <span class="noti" *ngIf="subTaskCount != 0">{{subTaskCount}}</span>
+                                <span class="noti">{{subTaskCount}}</span>
                             </a></li>
 
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
@@ -597,10 +605,10 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
-                                    <span  class="noti" *ngIf="TotalDocs!=0">{{TotalDocs}}</span></a></li>
+                                    <span  class="noti">{{TotalDocs}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
-                                <span  class="noti" *ngIf="totalRecords != 0">{{totalRecords}}</span></a></li>                                    
+                                <span  class="noti">{{totalRecords}}</span></a></li>                                    
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
@@ -1437,10 +1445,10 @@
                                     </div> 
                                 </div>
                             </div> -->
-                        <div style="clear: both">
-                            <h4 style="float: left; color:cornflowerblue"><strong><u>Daily Achievement Reaport(DAR) - Timeline</u></strong></h4>
-                            <h6 style="float: right"><strong>DAR Total Hours - {{totalHours}} Hrs</strong></h6>
-                        </div><br>                                              
+                        
+                        <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                        <span><h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
+                        <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></span><pre></pre>
                         <div class="item-b">
                             <div class="mb-3 " *ngFor="let item of darList">
                                 <div class="list-header">
@@ -1453,7 +1461,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 50px;">S.No.</th>
-                                                <th style="width: 280px;">Employee</th>
+                                                <th style="width: 280px;">Who</th>
                                                 <!-- <th>Description</th> -->
                                                 <th>Achievement</th>
                                                 <th style="width: 80px;">Start</th>
@@ -1500,8 +1508,8 @@
                                 <div class="time-totals">
                                     <ul class="time-totals-list" align="right">
                                         <li class="totals-list--item">
-                                            <span><strong>Total Time: </strong></span>
-                                            <span><strong>{{item.TotalDuration}}</strong></span>
+                                            <span><strong>Total Hours: </strong></span>
+                                            <span>{{item.TotalDuration}}</span>
                                             <!-- <span>(0.03)</span> -->
                                         </li>
                                         <!-- <li class="totals-list--item">
