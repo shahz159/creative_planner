@@ -319,10 +319,15 @@
                                                                 <div data-toggle="kt-tooltip" data-skin="dark"
                                                                     data-placement="right" title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -382,13 +387,23 @@
                                                             <div _ngcontent-spk-c396="" _nghost-spk-c401="">
                                                                 <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
-                                                                    title="Favorite"
+                                                                    title="Favorite"  *ngIf="item.Created_By == Current_user_ID"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a 
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    </div>
+                                                                    <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                                    data-skin="dark" data-placement="right"
+                                                                    title="Favorite"  *ngIf="item.Created_By != Current_user_ID"
+                                                                    class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -449,11 +464,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -513,11 +533,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -577,11 +602,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -643,11 +673,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -708,11 +743,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -772,11 +812,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -836,11 +881,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -901,11 +951,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -965,11 +1020,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1029,11 +1089,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1093,11 +1158,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1156,11 +1226,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1219,11 +1294,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1283,11 +1363,16 @@
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
-                                                                    <a
+                                                                    <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star"
+                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
                                                                             id="StarIcon"></i>
+                                                                    </a>
+                                                                    <a *ngIf="item.Created_By != Current_user_ID"
+                                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
