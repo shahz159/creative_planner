@@ -538,7 +538,7 @@
                     <!-- Completed tasks -->
                     <div class="accordion accordion-light  accordion-toggle-arrow" id="accordionExample5"
                         [hidden]="_CompletedDetails">
-                        <div class="card">
+                        <div class="card" *ngIf="CompletedList != ''" >
                             <div class="card-header" id="headingOne5">
                                 <div class="card-title" data-toggle="collapse" data-target="#collapseOne5"
                                     aria-expanded="true" aria-controls="collapseOne5" >
