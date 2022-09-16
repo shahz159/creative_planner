@@ -1076,11 +1076,45 @@ export class PortfolioProjectsComponent implements OnInit {
     //document.getElementById("mysideInfobar").style.width = "410px";
     document.getElementById("mysideInfobar").style.width = "70%";
     //setTimeout((this.closeInfo2),1000, "Hello", "John");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    var threshold = 3;
+    $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+
+    if ($("div.item-b").children().not(".show1").length > threshold) {
+      $(".show1.more").css("display", "block");
+    }
+  
+    $(".show1.more").on("click", function() {
+      $("div.item-b").children().not(".show1").css("display", "block");
+      // $(this).parent().find(".show1.less").css("display", "block");
+      $(this).hide();
+      $(".show1.less").css("display", "block");
+      $(".show1.more").css("display", "none");
+    });
+
+    
+    $(".show1.less").on("click", function() {
+      $("div.item-b").children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+      // $(this).parent().find(".show1.more").css("display", "block");
+      $(this).hide();
+      $(".show1.less").css("display", "none");
+      $(".show1.more").css("display", "block");
+
+    });
+
   }
 
   closeInfo2() {
     document.getElementById("InfoContent2").style.width = "0";
     //document.getElementById("mysideInfobar").style.width='0';
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
+  closeInfo() {
+    document.getElementById("mysideInfobar").style.width = "0%";
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
 
   // share_Users() {

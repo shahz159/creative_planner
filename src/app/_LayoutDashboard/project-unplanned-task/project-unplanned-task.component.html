@@ -121,10 +121,15 @@
                         <h3>{{_CategoryName}}</h3>
                         <div class="count-list p-3 bg-gray-400 rounded-xl my-2">
                             <div class="kt-portlet__head-toolbar">
-                              <label class="badge badge-primary kt-badge--inline mr-2 py-8px btn-sm"> Total 8 Projects</label>
-                              <label class="badge badge-warning kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> 5 InProcess</label>
-                              <label class="badge badge-danger kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> 1 Delay</label>
-                              <label class="badge badge-info kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> 2 Under Approval's</label>
+                              <label class="badge badge-info kt-badge--inline mr-2 py-8px btn-sm"> Total {{ActionedSubtask_Json.length + ActionedAssigned_Josn.length + _CompletedList.length + _TodoList.length}} Projects</label>
+                              <label class="badge badge-info kt-badge--inline mr-2 py-8px btn-sm"> {{_TodoList.length}} Task</label>
+                              <label class="badge badge-info kt-badge--inline mr-2 py-8px btn-sm"> {{_CompletedList.length}} Completed</label>
+                              <label class="badge badge-info kt-badge--inline mr-2 py-8px btn-sm"> {{ActionedSubtask_Json.length}} Action To Projects</label>
+                              <label class="badge badge-info kt-badge--inline mr-2 py-8px btn-sm"> {{ActionedAssigned_Josn.length}} Assigned Task</label>
+                              <label class="badge badge-success kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> {{CountsAccepted}} Accepted</label>
+                              <label class="badge badge-warning kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> {{CountsPending}} Pending</label>
+                              <label class="badge badge-danger kt-badge--inline mr-2 btn-sm py-8px ng-star-inserted"> {{CountsRejected}} Rejected</label>
+                              
                             </div>
                           </div>
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2 d-none">

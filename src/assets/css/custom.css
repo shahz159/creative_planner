@@ -1014,3 +1014,11 @@ svg.feather {
         grid-template-columns: repeat(3,minmax(0,1fr)) !important;
     }
 }
+.flex-1 {
+    flex: 1;
+}
+.box1{
+    box-shadow: 0 .1rem 1rem .25rem #0000000d!important;
+    background-clip: border-box;
+    border: 1px solid #ebedf2;
+}
