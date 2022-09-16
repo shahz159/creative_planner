@@ -167,3 +167,25 @@
     padding: .375rem .5625rem;
     font-weight: normal;
   }
+  .port_list{
+    background-color: #f4f6fa;
+    padding: 0.75rem 1rem;
+
+  }
+  /* .port_list.border-bottom:first-child {
+    border-top: 1px solid #dee2e6!important;
+} */
+  .border-bottom {
+    border-bottom: 1px solid #dee2e6!important;
+}
+.show1 {
+    display: none;
+}
+
+.show:hover {
+    cursor: pointer;
+}
+
+.item-b div:nth-child(n+4) {
+    display: none;
+}

@@ -160,27 +160,8 @@ export class MoreDetailsComponent implements OnInit {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
 
-    // $(document).on('ready', function () {
-    //   var threshold = 3;
-    //   $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-  
-  
-    //   if ($("div.item-b").children().not(".show1").length > threshold) {
-    //     $(".show1.more").css("display", "block");
-    //   }
-     
-    //   $(".show1.more").on("click", function() {
-    //     $(this).parent().children().not(".show1").css("display", "block");
-    //     $(this).parent().find(".show1.less").css("display", "block");
-    //     $(this).hide();
-    //   });
+    //   window.addEventListener("load", function (event) {
 
-      
-    //   $(".show1.less").on("click", function() {
-    //     $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-    //     $(this).parent().find(".show1.more").css("display", "block");
-    //     $(this).hide();
-    //   });
   
     // });
   
@@ -200,6 +181,28 @@ export class MoreDetailsComponent implements OnInit {
               this.noTimeline =true;
             }
     });
+    
+            
+          var threshold = 3;
+          $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+      
+        //alert("test");
+          if ($("div.item-b").children().not(".show1").length > threshold) {
+            $(".show1.more").css("display", "block");
+          }
+        
+          $(".show1.more").on("click", function() {
+            $(this).parent().children().not(".show1").css("display", "block");
+            $(this).parent().find(".show1.less").css("display", "block");
+            $(this).hide();
+          });
+
+          
+          $(".show1.less").on("click", function() {
+            $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+            $(this).parent().find(".show1.more").css("display", "block");
+            $(this).hide();
+          });
   }
 
   time_convert(num)

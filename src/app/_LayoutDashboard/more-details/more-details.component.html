@@ -1446,9 +1446,17 @@
                                 </div>
                             </div> -->
                         
-                        <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
-                        <span><h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
-                        <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></span><pre></pre>
+                            <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                            <div>
+                                <div class="d-flex-center mb-2">
+                                    <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#darModalCenter">
+                                        DAR Creation
+                                    </button>
+                                </div>
+                                <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></div>
+                            <pre></pre>
+
                         <div class="item-b">
                             <div class="mb-3 " *ngFor="let item of darList">
                                 <div class="list-header">
@@ -1527,9 +1535,9 @@
                                     </ul>
                                 </div>
                             </div> 
-                        </div>     
                         <!-- <div class="show1 more">Show More</div>
-                        <div class="show1 less">Show Less</div>                    -->
+                        <div class="show1 less">Show Less</div>    -->
+                        </div>                     
                         </div>
                     </div>
                  <!-- TimeLine Section end-->
@@ -2139,3 +2147,40 @@
         <li class="kt-nav__foot"></li>
     </ul>
 </div>
+
+
+<div class="modal fade" id="darModalCenter" tabindex="-1" role="dialog" aria-labelledby="darModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="darModalLongTitle">Dar Creation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <form>
+                <div class="form-group">
+                    <label>Label Text</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input class="form-control" type="time" value="13:45:00" id="time-start">
+                    <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input class="form-control" type="time" value="13:45:00" id="time-end">
+                </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -548,6 +548,7 @@
 
         <!-- ADD DMS  -->
         <div class=" border-top">
+            
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
@@ -555,36 +556,27 @@
                             <i class="fa fa-file-alt mr-2"></i> Linked Portfolios
                         </label>
                     </div>
-                    <ng-container *ngFor="let tezz of _portfoliolist; let i=index">
-                        <span *ngIf="_portfoliolist; else NoPortfolio">
-                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b> | 
-                        </span>
-                    </ng-container>
-                    <ng-template #NoPortfolio>
-                        <p>No Portfolios linked.</p>
-                    </ng-template>
+
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm py-1 show1 more">Show More</button>
+                    <button type="button" class="btn btn-info btn-sm py-1 show1 less">Show Less</button>
                 </div>
             </div>
-
             <div class="card-body">
-                <div class="fs-6">
-                    <!-- <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <a href="javascript:void(0)">
-                                        Memo Subject</a>
-                                </td>
-                                <td class="align-top curser-pointer"
-                                    (click)="deleteMemos(itemMemos.MailId)">
-                                    <i class="fas fa-trash-alt text-primary"></i>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                        <p style="color:gray">Memos Not Found</p>
-                    </table> -->
+                
+                <div class="item-b box1">
+                    <ng-container *ngFor="let tezz of _portfoliolist; let i=index">
+                        <div *ngIf="_portfoliolist; else NoPortfolio" class="port_list border-bottom">
+                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="show1 more">Show More</div>-->
+                    <button type="button" class="btn btn-info btn-sm py-1 m-2 show1 less">Show Less</button>
                 </div>
+                <ng-template #NoPortfolio>
+                    <p>No Portfolios linked.</p>
+                </ng-template>
             </div>
         </div>
 
