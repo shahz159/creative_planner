@@ -19,7 +19,7 @@
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
-                    <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4>
+                    <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
                     <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
                         <label data-toggle="tooltip" title="Project Status!"
                         *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
@@ -34,7 +34,8 @@
                         {{Status}}</label> 
                     </ng-container>
                     <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks')">
-                        {{SubmissionName}}
+                        <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
+                            {{SubmissionName}}</label>
                     </ng-container>
                     
                     
@@ -593,7 +594,7 @@
                         <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile">                                
                                 <span class="nav-text">Tasks</span>                                
-                                <span class="noti">{{subTaskCount}}</span>
+                                <span class="noti" *ngIf="subTaskCount!=0">{{subTaskCount}}</span>
                             </a></li>
 
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
@@ -605,10 +606,10 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
-                                    <span  class="noti">{{TotalDocs}}</span></a></li>
+                                    <span  class="noti" *ngIf="TotalDocs!=0">{{TotalDocs}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
-                                <span  class="noti">{{totalRecords}}</span></a></li>                                    
+                                <span  class="noti"*ngIf="totalRecords!=0">{{totalRecords}}</span></a></li>                                    
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
@@ -1446,9 +1447,17 @@
                                 </div>
                             </div> -->
                         
-                        <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
-                        <span><h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
-                        <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></span><pre></pre>
+                            <!-- <h4 *ngIf="noTimeline == true">No Records Found.</h4> -->
+                            <div>
+                                <div class="d-flex-center mb-2">
+                                    <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5>
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#darModalCenter">
+                                        DAR Creation
+                                    </button>
+                                </div>
+                                <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></div>
+                            <pre></pre>
+
                         <div class="item-b">
                             <div class="mb-3 " *ngFor="let item of darList">
                                 <div class="list-header">
@@ -1527,9 +1536,9 @@
                                     </ul>
                                 </div>
                             </div> 
-                        </div>     
                         <!-- <div class="show1 more">Show More</div>
-                        <div class="show1 less">Show Less</div>                    -->
+                        <div class="show1 less">Show Less</div>    -->
+                        </div>                     
                         </div>
                     </div>
                  <!-- TimeLine Section end-->
@@ -2139,3 +2148,40 @@
         <li class="kt-nav__foot"></li>
     </ul>
 </div>
+
+
+<div class="modal fade" id="darModalCenter" tabindex="-1" role="dialog" aria-labelledby="darModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="darModalLongTitle">Dar Creation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <form>
+                <div class="form-group">
+                    <label>Label Text</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input class="form-control" type="time" value="13:45:00" id="time-start">
+                    <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input class="form-control" type="time" value="13:45:00" id="time-end">
+                </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
