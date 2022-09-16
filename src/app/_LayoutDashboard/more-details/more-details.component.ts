@@ -128,7 +128,8 @@ export class MoreDetailsComponent implements OnInit {
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
 
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
-            .subscribe((data) => {  this.TotalDocs=(data[0]['TotalDocs']);});
+            .subscribe((data) => { 
+               this.TotalDocs=(data[0]['TotalDocs']);});
         }});
   
     this.GetProjectDetails();
@@ -2254,7 +2255,7 @@ export class MoreDetailsComponent implements OnInit {
           this.noFiles = true;
         }
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-        //console.log("Attachments---->", this.AttachmentList);
+        console.log("Attachments---->", this.AttachmentList);
       });
   }
 

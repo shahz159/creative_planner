@@ -19,7 +19,7 @@
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
-                    <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4>
+                    <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
                     <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
                         <label data-toggle="tooltip" title="Project Status!"
                         *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
@@ -34,7 +34,8 @@
                         {{Status}}</label> 
                     </ng-container>
                     <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks')">
-                        {{SubmissionName}}
+                        <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
+                            {{SubmissionName}}</label>
                     </ng-container>
                     
                     
@@ -593,7 +594,7 @@
                         <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile">                                
                                 <span class="nav-text">Tasks</span>                                
-                                <span class="noti">{{subTaskCount}}</span>
+                                <span class="noti" *ngIf="subTaskCount!=0">{{subTaskCount}}</span>
                             </a></li>
 
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
@@ -605,10 +606,10 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
-                                    <span  class="noti">{{TotalDocs}}</span></a></li>
+                                    <span  class="noti" *ngIf="TotalDocs!=0">{{TotalDocs}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
-                                <span  class="noti">{{totalRecords}}</span></a></li>                                    
+                                <span  class="noti"*ngIf="totalRecords!=0">{{totalRecords}}</span></a></li>                                    
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
