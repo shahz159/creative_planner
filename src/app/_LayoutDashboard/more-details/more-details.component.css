@@ -398,6 +398,7 @@ margin:0px 10px;
     padding: 0.35rem 1.4rem;
     border-radius: 10px;
     background: transparent;
+    position: relative;
 }
 
 .pro-nm {
@@ -946,10 +947,13 @@ input[type=number] {
 }
 .noti {
     background: #08516e;
-    border-radius: 10px;
-    padding: 0px 3px 2px 3px;
+    border-radius: 50%;
+    padding: 1px 4px 3px 4px;
     line-height: 1;
     margin-left: 5px;
+    position: absolute;
+    top: -3px;
+    right: 0px;
 }
 /* .show1 {
     display: none;

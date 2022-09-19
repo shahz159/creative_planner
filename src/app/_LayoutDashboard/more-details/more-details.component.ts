@@ -513,6 +513,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar1").style.width = "0";
     document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("darsidebar").style.width = "0";
     // document.getElementById("mysideInfobar1").classList.remove("side--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -2634,5 +2635,17 @@ export class MoreDetailsComponent implements OnInit {
   let b =await this.GetProjectDetails();
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
+  }
+
+  darcreate(){    
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("darsidebar").style.width = "60%";
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  closedarBar(){    
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").style.width = "0";
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 }
