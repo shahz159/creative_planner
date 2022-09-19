@@ -566,8 +566,9 @@
                 </div> -->
             </div>
             <div class="card-body" *ngIf="_portfoliolist; else NoPortfolio">                
-                <div *ngFor="let tezz of _portfoliolist; let i=index"> 
+                <div *ngFor="let tezz of _portfoliolist; let i=index"  class="port_list border-bottom"> 
                     <!-- <ng-container > -->
+                        
                         <div>
                             <!-- class="port_list border-bottom"  class="item-b box1"-->
                             <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b>                           

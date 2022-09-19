@@ -1451,7 +1451,7 @@
                             <div>
                                 <div class="d-flex-center mb-2">
                                     <!-- <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5> -->
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#darModalCenter">
+                                    <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
                                         DAR Creation
                                     </button>
                                 </div>
@@ -2150,38 +2150,35 @@
 </div>
 
 
-<div class="modal fade" id="darModalCenter" tabindex="-1" role="dialog" aria-labelledby="darModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="darModalLongTitle">Dar Creation</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<div id="darsidebar" class="sideInfobar animate-right">
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i>Dar Creation</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
+                (click)="closedarBar()">
+                <i class="fa fa-times"></i>
+            </a>
         </div>
-        <div class="modal-body">
-          <div class="">
-            <form>
-                <div class="form-group">
-                    <label>Work Description</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Start Time</label>
-                    <input class="form-control" type="time" value="13:45:00" id="time-start">
-                    <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
-                </div>
-                <div class="form-group">
-                    <label>End Time</label>
-                    <input class="form-control" type="time" value="13:45:00" id="time-end">
-                </div>
-            </form>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-info">Submit</button>
-        </div>
-      </div>
     </div>
-  </div>
+    <div class="px-4 pt-2">        
+        <form>
+            <div class="form-group">
+                <label>Work Description</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Start Time</label>
+                <input class="form-control" type="time" value="13:45:00" id="time-start">
+                <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
+            </div>
+            <div class="form-group">
+                <label>End Time</label>
+                <input class="form-control" type="time" value="13:45:00" id="time-end">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" disabled="">Submit</button>
+                <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
