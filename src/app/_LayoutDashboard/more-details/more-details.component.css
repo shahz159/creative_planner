@@ -831,13 +831,14 @@ input[type=number] {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
     font-size: 13px;
     border: solid #e1e1e1 1px;
     border-radius: 4px;
 }
 .time-table th {
     background-color: rgb(21, 21, 42) !important;
+    background-color: #6e6d76 !important;
 }
 
 .time-table th {
@@ -933,7 +934,9 @@ input[type=number] {
 .time-totals {
     font-weight: 400;
     color: #0B0E1F;
-    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .time-totals-list {
     height: 100%;
@@ -946,14 +949,16 @@ input[type=number] {
     font-weight: 400;
 }
 .noti {
-    background: #08516e;
+    background: #f1416c;
     border-radius: 50%;
-    padding: 1px 4px 3px 4px;
+    padding: 0.2em 0.5rem 0.35rem 0.5rem;
+    min-width: 1.429rem;
+    min-height: 1.429rem;
     line-height: 1;
     margin-left: 5px;
     position: absolute;
-    top: -3px;
-    right: 0px;
+    top: -7px;
+    right: -6px;
 }
 /* .show1 {
     display: none;
