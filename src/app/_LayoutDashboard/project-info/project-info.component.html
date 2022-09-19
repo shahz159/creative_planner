@@ -546,7 +546,9 @@
             </div> -->
         </div>
 
-        <!-- ADD DMS  -->
+        <!-- ADD DMS  End-->
+
+        <!-- Linked Portfolios -->
         <div class=" border-top">
             
             <div class="d-flex  align-items-center justify-content-between mt-3">
@@ -558,27 +560,28 @@
                     </div>
 
                 </div>
-                <div>
+                <!-- <div>
                     <button type="button" class="btn btn-info btn-sm py-1 show1 more">Show More</button>
                     <button type="button" class="btn btn-info btn-sm py-1 show1 less">Show Less</button>
-                </div>
+                </div> -->
             </div>
-            <div class="card-body">
-                
-                <div class="item-b box1">
-                    <ng-container *ngFor="let tezz of _portfoliolist; let i=index">
-                        <div *ngIf="_portfoliolist; else NoPortfolio" class="port_list border-bottom">
-                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b>
-                        </div>
-                    </ng-container>
+            <div class="card-body" *ngIf="_portfoliolist; else NoPortfolio">                
+                <div *ngFor="let tezz of _portfoliolist; let i=index"> 
+                    <!-- <ng-container > -->
+                        <div>
+                            <!-- class="port_list border-bottom"  class="item-b box1"-->
+                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b>                           
+                        </div>                       
+                    <!-- </ng-container> -->                   
                     <!-- <div class="show1 more">Show More</div>-->
-                    <button type="button" class="btn btn-info btn-sm py-1 m-2 show1 less">Show Less</button>
-                </div>
-                <ng-template #NoPortfolio>
-                    <p>No Portfolios linked.</p>
-                </ng-template>
-            </div>
+                    <!-- <button type="button" class="btn btn-info btn-sm py-1 m-2 show1 less">Show Less</button> -->
+                </div>              
+            </div>           
         </div>
+        <ng-template #NoPortfolio>
+            <p>No Portfolios linked.</p>
+        </ng-template>
+         <!-- Linked Portfolios -->
 
         <!-- Subtask List -->
         <div class=" border-top" *ngFor="let task of Subtask_List;let i=index">

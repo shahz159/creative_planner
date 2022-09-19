@@ -181,9 +181,7 @@ export class MoreDetailsComponent implements OnInit {
             if(this.darList == null){
               this.noTimeline =true;
             }
-    });
-    
-            
+
           var threshold = 3;
           $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
       
@@ -204,6 +202,10 @@ export class MoreDetailsComponent implements OnInit {
             $(this).parent().find(".show1.more").css("display", "block");
             $(this).hide();
           });
+    });
+    
+            
+          
   }
 
   time_convert(num)
