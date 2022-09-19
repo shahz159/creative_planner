@@ -148,31 +148,31 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials= this.initials.toUpperCase();
 
-          var threshold = 3;
-          $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-          if ($("div.item-b").children().not(".show1").length > threshold) {
-            $(".show1.more").css("display", "block");
+          // var threshold = 3;
+          // $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+          // if ($("div.item-b").children().not(".show1").length > threshold) {
+          //   $(".show1.more").css("display", "block");
             
-            // alert(threshold);
-          }
+          //   // alert(threshold);
+          // }
         
-          $(".show1.more").on("click", function() {
-            $("div.item-b").children().not(".show1").css("display", "block");
-            $(this).parent().find(".show1.less").css("display", "block");
-            $(this).hide();
-            // alert(threshold);
-            $(".show1.less").css("display", "block");
-            $(".show1.more").css("display", "none");
-          });
+          // $(".show1.more").on("click", function() {
+          //   $("div.item-b").children().not(".show1").css("display", "block");
+          //   $(this).parent().find(".show1.less").css("display", "block");
+          //   $(this).hide();
+          //   // alert(threshold);
+          //   $(".show1.less").css("display", "block");
+          //   $(".show1.more").css("display", "none");
+          // });
       
           
-          $(".show1.less").on("click", function() {
-            $("div.item-b").children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-            // $(this).parent().find(".show1.more").css("display", "block");
-            $(this).hide();
-            $(".show1.less").css("display", "none");
-            $(".show1.more").css("display", "block");
-          });
+          // $(".show1.less").on("click", function() {
+          //   $("div.item-b").children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+          //   // $(this).parent().find(".show1.more").css("display", "block");
+          //   $(this).hide();
+          //   $(".show1.less").css("display", "none");
+          //   $(".show1.more").css("display", "block");
+          // });
         }
         else {
           this._subtaskDiv = true;

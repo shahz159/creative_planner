@@ -1460,17 +1460,17 @@
 
                         <div class="item-b">
                             <div class="mb-3 " *ngFor="let item of darList">
-                                <div class="list-header">
+                                <!-- <div class="list-header">
                                     <h4 class="header-date">
                                         {{item.SubmissionDate | date: 'fullDate'}}
                                     </h4><br>
-                                </div>
+                                </div> -->
                                 <div class="">
                                     <table class="time-table">
                                         <thead>
                                             <tr>
                                                 <th style="width: 50px;">S.No.</th>
-                                                <th style="width: 280px;">Who</th>
+                                                <th style="width: 280px;">Employee</th>
                                                 <!-- <th>Description</th> -->
                                                 <th>Achievement</th>
                                                 <th style="width: 80px;">Start</th>
@@ -1517,17 +1517,22 @@
                                 <div class="time-totals">
                                     <ul class="time-totals-list" align="right">
                                         <li class="totals-list--item">
+                                            <h4 class="header-date">
+                                                {{item.SubmissionDate | date: 'fullDate'}}
+                                            </h4>
+                                        </li>
+                                        <li class="totals-list--item">
                                             <span><strong>Total Hours: </strong></span>
                                             <span>{{item.TotalDuration}}</span>
                                             <!-- <span>(0.03)</span> -->
                                         </li>
-                                        <!-- <li class="totals-list--item">
+                                        <!-- <li class="totals-list--item" >
                                             <span><strong>Estimated Time: </strong></span>
                                             <span> 2h </span>
                                             <span> (2.00)</span>
-                                        </li>
+                                        </li> -->
                                         
-                                        <li class="totals-list--item">
+                                        <!-- <li class="totals-list--item">
                                             <span><strong>Billable Time: </strong></span>
                                             <span> 2m</span>
                                             <span>(0.03)</span>

@@ -2245,22 +2245,22 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   AttachmentList: any;
-  data1: any;
   TotalDocs: number;
 
   getAttachments() {
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
-        this.data1 = (data[0]['Attachments_Json']);
+        this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         this.TotalDocs=(data[0]['TotalDocs']);
-        if (this.data1 != '') {
+        console.log(this.TotalDocs,this.AttachmentList.length);
+        if (this.AttachmentList != '' || this.AttachmentList.length==0) {
           this.noFiles = false;
         }
         else {
           this.noFiles = true;
         }
-        this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-        console.log("Attachments---->", this.AttachmentList);
+        
+        // console.log("Attachments---->", this.AttachmentList);
       });
   }
 
