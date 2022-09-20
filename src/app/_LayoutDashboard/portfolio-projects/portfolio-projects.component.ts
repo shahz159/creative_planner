@@ -72,6 +72,7 @@ export class PortfolioProjectsComponent implements OnInit {
   CountRejecteds: any;
   MaxDelays: any;
   snackBarRef: any;
+  
   //_snackBar: any;
   dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   EmpDropdwn: unknown[];
@@ -97,6 +98,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _SearchProjects: string;
   PortfolioCreated_UserName: string;
   _PortfolioOwner: string;
+  viewpreference:any;
 
   constructor(public service: ProjectTypeService,
     private notifyService: NotificationService,
@@ -120,6 +122,7 @@ export class PortfolioProjectsComponent implements OnInit {
   Url_portfolioId: number;
 
   ngOnInit(): void {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
     this.pieBarCharts = true;
@@ -133,6 +136,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
+  createdBy:any;
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -159,6 +163,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
+        this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
+        
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this._PortfolioDetailsById);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
@@ -280,6 +286,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.PreferenceTpye = data[0]["PreferenceType"];
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
+        this.viewpreference=this.With_Data[0].Preferences;
         if (this.PreferenceTpye == 1) {
           if (this.With_Data[0].Preferences == "View Only") {
             this.Share_preferences = true;
@@ -700,10 +707,10 @@ export class PortfolioProjectsComponent implements OnInit {
         this.notifyService.showInfo("Action Cancelled ", '');
       }
     });
-    // }
-    // else {
-    //   this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');
-    // }
+     //}
+    //  else {
+    // this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');
+    //  }
   }
 
   messagefav: string;

@@ -1756,7 +1756,7 @@ export class HomeComponent implements OnInit {
   deletedBy: string;
 
   _deletePortfolio(pid: number, portName: string, createdBy: string, createdDT: Date, ProjCount: number, status: string) {
-    //if (createdBy == this.Current_user_ID) {
+    if (createdBy == this.Current_user_ID) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         mode: 'delete',
@@ -1807,10 +1807,10 @@ export class HomeComponent implements OnInit {
         this.notifyService.showInfo("Delete Cancelled ", '');
       }
     });
-    // }
-    // else {
-    //   this.notifyService.showError("Can't delete shared portfolio", 'Permission Denied');
-    // }
+    }
+     else {
+      this.notifyService.showError("Can't delete shared portfolio", 'Permission Denied');
+     }
   }
   //Sorting.....
   clicks: number = 0;

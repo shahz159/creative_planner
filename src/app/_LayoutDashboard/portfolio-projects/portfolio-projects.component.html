@@ -350,13 +350,13 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="mx-2 p-1" style="flex: 0;">
+                                                    <div class="mx-2 p-1" style="flex: 0;" *ngIf="viewpreference != 'View Only'">
                                                         <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
                                                             (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
                                                             <i class="fas fa-trash-alt mr-0"
                                                                 aria-hidden="true"></i>
                                                         </a>
-                                                    </div>
+                                                    </div>                                           
                                                 </div>
                                             </div>
                                         </ng-container>`
