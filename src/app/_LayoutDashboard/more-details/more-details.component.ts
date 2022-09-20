@@ -130,7 +130,7 @@ export class MoreDetailsComponent implements OnInit {
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => { 
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-              this.noFiles=this.AttachmentList.length;});
+            });
         }});
   
     this.GetProjectDetails();
@@ -183,31 +183,33 @@ export class MoreDetailsComponent implements OnInit {
               this.noTimeline =true;
             }
 
-          
-    //       var threshold = 3;
-    //       $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+          var threshold = 3;
+          $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
       
-    //     //alert("test");
-    //       if ($("div.item-b").children().not(".show1").length > threshold) {
-    //         $(".show1.more").css("display", "block");
-    //       }
+        //alert("test");
+          if ($("div.item-b").children().not(".show1").length > threshold) {
+            $(".show1.more").css("display", "block");
+          }
         
-    //       $(".show1.more").on("click", function() {
-    //         $(this).parent().children().not(".show1").css("display", "block");
-    //         $(this).parent().find(".show1.less").css("display", "block");
-    //         $(this).hide();
-    //       });
+          $(".show1.more").on("click", function() {
+            $(this).parent().children().not(".show1").css("display", "block");
+            $(this).parent().find(".show1.less").css("display", "block");
+            $(this).hide();
+          });
 
           
-    //       $(".show1.less").on("click", function() {
-    //         $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-    //         $(this).parent().find(".show1.more").css("display", "block");
-    //         $(this).hide();
-    //       });
-    });         
+          $(".show1.less").on("click", function() {
+            $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+            $(this).parent().find(".show1.more").css("display", "block");
+            $(this).hide();
+          });
+    });
+    
+            
+          
   }
 
-time_convert(num)
+  time_convert(num)
  { 
   var hours = Math.floor(num / 60);  
   var minutes = num % 60;

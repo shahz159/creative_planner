@@ -1475,7 +1475,10 @@
                                 </div>
                             </div> 
                             <!-- <div class="show1 more">Show More </div>
-                            <div class="show1 less">Show Less </div>  -->
+                            <div class="show1 less">Show Less </div> 
+                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
+                                [disabled]="_CurrentpageRecords<10" -->
+                                <button class="btn btn-danger loadMore">Load More</button>
                         </div>                     
                         </div>
                     </div>

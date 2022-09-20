@@ -41,6 +41,10 @@ export class SubTaskDTO {
   Message:string;
   ProjectBlock:string;
   EmployeeName:string;
+
+  RowsOfPage: number;
+  PageNumber: number;
+  PageSize:number;
   
 
 }

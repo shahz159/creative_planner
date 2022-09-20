@@ -1740,7 +1740,7 @@ ul {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 178px);
+    height: calc(100vh - 237px);
     overflow: hidden;
     overflow-y: auto;
 }
