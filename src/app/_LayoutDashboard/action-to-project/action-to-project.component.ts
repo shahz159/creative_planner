@@ -228,7 +228,7 @@ export class ActionToProjectComponent implements OnInit {
 
   OnSubmit() {
 
-    if (this._MainPrjectName == "" || this._MainPrjectName == null || this._MainPrjectName == undefined) {
+    if ( this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined) {
       this._projcode = true;
       return false;
     }
