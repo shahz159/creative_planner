@@ -424,8 +424,10 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetDARAchievement", this._objDARAchievement);
   }
 
-  _GetDARbyMasterCode(MasterCode: string) {
-    this.ObjSubTaskDTO.MasterCode = MasterCode;
+  _GetDARbyMasterCode(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.MasterCode = obj.MasterCode;
+    this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
+    this.ObjSubTaskDTO.PageSize = obj.PageSize;
     return this.http.post(this.rootUrl + "TestAPI/DARDetailsByMasterCode", this.ObjSubTaskDTO);
   }
 

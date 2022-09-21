@@ -52,7 +52,7 @@ export class MoreDetailsComponent implements OnInit {
   SubmissionName: string;
   noRecords: boolean = false;
   noMilestones: boolean = true;
-  noFiles: number;
+  noFiles: boolean=true;
   noTimeline: boolean;
   noNotes: boolean = true;
   noMeeting: boolean = true;
@@ -63,7 +63,7 @@ export class MoreDetailsComponent implements OnInit {
   ProjectPercentage: any;
   src: any;
   actionButton:boolean=false;
-  darList:string;
+  darList:any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -72,6 +72,8 @@ export class MoreDetailsComponent implements OnInit {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
+
+      this.dar_details();
 
       let data1: any;
       this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -82,8 +84,8 @@ export class MoreDetailsComponent implements OnInit {
           console.log(this.DarGraphDataList);
         });
       
-        this.service._GetDARbyMasterCode(this.URL_ProjectCode)
-        .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
+        // this.service._GetDARbyMasterCode(this.URL_ProjectCode)
+        // .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
 
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
         (data) => {
@@ -130,6 +132,9 @@ export class MoreDetailsComponent implements OnInit {
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => { 
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
+              this.attachmentlength=this.AttachmentList.length;
+              this.TotalDocs=(data[0]['TotalDocs']);
+              
             });
         }});
   
@@ -171,42 +176,67 @@ export class MoreDetailsComponent implements OnInit {
 
   totalHours: any;
   totalRecords: any;
+  _CurrentpageRecords:any;
+  CurrentPageNo: number = 1;
+  arr:any = [];
 
   dar_details(){
     this.noTimeline = false;
-    this.service._GetDARbyMasterCode(this.URL_ProjectCode)
+    this.ObjSubTaskDTO.MasterCode=this.URL_ProjectCode;
+    this.ObjSubTaskDTO.PageNumber=1;
+    this.ObjSubTaskDTO.PageSize=10;
+    this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
     .subscribe(data1 => {
             this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+            this.arr=this.darList;
             this.totalHours = (data1[0]['Totalhours']);
             this.totalRecords= (data1[0]['TotalRecords']);
             if(this.darList == null){
               this.noTimeline =true;
             }
+            if(this.darList){
+              this._CurrentpageRecords=this.darList.length;
+            }
 
-          var threshold = 3;
-          $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+    //       var threshold = 3;
+    //       $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
       
-        //alert("test");
-          if ($("div.item-b").children().not(".show1").length > threshold) {
-            $(".show1.more").css("display", "block");
-          }
+    //     //alert("test");
+    //       if ($("div.item-b").children().not(".show1").length > threshold) {
+    //         $(".show1.more").css("display", "block");
+    //       }
         
-          $(".show1.more").on("click", function() {
-            $(this).parent().children().not(".show1").css("display", "block");
-            $(this).parent().find(".show1.less").css("display", "block");
-            $(this).hide();
-          });
+    //       $(".show1.more").on("click", function() {
+    //         $(this).parent().children().not(".show1").css("display", "block");
+    //         $(this).parent().find(".show1.less").css("display", "block");
+    //         $(this).hide();
+    //       });
 
           
-          $(".show1.less").on("click", function() {
-            $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-            $(this).parent().find(".show1.more").css("display", "block");
-            $(this).hide();
-          });
+    //       $(".show1.less").on("click", function() {
+    //         $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+    //         $(this).parent().find(".show1.more").css("display", "block");
+    //         $(this).hide();
+    //       });
+    });         
+  }
+
+  loadMore(){
+    this.ObjSubTaskDTO.MasterCode=this.URL_ProjectCode;
+    this.ObjSubTaskDTO.PageNumber=this.CurrentPageNo;
+    this.ObjSubTaskDTO.PageSize=10;
+    this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
+    .subscribe(data1 => {
+            this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+ 
+            this.darList.forEach(element => {
+                this.arr.push(element);
+            });
+
+            if(this.darList){
+              this._CurrentpageRecords=this.darList.length;
+            }
     });
-    
-            
-          
   }
 
   time_convert(num)
@@ -2247,13 +2277,18 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   AttachmentList: any;
-  // TotalDocs: number;
+  attachmentlength:any;
+   TotalDocs: number;
 
   getAttachments() {
+    this.noFiles=false;
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {       
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-        // this.TotalDocs=(data[0]['TotalDocs']);
+        this.attachmentlength=this.AttachmentList.length;
+        this.TotalDocs=(data[0]['TotalDocs']);
+        if(this.TotalDocs==0)
+          this.noFiles=true;
         // console.log(this.TotalDocs,this.AttachmentList.length);            
         // console.log("Attachments---->", this.AttachmentList);
       });
@@ -2282,7 +2317,7 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
     window.open(proofDoc);
     
   }
@@ -2343,6 +2378,13 @@ export class MoreDetailsComponent implements OnInit {
         this.subTaskCount = this.inProcessCount + this.completedCount;
         // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
       });
+  }
+
+  selectedAction:any;
+
+  ActionOnSelect(obj) {
+    // this.selectedEmpNo = obj['Emp_No'];
+    this.selectedAction = obj;
   }
 
   OnUpdateClick() {

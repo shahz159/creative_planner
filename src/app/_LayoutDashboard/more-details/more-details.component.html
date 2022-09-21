@@ -606,7 +606,7 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
-                                    <span  class="noti" *ngIf="noFiles!=0">{{AttachmentList.length}}</span></a></li>
+                                    <span  class="noti" *ngIf="TotalDocs!=0">{{attachmentlength}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
                                 <span  class="noti"*ngIf="totalRecords!=0">{{totalRecords}}</span></a></li>                                    
@@ -1342,7 +1342,7 @@
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
                             <div class="kt-container w-100 px-0">
                                 <div class="kt-subheader__main"> -->
-                        <h3 class="kt-subheader__title" *ngIf="noFiles!=0; else noResultsFound">Files</h3>
+                        <h3 class="kt-subheader__title" *ngIf="noFiles == false; else noResultsFound">Files</h3>
                         <!-- <h4 class="kt-subheader__title" *ngIf="noFiles == true">No Records Found.</h4> -->
                         <!-- </div>
                             </div>
@@ -1412,18 +1412,19 @@
 
                 <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
-                        <div *ngIf="noTimeline == false; else noResultsFound">
-                            <div>
-                                <div class="d-flex-center mb-2">
-                                    <!-- <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5> -->
-                                    <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
+                             <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
                                         DAR Creation
                                     </button>
+                        <div *ngIf="noTimeline == false; else noResultsFound">
+                            <div>
+                                <div class="d-flex-right mb-2">
+                                    <!-- <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5> -->
+                                    
                                     <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></div>
                                 </div>
                             <pre></pre>                             
                         <div class="item-b">
-                            <div class="mb-3 " *ngFor="let item of darList">
+                            <div class="mb-3 " *ngFor="let item of arr">
                                 <!-- <div class="list-header">
                                     <h4 class="header-date">
                                         {{item.SubmissionDate | date: 'fullDate'}}
@@ -1478,7 +1479,9 @@
                             <div class="show1 less">Show Less </div> 
                          (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                                 [disabled]="_CurrentpageRecords<10" -->
-                                <button class="btn btn-danger loadMore">Load More</button>
+                               <div style="text-align:center"> <button class="btn btn-danger loadMore"
+                                (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()" [hidden]="_CurrentpageRecords<10">
+                                Load More</button></div>
                         </div>                     
                         </div>
                     </div>
@@ -2103,17 +2106,27 @@
     </div>
     <div class="px-4 pt-2">        
         <form>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
+                <label> Action <span class="text-danger">*</span> : <strong></strong></label>
+                <ng-select  placeholder="Select Action" >
+                    <ng-option>
+                      item
+                        <!-- [value]="item._MasterCode"   required #action="ngModel"  [(ngModel)]="selectedAction" *ngFor="let item of Subtask_List" -->
+                    </ng-option>
+                </ng-select>                
+                
+            </div>
             <div class="form-group">
-                <label>Work Description</label>
+                <label>Work Description<span class="text-danger">*</span> : <strong></strong></label>
                 <input type="text" class="form-control">
             </div>
             <div class="form-group">
-                <label>Start Time</label>
+                <label>Start Time<span class="text-danger">*</span> : <strong></strong></label>
                 <input class="form-control" type="time" value="13:45:00" id="time-start">
                 <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
             </div>
             <div class="form-group">
-                <label>End Time</label>
+                <label>End Time<span class="text-danger">*</span> : <strong></strong></label>
                 <input class="form-control" type="time" value="13:45:00" id="time-end">
             </div>
             <div class="form-group">
