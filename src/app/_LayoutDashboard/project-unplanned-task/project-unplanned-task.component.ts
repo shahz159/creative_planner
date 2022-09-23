@@ -213,13 +213,54 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+        debugger
+
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
+        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        // console.log(this.ActionedAssigned_Josn)
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        // console.log(this.ActionedAssigned_Josn)
+        if(this.ActionedSubtask_Json.length>0){
+           
+          document.getElementById("mysideInfobar").style.width = "0px";
+          //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
+          this._CategoryActive = true;
+          this.IfNoTaskFound = "";
+          this._Categoryid = data[0]["CategoryId"];
+          this._CategoryName = data[0]["CategoryName"];
+          this.ShowTaskList_Div = false;
+          this.Label_TaskName = false;
+          this.Textbox_EditTaskName = true;
+          this._taskName = "";
+          /// Get Tasks On Category Click  /////
+          this._ObjCompletedProj.PageNumber = 1;
+          this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+          this._ObjCompletedProj.CategoryId = this._Categoryid;
+          this._ObjCompletedProj.Mode = 'Todo';
+        }
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']); 
+        let _Accepted =0;
+        let _Pending =0;
+        let _Rejected=0;
+        this.ActionedAssigned_Josn.forEach(element => {
+          if(element.Status=="Accepted"){
+            _Accepted=_Accepted+1;
+          }
+          else if(element.Status == "Pending"){
+            _Pending=_Pending+1;
+          }
+          else if(element.Status == "Rejected"){
+            _Rejected=_Rejected+1;
+          }
+        });
+        this.CountsAccepted= _Accepted;
+        this.CountsPending= _Pending;
+        this.CountsRejected= _Rejected;
       });
   }
 
