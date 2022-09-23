@@ -13,16 +13,20 @@ import { LinkService } from 'src/app/_Services/link.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import * as _ from 'underscore';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
+import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { Tooltip } from 'chart.js';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
 import Swal from 'sweetalert2';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
-import { ConditionalExpr } from '@angular/compiler';
+import { formatDate } from '@fullcalendar/angular';
+import { DatePipe } from '@angular/common';
+import { Time } from '@amcharts/amcharts5/.internal/core/util/Animation';
 
 
 @Component({
@@ -32,14 +36,22 @@ import { ConditionalExpr } from '@angular/compiler';
 })
 
 export class MoreDetailsComponent implements OnInit {
+  
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     private router: Router,
     public service: ProjectTypeService,
-    private notifyService: NotificationService,
+    private notifyService: NotificationService,public dateAdapter: DateAdapter<Date>,
     private dialog: MatDialog,
+    public datepipe: DatePipe,
     private BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
+    this.objProjectDto = new ProjectDetailsDTO();
+    $(document).ready(function () {
+      var today = new Date().toISOString().split('T')[0];
+      $("#minDate").attr('min', today);
+  });
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
   }
 
   projectCode: string;
@@ -63,7 +75,9 @@ export class MoreDetailsComponent implements OnInit {
   ProjectPercentage: any;
   src: any;
   actionButton:boolean=false;
+  darbutton:boolean=true;
   darList:any;
+  disablePreviousDate = new Date();
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -239,6 +253,104 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
+  workdes:string;
+  starttime:any;
+  endtime:any;
+  timecount:any;
+  current_Date: any;
+  objProjectDto : ProjectDetailsDTO;
+  actionCode: string;
+
+  
+diff_minutes(dt2, dt1)
+{
+ var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+ diff /= 60;
+ return Math.abs(Math.round(diff));
+}
+
+minutes: any;
+hours:any;
+temp:any;
+end:boolean=true;
+
+  submitDar(){
+          
+    if(this.starttime!=null && this.endtime!=null){      
+
+      const [shours, sminutes] = this.starttime.split(':');
+      const [ehours, eminutes] = this.endtime.split(':');          
+
+        var  dt1 = new Date(2014,10,2,shours,sminutes);
+        var  dt2 = new Date(2014,10,2,ehours,eminutes);
+
+          if(ehours<shours){
+            this.end=false;
+            this.notifyService.showError("End time cannot be less than start time", '');
+            // alert("End time cannot be less than start time");
+          }
+          else if((ehours==shours) && (eminutes<sminutes)){
+            this.end=false;
+            this.notifyService.showError("End time cannot be less than start time", '');
+            // alert("End time cannot be less than start time");
+          }
+          else if((ehours==shours) && (eminutes==sminutes)){
+            this.end=false;
+            this.notifyService.showError("End time cannot be equal to start time", '');
+            // alert("End time cannot be equal to start time");
+          }
+          else{
+            this.end=true;
+                  this.minutes = this.diff_minutes(dt1,dt2)%60;
+                  if(this.minutes<10){
+                  this.minutes="0"+this.minutes
+                  }
+                  
+                  this.hours=Math.floor(this.diff_minutes(dt1,dt2) / 60);
+                  if(this.hours<10){
+                    this.hours="0"+this.hours;
+                  }
+                  this.timecount=(this.hours+":"+this.minutes);
+          }         
+    }
+
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.Exec_BlockName=this.ProjectBlockName;
+    this.objProjectDto.Project_Name=this.ProjectName;
+    this.objProjectDto.StartTime=this.starttime;
+    this.objProjectDto.EndTime=this.endtime;
+    this.objProjectDto.TimeCount=this.timecount;
+    this.current_Date=this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+    this.objProjectDto.date=this.current_Date;
+    this.objProjectDto.WorkAchieved=this.workdes;
+    this.objProjectDto.Emp_Comp_No = this.Comp_No;
+
+
+    if(this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List'){
+
+      this.objProjectDto.Master_code = this.URL_ProjectCode;      
+      this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    }
+    else{
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
+      this.objProjectDto.Project_Code = this.actionCode;
+    }
+
+    this.service._InsertDARServie(this.objProjectDto)
+    .subscribe(data => {
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message,"");
+            console.log(this._Message);
+    });
+    console.log(this.Comp_No,this.URL_ProjectCode,this.actionCode,this.inProcessCount,"testingDar");
+    
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").style.width = "0";
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.Clear_Feilds();
+
+  }
+
   time_convert(num)
  { 
   var hours = Math.floor(num / 60);  
@@ -278,6 +390,7 @@ export class MoreDetailsComponent implements OnInit {
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
+    alert(this.Sub_ProjectCode);  
     this.Sub_Desc = item.Project_Description;
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
@@ -359,6 +472,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
+          // alert(this.Comp_No);
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
@@ -412,9 +526,13 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if(this.Status =='Completion Under Approval' || this.Status == 'Under Approval' || this.Status == 'New Project Rejected'){
+          if(this.Status == 'New Project Rejected'){
             this.actionButton=true;
           }
+          if(this.Status== 'ToDo Completed' || this.Status== 'Completed'){
+            this.darbutton=false;
+          }
+
         }
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -2617,8 +2735,12 @@ export class MoreDetailsComponent implements OnInit {
     $('#uploadFile').val('');
     $('#_upload').html('Select a file'); 
     $('#_pdf').val('');
-    $('#upload').html('Select a file'); 
-    
+    $('#upload').html('Select a file');
+    this.actionCode=null;
+    this.workdes="";
+    this.current_Date=null;
+    this.starttime=null;
+    this.endtime=null;
   }
 
   //Project Update
@@ -2672,8 +2794,12 @@ export class MoreDetailsComponent implements OnInit {
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }
+  coresecondary:boolean=true;
+  darcreate(){   
+    if(this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List'){
+      this.coresecondary=false;
+    }
 
-  darcreate(){    
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("darsidebar").style.width = "60%";
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2683,5 +2809,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
+    this.notifyService.showError("Cancelled",'');
+    this.Clear_Feilds();
   }
 }

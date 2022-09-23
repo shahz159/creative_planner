@@ -16,7 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
-
+import { DatePipe } from '@angular/common';
 
 
 
@@ -39,7 +39,7 @@ import { MoreDetailsComponent } from '../more-details/more-details.component';
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule
   ]
-,providers:[ProjectUnplannedTaskComponent,MoreDetailsComponent],
+,providers:[ProjectUnplannedTaskComponent,MoreDetailsComponent,DatePipe],
 
 exports:[
     ToDoProjectsComponent

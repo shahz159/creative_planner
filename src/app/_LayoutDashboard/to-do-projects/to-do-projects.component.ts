@@ -209,9 +209,9 @@ export class ToDoProjectsComponent implements OnInit {
     else {
       this.addbutton_hidden = true;
     }
-    if(this.Project_Status == 'Completion Under Approval' || this.Project_Status == 'Under Approval'){
-      this.addbutton_hidden = true;
-    }
+    // if(this.Project_Status == 'Completion Under Approval' || this.Project_Status == 'Under Approval'){
+    //   this.addbutton_hidden = true;
+    // }
     this.closeInfo();
   }
 

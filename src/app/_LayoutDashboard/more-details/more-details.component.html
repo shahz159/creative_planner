@@ -18,6 +18,7 @@
         <div class="row">
             <div class="col-lg-12 project-description pt-2">
                 <div class="d-flex align-items-center mb-2 cir-icon">
+                    <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
                     <!-- <i class="fas fa-code-branch"></i> -->
                     <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
                     <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
@@ -145,6 +146,19 @@
                     </div>
 
                     <!--progress bar end -->
+
+
+                    </div>
+                    <div class=" pro-act">
+                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
+                            Actions</button>
+                    </div>
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')" class=" pro-act ml-2">
+                        <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
+                            <i class="fas fa-check mr-2"></i>
+                            Project Completion
+                        </button>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
@@ -168,16 +182,6 @@
                             </div>
                         </span>
 
-                    </div>
-                    <div class=" pro-act">
-                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
-                            Actions</button>
-                    </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')" class=" pro-act ml-2">
-                        <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
-                            <i class="fas fa-check mr-2"></i>
-                            Project Completion
-                        </button>
                     </div>
 
                 </div>
@@ -1342,7 +1346,7 @@
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
                             <div class="kt-container w-100 px-0">
                                 <div class="kt-subheader__main"> -->
-                        <h3 class="kt-subheader__title" *ngIf="noFiles == false; else noResultsFound">Files</h3>
+                        <h3 class="kt-subheader__title" *ngIf="AttachmentList; else noResultsFound">Files</h3>
                         <!-- <h4 class="kt-subheader__title" *ngIf="noFiles == true">No Records Found.</h4> -->
                         <!-- </div>
                             </div>
@@ -1412,15 +1416,17 @@
 
                 <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
-                             <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
-                                        DAR Creation
+                        <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
+                        <div class="text-right mb-3" *ngIf="darbutton==true">                                                   
+                             <button type="button" class="btn btn-info btn-sm" 
+                                  (click)="darcreate()">
+                                        Create Work
                                     </button>
+                        </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div>
-                                <div class="d-flex-right mb-2">
-                                    <!-- <h5 style="color:cadetblue"><u><strong>Daily Achievement Reaport(DAR) - Timeline</strong></u></h5> -->
-                                    
-                                    <h6 style="text-align:right"><strong>DAR Total Hours - {{totalHours}}</strong></h6></div>
+                                <div class="d-flex-right mb-2">                                   
+                                    <h6 style="text-align:right"><strong>Total Achievement Hours - {{totalHours}}</strong></h6></div>
                                 </div>
                             <pre></pre>                             
                         <div class="item-b">
@@ -1479,7 +1485,7 @@
                             <div class="show1 less">Show Less </div> 
                          (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                                 [disabled]="_CurrentpageRecords<10" -->
-                               <div style="text-align:center"> <button class="btn btn-danger loadMore"
+                               <div style="text-align:center"> <button class="btn btn-info loadMore"
                                 (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()" [hidden]="_CurrentpageRecords<10">
                                 Load More</button></div>
                         </div>                     
@@ -2107,30 +2113,48 @@
     <div class="px-4 pt-2">        
         <form>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
-                <label> Action <span class="text-danger">*</span> : <strong></strong></label>
-                <ng-select  placeholder="Select Action" >
-                    <ng-option>
-                      item
-                        <!-- [value]="item._MasterCode"   required #action="ngModel"  [(ngModel)]="selectedAction" *ngFor="let item of Subtask_List" -->
+                <label>Action <span class="text-danger">*</span></label>
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action"  [(ngModel)]="actionCode">
+                    <ng-option [value]="item.Project_Code"  *ngFor="let item of Subtask_List">
+                      {{item.Project_Name}}                        
                     </ng-option>
-                </ng-select>                
-                
+                </ng-select>               
             </div>
             <div class="form-group">
-                <label>Work Description<span class="text-danger">*</span> : <strong></strong></label>
-                <input type="text" class="form-control">
+                <label>Work Description<span class="text-danger">*</span></label>
+                <input type="text" name="work" class="form-control" [(ngModel)]="workdes">
             </div>
             <div class="form-group">
-                <label>Start Time<span class="text-danger">*</span> : <strong></strong></label>
-                <input class="form-control" type="time" value="13:45:00" id="time-start">
+                <label>Date<span class="text-danger">*</span></label>
+                <!-- <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
+                <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
+                <div class="input-group">
+                    <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
+                        [(ngModel)]="current_Date" placeholder="Select Date" class="form-control" name="date">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Start Time<span class="text-danger">*</span></label>
+                <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start"  [(ngModel)]="starttime"> 
+                              
                 <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
             </div>
             <div class="form-group">
-                <label>End Time<span class="text-danger">*</span> : <strong></strong></label>
-                <input class="form-control" type="time" value="13:45:00" id="time-end">
+                <label>End Time<span class="text-danger">*</span></label>
+                <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime">
+                <span  style="color:red" *ngIf="end==false">Please enter valid End Time!</span> 
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" disabled="">Submit</button>
+                <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
+                [disabled]="!actionCode || !workdes || !current_Date || !starttime || !endtime">
+                    Submit</button>
+                    <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==false"
+                [disabled]=" !workdes || !current_Date || !starttime || !endtime">
+                    Submit</button>
                 <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
         </form>

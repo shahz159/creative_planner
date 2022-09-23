@@ -49,6 +49,7 @@ export class ProjectTypeService {
   Portfolio_List: PortfolioDTO[];
   Project_TypeList = [];
   _ObjSharePortfolio: Shareportfolio_DTO;
+  _ObjProjectDTO: ProjectDetailsDTO
   ObjStatusDTO: StatusDTO;
   ObjNotificationDto: NotificationActivityDTO;
   _ObjChartDTO: ChartDTO;
@@ -521,6 +522,22 @@ export class ProjectTypeService {
 
   _InsertAssignTaskServie(fd) {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
+  }
+
+  _InsertDARServie(obj: ProjectDetailsDTO ) {
+    this.ObjDto.Emp_No = obj.Emp_No;
+    this.ObjDto.Exec_BlockName=obj.Exec_BlockName;
+    this.ObjDto.Project_Name = obj.Project_Name;
+    this.ObjDto.StartTime = obj.StartTime;
+    this.ObjDto.EndTime = obj.EndTime;
+    this.ObjDto.WorkAchieved = obj.WorkAchieved;
+    this.ObjDto.date = obj.date;
+    this.ObjDto.TimeCount = obj.TimeCount;
+    this.ObjDto.Emp_Comp_No = obj.Emp_Comp_No;
+    this.ObjDto.Project_Code = obj.Project_Code;
+    this.ObjDto.Master_code = obj.Master_code;
+    
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertDAR", this.ObjDto);
   }
 
   ObjCategoryDTO: CategoryDTO;

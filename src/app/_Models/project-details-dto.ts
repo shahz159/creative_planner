@@ -4,7 +4,7 @@ export class ProjectDetailsDTO {
     Exec_BlockNo: number
     Exec_BlockName: string
 
-    Project_Code: string
+    Project_Code: string;
     Project_Block: string;
     Project_Name: string;
     Project_Description: string;
@@ -43,4 +43,11 @@ export class ProjectDetailsDTO {
     Project_Cost: number;
     Projects_Json: string;
     ReportType: string;
+
+    Master_code:string;
+    StartTime:any;
+    EndTime:any;
+    date:any;
+    TimeCount:any;
+    WorkAchieved:any;
 }

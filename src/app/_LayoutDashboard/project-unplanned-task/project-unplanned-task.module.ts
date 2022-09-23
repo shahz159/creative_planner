@@ -15,6 +15,7 @@ import { TaskDateAgoPipe } from './task-date-ago.pipe';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
+import { DatePipe } from '@angular/common';
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { MoreDetailsComponent } from '../more-details/more-details.component';
     ProjectUnplannedTaskComponent, 
   ],
     providers: [ 
-      NotificationService, ToDoProjectsComponent, MoreDetailsComponent
+      NotificationService, ToDoProjectsComponent, MoreDetailsComponent, DatePipe
   ] 
 })
 export class ProjectUnplannedTaskModule { }
