@@ -1441,7 +1441,8 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 50px;">S.No.</th>
-                                                <th style="width: 280px;">Employee</th>                                                
+                                                <th style="width: 280px;">Employee</th>
+                                                <th style="width: 280px;" *ngIf="ProjectBlockName != 'Standard Tasks'">Action Name</th>                                              
                                                 <th>Achievement</th>
                                                 <th style="width: 80px;">Start</th>
                                                 <th style="width: 80px;">End</th>                                              
@@ -1455,8 +1456,9 @@
                                                     <div class="d-flex">
                                                         <div class="initial-box color-7 b-50 mr-2">{{InitR}} </div><span class="user--name">{{dar.EmpName}}</span>
                                                     </div>
-                                                </td>                                           
-                                                <td>{{dar.WorkAchieved}}</td>
+                                                </td>
+                                                <td *ngIf="ProjectBlockName != 'Standard Tasks'">{{dar.ProjectName}}</td>                                        
+                                                <td>{{dar.WorkAchieved}}</td>                                                
                                                 <td>{{dar.starttime}}</td>
                                                 <td>{{dar.endtime}}</td>                                               
                                                 <td>{{dar.Duration}} Hrs</td>                                               
@@ -2114,9 +2116,9 @@
         <form>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
                 <label>Action <span class="text-danger">*</span></label>
-                <ng-select required #action="ngModel" name="action" placeholder="Select Action"  [(ngModel)]="actionCode">
-                    <ng-option [value]="item.Project_Code"  *ngFor="let item of Subtask_List">
-                      {{item.Project_Name}}                        
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"  [(ngModel)]="actionCode">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of Subtask_List">
+                      {{item.Project_Name}}                     
                     </ng-option>
                 </ng-select>               
             </div>
@@ -2139,22 +2141,23 @@
             </div>
             <div class="form-group">
                 <label>Start Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start"  [(ngModel)]="starttime"> 
+                <input class="form-control" name="starttim" type="time" id="time-start"  [(ngModel)]="starttime"> 
                               
-                <!-- <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="datetime-start"> -->
+                <!-- <input class="form-control" type="datetime-local"  value="13:45:00" value="2011-08-19T13:45:00" id="datetime-start"> -->
             </div>
             <div class="form-group">
                 <label>End Time<span class="text-danger">*</span></label>
                 <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime">
-                <span  style="color:red" *ngIf="end==false">Please enter valid End Time!</span> 
+                <span  style="color:red" id="err" *ngIf="(endtime < starttime)">Please enter valid End Time!</span> 
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
-                [disabled]="!actionCode || !workdes || !current_Date || !starttime || !endtime">
+                [disabled]="!actionCode || !workdes || !current_Date || !starttime || !endtime || endtime < starttime">
                     Submit</button>
                     <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==false"
-                [disabled]=" !workdes || !current_Date || !starttime || !endtime">
-                    Submit</button>
+                [disabled]=" !workdes || !current_Date || !starttime || !endtime || endtime < starttime">
+                    Submit</button>                
+                <button type="reset" class="btn btn-secondary ml-2">Reset</button>
                 <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
         </form>

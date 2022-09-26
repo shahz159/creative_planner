@@ -95,7 +95,7 @@ export class MoreDetailsComponent implements OnInit {
           // console.log("data1 Testong---->", data);
           data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
           this.DarGraphDataList = data1;
-          console.log(this.DarGraphDataList);
+          // console.log(this.DarGraphDataList);
         });
       
         // this.service._GetDARbyMasterCode(this.URL_ProjectCode)
@@ -200,9 +200,10 @@ export class MoreDetailsComponent implements OnInit {
     this.ObjSubTaskDTO.PageNumber=1;
     this.ObjSubTaskDTO.PageSize=10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
-    .subscribe(data1 => {
+    .subscribe(data1 => {          
             this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
             this.arr=this.darList;
+            // alert(1);
             this.totalHours = (data1[0]['Totalhours']);
             this.totalRecords= (data1[0]['TotalRecords']);
             if(this.darList == null){
@@ -260,6 +261,7 @@ export class MoreDetailsComponent implements OnInit {
   current_Date: any;
   objProjectDto : ProjectDetailsDTO;
   actionCode: string;
+  actionName: string;
 
   
 diff_minutes(dt2, dt1)
@@ -276,47 +278,26 @@ end:boolean=true;
 
   submitDar(){
           
-    if(this.starttime!=null && this.endtime!=null){      
-
+    if(this.starttime!=null && this.endtime!=null){
       const [shours, sminutes] = this.starttime.split(':');
       const [ehours, eminutes] = this.endtime.split(':');          
 
         var  dt1 = new Date(2014,10,2,shours,sminutes);
-        var  dt2 = new Date(2014,10,2,ehours,eminutes);
-
-          if(ehours<shours){
-            this.end=false;
-            this.notifyService.showError("End time cannot be less than start time", '');
-            // alert("End time cannot be less than start time");
-          }
-          else if((ehours==shours) && (eminutes<sminutes)){
-            this.end=false;
-            this.notifyService.showError("End time cannot be less than start time", '');
-            // alert("End time cannot be less than start time");
-          }
-          else if((ehours==shours) && (eminutes==sminutes)){
-            this.end=false;
-            this.notifyService.showError("End time cannot be equal to start time", '');
-            // alert("End time cannot be equal to start time");
-          }
-          else{
-            this.end=true;
-                  this.minutes = this.diff_minutes(dt1,dt2)%60;
-                  if(this.minutes<10){
-                  this.minutes="0"+this.minutes
-                  }
+        var  dt2 = new Date(2014,10,2,ehours,eminutes);        
+        this.minutes = this.diff_minutes(dt1,dt2)%60;
+         if(this.minutes<10){
+           this.minutes="0"+this.minutes
+         }
                   
-                  this.hours=Math.floor(this.diff_minutes(dt1,dt2) / 60);
-                  if(this.hours<10){
-                    this.hours="0"+this.hours;
-                  }
-                  this.timecount=(this.hours+":"+this.minutes);
-          }         
+        this.hours=Math.floor(this.diff_minutes(dt1,dt2) / 60);
+          if(this.hours<10){
+            this.hours="0"+this.hours;
+          }
+         this.timecount=(this.hours+":"+this.minutes);                   
     }
 
     this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Exec_BlockName=this.ProjectBlockName;
-    this.objProjectDto.Project_Name=this.ProjectName;
+    this.objProjectDto.Exec_BlockName=this.ProjectBlockName; 
     this.objProjectDto.StartTime=this.starttime;
     this.objProjectDto.EndTime=this.endtime;
     this.objProjectDto.TimeCount=this.timecount;
@@ -325,30 +306,28 @@ end:boolean=true;
     this.objProjectDto.WorkAchieved=this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-
     if(this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List'){
-
+      this.objProjectDto.Project_Name=this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;      
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
     else{
       this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.actionCode;
+      this.objProjectDto.Project_Code = this.actionCode;   
     }
 
     this.service._InsertDARServie(this.objProjectDto)
     .subscribe(data => {
             this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message,"");
-            console.log(this._Message);
+            this.notifyService.showSuccess(this._Message,"Success");            
+            // console.log(this._Message);
     });
-    console.log(this.Comp_No,this.URL_ProjectCode,this.actionCode,this.inProcessCount,"testingDar");
-    
+    // console.log(this.Comp_No,this.URL_ProjectCode,this.actionCode,this.inProcessCount,this.actionName,"testingDar");
+    this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
-
   }
 
   time_convert(num)
@@ -686,7 +665,7 @@ end:boolean=true;
         // console.log("data1 Testong---->", data);
         data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
         this.DarGraphDataList = data1;
-        console.log(this.DarGraphDataList);
+        // console.log(this.DarGraphDataList);
         //console.log("DarGraphDataList---->",this.DarGraphDataList);
         let root = am5.Root.new("chartdiv");
         let chart = root.container.children.push(am5xy.XYChart.new(root, {
@@ -2741,6 +2720,7 @@ end:boolean=true;
     this.current_Date=null;
     this.starttime=null;
     this.endtime=null;
+    // $("err").html("");
   }
 
   //Project Update
@@ -2806,6 +2786,7 @@ end:boolean=true;
   }
 
   closedarBar(){    
+    // alert(this.actionName);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
