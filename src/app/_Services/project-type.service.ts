@@ -429,12 +429,12 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.MasterCode = obj.MasterCode;
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
-    return this.http.post(this.rootUrl + "TestAPI/DARDetailsByMasterCode", this.ObjSubTaskDTO);
+    return this.http.post(this.rootUrl + "TestAPI/NewDARDetailsByMasterCode", this.ObjSubTaskDTO);
   }
 
   _GetNewProjectCode(obj) {
     this.ObjSubTaskDTO.MasterCode = obj.MasterCode;
-    return this.http.post(this.rootUrl + "Notification/GenerateNewProjectCode", this.ObjSubTaskDTO);
+    return this.http.post(this.rootUrl + "Notification/NewGenerateNewProjectCode", this.ObjSubTaskDTO);
   }
 
   _InsertNewSubtask(data) {
