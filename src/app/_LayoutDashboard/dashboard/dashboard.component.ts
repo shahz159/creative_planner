@@ -84,6 +84,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "0";    
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("mysideInfobar_schd").style.width = "0";    
+
   }
   _objStatusDTO: StatusDTO;
 
@@ -623,6 +625,47 @@ export class DashboardComponent implements OnInit {
     var myurl = `${url}/${P_id}`;
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
+  }
+
+  openschd(){
+    document.getElementById("mysideInfobar_schd").style.width = "50%";    
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  closeschd(){
+    document.getElementById("mysideInfobar_schd").style.width = "0%";    
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
+
+  showcore(){
+    document.getElementById("core_viw").classList.add("show");
+    document.getElementById("stan_viw").classList.remove("show");
+    document.getElementById("sec_viw").classList.remove("show");
+
+    document.getElementById("core_tab").classList.add("btn-light-primary");
+    document.getElementById("stan_tab").classList.remove("btn-light-primary");
+    document.getElementById("sec_tab").classList.remove("btn-light-primary");
+
+  }
+
+  showstan(){
+    document.getElementById("stan_viw").classList.add("show");
+    document.getElementById("sec_viw").classList.remove("show");
+    document.getElementById("core_viw").classList.remove("show");
+
+    document.getElementById("stan_tab").classList.add("btn-light-primary");
+    document.getElementById("core_tab").classList.remove("btn-light-primary");
+    document.getElementById("sec_tab").classList.remove("btn-light-primary");
+  }
+  showsec(){
+    document.getElementById("sec_viw").classList.add("show");
+    document.getElementById("core_viw").classList.remove("show");
+    document.getElementById("stan_viw").classList.remove("show");
+
+    document.getElementById("sec_tab").classList.add("btn-light-primary");
+    document.getElementById("core_tab").classList.remove("btn-light-primary");
+    document.getElementById("stan_tab").classList.remove("btn-light-primary");
   }
 
 }
