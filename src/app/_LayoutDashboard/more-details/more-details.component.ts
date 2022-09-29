@@ -36,12 +36,12 @@ import { Time } from '@amcharts/amcharts5/.internal/core/util/Animation';
 })
 
 export class MoreDetailsComponent implements OnInit {
-  
+
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     private router: Router,
     public service: ProjectTypeService,
-    private notifyService: NotificationService,public dateAdapter: DateAdapter<Date>,
+    private notifyService: NotificationService, public dateAdapter: DateAdapter<Date>,
     private dialog: MatDialog,
     public datepipe: DatePipe,
     private BsService: BsServiceService) {
@@ -50,7 +50,7 @@ export class MoreDetailsComponent implements OnInit {
     $(document).ready(function () {
       var today = new Date().toISOString().split('T')[0];
       $("#minDate").attr('min', today);
-  });
+    });
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
   }
 
@@ -59,24 +59,24 @@ export class MoreDetailsComponent implements OnInit {
   IsData: string;
   _LinkSideBar: boolean = true;
   maxDuration: any;
-  standardDuration:any;
+  standardDuration: any;
   totalPercent: number = 1;
   SubmissionName: string;
   noRecords: boolean = false;
   noMilestones: boolean = true;
-  noFiles: boolean=true;
+  noFiles: boolean = true;
   noTimeline: boolean;
   noNotes: boolean = true;
   noMeeting: boolean = true;
   checked: any;
-  totalSubtaskHours : any;
+  totalSubtaskHours: any;
   actionResponsibles: any = [];
   ProjectStatus: string;
   ProjectPercentage: any;
   src: any;
-  actionButton:boolean=false;
-  darbutton:boolean=true;
-  darList:any;
+  actionButton: boolean = false;
+  darbutton: boolean = true;
+  darList: any;
   disablePreviousDate = new Date();
 
   ngOnInit(): void {
@@ -97,9 +97,9 @@ export class MoreDetailsComponent implements OnInit {
           this.DarGraphDataList = data1;
           // console.log(this.DarGraphDataList);
         });
-      
-        // this.service._GetDARbyMasterCode(this.URL_ProjectCode)
-        // .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
+
+      // this.service._GetDARbyMasterCode(this.URL_ProjectCode)
+      // .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
 
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
         (data) => {
@@ -110,13 +110,13 @@ export class MoreDetailsComponent implements OnInit {
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
-          
-          
+
+
           // console.log(this.actionResponsibles,"test");
           // for(var val of this.Subtask_Res_List){
           //   this.actionResponsibles = this.Subtask_Res_List[val]['TM_DisplayName'];
           // }
-          
+
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
           // console.log(this.totalSubtaskHours,"Total subhours");
           if ((this.Subtask_List == '') && (this.CompletedList == '')) {
@@ -140,20 +140,21 @@ export class MoreDetailsComponent implements OnInit {
       (data) => {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-          this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];          
+          this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
 
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
-            .subscribe((data) => { 
+            .subscribe((data) => {
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-              this.attachmentlength=this.AttachmentList.length;
-              this.TotalDocs=(data[0]['TotalDocs']);
-              
+              this.attachmentlength = this.AttachmentList.length;
+              this.TotalDocs = (data[0]['TotalDocs']);
+
             });
-        }});
-  
+        }
+      });
+
     this.GetProjectDetails();
-    
+
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -183,145 +184,141 @@ export class MoreDetailsComponent implements OnInit {
 
     //   window.addEventListener("load", function (event) {
 
-  
+
     // });
-  
+
   }
 
   totalHours: any;
   totalRecords: any;
-  _CurrentpageRecords:any;
+  _CurrentpageRecords: any;
   CurrentPageNo: number = 1;
-  arr:any = [];
+  arr: any = [];
 
-  dar_details(){
+  dar_details() {
     this.noTimeline = false;
-    this.ObjSubTaskDTO.MasterCode=this.URL_ProjectCode;
-    this.ObjSubTaskDTO.PageNumber=1;
-    this.ObjSubTaskDTO.PageSize=10;
+    this.ObjSubTaskDTO.MasterCode = this.URL_ProjectCode;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
-    .subscribe(data1 => {          
-            this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-            this.arr=this.darList;
-            // alert(1);
-            this.totalHours = (data1[0]['Totalhours']);
-            this.totalRecords= (data1[0]['TotalRecords']);
-            if(this.darList == null){
-              this.noTimeline =true;
-            }
-            if(this.darList){
-              this._CurrentpageRecords=this.darList.length;
-            }
+      .subscribe(data1 => {
+        this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+        this.arr = this.darList;
+        // alert(1);
+        this.totalHours = (data1[0]['Totalhours']);
+        this.totalRecords = (data1[0]['TotalRecords']);
+        if (this.darList == null) {
+          this.noTimeline = true;
+        }
+        if (this.darList) {
+          this._CurrentpageRecords = this.darList.length;
+        }
 
-    //       var threshold = 3;
-    //       $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-      
-    //     //alert("test");
-    //       if ($("div.item-b").children().not(".show1").length > threshold) {
-    //         $(".show1.more").css("display", "block");
-    //       }
-        
-    //       $(".show1.more").on("click", function() {
-    //         $(this).parent().children().not(".show1").css("display", "block");
-    //         $(this).parent().find(".show1.less").css("display", "block");
-    //         $(this).hide();
-    //       });
+        //       var threshold = 3;
+        //       $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
 
-          
-    //       $(".show1.less").on("click", function() {
-    //         $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-    //         $(this).parent().find(".show1.more").css("display", "block");
-    //         $(this).hide();
-    //       });
-    });         
+        //     //alert("test");
+        //       if ($("div.item-b").children().not(".show1").length > threshold) {
+        //         $(".show1.more").css("display", "block");
+        //       }
+
+        //       $(".show1.more").on("click", function() {
+        //         $(this).parent().children().not(".show1").css("display", "block");
+        //         $(this).parent().find(".show1.less").css("display", "block");
+        //         $(this).hide();
+        //       });
+
+
+        //       $(".show1.less").on("click", function() {
+        //         $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
+        //         $(this).parent().find(".show1.more").css("display", "block");
+        //         $(this).hide();
+        //       });
+      });
   }
 
-  loadMore(){
-    this.ObjSubTaskDTO.MasterCode=this.URL_ProjectCode;
-    this.ObjSubTaskDTO.PageNumber=this.CurrentPageNo;
-    this.ObjSubTaskDTO.PageSize=10;
+  loadMore() {
+    this.ObjSubTaskDTO.MasterCode = this.URL_ProjectCode;
+    this.ObjSubTaskDTO.PageNumber = this.CurrentPageNo;
+    this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
-    .subscribe(data1 => {
-            this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
- 
-            this.darList.forEach(element => {
-                this.arr.push(element);
-            });
+      .subscribe(data1 => {
+        this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+        this.darList.forEach(element => {
+          this.arr.push(element);
+        });
 
-            if(this.darList){
-              this._CurrentpageRecords=this.darList.length;
-            }
-    });
+        if (this.darList) {
+          this._CurrentpageRecords = this.darList.length;
+        }
+      });
   }
 
-  workdes:string;
-  starttime:any;
-  endtime:any;
-  timecount:any;
+  workdes: string;
+  starttime: any;
+  endtime: any;
+  timecount: any;
   current_Date: any;
-  objProjectDto : ProjectDetailsDTO;
+  objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
 
-  
-diff_minutes(dt2, dt1)
-{
- var diff =(dt2.getTime() - dt1.getTime()) / 1000;
- diff /= 60;
- return Math.abs(Math.round(diff));
-}
+  diff_minutes(dt2, dt1) {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60;
+    return Math.abs(Math.round(diff));
+  }
 
-minutes: any;
-hours:any;
-temp:any;
-end:boolean=true;
+  minutes: any;
+  hours: any;
+  temp: any;
+  end: boolean = true;
 
-  submitDar(){
-          
-    if(this.starttime!=null && this.endtime!=null){
+  submitDar() {
+
+    if (this.starttime != null && this.endtime != null) {
       const [shours, sminutes] = this.starttime.split(':');
-      const [ehours, eminutes] = this.endtime.split(':');          
+      const [ehours, eminutes] = this.endtime.split(':');
 
-        var  dt1 = new Date(2014,10,2,shours,sminutes);
-        var  dt2 = new Date(2014,10,2,ehours,eminutes);        
-        this.minutes = this.diff_minutes(dt1,dt2)%60;
-         if(this.minutes<10){
-           this.minutes="0"+this.minutes
-         }
-                  
-        this.hours=Math.floor(this.diff_minutes(dt1,dt2) / 60);
-          if(this.hours<10){
-            this.hours="0"+this.hours;
-          }
-         this.timecount=(this.hours+":"+this.minutes);                   
+      var dt1 = new Date(2014, 10, 2, shours, sminutes);
+      var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+      this.minutes = this.diff_minutes(dt1, dt2) % 60;
+      if (this.minutes < 10) {
+        this.minutes = "0" + this.minutes
+      }
+      this.hours = Math.floor(this.diff_minutes(dt1, dt2) / 60);
+      if (this.hours < 10) {
+        this.hours = "0" + this.hours;
+      }
+      this.timecount = (this.hours + ":" + this.minutes);
     }
 
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Exec_BlockName=this.ProjectBlockName; 
-    this.objProjectDto.StartTime=this.starttime;
-    this.objProjectDto.EndTime=this.endtime;
-    this.objProjectDto.TimeCount=this.timecount;
-    this.current_Date=this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-    this.objProjectDto.date=this.current_Date;
-    this.objProjectDto.WorkAchieved=this.workdes;
+    this.objProjectDto.Emp_No = this.Current_user_ID;
+    this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
+    this.objProjectDto.StartTime = this.starttime;
+    this.objProjectDto.EndTime = this.endtime;
+    this.objProjectDto.TimeCount = this.timecount;
+    this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+    this.objProjectDto.date = this.current_Date;
+    this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if(this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List'){
-      this.objProjectDto.Project_Name=this.ProjectName;
-      this.objProjectDto.Master_code = this.URL_ProjectCode;      
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+      this.objProjectDto.Project_Name = this.ProjectName;
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
-    else{
+    else {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.actionCode;   
+      this.objProjectDto.Project_Code = this.actionCode;
     }
 
     this.service._InsertDARServie(this.objProjectDto)
-    .subscribe(data => {
-            this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message,"Success");            
-            // console.log(this._Message);
-    });
+      .subscribe(data => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "Success");
+        // console.log(this._Message);
+      });
     // console.log(this.Comp_No,this.URL_ProjectCode,this.actionCode,this.inProcessCount,this.actionName,"testingDar");
     this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -330,12 +327,11 @@ end:boolean=true;
     this.Clear_Feilds();
   }
 
-  time_convert(num)
- { 
-  var hours = Math.floor(num / 60);  
-  var minutes = num % 60;
-  return hours + ":" + minutes;         
-}
+  time_convert(num) {
+    var hours = Math.floor(num / 60);
+    var minutes = num % 60;
+    return hours + ":" + minutes;
+  }
 
   CoreSecodaryCharts() {
     //this.TaskChart();
@@ -369,7 +365,7 @@ end:boolean=true;
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
-    alert(this.Sub_ProjectCode);  
+    alert(this.Sub_ProjectCode);
     this.Sub_Desc = item.Project_Description;
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
@@ -437,8 +433,8 @@ end:boolean=true;
   StandardDuration: any;
   ProjectBlockName: any;
   Status: any;
-  Pid:number;
-  Comp_No:string;
+  Pid: number;
+  Comp_No: string;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -505,11 +501,11 @@ end:boolean=true;
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if(this.Status == 'New Project Rejected'){
-            this.actionButton=true;
+          if (this.Status == 'New Project Rejected') {
+            this.actionButton = true;
           }
-          if(this.Status== 'ToDo Completed' || this.Status== 'Completed'){
-            this.darbutton=false;
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed') {
+            this.darbutton = false;
           }
 
         }
@@ -521,8 +517,7 @@ end:boolean=true;
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
-        this.standardDuration= (data2[0]['DurationTime']);
-
+        this.standardDuration = (data2[0]['DurationTime']);
       });
   }
 
@@ -2374,18 +2369,18 @@ end:boolean=true;
   }
 
   AttachmentList: any;
-  attachmentlength:any;
-   TotalDocs: number;
+  attachmentlength: any;
+  TotalDocs: number;
 
   getAttachments() {
-    this.noFiles=false;
+    this.noFiles = false;
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
-      .subscribe((data) => {       
+      .subscribe((data) => {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-        this.attachmentlength=this.AttachmentList.length;
-        this.TotalDocs=(data[0]['TotalDocs']);
-        if(this.TotalDocs==0)
-          this.noFiles=true;
+        this.attachmentlength = this.AttachmentList.length;
+        this.TotalDocs = (data[0]['TotalDocs']);
+        if (this.TotalDocs == 0)
+          this.noFiles = true;
         // console.log(this.TotalDocs,this.AttachmentList.length);            
         // console.log("Attachments---->", this.AttachmentList);
       });
@@ -2416,7 +2411,7 @@ end:boolean=true;
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
     window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
     window.open(proofDoc);
-    
+
   }
 
   openPDF(cd_date, docName) {
@@ -2477,7 +2472,7 @@ end:boolean=true;
       });
   }
 
-  selectedAction:any;
+  selectedAction: any;
 
   ActionOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
@@ -2508,26 +2503,26 @@ end:boolean=true;
           this._inputAttachments = "";
           this.GetSubtask_Details();
           this.GetProjectDetails();
-      // Rebinding    
-              
+          // Rebinding    
+
           this.notifyService.showInfo("Successfully Updated", '');
-          this.closeInfo(); 
-                   
-    });
+          this.closeInfo();
+
+        });
     }
   }
 
   OnTabTask_Click() {
     this.GetSubtask_Details();
   }
-  OnOverview_Click(){
+  OnOverview_Click() {
     this.GetSubtask_Details();
   }
 
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
-  
+
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
@@ -2546,14 +2541,14 @@ end:boolean=true;
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
 
-  _modelProjAlloc: number =0;
-  OnEditProject_Alloc(id, allocated){
+  _modelProjAlloc: number = 0;
+  OnEditProject_Alloc(id, allocated) {
     this._modelProjAlloc = allocated;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
-    
+
   }
 
   onCancel(id) {
@@ -2587,7 +2582,7 @@ end:boolean=true;
 
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID,this._modelProjAlloc).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID, this._modelProjAlloc).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
@@ -2677,18 +2672,18 @@ end:boolean=true;
             title: 'Unable To Complete This Project !!',
             text: 'SubTask Status Are In Rejected or Pending ?',
             // icon: 'warning',
-            showCancelButton: true       
+            showCancelButton: true
           });
         }
         else {
-        // applying sidebar from mysideInfobar_ProjectsUpdate in html
-        document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
-        // placing the backgorund dim on opening sidebar
-        document.getElementById("rightbar-overlay").style.display = "block";
-        // Fixing the scrollbar for sidebar
-        document.getElementById("moredet").classList.add("position-fixed");
-        document.getElementById("mysideInfobar").style.width = "0px";
-        document.getElementById("mysideInfobar_Update").style.width = "0px";
+          // applying sidebar from mysideInfobar_ProjectsUpdate in html
+          document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
+          // placing the backgorund dim on opening sidebar
+          document.getElementById("rightbar-overlay").style.display = "block";
+          // Fixing the scrollbar for sidebar
+          document.getElementById("moredet").classList.add("position-fixed");
+          document.getElementById("mysideInfobar").style.width = "0px";
+          document.getElementById("mysideInfobar_Update").style.width = "0px";
         }
       });
   }
@@ -2712,14 +2707,14 @@ end:boolean=true;
     this.selected_Employee = [];
     this.selectedFile = " ";
     $('#uploadFile').val('');
-    $('#_upload').html('Select a file'); 
+    $('#_upload').html('Select a file');
     $('#_pdf').val('');
     $('#upload').html('Select a file');
-    this.actionCode=null;
-    this.workdes="";
-    this.current_Date=null;
-    this.starttime=null;
-    this.endtime=null;
+    this.actionCode = null;
+    this.workdes = "";
+    this.current_Date = null;
+    this.starttime = null;
+    this.endtime = null;
     // $("err").html("");
   }
 
@@ -2769,15 +2764,15 @@ end:boolean=true;
 
   async CallOnSubmitAction() {
     //  console.log('A');
-  let a= await this.GetSubtask_Details();
-  let b =await this.GetProjectDetails();
+    let a = await this.GetSubtask_Details();
+    let b = await this.GetProjectDetails();
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }
-  coresecondary:boolean=true;
-  darcreate(){   
-    if(this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List'){
-      this.coresecondary=false;
+  coresecondary: boolean = true;
+  darcreate() {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+      this.coresecondary = false;
     }
 
     document.getElementById("moredet").classList.add("position-fixed");
@@ -2785,12 +2780,12 @@ end:boolean=true;
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  closedarBar(){    
+  closedarBar() {
     // alert(this.actionName);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
-    this.notifyService.showError("Cancelled",'');
+    this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
   }
 }
