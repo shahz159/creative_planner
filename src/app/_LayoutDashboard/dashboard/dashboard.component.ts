@@ -17,6 +17,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 import { CalendarOptions } from '@fullcalendar/angular';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class DashboardComponent implements OnInit {
   projectactivity_Div: boolean;
   DARactivity_Div: boolean;
   _subtaskDiv: boolean;
-
+  typetext:string;
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
   Current_user_ID: any;
@@ -45,7 +46,8 @@ export class DashboardComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
   _ActualProjectList = [];
   _CalendarProjectsList = {};
-
+  disablePreviousDate = new Date();
+ 
 
 
   constructor(public service: ProjectTypeService,
@@ -56,6 +58,7 @@ export class DashboardComponent implements OnInit {
   ) {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    
   }
 
 
@@ -87,14 +90,18 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").style.width = "0";    
 
   }
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    
+  }
   _objStatusDTO: StatusDTO;
 
   ngOnInit() {
     //----Adding One Day---for Date Concept----//
     // var date = new Date();
     // date.setDate(date.getDate() + 1);
-
-
+ 
+  this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+    this.typetext="This Project consists of Core/Secondary Projects";
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.CurrentUser_fullname = localStorage.getItem("UserfullName");
     // this.notifyService.showInfo(this.CurrentUser_fullname + ' ' + ' ', 'Login By :');
@@ -639,6 +646,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showcore(){
+    this.typetext="This Project consists of Core/Secondary Projects";
     document.getElementById("core_viw").classList.add("show");
     document.getElementById("stan_viw").classList.remove("show");
     document.getElementById("sec_viw").classList.remove("show");
@@ -650,6 +658,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showstan(){
+    this.typetext="This Project consists of Standard/Routine Task";
     document.getElementById("stan_viw").classList.add("show");
     document.getElementById("sec_viw").classList.remove("show");
     document.getElementById("core_viw").classList.remove("show");
@@ -659,6 +668,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("sec_tab").classList.remove("btn-light-primary");
   }
   showsec(){
+    this.typetext="This Project consists of ToDo Task";
     document.getElementById("sec_viw").classList.add("show");
     document.getElementById("core_viw").classList.remove("show");
     document.getElementById("stan_viw").classList.remove("show");

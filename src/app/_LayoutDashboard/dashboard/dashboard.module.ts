@@ -6,6 +6,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -31,7 +32,8 @@ FullCalendarModule.registerPlugins([
     FormsModule,
     DashboardRoutingModule,
     FullCalendarModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    MatDatepickerModule
   ],
   exports:[DashboardComponent]
 })
