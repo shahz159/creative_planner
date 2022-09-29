@@ -2172,7 +2172,19 @@
             </div>
             <div class="form-group">
                 <label>Start Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="starttim" type="time" id="time-start" [(ngModel)]="starttime">
+                <input class="form-control" name="starttim" type="time" value="08:00:00"  id="time-start" [(ngModel)]="starttime"  data-toggle="dropdown">
+                <div class="dropdown-menu scrollbar1" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item">00:00</a><a class="dropdown-item">00:30</a><a class="dropdown-item">01:00</a><a class="dropdown-item">01:30</a><a class="dropdown-item">02:00</a><a class="dropdown-item">02:30</a>
+                    <a class="dropdown-item">03:00</a><a class="dropdown-item">03:30</a>
+                    <a class="dropdown-item">04:00</a><a class="dropdown-item">04:30</a><a class="dropdown-item">05:00</a><a class="dropdown-item">05:30</a><a class="dropdown-item">06:00</a><a class="dropdown-item">06:30</a>
+                    <a class="dropdown-item">07:00</a><a class="dropdown-item">07:30</a><a class="dropdown-item">08:00</a><a class="dropdown-item">08:30</a><a class="dropdown-item">09:00</a><a class="dropdown-item">09:30</a>
+                    <a class="dropdown-item">10:00</a><a class="dropdown-item">10:30</a><a class="dropdown-item">11:00</a><a class="dropdown-item">11:30</a><a class="dropdown-item">12:00</a><a class="dropdown-item">12:30</a>
+                    <a class="dropdown-item">13:00</a><a class="dropdown-item">13:30</a><a class="dropdown-item">14:00</a><a class="dropdown-item">14:30</a><a class="dropdown-item">15:00</a><a class="dropdown-item">15:30</a>
+                    <a class="dropdown-item">16:00</a><a class="dropdown-item">16:30</a><a class="dropdown-item">17:00</a><a class="dropdown-item">17:30</a><a class="dropdown-item">18:00</a><a class="dropdown-item">18:30</a>
+                    <a class="dropdown-item">19:00</a><a class="dropdown-item">19:30</a><a class="dropdown-item">20:00</a><a class="dropdown-item">20:30</a><a class="dropdown-item">21:00</a><a class="dropdown-item">21:30</a>
+                    <a class="dropdown-item">22:00</a><a class="dropdown-item">22:30</a><a class="dropdown-item">23:00</a><a class="dropdown-item">23:30</a>                    
+                </div>
+                
                 <!-- <input class="form-control" type="datetime-local"  value="13:45:00" value="2011-08-19T13:45:00" id="datetime-start"> -->
             </div>
             <div class="form-group">
