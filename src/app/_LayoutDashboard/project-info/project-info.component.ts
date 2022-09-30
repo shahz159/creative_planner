@@ -505,7 +505,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         // this.GetSubtask_Details();
         // this.GetProjectsByUserName();
         this.fun_LoadProjectDetails();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No,null).subscribe(
           (data) => {
             let list: any;
             list = JSON.parse(data[0]['ProjectInfo']);

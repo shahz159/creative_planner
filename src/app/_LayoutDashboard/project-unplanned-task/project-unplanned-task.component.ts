@@ -88,7 +88,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.GetAssignFormEmployeeDropdownList();
     
     // <<<<<<< HEAD
-    window.onload = () => {
+    
       tippy('#tippy1', {
         content: "Runway Tasks!!",
         arrow: true,
@@ -100,8 +100,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // trigger: 'click',
         // delay: [1000, 200]
       });
-
+      
       tippy('#tippy2', {
+        content: "Add Category!",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -112,8 +113,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // delay: [1000, 200]
       });
 
-      tippy('.tippy4', {
-        content: "Enter Rack Name",
+      tippy('#tippy3', {
+        content: "Add Task!",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -135,7 +136,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // trigger: 'click',
         // delay: [1000, 200]
       });
-    }
+    
 
     //   window.onload = () => {
     //   tippy('#tippy1', {

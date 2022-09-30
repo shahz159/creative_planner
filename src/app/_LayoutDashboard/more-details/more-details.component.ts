@@ -4,7 +4,6 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
 import { Router } from '@angular/router';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -18,15 +17,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
-import { Tooltip } from 'chart.js';
 import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 am4core.useTheme(am4themes_animated);
 import Swal from 'sweetalert2';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
-import { formatDate } from '@fullcalendar/angular';
 import { DatePipe } from '@angular/common';
-import { Time } from '@amcharts/amcharts5/.internal/core/util/Animation';
+import { getDateMeta } from '@fullcalendar/angular';
 
 
 @Component({
@@ -62,7 +59,6 @@ export class MoreDetailsComponent implements OnInit {
   standardDuration: any;
   totalPercent: number = 1;
   SubmissionName: string;
-  noRecords: boolean = false;
   noMilestones: boolean = true;
   noFiles: boolean = true;
   noTimeline: boolean;
@@ -88,51 +84,27 @@ export class MoreDetailsComponent implements OnInit {
       this._MasterCode = pcode;
 
       this.dar_details();
+      this.GetProjectDetails();
 
       let data1: any;
       this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
         .subscribe(data => {
-          // console.log("data1 Testong---->", data);
           data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
           this.DarGraphDataList = data1;
-          // console.log(this.DarGraphDataList);
         });
 
-      // this.service._GetDARbyMasterCode(this.URL_ProjectCode)
-      // .subscribe(data1 => {this.totalRecords= (data1[0]['TotalRecords']);});
-
-      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
+      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          // console.log(this.noRecords);
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-          // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
-
-
-          // console.log(this.actionResponsibles,"test");
-          // for(var val of this.Subtask_Res_List){
-          //   this.actionResponsibles = this.Subtask_Res_List[val]['TM_DisplayName'];
-          // }
-
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
-          // console.log(this.totalSubtaskHours,"Total subhours");
-          if ((this.Subtask_List == '') && (this.CompletedList == '')) {
-            this.noRecords = true;
-            // console.log(this.noRecords);
-          }
-          if (this.Subtask_List == '') {
-            this.noInprocess = true;
-          }
-          if (this.CompletedList == '') {
-            this.noCompleted = true;
-          }
+        
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
-          //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     });
 
@@ -148,12 +120,9 @@ export class MoreDetailsComponent implements OnInit {
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
               this.attachmentlength = this.AttachmentList.length;
               this.TotalDocs = (data[0]['TotalDocs']);
-
             });
         }
       });
-
-    this.GetProjectDetails();
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
@@ -207,33 +176,12 @@ export class MoreDetailsComponent implements OnInit {
         // alert(1);
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
-        if (this.darList == null) {
-          this.noTimeline = true;
+        if (this.darList.length == 0) {
+          this.noTimeline = true;          
         }
         if (this.darList) {
           this._CurrentpageRecords = this.darList.length;
-        }
-
-        //       var threshold = 3;
-        //       $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-
-        //     //alert("test");
-        //       if ($("div.item-b").children().not(".show1").length > threshold) {
-        //         $(".show1.more").css("display", "block");
-        //       }
-
-        //       $(".show1.more").on("click", function() {
-        //         $(this).parent().children().not(".show1").css("display", "block");
-        //         $(this).parent().find(".show1.less").css("display", "block");
-        //         $(this).hide();
-        //       });
-
-
-        //       $(".show1.less").on("click", function() {
-        //         $(this).parent().children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-        //         $(this).parent().find(".show1.more").css("display", "block");
-        //         $(this).hide();
-        //       });
+        }        
       });
   }
 
@@ -258,7 +206,7 @@ export class MoreDetailsComponent implements OnInit {
   starttime: any;
   endtime: any;
   timecount: any;
-  current_Date: any;
+  current_Date: any =new Date();
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
@@ -365,7 +313,7 @@ export class MoreDetailsComponent implements OnInit {
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
-    alert(this.Sub_ProjectCode);
+    // alert(this.Sub_ProjectCode);
     this.Sub_Desc = item.Project_Description;
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
@@ -2440,37 +2388,74 @@ export class MoreDetailsComponent implements OnInit {
 
   Subtask_List: any;
   CompletedList: any;
-  noInprocess: boolean = false;
-  noCompleted: boolean = false;
   inProcessCount: number;
   completedCount: number;
   subTaskCount: number;
+  empDropdown:any =[];
+  dropdownSettings_Employee={};
+  selectedEmp:string;
 
   GetSubtask_Details() {
-    this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null).subscribe(
-      (data) => {
-        // console.log(this.noRecords);
-        this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-        this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-        // console.log("Completed--------->", this.CompletedList, this.Subtask_List);
-        this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-        // console.log(this.Subtask_Res_List);
-        if ((this.Subtask_List == '') && (this.CompletedList == '')) {
-          this.noRecords = true;
-          // console.log(this.noRecords);
-        }
-        if (this.Subtask_List == '') {
-          this.noInprocess = true;
-        }
-        if (this.CompletedList == '') {
-          this.noCompleted = true;
-        }
-        this.inProcessCount = this.Subtask_List.length;
-        this.completedCount = this.CompletedList.length;
-        this.subTaskCount = this.inProcessCount + this.completedCount;
-        // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
-      });
+    if(this.filteredemp==true){
+      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
+        (data) => {
+          this.Subtask_List = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+          this.CompletedList = JSON.parse(data[0]['Json_ResponsibleCompleted']);          
+          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+  
+          this.inProcessCount = this.Subtask_List.length;
+          this.completedCount = this.CompletedList.length;
+          this.subTaskCount = this.inProcessCount + this.completedCount;
+           console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+        });
+    }
+
+    else if(this.filteredemp==false){
+      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
+        (data) => {
+          this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+          console.log(this.Subtask_List);
+        //SubTasks Multiselect start
+          this.dropdownSettings_Employee = {
+            singleSelection: true,
+            idField: 'Team_Res',
+            textField: 'TM_DisplayName',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 1,
+            allowSearchFilter: true
+          };
+          this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());          // console.log(this.empDropdown);
+        //SubTasks Multiselect End
+
+          this.inProcessCount = this.Subtask_List.length;
+          this.completedCount = this.CompletedList.length;
+          this.subTaskCount = this.inProcessCount + this.completedCount;
+          console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+        });
+    }   
   }
+
+  selectedEmployee: string;
+  filteredemp:boolean = false;
+
+  EmpOnselect(obj) {
+    this.filteredemp=true;
+    this.selectedEmployee = obj['Team_Res'];
+    // console.log(this.selectedEmployee);
+    this.GetSubtask_Details();
+  }
+
+  EmpOnDeselect() {
+    this.filteredemp=false;
+    this.selectedEmployee = null;
+    this.GetSubtask_Details();
+  }
+
+
+
 
   selectedAction: any;
 
@@ -2587,7 +2572,7 @@ export class MoreDetailsComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
         // this.GetProjectsByUserName();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
           (data) => {
             let list: any;
             list = JSON.parse(data[0]['ProjectInfo']);
@@ -2781,7 +2766,6 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-    // alert(this.actionName);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";

@@ -328,9 +328,10 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   // New Subtask Page
-  SubTaskDetailsService_ToDo_Page(prjCode, compCode) {
+  SubTaskDetailsService_ToDo_Page(prjCode, compCode, empno) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Comp_No = compCode;
+    this.ObjSubTaskDTO.Emp_No = empno;
 
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
