@@ -14,6 +14,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
+
 @NgModule({
   declarations: [MoreDetailsComponent],
   imports: [

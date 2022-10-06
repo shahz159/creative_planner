@@ -328,9 +328,10 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   // New Subtask Page
-  SubTaskDetailsService_ToDo_Page(prjCode, compCode) {
+  SubTaskDetailsService_ToDo_Page(prjCode, compCode, empno) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Comp_No = compCode;
+    this.ObjSubTaskDTO.Emp_No = empno;
 
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
@@ -538,6 +539,12 @@ export class ProjectTypeService {
     this.ObjDto.Master_code = obj.Master_code;
     
     return this.http.post(this.rootUrl + "TestAPI/NewInsertDAR", this.ObjDto);
+  }
+
+  _GetTimeforDar(empid, date) {
+    this.ObjDto.Emp_No = empid;
+    this.ObjDto.date = date;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimeForDarService", this.ObjDto);
   }
 
   ObjCategoryDTO: CategoryDTO;

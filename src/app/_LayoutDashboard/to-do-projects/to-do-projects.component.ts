@@ -287,7 +287,7 @@ export class ToDoProjectsComponent implements OnInit {
 
  GetSubtask_Details() {
      
-   this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
+   this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No, null).subscribe(
        (data) => {
         
         this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
@@ -732,7 +732,7 @@ export class ToDoProjectsComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
         this.GetProjectsByUserName();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
           (data) => {
             let list: any;
             list = JSON.parse(data[0]['ProjectInfo']);

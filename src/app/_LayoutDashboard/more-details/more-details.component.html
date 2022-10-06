@@ -923,10 +923,14 @@
 
                     <!-- SubTasks Section -->
                     <div class="tab-pane fade" id="Tasks" role="tabpanel" aria-labelledby="Tasks1">
-
+                        <div class="mult-div" *ngIf="subTaskCount!=0">
+                            <ng-multiselect-dropdown class="mutlidropdown-set" [placeholder]="' All      '"
+                                [settings]="dropdownSettings_Employee" [data]="empDropdown" [(ngModel)]="selectedEmp"
+                                (onSelect)="EmpOnselect($event)" (onDeSelect)="EmpOnDeselect()">
+                            </ng-multiselect-dropdown>
+                        </div>
                         <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist"
-                            *ngIf="noRecords == false; else noResultsFound">
-                            <!-- <li><h4 *ngIf="noRecords == true">No Records Found.</h4></li> -->
+                            *ngIf="subTaskCount!=0; else noResultsFound">
                             <li class="nav-item">
                                 <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
                                     <span class="nav-text">Actions</span>
@@ -943,26 +947,20 @@
                         <div class="tab-content" id="task-tabbview">
                             <div class="tab-pane fade show active" id="tasks_1" role="tabpanel"
                                 aria-labelledby="tasks-1">
-
-
                                 <div class="tasks_views">
-
-
-
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
-
-                                        <div class="ribbon-info ribbon float-start" *ngIf="noInprocess == false"
+                                        <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
-                                            <button *ngIf="noInprocess == false" (click)="sweetAlert()"
+                                            <button *ngIf="inProcessCount!=0" (click)="sweetAlert()"
                                                 [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                     class="fas fa-plus mr-2"></i>New Action</button>
                                         </div>
 
-                                        <div class="ribbon-content scrollbar1" *ngIf="noInprocess == false">
+                                        <div class="ribbon-content scrollbar1" *ngIf="inProcessCount!=0">
                                             <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                                 [ngClass]="{'bg-custom': item.Team_Autho==Current_user_ID}">
 
@@ -1137,17 +1135,17 @@
                                         </div>
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
-                                        <div class="ribbon-success  ribbon float-start" *ngIf="noCompleted == false"
+                                        <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
-                                            <button *ngIf="noInprocess == true && noCompleted == false"
+                                            <button *ngIf="inProcessCount!=0 && completedCount!=0"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                     class="fas fa-plus mr-2"></i>New Action</button>
                                         </div>
-                                        <div class="ribbon-content scrollbar1" *ngIf="noCompleted == false">
+                                        <div class="ribbon-content scrollbar1" *ngIf="completedCount !=0">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
                                             <div class="subtask-list" *ngFor="let item of CompletedList">
                                                 <div class="col-lg-11">
@@ -1370,7 +1368,7 @@
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
                             <div class="kt-container w-100 px-0">
                                 <div class="kt-subheader__main"> -->
-                        <h3 class="kt-subheader__title" *ngIf="AttachmentList; else noResultsFound">Files</h3>
+                        <h3 class="kt-subheader__title" *ngIf="attachmentlength!=0; else noResultsFound">Files</h3>
                         <!-- <h4 class="kt-subheader__title" *ngIf="noFiles == true">No Records Found.</h4> -->
                         <!-- </div>
                             </div>
@@ -1441,14 +1439,14 @@
                     <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
-                        <div class="text-right mb-3" *ngIf="darbutton==true">
+                        <div class="text-left mb-3" *ngIf="darbutton==true">
                             <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
                                 Create Work
                             </button>
                         </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div>
-                                <div class="d-flex-right mb-2">
+                                <div class="text-right mb-2">
                                     <h6 style="text-align:right"><strong>Total Achievement Hours -
                                             {{totalHours}}</strong></h6>
                                 </div>
@@ -2162,7 +2160,7 @@
                 <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
                 <div class="input-group">
                     <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()"
-                        [min]="disablePreviousDate" [(ngModel)]="current_Date" placeholder="Select Date"
+                        [min]="disablePreviousDate" [max]="todayDate" [(ngModel)]="current_Date" placeholder="Select Date"
                         class="form-control" name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -2172,25 +2170,71 @@
             </div>
             <div class="form-group">
                 <label>Start Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="starttim" type="time"   id="time-start" [(ngModel)]="starttime" >
-                <!-- <div class="dropdown-menu scrollbar1" aria-labelledby="dropdownMenuButton"> value="08:00:00" data-toggle="dropdown"
-                    <a class="dropdown-item">00:00</a><a class="dropdown-item">00:30</a><a class="dropdown-item">01:00</a><a class="dropdown-item">01:30</a><a class="dropdown-item">02:00</a><a class="dropdown-item">02:30</a>
-                    <a class="dropdown-item">03:00</a><a class="dropdown-item">03:30</a>
-                    <a class="dropdown-item">04:00</a><a class="dropdown-item">04:30</a><a class="dropdown-item">05:00</a><a class="dropdown-item">05:30</a><a class="dropdown-item">06:00</a><a class="dropdown-item">06:30</a>
-                    <a class="dropdown-item">07:00</a><a class="dropdown-item">07:30</a><a class="dropdown-item">08:00</a><a class="dropdown-item">08:30</a><a class="dropdown-item">09:00</a><a class="dropdown-item">09:30</a>
-                    <a class="dropdown-item">10:00</a><a class="dropdown-item">10:30</a><a class="dropdown-item">11:00</a><a class="dropdown-item">11:30</a><a class="dropdown-item">12:00</a><a class="dropdown-item">12:30</a>
-                    <a class="dropdown-item">13:00</a><a class="dropdown-item">13:30</a><a class="dropdown-item">14:00</a><a class="dropdown-item">14:30</a><a class="dropdown-item">15:00</a><a class="dropdown-item">15:30</a>
-                    <a class="dropdown-item">16:00</a><a class="dropdown-item">16:30</a><a class="dropdown-item">17:00</a><a class="dropdown-item">17:30</a><a class="dropdown-item">18:00</a><a class="dropdown-item">18:30</a>
-                    <a class="dropdown-item">19:00</a><a class="dropdown-item">19:30</a><a class="dropdown-item">20:00</a><a class="dropdown-item">20:30</a><a class="dropdown-item">21:00</a><a class="dropdown-item">21:30</a>
-                    <a class="dropdown-item">22:00</a><a class="dropdown-item">22:30</a><a class="dropdown-item">23:00</a><a class="dropdown-item">23:30</a>                    
+                <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                    [(ngModel)]="starttime">                    
+                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
+                        <a *ngIf="i!=10 && i!=11">{{item}}</a>
+                        <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                    </ng-option>
+                </ng-select>
+
+
+                <!-- <div class="dropdown-menu scrollbar12"  aria-labelledby="dropdownMenuButton">
+                    <input class="form-control" name="starttim" (click)="time()" type="time" id="time-start" [(ngModel)]="starttime"  data-toggle="dropdown">
+                    <a class="dropdown-item" *ngFor="let item of timedata">{{item.hh}}:{{item.mm}}</a>
                 </div> -->
-                
-                <!-- <input class="form-control" type="datetime-local"  value="13:45:00" value="2011-08-19T13:45:00" id="datetime-start"> -->
+                <!-- <div class="dropdown-menu scrollbar12" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item">00:00</a><a class="dropdown-item">00:30</a><a
+                        class="dropdown-item">01:00</a><a class="dropdown-item">01:30</a><a
+                        class="dropdown-item">02:00</a><a class="dropdown-item">02:30</a>
+                    <a class="dropdown-item">03:00</a><a class="dropdown-item">03:30</a>
+                    <a class="dropdown-item">04:00</a><a class="dropdown-item">04:30</a><a
+                        class="dropdown-item">05:00</a><a class="dropdown-item">05:30</a><a
+                        class="dropdown-item">06:00</a><a class="dropdown-item">06:30</a>
+                    <a class="dropdown-item">07:00</a><a class="dropdown-item">07:30</a><a
+                        class="dropdown-item">08:00</a><a class="dropdown-item">08:30</a><a
+                        class="dropdown-item">09:00</a><a class="dropdown-item">09:30</a>
+                    <a class="dropdown-item">10:00</a><a class="dropdown-item">10:30</a><a
+                        class="dropdown-item">11:00</a><a class="dropdown-item">11:30</a><a
+                        class="dropdown-item">12:00</a><a class="dropdown-item">12:30</a>
+                    <a class="dropdown-item">13:00</a><a class="dropdown-item">13:30</a><a
+                        class="dropdown-item">14:00</a><a class="dropdown-item">14:30</a><a
+                        class="dropdown-item">15:00</a><a class="dropdown-item">15:30</a>
+                    <a class="dropdown-item">16:00</a><a class="dropdown-item">16:30</a><a
+                        class="dropdown-item">17:00</a><a class="dropdown-item">17:30</a><a
+                        class="dropdown-item">18:00</a><a class="dropdown-item">18:30</a>
+                    <a class="dropdown-item">19:00</a><a class="dropdown-item">19:30</a><a
+                        class="dropdown-item">20:00</a><a class="dropdown-item">20:30</a><a
+                        class="dropdown-item">21:00</a><a class="dropdown-item">21:30</a>
+                    <a class="dropdown-item">22:00</a><a class="dropdown-item">22:30</a><a
+                        class="dropdown-item">23:00</a><a class="dropdown-item">23:30</a>
+                </div> -->
             </div>
-            <div class="form-group">
+
+            <!-- <div class="form-group">
                 <label>End Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime">
-                <span style="color:red" id="err" *ngIf="(endtime < starttime)">Please enter valid End Time!</span>
+                <ng-select name="endtim" (click)="time();getDarTime()" placeholder="Select End Time" id="time-end"
+                [(ngModel)]="endtime">
+                    <ng-container *ngFor="let item of timedata; let i=index">
+                        <ng-option [value]="item" *ngFor="let time of endtimearr; let j=index" [disabled]="i==20 || i==21 || i==22 || i==23">
+                            <a *ngIf="i!=20 && i!=21 && i!=22 && i!=23">{{item.hh}}:{{item.mm}}</a>
+                            <a *ngIf="i==20 || i==21 || i==22 || i==23">{{item.hh}}:{{item.mm}}--&nbsp;&nbsp;(Lunch Break)</a>
+                        </ng-option>
+                    </ng-container>
+                </ng-select>                
+            </div> -->
+            <div class="form-group" >
+                <label>End Time<span class="text-danger">*</span></label>
+                <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" (click)="getDarTime()"
+                [(ngModel)]="endtime">
+                <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
+                    <!--  -->
+                    <a *ngIf="i!=10 && i!=11">{{item}}</a>
+                    <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                </ng-option>
+                </ng-select>
+                <!-- <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime"> -->
+                <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start time!!</span>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
