@@ -93,7 +93,7 @@
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox" >
+                                                            <label class="kt-checkbox">
 
                                                                 <!-- <mat-checkbox class="example-margin" color="primary"
                                                                 (change)="isTypeChecked(item)"
@@ -102,7 +102,7 @@
                                                                 </mat-checkbox> -->
                                                                 <!-- value="item.id" [attr.checked]="item.mode.indexOf(m.id) > -1 ? true : null"> -->
                                                                 <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                    [(ngModel)]="item.checked" >
+                                                                    [(ngModel)]="item.checked">
                                                                 {{item.Exec_BlockName}}
                                                                 <span></span>
                                                             </label>
@@ -223,6 +223,7 @@
                                                     <th><strong>Employee</strong></th>
                                                     <th><strong>Start Date</strong></th>
                                                     <th><strong>End Date</strong></th>
+                                                    <th>Last Worked</th>
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
@@ -230,26 +231,30 @@
                                                 <tr *ngFor="let item of _AssignedProjectsList; let i=index">
                                                     <!-- Project details info column -->
                                                     <td class="kt-widget__title mb-0 ">
-                                                        <a data-toggle="tooltip" title="Project Details!" class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
-                                                        (click)="openInfo(item.Project_Code,item.Project_Name)"> 
-                                                            <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;      
-                                                        </a>    
+                                                        <a data-toggle="tooltip" title="Project Details!"
+                                                            class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info"
+                                                            *ngIf="item.Project_Code != null && item.Status !='Pending'"
+                                                            (click)="openInfo(item.Project_Code,item.Project_Name)">
+                                                            <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;
+                                                        </a>
                                                     </td>
-                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px" > {{item.Task_Name}}</td>
-                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px">{{item.Task_Description}}</td>
-                                                   <!-- style:width="25%" -->
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px">
+                                                        {{item.Task_Name}}</td>
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px">
+                                                        {{item.Task_Description}}</td>
+                                                    <!-- style:width="25%" -->
                                                     <td class="kt-widget__title mb-0">{{item.ProjectType}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Employee}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Start_Date
                                                         |date:'dd-MM-yyyy'}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.End_Date
                                                         |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="kt-widget__title mb-0" 
-                                                    
-                                                        [ngClass]="{'text-danger font-weight-400':item.Status=='Rejected',
+                                                    <td class="kt-widget__title mb-0">
+                                                        {{item.Creation_Date|dateAgo1}}</td>
+                                                    <td class="kt-widget__title mb-0" [ngClass]="{'text-danger font-weight-400':item.Status=='Rejected',
                                                             'text-success font-weight-400':item.Status=='Accepted',
                                                              'text-warning font-weight-400':item.Status=='Pending'}">
-                                                         {{item.Status}}
+                                                        {{item.Status}}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -328,6 +333,13 @@
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
+                                                        Last Worked
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
                                                         Status
                                                     </th>
                                                 </tr>
@@ -380,6 +392,12 @@
                                                     <td><span class="kt-widget__other">
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                     </td>
+                                                    <td><span class="kt-widget__other">
+                                                            {{item.LastModified_Date|dateAgo1}}</span>
+                                                    </td>
+                                                    <!-- <td><span class="kt-widget__other">
+                                                            {{item.Creation_Date}}</span>
+                                                    </td> -->
                                                     <td>
                                                         <div *ngIf="item.Status=='Under Approval'">
                                                             <span class="text-info font-weight-400">Under
@@ -547,4 +565,3 @@
 
     <div id="rightbar-overlay" (click)="closeInfo()"></div>
 </div>
-
