@@ -2154,6 +2154,7 @@
                 <label>Work Description<span class="text-danger">*</span></label>
                 <input type="text" name="work" class="form-control" [(ngModel)]="workdes">
             </div>
+            
             <div class="form-group">
                 <label>Date<span class="text-danger">*</span></label>
                 <!-- <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
@@ -2168,74 +2169,33 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Start Time<span class="text-danger">*</span></label>
-                <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
-                    [(ngModel)]="starttime">                    
-                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
-                        <a *ngIf="i!=10 && i!=11">{{item}}</a>
-                        <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
-                    </ng-option>
-                </ng-select>
 
-
-                <!-- <div class="dropdown-menu scrollbar12"  aria-labelledby="dropdownMenuButton">
-                    <input class="form-control" name="starttim" (click)="time()" type="time" id="time-start" [(ngModel)]="starttime"  data-toggle="dropdown">
-                    <a class="dropdown-item" *ngFor="let item of timedata">{{item.hh}}:{{item.mm}}</a>
-                </div> -->
-                <!-- <div class="dropdown-menu scrollbar12" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item">00:00</a><a class="dropdown-item">00:30</a><a
-                        class="dropdown-item">01:00</a><a class="dropdown-item">01:30</a><a
-                        class="dropdown-item">02:00</a><a class="dropdown-item">02:30</a>
-                    <a class="dropdown-item">03:00</a><a class="dropdown-item">03:30</a>
-                    <a class="dropdown-item">04:00</a><a class="dropdown-item">04:30</a><a
-                        class="dropdown-item">05:00</a><a class="dropdown-item">05:30</a><a
-                        class="dropdown-item">06:00</a><a class="dropdown-item">06:30</a>
-                    <a class="dropdown-item">07:00</a><a class="dropdown-item">07:30</a><a
-                        class="dropdown-item">08:00</a><a class="dropdown-item">08:30</a><a
-                        class="dropdown-item">09:00</a><a class="dropdown-item">09:30</a>
-                    <a class="dropdown-item">10:00</a><a class="dropdown-item">10:30</a><a
-                        class="dropdown-item">11:00</a><a class="dropdown-item">11:30</a><a
-                        class="dropdown-item">12:00</a><a class="dropdown-item">12:30</a>
-                    <a class="dropdown-item">13:00</a><a class="dropdown-item">13:30</a><a
-                        class="dropdown-item">14:00</a><a class="dropdown-item">14:30</a><a
-                        class="dropdown-item">15:00</a><a class="dropdown-item">15:30</a>
-                    <a class="dropdown-item">16:00</a><a class="dropdown-item">16:30</a><a
-                        class="dropdown-item">17:00</a><a class="dropdown-item">17:30</a><a
-                        class="dropdown-item">18:00</a><a class="dropdown-item">18:30</a>
-                    <a class="dropdown-item">19:00</a><a class="dropdown-item">19:30</a><a
-                        class="dropdown-item">20:00</a><a class="dropdown-item">20:30</a><a
-                        class="dropdown-item">21:00</a><a class="dropdown-item">21:30</a>
-                    <a class="dropdown-item">22:00</a><a class="dropdown-item">22:30</a><a
-                        class="dropdown-item">23:00</a><a class="dropdown-item">23:30</a>
-                </div> -->
-            </div>
-
-            <!-- <div class="form-group">
-                <label>End Time<span class="text-danger">*</span></label>
-                <ng-select name="endtim" (click)="time();getDarTime()" placeholder="Select End Time" id="time-end"
-                [(ngModel)]="endtime">
-                    <ng-container *ngFor="let item of timedata; let i=index">
-                        <ng-option [value]="item" *ngFor="let time of endtimearr; let j=index" [disabled]="i==20 || i==21 || i==22 || i==23">
-                            <a *ngIf="i!=20 && i!=21 && i!=22 && i!=23">{{item.hh}}:{{item.mm}}</a>
-                            <a *ngIf="i==20 || i==21 || i==22 || i==23">{{item.hh}}:{{item.mm}}--&nbsp;&nbsp;(Lunch Break)</a>
+                <div class="form-group">
+                    <label>Start Time<span class="text-danger">*</span></label>
+                    <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                        [(ngModel)]="starttime">                    
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="item!=lastEndtime && bol==false">
+                            <a *ngIf="i!=10 && i!=11">{{item}}</a>
+                            <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
                         </ng-option>
-                    </ng-container>
-                </ng-select>                
-            </div> -->
+                        
+                    </ng-select>
+                    
+                </div>
+
             <div class="form-group" >
                 <label>End Time<span class="text-danger">*</span></label>
                 <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" (click)="getDarTime()"
                 [(ngModel)]="endtime">
-                <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
-                    <!--  -->
+                <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="item<=lastEndtime">
                     <a *ngIf="i!=10 && i!=11">{{item}}</a>
                     <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
                 </ng-option>
                 </ng-select>
-                <!-- <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime"> -->
                 <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start time!!</span>
             </div>
+
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
                     [disabled]="!actionCode || !workdes || !current_Date || !starttime || !endtime || endtime < starttime">
