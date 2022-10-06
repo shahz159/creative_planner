@@ -145,6 +145,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+            debugger
             //if (this._AssignedProjectsList.length > 0) {
             this._CurrentpageRecords = this._AssignedProjectsList.length;
             this._totalProjectsCount = (data[0]['CountAssigned']);
@@ -219,6 +220,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            debugger
             // console.log("---------->Exp in One Month------->",this._ProjectDataList);
             if (this._ProjectDataList.length > 0) {
             }
