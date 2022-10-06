@@ -264,12 +264,12 @@ export class MoreDetailsComponent implements OnInit {
       this.objProjectDto.Project_Code = this.actionCode;
     }
 
-    // this.service._InsertDARServie(this.objProjectDto)
-    //   .subscribe(data => {
-    //     this._Message = data['message'];
-    //     this.notifyService.showSuccess(this._Message, "Success");
-    //     // console.log(this._Message);
-    //   });
+    this.service._InsertDARServie(this.objProjectDto)
+      .subscribe(data => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "Success");
+        // console.log(this._Message);
+      });
     console.log(this.objProjectDto,"testingDar");
     this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -281,12 +281,13 @@ export class MoreDetailsComponent implements OnInit {
   timeList: any;
   starttimearr: any=[];
   endtimearr: any=[];
-  bol:boolean=false;
-  duparr:any =[];
+  bol:boolean=true;
+  lastEndtime:any;
   s_ind:number;
   e_ind:number;
 
   getDarTime(){
+  
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.objProjectDto.date = this.current_Date;
@@ -294,35 +295,40 @@ export class MoreDetailsComponent implements OnInit {
     this.service._GetTimeforDar(this.Current_user_ID,this.current_Date)
       .subscribe(data => {
         this.timeList=JSON.parse(data[0]['time_json']);
-        if(this.timeList!=null){
+        if(this.timeList.length!=0){
+          this.bol=false;
           this.timeList.forEach(element => {
             this.starttimearr.push(element.starttime);
           });
           this.timeList.forEach(element => {
-            this.endtimearr.push(element.endtime);
+            this.endtimearr.push(element.endtime);           
           });
+          let l=this.endtimearr.length;
+          this.lastEndtime= this.endtimearr[l-1];
+          // alert(this.lastEndtime);
         }
-        else{
+        else if(this.timeList.length ==0){
+          this.bol=true;
+          this.lastEndtime=0;
           this.starttimearr=[];
           this.endtimearr=[];
         }
-
-        for(var i=0;i<this.timedata.length;i++){
-          for(var j=0;j<this.timeList.length;j++){
-            if(this.timedata[i]==this.timeList[j].starttime){
-              this.s_ind=i;
-              console.log(i,"sindex");
-            }
-            if(this.timedata[i]==this.timeList[j].endtime){
-              this.e_ind=i;
-              console.log(i,"eindex");
-            }
+        // for(var i=0;i<this.timedata.length;i++){
+        //   for(var j=0;j<this.timeList.length;j++){
+        //     if(this.timedata[i]==this.timeList[j].starttime){
+        //       this.s_ind=i;
+        //       console.log(i,"sindex");
+        //     }
+        //     if(this.timedata[i]==this.timeList[j].endtime){
+        //       this.e_ind=i;
+        //       console.log(i,"eindex");
+        //     }
             // for(i=this.s_ind;i<this.e_ind;i++){
             //   this.starttimearr.push(this.timedata[i]);
             // }
-          }     
-        }
-        console.log(this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
+          // }     
+        // }
+        console.log(this.bol,this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
       });
   }
 
@@ -2820,7 +2826,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-    // console.log(this.starttime,this.endtime);
+    console.log(this.starttime,this.endtime);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
