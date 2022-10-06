@@ -249,11 +249,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   Memo_Deselect() {
     let arr = [];
-    this.Empty_MemoDropdown = this.ngDropdwonMemo;
-    this.Empty_MemoDropdown.forEach(element => {
-      arr.push({ MailId: element.MailId })
-      this._SelectedMemos = arr;
-    });
+    this._SelectedMemos = arr;
+    // this.Empty_MemoDropdown = this.ngDropdwonMemo;
+    // this.Empty_MemoDropdown.forEach(element => {
+    //   arr.push({ MailId: element.MailId })
+    //   this._SelectedMemos = arr;
+    // });
     //console.log("Deselect Memos--->", this._SelectedMemos)
   }
 
@@ -483,6 +484,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     (<HTMLInputElement>document.getElementById("spanTextarea_single" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
+
+
 
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("pro_name_" + id)).style.display = "inline-block";
