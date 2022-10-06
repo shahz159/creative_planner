@@ -541,6 +541,12 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewInsertDAR", this.ObjDto);
   }
 
+  _GetTimeforDar(empid, date) {
+    this.ObjDto.Emp_No = empid;
+    this.ObjDto.date = date;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimeForDarService", this.ObjDto);
+  }
+
   ObjCategoryDTO: CategoryDTO;
   _CategoryRenameDelete(obj) {
     this.ObjCategoryDTO.Mode = obj.Mode;

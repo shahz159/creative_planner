@@ -26,6 +26,7 @@ import { DatePipe } from '@angular/common';
 import { getDateMeta } from '@fullcalendar/angular';
 
 
+
 @Component({
   selector: 'app-more-details',
   templateUrl: './more-details.component.html',
@@ -44,11 +45,6 @@ export class MoreDetailsComponent implements OnInit {
     private BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
-    $(document).ready(function () {
-      var today = new Date().toISOString().split('T')[0];
-      $("#minDate").attr('min', today);
-    });
-    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
   }
 
   projectCode: string;
@@ -74,9 +70,12 @@ export class MoreDetailsComponent implements OnInit {
   darbutton: boolean = true;
   darList: any;
   disablePreviousDate = new Date();
+  todayDate= new Date();
+  timedata: any =[];
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);   
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -85,6 +84,9 @@ export class MoreDetailsComponent implements OnInit {
 
       this.dar_details();
       this.GetProjectDetails();
+
+      this.timedata=["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00",
+                      "15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"];
 
       let data1: any;
       this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -206,7 +208,7 @@ export class MoreDetailsComponent implements OnInit {
   starttime: any;
   endtime: any;
   timecount: any;
-  current_Date: any =new Date();
+  current_Date: any;
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
@@ -220,14 +222,13 @@ export class MoreDetailsComponent implements OnInit {
   minutes: any;
   hours: any;
   temp: any;
-  end: boolean = true;
+  // end: boolean = true;
 
   submitDar() {
 
     if (this.starttime != null && this.endtime != null) {
-      const [shours, sminutes] = this.starttime.split(':');
-      const [ehours, eminutes] = this.endtime.split(':');
-
+      const [shours, sminutes] = this.starttime.split(":");
+      const [ehours, eminutes] = this.endtime.split(":");      
       var dt1 = new Date(2014, 10, 2, shours, sminutes);
       var dt2 = new Date(2014, 10, 2, ehours, eminutes);
       this.minutes = this.diff_minutes(dt1, dt2) % 60;
@@ -243,9 +244,11 @@ export class MoreDetailsComponent implements OnInit {
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-    this.objProjectDto.StartTime = this.starttime;
-    this.objProjectDto.EndTime = this.endtime;
-    this.objProjectDto.TimeCount = this.timecount;
+    if(this.starttime!=undefined && this.endtime!=undefined && this.timecount!=undefined){
+      this.objProjectDto.StartTime = this.starttime;
+      this.objProjectDto.EndTime = this.endtime;
+      this.objProjectDto.TimeCount = this.timecount;
+    }   
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.objProjectDto.date = this.current_Date;
     this.objProjectDto.WorkAchieved = this.workdes;
@@ -261,18 +264,66 @@ export class MoreDetailsComponent implements OnInit {
       this.objProjectDto.Project_Code = this.actionCode;
     }
 
-    this.service._InsertDARServie(this.objProjectDto)
-      .subscribe(data => {
-        this._Message = data['message'];
-        this.notifyService.showSuccess(this._Message, "Success");
-        // console.log(this._Message);
-      });
-    // console.log(this.Comp_No,this.URL_ProjectCode,this.actionCode,this.inProcessCount,this.actionName,"testingDar");
+    // this.service._InsertDARServie(this.objProjectDto)
+    //   .subscribe(data => {
+    //     this._Message = data['message'];
+    //     this.notifyService.showSuccess(this._Message, "Success");
+    //     // console.log(this._Message);
+    //   });
+    console.log(this.objProjectDto,"testingDar");
     this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
+  }
+
+  timeList: any;
+  starttimearr: any=[];
+  endtimearr: any=[];
+  bol:boolean=false;
+  duparr:any =[];
+  s_ind:number;
+  e_ind:number;
+
+  getDarTime(){
+    this.objProjectDto.Emp_No = this.Current_user_ID;
+    this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+    this.objProjectDto.date = this.current_Date;
+
+    this.service._GetTimeforDar(this.Current_user_ID,this.current_Date)
+      .subscribe(data => {
+        this.timeList=JSON.parse(data[0]['time_json']);
+        if(this.timeList!=null){
+          this.timeList.forEach(element => {
+            this.starttimearr.push(element.starttime);
+          });
+          this.timeList.forEach(element => {
+            this.endtimearr.push(element.endtime);
+          });
+        }
+        else{
+          this.starttimearr=[];
+          this.endtimearr=[];
+        }
+
+        for(var i=0;i<this.timedata.length;i++){
+          for(var j=0;j<this.timeList.length;j++){
+            if(this.timedata[i]==this.timeList[j].starttime){
+              this.s_ind=i;
+              console.log(i,"sindex");
+            }
+            if(this.timedata[i]==this.timeList[j].endtime){
+              this.e_ind=i;
+              console.log(i,"eindex");
+            }
+            // for(i=this.s_ind;i<this.e_ind;i++){
+            //   this.starttimearr.push(this.timedata[i]);
+            // }
+          }     
+        }
+        console.log(this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
+      });
   }
 
   time_convert(num) {
@@ -2406,7 +2457,7 @@ export class MoreDetailsComponent implements OnInit {
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
-           console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+          //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }
 
@@ -2416,7 +2467,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-          console.log(this.Subtask_List);
+          // console.log(this.Subtask_List);
         //SubTasks Multiselect start
           this.dropdownSettings_Employee = {
             singleSelection: true,
@@ -2433,7 +2484,7 @@ export class MoreDetailsComponent implements OnInit {
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
-          console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
+          // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }   
   }
@@ -2700,7 +2751,10 @@ export class MoreDetailsComponent implements OnInit {
     this.current_Date = null;
     this.starttime = null;
     this.endtime = null;
-    // $("err").html("");
+    this.starttimearr=[];
+    this.endtimearr=[];
+    $("#err2").empty();
+    // this.ngOnInit();
   }
 
   //Project Update
@@ -2766,10 +2820,12 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
+    // console.log(this.starttime,this.endtime);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
   }
+  
 }

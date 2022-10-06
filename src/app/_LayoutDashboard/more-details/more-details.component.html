@@ -945,10 +945,12 @@
                             </li>
                         </ul>
                         <div class="tab-content" id="task-tabbview">
-                            <div class="tab-pane fade show active" id="tasks_1" role="tabpanel" aria-labelledby="tasks-1">
+                            <div class="tab-pane fade show active" id="tasks_1" role="tabpanel"
+                                aria-labelledby="tasks-1">
                                 <div class="tasks_views">
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
-                                        <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0" data-toggle="tooltip" title="InProcess Actions!">
+                                        <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
+                                            data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div>
                                         <div class="text-right">
                                             <!-- (click)="OnAddTaskClick()" -->
@@ -1437,14 +1439,14 @@
                     <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
-                        <div class="text-right mb-3" *ngIf="darbutton==true">
+                        <div class="text-left mb-3" *ngIf="darbutton==true">
                             <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
                                 Create Work
                             </button>
                         </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div>
-                                <div class="d-flex-right mb-2">
+                                <div class="text-right mb-2">
                                     <h6 style="text-align:right"><strong>Total Achievement Hours -
                                             {{totalHours}}</strong></h6>
                                 </div>
@@ -2152,24 +2154,36 @@
                 <label>Work Description<span class="text-danger">*</span></label>
                 <input type="text" name="work" class="form-control" [(ngModel)]="workdes">
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label>Date<span class="text-danger">*</span></label>
-                <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime">
-                <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date">
+                <!-- <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
+                <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
                 <div class="input-group">
                     <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()"
-                        [min]="disablePreviousDate" [(ngModel)]="current_Date" placeholder="Select Date"
+                        [min]="disablePreviousDate" [max]="todayDate" [(ngModel)]="current_Date" placeholder="Select Date"
                         class="form-control" name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <div class="form-group">
                 <label>Start Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="starttim" type="time" id="time-start" [(ngModel)]="starttime">
-                <!-- <div class="dropdown-menu scrollbar12" aria-labelledby="dropdownMenuButton"> data-toggle="dropdown"
+                <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                    [(ngModel)]="starttime">                    
+                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
+                        <a *ngIf="i!=10 && i!=11">{{item}}</a>
+                        <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                    </ng-option>
+                </ng-select>
+
+
+                <!-- <div class="dropdown-menu scrollbar12"  aria-labelledby="dropdownMenuButton">
+                    <input class="form-control" name="starttim" (click)="time()" type="time" id="time-start" [(ngModel)]="starttime"  data-toggle="dropdown">
+                    <a class="dropdown-item" *ngFor="let item of timedata">{{item.hh}}:{{item.mm}}</a>
+                </div> -->
+                <!-- <div class="dropdown-menu scrollbar12" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item">00:00</a><a class="dropdown-item">00:30</a><a
                         class="dropdown-item">01:00</a><a class="dropdown-item">01:30</a><a
                         class="dropdown-item">02:00</a><a class="dropdown-item">02:30</a>
@@ -2196,10 +2210,31 @@
                         class="dropdown-item">23:00</a><a class="dropdown-item">23:30</a>
                 </div> -->
             </div>
-            <div class="form-group">
+
+            <!-- <div class="form-group">
                 <label>End Time<span class="text-danger">*</span></label>
-                <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime">
-                <span style="color:red" id="err" *ngIf="(endtime < starttime)">Please enter valid End Time!</span>
+                <ng-select name="endtim" (click)="time();getDarTime()" placeholder="Select End Time" id="time-end"
+                [(ngModel)]="endtime">
+                    <ng-container *ngFor="let item of timedata; let i=index">
+                        <ng-option [value]="item" *ngFor="let time of endtimearr; let j=index" [disabled]="i==20 || i==21 || i==22 || i==23">
+                            <a *ngIf="i!=20 && i!=21 && i!=22 && i!=23">{{item.hh}}:{{item.mm}}</a>
+                            <a *ngIf="i==20 || i==21 || i==22 || i==23">{{item.hh}}:{{item.mm}}--&nbsp;&nbsp;(Lunch Break)</a>
+                        </ng-option>
+                    </ng-container>
+                </ng-select>                
+            </div> -->
+            <div class="form-group" >
+                <label>End Time<span class="text-danger">*</span></label>
+                <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" (click)="getDarTime()"
+                [(ngModel)]="endtime">
+                <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="i==10 || i==11 || starttimearr.includes(item)">
+                    <!--  -->
+                    <a *ngIf="i!=10 && i!=11">{{item}}</a>
+                    <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                </ng-option>
+                </ng-select>
+                <!-- <input class="form-control" name="endtim" type="time" id="time-end" [(ngModel)]="endtime"> -->
+                <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start time!!</span>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
