@@ -225,7 +225,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           textField: 'Subject',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
+          itemsShowLimit: 3,
           allowSearchFilter: true
         };
       });
@@ -249,13 +249,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   Memo_Deselect() {
     let arr = [];
-    this._SelectedMemos = arr;
-    // this.Empty_MemoDropdown = this.ngDropdwonMemo;
-    // this.Empty_MemoDropdown.forEach(element => {
-    //   arr.push({ MailId: element.MailId })
-    //   this._SelectedMemos = arr;
-    // });
-    //console.log("Deselect Memos--->", this._SelectedMemos)
+    
+    this.Empty_MemoDropdown = this.ngDropdwonMemo;
+    this.Empty_MemoDropdown.forEach(element => {
+      arr.push({ MailId: element.MailId })
+      this._SelectedMemos = arr;
+    });
+    console.log("Deselect Memos--->", this._SelectedMemos)
   }
 
   _onRowClick(projectCode) {
