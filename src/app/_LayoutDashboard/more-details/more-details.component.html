@@ -2132,7 +2132,7 @@
 <div id="darsidebar" class="sideInfobar animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i>DAR Creation</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i>DAR Submission</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closedarBar()">
                 <i class="fa fa-times"></i>
             </a>
@@ -2160,7 +2160,7 @@
                 <!-- <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
                 <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
                 <div class="input-group">
-                    <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()"
+                    <input matInput [matDatepicker]="picker1" id="d-date" required #startdate="ngModel" (click)="picker1.open()"
                         [min]="disablePreviousDate" [max]="todayDate" [(ngModel)]="current_Date" placeholder="Select Date"
                         class="form-control" name="date">
                     <div class="input-group-text p-0">

@@ -288,6 +288,8 @@ export class MoreDetailsComponent implements OnInit {
 
   getDarTime(){
   
+    $("#d-date").val(this.current_Date);
+    
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.objProjectDto.date = this.current_Date;
@@ -328,7 +330,7 @@ export class MoreDetailsComponent implements OnInit {
             // }
           // }     
         // }
-        console.log(this.bol,this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
+        // console.log(this.bol,this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
       });
   }
 
@@ -2484,7 +2486,8 @@ export class MoreDetailsComponent implements OnInit {
             itemsShowLimit: 1,
             allowSearchFilter: true
           };
-          this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());          // console.log(this.empDropdown);
+          this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values()); 
+          // console.log(this.empDropdown);
         //SubTasks Multiselect End
 
           this.inProcessCount = this.Subtask_List.length;
@@ -2826,7 +2829,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-    console.log(this.starttime,this.endtime);
+    // console.log(this.current_Date,"dato");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
