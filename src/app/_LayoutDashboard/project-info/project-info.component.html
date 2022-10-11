@@ -42,7 +42,7 @@
                     (onDeSelect)="Memo_Deselect()" style="flex: 3;">
                 </ng-multiselect-dropdown>
 
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" disabled="ngDropdwonMemo" (click)="_AddLink()">Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" [disabled]="!ngDropdwonMemo" (click)="_AddLink()">Link</button>
             </div>
         </li>
         <li class="kt-nav__foot"></li>
