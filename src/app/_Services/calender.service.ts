@@ -1,0 +1,45 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { CalenderDTO } from '../_Models/calender-dto';
+import { ApiurlService } from './apiurl.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CalenderService {
+  obj_CalenderDTO: CalenderDTO;
+
+  constructor(private http: HttpClient, private commonUrl: ApiurlService) {
+    this.obj_CalenderDTO = new CalenderDTO;
+  }
+  readonly rootUrl = this.commonUrl.apiurl;
+  GetCalenderProjectandsubList(obj: CalenderDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.obj_CalenderDTO.EmpNo = EmpNo;
+    this.obj_CalenderDTO.Project_Code = obj.Project_Code;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetProjectandsubtaskDrp", this.obj_CalenderDTO);
+
+  }
+  // starttime:string;
+  // min:number;
+  // endtime:string;
+
+  GetTimeslabcalender(obj: CalenderDTO){
+    this.obj_CalenderDTO.minutes=obj.minutes;
+    this.obj_CalenderDTO.StartTime=obj.StartTime;
+    this.obj_CalenderDTO.EndTime=obj.EndTime;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGettimeslabs", this.obj_CalenderDTO);
+  }
+
+  NewInsertCalender(obj: CalenderDTO){
+    
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    this.obj_CalenderDTO.Project_Code= obj.Project_Code;
+    this.obj_CalenderDTO.Start_date = obj.Start_date;
+    this.obj_CalenderDTO.End_date = obj.End_date;
+    this.obj_CalenderDTO.Start_time = obj.Start_time;
+    this.obj_CalenderDTO.End_time = obj.End_time;
+    this.obj_CalenderDTO.Weekday = obj.Weekday;
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_Calender", this.obj_CalenderDTO);
+  }
+}

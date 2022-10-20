@@ -11,6 +11,7 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 //import { LoadingBarService } from '@ngx-loading-bar/core';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { LinkService } from 'src/app/_Services/link.service';
+import { CalenderService } from 'src/app/_Services/calender.service';
 
 import * as _ from 'underscore';
 import { NotificationService } from 'src/app/_Services/notification.service';
@@ -18,6 +19,9 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 import { CalendarOptions } from '@fullcalendar/angular';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { CalenderDTO } from 'src/app/_Models/calender-dto';
+import { DatePipe } from '@angular/common';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 
 @Component({
@@ -36,7 +40,7 @@ export class DashboardComponent implements OnInit {
   projectactivity_Div: boolean;
   DARactivity_Div: boolean;
   _subtaskDiv: boolean;
-  typetext:string;
+  typetext: string;
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
   Current_user_ID: any;
@@ -47,18 +51,35 @@ export class DashboardComponent implements OnInit {
   _ActualProjectList = [];
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
- 
+  _calenderDto: CalenderDTO;
+  BlockNameProject: any;
+  BlockNameProject1: any;
+  Timeslab:any;
+  MasterCode:any;
+  Subtask:any;
+  Startts:any;
+  Endtms:any;
+  SelectStartdate:any;
+  Selectenddate:any;
+  selectDay:any;
+  dayArr:any=['S','M','T','W','Th','F','Sa'];
+  weeklyarr:any=['First Week','Second Week','Third Week','Fourth Week','Fifth Week']
+  monthArr:any=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
+    public datepipe: DatePipe,
     private notifyService: NotificationService,
-    public _LinkService: LinkService,
+    public _LinkService: LinkService, private CalenderService: CalenderService
   ) {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
-    
+    this._calenderDto = new CalenderDTO;
+    this.BlockNameProject = [];
+    this.BlockNameProject1 = [];
+    this.Timeslab=[];
   }
 
 
@@ -79,19 +100,19 @@ export class DashboardComponent implements OnInit {
   handleEventClick(arg) {
     this.ProjectCode = arg.event._def.extendedProps.Project_Code;
     this.router.navigate(["../backend/dashboard/projectinfo", this.ProjectCode]);
-    document.getElementById("mysideInfobar").style.width = "70%";    
+    document.getElementById("mysideInfobar").style.width = "70%";
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0";    
+    document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar_schd").style.width = "0";    
+    document.getElementById("mysideInfobar_schd").style.width = "0";
 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    
+
   }
   _objStatusDTO: StatusDTO;
 
@@ -99,9 +120,11 @@ export class DashboardComponent implements OnInit {
     //----Adding One Day---for Date Concept----//
     // var date = new Date();
     // date.setDate(date.getDate() + 1);
- 
-  this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
-    this.typetext="This Project consists of Core/Secondary Projects";
+    this.GetProjectAndsubtashDrpforCalender();
+    this.GetTimeslabfordate();
+
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+    this.typetext = "This Project consists of Core/Secondary Projects";
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.CurrentUser_fullname = localStorage.getItem("UserfullName");
     // this.notifyService.showInfo(this.CurrentUser_fullname + ' ' + ' ', 'Login By :');
@@ -122,7 +145,7 @@ export class DashboardComponent implements OnInit {
     this._objStatusDTO.PageNumber = 1;
     this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
       (data) => {
-         console.log("Porfolio Data Dashbaord--->", data);
+        // console.log("Porfolio Data Dashbaord--->", data);
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
         //JSON.parse(data[0]['PortfolioList_Json']);
         // data as StatusDTO[];
@@ -266,7 +289,7 @@ export class DashboardComponent implements OnInit {
   DelayCount: any = sessionStorage.getItem('DelayCount');
   CompletedCount: any = sessionStorage.getItem('CompletedCount');
   TotalExpiryInMonth: any = sessionStorage.getItem('TotalExpiryInMonth');
-  TotalExpiryPortfolio: number=0;
+  TotalExpiryPortfolio: number = 0;
   EmployeeVacationInDays: any = sessionStorage.getItem('EmployeeVacationInDays');
   TotalDARSubmitted: any = sessionStorage.getItem('TotalDARSubmitted');
   TodaysDARAchievement: any = sessionStorage.getItem('TodaysDARAchievement');
@@ -585,6 +608,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
   //Delete Memos 96290  CRS2004
   deleteMemos(memoId, pcode) {
     this._MemosSubjectList = [];
@@ -634,19 +658,164 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
 
-  openschd(){
-    document.getElementById("mysideInfobar_schd").style.width = "50%";    
+
+
+  Projecttype: any;
+  GetProjectAndsubtashDrpforCalender() {
+
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+      ((data) => {
+        // console.log(data)
+        this.ProjectCode = data['Project_Code']
+        this.BlockNameProject = data as [];
+      })
+
+  }
+  StartTimearr:any=[];
+  EndTimearr:any=[];
+
+ 
+  SubmissionName:string;
+  _Exec_BlockName: string = "";
+ 
+  day:boolean=false;
+
+
+  GetTimeslabfordate(){
+    debugger
+    this._calenderDto.minutes=30;
+    this._calenderDto.StartTime="08:00";
+    this._calenderDto.EndTime="20:00";
+
+    this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
+      ((data) => {
+        debugger
+        this.StartTimearr = data as [];
+        this.Startts=this.StartTimearr[0].TSStart;
+        this.Endtms=this.StartTimearr[0].TSEnd;
+        console.log(this.StartTimearr[0].TSStart);       
+      });
+  }
+
+  addstarttime(TSStart){
+    this.Startts=TSStart;
+  }
+
+  addendtime(TSEnd){    
+    this.Endtms=TSEnd;
+  }
+
+  selectedDay(day){
+    this.day=true;
+    this.selectDay=day;
+  }
+
+
+  GetSubtasklistfromProject(MasterCode) {
+    if (MasterCode != undefined) {
+      this._calenderDto.Project_Code = MasterCode;
+      // alert(MasterCode);
+      this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+        ((data) => {
+          console.log(data);
+          this.BlockNameProject1 = data as [];
+        });
+      
+      this.BlockNameProject.forEach(element => {
+        if (element.Project_Code == MasterCode) {
+          this._Exec_BlockName = element.Exec_BlockName;
+          this.SubmissionName = element.Submission;
+        }
+      });
+      if (this._Exec_BlockName == "Standard Tasks" || this._Exec_BlockName == "To do List") {
+        (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "none";
+
+      }
+      else {
+        (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
+      }
+    }
+  }
+
+  _Message:string;
+
+  OnSubmitcalender(){
+
+    this.SelectStartdate= this.datepipe.transform(this.SelectStartdate, 'MM/dd/yyyy');
+    this.Selectenddate = this.datepipe.transform(this.Selectenddate, 'MM/dd/yyyy');
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    if(this._Exec_BlockName == 'Standard Tasks'){
+      this._calenderDto.Project_Code = this.MasterCode;
+      if(this.selectDay=='S'){
+        this._calenderDto.Weekday="Sunday";
+      }
+      else if(this.selectDay=='M'){
+        this._calenderDto.Weekday="Monday";
+      }
+      else if(this.selectDay=='T'){
+        this._calenderDto.Weekday="Tuesday";
+      }
+      else if(this.selectDay=='W'){
+        this._calenderDto.Weekday="Wednesday";
+      }
+      else if(this.selectDay=='Th'){
+        this._calenderDto.Weekday="Thursday";
+      }
+      else if(this.selectDay=='F'){
+        this._calenderDto.Weekday="Friday";
+      }
+      else if(this.selectDay=='Sa'){
+        this._calenderDto.Weekday="Saturday";
+      }
+    }
+    else{
+      this._calenderDto.Project_Code = this.Subtask;
+    }
+    
+    this._calenderDto.Start_date = this.SelectStartdate;
+    this._calenderDto.End_date = this.Selectenddate;
+    this._calenderDto.Start_time =this.Startts;
+    this._calenderDto.End_time = this.Endtms;
+    // this._calenderDto.Status  = true;
+
+    console.log(this._calenderDto.Weekday,"Insert test");
+    this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+    (data => {
+      console.log(data,"m");
+      this._Message = data['message'];
+      this.notifyService.showSuccess(this._Message, "Success");
+    });
+    
+    this.MasterCode=null;
+    this.Subtask=null;
+    this.Startts=null;
+    this.Endtms=null;
+    this.SelectStartdate=null;
+    this.Selectenddate=null;
+    this.selectDay=null;
+  }
+
+  openschd() {
+    document.getElementById("mysideInfobar_schd").style.width = "50%";
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
-  closeschd(){
-    document.getElementById("mysideInfobar_schd").style.width = "0%";    
+  closeschd() {
+    document.getElementById("mysideInfobar_schd").style.width = "0%";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
+    this.MasterCode=null;
+    this.Subtask=null;
+    this.Startts=null;
+    this.Endtms=null;
+    this.SelectStartdate=null;
+    this.Selectenddate=null;
+    this.selectDay=null;
   }
 
-  showcore(){
-    this.typetext="This Project consists of Core/Secondary Projects";
+  showcore() {
+    this.typetext = "This Project consists of Core/Secondary Projects";
     document.getElementById("core_viw").classList.add("show");
     document.getElementById("stan_viw").classList.remove("show");
     document.getElementById("sec_viw").classList.remove("show");
@@ -657,8 +826,8 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  showstan(){
-    this.typetext="This Project consists of Standard/Routine Task";
+  showstan() {
+    this.typetext = "This Project consists of Standard/Routine Task";
     document.getElementById("stan_viw").classList.add("show");
     document.getElementById("sec_viw").classList.remove("show");
     document.getElementById("core_viw").classList.remove("show");
@@ -667,8 +836,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("core_tab").classList.remove("btn-light-primary");
     document.getElementById("sec_tab").classList.remove("btn-light-primary");
   }
-  showsec(){
-    this.typetext="This Project consists of ToDo Task";
+  showsec() {
+    this.typetext = "This Project consists of ToDo Task";
     document.getElementById("sec_viw").classList.add("show");
     document.getElementById("core_viw").classList.remove("show");
     document.getElementById("stan_viw").classList.remove("show");
