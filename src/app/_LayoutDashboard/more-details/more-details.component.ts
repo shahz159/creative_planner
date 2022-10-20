@@ -70,81 +70,62 @@ export class MoreDetailsComponent implements OnInit {
   darbutton: boolean = true;
   darList: any;
   disablePreviousDate = new Date();
-  todayDate= new Date();
-  timedata: any =[];
+  todayDate = new Date();
+  timedata: any = [];
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);   
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
-
-      this.dar_details();
-      this.GetProjectDetails();
-
-      this.timedata=["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00",
-                      "15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"];
-
-      let data1: any;
-      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-        .subscribe(data => {
-          data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
-          this.DarGraphDataList = data1;
-        });
-
-      this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
-        (data) => {
-          this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-          this.ProjectStatus = data[0]['ProjectStatus'];
-          this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
-          this.totalSubtaskHours = (data[0]['SubtaskHours']);
-        
-          this.inProcessCount = this.Subtask_List.length;
-          this.completedCount = this.CompletedList.length;
-          this.subTaskCount = this.inProcessCount + this.completedCount;
-        });
-    });
-
-    this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
-      (data) => {
-        if (data != null && data != undefined) {
-          this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-          this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
-          this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
-
-          this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
-            .subscribe((data) => {
-              this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-              this.attachmentlength = this.AttachmentList.length;
-              this.TotalDocs = (data[0]['TotalDocs']);
-            });
-        }
       });
+      
+      this.GetProjectDetails();
+      this.GetSubtask_Details();
+      this.dar_details();
+
+      // let data1: any;
+      // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      //   .subscribe(data => {
+      //     data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
+      //     this.DarGraphDataList = data1;
+      //   });
+
+      // this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
+      //   (data) => {
+      //     this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+      //     this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+      //     this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+
+
+      //     this.inProcessCount = this.Subtask_List.length;
+      //     this.completedCount = this.CompletedList.length;
+      //     this.subTaskCount = this.inProcessCount + this.completedCount;
+      //   });
+    
+
+    // this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
+    //   (data) => {
+    //     if (data != null && data != undefined) {
+    //       this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+    //       this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
+    //       this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
+
+    //     }
+    //   });
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
         this.IsData = (data[0]['DARGraphCalculations_Json']);
         //console.log("data isnull/not---->", this.IsData);
-        if (projectType == '001' || projectType == '002') {
-          // document.getElementById('act-tab-1').classList.add("d-none");
-          // document.getElementById('Activity').classList.remove("show", "active");
-          // document.getElementById('sum-tab-1').classList.remove("d-none");
-          // document.getElementById('sum-tab-1').classList.add("active");
-          // document.getElementById('Summary').classList.add("show", "active");
+        if (projectType == '001' || projectType == '002') {       
           this.CoreSecodaryCharts();
         }
         else if (projectType != '001' || projectType != '002') {
-          // document.getElementById('act-tab-1').classList.remove("d-none");
-          // document.getElementById('act-tab-1').classList.add("active");
-          // document.getElementById('Activity').classList.add("show", "active");
-          // document.getElementById('sum-tab-1').classList.add("d-none");
-          // document.getElementById('Summary').classList.remove("show", "active");
           this.OtherCharts();
         }
       });
@@ -152,12 +133,6 @@ export class MoreDetailsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
-
-    //   window.addEventListener("load", function (event) {
-
-
-    // });
-
   }
 
   totalHours: any;
@@ -179,11 +154,11 @@ export class MoreDetailsComponent implements OnInit {
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
-          this.noTimeline = true;          
+          this.noTimeline = true;
         }
         if (this.darList) {
           this._CurrentpageRecords = this.darList.length;
-        }        
+        }
       });
   }
 
@@ -228,7 +203,7 @@ export class MoreDetailsComponent implements OnInit {
 
     if (this.starttime != null && this.endtime != null) {
       const [shours, sminutes] = this.starttime.split(":");
-      const [ehours, eminutes] = this.endtime.split(":");      
+      const [ehours, eminutes] = this.endtime.split(":");
       var dt1 = new Date(2014, 10, 2, shours, sminutes);
       var dt2 = new Date(2014, 10, 2, ehours, eminutes);
       this.minutes = this.diff_minutes(dt1, dt2) % 60;
@@ -244,11 +219,11 @@ export class MoreDetailsComponent implements OnInit {
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-    if(this.starttime!=undefined && this.endtime!=undefined && this.timecount!=undefined){
+    if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
       this.objProjectDto.StartTime = this.starttime;
       this.objProjectDto.EndTime = this.endtime;
       this.objProjectDto.TimeCount = this.timecount;
-    }   
+    }
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.objProjectDto.date = this.current_Date;
     this.objProjectDto.WorkAchieved = this.workdes;
@@ -270,7 +245,7 @@ export class MoreDetailsComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "Success");
         // console.log(this._Message);
       });
-    console.log(this.objProjectDto,"testingDar");
+    console.log(this.objProjectDto, "testingDar");
     this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
@@ -279,57 +254,44 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   timeList: any;
-  starttimearr: any=[];
-  endtimearr: any=[];
-  bol:boolean=true;
-  lastEndtime:any;
-  s_ind:number;
-  e_ind:number;
+  starttimearr: any = [];
+  endtimearr: any = [];
+  bol: boolean = true;
+  lastEndtime: any;
+  s_ind: number;
+  e_ind: number;
 
-  getDarTime(){
-  
+  getDarTime() {
+
+    this.timedata = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00",
+      "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"];
     $("#d-date").val(this.current_Date);
-    
+
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.objProjectDto.date = this.current_Date;
 
-    this.service._GetTimeforDar(this.Current_user_ID,this.current_Date)
+    this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
       .subscribe(data => {
-        this.timeList=JSON.parse(data[0]['time_json']);
-        if(this.timeList.length!=0){
-          this.bol=false;
+        this.timeList = JSON.parse(data[0]['time_json']);
+        if (this.timeList.length != 0) {
+          this.bol = false;
           this.timeList.forEach(element => {
             this.starttimearr.push(element.starttime);
           });
           this.timeList.forEach(element => {
-            this.endtimearr.push(element.endtime);           
+            this.endtimearr.push(element.endtime);
           });
-          let l=this.endtimearr.length;
-          this.lastEndtime= this.endtimearr[l-1];
+          let l = this.endtimearr.length;
+          this.lastEndtime = this.endtimearr[l - 1];
           // alert(this.lastEndtime);
         }
-        else if(this.timeList.length ==0){
-          this.bol=true;
-          this.lastEndtime=0;
-          this.starttimearr=[];
-          this.endtimearr=[];
+        else if (this.timeList.length == 0) {
+          this.bol = true;
+          this.lastEndtime = 0;
+          this.starttimearr = [];
+          this.endtimearr = [];
         }
-        // for(var i=0;i<this.timedata.length;i++){
-        //   for(var j=0;j<this.timeList.length;j++){
-        //     if(this.timedata[i]==this.timeList[j].starttime){
-        //       this.s_ind=i;
-        //       console.log(i,"sindex");
-        //     }
-        //     if(this.timedata[i]==this.timeList[j].endtime){
-        //       this.e_ind=i;
-        //       console.log(i,"eindex");
-        //     }
-            // for(i=this.s_ind;i<this.e_ind;i++){
-            //   this.starttimearr.push(this.timedata[i]);
-            // }
-          // }     
-        // }
         // console.log(this.bol,this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
       });
   }
@@ -473,6 +435,13 @@ export class MoreDetailsComponent implements OnInit {
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
+
+          this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
+            .subscribe((data) => {
+              this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
+              this.attachmentlength = this.AttachmentList.length;
+              this.TotalDocs = (data[0]['TotalDocs']);
+            });
           var fullname_R = this.Responsible.split(' ');
           this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
           this.InitR.toUpperCase();
@@ -511,7 +480,8 @@ export class MoreDetailsComponent implements OnInit {
           if (this.Status == 'New Project Rejected') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed') {
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected' 
+              || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
             this.darbutton = false;
           }
 
@@ -519,7 +489,7 @@ export class MoreDetailsComponent implements OnInit {
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        // let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+        this.DarGraphDataList = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         //  console.log(data[0]['RemainingHours']);
         //console.log("MaxDu....", MaxDuration);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
@@ -2450,18 +2420,19 @@ export class MoreDetailsComponent implements OnInit {
   inProcessCount: number;
   completedCount: number;
   subTaskCount: number;
-  empDropdown:any =[];
-  dropdownSettings_Employee={};
-  selectedEmp:string;
+  empDropdown: any = [];
+  dropdownSettings_Employee = {};
+  selectedEmp: string;
+  filteredemp: boolean = false;
 
   GetSubtask_Details() {
-    if(this.filteredemp==true){
+    if (this.filteredemp == true) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-          this.CompletedList = JSON.parse(data[0]['Json_ResponsibleCompleted']);          
-          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-  
+          this.CompletedList = JSON.parse(data[0]['Json_ResponsibleCompleted']);
+          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);          
+          
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
@@ -2469,14 +2440,19 @@ export class MoreDetailsComponent implements OnInit {
         });
     }
 
-    else if(this.filteredemp==false){
+    else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+          this.ProjectStatus = data[0]['ProjectStatus'];
+          this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
+          this.totalSubtaskHours = (data[0]['SubtaskHours']);
+          // console.log(this.Subtask_Res_List,this.totalSubtaskHours );
+
           // console.log(this.Subtask_List);
-        //SubTasks Multiselect start
+          //SubTasks Multiselect start
           this.dropdownSettings_Employee = {
             singleSelection: true,
             idField: 'Team_Res',
@@ -2486,30 +2462,29 @@ export class MoreDetailsComponent implements OnInit {
             itemsShowLimit: 1,
             allowSearchFilter: true
           };
-          this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values()); 
+          this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());
           // console.log(this.empDropdown);
-        //SubTasks Multiselect End
+          //SubTasks Multiselect End
 
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
           // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
-    }   
+    }
   }
 
   selectedEmployee: string;
-  filteredemp:boolean = false;
 
   EmpOnselect(obj) {
-    this.filteredemp=true;
+    this.filteredemp = true;
     this.selectedEmployee = obj['Team_Res'];
     // console.log(this.selectedEmployee);
     this.GetSubtask_Details();
   }
 
   EmpOnDeselect() {
-    this.filteredemp=false;
+    this.filteredemp = false;
     this.selectedEmployee = null;
     this.GetSubtask_Details();
   }
@@ -2760,8 +2735,8 @@ export class MoreDetailsComponent implements OnInit {
     this.current_Date = null;
     this.starttime = null;
     this.endtime = null;
-    this.starttimearr=[];
-    this.endtimearr=[];
+    this.starttimearr = [];
+    this.endtimearr = [];
     $("#err2").empty();
     // this.ngOnInit();
   }
@@ -2836,5 +2811,5 @@ export class MoreDetailsComponent implements OnInit {
     this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
   }
-  
+
 }

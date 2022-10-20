@@ -616,7 +616,7 @@
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
-                                <span class="noti" *ngIf="TotalDocs!=0">{{attachmentlength}}</span></a></li>
+                                <span class="noti" *ngIf="attachmentlength!=0">{{attachmentlength}}</span></a></li>
                         <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
                                 <span class="noti" *ngIf="totalRecords!=0">{{totalRecords}}</span></a></li>
@@ -759,14 +759,12 @@
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
                                                                 <ul class="list-group">
-                                                                    <li class="list-group-item active">Action Legends
-                                                                    </li>
-                                                                    <li class="list-group-item"
-                                                                        *ngFor="let dar of DarGraphDataList;let i=index">
-                                                                        <span class="text-primary">
-                                                                            <b>{{dar.category}}: </b> </span>
+                                                                    <li class="list-group-item active">Action Legends</li>
+                                                                    <div class=" ribbon-content scrollbar1">
+                                                                    <li class="list-group-item" *ngFor="let dar of DarGraphDataList;let i=index">
+                                                                        <span class="text-primary"><b>{{dar.category}}: </b></span>
                                                                         {{dar.Project_Name}}
-                                                                    </li>
+                                                                    </li></div>
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -806,15 +804,9 @@
                                                                         class="breakdown-user"
                                                                         *ngIf="item.TM_DisplayName" />
                                                                     <p class="mb-2">
-                                                                        <small><strong
-                                                                                *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small>
-                                                                    </p>
-                                                                    <h5><strong
-                                                                            *ngIf="item.TM_DisplayName">{{(item.RespDuration
-                                                                            / totalSubtaskHours ) |
-                                                                            percent:'.1-2'}}</strong></h5>
-                                                                    <h5><strong *ngIf="totalSubtaskHours == 0"> 0%
-                                                                        </strong></h5>
+                                                                        <small><strong *ngIf="item.TM_DisplayName">{{item.TM_DisplayName}}</strong></small></p>
+                                                                    <h5><strong *ngIf="item.TM_DisplayName">{{(item.RespDuration / totalSubtaskHours ) | percent:'.1-2'}}</strong></h5>
+                                                                    <h5><strong *ngIf="totalSubtaskHours == 0"> 0% </strong></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1440,7 +1432,7 @@
                         <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
                         <div class="text-left mb-3" *ngIf="darbutton==true">
                             <button type="button" class="btn btn-info btn-sm" (click)="darcreate()">
-                                Create Work
+                                Create Timeline
                             </button>
                         </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
@@ -1451,8 +1443,8 @@
                                 </div>
                             </div>
                             <pre></pre>
-                            <div class="item-b">
-                                <div class="mb-3 " *ngFor="let item of arr">
+                            <div class="item-b  ribbon-content scrollbar1">
+                                <div class="mb-3" *ngFor="let item of arr">
                                     <!-- <div class="list-header">
                                     <h4 class="header-date">
                                         {{item.SubmissionDate | date: 'fullDate'}}
@@ -1515,7 +1507,7 @@
                                 <div style="text-align:center"> <button class="btn btn-info loadMore"
                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                                         [hidden]="_CurrentpageRecords<10">
-                                        Load More</button></div>
+                                        Load More!</button></div>
                             </div>
                         </div>
                     </div>
