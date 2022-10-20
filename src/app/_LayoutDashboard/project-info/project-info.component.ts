@@ -86,6 +86,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);
+          console.log(this._portfoliolist.length,"port");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);

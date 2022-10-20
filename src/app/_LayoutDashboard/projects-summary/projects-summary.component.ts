@@ -351,6 +351,9 @@ export class ProjectsSummaryComponent implements OnInit {
     });
   }
 
+  LastPage:number;
+  lastPagerecords:number;
+
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -384,7 +387,20 @@ export class ProjectsSummaryComponent implements OnInit {
         this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
         this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
         this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
-        //console.log(this._totalProjectsCount)
+
+        let _vl = this._totalProjectsCount / 30;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=30;
+        }
+        // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
       });
   }
 
@@ -534,6 +550,7 @@ export class ProjectsSummaryComponent implements OnInit {
       });
     //Filtering Checkbox de
     this.getDropdownsDataFromDB();
+    
   }
 
   resetFilters() {
