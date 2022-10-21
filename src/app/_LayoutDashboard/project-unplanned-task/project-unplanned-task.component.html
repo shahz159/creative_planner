@@ -44,9 +44,9 @@
                                 <div class="d-flex flex-column align-items-cente py-2 w-90">
                                     <div id="LabelCat_{{item.Category_ID}}"
                                         (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                        <span>
-                                            <p
-                                                class="text-dark-75 font-weight-bold text-hover-primary font-size-lg project-title mb-2">
+                                        <span >
+                                            <p 
+                                                class="text-dark-75 font-weight-bold text-hover-primary font-size-lg project-title mb-2" > 
                                                 {{item.Category_Name}}
                                             </p>
                                         </span>
@@ -96,7 +96,7 @@
                 <div class="form-group mb-0">
                     <div class="input-group">
                         <div class="input-group-prepend w-100">
-                            <button class="btn btn-primary btn-sm lh-25" id="basic-addon2" (click)="OnSubmitCategory(Mdl_CategoryName)" primary="true">
+                            <button class="btn btn-primary btn-sm lh-25" id="basic-addon2" (click)="OnSubmitCategory(Mdl_CategoryName)" primary="true" id="tippy2">
                                 <i class="la la-plus text-white mr-0"></i>
                             </button>
                             <input type="text"  [(ngModel)]="Mdl_CategoryName" class="form-control add_assign_task_input brdr-gr"
@@ -591,7 +591,7 @@
                             id="addbtn"><i class="la la-plus text-white mr-2"></i>Add Task</a>
                         <div class="input-group" id="addtsk">
                             <div class="input-group-prepend">
-                                <button class="btn btn-primary btn-sm lh-25" id="basic-addon1"
+                                <button class="btn btn-primary btn-sm lh-25" id="basic-addon1" id="tippy3"
                                     (click)="EnterSubmit(_Demotext)" primary="true">
                                     <i class="la la-plus text-white mr-0"></i>
                                 </button>

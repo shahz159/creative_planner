@@ -1022,3 +1022,13 @@ svg.feather {
     background-clip: border-box;
     border: 1px solid #ebedf2;
 }
+.btn.btn-light-primary {
+    color: #3699FF;
+    background-color: #E1F0FF;
+    border-color: transparent;
+}
+.btn.btn-light-primary:hover:not(.btn-text):not(:disabled):not(.disabled), .btn.btn-light-primary:focus:not(.btn-text), .btn.btn-light-primary.focus:not(.btn-text) {
+    color: #FFFFFF;
+    background-color: #3699FF;
+    border-color: transparent;
+}

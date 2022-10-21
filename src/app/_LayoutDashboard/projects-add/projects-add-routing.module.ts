@@ -9,6 +9,7 @@ children:[
     path: 'projectinfo/:projectcode',
     loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
   }
+  
 ] }];
 
 @NgModule({

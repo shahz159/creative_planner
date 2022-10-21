@@ -86,6 +86,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);
+          console.log(this._portfoliolist.length,"port");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
@@ -225,7 +226,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           textField: 'Subject',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
+          itemsShowLimit: 3,
           allowSearchFilter: true
         };
       });
@@ -249,12 +250,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   Memo_Deselect() {
     let arr = [];
+    
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
     this.Empty_MemoDropdown.forEach(element => {
       arr.push({ MailId: element.MailId })
       this._SelectedMemos = arr;
     });
-    //console.log("Deselect Memos--->", this._SelectedMemos)
+    console.log("Deselect Memos--->", this._SelectedMemos)
   }
 
   _onRowClick(projectCode) {
@@ -484,6 +486,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
 
+
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("pro_name_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_single" + id)).style.display = "none";
@@ -505,7 +509,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         // this.GetSubtask_Details();
         // this.GetProjectsByUserName();
         this.fun_LoadProjectDetails();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No,null).subscribe(
           (data) => {
             let list: any;
             list = JSON.parse(data[0]['ProjectInfo']);

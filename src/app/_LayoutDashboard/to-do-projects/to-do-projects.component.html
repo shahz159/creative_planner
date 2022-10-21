@@ -28,8 +28,11 @@
                         <ng-container *ngIf="CurrentPageNo==1">
                             {{CurrentPageNo}} - {{_CurrentpageRecords}}
                         </ng-container>
-                        <ng-container *ngIf="CurrentPageNo!=1">
+                        <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
                             {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords * CurrentPageNo}}
+                        </ng-container>
+                        <ng-container *ngIf="CurrentPageNo==LastPage && CurrentPageNo!=1">
+                            {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
                         </ng-container>
                         of
                         <span> {{_totalProjectsCount}}</span>

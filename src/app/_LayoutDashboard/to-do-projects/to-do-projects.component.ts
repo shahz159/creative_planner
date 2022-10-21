@@ -111,11 +111,12 @@ export class ToDoProjectsComponent implements OnInit {
   Comp_No: string; ProjectBlock: string;
 
   GetProjectsByUserName() {
-    this.ObjUserDetails.PageNumber = 1;
+    this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
-      this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-      this._totalProjectsCount = data[0]['ProjectsCount_Json']
+      this._totalProjectsCount = data[0]['ProjectsCount_Json'];
+      // console.log(this._totalProjectsCount);
+      this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);      
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
@@ -287,7 +288,7 @@ export class ToDoProjectsComponent implements OnInit {
 
  GetSubtask_Details() {
      
-   this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
+   this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No, null).subscribe(
        (data) => {
         
         this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
@@ -328,7 +329,7 @@ export class ToDoProjectsComponent implements OnInit {
          this.Resp=this._Projecttest[0].Team_Res;
          this.Client_Name=this._Projecttest[0].Client_Name;
         
-        console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
+        // console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
         // console.log(this.Subtask_List,this.CompletedList,"Same");
       });
   }
@@ -732,7 +733,7 @@ export class ToDoProjectsComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
         this.GetProjectsByUserName();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No).subscribe(
+        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
           (data) => {
             let list: any;
             list = JSON.parse(data[0]['ProjectInfo']);
@@ -760,6 +761,8 @@ export class ToDoProjectsComponent implements OnInit {
   TypeContInFilter = [];
   StatusCountFilter = [];
   count_LinkedProjects: number;
+  LastPage:number;
+  lastPagerecords:number;
   
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.CurrentUser_ID;
@@ -791,10 +794,23 @@ export class ToDoProjectsComponent implements OnInit {
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
         }
-        this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
-        this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
-        this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
-        //console.log(this._totalProjectsCount)
+        // this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
+        // this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
+        // this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
+
+        let _vl = this._totalProjectsCount / 30;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=30;
+        }
+         console.log(this._CurrentpageRecords,this.CurrentPageNo,this._totalProjectsCount,this.LastPage, this.lastPagerecords);
       });
   }
   
@@ -908,23 +924,23 @@ export class ToDoProjectsComponent implements OnInit {
   _filtersMessage2: string;
   _filtersMessage: string;
 
-  applyFilters_Old() {
-    this.ObjUserDetails.PageNumber = this.CurrentPageNo;
-    this.ObjUserDetails.PageSize = 30;
-    this.ObjUserDetails.SearchText = this.searchText;
-    this.ObjUserDetails.PortfolioId = null;
-    this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
-      this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-      this._totalProjectsCount = data[0]['ProjectsCount_Json'];
-      //console.log("To DO Data---->", (data[0]['ProjectsCount_Json']));
-      //Racis Details
-      // this._totalProjectsCount = this._ProjectDataList.length
-      if (this._ProjectDataList) {
-        this._CurrentpageRecords = this._ProjectDataList.length;
-        // console.log("ProjectList----------->", this._ProjectDataList.length);
-      }
-    });
-  }
+  // applyFilters_Old() {
+  //   this.ObjUserDetails.PageNumber = this.CurrentPageNo;
+  //   this.ObjUserDetails.PageSize = 30;
+  //   this.ObjUserDetails.SearchText = this.searchText;
+  //   this.ObjUserDetails.PortfolioId = null;
+  //   this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
+  //     this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
+  //     // this._totalProjectsCount = data[0]['ProjectsCount_Json'];
+  //     //console.log("To DO Data---->", (data[0]['ProjectsCount_Json']));
+  //     //Racis Details
+  //     // this._totalProjectsCount = this._ProjectDataList.length
+  //     if (this._ProjectDataList) {
+  //       this._CurrentpageRecords = this._ProjectDataList.length;
+  //       // console.log("ProjectList----------->", this._ProjectDataList.length);
+  //     }
+  //   });
+  // }
 
   applyFilters() {
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
@@ -948,8 +964,9 @@ export class ToDoProjectsComponent implements OnInit {
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails)
       .subscribe(data => {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-        this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-        this._totalProjectsCount = data[0]['ProjectsCount_Json']
+        this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);       
+        // console.log(this._ProjectDataList);
+        // this._totalProjectsCount = data[0]['ProjectsCount_Json'];
         if (this._ProjectDataList) {
           this._CurrentpageRecords = this._ProjectDataList.length;
         }

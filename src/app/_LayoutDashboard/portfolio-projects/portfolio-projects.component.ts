@@ -166,6 +166,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
         
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+        debugger
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this._PortfolioDetailsById);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);

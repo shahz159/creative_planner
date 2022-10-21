@@ -42,7 +42,7 @@
                     (onDeSelect)="Memo_Deselect()" style="flex: 3;">
                 </ng-multiselect-dropdown>
 
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" [disabled]="!ngDropdwonMemo" (click)="_AddLink()">Link</button>
             </div>
         </li>
         <li class="kt-nav__foot"></li>
@@ -549,8 +549,7 @@
         <!-- ADD DMS  End-->
 
         <!-- Linked Portfolios -->
-        <div class=" border-top">
-            
+        <div class=" border-top">            
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
@@ -558,24 +557,13 @@
                             <i class="fa fa-file-alt mr-2"></i> Linked Portfolios
                         </label>
                     </div>
-
                 </div>
-                <!-- <div>
-                    <button type="button" class="btn btn-info btn-sm py-1 show1 more">Show More</button>
-                    <button type="button" class="btn btn-info btn-sm py-1 show1 less">Show Less</button>
-                </div> -->
             </div>
             <div class="card-body" *ngIf="_portfoliolist; else NoPortfolio">                
-                <div *ngFor="let tezz of _portfoliolist; let i=index"  class="port_list border-bottom"> 
-                    <!-- <ng-container > -->
-                        
+                <div *ngFor="let tezz of _portfoliolist; let i=index"  class="port_list border-bottom">                        
                         <div>
-                            <!-- class="port_list border-bottom"  class="item-b box1"-->
-                            <b *ngIf="tezz.Portfolio_Name!=''">{{tezz.Portfolio_Name}}</b>                           
+                            <b>{{tezz.Portfolio_Name}}</b>                           
                         </div>                       
-                    <!-- </ng-container> -->                   
-                    <!-- <div class="show1 more">Show More</div>-->
-                    <!-- <button type="button" class="btn btn-info btn-sm py-1 m-2 show1 less">Show Less</button> -->
                 </div>              
             </div>           
         </div>

@@ -971,3 +971,12 @@ input[type=number] {
 .item-b div:nth-child(n+4) {
     display: none;
 } */
+.mult-div{
+    position: absolute;
+    right: 20px;
+    margin-top: 6px;
+}
+.scrollbar12.show {
+    max-height: 200px;
+    overflow-y: auto;
+}

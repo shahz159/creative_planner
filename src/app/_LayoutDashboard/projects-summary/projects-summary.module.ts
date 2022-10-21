@@ -8,7 +8,7 @@ import { MaterialModule } from "src/app/material-module";
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { DateAgoPipe } from 'src/app/Shared/DateAgo/date-ago.pipe';
+import { DateAgoPipe } from "src/app/Shared/DateAgo/DateAgoPipe";
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { SortDirective } from './sort.directive';
 //import { ProjectInfoComponent } from '../project-info/project-info.component';

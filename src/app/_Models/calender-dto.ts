@@ -1,0 +1,19 @@
+export class CalenderDTO {
+    EmpNo:string;
+    Project_Code:string;
+    minutes:number;
+    StartTime:string;
+    EndTime:string;
+    Start_date:any;
+    End_date:any;
+    Start_time:string;
+    End_time:string;
+    Status:boolean;
+    Note:string;
+    Emp_No:string;
+    Weekday:string;
+    // Exec_BLockName:string;
+    // Project_Name:string;
+    // BlockNameProject:string;
+
+}
