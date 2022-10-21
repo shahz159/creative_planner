@@ -478,6 +478,16 @@
 .dropfocus.dropdown.show{
     background: #f1f3f4;
 }
+#mysideInfobar_schd{
+    font-family: "Google Sans",Roboto,Arial,sans-serif
+}
+#mysideInfobar_schd button{
+    font-family: "Google Sans",Roboto,Arial,sans-serif
+}
+.dropfocus .dropdown-menu.show{
+    min-width: 100%;
+
+}
 .eve-icons{
     color: #5f6368;
 }
