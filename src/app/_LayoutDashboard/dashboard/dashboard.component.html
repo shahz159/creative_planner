@@ -895,10 +895,19 @@
                 <div>
                     <div class="my-2">
                         <div class="my-2">
-                            <button class="btn btn-sm btn-light-primary mr-2" (click)="showcore()" id="core_tab">Schedule Time</button>
-                            <!-- Secondary Tasks,Core Tasks -->
+                            <!--<button class="btn btn-sm btn-light-primary mr-2" (click)="showcore()" id="core_tab">Schedule Time</button>
+                             Secondary Tasks,Core Tasks -->
                             <!-- <button class="btn btn-sm mr-2"  (click)="showstan()" id="stan_tab">Recurrence</button>
                             <button class="btn btn-sm" (click)="showsec()" id="sec_tab">Task</button> -->
+                            <div class="d-flex align-items-start">
+                                <label class="form-check-label mr-2" for="customSwitch1">Task</label>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" id="customSwitch1">
+                                    <label class="form-check-label" for="customSwitch1">Event</label>
+                                </div>
+
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -920,14 +929,16 @@
                 <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode" (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code" >{{item.BlockNameProject}}</ng-option>
                 </ng-select>
+                <div class="txtm-cus mt-1 ml-1">Project details like starts date, end date and status</div>
             </div>
 
             
-            <div class="content-main show" id="core_viw">
+            <div class="content-main show pt-0" id="core_viw">
                 <div class="form-group" id="subtaskid">
                     <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask" >
                         <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">{{item.BlockNameProject}}</ng-option>
                     </ng-select>
+                    <div class="txtm-cus mt-1 ml-1">Project details like starts date, end date and status</div>
                 </div>
 
                 <!-- <div class="form-group">
@@ -994,14 +1005,213 @@
                     </div>
                 </div>
 
-
+                <div class="d-flex align-items-start mb-3">
+                    <div class="calendar-wrap mr-3">
+                        <h5 class="month-year">January 2020</h5>
+                    
+                        <table class="calendar">
+                        <thead>
+                            <tr>
+                            <th class="day-title" scope="col">S</th>
+                            <th class="day-title" scope="col">M</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">W</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">F</th>
+                            <th class="day-title" scope="col">S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="week">
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                            <td class="day today" tabindex="0"><span class="day-number">2</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        
+                        <a class="resetbtn">Clear date-range</a>
+                    </div>
+                    <div class="calendar-wrap mr-3">
+                        <h5 class="month-year">January 2020</h5>
+                    
+                        <table class="calendar">
+                        <thead>
+                            <tr>
+                            <th class="day-title" scope="col">S</th>
+                            <th class="day-title" scope="col">M</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">W</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">F</th>
+                            <th class="day-title" scope="col">S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="week">
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                            <td class="day today" tabindex="0"><span class="day-number">2</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        
+                        <a class="resetbtn">Clear date-range</a>
+                    </div>
+                    <div class="calendar-wrap">
+                        <h5 class="month-year">January 2020</h5>
+                    
+                        <table class="calendar">
+                        <thead>
+                            <tr>
+                            <th class="day-title" scope="col">S</th>
+                            <th class="day-title" scope="col">M</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">W</th>
+                            <th class="day-title" scope="col">T</th>
+                            <th class="day-title" scope="col">F</th>
+                            <th class="day-title" scope="col">S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="week">
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                            <td class="day today" tabindex="0"><span class="day-number">2</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                            </tr>
+                            <tr class="week">
+                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        
+                        <a class="resetbtn">Clear date-range</a>
+                    </div>
+                </div>
 
                 <div>
                     <h2>{{SubmissionName}} </h2>
                 </div>
 
 
-                    <div class="form-group d-none" >
+                    <div class="form-group " >
                         <label class="">Repeat on</label>
                         <div class="dropfocus dropdown w-200 ml-0">
                             <input class="kt-input form-control" type="text" placeholder="Do not repeat"  data-toggle="dropdown"  >
