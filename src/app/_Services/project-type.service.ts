@@ -565,6 +565,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectRename", this.ObjDto);
   }
 
+  _ProjectDeadlineExtendService(obj: ProjectDetailsDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjDto.Emp_No = EmpNo;
+    this.ObjDto.Project_Code=obj.Project_Code;
+    this.ObjDto.Project_EndDate=obj.Project_EndDate;
+    return this.http.post(this.rootUrl + "Category/NewProjectDeadlineExtend", this.ObjDto);
+  }
+
 
 
 
