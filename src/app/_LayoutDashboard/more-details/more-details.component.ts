@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { DatePipe } from '@angular/common';
 import { getDateMeta } from '@fullcalendar/angular';
+import { FormControl } from '@angular/forms';
 
 
 
@@ -72,10 +73,12 @@ export class MoreDetailsComponent implements OnInit {
   disablePreviousDate = new Date();
   todayDate = new Date();
   timedata: any = [];
+  EndDate1:any = new Date();
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+   
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -86,7 +89,8 @@ export class MoreDetailsComponent implements OnInit {
       this.GetProjectDetails();
       this.GetSubtask_Details();
       this.dar_details();
-
+      
+      this.EndDate1.setDate(this.EndDate1.getDate() + 1);
       // let data1: any;
       // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       //   .subscribe(data => {
@@ -133,6 +137,11 @@ export class MoreDetailsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
+  }
+
+  getnextDeadline() {  
+    
+    return this.datepipe.transform(this.EndDate1, 'yyyy-MM-dd');
   }
 
   totalHours: any;
@@ -245,7 +254,7 @@ export class MoreDetailsComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "Success");
         // console.log(this._Message);
       });
-    console.log(this.objProjectDto, "testingDar");
+    // console.log(this.objProjectDto, "testingDar");
     this.dar_details();
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
@@ -420,6 +429,9 @@ export class MoreDetailsComponent implements OnInit {
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
+          this.EndDate1 = this.EndDate;
+          this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
+         
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];
@@ -434,7 +446,8 @@ export class MoreDetailsComponent implements OnInit {
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
-          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
+          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];       
+          
 
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
@@ -2542,7 +2555,7 @@ export class MoreDetailsComponent implements OnInit {
   Editbutton: boolean;
   _modelProjectName: string;
   _modelProjDesc: string;
-
+  _ProjDeadline: string;
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
@@ -2571,7 +2584,16 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
+  onEditDeadline(id, enddate ){
+    // this._ProjDeadline = enddate;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
+  }
+
   onCancel(id) {
+      
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "inline-block";
@@ -2581,6 +2603,9 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "none";
     this._modelProjDesc = null;
     this._modelProjectName = null;
+
+    (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
 
@@ -2621,6 +2646,33 @@ export class MoreDetailsComponent implements OnInit {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
+
+  onProject_ExtendDeadline(id, Pcode) {
+    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    if (this._ProjDeadline != null) {
+     
+      this.objProjectDto.Project_EndDate= this._ProjDeadline;
+      this.objProjectDto.Project_Code=Pcode;
+      //  alert(Pcode);
+      this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if(this._Message == 'Project Deadline not Updated'){
+          this.notifyService.showError(this._Message +'.'+ "Please select the appropriate date and try again.", "Failed");
+          this.GetProjectDetails();  
+        }
+        else if(this._Message == 'Project Deadline Updated'){
+          this.notifyService.showSuccess(this._Message, "Success");
+          this.GetProjectDetails();  
+        }
+      });
+      this.onCancel(id);
+    }
+    else {
+      this.notifyService.showInfo("Deadline date cannot be empty", "Please select date.");
+    }
+  }
+
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
