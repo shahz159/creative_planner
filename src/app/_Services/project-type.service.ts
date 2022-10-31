@@ -109,6 +109,14 @@ export class ProjectTypeService {
     this.objPortfolioDTO.EmployeeId = localStorage.getItem('EmpNo');
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioSharePreferences_Json", this.objPortfolioDTO)
   }
+
+  GetPortfoliosBy_ProjectId(pid) {
+    this.objPortfolioDTO.Project_Code = pid;
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosBy_ProjectId", this.objPortfolioDTO)
+  }
+
+
   GetProjectsByUserName_Service(obj: UserDetailsDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjUserDetails.Emp_No = EmpNo;

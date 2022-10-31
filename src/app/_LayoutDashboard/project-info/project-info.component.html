@@ -68,21 +68,25 @@
             <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
-                    21</div>
+                    {{totalPortfolios}}</div>
                 Linked
                 <div class="badge badge-pill badge-outline-success">
-                    3</div>
+                    {{_portfolioLength}}</div>
             </div>
             <div class="kt-nav__separator"></div>
         </li>
         <li class="kt-nav__item px-4">
             <div class="d-flex">
                 <!-- Working... -->
-                <select class="form-control">
-                    <option>1</option>
-                </select>
+                <ng-select #portId="ngModel" name="portfolioId" placeholder="Select Portfolio" id="portfolioName"
+                    [(ngModel)]="portfolioId"  [multiple]="true" [closeOnSelect]="false"
+                    [clearSearchOnAdd]="true" (click)="getPortfolios()">                    
+                    <ng-option [value]="item.Portfolio_ID" *ngFor="let item of _portfoliosList">
+                        {{item.Portfolio_Name}}
+                    </ng-option>
+                </ng-select>
 
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold">Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="addProjectToPortfolio()">Link</button>
             </div>
         </li>
         <li class="kt-nav__foot"></li>
@@ -607,8 +611,7 @@
             <div class="card-body" *ngIf="_portfoliolist; else NoPortfolio">                
                 <div *ngFor="let tezz of _portfoliolist; let i=index"  class="port_list border-bottom">                        
                         <div>
-                            <b *ngIf="tezz.Portfolio_Name !=''; else NoPortfolio">{{tezz.Portfolio_Name}}</b>     
-                            <!--                        -->
+                            <b *ngIf="tezz.Portfolio_Name !=''; else NoPortfolio">{{tezz.Portfolio_Name}}</b>                           
                         </div>                       
                 </div>              
             </div>           

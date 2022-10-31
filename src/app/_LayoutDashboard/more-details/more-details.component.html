@@ -464,7 +464,7 @@
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body p-3">
                                 <h6 class="mb-2">Project Duration</h6>
-                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}</h5>
+                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate}}</h5>
                                 <progress value="50" max="100" class="project-duration-bar"></progress>
                             </div>
                         </div>
@@ -511,7 +511,8 @@
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body p-3">
                                 <h6 class="mb-2">Project Duration</h6>
-                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate|date:'dd-MM-yyyy'}}</h5>
+                                <!-- |date:'dd-MM-yyyy' -->
+                                <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate}}</h5>
                                 <progress value="50" max="100" class="project-duration-bar"></progress>
                             </div>
                         </div>
@@ -2173,8 +2174,8 @@
                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
-                    [(ngModel)]="actionCode">
-                    <ng-option [value]="item.Project_Code" *ngFor="let item of Subtask_List">
+                    [(ngModel)]="actionCode" (click)="getResponsibleActions()">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
                         {{item.Project_Name}}
                     </ng-option>
                 </ng-select>

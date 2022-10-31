@@ -151,32 +151,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           const fullName = this.Project_Responsible.split(' ');
           this.initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials= this.initials.toUpperCase();
-
-          // var threshold = 3;
-          // $('.item-b').children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-          // if ($("div.item-b").children().not(".show1").length > threshold) {
-          //   $(".show1.more").css("display", "block");
-            
-          //   // alert(threshold);
-          // }
-        
-          // $(".show1.more").on("click", function() {
-          //   $("div.item-b").children().not(".show1").css("display", "block");
-          //   $(this).parent().find(".show1.less").css("display", "block");
-          //   $(this).hide();
-          //   // alert(threshold);
-          //   $(".show1.less").css("display", "block");
-          //   $(".show1.more").css("display", "none");
-          // });
-      
-          
-          // $(".show1.less").on("click", function() {
-          //   $("div.item-b").children(":nth-child(n+" + (threshold + 1) + ")").not(".show1").hide();
-          //   // $(this).parent().find(".show1.more").css("display", "block");
-          //   $(this).hide();
-          //   $(".show1.less").css("display", "none");
-          //   $(".show1.more").css("display", "block");
-          // });
         }
         else {
           this._subtaskDiv = true;
@@ -206,10 +180,32 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   AddPortfolio() {
     this._openInfoSideBar = true;
+    this._LinkSideBar = true;
     this._LinkSideBar1 = false;
-    this._onRowClick(this.projectCode);
+    this.getPortfolios();
   }
 
+  getPortfolios(){
+
+    this.service.GetPortfoliosBy_ProjectId(this.projectCode).subscribe
+    ((data) => {
+
+      this._portfoliosList = data as [];
+      this.totalPortfolios=this._portfoliosList.length;
+      console.log(this.portfolioId,"ports");
+
+    });
+    document.getElementById("LinkSideBar1").style.width = "100%";
+  }
+
+  addProjectToPortfolio(){
+    this.closeLinkSideBar();
+    this.notifyService.showError("Project not added to Portfolio - Under Maintainance","Failed");
+  }
+
+  totalPortfolios: number;
+  portfolioId:any;
+  _portfoliosList:any;
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -314,8 +310,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           console.log("No Memos linked For This Project...")
         }
       });
-    document.getElementById("LinkSideBar").style.width = "100%";
-    document.getElementById("LinkSideBar1").style.width = "100%";
+    document.getElementById("LinkSideBar").style.width = "100%";    
   }
 
   moreDetails() {
