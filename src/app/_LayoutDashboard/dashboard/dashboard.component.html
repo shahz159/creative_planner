@@ -929,16 +929,16 @@
                 <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode" (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code" >{{item.BlockNameProject}}</ng-option>
                 </ng-select>
-                <div class="txtm-cus mt-1 ml-1" >Project details like starts date, end date and status</div>
+                <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''" >{{Projectstartdate}},{{projectEnddate}},{{AllocatedHours}},{{Status_project}}</div>
             </div>
 
             
             <div class="content-main show pt-0" id="core_viw">
                 <div class="form-group" id="subtaskid">
-                    <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask" >
+                    <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask" (change)="getChangeSubtaskDetais($event)">
                         <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">{{item.Project_Name}}</ng-option>
                     </ng-select>
-                    <div class="txtm-cus mt-1 ml-1" >Project details like starts date, end date and status</div>
+                    <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">{{St_date}},{{Ed_date}},{{Allocated_subtask}},{{_status}}</div>
                 </div>
 
                 <!-- <div class="form-group">
@@ -1035,7 +1035,42 @@
                     </div>
                 </div>
                 
-                <div class="txtm-info mt-1 ml-1 mb-3">Customize Dates</div>
+                <div class="txtm-info mt-1 ml-1 mb-3">Customize Dates  </div>
+
+                            <!-- Testing -->
+
+                            <mat-form-field>
+                                <mat-chip-list #chipList aria-label="Choose a date"  (click)="picker9.open()">
+                                  <mat-chip
+                                    *ngFor="let value of model"
+                                    [selectable]="false"
+                                    [removable]="true"
+                                    (removed)="remove(value)"
+                                  >
+                                    {{ value | date }}
+                                    <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                  </mat-chip>
+                                  <input
+                                    [value]="resetModel"
+                                    matInput
+                                    [matDatepicker]="picker9"
+                                    placeholder="Choose a date"
+                                    (dateChange)="dateChanged($event)"
+                                    [matChipInputFor]="chipList"
+                                   
+                                    [min]="SelectStartdate"
+                                    [max]="Selectenddate"
+                                    hidden
+                                  />
+                                </mat-chip-list>
+                                <mat-datepicker-toggle matPrefix [for]="picker9"></mat-datepicker-toggle>
+                                <mat-datepicker
+                                  #picker9
+                                  [startAt]="init"
+                                  [dateClass]="dateClass"
+                                ></mat-datepicker>
+                              </mat-form-field>
+                          
                 <div class=" align-items-start  mb-3 d-none">
                     <div class="calendar-wrap mr-3">
                         <h5 class="month-year">January 2020</h5>

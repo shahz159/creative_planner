@@ -14,6 +14,13 @@ import listPlugin from '@fullcalendar/list';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DatePipe } from '@angular/common';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+
+
+
 // import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 
@@ -38,7 +45,9 @@ FullCalendarModule.registerPlugins([
     FullCalendarModule,
     NgMultiSelectDropDownModule,
     MatDatepickerModule,
-    NgSelectModule
+    NgSelectModule,
+    MatDialogModule, MatChipsModule, MatFormFieldModule,
+    MatIconModule
     // NgxDaterangepickerMd.forRoot()
   ],
   providers:[DatePipe],

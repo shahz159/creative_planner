@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 //import { ScriptService } from 'src/app/_Services/script.service';
@@ -18,10 +18,11 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 import { CalendarOptions } from '@fullcalendar/angular';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { DatePipe } from '@angular/common';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+import { forEach } from '@angular-devkit/schematics';
 
 
 @Component({
@@ -82,6 +83,56 @@ export class DashboardComponent implements OnInit {
     this.Timeslab=[];
   }
 
+
+  //Testing calendar
+
+  public CLOSE_ON_SELECTED = false;
+  public init = new Date();
+  public resetModel = new Date(0);
+  public model = [
+   
+  ];
+  @ViewChild('picker', { static: true }) _picker: MatDatepicker<Date>;
+
+  public dateClass = (date: Date) => {
+    if (this._findDate(date) !== -1) {
+      return [ 'selected' ];
+    }
+    return [ ];
+  }
+
+  public dateChanged(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value) {
+      const date = event.value;
+      const index = this._findDate(date);
+      if (index === -1) {
+        this.model.push(date);
+      } else {
+        this.model.splice(index, 1)
+      }
+      this.resetModel = new Date(0);
+      if (!this.CLOSE_ON_SELECTED) {
+        const closeFn = this._picker.close;
+        this._picker.close = () => { };
+        this._picker['_popupComponentRef'].instance._calendar.monthView._createWeekCells()
+        setTimeout(() => {
+          this._picker.close = closeFn;
+        });
+      }
+    }
+  }
+
+  public remove(date: Date): void {
+    const index = this._findDate(date);
+    this.model.splice(index, 1)
+  }
+
+  private _findDate(date: Date): number {
+    return this.model.map((m) => +m).indexOf(+date);
+  }
+
+
+// Testing calendar
 
   initials: string;
   Subtask_List: SubTaskDTO[];
@@ -673,7 +724,14 @@ export class DashboardComponent implements OnInit {
   }
   StartTimearr:any=[];
   EndTimearr:any=[];
-
+  Projectstartdate:string="";
+  projectEnddate:string;
+  Status_project:string;
+  AllocatedHours:number;
+  St_date:string="";
+  Ed_date:string;
+  _status:string;
+  Allocated_subtask:number;
  
   SubmissionName:string;
   _Exec_BlockName: string = "";
@@ -712,6 +770,20 @@ export class DashboardComponent implements OnInit {
 
 
   GetSubtasklistfromProject(MasterCode) {
+    this.BlockNameProject.forEach(element => {
+      if (element.Project_Code==MasterCode){
+       
+        this.Projectstartdate=element.StatDate;
+        this.projectEnddate=element.Enddate;
+        this.Status_project=element.Status;
+        this.AllocatedHours=element.Allocated;
+        
+        
+  
+
+      }
+      
+    });
     if (MasterCode != undefined) {
       this._calenderDto.Project_Code = MasterCode;
       // alert(MasterCode);
@@ -735,6 +807,20 @@ export class DashboardComponent implements OnInit {
         (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
       }
     }
+  }
+
+  getChangeSubtaskDetais(Project_Code){
+   this.BlockNameProject1.forEach(element => {
+      
+    if(element.Project_Code==Project_Code){
+      this.St_date=element.StatDate;
+      this.Ed_date=element.Enddate;
+      this._status=element.Status;
+      this.Allocated_subtask=element.Allocated
+    }
+    });
+  
+
   }
 
   _Message:string;
