@@ -14,6 +14,8 @@ import listPlugin from '@fullcalendar/list';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DatePipe } from '@angular/common';
+// import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -37,6 +39,7 @@ FullCalendarModule.registerPlugins([
     NgMultiSelectDropDownModule,
     MatDatepickerModule,
     NgSelectModule
+    // NgxDaterangepickerMd.forRoot()
   ],
   providers:[DatePipe],
   exports:[DashboardComponent] 

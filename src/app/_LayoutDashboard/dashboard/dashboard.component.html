@@ -929,16 +929,16 @@
                 <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode" (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code" >{{item.BlockNameProject}}</ng-option>
                 </ng-select>
-                <div class="txtm-cus mt-1 ml-1">Project details like starts date, end date and status</div>
+                <div class="txtm-cus mt-1 ml-1" >Project details like starts date, end date and status</div>
             </div>
 
             
             <div class="content-main show pt-0" id="core_viw">
                 <div class="form-group" id="subtaskid">
                     <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask" >
-                        <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">{{item.BlockNameProject}}</ng-option>
+                        <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">{{item.Project_Name}}</ng-option>
                     </ng-select>
-                    <div class="txtm-cus mt-1 ml-1">Project details like starts date, end date and status</div>
+                    <div class="txtm-cus mt-1 ml-1" >Project details like starts date, end date and status</div>
                 </div>
 
                 <!-- <div class="form-group">
@@ -1004,9 +1004,39 @@
 
                     </div>
                 </div>
+                <div class="form-group" id="monrep" >
+                    <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Weekly'" -->
+                    <label class="">Days</label>
+                    <div class="pt-1">
+                        <div class="d-flex">
+                            <!-- [ngClass]="day ? 'repeat-day active' : 'repeat-day'" -->
+                            <div *ngFor="let item of dayArr" [ngClass]="selectDay==item ? 'repeat-day active' : 'repeat-day'" (click)="selectedDay(item)" [(ngModel)]="selectDay">
+                                {{item}}
+                            </div>
+                            <!-- <div class="repeat-day">
+                                M
+                            </div>
+                            <div class="repeat-day active">
+                                T
+                            </div>
+                            <div class="repeat-day">
+                                W
+                            </div>
+                            <div class="repeat-day">
+                                T
+                            </div>
+                            <div class="repeat-day">
+                                F
+                            </div>
+                            <div class="repeat-day">
+                                S
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="txtm-info mt-1 ml-1 mb-3">Customize Dates</div>
-                <div class="d-flex align-items-start  mb-3">
+                <div class=" align-items-start  mb-3 d-none">
                     <div class="calendar-wrap mr-3">
                         <h5 class="month-year">January 2020</h5>
                     
@@ -1212,7 +1242,7 @@
                 </div>
 
 
-                    <div class="form-group " >
+                    <!-- <div class="form-group " >
                         <label class="">Repeat on</label>
                         <div class="dropfocus dropdown w-200 ml-0">
                             <input class="kt-input form-control" type="text" placeholder="Do not repeat"  data-toggle="dropdown"  >
@@ -1225,7 +1255,7 @@
                                 <a class="dropdown-item">Custom</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group" id="dayrep" *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')">
                         <label class="">Repeat on</label>
                         <div class="pt-1">
@@ -1278,35 +1308,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" id="monrep" *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Weekly'">
-                        <label class="">Repeat on1</label>
-                        <div class="pt-1">
-                            <div class="d-flex">
-                                <!-- [ngClass]="day ? 'repeat-day active' : 'repeat-day'" -->
-                                <div *ngFor="let item of dayArr" [ngClass]="selectDay==item ? 'repeat-day active' : 'repeat-day'" (click)="selectedDay(item)" [(ngModel)]="selectDay">
-                                    {{item}}
-                                </div>
-                                <!-- <div class="repeat-day">
-                                    M
-                                </div>
-                                <div class="repeat-day active">
-                                    T
-                                </div>
-                                <div class="repeat-day">
-                                    W
-                                </div>
-                                <div class="repeat-day">
-                                    T
-                                </div>
-                                <div class="repeat-day">
-                                    F
-                                </div>
-                                <div class="repeat-day">
-                                    S
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
+                   
                    
 
                   
