@@ -10,7 +10,11 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedLink", function() { return ForceDirectedLink; });
+<<<<<<< HEAD
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/daygrid/node_modules/tslib/tslib.es6.js");
+=======
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/interaction/node_modules/tslib/tslib.es6.js");
+>>>>>>> 7babb4c28f37b1f0b5e65dd3239c71513034e729
 /* harmony import */ var _core_Sprite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/Sprite */ "./node_modules/@amcharts/amcharts4/.internal/core/Sprite.js");
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/Registry */ "./node_modules/@amcharts/amcharts4/.internal/core/Registry.js");
 /* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/InterfaceColorSet */ "./node_modules/@amcharts/amcharts4/.internal/core/utils/InterfaceColorSet.js");
@@ -258,7 +262,11 @@ _core_Registry__WEBPACK_IMPORTED_MODULE_2__["registry"].registeredClasses["Force
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedNode", function() { return ForceDirectedNode; });
+<<<<<<< HEAD
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/daygrid/node_modules/tslib/tslib.es6.js");
+=======
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/interaction/node_modules/tslib/tslib.es6.js");
+>>>>>>> 7babb4c28f37b1f0b5e65dd3239c71513034e729
 /* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/Container */ "./node_modules/@amcharts/amcharts4/.internal/core/Container.js");
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/Registry */ "./node_modules/@amcharts/amcharts4/.internal/core/Registry.js");
 /* harmony import */ var _core_elements_Circle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/elements/Circle */ "./node_modules/@amcharts/amcharts4/.internal/core/elements/Circle.js");
@@ -579,7 +587,11 @@ _core_Registry__WEBPACK_IMPORTED_MODULE_2__["registry"].registeredClasses["Force
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedSeriesDataItem", function() { return ForceDirectedSeriesDataItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedSeries", function() { return ForceDirectedSeries; });
+<<<<<<< HEAD
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/daygrid/node_modules/tslib/tslib.es6.js");
+=======
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/interaction/node_modules/tslib/tslib.es6.js");
+>>>>>>> 7babb4c28f37b1f0b5e65dd3239c71513034e729
 /* harmony import */ var _charts_series_Series__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../charts/series/Series */ "./node_modules/@amcharts/amcharts4/.internal/charts/series/Series.js");
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/Registry */ "./node_modules/@amcharts/amcharts4/.internal/core/Registry.js");
 /* harmony import */ var _core_utils_List__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/List */ "./node_modules/@amcharts/amcharts4/.internal/core/utils/List.js");
@@ -1787,7 +1799,11 @@ _core_Registry__WEBPACK_IMPORTED_MODULE_2__["registry"].registeredClasses["Force
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedTreeDataItem", function() { return ForceDirectedTreeDataItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForceDirectedTree", function() { return ForceDirectedTree; });
+<<<<<<< HEAD
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/daygrid/node_modules/tslib/tslib.es6.js");
+=======
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/@fullcalendar/interaction/node_modules/tslib/tslib.es6.js");
+>>>>>>> 7babb4c28f37b1f0b5e65dd3239c71513034e729
 /* harmony import */ var _charts_types_SerialChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../charts/types/SerialChart */ "./node_modules/@amcharts/amcharts4/.internal/charts/types/SerialChart.js");
 /* harmony import */ var _ForceDirectedSeries__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ForceDirectedSeries */ "./node_modules/@amcharts/amcharts4/.internal/plugins/forceDirected/ForceDirectedSeries.js");
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/Registry */ "./node_modules/@amcharts/amcharts4/.internal/core/Registry.js");

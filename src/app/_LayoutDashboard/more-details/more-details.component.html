@@ -152,9 +152,8 @@
 
 
                     </div>
-                    <div class=" pro-act">
-                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval')">Project
-                            Actions</button>
+                    <div class=" pro-act" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo">
+                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval')">Project Actions</button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')"
                         class=" pro-act ml-2">
@@ -2006,7 +2005,7 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
-                    <h5 class="mt-1 text-blue">30/11/2021</h5>
+                    <h5 class="mt-1 text-blue">{{StartDate|date:'dd-MM-yyyy'}}</h5>
                 </div>
             </div>
             <div class="d-flex align-items-center">
@@ -2020,7 +2019,8 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
-                    <h5 class="mt-1 text-blue">New Project</h5>
+                    <h5 class="mt-1 text-blue" *ngIf="Status == 'Under Approval'">New Project</h5>
+                    <h5 class="mt-1 text-blue" *ngIf="Status == 'Completion Under Approval'">Project Complete</h5>
                 </div>
             </div>
             <div class="d-flex align-items-center">
@@ -2032,7 +2032,7 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
-                    <h5 class="mt-1 text-blue">13/12/2021</h5>
+                    <h5 class="mt-1 text-blue">{{EndDate}}</h5>
                 </div>
             </div>
         </div>
@@ -2088,8 +2088,8 @@
                                     <label class="mb-2">Select Comment</label>
                                     <select class="form-control">
                                         <option>Select Comment</option>
-                                        <option>Comment 1</option>
-                                        <option>Comment 2</option>
+                                        <option>New project Accepted</option>
+                                        <option>Complete Project Accepted</option>
                                     </select>
                                 </div>
                             </div>
