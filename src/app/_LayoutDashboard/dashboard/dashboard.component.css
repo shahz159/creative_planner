@@ -674,7 +674,7 @@
     outline: none;
   }
   
-  .day:focus .day-number::after {
+  /* .day:focus .day-number::after {
     content: '';
     position: absolute;
     z-index: -1;
@@ -685,28 +685,28 @@
     transform: translate(-50%,-50%);
     border: 0.25em solid #0288d1;
     border-radius: 50%;
-  }
+  } 
   
   .day.active-a:focus .day-number::after,
   .day.active-b:focus .day-number::after {
     width: 100%;
     height: 100%;
-  }
+  }*/
   .day-number {
     position: relative;
     z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 2em;
-    border-radius: 50%;
+    height: 26px;
+    border-radius: 100px;
 }
   .day.today span.day-number {
     color: #fff;
     border: 0.25em solid transparent;
     box-shadow: inset 0 0 0 2em #37474f;
 }
-.day.prev-mon .day-number, .day.next-mon .day-number {
+.day.prev-mon .day-number, .day.next-mon .day-number, .day.prev-mon:hover .day-number, .day.next-mon:hover .day-number {
     color: rgba(0,0,0,0.3);
 }
   .day.today:focus .day-number::after {
@@ -752,4 +752,16 @@
 }
 .resetbtn:hover {
         color: #ede3e3;
+}
+.day.prev-mon, .day.prev-mon:focus, .day.next-mon, .day.next-mon:focus {
+    outline: none !important;
+    border: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+.day.prev-mon:focus .day-number, .day-number:focus, .day.next-mon:focus .day-number{
+    outline: none !important;
+    border: none;
+    box-shadow: none;
+    cursor: not-allowed;
 }
