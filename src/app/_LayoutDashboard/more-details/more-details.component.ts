@@ -2859,7 +2859,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-    // console.log(this.current_Date,"dato");
+     console.log(this.actionCode,"darcode");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
