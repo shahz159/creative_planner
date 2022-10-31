@@ -17,7 +17,7 @@ import * as _ from 'underscore';
   styleUrls: ['./project-info.component.css']
 })
 
-export class ProjectInfoComponent implements OnInit,OnDestroy {
+export class ProjectInfoComponent implements OnInit,OnDestroy {  
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
@@ -40,6 +40,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _subtaskDiv: boolean;
   Current_user_ID: string;
   _LinkSideBar: boolean = true;
+  _LinkSideBar1: boolean = true;
   _openInfoSideBar: boolean = false;
   interval: any;
   MoreDetailsList: any;
@@ -78,6 +79,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   Pid: number;
   _MasterCode:string;
  _portfoliolist:any;
+ _portfolioLength: any;
   fun_LoadProjectDetails() { 
     
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
@@ -86,6 +88,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);
+          this._portfolioLength=this._portfoliolist.length;
           console.log(this._portfoliolist.length,"port");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
@@ -201,6 +204,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this._onRowClick(this.projectCode);
   }
 
+  AddPortfolio() {
+    this._openInfoSideBar = true;
+    this._LinkSideBar1 = false;
+    this._onRowClick(this.projectCode);
+  }
+
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -306,6 +315,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         }
       });
     document.getElementById("LinkSideBar").style.width = "100%";
+    document.getElementById("LinkSideBar1").style.width = "100%";
   }
 
   moreDetails() {
@@ -446,7 +456,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
+    document.getElementById("LinkSideBar1").style.width = "0";
     this._LinkSideBar = true;
+    this._LinkSideBar1 = true;
     this._openInfoSideBar = false;
   }
 

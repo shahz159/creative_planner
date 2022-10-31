@@ -141,7 +141,7 @@ export class MoreDetailsComponent implements OnInit {
 
   getnextDeadline() {  
     
-    return this.datepipe.transform(this.EndDate1, 'yyyy-MM-dd');
+    return this.datepipe.transform(this.EndDate, 'MM-dd-YYYY');
   }
 
   totalHours: any;
@@ -2606,6 +2606,7 @@ export class MoreDetailsComponent implements OnInit {
 
     (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
+    this._ProjDeadline=null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
 
@@ -2647,7 +2648,9 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  onProject_ExtendDeadline(id, Pcode) {
+  onProject_ExtendDeadline(id, Pcode) { 
+    
+    // $("#Deadlinetext_").val(this.EndDate);
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     if (this._ProjDeadline != null) {
      
@@ -2857,7 +2860,6 @@ export class MoreDetailsComponent implements OnInit {
 
   closedarBar() {
     // console.log(this.current_Date,"dato");
-    alert(this.actionCode);
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
