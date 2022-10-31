@@ -2174,9 +2174,8 @@
                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
-                    [(ngModel)]="actionCode">
-                    <ng-option [value]="item.Project_Code" *ngFor="let item of Subtask_List" 
-                    [disabled]="item.Team_Autho!=Current_user_ID">
+                    [(ngModel)]="actionCode" (click)="getResponsibleActions()">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
                         {{item.Project_Name}}
                     </ng-option>
                 </ng-select>

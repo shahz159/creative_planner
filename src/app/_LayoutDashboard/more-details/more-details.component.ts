@@ -88,8 +88,9 @@ export class MoreDetailsComponent implements OnInit {
       
       this.GetProjectDetails();
       this.GetSubtask_Details();
-      this.dar_details();
-      
+      this.dar_details(); 
+      this.getResponsibleActions();
+
       this.EndDate1.setDate(this.EndDate1.getDate() + 1);
       // let data1: any;
       // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -142,6 +143,13 @@ export class MoreDetailsComponent implements OnInit {
   getnextDeadline() {  
     
     return this.datepipe.transform(this.EndDate, 'MM-dd-YYYY');
+  }
+
+  getResponsibleActions(){
+    this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
+      (data) => {
+        this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+      });
   }
 
   totalHours: any;
@@ -2437,6 +2445,8 @@ export class MoreDetailsComponent implements OnInit {
   dropdownSettings_Employee = {};
   selectedEmp: string;
   filteredemp: boolean = false;
+  darArr: any;
+
 
   GetSubtask_Details() {
     if (this.filteredemp == true) {
@@ -2457,15 +2467,17 @@ export class MoreDetailsComponent implements OnInit {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+          this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
-          // console.log(this.Subtask_Res_List,this.totalSubtaskHours );
+          // console.log(this.Subtask_List,"dar");
 
           // console.log(this.Subtask_List);
-          //SubTasks Multiselect start
+          //SubTasks Multiselect start         
+
           this.dropdownSettings_Employee = {
             singleSelection: true,
             idField: 'Team_Res',
@@ -2859,7 +2871,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-     console.log(this.actionCode,"darcode");
+    console.log(this.actionCode,"darcode");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
