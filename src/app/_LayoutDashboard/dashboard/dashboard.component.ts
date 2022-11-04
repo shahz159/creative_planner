@@ -927,15 +927,9 @@ export class DashboardComponent implements OnInit {
       ((data) => {
 
         this.StartTimearr = data as [];
-<<<<<<< HEAD
-        this.Startts=this.StartTimearr[0].TSStart;
-        this.Endtms=this.StartTimearr[0].TSEnd;
-        console.log(this.StartTimearr[0].TSStart);  
-=======
         this.Startts = this.StartTimearr[0].TSStart;
         this.Endtms = this.StartTimearr[0].TSEnd;
         console.log(this.StartTimearr[0].TSStart);
->>>>>>> e285a7feb2bf818db7405fb8266a5661196993fc
       });
   }
 
