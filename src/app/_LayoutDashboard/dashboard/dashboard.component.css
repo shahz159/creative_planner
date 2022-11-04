@@ -475,7 +475,7 @@
     position: relative;
 }
 .dropfocus{
-    margin: 0px 9px;
+    margin: 0px 0px;
 }
 .dropfocus.dropdown.show{
     background: #f1f3f4;
@@ -788,9 +788,9 @@
 .drop-calendar {
     width: 30rem
 }
-.demo-inline-calendar-card {
+/* .demo-inline-calendar-card {
     width: 300px;
-}
+} */
 ::ng-deep .mat-calendar-controls{
     margin-top: 0px !important;
 }
@@ -806,4 +806,7 @@
 .rep-chk{
     position: absolute;
     opacity: 0;
+}
+.gap-15{
+    gap: 15px;
 }
