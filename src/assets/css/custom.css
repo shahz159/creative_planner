@@ -1032,3 +1032,19 @@ svg.feather {
     background-color: #3699FF;
     border-color: transparent;
 }
+
+.h-50px {
+    height: 50px !important;
+}
+.h-60px {
+    height: 60px !important;
+}
+.h-70px {
+    height: 70px !important;
+}
+.h-80px {
+    height: 80px !important;
+}
+.h-100px {
+    height: 100px !important;
+}

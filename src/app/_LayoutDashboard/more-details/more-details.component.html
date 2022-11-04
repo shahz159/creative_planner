@@ -152,8 +152,8 @@
 
 
                     </div>
-                    <div class=" pro-act" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo">
-                        <button class="btn22" (click)="sideviw()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval')">Project Actions</button>
+                    <div class=" pro-act" *ngIf="(Current_user_ID == Owner_EmpNo) || (Current_user_ID == Responsible_EmpNo) && (Responsible_EmpNo != Authority_EmpNo)">
+                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval')">Project Actions</button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')"
                         class=" pro-act ml-2">
@@ -411,7 +411,8 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
-                                    <h5 class="mt-1">{{Category}}</h5>
+                                    <h5 class="mt-1" *ngIf="Category!=null">{{Category}}</h5>
+                                    <h5 class="mt-1" *ngIf="Category==null">Software Support</h5>
                                 </div>
                             </div>
                         </div>
@@ -2006,7 +2007,7 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
-                    <h5 class="mt-1 text-blue">{{StartDate|date:'dd-MM-yyyy'}}</h5>
+                    <h5 class="mt-1 text-blue">{{requestDate|date:'dd-MM-yyyy'}}</h5>
                 </div>
             </div>
             <div class="d-flex align-items-center">
@@ -2020,8 +2021,7 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
-                    <h5 class="mt-1 text-blue" *ngIf="Status == 'Under Approval'">New Project</h5>
-                    <h5 class="mt-1 text-blue" *ngIf="Status == 'Completion Under Approval'">Project Complete</h5>
+                    <h5 class="mt-1 text-blue">{{requestType}}</h5>    
                 </div>
             </div>
             <div class="d-flex align-items-center">
@@ -2033,7 +2033,9 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
-                    <h5 class="mt-1 text-blue">{{EndDate}}</h5>
+                    <h5 class="mt-1 text-blue" *ngIf="requestDeadline!=null">{{requestDeadline|date:'dd-MM-yyyy'}}</h5>
+                    <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5>
+
                 </div>
             </div>
         </div>
@@ -2061,19 +2063,19 @@
                             <div class="form-check-inline">
                                 <label class="form-check-label lbl-suc btn-app">
                                     <input id="rdbButtons_0" type="radio" class="form-check-input" name="rdbButtons"
-                                        value="1" checked="checked">Accept
+                                        value="1" checked="checked" [(ngModel)]="selectedType">Accept
                                 </label>
                             </div>
                             <div class="form-check-inline">
                                 <label class="form-check-label lbl-war btn-app">
                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
-                                        value="2">Hold
+                                        value="2" [(ngModel)]="selectedType">Hold
                                 </label>
                             </div>
                             <div class="form-check-inline">
                                 <label class="form-check-label lbl-dan btn-app">
                                     <input id="rdbButtons_2" type="radio" class="form-check-input" name="rdbButtons"
-                                        value="3">Reject
+                                        value="3" [(ngModel)]="selectedType">Reject
                                 </label>
                             </div>
                         </div>
@@ -2082,21 +2084,22 @@
                         <div class="col-md-12 checked-rad pl-1 pt-3">
                             <div class="appr-comts">
                                 <div class="form-group">
-                                    <label class="mb-2">Enter your Comment</label>
+                                    <label class="mb-2">Enter your Comment(optional)</label>
                                     <textarea class="form-control"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="mb-2">Select Comment</label>
-                                    <select class="form-control">
-                                        <option>Select Comment</option>
-                                        <option>New project Accepted</option>
-                                        <option>Complete Project Accepted</option>
+                                    <select class="form-control" [(ngModel)]="commentSelected">
+                                        <option value=""> -- select an option -- </option>
+                                        <option>Accepted</option>
+                                        <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
+                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-sm btn-info mr-2">Submit</button>
-                                <button class="btn btn-sm btn-secondary">Cancel</button>
+                                <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()" [disabled]="!commentSelected || !selectedType">Submit</button>
+                                <button class="btn btn-sm btn-secondary" (click)="closeInfo()">Cancel</button>
                             </div>
                         </div>
                         <div class="none-checked margin-auto">
@@ -2169,7 +2172,8 @@
         </div>
     </div>
     <div class="px-4 pt-2">
-        <form>
+         
+        <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List'">
                 <label>Action <span class="text-danger">*</span></label>
@@ -2182,17 +2186,17 @@
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>
-                <input type="text" name="work" class="form-control" [(ngModel)]="workdes">
+                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Date<span class="text-danger">*</span></label>
-                <!-- <input class="form-control" name="starttim" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
+                <!-- <input class="form-control" name="starttim" #startdate="ngModel" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
                 <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
-                <div class="input-group">
-                    <input matInput [matDatepicker]="picker1" id="d-date" required #startdate="ngModel"
+                <div class="input-group">                 
+                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value" [matDatepicker]="picker1" id="d-date" required 
                         (click)="picker1.open()" [min]="disablePreviousDate" [max]="todayDate"
-                        [(ngModel)]="current_Date" placeholder="Select Date" class="form-control" name="date">
+                         placeholder="Select Date" class="form-control" name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
@@ -2206,8 +2210,8 @@
                     [(ngModel)]="starttime">
                     <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                         [disabled]="item!=lastEndtime && bol==false">
-                        <a *ngIf="i!=10 && i!=11">{{item}}</a>
-                        <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                        <a>{{item}}</a>
+                        <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                     </ng-option>
 
                 </ng-select>
@@ -2219,8 +2223,8 @@
                 <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
                     (click)="getDarTime()" [(ngModel)]="endtime">
                     <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="item<=lastEndtime">
-                        <a *ngIf="i!=10 && i!=11">{{item}}</a>
-                        <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a>
+                        <a>{{item}}</a>
+                        <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                     </ng-option>
                 </ng-select>
                 <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
@@ -2230,14 +2234,14 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
-                    [disabled]="!actionCode || !workdes || !current_Date || !starttime || !endtime || endtime < starttime">
+                    [disabled]="!actionCode || !workdes || !starttime || !endtime || endtime < starttime">
                     Submit</button>
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==false"
-                    [disabled]=" !workdes || !current_Date || !starttime || !endtime || endtime < starttime">
+                    [disabled]=" !workdes  || !starttime || !endtime || endtime < starttime">
                     Submit</button>
                 <button type="reset" class="btn btn-secondary ml-2">Reset</button>
                 <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>

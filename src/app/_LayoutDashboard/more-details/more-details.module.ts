@@ -11,6 +11,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 
@@ -22,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,ReactiveFormsModule,
     MoreDetailsRoutingModule,
     NgMultiSelectDropDownModule,
-    MatDatepickerModule,NgSelectModule
+    MatDatepickerModule,NgSelectModule,
+    MatFormFieldModule
   ],
   providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe]
 })

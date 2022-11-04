@@ -116,6 +116,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosBy_ProjectId", this.objPortfolioDTO)
   }
 
+  GetTotalPortfoliosBy_Employeeid() {
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTotalPortfoliosofEmployee", this.objPortfolioDTO)
+  }
+
 
   GetProjectsByUserName_Service(obj: UserDetailsDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
@@ -210,6 +215,19 @@ export class ProjectTypeService {
     // });
 
   }
+
+  InsertPortfolioIdsByProjectCode(objFromComp : PortfolioDTO) {
+    this.objPortfolioDTO.SelectedPortIdsJson = objFromComp.SelectedPortIdsJson;
+    this.objPortfolioDTO.Project_Code = objFromComp.Project_Code;
+    this.objPortfolioDTO.Emp_No = objFromComp.Emp_No;
+    this.objPortfolioDTO.Created_By = objFromComp.Emp_No;
+    this.objPortfolioDTO.Modified_By = objFromComp.Emp_No;
+    
+    return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfoliosByProjectCode", this.objPortfolioDTO);
+ 
+  }
+
+
   //Get Portfolio
   GetPortfolio() {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolio", this.objPortfolioDTO)

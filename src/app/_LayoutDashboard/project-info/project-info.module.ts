@@ -10,8 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import { NgSelectModule } from '@ng-select/ng-select';
-
-
+import { FocusOnClickDirective } from './focus-on-click.directive';
 
 
 FullCalendarModule.registerPlugins([
@@ -32,9 +31,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule
 
   ],
-  declarations: [
-   ProjectInfoComponent
-  ],
+  declarations: [ ProjectInfoComponent, FocusOnClickDirective ],
  //exports:[ProjectInfoComponent]
   
 })

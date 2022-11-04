@@ -20,6 +20,7 @@ export class PortfolioDTO {
     Modified_By: string;
     Modified_DT: Date;
     SelectedProjects = [];
+    SelectedPortIdsJson: any;
     //FlagId:number;
     Emp_SystemRole: string;
     TM_DisplayName: string;
@@ -64,5 +65,6 @@ export class PortfolioDTO {
     Proj_Percentage: number;
     result: number;
     SearchText: string;
+    TotalPortfolios: number;
 }
 

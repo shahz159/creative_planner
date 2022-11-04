@@ -10,6 +10,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { ActivatedRoute } from '@angular/router';
 import { LinkService } from 'src/app/_Services/link.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import {ApprovalsService} from 'src/app/_Services/approvals.service';
 import * as _ from 'underscore';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { DateAdapter } from '@angular/material/core';
@@ -25,6 +26,8 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { DatePipe } from '@angular/common';
 import { getDateMeta } from '@fullcalendar/angular';
 import { FormControl } from '@angular/forms';
+import { data } from 'jquery';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 
 
 
@@ -38,6 +41,7 @@ export class MoreDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
+    public approvalservice : ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
     private notifyService: NotificationService, public dateAdapter: DateAdapter<Date>,
@@ -74,6 +78,11 @@ export class MoreDetailsComponent implements OnInit {
   todayDate = new Date();
   timedata: any = [];
   EndDate1:any = new Date();
+  commentSelected: string;
+  selectedType: string;
+  date = new Date();
+  dateF = new FormControl(new Date());
+
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -91,36 +100,7 @@ export class MoreDetailsComponent implements OnInit {
       this.dar_details(); 
       this.getResponsibleActions();
 
-      this.EndDate1.setDate(this.EndDate1.getDate() + 1);
-      // let data1: any;
-      // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-      //   .subscribe(data => {
-      //     data1 = JSON.parse(data[0]['DARGraphCalculations_Json']);
-      //     this.DarGraphDataList = data1;
-      //   });
-
-      // this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
-      //   (data) => {
-      //     this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-      //     this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-      //     this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
-
-
-      //     this.inProcessCount = this.Subtask_List.length;
-      //     this.completedCount = this.CompletedList.length;
-      //     this.subTaskCount = this.inProcessCount + this.completedCount;
-      //   });
-    
-
-    // this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
-    //   (data) => {
-    //     if (data != null && data != undefined) {
-    //       this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-    //       this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
-    //       this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
-
-    //     }
-    //   });
+      this.EndDate1.setDate(this.EndDate1.getDate() + 1);      
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
@@ -138,6 +118,61 @@ export class MoreDetailsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
+
+     this.current_Date=moment(new Date()).format("MM/DD/YYYY");
+    // alert(this.current_Date);
+  }
+  orgValueChange(val){
+    this.current_Date=moment(val.value).format("MM/DD/YYYY");
+    // alert(this.current_Date);
+  }
+
+  approvalObj = new ApprovalDTO();
+  requestDate: any;
+  requestDeadline: any;
+  requestType: any;
+
+  getapprovalStats(){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data)=>{
+        this.requestType = (data[0]['Request_type']);
+        this.requestDate = (data[0]['Request_date']);
+        this.requestDeadline = (data[0]['Request_deadline']);
+        console.log(this.requestDate,this.requestDeadline,this.requestType,"request status");
+    });
+  }
+
+  submitApproval(){
+    if(this.selectedType=='1'){
+
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.Remarks = this.commentSelected;
+
+      this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+      subscribe((data)=>{
+        this._Message = (data['message']);
+        this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+        this.GetProjectDetails();
+        this.GetSubtask_Details();
+      });    
+      
+    }
+
+    else if(this.selectedType=='2'){
+     this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+
+    else if(this.selectedType=='3'){
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    document.getElementById("mysideInfobar").classList.remove("side--on");  
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").style.width = "0";
+    document.getElementById("rightbar-overlay").style.display = "none"; 
+        
   }
 
   getnextDeadline() {  
@@ -200,7 +235,8 @@ export class MoreDetailsComponent implements OnInit {
   starttime: any;
   endtime: any;
   timecount: any;
-  current_Date: any;
+  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy')
+  releaseDate:any;
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
@@ -264,6 +300,7 @@ export class MoreDetailsComponent implements OnInit {
       });
     // console.log(this.objProjectDto, "testingDar");
     this.dar_details();
+    this.getDarTime();
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -282,7 +319,8 @@ export class MoreDetailsComponent implements OnInit {
 
     this.timedata = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00",
       "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"];
-    $("#d-date").val(this.current_Date);
+    // $("#d-date").val(this.current_Date);
+    
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
@@ -533,7 +571,7 @@ export class MoreDetailsComponent implements OnInit {
         this._totalMemos = this._ActualMemoslist.length;
         // console.log("Memos List", JSON.parse(data['JsonData']));
         this.dropdownSettings_Memo = {
-          singleSelection: false,
+          singleSelection: true,
           idField: 'MailId',
           textField: 'Subject',
           selectAllText: 'Select All',
@@ -639,6 +677,7 @@ export class MoreDetailsComponent implements OnInit {
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
     this.GetSubtask_Details();
   }
@@ -2799,12 +2838,16 @@ export class MoreDetailsComponent implements OnInit {
     $('#upload').html('Select a file');
     this.actionCode = null;
     this.workdes = "";
-    this.current_Date = null;
+    this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
+    // this.dateF=null;
     this.starttime = null;
     this.endtime = null;
     this.starttimearr = [];
     this.endtimearr = [];
     $("#err2").empty();
+
+    this.selectedType = null;
+    this.commentSelected = null;
     // this.ngOnInit();
   }
 
@@ -2861,6 +2904,7 @@ export class MoreDetailsComponent implements OnInit {
   }
   coresecondary: boolean = true;
   darcreate() {
+    this.dateF = new FormControl(new Date());
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
@@ -2871,7 +2915,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closedarBar() {
-    console.log(this.actionCode,"darcode");
+    // console.log(this.actionCode,"darcode");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";

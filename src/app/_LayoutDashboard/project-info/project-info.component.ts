@@ -10,6 +10,8 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import * as _ from 'underscore';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
+import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 
 @Component({
   selector: 'app-project-info',
@@ -24,6 +26,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     private ShareParameter_Service: ParameterService,
     private route: ActivatedRoute,
     private elementRef: ElementRef) {
+      this.objPortfolioDto= new PortfolioDTO();
   }
 
   @Input() inputFromParent: string;
@@ -80,6 +83,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _MasterCode:string;
  _portfoliolist:any;
  _portfolioLength: any;
+  objPortfolioDto : PortfolioDTO;
+
   fun_LoadProjectDetails() { 
     
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
@@ -87,9 +92,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         //console.log("Project Details---->", data);
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
-          this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);
-          this._portfolioLength=this._portfoliolist.length;
-          console.log(this._portfoliolist.length,"port");
+          this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
+          // console.log(this._portfoliolist.length,"port");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
@@ -181,31 +185,127 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   AddPortfolio() {
     this._openInfoSideBar = true;
     this._LinkSideBar = true;
-    this._LinkSideBar1 = false;
+    this._LinkSideBar1 = false;   
     this.getPortfolios();
   }
 
-  getPortfolios(){
+  getPortfolios(){ 
+
+    if((this._portfoliolist.length== 1) && (this._portfoliolist[0]['Portfolio_Name'] == ''))
+    this._portfolioLength=0;
+    else
+    this._portfolioLength=this._portfoliolist.length;
+    // console.log(this._portfoliolist,"lll");
+
+    this.service.GetTotalPortfoliosBy_Employeeid().subscribe
+    ((data) => {
+      this.totalPortfolios=(data[0]['TotalPortfolios']);       
+    });
 
     this.service.GetPortfoliosBy_ProjectId(this.projectCode).subscribe
     ((data) => {
-
-      this._portfoliosList = data as [];
-      this.totalPortfolios=this._portfoliosList.length;
-      console.log(this.portfolioId,"ports");
-
+      this._portfoliosList = data as []; 
+     
+      this.dropdownSettings_Portfolio = {
+        singleSelection: false,
+        idField: 'Portfolio_ID',
+        textField: 'Portfolio_Name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 4,
+        allowSearchFilter: true,
+        clearSearchFilter: true
+      };
     });
     document.getElementById("LinkSideBar1").style.width = "100%";
   }
 
+  Empty_portDropdown: any;
+  _SelectedPorts: any;
+  Port_Id: number;
+
+  Portfolio_Select(selecteditems) {
+    //console.log("Selected Item---->",selecteditems)
+    let arr = [];
+    this.Empty_portDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+    console.log("Selected Ports In Array--->", this._SelectedPorts);
+    // console.log(this.ngDropdwonPort,"ports");
+  
+  }
+
+  Portfolio_SelectAll(selecteditems){
+
+    let arr = [];
+    this.Empty_portDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+    //  console.log("Selected Ports In Array1--->", this._SelectedPorts);
+
+  }
+
+  Portfolio_DeSelectAll(){
+    this._SelectedPorts = [];
+    // console.log("Selected Ports In Array1--->", this._SelectedPorts);
+  }
+
+  Portfolio_Deselect(selecteditems) {
+    let arr = [];
+    
+    this.Empty_portDropdown = selecteditems;
+    if(this.Empty_portDropdown != ''){
+      this.Empty_portDropdown.forEach(element => {
+        arr.push({ Port_Id: element.Portfolio_ID })
+        this._SelectedPorts = arr;
+      });
+    }
+    else{
+      this._SelectedPorts= [];     
+    }
+   
+    // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
+  }
+
+  selectedportID : any;
+  noPort: string = "No Portfolios linked"
+  
   addProjectToPortfolio(){
+    this.selectedportID = JSON.stringify(this._SelectedPorts);
+    console.log(this.selectedportID,"portids");
+  if(this.selectedportID!=null){
+    this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
+   this.objPortfolioDto.Project_Code = this.projectCode;
+   this.objPortfolioDto.Emp_No = this.Current_user_ID;
+
+    this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
+    subscribe((data) => {
+      this._Message=(data['message']);
+      console.log(data);
+
+      if(this._Message == 'Updated Successfully')
+        this.notifyService.showSuccess("Project Successfully added to selected Portfolio(s)",this._Message);
+      else
+      this.notifyService.showInfo("Please select atleast one portfolio and try again","");
+      
+    });
+  }
+   
+    this.ngDropdwonPort = [];
     this.closeLinkSideBar();
-    this.notifyService.showError("Project not added to Portfolio - Under Maintainance","Failed");
+    this.fun_LoadProjectDetails();
   }
 
   totalPortfolios: number;
   portfolioId:any;
   _portfoliosList:any;
+  _
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -215,7 +315,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _totalMemos: number;
   _mappedMemos: number;
   dropdownSettings_Memo: IDropdownSettings = {};
+  dropdownSettings_Portfolio: IDropdownSettings ={};
   ngDropdwonMemo: any;
+  ngDropdwonPort: any;
 
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -226,7 +328,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         this._totalMemos = this._ActualMemoslist.length;
         // console.log("Memos List", JSON.parse(data['JsonData']));
         this.dropdownSettings_Memo = {
-          singleSelection: false,
+          singleSelection: true,
           idField: 'MailId',
           textField: 'Subject',
           selectAllText: 'Select All',
@@ -450,6 +552,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   closeLinkSideBar() {
+    this.ngDropdwonPort = [];
     document.getElementById("LinkSideBar").style.width = "0";
     document.getElementById("LinkSideBar1").style.width = "0";
     this._LinkSideBar = true;
