@@ -472,6 +472,7 @@
     margin-right: 8px;
     cursor: pointer;
     text-transform: capitalize;
+    position: relative;
 }
 .dropfocus{
     margin: 0px 9px;
@@ -780,4 +781,29 @@
   }
 
   
-  
+  .mat-calendar-body-cell.selected {
+    background-color: #1a73e8 !important;
+    border-radius: 50%
+}
+.drop-calendar {
+    width: 30rem
+}
+.demo-inline-calendar-card {
+    width: 300px;
+}
+::ng-deep .mat-calendar-controls{
+    margin-top: 0px !important;
+}
+::ng-deep .demo-inline-calendar-card{
+    padding-top: 0px !important;
+}
+.wc-cus{
+    width: 48%;
+}
+.width-cus{
+    width: 52%;
+}
+.rep-chk{
+    position: absolute;
+    opacity: 0;
+}

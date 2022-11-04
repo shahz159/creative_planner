@@ -112,8 +112,7 @@
                     <h5 class="kt-portlet__head-title">Need Your Action</h5>
                     <!-- <h3 [ngStyle]="{'color':'GREEN'}"> Testing Ng Style Color</h3> -->
                     <button class="btn btn-info btn-sm mb-2" type="button" data-toggle="collapse"
-                        data-target="#multiCollapse1" aria-expanded="false"
-                        aria-controls="multiCollapse1">DAR Status
+                        data-target="#multiCollapse1" aria-expanded="false" aria-controls="multiCollapse1">DAR Status
                         <i class="fas fa-chevron-up"></i>
                     </button>
                 </div>
@@ -122,20 +121,20 @@
                         <div class="action-count" role="button" (click)="Delay_Click()">
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
-                                <span class="symbol-label  bg-dangr">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fas fa-prescription-bottle"></i>
+                                    <span class="symbol-label  bg-dangr">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fas fa-prescription-bottle"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <!-- (click)="Delay_Click()" [routerLink]="['ViewProjects','Delay']"-->
-                            <div class="action-content">
-                                <!-- <a target="_blank" routerLink="/ProjectsSummary">Click Me to aNother Page</a> -->
-                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{DelayCount}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5"> Delay Projects</div>
-                                <!-- <p class="mb-0"><span>It will effect your DAR</span></p> -->
-                            </div>
+                                </div>
+                                <!-- (click)="Delay_Click()" [routerLink]="['ViewProjects','Delay']"-->
+                                <div class="action-content">
+                                    <!-- <a target="_blank" routerLink="/ProjectsSummary">Click Me to aNother Page</a> -->
+                                    <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{DelayCount}}</h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5"> Delay Projects</div>
+                                    <!-- <p class="mb-0"><span>It will effect your DAR</span></p> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,98 +142,108 @@
                         <div class="action-count" role="button" (click)="ExpiryInOneMonth_Click()">
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
-                                <span class="symbol-label bg-coral">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fas fa-calendar-day"></i>
+                                    <span class="symbol-label bg-coral">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fas fa-calendar-day"></i>
+                                        </span>
                                     </span>
-                                </span>
+                                </div>
+                                <div class="action-content">
+                                    <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryInMonth}}
+                                    </h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5">Delay In One Month</div>
+                                </div>
                             </div>
-                            <div class="action-content">
-                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryInMonth}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5">Delay In One Month</div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="action-count" role="button" (click)="Not_Started()">
-                            <div class="d-flex align-items-center"><div class="symbol me-5">
-                                <span class="symbol-label bg-light-nav">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="far fa-stop-circle"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label bg-light-nav">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="far fa-stop-circle"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="action-content">
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotStarted}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5"> Projects not Started</div>
-                            </div>
+                                </div>
+                                <div class="action-content">
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotStarted}}
+                                    </h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5"> Projects not Started</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="action-count" role="button" (click)="AssignedTask_Click()">
-                            <div class="d-flex align-items-center"><div class="symbol me-5">
-                                <span class="symbol-label  bg-info">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="far fa-file-alt"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-info">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="far fa-file-alt"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="action-content">
-                                <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{AssignedProjects}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5">Assigned Projects</div>
-                            </div>
+                                </div>
+                                <div class="action-content">
+                                    <!-- <p class="mb-0"><span>{{myDate|date:'mediumDate'}}</span></p> -->
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{AssignedProjects}}
+                                    </h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5">Assigned Projects</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="action-count" role="button" (click)="Not_Working()">
-                            <div class="d-flex align-items-center"><div class="symbol me-5">
-                                <span class="symbol-label  bg-light-nav">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fas fa-calendar-times"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-light-nav">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fas fa-calendar-times"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="action-content">
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotWorking}} <span class="fs-6">Projects</span></h3>
-                                <div class="fw-bolder text-muted pt-3 fs-6"> Not Working from 1 Month</div>
-                            </div>
+                                </div>
+                                <div class="action-content">
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{ProjectsNotWorking}}
+                                        <span class="fs-6">Projects</span>
+                                    </h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-6"> Not Working from 1 Month</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="action-count" role="button" (click)="Rejected_Click()">
-                            <div class="d-flex align-items-center"><div class="symbol me-5">
-                                <span class="symbol-label  bg-dangr">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fas fa-ban"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-dangr">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
                                     </span>
-                                </span>
+                                </div>
+                                <div class="action-content">
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{RejectedCount}}</h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5"> Rejected Projects</div>
+                                </div>
                             </div>
-                            <div class="action-content">
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{RejectedCount}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5"> Rejected Projects</div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="action-count" role="button" (click)="UnderApproval_Click()">
-                            <div class="d-flex align-items-center"><div class="symbol me-5">
-                                <span class="symbol-label  bg-warning">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fas fa-spinner"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="symbol me-5">
+                                    <span class="symbol-label  bg-warning">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fas fa-spinner"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="action-content">
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{CompletedCount}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5"> Under Approval Projects</div>
-                            </div>
+                                </div>
+                                <div class="action-content">
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{CompletedCount}}</h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5"> Under Approval Projects</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,23 +251,24 @@
                         <div class="action-count" role="button">
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
-                                <span class="symbol-label  bg-dangr">
-                                    <span class="svg-icon svg-icon-2x svg-icon-success navbg">
-                                        <i class="fab fa-empire"></i>
+                                    <span class="symbol-label  bg-dangr">
+                                        <span class="svg-icon svg-icon-2x svg-icon-success navbg">
+                                            <i class="fab fa-empire"></i>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="action-content">
-                                <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryPortfolio}}</h3>
-                                <div class="fw-bolder text-muted pt-3 fs-5"> Delay Portfolios</div>
-                                <!-- <div *ngIf="!TotalExpiryPortfolio; else Count">
+                                </div>
+                                <div class="action-content">
+                                    <h3 class="fs-3 text-info-cus opacity-75 fw-bold mt-1 mb-0">{{TotalExpiryPortfolio}}
+                                    </h3>
+                                    <div class="fw-bolder text-muted pt-3 fs-5"> Delay Portfolios</div>
+                                    <!-- <div *ngIf="!TotalExpiryPortfolio; else Count">
                                 <h3 class="mt-2">0</h3>
                             </div> -->
-                                <!-- <ng-template>
+                                    <!-- <ng-template>
                                 <h3 class="mt-2">{{TotalExpiryPortfolio}}</h3>
                             </ng-template> -->
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -276,8 +286,7 @@
                                         <span class="symbol-label bg-success-1">
                                             <span class="svg-icon svg-icon-2x ">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    fill="#ffffff" class="bi bi-hourglass-split"
-                                                    viewBox="0 0 16 16">
+                                                    fill="#ffffff" class="bi bi-hourglass-split" viewBox="0 0 16 16">
                                                     <path
                                                         d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z">
                                                     </path>
@@ -289,10 +298,10 @@
                                         <!-- <a href="#" class="fs-4 text-white text-hover-primary fw-bolder">Expired Memos</a> -->
                                         <div class="fs-3 text-info-cus opacity-75 fw-bold mt-1">{{TodaysDARAchievement}}
                                             Hrs</div>
-                                            <div class="fw-bolder text-muted pt-1 fs-5">
-                                                <span class="d-block">Todays DAR Achievement
-                                                </span>
-                                            </div>
+                                        <div class="fw-bolder text-muted pt-1 fs-5">
+                                            <span class="d-block">Todays DAR Achievement
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -391,8 +400,8 @@
                     <div class="d-flex">
                         <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button>
                         <div class="dropdown">
-                            <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                aria-expanded="false">{{Project_Mode}}</a>
+                            <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">{{Project_Mode}}</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" (click)="userProjects()">My</a>
                                 <a class="dropdown-item" (click)="teamProjects()">My Team</a>
@@ -615,7 +624,8 @@
                                             <div class="kt-widget5__content">
                                                 <div class="kt-widget5__info Activity-date">
                                                     <span><b>On : </b></span>
-                                                    <span class="kt-font-info">{{item.submissiondate|date:'dd-MM-yyyy'}}</span>
+                                                    <span
+                                                        class="kt-font-info">{{item.submissiondate|date:'dd-MM-yyyy'}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -883,8 +893,7 @@
     <div class="px-4 pt-4 pb-1 border-bottom">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
             <h4 class="font-weight-bold m-0">Schedule Task</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
-                (click)="closeschd()">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
                 <i class="fa fa-times"></i>
             </a>
         </div>
@@ -907,7 +916,7 @@
                                 </div>
 
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -925,20 +934,42 @@
                   <span class="">{{typetext}}</span>
             </div> -->
 
-            <div class="form-group" >
-                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode" (change)="GetSubtasklistfromProject($event)">
-                    <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code" >{{item.BlockNameProject}}</ng-option>
+            <div class="form-group">
+                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
+                    (change)="GetSubtasklistfromProject($event)">
+                    <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
+                        {{item.BlockNameProject}}</ng-option>
                 </ng-select>
-                <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''" >{{Projectstartdate}},{{projectEnddate}},{{AllocatedHours}},{{Status_project}}</div>
+                <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
+                    <span class="d-inline-flex align-items-center"><i
+                            class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate}},</span>
+                    <span class="d-inline-flex align-items-center ml-2"><i
+                            class="fas fa-calendar-alt mr-2"></i>{{projectEnddate}},</span>
+                    <span class="d-inline-flex align-items-center ml-2"><i
+                            class="fas fa-clock mr-2"></i>{{AllocatedHours}},</span>
+                    <span class="d-inline-flex align-items-center ml-2"><i
+                            class="fas fa-star mr-2"></i>{{Status_project}}</span>
+                </div>
             </div>
 
-            
+
             <div class="content-main show pt-0" id="core_viw">
                 <div class="form-group" id="subtaskid">
-                    <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask" (change)="getChangeSubtaskDetais($event)">
-                        <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">{{item.Project_Name}}</ng-option>
+                    <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask"
+                        (change)="getChangeSubtaskDetais($event)">
+                        <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">
+                            {{item.Project_Name}}</ng-option>
                     </ng-select>
-                    <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">{{St_date}},{{Ed_date}},{{Allocated_subtask}},{{_status}}</div>
+                    <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">
+                        <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-2"></i>
+                            {{St_date}},</span>
+                        <span class="d-inline-flex align-items-center ml-2"><i
+                                class="fas fa-calendar-alt mr-2"></i>{{Ed_date}},</span>
+                        <span class="d-inline-flex align-items-center ml-2"><i
+                                class="fas fa-clock mr-2"></i>{{Allocated_subtask}},</span>
+                        <span class="d-inline-flex align-items-center ml-2"><i
+                                class="fas fa-star mr-2"></i>{{_status}}</span>
+                    </div>
                 </div>
 
                 <!-- <div class="form-group">
@@ -947,334 +978,334 @@
                     </select>
                 </div> -->
                 <div class="form-group">
-                    <div class="d-flex">
-
-                        <div class="input-group align-items-center dropdown mr-2">
-                            <span class="mr-2 eve-icons">
-                                <i class="material-icons">schedule</i>
-                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#5f6368" class="bi bi-clock" viewBox="0 0 16 16">
-                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                                </svg> -->
-                            </span>
-                            <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker3"  (click)="picker3.open()" [min]="disablePreviousDate"
-                            placeholder="Start Date" name="date" [(ngModel)]="SelectStartdate">
-                            
-                         <div class="input-group-text p-0">
-                             <!-- <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle> -->
-                             <mat-datepicker #picker3></mat-datepicker>
-                         </div>
-                         <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker4"  (click)="picker4.open()" [min]="disablePreviousDate"
-                         placeholder="End Date" name="date" [(ngModel)]="Selectenddate">
-                      <div class="input-group-text p-0">
-                          <!-- <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle> -->
-                          <mat-datepicker #picker4></mat-datepicker>
-                      </div>
-                            <!-- <input class="kt-input form-control" type="text" placeholder="Calender"  data-toggle="dropdown">
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item">Calender</a>
-                                <a class="dropdown-item">Calender</a>
-                                <a class="dropdown-item">Calender</a>
-                            </div> -->
-                        </div>
-
+                    <!-- <div class="">
                         <div class="d-flex align-items-center">
-                            <div class="input-group align-items-center dropfocus  dropdown"  >
-                                <input class="kt-input form-control" type="text" placeholder="Start Time"  data-toggle="dropdown" [(ngModel)]="Startts">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                            <div class="input-group align-items-center dropfocus  dropdown">
+                                <input class="kt-input form-control" type="text" placeholder="Start Time"
+                                    data-toggle="dropdown" [(ngModel)]="Startts">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <ng-container *ngFor="let item of StartTimearr">
-                                        <a class="dropdown-item" (click)="addstarttime(item.TSStart)">{{item.TSStart}}</a>
+                                        <a class="dropdown-item"
+                                            (click)="addstarttime(item.TSStart)">{{item.TSStart}}</a>
                                     </ng-container>
-                                    
-                                   
                                 </div>
                             </div>
                             <span aria-label=" to ">–</span>
                             <div class="input-group align-items-center dropfocus  dropdown">
-                                <input class="kt-input form-control" type="text" placeholder="End Time"  data-toggle="dropdown" [(ngModel)]="Endtms">
+                                <input class="kt-input form-control" type="text" placeholder="End Time"
+                                    data-toggle="dropdown" [(ngModel)]="Endtms">
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <ng-container *ngFor="let item of StartTimearr">
                                         <a class="dropdown-item" (click)="addendtime(item.TSEnd)">{{item.TSEnd}}</a>
                                     </ng-container>
-                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3">
+                        <mat-card class="demo-inline-calendar-card wc-cus">
+                            <div>
+                                <mat-calendar #calendar (selectedChange)="select($event,calendar)"
+                                    [dateClass]="isSelected" 
+                                     [minDate]="minDate" [maxDate]="maxDate" >
+                                </mat-calendar>
+                            </div>
+                        </mat-card>
+
+                        <div class="d-flex align-items-center flex-wrap pl-3 pt-3 width-cus">
+                            <div class="input-group align-items-center dropfocus  dropdown mb-3">
+                                <input class="kt-input form-control" type="text" placeholder="Start Time"
+                                    data-toggle="dropdown" [(ngModel)]="Startts">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <ng-container *ngFor="let item of StartTimearr">
+                                        <a class="dropdown-item"
+                                            (click)="addstarttime(item.TSStart)">{{item.TSStart}}</a>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="input-group align-items-center dropfocus  dropdown mb-3">
+                                <input class="kt-input form-control" type="text" placeholder="End Time"
+                                    data-toggle="dropdown" [(ngModel)]="Endtms">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <ng-container *ngFor="let item of StartTimearr">
+                                        <a class="dropdown-item" (click)="addendtime(item.TSEnd)">{{item.TSEnd}}</a>
+                                    </ng-container>
                                 </div>
                             </div>
 
-                        </div>
-
-                    </div>
-                </div>
-                <div class="form-group" id="monrep" >
-                    <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Weekly'" -->
-                    <label class="">Days</label>
-                    <div class="pt-1">
-                        <div class="d-flex">
-                            <!-- [ngClass]="day ? 'repeat-day active' : 'repeat-day'" -->
-                            <div *ngFor="let item of dayArr" [ngClass]="selectDay==item ? 'repeat-day active' : 'repeat-day'" (click)="selectedDay(item)" [(ngModel)]="selectDay">
-                                {{item}}
-                            </div>
-                            <!-- <div class="repeat-day">
-                                M
-                            </div>
-                            <div class="repeat-day active">
-                                T
-                            </div>
-                            <div class="repeat-day">
-                                W
-                            </div>
-                            <div class="repeat-day">
-                                T
-                            </div>
-                            <div class="repeat-day">
-                                F
-                            </div>
-                            <div class="repeat-day">
-                                S
+                            <!-- <div class="m-3 w-100">
+                                <input type="checkbox" class="ver-m" id="recur" [(ngModel)]="isChecked" (change)="Recursive(isChecked?'1':'2')">
+                                <label class="ml-2 curser-pointer" for="recur"> recursive</label><br>
                             </div> -->
+                            <div class="ml-3 mb-3">
+                                <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Weekly'" -->
+                                <label class="">Days</label>
+                                <div class="pt-1">
+                                    <div class="d-flex">
+                                        <!-- [ngClass]="day ? 'repeat-day active' : 'repeat-day'" -->
+                                        <!-- <div *ngFor="let item of dayArr"
+                                            [ngClass]="selectDay==item ? 'repeat-day active' : 'repeat-day'"
+                                            (click)="selectedDay(item)" [(ngModel)]="selectDay">
+                                            <input type="checkbox" class="rep-chk" />
+                                            {{item}}
+                                        </div>
+                                        <br> -->
+                                        <ng-container *ngFor="let item of dayArr">
+                                            <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'" id="chek">
+                                                <input (change)="selectedDay($event)" id="{{item.value}}" type="checkbox" name="DaysChk" value="{{item.value}}" class="rep-chk" />
+                                                {{item.Day}}
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- <div class="repeat-day">
+                                            Su
+                                        </div>
+                                        <div class="repeat-day">
+                                            M
+                                        </div>
+                                        <div class="repeat-day active">
+                                            T
+                                        </div>
+                                        <div class="repeat-day">
+                                            W
+                                        </div>
+                                        <div class="repeat-day">
+                                            T
+                                        </div>
+                                        <div class="repeat-day">
+                                            F
+                                        </div>
+                                        <div class="repeat-day">
+                                            S
+                                        </div> -->
+
+                                        <!-- <input class="kt-input form-control" type="text" placeholder="Calender" matInput
+                                            [matDatepicker]="picker1" (click)="picker1.open()" placeholder="Select Date"
+                                            name="date" />
+                                        <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="txtm-info mt-1 ml-1 mb-3">Customize Dates  </div>
 
-                            <!-- Testing -->
+                <div *ngIf="isChecked == '1'">
+                    <!-- <div class="form-group">Customize Dates
+                        <mat-card class="demo-inline-calendar-card wc-cus">
+                            <mat-calendar #calendar1 (selectedChange)="selectCD($event,calendar1)"
+                                [dateClass]="isSelectedCD" [minDate]="minDateCD" [maxDate]="maxDateCD">
+                            </mat-calendar>
+                        </mat-card>
+                    </div> -->
+                    <!-- Testing -->
+                    <div class="form-group align-items-start  mb-3 d-none">
+                        <div class="calendar-wrap mr-3">
+                            <h5 class="month-year">January 2020</h5>
 
-                            <mat-form-field>
-                                <mat-chip-list #chipList aria-label="Choose a date"  (click)="picker9.open()">
-                                  <mat-chip
-                                    *ngFor="let value of model"
-                                    [selectable]="false"
-                                    [removable]="true"
-                                    (removed)="remove(value)"
-                                  >
-                                    {{ value | date }}
-                                    <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                                  </mat-chip>
-                                  <input
-                                    [value]="resetModel"
-                                    matInput
-                                    [matDatepicker]="picker9"
-                                    placeholder="Choose a date"
-                                    (dateChange)="dateChanged($event)"
-                                    [matChipInputFor]="chipList"
-                                   
-                                    [min]="SelectStartdate"
-                                    [max]="Selectenddate"
-                                    hidden
-                                  />
-                                </mat-chip-list>
-                                <mat-datepicker-toggle matPrefix [for]="picker9"></mat-datepicker-toggle>
-                                <mat-datepicker
-                                  #picker9
-                                  [startAt]="init"
-                                  [dateClass]="dateClass"
-                                ></mat-datepicker>
-                              </mat-form-field>
-                          
-                <div class=" align-items-start  mb-3 d-none">
-                    <div class="calendar-wrap mr-3">
-                        <h5 class="month-year">January 2020</h5>
-                    
-                        <table class="calendar">
-                        <thead>
-                            <tr>
-                            <th class="day-title" scope="col">S</th>
-                            <th class="day-title" scope="col">M</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">W</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">F</th>
-                            <th class="day-title" scope="col">S</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="week">
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        
-                        <a class="resetbtn">Clear date-range</a>
-                    </div>
-                    <div class="calendar-wrap mr-3">
-                        <h5 class="month-year">January 2020</h5>
-                    
-                        <table class="calendar">
-                        <thead>
-                            <tr>
-                            <th class="day-title" scope="col">S</th>
-                            <th class="day-title" scope="col">M</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">W</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">F</th>
-                            <th class="day-title" scope="col">S</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="week">
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        
-                        <a class="resetbtn">Clear date-range</a>
-                    </div>
-                    <div class="calendar-wrap">
-                        <h5 class="month-year">January 2020</h5>
-                    
-                        <table class="calendar">
-                        <thead>
-                            <tr>
-                            <th class="day-title" scope="col">S</th>
-                            <th class="day-title" scope="col">M</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">W</th>
-                            <th class="day-title" scope="col">T</th>
-                            <th class="day-title" scope="col">F</th>
-                            <th class="day-title" scope="col">S</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="week">
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                            </tr>
-                            <tr class="week">
-                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        
-                        <a class="resetbtn">Clear date-range</a>
-                    </div>
-                </div>
+                            <table class="calendar">
+                                <thead>
+                                    <tr>
+                                        <th class="day-title" scope="col">S</th>
+                                        <th class="day-title" scope="col">M</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">W</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">F</th>
+                                        <th class="day-title" scope="col">S</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="week">
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                        <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                <div>
-                    <h2>{{SubmissionName}} </h2>
-                </div>
+                            <a class="resetbtn">Clear date-range</a>
+                        </div>
+                        <div class="calendar-wrap mr-3">
+                            <h5 class="month-year">January 2020</h5>
+
+                            <table class="calendar">
+                                <thead>
+                                    <tr>
+                                        <th class="day-title" scope="col">S</th>
+                                        <th class="day-title" scope="col">M</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">W</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">F</th>
+                                        <th class="day-title" scope="col">S</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="week">
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                        <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <a class="resetbtn">Clear date-range</a>
+                        </div>
+                        <div class="calendar-wrap">
+                            <h5 class="month-year">January 2020</h5>
+
+                            <table class="calendar">
+                                <thead>
+                                    <tr>
+                                        <th class="day-title" scope="col">S</th>
+                                        <th class="day-title" scope="col">M</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">W</th>
+                                        <th class="day-title" scope="col">T</th>
+                                        <th class="day-title" scope="col">F</th>
+                                        <th class="day-title" scope="col">S</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="week">
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                        <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                        <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                        <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                        <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <a class="resetbtn">Clear date-range</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2>{{SubmissionName}} </h2>
+                    </div>
 
 
                     <!-- <div class="form-group " >
@@ -1291,11 +1322,12 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="form-group" id="dayrep" *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')">
+                    <div class="form-group" id="dayrep"
+                        *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')">
                         <label class="">Repeat on</label>
                         <div class="pt-1">
                             <div class="d-flex">
-                                <div class="repeat-month"  *ngFor="let item of monthArr">
+                                <div class="repeat-month" *ngFor="let item of monthArr">
                                     {{item}}
                                 </div>
                                 <!-- <div class="repeat-month">
@@ -1336,25 +1368,28 @@
                     </div>
                     <div class="form-group " *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Monthly'">
                         <div class="dropfocus dropdown w-200 ml-0">
-                            <input class="kt-input form-control" type="text" placeholder="Select Repeat Weekday"  data-toggle="dropdown">
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-                               <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a></ng-container> 
-                               
+                            <input class="kt-input form-control" type="text" placeholder="Select Repeat Weekday"
+                                data-toggle="dropdown">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a>
+                                </ng-container>
+
                             </div>
                         </div>
                     </div>
-                   
+
+
+
+
+
                    
 
-                  
-
+                </div>
                 <div class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" (click)="OnSubmitcalender()">Submit</button>
                 </div>
 
-            </div>
-
-            <!-- <div class="content-main" id="stan_viw"> -->
+                <!-- <div class="content-main" id="stan_viw"> -->
 
                 <!-- <div class="form-group d-none">
                     <div class="d-flex">
@@ -1392,21 +1427,21 @@
                             <span class="mr-2 eve-icons">
                                 <i class="material-icons">schedule</i>
                             </span> -->
-                            <!-- <input class="kt-input form-control" type="text" placeholder="Calender"  data-toggle="dropdown"> -->
-                            <!-- <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker1"  (click)="picker1.open()" [min]="disablePreviousDate"
+                <!-- <input class="kt-input form-control" type="text" placeholder="Calender"  data-toggle="dropdown"> -->
+                <!-- <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker1"  (click)="picker1.open()" [min]="disablePreviousDate"
                                        placeholder="Select Date" name="date" (dateChange)="addEvent('change', $event)">
                                     <div class="input-group-text p-0"> -->
-                                        <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
-                                        <!-- <mat-datepicker #picker1 ></mat-datepicker>
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
+                <!-- <mat-datepicker #picker1 ></mat-datepicker>
                                     </div> -->
 
 
-                            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
-                                <!-- <a class="dropdown-item">Calender</a>
+                <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
+                <!-- <a class="dropdown-item">Calender</a>
                                 <a class="dropdown-item">Calender</a>
                                 <a class="dropdown-item">Calender</a> -->
-                                <!-- <div class="input-group"> -->
-                                    <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <div class="input-group"> -->
+                <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <input matInput [matDatepicker]="picker1"  (click)="picker1.open()" [min]="disablePreviousDate"
                                        placeholder="Select Date" name="date">
                                     <div class="input-group-text p-0">
@@ -1414,9 +1449,9 @@
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </div>
                                 </div> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-<!--
+                <!-- </div> -->
+                <!-- </div> -->
+                <!--
                         <div class="d-flex align-items-center">
                             <div class="input-group align-items-center dropfocus dropdown">
                                 <input class="kt-input form-control" type="text" placeholder="06:00"  data-toggle="dropdown">
@@ -1445,7 +1480,7 @@
                 <h2>Weekly </h2>
             </div> -->
 
-<!--
+                <!--
                 <div class="form-group d-none" >
                     <label class="">Repeat on</label>
                     <div class="dropfocus dropdown w-200 ml-0">
@@ -1552,37 +1587,37 @@
                 </div>
             </div> -->
 
-            <!-- <div class="content-main" id="sec_viw">
+                <!-- <div class="content-main" id="sec_viw">
                 <div class="form-group">
                     <div class="d-flex">
 
                         <div class="input-group align-items-center dropdown mr-2">
                             <span class="mr-2 eve-icons">
                                 <i class="material-icons">schedule</i> -->
-                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#5f6368" class="bi bi-clock" viewBox="0 0 16 16">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#5f6368" class="bi bi-clock" viewBox="0 0 16 16">
                                     <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
                                     <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                                 </svg> -->
-                            <!-- </span>
+                <!-- </span>
                             <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker5"  (click)="picker5.open()" [min]="disablePreviousDate"
                             placeholder="Start Date" name="date">
                          <div class="input-group-text p-0"> -->
-                             <!-- <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle> -->
-                             <!-- <mat-datepicker #picker5></mat-datepicker>
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle> -->
+                <!-- <mat-datepicker #picker5></mat-datepicker>
                          </div>
                          <input class="kt-input form-control" type="text" placeholder="Calender" matInput [matDatepicker]="picker6"  (click)="picker6.open()" [min]="disablePreviousDate"
                          placeholder="End Date" name="date">
                       <div class="input-group-text p-0"> -->
-                          <!-- <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle> -->
-                          <!-- <mat-datepicker #picker6></mat-datepicker>
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle> -->
+                <!-- <mat-datepicker #picker6></mat-datepicker>
                       </div> -->
-                            <!-- <input class="kt-input form-control" type="text" placeholder="Calender"  data-toggle="dropdown">
+                <!-- <input class="kt-input form-control" type="text" placeholder="Calender"  data-toggle="dropdown">
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item">Calender</a>
                                 <a class="dropdown-item">Calender</a>
                                 <a class="dropdown-item">Calender</a>
                             </div> -->
-                        <!-- </div>
+                <!-- </div>
 
                         <div class="d-flex align-items-center">
                             <div class="input-group align-items-center dropfocus dropdown">
@@ -1611,10 +1646,12 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div> -->
+            <!-- <div class="form-group mb-1">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div> -->
+
+            </div>
 
 
         </div>
-
-
     </div>
-</div>
