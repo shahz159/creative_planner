@@ -224,8 +224,6 @@ export class DashboardComponent implements OnInit {
       "-" +
       ("00" + event.getDate()).slice(-2);
     const index = this.daysSelected.findIndex(x => x == date);
-    // const Stime =this.Startts;
-    // const Etime =this.Endtms;
     if (index < 0){ 
       
       this.daysSelected.push(date);
@@ -394,6 +392,7 @@ export class DashboardComponent implements OnInit {
     this.userProjects();
     // this.GetCalendarProjects();
     // this.LoadingBar.stop();
+    
   }
   GetCalendarProjects() {
     let Empno: string = this.Current_user_ID;
@@ -918,8 +917,7 @@ export class DashboardComponent implements OnInit {
 
 
   GetTimeslabfordate() {
-
-    this._calenderDto.minutes = 30;
+    this._calenderDto.minutes = 15;
     this._calenderDto.StartTime = "08:00";
     this._calenderDto.EndTime = "20:00";
 
@@ -1069,12 +1067,24 @@ export class DashboardComponent implements OnInit {
     this.SelectStartdate = null;
     this.Selectenddate = null;
     this.selectDay = null;
+   
   }
 
   openschd() {
     document.getElementById("mysideInfobar_schd").style.width = "50%";
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+  }
+  SelectDropDown(val){
+    
+    if(val.value==2){
+    document.getElementById("weekly_121").style.display = "block";
+    }
+    else{
+      document.getElementById("weekly_121").style.display = "none";
+
+    }
   }
   closeschd() {
 
@@ -1090,8 +1100,23 @@ export class DashboardComponent implements OnInit {
     this.SelectStartdate = null;
     this.Selectenddate = null;
     this.selectDay = null;
-
-   
+    this.St_date = null;
+    this.Ed_date = null;
+    this._status = null;
+    this.Allocated_subtask = null;
+    this.Projectstartdate=null;
+    this.Projectstartdate=null;
+    this.projectEnddate=null;
+    this.Status_project=null;
+    this.AllocatedHours=null;
+    this.daysSelected = [];
+    this.selectdaytime = [];
+    this.daysSelectedII = [];
+    this.singleselectarry=[];
+    this.calendar.updateTodaysDate();
+    this.dayArr.map((element) => {
+      return element.checked=false;;
+    });
   }
 
   showcore() {
@@ -1103,6 +1128,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("core_tab").classList.add("btn-light-primary");
     document.getElementById("stan_tab").classList.remove("btn-light-primary");
     document.getElementById("sec_tab").classList.remove("btn-light-primary");
+   
 
   }
 
