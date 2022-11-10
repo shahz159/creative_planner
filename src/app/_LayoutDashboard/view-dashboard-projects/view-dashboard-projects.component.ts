@@ -277,6 +277,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
         return this.checkedItems_Status = arr;
       }
     });
+    
     let arr2 = [];
     this.StatusCountFilter.filter((item) => {
       if (item.checked == true) {
