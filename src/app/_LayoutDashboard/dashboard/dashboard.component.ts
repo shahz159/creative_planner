@@ -21,6 +21,7 @@ import { CalendarOptions } from '@fullcalendar/angular';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { DatePipe } from '@angular/common';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { forEach } from '@angular-devkit/schematics';
 
@@ -64,7 +65,7 @@ export class DashboardComponent implements OnInit {
   Selectenddate: any;
   selectDay: any;
   selectedadayandtime: any = [];
-
+  Selecteddaate: any
 
 
 
@@ -110,7 +111,8 @@ export class DashboardComponent implements OnInit {
   daysSelected: any[] = [];
   selectdaytime: any[] = [];
   daysSelectedII: any[] = [];
-  singleselectarry:any[]=[];
+  singleselectarry: any[] = [];
+  Doubleselectedday: any[] = [];
   event: any;
   selected: Date | null;
   minDate = moment().format("YYYY-MM-DD").toString();
@@ -120,6 +122,7 @@ export class DashboardComponent implements OnInit {
   selecteddays: any[] = [];
   isChecked: string
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
+  Checkdatetimejson: any = [];
 
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
@@ -134,7 +137,7 @@ export class DashboardComponent implements OnInit {
     this.BlockNameProject = [];
     this.BlockNameProject1 = [];
     this.Timeslab = [];
-
+    this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
     // //Get Dates as per day between date range
     // //Add days in an array
     // this.selecteddays.push(3);
@@ -160,11 +163,11 @@ export class DashboardComponent implements OnInit {
   }
   selectedDay(days) {
 
+    //Checked the day
     let objIndex = this.dayArr.findIndex((obj => obj.value == days.target.value));
-
     this.dayArr[objIndex].checked = days.target.checked;
 
-
+    //Get dates by selected day
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     var result = [];
@@ -179,18 +182,31 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-    const format2 = "YYYY-MM-DD"
-    this.daysSelected = result.map(m => moment(m).format(format2));
-    this.singleselectarry.forEach(element => {
 
-       this.daysSelected.push( moment(element).format(format2))
+    const format2 = "YYYY-MM-DD";
+
+    //result = result.map(m => moment(m).format(format2));
+    // make a Set to hold values from namesToDeleteArr
+
+
+    // use filter() method
+    // to filter only those elements
+    // that need not to be deleted from the array
+
+
+    this.daysSelected = result.map(m => moment(m).format(format2));
+    const namesToDeleteSet = new Set(this.daysSelected);
+    this.singleselectarry = this.singleselectarry.filter((name) => {
+      // return those elements not in the namesToDeleteSet
+      return !namesToDeleteSet.has(name);
+    });
+    this.singleselectarry.forEach(element => {
+      this.daysSelected.push(moment(element).format(format2))
     });
     // this.daysSelected.push({ format2 });
 
 
-    console.log(this.daysSelected, "daytime");
-    this.calendar.updateTodaysDate();
-    
+
     this.daysSelectedII = [];
     this.daysSelected.forEach(element => {
 
@@ -202,9 +218,10 @@ export class DashboardComponent implements OnInit {
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
       this.daysSelectedII.push(jsonData)
-
     });
-    console.log(this.daysSelectedII);
+    // alert(this.daysSelectedII.length)
+    this.calendar.updateTodaysDate();
+    this.Checkdatetimetable(this.daysSelectedII);
 
   }
   isSelected = (event: any) => {
@@ -214,27 +231,38 @@ export class DashboardComponent implements OnInit {
       ("00" + (event.getMonth() + 1)).slice(-2) +
       "-" +
       ("00" + event.getDate()).slice(-2);
-    return this.daysSelected.find(x => x == date) ? "selected" : null;
+
+    //return this.daysSelected.find(x => x == Date) ? "selected" : null;
+    return this.daysSelectedII.find(x => x.Date == date && x.IsActive == false) ? "selected" :
+      this.daysSelectedII.find(y => y.Date == date && y.IsActive == true) ? "selectedinvalid" : null;
   };
-  select(event: any, calendar: any) {
-    const date =
-      event.getFullYear() +
-      "-" +
-      ("00" + (event.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("00" + event.getDate()).slice(-2);
+
+ doubleclickdate:any;
+  preventSingleClick = false;
+  timer: any;
+  delay: Number;
+  select(event: any) {
+    this.preventSingleClick = false;
+    const delay = 200;
+
+    const date = event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
+    this.doubleclickdate= date;
+     this.timer = setTimeout(() => {
+       if (!this.preventSingleClick) {
+
+   
+
     const index = this.daysSelected.findIndex(x => x == date);
-    if (index < 0){ 
-      
+    if (index < 0) {
+
       this.daysSelected.push(date);
       this.singleselectarry.push(date);
     }
-
-    else {this.daysSelected.splice(index, 1);
+    else {
+      this.daysSelected.splice(index, 1);
       this.singleselectarry.splice(index, 1);
     }
 
-    console.log(this.daysSelected);
     this.calendar.updateTodaysDate();
     this.daysSelectedII = [];
     this.daysSelected.forEach(element => {
@@ -246,10 +274,40 @@ export class DashboardComponent implements OnInit {
       jsonData[columnNames] = this.Startts;
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
+
       this.daysSelectedII.push(jsonData)
 
     });
-    console.log(this.daysSelectedII)
+    //  alert(this.daysSelectedII.length)
+
+    this.Checkdatetimetable(this.daysSelectedII);
+    this.calendar.updateTodaysDate();
+  }
+  }, delay);
+}
+
+
+  
+
+  
+  Checkdatetimetable(_array) {
+    this._calenderDto.json = JSON.stringify(_array);
+    this._calenderDto.EmpNo = this.Current_user_ID;
+    this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
+      ((data) => {
+        this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
+        this.calendar.updateTodaysDate();
+      });
+
+  }
+  Doubleclick(event: any) {
+    this.preventSingleClick = true;
+    clearTimeout(this.timer);
+    // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
+    alert(this.doubleclickdate)
+    console.log(event)
+    this.calendar.updateTodaysDate();
+   
   }
 
 
@@ -392,7 +450,7 @@ export class DashboardComponent implements OnInit {
     this.userProjects();
     // this.GetCalendarProjects();
     // this.LoadingBar.stop();
-    
+
   }
   GetCalendarProjects() {
     let Empno: string = this.Current_user_ID;
@@ -1067,8 +1125,9 @@ export class DashboardComponent implements OnInit {
     this.SelectStartdate = null;
     this.Selectenddate = null;
     this.selectDay = null;
-   
+
   }
+
 
   openschd() {
     document.getElementById("mysideInfobar_schd").style.width = "50%";
@@ -1076,19 +1135,19 @@ export class DashboardComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-  SelectDropDown(val){
-    
-    if(val.value==2){
-    document.getElementById("weekly_121").style.display = "block";
+  SelectDropDown(val) {
+
+    if (val.value == 2) {
+      document.getElementById("weekly_121").style.display = "block";
     }
-    else{
+    else {
       document.getElementById("weekly_121").style.display = "none";
 
     }
   }
   closeschd() {
 
-    
+
     document.getElementById("mysideInfobar_schd").style.width = "0%";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -1104,18 +1163,18 @@ export class DashboardComponent implements OnInit {
     this.Ed_date = null;
     this._status = null;
     this.Allocated_subtask = null;
-    this.Projectstartdate=null;
-    this.Projectstartdate=null;
-    this.projectEnddate=null;
-    this.Status_project=null;
-    this.AllocatedHours=null;
+    this.Projectstartdate = null;
+    this.Projectstartdate = null;
+    this.projectEnddate = null;
+    this.Status_project = null;
+    this.AllocatedHours = null;
     this.daysSelected = [];
     this.selectdaytime = [];
     this.daysSelectedII = [];
-    this.singleselectarry=[];
+    this.singleselectarry = [];
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
-      return element.checked=false;;
+      return element.checked = false;;
     });
   }
 
@@ -1128,7 +1187,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("core_tab").classList.add("btn-light-primary");
     document.getElementById("stan_tab").classList.remove("btn-light-primary");
     document.getElementById("sec_tab").classList.remove("btn-light-primary");
-   
+
 
   }
 

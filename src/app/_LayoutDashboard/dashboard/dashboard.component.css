@@ -776,15 +776,29 @@
   ::ng-deep .mat-calendar-body-cell.selected > .mat-calendar-body-cell-content,
   ::ng-deep .mat-calendar-body-cell.selected:hover > .mat-calendar-body-cell-content,
   ::ng-deep .mat-calendar-body-cell.selected > .mat-calendar-body-cell-content:hover {
-    background-color: #673ab7 !important;
+    background-color: #1a84e8 !important;
     color: #fff !important;
   }
 
   
   .mat-calendar-body-cell.selected {
-    background-color: #1a73e8 !important;
+    background-color: #1a84e8 !important;
     border-radius: 50%
 }
+
+::ng-deep .mat-calendar-body-cell.selectedinvalid > .mat-calendar-body-cell-content,
+  ::ng-deep .mat-calendar-body-cell.selectedinvalid:hover > .mat-calendar-body-cell-content,
+  ::ng-deep .mat-calendar-body-cell.selectedinvalid > .mat-calendar-body-cell-content:hover {
+    background-color: #e8281a !important;
+    color: #fff !important;
+  }
+
+  
+  .mat-calendar-body-cell.selectedinvalid {
+    background-color: #e8281a !important;
+    border-radius: 50%
+}
+
 .drop-calendar {
     width: 30rem
 }

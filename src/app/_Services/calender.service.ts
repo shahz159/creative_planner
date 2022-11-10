@@ -42,4 +42,12 @@ export class CalenderService {
     this.obj_CalenderDTO.Weekday = obj.Weekday;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_Calender", this.obj_CalenderDTO);
   }
+
+  NewGetcheckdateandtime(obj: CalenderDTO){
+    this.obj_CalenderDTO.json=obj.json;
+    this.obj_CalenderDTO.EmpNo=obj.EmpNo;
+   
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetcheckdatetimetable", this.obj_CalenderDTO);
+
+}
 }
