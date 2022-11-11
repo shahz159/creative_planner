@@ -908,7 +908,7 @@
                              Secondary Tasks,Core Tasks -->
                             <!-- <button class="btn btn-sm mr-2"  (click)="showstan()" id="stan_tab">Recurrence</button>
                             <button class="btn btn-sm" (click)="showsec()" id="sec_tab">Task</button> -->
-                            <div class="d-flex align-items-start">
+                            <div class="d-none align-items-start">
                                 <label class="form-check-label mr-2" for="customSwitch1">Task</label>
                                 <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input" id="customSwitch1">
@@ -916,6 +916,25 @@
                                 </div>
 
                             </div>
+                            
+                                                         
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
+                                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                                        </g>
+                                    </svg>
+                                </span>
+                                     Create
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="#">Task</a>
+                                  <a class="dropdown-item" href="#">Event</a>
+                                </div>
+                              </div>
 
                         </div>
                     </div>
