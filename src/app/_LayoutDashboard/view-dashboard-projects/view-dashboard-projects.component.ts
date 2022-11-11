@@ -63,6 +63,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
   _objDropdownDTO: DropdownDTO;
   Obj_Portfolio_DTO: PortfolioDTO;
   portfolioId: number;
+  edited: boolean = false;
+
   Current_user_ID = localStorage.getItem('EmpNo');
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
@@ -83,6 +85,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
     this.GetCompletedProjects();
+    this.getDropdownsDataFromDB();
     // this.notFoundData=true;
     //this.AssignedTask = true;
     //this.projectsDataTable = false;
@@ -102,7 +105,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   TotalWork_Hours: any;
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
-  openInfo(pcode) {
+  openInfo(pcode,  pName) {
     document.getElementById("mysideInfobar").style.width = "70%";
     this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode]);
      //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
@@ -113,6 +116,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
+
+  _CloseMemosidebar() {
+    document.getElementById("MemosSideBar").style.width = "0";
   }
   projectsDataTable: boolean;
   AssignedTask: boolean;
@@ -157,27 +164,27 @@ export class ViewDashboardProjectsComponent implements OnInit {
             // }
           }
           //Type
-          if (this.selectedItem_Type.length == 0) {
-            this.TypeContInFilter = JSON.parse(data[0]['ProjectTypeList']);
-          }
-          else {
-            this.TypeContInFilter = this.selectedItem_Type[0];
-          }
-          //Status
-          if (this.selectedItem_Status.length == 0) {
-            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-          }
-          else {
-            this.StatusCountFilter = this.selectedItem_Status[0];
-          }
-          //Employees
-          if (this.selectedItem_Emp.length == 0) {
-            this.EmpCountInFilter = JSON.parse(data[0]['EmployeeList']);
+          // if (this.selectedItem_Type.length == 0) {
+          //   this.TypeContInFilter = JSON.parse(data[0]['ProjectTypeList']);
+          // }
+          // else {
+          //   this.TypeContInFilter = this.selectedItem_Type[0];
+          // }
+          // //Status
+          // if (this.selectedItem_Status.length == 0) {
+          //   this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          // }
+          // else {
+          //   this.StatusCountFilter = this.selectedItem_Status[0];
+          // }
+          // //Employees
+          // if (this.selectedItem_Emp.length == 0) {
+          //   this.EmpCountInFilter = JSON.parse(data[0]['EmployeeList']);
   
-          }
-          else {
-            this.EmpCountInFilter = this.selectedItem_Emp[0];
-          }
+          // }
+          // else {
+          //   this.EmpCountInFilter = this.selectedItem_Emp[0];
+          // }
         });
      
     }
@@ -219,36 +226,43 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
           }
           else {
+            // alert(this.Mode);
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-            debugger
+            this._CurrentpageRecords = this._ProjectDataList.length;
+            // if(this.Mode=='Delay')
+            // this._totalProjectsCount = JSON.parse(data[0]['delaycount']);
+          
+            
+            
             // console.log("---------->Exp in One Month------->",this._ProjectDataList);
-            if (this._ProjectDataList.length > 0) {
-            }
-            if (this.selectedItem_Emp.length == 0) {
-              this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            // if (this._ProjectDataList.length > 0) {
+            
+            // if (this.selectedItem_Emp.length == 0) {
+            //   this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
 
-            }
-            else {
-              this.EmpCountInFilter = this.selectedItem_Emp[0];
-            }
-            //Type
-            if (this.selectedItem_Type.length == 0) {
-              this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-            }
-            else {
-              this.TypeContInFilter = this.selectedItem_Type[0];
-            }
-            //Status
-            if (this.selectedItem_Status.length == 0) {
-              this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            }
-            else {
-              this.StatusCountFilter = this.selectedItem_Status[0];
-            }
+            // }
+            // else {
+            //   this.EmpCountInFilter = this.selectedItem_Emp[0];
+            // }
+            // //Type
+            // if (this.selectedItem_Type.length == 0) {
+            //   this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            // }
+            // else {
+            //   this.TypeContInFilter = this.selectedItem_Type[0];
+            // }
+            // //Status
+            // if (this.selectedItem_Status.length == 0) {
+            //   this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            // }
+            // else {
+            //   this.StatusCountFilter = this.selectedItem_Status[0];
+            // }
             // this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             // this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             // this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
           }
+        // }
           // else {
           //   this.LoadingBar.stop();
           //   this.notFoundData = false;
@@ -256,6 +270,64 @@ export class ViewDashboardProjectsComponent implements OnInit {
         });
     }
   }
+
+  LastPage:number;
+  lastPagerecords:number;
+
+  getDropdownsDataFromDB() {
+ 
+    this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
+    this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
+    this._ObjCompletedProj.SelectedBlock_No = this.selectedType_String;
+
+    this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
+    this._ObjCompletedProj.PageSize = 30;
+    this._ObjCompletedProj.Project_SearchText = this.searchText;
+
+    // this._objDropdownDTO.PortfolioId = null;
+    this.service._GetCompletedProjects(this._ObjCompletedProj)
+      .subscribe((data) => {
+        //Emp
+        if (this.selectedItem_Emp.length == 0) {
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+        }
+        else {
+          this.EmpCountInFilter = this.selectedItem_Emp[0];
+        }
+        //Type
+        if (this.selectedItem_Type.length == 0) {
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+        }
+        else {
+          this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Status
+        if (this.selectedItem_Status.length == 0) {
+          this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+        }
+        else {
+          this.StatusCountFilter = this.selectedItem_Status[0];
+        }
+
+        this._totalProjectsCount = data[0]['delaycount'];
+
+        let _vl = this._totalProjectsCount / 30;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=30;
+        }
+        // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
+      });
+  }
+
+
   BackBttn() {
     this._ProjectDataList = [];
     this.service.Mode = "";
@@ -271,13 +343,13 @@ export class ViewDashboardProjectsComponent implements OnInit {
   selectedItem_Status = [];
   isStatusChecked(item) {
     let arr = [];
+    this.edited = true;
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Status: element.Name });
         return this.checkedItems_Status = arr;
       }
     });
-    
     let arr2 = [];
     this.StatusCountFilter.filter((item) => {
       if (item.checked == true) {
@@ -292,14 +364,19 @@ export class ViewDashboardProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Type = [];
   isTypeChecked(item) {
-
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
-        arr.push({ Block_No: element.Project_Block });
+        arr.push({ Block_No: element.Block_No });
         return this.checkedItems_Type = arr;
       }
     });
@@ -311,17 +388,24 @@ export class ViewDashboardProjectsComponent implements OnInit {
       }
     });
     this.selectedItem_Type.push(arr2);
-    this.TypeContInFilter.forEach(element => {
+    this.TypeContInFilter.forEach(element => {      
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   selectedItem_Emp = [];
   isEmpChecked(item) {
     let arr = [];
-    this.EmpCountInFilter.forEach(element => {
+    this.edited = true;
+    this.EmpCountInFilter.forEach(element => {     
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
         return this.checkedItems_Emp = arr;
@@ -335,18 +419,25 @@ export class ViewDashboardProjectsComponent implements OnInit {
       }
     });
     this.selectedItem_Emp.push(arr2);
-    this.EmpCountInFilter.forEach(element => {
+    this.EmpCountInFilter.forEach(element => {     
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   resetFilters() {
 
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
+    this.edited=false;
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -402,6 +493,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
         this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
 
         this._CurrentpageRecords = this._ProjectDataList.length;
+        // this._totalProjectsCount = (data[0]['CountAssigned'])
         if (this._ProjectDataList) {
           //this.LoadingBar_state.stop();
         }
@@ -415,7 +507,13 @@ export class ViewDashboardProjectsComponent implements OnInit {
         }
       });
     //Filtering Checkbox de
+    this.getDropdownsDataFromDB();
   }
+
+
+  
+
+
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;
@@ -664,6 +762,40 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._MemosNotFound = "No memos linked";
         }
       });
+  }
+
+  _OpenMemosInfo(_projectCode, _projectName) {
+    this._dbMemoIdList = [];
+    this._displayProjName = _projectName;
+    this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
+      subscribe((data) => {
+        let Table_data: any = data;
+        //console.log("Linked Db Memos Data---->",data);
+        let Dbdata: any = data[0]['JsonData'];
+        // console.log(Dbdata);
+        //console.log("DBdata Memos Data---->",Dbdata);
+        if (Dbdata == '[]') {
+          this._MemosSubjectList = [];
+          this._MemosNotFound = "No memos linked";
+        }
+        if (Table_data.length > 0 && data[0]['JsonData'] != '[]') {
+          this._MemosNotFound = "";
+          this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
+          this._JsonString = data[0]['JsonData'];
+          this._LinkService._GetMemosSubject(this._JsonString).
+            subscribe((data) => {
+              // console.log("------------>", data);
+              this._MemosSubjectList = JSON.parse(data['JsonData']);
+              //console.log("Subject Name ------------>", this._MemosSubjectList);
+            });
+        }
+        else {
+          this._MemosSubjectList = [];
+          this._MemosNotFound = "No memos linked";
+        }
+      });
+    //Displaying Right Side Bar... 
+    document.getElementById("MemosSideBar").style.width = "350px";
   }
 
 }
