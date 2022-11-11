@@ -1015,17 +1015,17 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <ng-container *ngFor="let item of StartTimearr">
                                             <a class="dropdown-item"
-                                                (click)="addstarttime(item.TSStart)">{{item.TSStart}}</a>
+                                                (click)="addstarttime(item)">{{item}}</a>
                                         </ng-container>
                                     </div>
                                 </div>
                                 <div class="form-group dropfocus ml-0 dropdown mb-3">
                                     <label class="cus-lbl">End Time</label>
                                     <input class="form-control" type="text" placeholder="End Time"
-                                        data-toggle="dropdown" [(ngModel)]="Endtms">
+                                        data-toggle="dropdown" [(ngModel)]="Endtms" >
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <ng-container *ngFor="let item of StartTimearr">
-                                            <a class="dropdown-item" (click)="addendtime(item.TSEnd)">{{item.TSEnd}}</a>
+                                        <ng-container *ngFor="let item1 of EndTimearr">
+                                            <a class="dropdown-item" (click)="addendtime(item1)">{{item1}}</a>
                                         </ng-container>
                                     </div>
                                 </div>

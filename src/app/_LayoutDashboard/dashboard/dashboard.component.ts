@@ -61,12 +61,28 @@ export class DashboardComponent implements OnInit {
   Subtask: any;
   Startts: any;
   Endtms: any;
+  Alltimes: any = [];
   SelectStartdate: any;
   Selectenddate: any;
   selectDay: any;
   selectedadayandtime: any = [];
   Selecteddaate: any
+  _arrayObj: any;
+  StartTimearr: any = [];
+  EndTimearr: any = [];
+  Projectstartdate: string = "";
+  projectEnddate: string;
+  Status_project: string;
+  AllocatedHours: number;
+  St_date: string = "";
+  Ed_date: string;
+  _status: string;
+  Allocated_subtask: number;
 
+  SubmissionName: string;
+  _Exec_BlockName: string = "";
+
+  day: boolean = false;
 
 
   dayArr: any = [
@@ -237,7 +253,7 @@ export class DashboardComponent implements OnInit {
       this.daysSelectedII.find(y => y.Date == date && y.IsActive == true) ? "selectedinvalid" : null;
   };
 
- doubleclickdate:any;
+  doubleclickdate: any;
   preventSingleClick = false;
   timer: any;
   delay: Number;
@@ -246,50 +262,50 @@ export class DashboardComponent implements OnInit {
     const delay = 200;
 
     const date = event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
-    this.doubleclickdate= date;
-     this.timer = setTimeout(() => {
-       if (!this.preventSingleClick) {
+    this.doubleclickdate = date;
+    this.timer = setTimeout(() => {
+      if (!this.preventSingleClick) {
 
-   
 
-    const index = this.daysSelected.findIndex(x => x == date);
-    if (index < 0) {
 
-      this.daysSelected.push(date);
-      this.singleselectarry.push(date);
-    }
-    else {
-      this.daysSelected.splice(index, 1);
-      this.singleselectarry.splice(index, 1);
-    }
+        const index = this.daysSelected.findIndex(x => x == date);
+        if (index < 0) {
 
-    this.calendar.updateTodaysDate();
-    this.daysSelectedII = [];
-    this.daysSelected.forEach(element => {
+          this.daysSelected.push(date);
+          this.singleselectarry.push(date);
+        }
+        else {
+          this.daysSelected.splice(index, 1);
+          this.singleselectarry.splice(index, 1);
+        }
 
-      var jsonData = {};
-      var columnName = "Date";
-      jsonData[columnName] = element;
-      var columnNames = "StartTime";
-      jsonData[columnNames] = this.Startts;
-      var columnNamee = "EndTime";
-      jsonData[columnNamee] = this.Endtms;
+        this.calendar.updateTodaysDate();
+        this.daysSelectedII = [];
+        this.daysSelected.forEach(element => {
 
-      this.daysSelectedII.push(jsonData)
+          var jsonData = {};
+          var columnName = "Date";
+          jsonData[columnName] = element;
+          var columnNames = "StartTime";
+          jsonData[columnNames] = this.Startts;
+          var columnNamee = "EndTime";
+          jsonData[columnNamee] = this.Endtms;
 
-    });
-    //  alert(this.daysSelectedII.length)
+          this.daysSelectedII.push(jsonData)
 
-    this.Checkdatetimetable(this.daysSelectedII);
-    this.calendar.updateTodaysDate();
+        });
+        //  alert(this.daysSelectedII.length)
+
+        this.Checkdatetimetable(this.daysSelectedII);
+        this.calendar.updateTodaysDate();
+      }
+    }, delay);
   }
-  }, delay);
-}
 
 
-  
 
-  
+
+
   Checkdatetimetable(_array) {
     this._calenderDto.json = JSON.stringify(_array);
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -307,7 +323,7 @@ export class DashboardComponent implements OnInit {
     alert(this.doubleclickdate)
     console.log(event)
     this.calendar.updateTodaysDate();
-   
+
   }
 
 
@@ -957,44 +973,48 @@ export class DashboardComponent implements OnInit {
       })
 
   }
-  StartTimearr: any = [];
-  EndTimearr: any = [];
-  Projectstartdate: string = "";
-  projectEnddate: string;
-  Status_project: string;
-  AllocatedHours: number;
-  St_date: string = "";
-  Ed_date: string;
-  _status: string;
-  Allocated_subtask: number;
-
-  SubmissionName: string;
-  _Exec_BlockName: string = "";
-
-  day: boolean = false;
+ 
 
 
   GetTimeslabfordate() {
     this._calenderDto.minutes = 15;
-    this._calenderDto.StartTime = "08:00";
-    this._calenderDto.EndTime = "20:00";
+    this._calenderDto.StartTime = "05:00";
+    this._calenderDto.EndTime = "22:00";
 
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
+        debugger
+        this._arrayObj = data as [];
+        this._arrayObj.forEach(element => {
+          this.EndTimearr.push(element.TSStart);
+          this.StartTimearr.push(element.TSStart);
+          this.Alltimes.push(element.TSStart);
+        });
 
-        this.StartTimearr = data as [];
-        this.Startts = this.StartTimearr[0].TSStart;
-        this.Endtms = this.StartTimearr[0].TSEnd;
-        console.log(this.StartTimearr[0].TSStart);
+        console.log(this.EndTimearr[0]);
+        console.log("Array" + this.EndTimearr);
       });
   }
 
   addstarttime(TSStart) {
+    this.Alltimes = [];
+    this.StartTimearr.forEach(element => {
+      this.Alltimes.push(element);
+    });
     this.Startts = TSStart;
+    let _index = this.StartTimearr.indexOf(TSStart);
+    this.EndTimearr = this.Alltimes.splice(_index + 1);
+    this.Startts = TSStart;
+    this.Endtms = this.EndTimearr[0];
   }
 
   addendtime(TSEnd) {
+
     this.Endtms = TSEnd;
+    if (this.Startts > this.Endtms) {
+      this.Endtms = this.Startts;
+    }
+
   }
 
 
