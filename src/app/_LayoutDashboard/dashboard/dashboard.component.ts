@@ -320,7 +320,7 @@ export class DashboardComponent implements OnInit {
     this.preventSingleClick = true;
     clearTimeout(this.timer);
     // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
-    alert(this.doubleclickdate)
+ 
     console.log(event)
     this.calendar.updateTodaysDate();
 
