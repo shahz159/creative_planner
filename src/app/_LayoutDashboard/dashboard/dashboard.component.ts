@@ -31,6 +31,7 @@ import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
   posts = [];
   calendarOptions: CalendarOptions;
