@@ -491,12 +491,12 @@
 }
 
 #mysideInfobar_schd {
-    font-family: "Google Sans", Roboto, Arial, sans-serif
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 }
 
-#mysideInfobar_schd button {
+/* #mysideInfobar_schd button {
     font-family: "Google Sans", Roboto, Arial, sans-serif
-}
+} */
 
 .dropfocus .dropdown-menu.show {
     min-width: 100%;
@@ -998,6 +998,26 @@ span.time-slt-md {
 
 .badge.badge-light-primary {
     color: #7367f0!important;
+}
+.drop-cus{
+    background: #fff;
+    border: 0;
+    -webkit-border-radius: 8px;
+    -webkit-box-shadow: 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%), 0px 5px 5px -3px rgb(0 0 0 / 20%);
+    box-shadow: 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%), 0px 5px 5px -3px rgb(0 0 0 / 20%);
+    min-width: unset;
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 8px;
+}
+.drop-cus a.dropdown-item{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 14px;
+    padding: 0.5rem 1.2rem;
+    color: #222;
+}
+.drop-cus a.dropdown-item:hover{
+background-color: #f1f3f4;
 }
 @media Screen and (max-width: 1600px) {
 
