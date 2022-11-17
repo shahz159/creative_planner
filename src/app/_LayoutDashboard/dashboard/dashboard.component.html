@@ -898,16 +898,17 @@
             </a>
         </div>
     </div>
+    <!-- <button class="btn btn-sm btn-light-primary mr-2" (click)="showcore()" id="core_tab">Schedule Time</button>
+                             Secondary Tasks,Core Tasks -->
+    <!-- <button class="btn btn-sm mr-2"  (click)="showstan()" id="stan_tab">Recurrence</button>
+                            <button class="btn btn-sm" (click)="showsec()" id="sec_tab">Task</button> -->
     <div class="px-4 pt-2">
         <div class="pt-2">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                     <div class="my-2">
                         <div class="my-2">
-                            <!--<button class="btn btn-sm btn-light-primary mr-2" (click)="showcore()" id="core_tab">Schedule Time</button>
-                             Secondary Tasks,Core Tasks -->
-                            <!-- <button class="btn btn-sm mr-2"  (click)="showstan()" id="stan_tab">Recurrence</button>
-                            <button class="btn btn-sm" (click)="showsec()" id="sec_tab">Task</button> -->
+
                             <div class="d-none align-items-start">
                                 <label class="form-check-label mr-2" for="customSwitch1">Task</label>
                                 <div class="form-check form-switch">
@@ -916,25 +917,30 @@
                                 </div>
 
                             </div>
-                            
-                                                         
+
+
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk" data-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
+                                    data-toggle="dropdown" aria-expanded="false">
                                     <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
-                                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-                                        </g>
-                                    </svg>
-                                </span>
-                                     Create
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                                <rect fill="#000000" opacity="0.3"
+                                                    transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                    x="4" y="11" width="16" height="2" rx="1" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    Create
                                 </button>
                                 <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="#">Task</a>
-                                  <a class="dropdown-item" href="#">Event</a>
+                                    <a class="dropdown-item" href="#">Task</a>
+                                    <a class="dropdown-item" href="#">Event</a>
                                 </div>
-                              </div>
+                            </div>
 
                         </div>
                     </div>
@@ -962,9 +968,9 @@
                 </ng-select>
                 <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
                     <span class="d-inline-flex align-items-center"><i
-                            class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate}}</span>
+                            class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
                     <span class="d-inline-flex align-items-center ml-2"><i
-                            class="fas fa-calendar-alt mr-2"></i>{{projectEnddate}}</span>
+                            class="fas fa-calendar-alt mr-2"></i>{{projectEnddate | date:'dd-MM-yyyy'}}</span>
                     <span class="d-inline-flex align-items-center ml-2"><i
                             class="fas fa-clock mr-2"></i>{{AllocatedHours}}</span>
                     <span class="d-inline-flex align-items-center ml-2"><i
@@ -1033,15 +1039,14 @@
                                         data-toggle="dropdown" [(ngModel)]="Startts">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <ng-container *ngFor="let item of StartTimearr">
-                                            <a class="dropdown-item"
-                                                (click)="addstarttime(item)">{{item}}</a>
+                                            <a class="dropdown-item" (click)="addstarttime(item)">{{item}}</a>
                                         </ng-container>
                                     </div>
                                 </div>
                                 <div class="form-group dropfocus ml-0 dropdown mb-3">
                                     <label class="cus-lbl">End Time</label>
                                     <input class="form-control" type="text" placeholder="End Time"
-                                        data-toggle="dropdown" [(ngModel)]="Endtms" >
+                                        data-toggle="dropdown" [(ngModel)]="Endtms">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <ng-container *ngFor="let item1 of EndTimearr">
                                             <a class="dropdown-item" (click)="addendtime(item1)">{{item1}}</a>
@@ -1054,8 +1059,8 @@
 
                             <mat-card class="demo-inline-calendar-card ">
                                 <div>
-                                    <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)" 
-                                        [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate" >
+                                    <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)"
+                                        [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate">
                                     </mat-calendar>
                                 </div>
                             </mat-card>
@@ -1063,30 +1068,163 @@
                         </div>
 
                         <div class="d-flex align-items-center flex-wrap pl-3 pt-3 width-cus">
-                          <h6>Clock</h6> 
-                            <h2>{{doubleclickdate}}</h2>
+                            <input type="hidden" id="hdnSelectedId" value="{{this._selectedId}}">
+                            <input type="hidden" id="hdnSecondSelectedId" value="{{this._SecondSelectedId}}">
+                            <input type="hidden" id="hdntotal" value="{{this._total}}">
+                            <div class="d-flex align-items-center justify-content-between w-100">                                
+                                <h5>{{doubleclickdate}}</h5>
+                                <select (change)="getavltime($event)">
+                                    <option>select</option>
+                                    <option [id]="time.count" [value]="time.count" *ngFor="let time of Avaliabletime">
+                                        {{time.StartTime}} - {{time.EndTime}}
+                                    </option>
+                                </select>
+                            </div>
+                            <ng-container *ngFor="let sin of timeslotsavl;" >
+                                <table id="tbl_times" class="" >
+                                    <tr  class="d-flex flex-wrap">
+                                        <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i" (click)="TimeClick(i)">
+                                            <div id="div_{{i}}" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">{{sick.SlotTime}}</p>
+                                                    
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- <tr> {{time.StartTime}} - {{time.EndTime}}</tr> -->
+                                    <!-- <tr class="d-flex flex-wrap" >
+                                        <td id="1" (click)="TimeClick('09:00',1)">
+                                            <div id="div_1" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">09:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="2" (click)="TimeClick('10:00',2)">
+                                            <div id="div_2" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">10:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="3" (click)="TimeClick('11:00',3)">
+                                            <div id="div_3" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">11:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="4" (click)="TimeClick('12:00',4)">
+                                            <div id="div_4" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">12:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="5" (click)="TimeClick('01:00',5)">
+                                            <div id="div_5" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">01:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="6" (click)="TimeClick('02:00',6)">
+                                            <div id="div_6" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">02:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="7" (click)="TimeClick('02:00',7)">
+                                            <div id="div_7" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">03:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="8" (click)="TimeClick('02:00',8)">
+                                            <div id="div_8" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">04:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="9" (click)="TimeClick('02:00',9)">
+                                            <div id="div_9" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">05:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="10" (click)="TimeClick('02:00',10)">
+                                            <div id="div_10" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">06:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="11" (click)="TimeClick('02:00',11)">
+                                            <div id="div_11" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">07:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="12" (click)="TimeClick('02:00',12)">
+                                            <div id="div_12" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">08:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="13" (click)="TimeClick('02:00',13)">
+                                            <div id="div_13" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">09:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="14" (click)="TimeClick('02:00',14)">
+                                            <div id="div_14" class="wp-100">
+                                                <div class="time-slt-card">
+                                                    <p class="time-slt-time">10:00</p>
+                                                    <span class="time-slt-md"> AM</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr> -->
+                                </table>
+                            </ng-container>
                            
-                         <h2>start time</h2>
-                            
-                            <h2>End time</h2>
-                            <!-- <div class="m-3 w-100">
-                                <input type="checkbox" class="ver-m" id="recur" [(ngModel)]="isChecked" (change)="Recursive(isChecked?'1':'2')">
-                                <label class="ml-2 curser-pointer" for="recur"> recursive</label><br>
-                            </div> -->
+
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="">Repeat on</label>
-                    <mat-select  name="Select Type" placeholder="Do not repeat"
-                    class="form-control" (selectionChange)="SelectDropDown($event)">
-                  
-                    <mat-option [value]="1">Daily</mat-option>
-                    <mat-option [value]="2">Weekly</mat-option>
-                    <mat-option [value]="3">Monthly</mat-option>
-                    
-                </mat-select>
-                <!-- <ng-select placeholder="Select" (change)="SelectDropDown($event.value)"
+                    <mat-select name="Select Type" placeholder="Do not repeat" class="form-control"
+                        (selectionChange)="SelectDropDown($event)">
+
+                        <mat-option [value]="1">Daily</mat-option>
+                        <mat-option [value]="2">Weekly</mat-option>
+                        <mat-option [value]="3">Monthly</mat-option>
+
+                    </mat-select>
+                    <!-- <ng-select placeholder="Select" (change)="SelectDropDown($event.value)"
                 class="">
                 <ng-option [value]=item *ngFor="let item of Weekly">{{item}}</ng-option>
               
@@ -1116,8 +1254,8 @@
                                 {{item}}
                             </div>
                             <br> -->
-                            <ng-container  *ngFor="let item of dayArr">
-                                <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'" >
+                            <ng-container *ngFor="let item of dayArr">
+                                <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
                                     <input (change)="selectedDay($event)" id="{{item.value}}" type="checkbox"
                                         name="DaysChk" value="{{item.value}}" class="rep-chk" />
                                     {{item.Day}}

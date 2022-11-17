@@ -14,6 +14,9 @@ export class CalenderDTO {
     Weekday:string;
     json:string;
     Checkdatetimejson:string;
+    Scheduled_date:string;
+    AvailableSlotsJson:string;
+    count:number;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

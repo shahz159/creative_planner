@@ -50,4 +50,10 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcheckdatetimetable", this.obj_CalenderDTO);
 
 }
+NewGetScheduledtime(obj: CalenderDTO){
+  this.obj_CalenderDTO.EmpNo=obj.EmpNo;
+  this.obj_CalenderDTO.Scheduled_date=obj.Scheduled_date;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduleddatetime", this.obj_CalenderDTO);
+
+}
 }
