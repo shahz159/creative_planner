@@ -923,7 +923,7 @@
                                 <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
                                     data-toggle="dropdown" aria-expanded="false">
                                     <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        <!-- <svg xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
                                             viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -932,6 +932,10 @@
                                                     transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
                                                     x="4" y="11" width="16" height="2" rx="1" />
                                             </g>
+                                        </svg> -->
+                                        <svg width="36" height="36" viewBox="0 0 36 36"><path fill="#34A853" d="M16 16v14h4V20z"></path>
+                                            <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path><path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                                            <path fill="#4285F4" d="M20 16V6h-4v14z"></path><path fill="none" d="M0 0h36v36H0z"></path>
                                         </svg>
                                     </span>
                                     Create
@@ -1029,7 +1033,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3">
+                    <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
                             <div class="d-flex gap-15">
 
@@ -1067,13 +1071,13 @@
 
                         </div>
 
-                        <div class="d-flex align-items-center flex-wrap pl-3 pt-3 width-cus">
+                        <div class="d-flex align-items-center flex-wrap pl-3 pt-3 width-cus border">
                             <input type="hidden" id="hdnSelectedId" value="{{this._selectedId}}">
                             <input type="hidden" id="hdnSecondSelectedId" value="{{this._SecondSelectedId}}">
                             <input type="hidden" id="hdntotal" value="{{this._total}}">
-                            <div class="d-flex align-items-center justify-content-between w-100">                                
-                                <h5>{{doubleclickdate}}</h5>
-                                <select (change)="getavltime($event)">
+                            <div class="d-flex align-items-center justify-content-between w-100 px-3 mb-2">
+                                <span class="badge badge-light-primary">{{doubleclickdate}}</span>
+                                <select (change)="getavltime($event)" class="form-control w-maxc">
                                     <option>select</option>
                                     <option [id]="time.count" [value]="time.count" *ngFor="let time of Avaliabletime">
                                         {{time.StartTime}} - {{time.EndTime}}
@@ -1081,133 +1085,136 @@
                                 </select>
                             </div>
                             <ng-container *ngFor="let sin of timeslotsavl;" >
-                                <table id="tbl_times" class="" >
-                                    <tr  class="d-flex flex-wrap">
-                                        <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i" (click)="TimeClick(i)">
-                                            <div id="div_{{i}}" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">{{sick.SlotTime}}</p>
-                                                    
+                                <div class="table-time">
+
+                                    <table id="tbl_times" class="" >
+                                        <tr  class="d-flex flex-wrap">
+                                            <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i" (click)="TimeClick(i)">
+                                                <div id="div_{{i}}" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">{{sick.SlotTime}}</p>
+                                                        
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- <tr> {{time.StartTime}} - {{time.EndTime}}</tr> -->
-                                    <!-- <tr class="d-flex flex-wrap" >
-                                        <td id="1" (click)="TimeClick('09:00',1)">
-                                            <div id="div_1" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">09:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr> {{time.StartTime}} - {{time.EndTime}}</tr> -->
+                                        <!-- <tr class="d-flex flex-wrap" >
+                                            <td id="1" (click)="TimeClick('09:00',1)">
+                                                <div id="div_1" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">09:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="2" (click)="TimeClick('10:00',2)">
-                                            <div id="div_2" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">10:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="2" (click)="TimeClick('10:00',2)">
+                                                <div id="div_2" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">10:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="3" (click)="TimeClick('11:00',3)">
-                                            <div id="div_3" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">11:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="3" (click)="TimeClick('11:00',3)">
+                                                <div id="div_3" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">11:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="4" (click)="TimeClick('12:00',4)">
-                                            <div id="div_4" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">12:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="4" (click)="TimeClick('12:00',4)">
+                                                <div id="div_4" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">12:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="5" (click)="TimeClick('01:00',5)">
-                                            <div id="div_5" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">01:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="5" (click)="TimeClick('01:00',5)">
+                                                <div id="div_5" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">01:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="6" (click)="TimeClick('02:00',6)">
-                                            <div id="div_6" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">02:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="6" (click)="TimeClick('02:00',6)">
+                                                <div id="div_6" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">02:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="7" (click)="TimeClick('02:00',7)">
-                                            <div id="div_7" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">03:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="7" (click)="TimeClick('02:00',7)">
+                                                <div id="div_7" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">03:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="8" (click)="TimeClick('02:00',8)">
-                                            <div id="div_8" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">04:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="8" (click)="TimeClick('02:00',8)">
+                                                <div id="div_8" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">04:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="9" (click)="TimeClick('02:00',9)">
-                                            <div id="div_9" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">05:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="9" (click)="TimeClick('02:00',9)">
+                                                <div id="div_9" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">05:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="10" (click)="TimeClick('02:00',10)">
-                                            <div id="div_10" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">06:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="10" (click)="TimeClick('02:00',10)">
+                                                <div id="div_10" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">06:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="11" (click)="TimeClick('02:00',11)">
-                                            <div id="div_11" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">07:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="11" (click)="TimeClick('02:00',11)">
+                                                <div id="div_11" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">07:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="12" (click)="TimeClick('02:00',12)">
-                                            <div id="div_12" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">08:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="12" (click)="TimeClick('02:00',12)">
+                                                <div id="div_12" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">08:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="13" (click)="TimeClick('02:00',13)">
-                                            <div id="div_13" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">09:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="13" (click)="TimeClick('02:00',13)">
+                                                <div id="div_13" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">09:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td id="14" (click)="TimeClick('02:00',14)">
-                                            <div id="div_14" class="wp-100">
-                                                <div class="time-slt-card">
-                                                    <p class="time-slt-time">10:00</p>
-                                                    <span class="time-slt-md"> AM</span>
+                                            </td>
+                                            <td id="14" (click)="TimeClick('02:00',14)">
+                                                <div id="div_14" class="wp-100">
+                                                    <div class="time-slt-card">
+                                                        <p class="time-slt-time">10:00</p>
+                                                        <span class="time-slt-md"> AM</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr> -->
-                                </table>
+                                            </td>
+                                        </tr> -->
+                                    </table>
+                                </div>
                             </ng-container>
                            
 
