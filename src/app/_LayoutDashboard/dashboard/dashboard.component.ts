@@ -488,16 +488,18 @@ export class DashboardComponent implements OnInit {
       ((data) => {
         this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
         this._total = this.Avaliabletime[0].SlotsJson.length;
+        
 
       })
     // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
-
+    
     console.log(event)
     this.calendar.updateTodaysDate();
 
   }
   
   getavltime(e) {
+    this.timeslotsavl=[];
     this.timeslotsavl.push(this.Avaliabletime.find(i => i.count === parseInt(e.target.value)));
   }
   GetProjectAndsubtashDrpforCalender() {
@@ -694,9 +696,47 @@ export class DashboardComponent implements OnInit {
 
 
     }
+    else if(val.value == 3) {
+      document.getElementById("weekly_121").style.display = "none";
 
+      var start = moment(this.minDate);
+      var end = moment(this.maxDate);
+      const format2 = "YYYY-MM-DD";
 
-  }
+      const d1 = new Date(moment(start).format(format2));
+      const d2 = new Date(moment(end).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = [];
+      const dates = [];
+
+      while (date <= d2) {
+
+        dates.push(moment(date).format(format2));
+
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = (moment(date).format(format2));
+        var columnNames = "StartTime";
+        jsonData[columnNames] = this.Startts;
+        var columnNamee = "EndTime";
+        jsonData[columnNamee] = this.Endtms;
+        this.daysSelectedII.push(jsonData);
+
+        date.setMonth(date.getMonth()+1 );
+      
+      }
+      // this.daysSelected = dates;
+
+      // const dd=[];
+      // dd.push("2022-11-17");
+      // this.daysSelected=dd;
+    
+      this.Checkdatetimetable(this.daysSelectedII);
+      this.calendar.updateTodaysDate();
+    }
+    }
+
+  
   getDatesInRange(startDate, endDate) {
 
     // return dates;
@@ -1280,6 +1320,8 @@ export class DashboardComponent implements OnInit {
     this.selectdaytime = [];
     this.daysSelectedII = [];
     this.singleselectarry = [];
+    this.Avaliabletime =[];
+    this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
