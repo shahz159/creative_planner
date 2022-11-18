@@ -6,10 +6,26 @@
             <div class="kt-portlet kt-portlet--bordered-semi">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
+                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
+                             {{_Statustitle}}
+                        </h3>
+                        <div class="dropdown"  *ngIf="Mode=='AssignedTask'">                            
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Assigned Projects
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a [ngClass]="Type=='Assigned by me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Projects Assigned By Me</a>
+                                <a [ngClass]="Type=='Assigned to me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Projects Assigned To Me</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
                             <strong> {{_Statustitle}}</strong>
                         </h3>
-                    </div>
+                        <button class="btn btn-primary" *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Assigned by me Projects</button>&nbsp;
+                        <button class="btn btn-primary" *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Assigned to me Projects</button>
+                    </div> -->
                     <div class="kt-portlet__head-label mr-2">
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
                             <div class="kt-header__topbar-wrapper">
@@ -33,12 +49,15 @@
                         </div>
 
                         <div class="mr-3">
+                            <ng-container *ngIf="CurrentPageNo==0">
+                               0 - 0
+                            </ng-container>
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}}
                                 -
                                 {{_CurrentpageRecords}}
                             </ng-container>
-                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage && CurrentPageNo!=0">
                                 {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
                                 CurrentPageNo}}
                             </ng-container>
@@ -55,12 +74,12 @@
                         </div> -->
 
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo<=1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
                             (click)="CurrentPageNo = CurrentPageNo + 1;applyFilters()"
-                            [disabled]="_CurrentpageRecords<30">
+                            [disabled]="_CurrentpageRecords<30 || (CurrentPageNo==LastPage && _CurrentpageRecords==30)">
                             <i class="fas fa-angle-right mr-0"></i></button>
 
                         <!-- Filters -->
@@ -97,13 +116,6 @@
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                                                             <label class="kt-checkbox">
-
-                                                                <!-- <mat-checkbox class="example-margin" color="primary"
-                                                                (change)="isTypeChecked(item)"
-                                                                [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                </mat-checkbox> -->
-                                                                <!-- value="item.id" [attr.checked]="item.mode.indexOf(m.id) > -1 ? true : null"> -->
                                                                 <input type="checkbox" (change)="isTypeChecked(item)"
                                                                     [(ngModel)]="item.checked">
                                                                 {{item.Exec_BlockName}}
@@ -119,11 +131,6 @@
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
-                                                                <!-- <mat-checkbox class="example-margin" color="primary"
-                                                                (change)="isStatusChecked(item)"
-                                                                [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                </mat-checkbox> -->
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
                                                                 {{item.Status}}

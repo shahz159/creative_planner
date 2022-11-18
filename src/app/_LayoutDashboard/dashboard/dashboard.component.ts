@@ -758,7 +758,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar_schd").style.width = "0";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -1288,7 +1288,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openschd() {
-    document.getElementById("mysideInfobar_schd").style.width = "50%";
+    document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
@@ -1296,7 +1296,7 @@ export class DashboardComponent implements OnInit {
 
   closeschd() {
 
-    document.getElementById("mysideInfobar_schd").style.width = "0%";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 

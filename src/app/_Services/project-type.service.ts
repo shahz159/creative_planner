@@ -443,6 +443,19 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
   }
 
+  _GetAssignedProjects(objDTO: CompletedProjectsDTO) {
+
+    this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
+    this._ObjCompletedProj.Type = objDTO.Type;
+    this._ObjCompletedProj.PageNumber = objDTO.PageNumber;
+    this._ObjCompletedProj.RowsOfPage =objDTO.RowsOfPage;
+    this._ObjCompletedProj.SelectedBlock_No = objDTO.SelectedBlock_No;
+    this._ObjCompletedProj.SelectedStatus = objDTO.SelectedStatus;
+    this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;
+    this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
+    return this.http.post(this.rootUrl + "Notification/NewGetAssignedProjects", this._ObjCompletedProj);
+  }
+
   _GetCalendarProjects(empNo: string) {
     this._ObjCompletedProj.Emp_No = empNo;
     return this.http.post(this.rootUrl + "Notification/NewGetCalendarProjects", this._ObjCompletedProj);

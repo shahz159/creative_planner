@@ -6,12 +6,15 @@ import { LinkService } from 'src/app/_Services/link.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ParameterService } from 'src/app/_Services/parameter.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { MatDialog } from '@angular/material/dialog';
+
 //import { CalendarOptions } from '@fullcalendar/angular';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import * as _ from 'underscore';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-project-info',
@@ -23,6 +26,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
+    private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
     private route: ActivatedRoute,
     private elementRef: ElementRef) {
@@ -160,6 +164,15 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this._subtaskDiv = true;
           this.subtaskNotFoundMsg = "No Subtask found";
         }
+        if((this._portfoliolist.length== 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')){
+          this._portfoliolist=[];
+          this.noPort="No portfolios linked"
+          
+        }
+        else{
+          this.noPort="";
+          console.log(this._portfoliolist,this.Pid, this._MasterCode,this._ProjectName,this.Current_user_ID,"portfolio list");
+        }
       });
     this._OpenMemosInfo(this.projectCode);
   }
@@ -179,6 +192,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   AddDms() {
     this._openInfoSideBar = true;
     this._LinkSideBar = false;
+    this._LinkSideBar1 = true;
     this._onRowClick(this.projectCode);
   }
 
@@ -191,8 +205,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   getPortfolios(){ 
 
-    if((this._portfoliolist.length== 1) && (this._portfoliolist[0]['Portfolio_Name'] == ''))
-    this._portfolioLength=0;
+    if((this._portfoliolist.length== 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')){
+      this._portfolioLength=0;
+      
+    }
+    
     else
     this._portfolioLength=this._portfoliolist.length;
     // console.log(this._portfoliolist,"lll");
@@ -218,6 +235,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       };
     });
     document.getElementById("LinkSideBar1").style.width = "100%";
+  
   }
 
   Empty_portDropdown: any;
@@ -274,11 +292,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   selectedportID : any;
-  noPort: string = "No Portfolios linked"
+  noPort: string;
   
   addProjectToPortfolio(){
     this.selectedportID = JSON.stringify(this._SelectedPorts);
-    console.log(this.selectedportID,"portids");
+    // console.log(this.selectedportID,"portids");
   if(this.selectedportID!=null){
     this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
    this.objPortfolioDto.Project_Code = this.projectCode;
@@ -287,7 +305,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
     subscribe((data) => {
       this._Message=(data['message']);
-      console.log(data);
+      // console.log(data);
 
       if(this._Message == 'Updated Successfully')
         this.notifyService.showSuccess("Project Successfully added to selected Portfolio(s)",this._Message);
@@ -298,8 +316,57 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
    
     this.ngDropdwonPort = [];
-    this.closeLinkSideBar();
+    this.closeLinkSideBar();    
     this.fun_LoadProjectDetails();
+    // this._openInfoSideBar = false;
+  }
+
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
+
+  deletedBy: string;
+  portfolioName: string;
+
+  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
+    this.deletedBy = this.Current_user_ID;
+
+    this._portfoliolist.forEach(element => {
+      if(port_id == element.Portfolio_ID)
+        this.portfolioName = element.Portfolio_Name
+    });
+    //if (createdBy == this.Current_user_ID) {
+    let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: this.portfolioName
+        
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
+          this.fun_LoadProjectDetails();
+          this.notifyService.showSuccess("Deleted successfully ", '');
+           });       
+      }
+      else {
+        this.notifyService.showError("Action Cancelled ", '');
+      }
+    });
   }
 
   totalPortfolios: number;

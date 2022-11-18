@@ -85,7 +85,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
     this.GetCompletedProjects();
-    this.getDropdownsDataFromDB();
+    this.getAssignedProjects(this.type1); 
+    
     // this.notFoundData=true;
     //this.AssignedTask = true;
     //this.projectsDataTable = false;
@@ -138,56 +139,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj.Mode = this.Mode;
     this._ObjCompletedProj.Emp_No = EmpNo;
     this._ObjCompletedProj.PageNumber = Pgno;
-
-    if (this.Mode == "AssignedTask") {
-      this.AssignedTask = false;
-      this.projectsDataTable = true;
-      this._Statustitle = "Assigned Projects";
-
-      this.service._GetCompletedProjects(this._ObjCompletedProj).
-        subscribe(data => {
-          if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
-            this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
-            this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
-          }
-          else {
-            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
-            debugger
-            //if (this._AssignedProjectsList.length > 0) {
-            this._CurrentpageRecords = this._AssignedProjectsList.length;
-            this._totalProjectsCount = (data[0]['CountAssigned']);
-            
-            this.TypeContInFilter = JSON.parse(data[0]['ProjectTypeList']);
-            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            this.EmpCountInFilter = JSON.parse(data[0]['EmployeeList']);
-            //this.service.Mode = "";
-            // }
-          }
-          //Type
-          // if (this.selectedItem_Type.length == 0) {
-          //   this.TypeContInFilter = JSON.parse(data[0]['ProjectTypeList']);
-          // }
-          // else {
-          //   this.TypeContInFilter = this.selectedItem_Type[0];
-          // }
-          // //Status
-          // if (this.selectedItem_Status.length == 0) {
-          //   this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-          // }
-          // else {
-          //   this.StatusCountFilter = this.selectedItem_Status[0];
-          // }
-          // //Employees
-          // if (this.selectedItem_Emp.length == 0) {
-          //   this.EmpCountInFilter = JSON.parse(data[0]['EmployeeList']);
-  
-          // }
-          // else {
-          //   this.EmpCountInFilter = this.selectedItem_Emp[0];
-          // }
-        });
+    this._ObjCompletedProj.PageSize = 30;
      
-    }
     if (this.Mode != "AssignedTask" && this.Mode != "") {
       this.projectsDataTable = false;
       this.AssignedTask = true;
@@ -220,113 +173,75 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ProjectDataList = [];
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe((data) => {
-          // console.log("----Testing--->",data)
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
+            this.CurrentPageNo=0;
+            this._CurrentpageRecords=0;
           }
           else {
-            // alert(this.Mode);
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this._CurrentpageRecords = this._ProjectDataList.length;
-            // if(this.Mode=='Delay')
-            // this._totalProjectsCount = JSON.parse(data[0]['delaycount']);
-          
-            
-            
-            // console.log("---------->Exp in One Month------->",this._ProjectDataList);
-            // if (this._ProjectDataList.length > 0) {
-            
-            // if (this.selectedItem_Emp.length == 0) {
-            //   this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
-
-            // }
-            // else {
-            //   this.EmpCountInFilter = this.selectedItem_Emp[0];
-            // }
-            // //Type
-            // if (this.selectedItem_Type.length == 0) {
-            //   this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-            // }
-            // else {
-            //   this.TypeContInFilter = this.selectedItem_Type[0];
-            // }
-            // //Status
-            // if (this.selectedItem_Status.length == 0) {
-            //   this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            // }
-            // else {
-            //   this.StatusCountFilter = this.selectedItem_Status[0];
-            // }
-            // this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-            // this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            // this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            this._totalProjectsCount = data[0]['delaycount'];           
           }
-        // }
-          // else {
-          //   this.LoadingBar.stop();
-          //   this.notFoundData = false;
-          // }
         });
+    }
+  }
+
+  type1:string = "Assigned by me";
+  type2:string = "Assigned to me";
+  Type:String;
+
+  getAssignedProjects(type){
+    
+    let EmpNo = this.Current_user_ID;
+    if (this.Mode == "AssignedTask") {
+      this.AssignedTask = false;
+      this.projectsDataTable = true;
+      this._Statustitle = "Assigned Projects";
+      this.CurrentPageNo=1;
+
+      this._ObjCompletedProj.Type = type;
+      this.Type=type;
+      // alert(type);
+      this._ObjCompletedProj.Emp_No = EmpNo;
+      this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
+      this._ObjCompletedProj.RowsOfPage = 30;
+
+
+      this.service._GetAssignedProjects(this._ObjCompletedProj).
+        subscribe(data => {
+          console.log(data);
+          
+          if (JSON.parse(data[0]['JsonData_Json']).length==0) {
+            this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
+            this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
+            this.CurrentPageNo=0;
+            this._totalProjectsCount=0;
+            this._CurrentpageRecords=0;
+          }
+          else {
+            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+            this._CurrentpageRecords = this._AssignedProjectsList.length;
+            if(type=='Assigned by me')
+            this._totalProjectsCount = (data[0]['AssignTOcount']);
+            else
+            this._totalProjectsCount = (data[0]['AssignBYcount']);
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+
+            console.log(this._AssignedProjectsList,this.TypeContInFilter,this.StatusCountFilter,this.EmpCountInFilter,"test assign");
+            }      
+        });     
     }
   }
 
   LastPage:number;
   lastPagerecords:number;
-
-  getDropdownsDataFromDB() {
- 
-    this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
-    this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
-    this._ObjCompletedProj.SelectedBlock_No = this.selectedType_String;
-
-    this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
-    this._ObjCompletedProj.PageSize = 30;
-    this._ObjCompletedProj.Project_SearchText = this.searchText;
-
-    // this._objDropdownDTO.PortfolioId = null;
-    this.service._GetCompletedProjects(this._ObjCompletedProj)
-      .subscribe((data) => {
-        //Emp
-        if (this.selectedItem_Emp.length == 0) {
-          this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
-        }
-        else {
-          this.EmpCountInFilter = this.selectedItem_Emp[0];
-        }
-        //Type
-        if (this.selectedItem_Type.length == 0) {
-          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-        }
-        else {
-          this.TypeContInFilter = this.selectedItem_Type[0];
-        }
-        //Status
-        if (this.selectedItem_Status.length == 0) {
-          this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-        }
-        else {
-          this.StatusCountFilter = this.selectedItem_Status[0];
-        }
-
-        this._totalProjectsCount = data[0]['delaycount'];
-
-        let _vl = this._totalProjectsCount / 30;
-        let _vl1 = _vl % 1;
-        if (_vl1 > 0.000) {
-          this.LastPage = Math.trunc(_vl) + 1;
-        }
-        else {
-          this.LastPage = Math.trunc(_vl);
-        }
-
-        if(this.CurrentPageNo == this.LastPage){
-          this.lastPagerecords=30;
-        }
-        // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
-      });
-  }
-
 
   BackBttn() {
     this._ProjectDataList = [];
@@ -346,7 +261,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.edited = true;
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
-        arr.push({ Status: element.Name });
+        arr.push({ Status: element.Status });
         return this.checkedItems_Status = arr;
       }
     });
@@ -376,7 +291,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
-        arr.push({ Block_No: element.Block_No });
+        arr.push({ Block_No: element.Project_Block });
         return this.checkedItems_Type = arr;
       }
     });
@@ -459,60 +374,138 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.applyFilters();
   }
   applyFilters() {
-    this.selectedEmp_String = this.checkedItems_Emp.map(select => {
-      return select.Emp_No;
-    }).join(',');
-
-    this.selectedType_String = this.checkedItems_Type.map(select => {
-      return select.Block_No;
-    }).join(',');
-
-    this.selectedStatus_String = this.checkedItems_Status.map(select => {
-      return select.Status;
-    }).join(',');
-
-    //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
-
-    this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
-    this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
-    this._ObjCompletedProj.SelectedBlock_No = this.selectedType_String;
-
-    this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
-    this._ObjCompletedProj.PageSize = 30;
-    this._ObjCompletedProj.Project_SearchText = this.searchText;
-
-    //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
-    this.service._GetCompletedProjects(this._ObjCompletedProj)
-      .subscribe(data => {
-
-        //this.LoadingBar_state.start();
-        //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-        this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-        this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-        this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-        this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
-
-        this._CurrentpageRecords = this._ProjectDataList.length;
-        // this._totalProjectsCount = (data[0]['CountAssigned'])
-        if (this._ProjectDataList) {
-          //this.LoadingBar_state.stop();
-        }
-        if (this._ProjectDataList.length == 0) {
-          this._filtersMessage = "No projects matched your search";
-          this._filtersMessage2 = "Please try again";
-        }
-        else {
-          this._filtersMessage = "";
-          this._filtersMessage2 = "";
-        }
-      });
-    //Filtering Checkbox de
-    this.getDropdownsDataFromDB();
-  }
-
-
+    if (this.Mode != "AssignedTask" && this.Mode != ""){
+      this.selectedEmp_String = this.checkedItems_Emp.map(select => {
+        return select.Emp_No;
+      }).join(',');
+      this.selectedType_String = this.checkedItems_Type.map(select => {
+        return select.Block_No;
+      }).join(',');
+      this.selectedStatus_String = this.checkedItems_Status.map(select => {
+        return select.Status;
+      }).join(',');
+      //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
+      this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
+      this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
+      this._ObjCompletedProj.SelectedBlock_No = this.selectedType_String;
+      this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
+      this._ObjCompletedProj.PageSize = 30;
+      this._ObjCompletedProj.Project_SearchText = this.searchText;
+      //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
+      this.service._GetCompletedProjects(this._ObjCompletedProj)
+        .subscribe(data => {
+          this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+          this._CurrentpageRecords = this._ProjectDataList.length;
+          if (this._ProjectDataList.length == 0) {
+            this._filtersMessage = "No projects matched your search";
+            this._filtersMessage2 = "Please try again";
+          }
+          else {
+            this._filtersMessage = "";
+            this._filtersMessage2 = "";
+          }
+          //Employee
+          if (this.selectedItem_Emp.length == 0) {
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+          }
+          else {
+            this.EmpCountInFilter = this.selectedItem_Emp[0];
+          }
+          //Type
+          if (this.selectedItem_Type.length == 0) {
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+          }
+          else {
+            this.TypeContInFilter = this.selectedItem_Type[0];
+          }
+          //Status
+          if (this.selectedItem_Status.length == 0) {
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          }
+          else {
+            this.StatusCountFilter = this.selectedItem_Status[0];
+          }
   
-
+          this._totalProjectsCount = data[0]['delaycount'];
+  
+          let _vl = this._totalProjectsCount / 30;
+          let _vl1 = _vl % 1;
+          if (_vl1 > 0.000) {
+            this.LastPage = Math.trunc(_vl) + 1;
+          }
+          else {
+            this.LastPage = Math.trunc(_vl);
+          }
+  
+          if(this.CurrentPageNo == this.LastPage){
+            this.lastPagerecords=30;
+          }
+        });
+    }
+    else if (this.Mode == "AssignedTask"){
+      this.selectedEmp_String = this.checkedItems_Emp.map(select => {
+        return select.Emp_No;
+      }).join(',');
+      this.selectedType_String = this.checkedItems_Type.map(select => {
+        return select.Block_No;
+      }).join(',');
+      this.selectedStatus_String = this.checkedItems_Status.map(select => {
+        return select.Status;
+      }).join(',');
+      //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
+      this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
+      this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
+      this._ObjCompletedProj.SelectedBlock_No = this.selectedType_String;
+      this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
+      this._ObjCompletedProj.RowsOfPage = 30;
+      this._ObjCompletedProj.Project_SearchText = this.searchText;
+      this.service._GetAssignedProjects(this._ObjCompletedProj).
+        subscribe(data => {
+          
+            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+            
+            this._CurrentpageRecords = this._AssignedProjectsList.length;
+            //Type
+            if (this.selectedItem_Type.length == 0) {
+              this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            }
+            else {
+              this.TypeContInFilter = this.selectedItem_Type[0];
+            }
+            //Status
+            if (this.selectedItem_Status.length == 0) {
+              this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            }
+            else {
+              this.StatusCountFilter = this.selectedItem_Status[0];
+            }
+            //Employees
+            if (this.selectedItem_Emp.length == 0) {
+              this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+      
+            }
+            else {
+              this.EmpCountInFilter = this.selectedItem_Emp[0];
+            }               
+            if(this._ObjCompletedProj.Type=='Assigned by me')
+            this._totalProjectsCount = (data[0]['AssignTOcount']);
+            else
+            this._totalProjectsCount = (data[0]['AssignBYcount']);
+            let _vl = this._totalProjectsCount / 30;
+            let _vl1 = _vl % 1;
+            if (_vl1 > 0.000) {
+              this.LastPage = Math.trunc(_vl) + 1;
+            }
+            else {
+              this.LastPage = Math.trunc(_vl);
+            }
+    
+            if(this.CurrentPageNo == this.LastPage){
+              this.lastPagerecords=30;
+            }
+        }); 
+      }    
+  }
 
   resetAll() {
     this.txtSearch = '';
