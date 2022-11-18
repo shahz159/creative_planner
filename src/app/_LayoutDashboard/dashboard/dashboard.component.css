@@ -1019,6 +1019,9 @@ span.time-slt-md {
 .drop-cus a.dropdown-item:hover{
 background-color: #f1f3f4;
 }
+.w-matc {
+    width: 47.5%;
+}
 @media Screen and (max-width: 1600px) {
 
 .table-time {
@@ -1031,5 +1034,14 @@ background-color: #f1f3f4;
 .table-time {
     max-height: 350px;
     overflow: auto;
+}
+}
+@media Screen and (max-width: 1400px) {
+
+.wp-100 {
+    width: 64px;
+}
+.time-slt-card{
+    padding: 7px 9px 7px 10px;
 }
 }
