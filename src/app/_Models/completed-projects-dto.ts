@@ -63,4 +63,5 @@ export class CompletedProjectsDTO {
     Link_Status: boolean;
     CategoryId: number;
     Filter:string;
+    Type:string;
 }
