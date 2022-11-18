@@ -1088,7 +1088,7 @@
                                 <div class="table-time">
 
                                     <table id="tbl_times" class="" >
-                                        <tr  class="d-flex flex-wrap">
+                                        <tr  class="d-flex flex-wrap justify-content-between">
                                             <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i" (click)="TimeClick(i,sick.SlotTime)">
                                                 <div id="div_{{i}}" class="wp-100">
                                                     <div class="time-slt-card">
