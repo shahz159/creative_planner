@@ -287,6 +287,11 @@ export class MoreDetailsComponent implements OnInit {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
+    else if((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount==0){
+      this.objProjectDto.Project_Name = this.ProjectName;
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
+      this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    }
     else {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.actionCode;
@@ -317,8 +322,19 @@ export class MoreDetailsComponent implements OnInit {
 
   getDarTime() {
 
-    this.timedata = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00",
-      "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"];
+    this.timedata = ["08:00",
+    "08:15", "08:30","08:45", "09:00",
+    "09:15", "09:30","09:45", "10:00",
+    "10:15", "10:30", "10:45","11:00",
+    "11:15", "11:30","11:45", "12:00",
+    "12:15","12:30", "12:45","13:00",
+    "13:15", "13:30","13:45", "14:00",
+    "14:15","14:30", "14:45","15:00",
+    "15:15","15:30", "15:45","16:00",
+    "16:15", "16:30", "16:45","17:00",
+    "17:15","17:30", "17:45","18:00", 
+    "18:15","18:30", "18:45","19:00", 
+    "19:15","19:30", "19:45","20:00"];
     // $("#d-date").val(this.current_Date);
     
 
@@ -668,6 +684,21 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closeInfo() {
+    document.getElementById("mysideInfobar").classList.remove("side--on");
+    document.getElementById("mysideInfobar_Update").style.width = "0";
+    document.getElementById("mysideInfobar1").style.width = "0";
+    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("darsidebar").style.width = "0";
+    // document.getElementById("mysideInfobar1").classList.remove("side--on");
+    // For page top div removing the fixed
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    // this.notifyService.showError("Cancelled", '');
+    this.Clear_Feilds();
+    this.GetSubtask_Details();
+  }
+
+  closeApproval() {
     document.getElementById("mysideInfobar").classList.remove("side--on");
     document.getElementById("mysideInfobar_Update").style.width = "0";
     document.getElementById("mysideInfobar1").style.width = "0";
@@ -2505,6 +2536,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
+          console.log(data,"standard status");
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
@@ -2906,6 +2938,9 @@ export class MoreDetailsComponent implements OnInit {
   darcreate() {
     this.dateF = new FormControl(new Date());
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+      this.coresecondary = false;
+    }
+    else if((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount==0){
       this.coresecondary = false;
     }
 
