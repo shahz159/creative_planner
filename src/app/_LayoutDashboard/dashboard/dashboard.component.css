@@ -923,7 +923,7 @@
 
 .time-slt-card {
     background-color: #f6f6f6;
-    padding: 7px 9px 7px 25px;
+    padding: 7px 9px 7px 10px;
     border-radius: 6px;
     text-align: end;
     line-height: 11px;
@@ -945,7 +945,7 @@ span.time-slt-md {
 .wp-100 {
     /* padding: 5px; */
     width: 74px;
-    margin: 10px;
+    margin: 10px 5px;
     cursor: pointer;
 }
 
@@ -1019,6 +1019,12 @@ span.time-slt-md {
 .drop-cus a.dropdown-item:hover{
 background-color: #f1f3f4;
 }
+.w-matc {
+    width: 47.5%;
+}
+.open_sidebar {
+    width: 50%;
+}
 @media Screen and (max-width: 1600px) {
 
 .table-time {
@@ -1032,4 +1038,26 @@ background-color: #f1f3f4;
     max-height: 350px;
     overflow: auto;
 }
+}
+@media Screen and (max-width: 1220px) {
+
+.wp-100 {
+    width: 64px;
+    margin: 10px 5px;
+}
+.time-slt-card{
+    padding: 7px 9px 7px 10px;
+}
+}
+@media Screen and (max-width: 1024px) {
+
+    .open_sidebar {
+        width: 75%;
+    }
+}
+@media Screen and (max-width: 768px) {
+
+    .open_sidebar {
+        width: 100%;
+    }
 }

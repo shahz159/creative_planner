@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   EndTimearr: any = [];
   Projectstartdate: string = "";
   projectEnddate: string;
-  Status_project: string;
+  Status_project: string; days
   AllocatedHours: number;
   St_date: string = "";
   Ed_date: string;
@@ -124,6 +124,8 @@ export class DashboardComponent implements OnInit {
   daysSelectedII: any[] = [];
   singleselectarry: any[] = [];
   Doubleselectedday: any[] = [];
+  Avaliabletime: any[] = [];
+  Timechangearry: any[] = [];
   event: any;
   selected: Date | null;
   minDate = moment().format("YYYY-MM-DD").toString();
@@ -192,6 +194,7 @@ export class DashboardComponent implements OnInit {
   SearchMemo: string;
   page_Name: string = "ViewProjects";
   _Message: string;
+  slottime: string;
   _AssignedProjectsList: any;
   memoId: any;
   Projecttype: any;
@@ -200,6 +203,7 @@ export class DashboardComponent implements OnInit {
   _total = 14;
   _firstClick: number = 0;
   loadAPI: Promise<any>;
+
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
@@ -337,7 +341,6 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
-
   getChangeSubtaskDetais(Project_Code) {
     this.BlockNameProject1.forEach(element => {
 
@@ -351,7 +354,6 @@ export class DashboardComponent implements OnInit {
 
 
   }
-
   selectedDay(days) {
 
     //Checked the day
@@ -414,7 +416,7 @@ export class DashboardComponent implements OnInit {
     this.Checkdatetimetable(this.daysSelectedII);
   }
   isSelected = (event: any) => {
-    debugger
+
     const date =
       event.getFullYear() +
       "-" +
@@ -427,16 +429,15 @@ export class DashboardComponent implements OnInit {
       this.daysSelectedII.find(y => y.Date == date && y.IsActive == true) ? "selectedinvalid" : null;
   };
   select(event: any) {
+
     this.preventSingleClick = false;
     const delay = 200;
-
     const date = event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
     this.doubleclickdate = date;
     this.timer = setTimeout(() => {
       if (!this.preventSingleClick) {
         const index = this.daysSelected.findIndex(x => x == date);
         if (index < 0) {
-
           this.daysSelected.push(date);
           this.singleselectarry.push(date);
         }
@@ -444,42 +445,53 @@ export class DashboardComponent implements OnInit {
           this.daysSelected.splice(index, 1);
           this.singleselectarry.splice(index, 1);
         }
-
         this.calendar.updateTodaysDate();
         this.daysSelectedII = [];
         this.daysSelected.forEach(element => {
+          const found = this.Timechangearry.some(el => el.Date === element);
+          if (found) {
+            this.Timechangearry.forEach(element2 => {
+              if (element2.Date == element) {
 
-          var jsonData = {};
-          var columnName = "Date";
-          jsonData[columnName] = element;
-          var columnNames = "StartTime";
-          jsonData[columnNames] = this.Startts;
-          var columnNamee = "EndTime";
-          jsonData[columnNamee] = this.Endtms;
-
-          this.daysSelectedII.push(jsonData)
-
+                var jsonData = {};
+                var columnName = "Date";
+                jsonData[columnName] = element2.Date;
+                var columnNames = "StartTime";
+                jsonData[columnNames] = element2.StartTime;
+                var columnNamee = "EndTime";
+                jsonData[columnNamee] = element2.EndTime;
+                this.daysSelectedII.push(jsonData)
+              }
+            });
+          }
+          else {
+            var jsonData = {};
+            var columnName = "Date";
+            jsonData[columnName] = element;
+            var columnNames = "StartTime";
+            jsonData[columnNames] = this.Startts;
+            var columnNamee = "EndTime";
+            jsonData[columnNamee] = this.Endtms;
+            this.daysSelectedII.push(jsonData);
+          }
         });
-
         this.Checkdatetimetable(this.daysSelectedII);
         this.calendar.updateTodaysDate();
       }
     }, delay);
   }
   Checkdatetimetable(_array) {
-    
+
     this._calenderDto.json = JSON.stringify(_array);
     this._calenderDto.EmpNo = this.Current_user_ID;
     this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
       ((data) => {
-         
+
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
         this.calendar.updateTodaysDate();
-        console.log("First value Array"+ JSON.stringify(this.daysSelectedII))
+        console.log("First value Array" + JSON.stringify(this.daysSelectedII))
       });
   }
-  Avaliabletime: any[] = [];
-
   Doubleclick(event: any) {
     this.preventSingleClick = true;
     clearTimeout(this.timer);
@@ -487,7 +499,9 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
       ((data) => {
         this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
-        this._total = this.Avaliabletime[0].SlotsJson.length;
+        // this._total = this.Avaliabletime[0].SlotsJson.length;
+        this.timeslotsavl = [];
+
 
       })
     // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
@@ -496,9 +510,12 @@ export class DashboardComponent implements OnInit {
     this.calendar.updateTodaysDate();
 
   }
-  
   getavltime(e) {
+    this.timeslotsavl = [];
     this.timeslotsavl.push(this.Avaliabletime.find(i => i.count === parseInt(e.target.value)));
+    this._selectedId = 0;
+    this._SecondSelectedId = 0;
+    this._total = this.timeslotsavl.length;
   }
   GetProjectAndsubtashDrpforCalender() {
 
@@ -548,14 +565,13 @@ export class DashboardComponent implements OnInit {
     }
 
   }
-  slottime:string;
-  TimeClick(id,stime) {
-    // alert(stime)
+  TimeClick(id, stime) {
+
     if (this._selectedId == 0) {
       $('.wp-100 .active').removeClass('active');
       $('#div_' + id).children('.time-slt-card').addClass('active');
       this._selectedId = id;
-      this.slottime=stime;
+      this.slottime = stime;
     }
     else if (this._SecondSelectedId == 0) {
       this._SecondSelectedId = id;
@@ -564,17 +580,44 @@ export class DashboardComponent implements OnInit {
         if (i > this._selectedId) {
           $('#div_' + i).children('.time-slt-card').addClass('active');
         }
-      
+
       }
+
       this.daysSelectedII.forEach(element => {
-        if(element.Date == this.doubleclickdate){
-          element.StartTime=this.slottime;
-          element.EndTime=stime;
-          element.IsActive=false;
-        }  
+        if (element.Date == this.doubleclickdate) {
+          element.StartTime = this.slottime;
+          element.EndTime = stime;
+          element.IsActive = false;
+
+        }
+
       });
-      console.log("Updated Array"+JSON.stringify(this.daysSelectedII))
+      // console.log("Updated Array"+JSON.stringify(this.daysSelectedII))
+      const found = this.Timechangearry.some(el => el.Date === this.doubleclickdate);
+      if (!found) {
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = this.doubleclickdate;
+        var columnNames = "StartTime";
+        jsonData[columnNames] = this.slottime;
+        var columnNamee = "EndTime";
+        jsonData[columnNamee] = stime;
+        this.Timechangearry.push(jsonData)
+      }
+      else {
+        this.Timechangearry.forEach(element => {
+
+          if (element.Date == this.doubleclickdate) {
+            element.StartTime = this.slottime;
+            element.EndTime = stime;
+
+          }
+        });
+      }
+      console.log("Updated Array" + JSON.stringify(this.Timechangearry))
       this.calendar.updateTodaysDate();
+      this._selectedId = 0;
+      this._SecondSelectedId = 0;
     }
     else {
       this._selectedId = id;
@@ -588,6 +631,8 @@ export class DashboardComponent implements OnInit {
       this.loadScript();
       resolve(true);
     });
+
+
     // var _selectedId = this._selectedId;
     // var _SecondSelectedId = this._SecondSelectedId;
     // var _total = 14;
@@ -629,7 +674,7 @@ export class DashboardComponent implements OnInit {
 
     if (!isFound) {
       var dynamicScripts = [
-        "../../../assets/js/timehover.js",
+        "../../../creativeplanner/assets/js/timehover.js",
       ];
       // var dynamicScripts = [
       //   environment.assetsurl + "../../../assets/js/dashboard/jquery.knob.min.js",
@@ -648,6 +693,7 @@ export class DashboardComponent implements OnInit {
 
     }
   }
+  monthdates: any[] = [];
   SelectDropDown(val) {
 
     if (val.value == 2) {
@@ -687,21 +733,69 @@ export class DashboardComponent implements OnInit {
       // const dd=[];
       // dd.push("2022-11-17");
       // this.daysSelected=dd;
-      
+
       this.Checkdatetimetable(this.daysSelectedII);
       this.calendar.updateTodaysDate();
       // this.getDatesInRange(, new Date(moment(end).format(format2)))
 
 
     }
+    else if (val.value == 3) {
+      const format2 = "YYYY-MM-DD";
+      var start = moment(this.minDate);
+      const d1 = new Date(moment(start).format(format2));
+      var end = moment(this.maxDate);
 
-
+      const d2 = new Date(moment(end).format(format2));
+      const date = new Date(d1.getTime());
+      if (this.daysSelectedII.length > 0) {
+        var date1 = new Date(), y = date1.getFullYear(), m = date1.getMonth();
+        var lastDay = new Date(y, m + 1, 0);
+        // monthdates
+        const enddate = new Date(moment(lastDay).format(format2));
+        this.daysSelectedII.forEach(element => {
+          var exist = moment(element.Date).isBetween(d1, enddate);
+          if (exist) {        
+            const d22 = new Date(moment(end).format(format2));
+            const d12 = new Date(moment(element.Date).format(format2)); 
+            d12.setMonth(d12.getMonth() + 1);          
+            while (d12 <= d22) {  
+              var jsonData = {};
+              var columnName = "Date";
+              jsonData[columnName] =moment(d12).format(format2);
+              var columnNames = "StartTime";
+              jsonData[columnNames] = this.Startts;
+              var columnNamee = "EndTime";
+              jsonData[columnNamee] = this.Endtms;
+              this.daysSelectedII.push(jsonData);
+              this.daysSelected.push(moment(d12).format(format2))
+              d12.setMonth(d12.getMonth() + 1);   
+            }         
+          }
+        });
+      }
+      else {
+        document.getElementById("weekly_121").style.display = "none";
+       
+        this.daysSelectedII = [];
+        const dates = [];
+        while (date <= d2) {
+          dates.push(moment(date).format(format2));
+          var jsonData = {};
+          var columnName = "Date";
+          jsonData[columnName] = (moment(date).format(format2));
+          var columnNames = "StartTime";
+          jsonData[columnNames] = this.Startts;
+          var columnNamee = "EndTime";
+          jsonData[columnNamee] = this.Endtms;
+          this.daysSelectedII.push(jsonData);
+          date.setMonth(date.getMonth() + 1);
+        }       
+      }
+      this.Checkdatetimetable(this.daysSelectedII);
+        this.calendar.updateTodaysDate();
+    }
   }
-  getDatesInRange(startDate, endDate) {
-
-    // return dates;
-  }
-
 
   // End Here
   // Scheduling Work
@@ -718,7 +812,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar_schd").style.width = "0";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -894,7 +988,6 @@ export class DashboardComponent implements OnInit {
     this.DARactivity_Div = false;
   }
 
-
   //LiveUrl:string="creativeplanner/ViewProjects/";
   UnderApproval_Click() {
     this._ProjectDataList = [];
@@ -968,12 +1061,9 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(Url);
     myWindow.focus();
   }
-
-
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
-
   GetmemosInSideInfoBar() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.pCode).
       subscribe((data) => {
@@ -1015,7 +1105,6 @@ export class DashboardComponent implements OnInit {
 
   // Add Dms and Delete Functionality
 
-
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
@@ -1033,7 +1122,6 @@ export class DashboardComponent implements OnInit {
         };
       });
   }
-
   Memo_Select(selecteditems) {
     let arr = [];
     this.Empty_MemoDropdown = selecteditems;
@@ -1050,8 +1138,6 @@ export class DashboardComponent implements OnInit {
       this._SelectedMemos = arr;
     });
   }
-
-
   _onRowClick(projectCode, ProjName) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -1097,11 +1183,9 @@ export class DashboardComponent implements OnInit {
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
   }
-
   AddDms() {
     this._onRowClick(this.ProjectCode, this.ProjectName);
   }
-
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
     let appId: number = 101;//this._ApplicationId;
@@ -1176,8 +1260,6 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
-
-
   calculateDiff(dateSent) {
     let currentDate = new Date();
 
@@ -1185,9 +1267,6 @@ export class DashboardComponent implements OnInit {
 
     return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
   }
-
-
-
   OnSubmitcalender() {
 
     this.SelectStartdate = this.datepipe.transform(this.SelectStartdate, 'MM/dd/yyyy');
@@ -1246,9 +1325,8 @@ export class DashboardComponent implements OnInit {
     this.selectDay = null;
 
   }
-
   openschd() {
-    document.getElementById("mysideInfobar_schd").style.width = "50%";
+    document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
@@ -1256,7 +1334,7 @@ export class DashboardComponent implements OnInit {
 
   closeschd() {
 
-    document.getElementById("mysideInfobar_schd").style.width = "0%";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 
@@ -1280,6 +1358,8 @@ export class DashboardComponent implements OnInit {
     this.selectdaytime = [];
     this.daysSelectedII = [];
     this.singleselectarry = [];
+    this.Avaliabletime = [];
+    this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
