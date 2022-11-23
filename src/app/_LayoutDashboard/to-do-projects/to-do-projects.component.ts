@@ -66,7 +66,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     //this._ProjectName = "Project Name"
     this.GetProjectsByUserName();
-    this.getDropdownsDataFromDB();
+    this.applyFilters();
    
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
@@ -771,45 +771,9 @@ export class ToDoProjectsComponent implements OnInit {
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
     // this._objDropdownDTO.PortfolioId = null;
-    this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
+    this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails)
       .subscribe((data) => {
-        //Emp
-        if (this.selectedItem_Emp.length == 0) {
-          this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
-        }
-        else {
-          this.EmpCountInFilter = this.selectedItem_Emp[0];
-        }
-        //Type
-        if (this.selectedItem_Type.length == 0) {
-          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-        }
-        else {
-          this.TypeContInFilter = this.selectedItem_Type[0];
-        }
-        //Status
-        if (this.selectedItem_Status.length == 0) {
-          this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-        }
-        else {
-          this.StatusCountFilter = this.selectedItem_Status[0];
-        }
-        // this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
-        // this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
-        // this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
-
-        let _vl = this._totalProjectsCount / 30;
-        let _vl1 = _vl % 1;
-        if (_vl1 > 0.000) {
-          this.LastPage = Math.trunc(_vl) + 1;
-        }
-        else {
-          this.LastPage = Math.trunc(_vl);
-        }
-
-        if(this.CurrentPageNo == this.LastPage){
-          this.lastPagerecords=30;
-        }
+        
          console.log(this._CurrentpageRecords,this.CurrentPageNo,this._totalProjectsCount,this.LastPage, this.lastPagerecords);
       });
   }
@@ -967,6 +931,42 @@ export class ToDoProjectsComponent implements OnInit {
         this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);       
         // console.log(this._ProjectDataList);
         // this._totalProjectsCount = data[0]['ProjectsCount_Json'];
+        //Emp
+        if (this.selectedItem_Emp.length == 0) {
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+        }
+        else {
+          this.EmpCountInFilter = this.selectedItem_Emp[0];
+        }
+        //Type
+        if (this.selectedItem_Type.length == 0) {
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+        }
+        else {
+          this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Status
+        if (this.selectedItem_Status.length == 0) {
+          this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
+        }
+        else {
+          this.StatusCountFilter = this.selectedItem_Status[0];
+        }
+        this._totalProjectsCount = JSON.parse(data[0]['ProjectsCount_Json']);
+        
+
+        let _vl = this._totalProjectsCount / 30;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=30;
+        }
         if (this._ProjectDataList) {
           this._CurrentpageRecords = this._ProjectDataList.length;
         }
@@ -982,7 +982,7 @@ export class ToDoProjectsComponent implements OnInit {
         }
       });
     //Filtering Checkbox de
-    this.getDropdownsDataFromDB();
+    // this.getDropdownsDataFromDB();
   }
 
   search_Type: any[];

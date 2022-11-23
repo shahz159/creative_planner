@@ -153,7 +153,7 @@
 
 
                     </div>
-                    <div class=" pro-act" *ngIf="(Current_user_ID == Owner_EmpNo) || (Current_user_ID == Responsible_EmpNo) && (Responsible_EmpNo != Authority_EmpNo)">
+                    <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId)">
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval')">Project Actions</button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')"

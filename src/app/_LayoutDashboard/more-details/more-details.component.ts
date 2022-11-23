@@ -99,6 +99,7 @@ export class MoreDetailsComponent implements OnInit {
       this.GetSubtask_Details();
       this.dar_details(); 
       this.getResponsibleActions();
+      this.getapprovalStats();
 
       this.EndDate1.setDate(this.EndDate1.getDate() + 1);      
 
@@ -131,6 +132,8 @@ export class MoreDetailsComponent implements OnInit {
   requestDate: any;
   requestDeadline: any;
   requestType: any;
+  approvalEmpId: any;
+  requestComments: any;
 
   getapprovalStats(){
     this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -139,7 +142,9 @@ export class MoreDetailsComponent implements OnInit {
         this.requestType = (data[0]['Request_type']);
         this.requestDate = (data[0]['Request_date']);
         this.requestDeadline = (data[0]['Request_deadline']);
-        console.log(this.requestDate,this.requestDeadline,this.requestType,"request status");
+        this.approvalEmpId = (data[0]['Emp_no']);
+        this.requestComments = (data[0]['Remarks']);
+        console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
   }
 
@@ -2907,6 +2912,7 @@ export class MoreDetailsComponent implements OnInit {
         this.closeInfo();
         this.GetSubtask_Details();
         this.GetProjectDetails();
+        this.getapprovalStats();
       });
   }
   LoadDocument(url: string) {
