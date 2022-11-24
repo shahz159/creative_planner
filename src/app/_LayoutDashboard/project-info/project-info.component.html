@@ -502,6 +502,16 @@
                                             {{item.Status}}
                                         </h5>
                                     </div>
+                                    <div *ngIf="item.Status=='ToDo Achieved'">
+                                        <h5 class="my-1 font-14 text-info">
+                                            {{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Standardtask Enactive Hold'">
+                                        <h5 class="my-1 font-14 text-danger">
+                                            {{item.Status}}
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
