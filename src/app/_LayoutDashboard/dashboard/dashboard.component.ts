@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit {
   SubmissionName: string;
   _Exec_BlockName: string = "";
   day: boolean = false;
+  ScheduleType: any;
   dayArr: any = [
     {
       "Day": "S",
@@ -202,8 +203,22 @@ export class DashboardComponent implements OnInit {
   _SecondSelectedId = 0;
   _total = 14;
   _firstClick: number = 0;
+  Title_Name: any;
+  Link_Type: any;
+  Location_Type: any;
+  Latitude_Type: any;
+  Longtitude_Type: any;
+  Description_Type: any;
+  User_Name: any;
+  EventNumber: any;
+  _EmployeeListForDropdown:any[]=[];
   loadAPI: Promise<any>;
-
+  dropdownSettings_Emp: IDropdownSettings = {};
+  ngEmployeeDropdown: any;
+  ngEmployeeDropdown2: any = [];
+  EmployeeDropdown: string;
+  _SelectedEmployees: any = [];
+  _SelectedEmpIds_String: string;
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
@@ -245,6 +260,9 @@ export class DashboardComponent implements OnInit {
     //----Adding One Day---for Date Concept----//
     // var date = new Date();
     // date.setDate(date.getDate() + 1);
+    this.ScheduleType = "Task"
+
+
     this.GetProjectAndsubtashDrpforCalender();
     this.GetTimeslabfordate();
 
@@ -295,12 +313,109 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
+  
+    // if (this.ScheduleType == "Task") {
+    //   this.Title_Name;
+    //   this.MasterCode;
+    //   this.Subtask;
+
+    // }
+    // else if (this.ScheduleType == "Event") {
+    //   this.Title_Name;
+    //   this.MasterCode;
+    //   this.Link_Type;
+    //   this.User_Name;
+    //   this.Location_Type;
+    //   this.Latitude_Type;
+    //   this.Longtitude_Type;
+    //   this.Description_Type;
+
+    // }
+    // console.log(this.daysSelectedII, "finaljson")
+    // // this.daysSelectedII;
+    // // this.daysSelectedII.forEach(element => {
+    // // this.EventNumber=new Date().getUTCMilliseconds();
+
+  OnSubmitSchedule() {
+
+    var now = new Date();
+    let timestamp = "";
+    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+    this.EventNumber = timestamp;
+    this.daysSelectedII.forEach(element => {
+
+      
+      var columnName = "Emp_No";
+      element[columnName] = this.Current_user_ID;
+      var columnNames = "ScheduleType";
+      element[columnNames] = this.ScheduleType == "Task" ? 1 : 2;
+      var columnName = "Emp_No";
+      element[columnName] = this.Current_user_ID;
+      var columnName = "Title_Name";
+      element[columnName] = this.Title_Name;
+      var columnName = "MasterCode";
+      element[columnName] = this.MasterCode;
+      // var columnName = "Link_Type";
+      // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+      var columnName = "User_Name";
+      element[columnName] = this._SelectedEmpIds_String == undefined ? "" : this._SelectedEmpIds_String;
+      var columnName = "Location_Type";
+      element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
+      var columnName = "Latitude_Type";
+      element[columnName] = this.Latitude_Type == undefined ? "" : this.Latitude_Type;
+      var columnName = "Longtitude_Type";
+      element[columnName] = this.Longtitude_Type == undefined ? "" : this.Longtitude_Type;
+      var columnName = "Description";
+      element[columnName] = this.Description_Type == undefined ? "" : this.Description_Type;
+      var columnName = "Subtask";
+      element[columnName] = this.Subtask == undefined ? "" : this.Subtask;
+      var columnName = "EventNumber";
+      element[columnName] = this.ScheduleType == "Task"  ? 0 : this.EventNumber;
+
+
+    });
+    console.log(this._SelectedEmpIds_String)
+    console.log(JSON.stringify(this.daysSelectedII))
+    this._calenderDto.ScheduleJson=JSON.stringify(this.daysSelectedII);
+    this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+    (data => {
+      console.log(data, "m");
+      this._Message = data['message'];
+      this.notifyService.showSuccess(this._Message, "Success");
+    });
+   
+  }
+  Task_type(value) {
+
+    if (value == 1) {
+      this.ScheduleType = "Task";
+      document.getElementById("subtaskid").style.display = "block";
+      document.getElementById("Link_Name").style.display = "none";
+      document.getElementById("Guest_Name").style.display = "none";
+      document.getElementById("Location_Name").style.display = "none";
+      document.getElementById("Descrip_Name").style.display = "none";
+    }
+    else {
+      this.ScheduleType = "Event";
+      document.getElementById("subtaskid").style.display = "none";
+      document.getElementById("Link_Name").style.display = "block";
+      document.getElementById("Guest_Name").style.display = "block";
+      document.getElementById("Location_Name").style.display = "block";
+      document.getElementById("Descrip_Name").style.display = "block";
+    }
+
+
+
+
+  }
   GetSubtasklistfromProject(MasterCode) {
     this.BlockNameProject.forEach(element => {
       if (element.Project_Code == MasterCode) {
 
         this.Projectstartdate = element.StatDate;
         this.projectEnddate = element.Enddate;
+       
 
 
         this.Status_project = element.Status;
@@ -323,7 +438,7 @@ export class DashboardComponent implements OnInit {
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
         ((data) => {
           console.log(data);
-          this.BlockNameProject1 = data as [];
+          this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
 
       this.BlockNameProject.forEach(element => {
@@ -521,12 +636,30 @@ export class DashboardComponent implements OnInit {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+   
         // console.log(data)
-        this.ProjectCode = data['Project_Code']
-        this.BlockNameProject = data as [];
+        this.BlockNameProject = JSON.parse(data['Projectlist']);
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+
+        // this.BlockNameProject = data as [];
+        this.dropdownSettings_Emp = {
+          singleSelection: false,
+          idField: 'Emp_No',
+          textField: 'TM_DisplayName',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 5,
+          allowSearchFilter: true,
+          closeDropDownOnSelection: true
+        }
       })
 
   }
+  EmployeeOnSelect(obj) {
+    // this.selectedEmpNo = obj['Emp_No'];
+    this.User_Name = obj;
+  }
+
   GetTimeslabfordate() {
     this._calenderDto.minutes = 15;
     this._calenderDto.StartTime = "05:00";
@@ -755,28 +888,28 @@ export class DashboardComponent implements OnInit {
         const enddate = new Date(moment(lastDay).format(format2));
         this.daysSelectedII.forEach(element => {
           var exist = moment(element.Date).isBetween(d1, enddate);
-          if (exist) {        
+          if (exist) {
             const d22 = new Date(moment(end).format(format2));
-            const d12 = new Date(moment(element.Date).format(format2)); 
-            d12.setMonth(d12.getMonth() + 1);          
-            while (d12 <= d22) {  
+            const d12 = new Date(moment(element.Date).format(format2));
+            d12.setMonth(d12.getMonth() + 1);
+            while (d12 <= d22) {
               var jsonData = {};
               var columnName = "Date";
-              jsonData[columnName] =moment(d12).format(format2);
+              jsonData[columnName] = moment(d12).format(format2);
               var columnNames = "StartTime";
               jsonData[columnNames] = this.Startts;
               var columnNamee = "EndTime";
               jsonData[columnNamee] = this.Endtms;
               this.daysSelectedII.push(jsonData);
               this.daysSelected.push(moment(d12).format(format2))
-              d12.setMonth(d12.getMonth() + 1);   
-            }         
+              d12.setMonth(d12.getMonth() + 1);
+            }
           }
         });
       }
       else {
         document.getElementById("weekly_121").style.display = "none";
-       
+
         this.daysSelectedII = [];
         const dates = [];
         while (date <= d2) {
@@ -790,11 +923,39 @@ export class DashboardComponent implements OnInit {
           jsonData[columnNamee] = this.Endtms;
           this.daysSelectedII.push(jsonData);
           date.setMonth(date.getMonth() + 1);
-        }       
+        }
       }
       this.Checkdatetimetable(this.daysSelectedII);
-        this.calendar.updateTodaysDate();
+      this.calendar.updateTodaysDate();
     }
+  }
+  OnEmpSelect(emp: string) {
+    
+    let arr = [];
+    this.EmployeeDropdown = emp['Emp_No'];
+    //console.log("Selected Employees---->", JSON.stringify(this.ngEmployeeDropdown));
+    this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
+
+    this.ngEmployeeDropdown2.forEach(element => {
+      arr.push({ Emp_No: element.Emp_No })
+      this._SelectedEmployees = (arr);
+    });
+    //Make Comma Separate..
+    this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
+      return select.Emp_No;
+    }).join(',');
+  }
+
+  OnEmpDeselect() {
+    let arr = [];
+    this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
+    this.ngEmployeeDropdown2.forEach(element => {
+      arr.push({ Emp_No: element.Emp_No })
+      this._SelectedEmployees = arr;
+    });
+    this._SelectedEmpIds_String = this._SelectedEmployees.map(select => {
+      return select.Emp_No;
+    }).join(',');
   }
 
   // End Here
