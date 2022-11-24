@@ -179,11 +179,11 @@ export class ActionToAssignComponent implements OnInit {
   // this._CompletedList = JSON.parse(data['CompletedList']);
 
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0px";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.clearFeilds();
-    // document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
-    //document.getElementById("mysideInfobar").style.width = "0px";
+    // document.getElementById("mysideInfobar_NewSubtask").classList.remove("kt-quick-panel--on");
+    //document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   }
 
   clearFeilds() {
