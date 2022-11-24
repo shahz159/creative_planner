@@ -19,6 +19,9 @@
     margin: 5px 0px;
 }
 
+.kt-quick-panel--on{
+    width: 50% !important;
+}
 /* width */
 
 .scrollbar::-webkit-scrollbar {

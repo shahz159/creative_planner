@@ -402,11 +402,11 @@ export class ActionToProjectComponent implements OnInit {
 
   closeInfo() {
 
-    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     this.Clear_Feilds();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar1").style.width = "0";
+    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
 
   }
 
