@@ -236,7 +236,7 @@ export class ToDoProjectsComponent implements OnInit {
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
     this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);
     // document.getElementById("rightbar-overlay").style.display = "block";
@@ -351,11 +351,8 @@ export class ToDoProjectsComponent implements OnInit {
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
     
-    document.getElementById("mysideInfobar_Update").style.width = "60%";
+    document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("mysideInfobar_ProjectAction").style.width = "0px";
-    document.getElementById("mysideInfobar").style.width = "0px";
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
    this.Clear_Feilds(); 
     
     // document
@@ -387,7 +384,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnAddTaskClick() {
     this.router.navigate(["./backend/ToDoProjects/ActionToProject/1"]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
      document.getElementById("rightbar-overlay").style.display = "block";
@@ -489,10 +486,10 @@ export class ToDoProjectsComponent implements OnInit {
   closeInfo() {
     // debugger
   
-    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("mysideInfobar_Update").style.width = "0";
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
      document.getElementById("todo").classList.remove("position-fixed");
      $('#uploadFile').val('');
      $('#_upload').html('Select a file');
@@ -563,15 +560,15 @@ export class ToDoProjectsComponent implements OnInit {
         else {
           this.Checkbox_checked = value;
           if (value == true) {
-            document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
+            document.getElementById("mysideInfobar_ProjectsUpdate").classList.add("kt-quick-panel--on");
             document.getElementById("rightbar-overlay").style.display = "block";
           }
           else {
-            document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
+            document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
             document.getElementById("rightbar-overlay").style.display = "none";
           }
-          document.getElementById("mysideInfobar").style.width = "0px";
-          document.getElementById("mysideInfobar_Update").style.width = "0px";
+          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+          document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
         }
       });
   }
@@ -639,10 +636,10 @@ export class ToDoProjectsComponent implements OnInit {
           this.GetSubtask_Details();
         
           this.notifyService.showInfo("Successfully Updated", '');
-          document.getElementById("mysideInfobar").style.width = "0";
+          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           document.getElementById("rightbar-overlay").style.display = "none";
-          document.getElementById("mysideInfobar_Update").style.width = "0";
-          document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+          document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+          document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
           document.getElementById("todo").classList.remove("position-fixed");
           $('#uploadFile').val('');
           $('#_upload').html('Select a file');

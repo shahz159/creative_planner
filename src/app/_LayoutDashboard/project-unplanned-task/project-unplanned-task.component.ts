@@ -228,7 +228,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         if(this.ActionedSubtask_Json.length>0){
            
-          document.getElementById("mysideInfobar").style.width = "0px";
+          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
           this.IfNoTaskFound = "";
@@ -454,7 +454,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     // _Name = C_Name;
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
-    document.getElementById("mysideInfobar").style.width = "0px";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
     this._CategoryActive = true;
     this.IfNoTaskFound = "";
@@ -500,10 +500,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0px";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     this.clearFeilds();
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("prodetbar").style.width = "0px";
+    document.getElementById("prodetbar").classList.remove("kt-quick-panel--on");
   }
 
   ProjectTypelist: any;
@@ -532,14 +532,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
     //     this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
     //   });
-    //document.getElementById("mysideInfobar_AssignTask").style.width = "60%";
+    //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
     this.router.navigate(["UnplannedTask/ActionToAssign/"]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    $("#mysideInfobar").scrollTop(0);
   }
 
   detailsbar() {
-    document.getElementById("prodetbar").style.width = "60%";
+    document.getElementById("prodetbar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
@@ -554,7 +556,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
     this.router.navigate(["UnplannedTask/ActionToProject/"]);
-    document.getElementById("mysideInfobar").style.width = "60%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    $("#mysideInfobar").scrollTop(0);
     //this.GetProjectsByUserName();
   }
 
