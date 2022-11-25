@@ -688,6 +688,8 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
 
   closeInfo() {
@@ -2769,7 +2771,8 @@ export class MoreDetailsComponent implements OnInit {
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
-
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   OnAddTaskClick() {
