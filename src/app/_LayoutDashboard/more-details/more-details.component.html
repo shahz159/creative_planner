@@ -23,17 +23,20 @@
                         <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
                         <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
-                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks'"
+                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'  || Status=='Project Hold'  || Status=='Deadline Extend Under Approval'
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks'
+                                         || Status=='New Project' || Status=='Project Complete Rejected' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold'"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                 [ngClass]="{'bg-success':Status=='Completed',
-                        'bg-info':Status=='Under Approval',
-                        'bg-primary':Status=='Completion Under Approval',
+                        'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' ||  Status =='ToDo Achieved',
+                        'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval',
                         'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
-                        'bg-rejected': Status=='New Project Rejected',
+                        'bg-rejected': Status=='New Project Rejected' || Status=='Project Complete Rejected', 
                         'bg-success-1' : Status=='ToDo Completed',
-                        'bg-coral' :  Status== 'New Todo'}">
+                        
+                        'bg-danger':Status=='Project Hold' || Status=='Standardtask Enactive Hold'}">
                                 {{Status}}</label>
+                            <!-- 'bg-coral' :  Status== 'New Todo', -->
                         </ng-container>
                         <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
@@ -46,12 +49,14 @@
 
                         <!--inprocess button-->
                         <div class="d-flex"
-                            *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='Forward Under Approval' && ProjectBlockName != 'Standard Tasks'">
+                            *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
+                                             && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
+                                             && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks'">
 
                             <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                             <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
-                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay',
+                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay' || Status=='Project Hold',
                                         'bg-warning':Status=='InProcess'}">{{Status}}</label>
                             <div class="task-status__divider"></div>
                             <button data-toggle="tooltip" title="Project Completion!" class="task-status__controls"
@@ -154,7 +159,11 @@
 
                     </div>
                     <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId)">
-                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval')">Project Actions</button>
+                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
+                                    || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
+                                    ||  Status =='ToDo Achieved')">
+                            Project Actions
+                        </button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')"
                         class=" pro-act ml-2">
@@ -282,21 +291,22 @@
                                                         [(ngModel)]="_ProjDeeadline" style="width: 78%;height: 32px;"
                                                         (keydown.enter)="OnProject_Rename(Pid,_MasterCode)"> [value]="getnextDeadline()" required [max]="todayDate"-->
                                                     <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
-                                                        #Deadlinetext="ngModel" (click)="picker2.open();" (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                        [min]="EndDate1"  placeholder="Select Date" [(ngModel)]="_ProjDeadline" 
-                                                        class="form-control" name="date">
-                                                        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                                                        #Deadlinetext="ngModel" (click)="picker2.open();"
+                                                        (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
+                                                        [min]="EndDate1" placeholder="Select Date"
+                                                        [(ngModel)]="_ProjDeadline" class="form-control" name="date">
+                                                    <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
                                                     <!-- <div class="input-group-text p-0"> -->
-                                                        <mat-datepicker-toggle matSuffix [for]="picker2">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker #picker2></mat-datepicker>
-                                                        <div class="d-inline-block ml-3" id="button-addon4">
-                                                            <button (click)="onProject_ExtendDeadline(Pid,_MasterCode)"
-                                                                class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                            <button class=" btn btn-secondary btn btn-sm"
-                                                                (click)="onCancel(Pid)">Cancel</button>
-                                                        </div>
-                                                    </div>                                               
+                                                    <mat-datepicker-toggle matSuffix [for]="picker2">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-datepicker #picker2></mat-datepicker>
+                                                    <div class="d-inline-block ml-3" id="button-addon4">
+                                                        <button (click)="onProject_ExtendDeadline(Pid,_MasterCode)"
+                                                            class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                        <button class=" btn btn-secondary btn btn-sm"
+                                                            (click)="onCancel(Pid)">Cancel</button>
+                                                    </div>
+                                                </div>
                                             </span>
                                         </h5>
                                     </ng-template>
@@ -1471,15 +1481,17 @@
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
                         <div class="d-flex-center mb-3">
-                            
+
                             <div class="">
-                                <button [hidden]="darbutton==false" type="button" class="btn btn-info btn-sm" (click)="darcreate()">
+                                <button [hidden]="darbutton==false" type="button" class="btn btn-info btn-sm"
+                                    (click)="darcreate()">
                                     Create Timeline
                                 </button>
                             </div>
                             <div class=" mb-0">
                                 <h6 class="mb-0">
-                                    <strong>Total Achievement Hours - {{totalHours}}</strong></h6>
+                                    <strong>Total Achievement Hours - {{totalHours}}</strong>
+                                </h6>
                             </div>
                         </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
@@ -1993,7 +2005,7 @@
                         class="fas fa-times mr-0"></i>
                 </button>
                 <h5 class="det-text pro-nm text-dark mb-1">Project Actions</h5>
-                <h5 class="mb-1 kt-portlet__head-title text-blue">Dear Sir, Please Approve Portfolio Module</h5>
+                <h5 class="mb-1 kt-portlet__head-title text-blue">{{requestComments}}</h5>
             </div>
         </div>
     </div>
@@ -2022,10 +2034,10 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
-                    <h5 class="mt-1 text-blue">{{requestType}}</h5>    
+                    <h5 class="mt-1 text-blue">{{requestType}}</h5>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center" *ngIf="Status=='Deadline Extend Under Approval'">
                 <div class=""><span class="svg-icon svg-icon-2x text-dangr mr-2"><svg width="24" height="24"
                             viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
                             <path
@@ -2034,8 +2046,8 @@
                         </svg></span></div>
                 <div class="action-content">
                     <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
-                    <h5 class="mt-1 text-blue" *ngIf="requestDeadline!=null">{{requestDeadline|date:'dd-MM-yyyy'}}</h5>
-                    <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5>
+                    <h5 class="mt-1 text-blue">{{requestDeadline|date:'dd-MM-yyyy'}}</h5>
+                    <!-- <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5> -->
 
                 </div>
             </div>
@@ -2067,7 +2079,7 @@
                                         value="1" checked="checked" [(ngModel)]="selectedType">Accept
                                 </label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline d-none">
                                 <label class="form-check-label lbl-war btn-app">
                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
                                         value="2" [(ngModel)]="selectedType">Hold
@@ -2094,12 +2106,14 @@
                                         <option value=""> -- select an option -- </option>
                                         <option>Accepted</option>
                                         <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
-                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted</option>
+                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()" [disabled]="!commentSelected || !selectedType">Submit</button>
+                                <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
+                                    [disabled]="!commentSelected || !selectedType">Submit</button>
                                 <button class="btn btn-sm btn-secondary" (click)="closeApproval()">Cancel</button>
                             </div>
                         </div>
@@ -2173,7 +2187,7 @@
         </div>
     </div>
     <div class="px-4 pt-2">
-         
+
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List' && inProcessCount!=0 ">
@@ -2194,10 +2208,11 @@
                 <label>Date<span class="text-danger">*</span></label>
                 <!-- <input class="form-control" name="starttim" #startdate="ngModel" type="time" value="13:45:00" id="time-start" [(ngModel)]="starttime"> -->
                 <!-- <input class="form-control" name="dardate" type="date" id="minDate" [(ngModel)]="current_Date"> -->
-                <div class="input-group">                 
-                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value" [matDatepicker]="picker1" id="d-date" required 
-                        (click)="picker1.open()" [min]="disablePreviousDate" [max]="todayDate"
-                         placeholder="Select Date" class="form-control" name="date">
+                <div class="input-group">
+                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
+                        [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
+                        [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
+                        name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
@@ -2205,30 +2220,31 @@
                 </div>
             </div>
             <div class="d-flex gap-1">
-            <div class="form-group w-100">
-                <label>Start Time<span class="text-danger">*</span></label>
-                <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
-                    [(ngModel)]="starttime">
-                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
-                        [disabled]="item!=lastEndtime && bol==false">
-                        <a>{{item}}</a>
-                        <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
-                    </ng-option>
-                </ng-select>
-            </div>
+                <div class="form-group w-100">
+                    <label>Start Time<span class="text-danger">*</span></label>
+                    <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                        [(ngModel)]="starttime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item!=lastEndtime && bol==false">
+                            <a>{{item}}</a>
+                            <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
+                        </ng-option>
+                    </ng-select>
+                </div>
 
-            <div class="form-group w-100">
-                <label>End Time<span class="text-danger">*</span></label>
-                <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
-                    (click)="getDarTime()" [(ngModel)]="endtime">
-                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index" [disabled]="item<=lastEndtime">
-                        <a>{{item}}</a>
-                        <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
-                    </ng-option>
-                </ng-select>
-                <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
-                    time!!</span>
-            </div>
+                <div class="form-group w-100">
+                    <label>End Time<span class="text-danger">*</span></label>
+                    <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
+                        (click)="getDarTime()" [(ngModel)]="endtime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item<=lastEndtime">
+                            <a>{{item}}</a>
+                            <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
+                        </ng-option>
+                    </ng-select>
+                    <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
+                        time!!</span>
+                </div>
             </div>
 
             <div class="form-group">

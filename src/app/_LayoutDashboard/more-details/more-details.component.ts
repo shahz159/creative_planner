@@ -10,7 +10,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { ActivatedRoute } from '@angular/router';
 import { LinkService } from 'src/app/_Services/link.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
-import {ApprovalsService} from 'src/app/_Services/approvals.service';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import * as _ from 'underscore';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { DateAdapter } from '@angular/material/core';
@@ -41,7 +41,7 @@ export class MoreDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
-    public approvalservice : ApprovalsService,
+    public approvalservice: ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
     private notifyService: NotificationService, public dateAdapter: DateAdapter<Date>,
@@ -77,7 +77,7 @@ export class MoreDetailsComponent implements OnInit {
   disablePreviousDate = new Date();
   todayDate = new Date();
   timedata: any = [];
-  EndDate1:any = new Date();
+  EndDate1: any = new Date();
   commentSelected: string;
   selectedType: string;
   date = new Date();
@@ -87,28 +87,28 @@ export class MoreDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
-   
+
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
-      });
-      
-      this.GetProjectDetails();
-      this.GetSubtask_Details();
-      this.dar_details(); 
-      this.getResponsibleActions();
-      this.getapprovalStats();
+    });
 
-      this.EndDate1.setDate(this.EndDate1.getDate() + 1);      
+    this.GetProjectDetails();
+    this.GetSubtask_Details();
+    this.dar_details();
+    this.getResponsibleActions();
+    this.getapprovalStats();
+
+    this.EndDate1.setDate(this.EndDate1.getDate() + 1);
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
         this.IsData = (data[0]['DARGraphCalculations_Json']);
         //console.log("data isnull/not---->", this.IsData);
-        if (projectType == '001' || projectType == '002') {       
+        if (projectType == '001' || projectType == '002') {
           this.CoreSecodaryCharts();
         }
         else if (projectType != '001' || projectType != '002') {
@@ -120,11 +120,11 @@ export class MoreDetailsComponent implements OnInit {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
 
-     this.current_Date=moment(new Date()).format("MM/DD/YYYY");
+    this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     // alert(this.current_Date);
   }
-  orgValueChange(val){
-    this.current_Date=moment(val.value).format("MM/DD/YYYY");
+  orgValueChange(val) {
+    this.current_Date = moment(val.value).format("MM/DD/YYYY");
     // alert(this.current_Date);
   }
 
@@ -134,22 +134,27 @@ export class MoreDetailsComponent implements OnInit {
   requestType: any;
   approvalEmpId: any;
   requestComments: any;
+  requestDetails:any;
 
-  getapprovalStats(){
+  getapprovalStats() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data)=>{
-        this.requestType = (data[0]['Request_type']);
-        this.requestDate = (data[0]['Request_date']);
-        this.requestDeadline = (data[0]['Request_deadline']);
-        this.approvalEmpId = (data[0]['Emp_no']);
-        this.requestComments = (data[0]['Remarks']);
-        console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      this.requestDetails= data as [];
+      // console.log(this.requestDetails, "req")
+      if (this.requestDetails.length > 0) {
+        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestDate = (this.requestDetails[0]['Request_date']);
+        this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+        this.requestComments = (this.requestDetails[0]['Remarks']);
+      }
+      // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
   }
 
-  submitApproval(){
-    if(this.selectedType=='1'){
+  submitApproval() {
+    if (this.selectedType == '1') {
 
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -157,35 +162,35 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Remarks = this.commentSelected;
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
-      subscribe((data)=>{
-        this._Message = (data['message']);
-        this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-        this.GetProjectDetails();
-        this.GetSubtask_Details();
-      });    
-      
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        });
+
     }
 
-    else if(this.selectedType=='2'){
-     this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    else if (this.selectedType == '2') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
 
-    else if(this.selectedType=='3'){
+    else if (this.selectedType == '3') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none"; 
-        
+
   }
 
-  getnextDeadline() {  
-    
+  getnextDeadline() {
+
     return this.datepipe.transform(this.EndDate, 'MM-dd-YYYY');
   }
 
-  getResponsibleActions(){
+  getResponsibleActions() {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
@@ -240,8 +245,8 @@ export class MoreDetailsComponent implements OnInit {
   starttime: any;
   endtime: any;
   timecount: any;
-  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy')
-  releaseDate:any;
+  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
+  releaseDate: any;
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
@@ -292,7 +297,7 @@ export class MoreDetailsComponent implements OnInit {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
-    else if((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount==0){
+    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
       this.objProjectDto.Project_Name = this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -328,20 +333,20 @@ export class MoreDetailsComponent implements OnInit {
   getDarTime() {
 
     this.timedata = ["08:00",
-    "08:15", "08:30","08:45", "09:00",
-    "09:15", "09:30","09:45", "10:00",
-    "10:15", "10:30", "10:45","11:00",
-    "11:15", "11:30","11:45", "12:00",
-    "12:15","12:30", "12:45","13:00",
-    "13:15", "13:30","13:45", "14:00",
-    "14:15","14:30", "14:45","15:00",
-    "15:15","15:30", "15:45","16:00",
-    "16:15", "16:30", "16:45","17:00",
-    "17:15","17:30", "17:45","18:00", 
-    "18:15","18:30", "18:45","19:00", 
-    "19:15","19:30", "19:45","20:00"];
+      "08:15", "08:30", "08:45", "09:00",
+      "09:15", "09:30", "09:45", "10:00",
+      "10:15", "10:30", "10:45", "11:00",
+      "11:15", "11:30", "11:45", "12:00",
+      "12:15", "12:30", "12:45", "13:00",
+      "13:15", "13:30", "13:45", "14:00",
+      "14:15", "14:30", "14:45", "15:00",
+      "15:15", "15:30", "15:45", "16:00",
+      "16:15", "16:30", "16:45", "17:00",
+      "17:15", "17:30", "17:45", "18:00",
+      "18:15", "18:30", "18:45", "19:00",
+      "19:15", "19:30", "19:45", "20:00"];
     // $("#d-date").val(this.current_Date);
-    
+
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
@@ -494,7 +499,7 @@ export class MoreDetailsComponent implements OnInit {
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
-         
+
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];
@@ -509,8 +514,8 @@ export class MoreDetailsComponent implements OnInit {
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
-          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];       
-          
+          this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
+
 
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
@@ -556,8 +561,9 @@ export class MoreDetailsComponent implements OnInit {
           if (this.Status == 'New Project Rejected') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected' 
-              || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected'
+            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' || this.Status == 'Project Complete Rejected'
+            || this.Status == 'Project Hold') {
             this.darbutton = false;
           }
 
@@ -2525,8 +2531,8 @@ export class MoreDetailsComponent implements OnInit {
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['Json_ResponsibleCompleted']);
-          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);          
-          
+          this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
+
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
@@ -2537,7 +2543,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          console.log(data,"standard status");
+          console.log(data, "standard status");
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
@@ -2668,7 +2674,7 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  onEditDeadline(id, enddate ){
+  onEditDeadline(id, enddate) {
     // this._ProjDeadline = enddate;
     this.Editbutton = true;
     (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
@@ -2677,7 +2683,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onCancel(id) {
-      
+
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "inline-block";
@@ -2690,7 +2696,7 @@ export class MoreDetailsComponent implements OnInit {
 
     (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
-    this._ProjDeadline=null;
+    this._ProjDeadline = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
   }
 
@@ -2732,25 +2738,25 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  onProject_ExtendDeadline(id, Pcode) { 
-    
+  onProject_ExtendDeadline(id, Pcode) {
+
     // $("#Deadlinetext_").val(this.EndDate);
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     if (this._ProjDeadline != null) {
-     
-      this.objProjectDto.Project_EndDate= this._ProjDeadline;
-      this.objProjectDto.Project_Code=Pcode;
+
+      this.objProjectDto.Project_EndDate = this._ProjDeadline;
+      this.objProjectDto.Project_Code = Pcode;
       //  alert(Pcode);
       this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
 
-        if(this._Message == 'Project Deadline not Updated'){
-          this.notifyService.showError(this._Message +'.'+ "Please select the appropriate date and try again.", "Failed");
-          this.GetProjectDetails();  
+        if (this._Message == 'Project Deadline not Updated') {
+          this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+          this.GetProjectDetails();
         }
-        else if(this._Message == 'Project Deadline Updated'){
+        else if (this._Message == 'Project Deadline Updated') {
           this.notifyService.showSuccess(this._Message, "Success");
-          this.GetProjectDetails();  
+          this.GetProjectDetails();
         }
       });
       this.onCancel(id);
@@ -2942,7 +2948,7 @@ export class MoreDetailsComponent implements OnInit {
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
-    else if((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount==0){
+    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
       this.coresecondary = false;
     }
 

@@ -13,6 +13,9 @@ export class BsServiceService {
   private _Pcode = new BehaviorSubject<any>(null);
   private _PName = new BehaviorSubject<any>(null);
 
+  private _catId = new BehaviorSubject<any>(null);
+  private _catName = new BehaviorSubject<any>(null);
+
   private _AssignId = new BehaviorSubject<any>(null);
   private _TaskName = new BehaviorSubject<any>(null);
 
@@ -26,6 +29,9 @@ export class BsServiceService {
 
   bs_AssignId = this._AssignId.asObservable();
   bs_TaskName = this._TaskName.asObservable();
+
+  bs_catId = this._catId.asObservable();
+  bs_catName = this._catName.asObservable();
 
   bs_TypeofTask = this._typeoftask.asObservable();
 
@@ -46,6 +52,14 @@ export class BsServiceService {
   }
   SetNewAssignedName(taskname) {
     this._TaskName.next(taskname);
+  }
+
+  setNewCategoryID(catid){
+    this._catId.next(catid);
+  }
+
+  setNewCategoryName(catname){
+    this._catName.next(catname);
   }
 
   setNewTypeofTask(typoftask) {

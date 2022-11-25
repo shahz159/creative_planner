@@ -17,6 +17,7 @@ export class CalenderDTO {
     Scheduled_date:string;
     AvailableSlotsJson:string;
     count:number;
+    ScheduleJson:string;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

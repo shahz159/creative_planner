@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
 import tippy from 'node_modules/tippy.js';
+import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
 
 @Component({
   selector: 'app-project-unplanned-task',
@@ -86,7 +87,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.GetTodoProjects();
     this.GetAssignFormEmployeeDropdownList();
-    
+    // alert(this._selectedcatid);
+    // alert(this._selectedcatname);
     // <<<<<<< HEAD
     
       tippy('#tippy1', {
@@ -214,7 +216,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        debugger
 
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
@@ -414,6 +415,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CallOnSubmitCategory() {
     // console.log('A');
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
+
+    // setTimeout(function(){
+    //   alert(this._selectedcatid);
+    //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
+    // },3000);
+   
+    
   }
 
   Mdl_CategoryName: string = "";
@@ -448,13 +456,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CountsAccepted: any;
   CountsPending: any;
   CountsRejected: any;
+  
 
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
+    debugger
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    this.BsService.setNewCategoryID(this._selectedcatid);
+    this.BsService.setNewCategoryName(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
     this._CategoryActive = true;
     this.IfNoTaskFound = "";
@@ -497,11 +508,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // alert(this.CountsAccepted);
         // console.log(this.CountsAccepted);
       });
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   }
 
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    this.clearFeilds();
+    this.clearFeilds();    
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("prodetbar").classList.remove("kt-quick-panel--on");
   }

@@ -421,6 +421,14 @@
                                                                 style="color: #c0b5dc;">Project Hold Under Approval
                                                             </span>
                                                         </div>
+                                                        <div *ngIf="item.Status=='ToDo Achieved'">
+                                                            <span class="text-info font-weight-400">ToDo Achieved
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Standardtask Enactive Hold'">
+                                                            <span class="text-danger font-weight-400">Standardtask Enactive Hold
+                                                            </span>
+                                                        </div>
                                                     </td>
                                                     <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
                                                         class="curser-pointer">
