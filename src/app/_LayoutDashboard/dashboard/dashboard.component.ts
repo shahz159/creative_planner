@@ -12,8 +12,8 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { LinkService } from 'src/app/_Services/link.service';
 import { CalenderService } from 'src/app/_Services/calender.service';
-
 import * as _ from 'underscore';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -22,7 +22,7 @@ import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/ma
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { DatePipe } from '@angular/common';
 import * as $ from 'jquery'
-import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+// import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { forEach } from '@angular-devkit/schematics';
 
@@ -219,6 +219,64 @@ export class DashboardComponent implements OnInit {
   EmployeeDropdown: string;
   _SelectedEmployees: any = [];
   _SelectedEmpIds_String: string;
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      [
+        'bold',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'subscript',
+        'superscript',
+        'indent',
+        'outdent',
+        'insertUnorderedList',
+        'insertOrderedList',
+        'heading',
+        'fontName'
+      ],
+      [
+        'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses',
+        'link',
+        'unlink',
+        'insertImage',
+        'insertVideo',
+        'insertHorizontalRule',
+        'removeFormat',
+        'toggleEditorMode'
+      ]
+    ],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText',
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+  };
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
@@ -350,8 +408,7 @@ export class DashboardComponent implements OnInit {
       element[columnName] = this.Current_user_ID;
       var columnNames = "ScheduleType";
       element[columnNames] = this.ScheduleType == "Task" ? 1 : 2;
-      var columnName = "Emp_No";
-      element[columnName] = this.Current_user_ID;
+     
       var columnName = "Title_Name";
       element[columnName] = this.Title_Name;
       var columnName = "MasterCode";
@@ -384,14 +441,21 @@ export class DashboardComponent implements OnInit {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
     });
-   
+    this.Title_Name=null;
+    this.ngEmployeeDropdown=null;
+     this.Description_Type=null;
+     this.MasterCode = null;
+     this.Subtask = null;
+     this.Startts = null;
+     this.Endtms = null;
+ 
   }
   Task_type(value) {
 
     if (value == 1) {
       this.ScheduleType = "Task";
       document.getElementById("subtaskid").style.display = "block";
-      document.getElementById("Link_Name").style.display = "none";
+      // document.getElementById("Link_Name").style.display = "none";
       document.getElementById("Guest_Name").style.display = "none";
       document.getElementById("Location_Name").style.display = "none";
       document.getElementById("Descrip_Name").style.display = "none";
@@ -399,7 +463,7 @@ export class DashboardComponent implements OnInit {
     else {
       this.ScheduleType = "Event";
       document.getElementById("subtaskid").style.display = "none";
-      document.getElementById("Link_Name").style.display = "block";
+      // document.getElementById("Link_Name").style.display = "block";
       document.getElementById("Guest_Name").style.display = "block";
       document.getElementById("Location_Name").style.display = "block";
       document.getElementById("Descrip_Name").style.display = "block";
@@ -1498,7 +1562,10 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+   
+    this.Title_Name=null;
+   this.ngEmployeeDropdown=null;
+    this.Description_Type=null;
     this.MasterCode = null;
     this.Subtask = null;
     this.Startts = null;

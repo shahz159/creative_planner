@@ -19,7 +19,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from "src/app/material-module";
 
 // import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
@@ -51,6 +51,7 @@ FullCalendarModule.registerPlugins([
     MatIconModule,
     MatCardModule
     ,MaterialModule
+    ,AngularEditorModule
     // NgxDaterangepickerMd.forRoot()
   ],
   providers:[DatePipe],
