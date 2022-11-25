@@ -960,6 +960,10 @@ input[type=number] {
     top: -7px;
     right: -6px;
 }
+
+.kt-quick-panel--on{
+    width: 50% !important;
+}
 /* .show1 {
     display: none;
 }

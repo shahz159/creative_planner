@@ -178,10 +178,10 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.selectedType == '3') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
-    document.getElementById("mysideInfobar").classList.remove("side--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
     document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("darsidebar").style.width = "0";
-    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none"; 
 
   }
 
@@ -317,7 +317,7 @@ export class MoreDetailsComponent implements OnInit {
     this.dar_details();
     this.getDarTime();
     document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("darsidebar").style.width = "0";
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
@@ -423,20 +423,16 @@ export class MoreDetailsComponent implements OnInit {
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
 
-    document.getElementById("mysideInfobar_Update").style.width = "60%";
+    document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     // For page top div position fix
     document.getElementById("moredet").classList.add("position-fixed");
-    document.getElementById("mysideInfobar_NewSubtask").style.width = "0px";
-    document.getElementById("mysideInfobar").style.width = "0px";
-    // document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0px";
     // document
     // this.Block3 = false;
   }
 
   // closeInfo() {
-  //   document.getElementById("mysideInfobar_Update").style.width = "0";
+  //   document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
   // }
 
   _inputAttachments: string;
@@ -691,16 +687,16 @@ export class MoreDetailsComponent implements OnInit {
           // console.log("No Memos linked For This Project...")
         }
       });
-    document.getElementById("LinkSideBar").style.width = "50%";
+    document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").classList.remove("side--on");
-    document.getElementById("mysideInfobar_Update").style.width = "0";
-    document.getElementById("mysideInfobar1").style.width = "0";
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
-    document.getElementById("darsidebar").style.width = "0";
-    // document.getElementById("mysideInfobar1").classList.remove("side--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -710,12 +706,12 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   closeApproval() {
-    document.getElementById("mysideInfobar").classList.remove("side--on");
-    document.getElementById("mysideInfobar_Update").style.width = "0";
-    document.getElementById("mysideInfobar1").style.width = "0";
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
-    document.getElementById("darsidebar").style.width = "0";
-    // document.getElementById("mysideInfobar1").classList.remove("side--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -725,7 +721,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   sideviw() {
-    document.getElementById("mysideInfobar").classList.add("side--on");
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
@@ -2772,13 +2768,13 @@ export class MoreDetailsComponent implements OnInit {
 
 
   closeLinkSideBar() {
-    document.getElementById("LinkSideBar").style.width = "0";
+    document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
 
   }
 
   OnAddTaskClick() {
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode, "ActionToProject"]);
-    document.getElementById("mysideInfobar1").style.width = "60%";
+    document.getElementById("mysideInfobar1").classList.add("kt-quick-panel--on");
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2823,7 +2819,7 @@ export class MoreDetailsComponent implements OnInit {
 
   closeInfoProject() {
     // For closing sidebar on 'X' buttton
-    document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "0";
+    document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     // For sidebar overlay background removing the slide on 'X' button
     document.getElementById("rightbar-overlay").style.display = "none";
     // For page top div removing fixed
@@ -2846,13 +2842,13 @@ export class MoreDetailsComponent implements OnInit {
         }
         else {
           // applying sidebar from mysideInfobar_ProjectsUpdate in html
-          document.getElementById("mysideInfobar_ProjectsUpdate").style.width = "60%";
+          document.getElementById("mysideInfobar_ProjectsUpdate").classList.add("kt-quick-panel--on");
           // placing the backgorund dim on opening sidebar
           document.getElementById("rightbar-overlay").style.display = "block";
           // Fixing the scrollbar for sidebar
           document.getElementById("moredet").classList.add("position-fixed");
-          document.getElementById("mysideInfobar").style.width = "0px";
-          document.getElementById("mysideInfobar_Update").style.width = "0px";
+          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+          document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
         }
       });
   }
@@ -2957,14 +2953,14 @@ export class MoreDetailsComponent implements OnInit {
     }
 
     document.getElementById("moredet").classList.add("position-fixed");
-    document.getElementById("darsidebar").style.width = "60%";
+    document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
   closedarBar() {
     // console.log(this.actionCode,"darcode");
     document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("darsidebar").style.width = "0";
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
