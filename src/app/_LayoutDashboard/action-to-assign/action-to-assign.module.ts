@@ -8,6 +8,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatDatepickerModule,
     MatSelectModule,
     NgSelectModule
-  ]
+  ],
+  providers:[DatePipe]
 })
 export class ActionToAssignModule { }

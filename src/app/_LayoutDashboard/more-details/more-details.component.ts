@@ -245,7 +245,7 @@ export class MoreDetailsComponent implements OnInit {
   starttime: any;
   endtime: any;
   timecount: any;
-  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy')
+  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   releaseDate: any;
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
