@@ -1011,10 +1011,10 @@
                 </div>
 
                 
-                <div class="form-group" id="Link_Name" style="display:none">
+                <!-- <div class="form-group" id="Link_Name" style="display:none">
                     <label class="cus-lbl">Link </label>
                     <input class="form-control" placeholder="link" type="LinK" [(ngModel)]="Link_Type">
-                </div>
+                </div> -->
                 <div class="form-group" id="Guest_Name"  style="display:none">
                     <label class="cus-lbl">Add Guest </label>
                     <!-- <select class="form-control" [(ngModel)]="User_Name">
@@ -1050,7 +1050,8 @@
                 </div>
                 <div class="form-group" id="Descrip_Name"  style="display:none">
                     <label class="cus-lbl">Description </label>
-                    <textarea class="form-control" placeholder="Description" [(ngModel)]="Description_Type"></textarea>
+                    <!-- <textarea class="form-control" placeholder="Description" [(ngModel)]="Description_Type"></textarea> -->
+                    <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
                 </div>
                 <!-- <div class="form-group">
                     <select class="kt-input form-control">
