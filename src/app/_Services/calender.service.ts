@@ -33,13 +33,8 @@ export class CalenderService {
 
   NewInsertCalender(obj: CalenderDTO){
     
-    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    this.obj_CalenderDTO.Project_Code= obj.Project_Code;
-    this.obj_CalenderDTO.Start_date = obj.Start_date;
-    this.obj_CalenderDTO.End_date = obj.End_date;
-    this.obj_CalenderDTO.Start_time = obj.Start_time;
-    this.obj_CalenderDTO.End_time = obj.End_time;
-    this.obj_CalenderDTO.Weekday = obj.Weekday;
+    this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
+  
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_Calender", this.obj_CalenderDTO);
   }
 
