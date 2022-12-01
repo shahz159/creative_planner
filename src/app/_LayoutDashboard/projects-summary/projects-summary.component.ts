@@ -14,6 +14,8 @@ import * as _ from 'underscore';
 // import { object, string } from '@amcharts/amcharts4/core';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ParameterService } from "src/app/_Services/parameter.service";
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 //import { ViewChild } from '@angular/core';
@@ -38,6 +40,7 @@ export class ProjectsSummaryComponent implements OnInit {
     private ShareParameter: ParameterService,
     // private loadingBar: LoadingBarService,
     private router: Router,
+    public approvalservice: ApprovalsService,
     private notifyService: NotificationService) {
     this.ObjUserDetails = new UserDetailsDTO();
     this._objDropdownDTO = new DropdownDTO();
@@ -51,6 +54,7 @@ export class ProjectsSummaryComponent implements OnInit {
   A2Z: boolean;
   Z2A: boolean;
   _raciDetails: boolean = true;
+  approvalObj = new ApprovalDTO();
 
   ngOnInit() {
     this._raciDetails = true;
@@ -63,6 +67,8 @@ export class ProjectsSummaryComponent implements OnInit {
     this.getDropdownsDataFromDB();
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
+
+ 
 
   Memos_List: any;
   _ActualMemoslist: any;
@@ -337,7 +343,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
-      // console.log("Summary Data---->", this._ProjectDataList);
+      console.log("Summary Data---->", this._ProjectDataList);
       // this.count_LinkedProjects= this._ProjectDataList.filter(x => x.Link_Status === true).length 
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
@@ -510,9 +516,16 @@ export class ProjectsSummaryComponent implements OnInit {
 
   //Apply Filters
   SearchbyText() {
-    this.searchResult = true;
-    this.CurrentPageNo = 1;
-    this.applyFilters();
+    if(this.searchText ==''){
+      this.searchResult = false;
+      this.CurrentPageNo = 1;
+      this.applyFilters();
+    }
+    else{
+      this.searchResult = true;
+      this.CurrentPageNo = 1;
+      this.applyFilters();
+    }    
   }
 
   applyFilters() {
@@ -575,7 +588,9 @@ export class ProjectsSummaryComponent implements OnInit {
   }
 
   resetAll() {
+    this.searchResult=false;
     this.txtSearch = '';
+    this.searchText= '';
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
@@ -608,8 +623,9 @@ export class ProjectsSummaryComponent implements OnInit {
   }
 
   closeInfo() {
+    this.Clear_Feilds();
     document.getElementById("mysideInfobar").style.width = "0";
-    
+    document.getElementById("proactbar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -739,11 +755,11 @@ export class ProjectsSummaryComponent implements OnInit {
     }
   }
 
-  moreDetails() {
+  moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
-    var myurl = `${url}/${this.pCode}`;
-    var myWindow = window.open(myurl, this.pCode);
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
 
@@ -752,8 +768,110 @@ export class ProjectsSummaryComponent implements OnInit {
   }
 
   search(event) {
-    this.searchResult = true;
-    this.SearchbyText();
+    if(this.searchText ==""){
+      this.searchResult = true;
+      this.SearchbyText();
+    }
+    else{
+      this.searchResult = true;
+      this.SearchbyText();
+    }
+    
     //console.log("Searh Text---->",event)
+  }
+
+  requestDetails:any;
+  requestDate: any;
+  requestDeadline: any;
+  requestType: any;
+  approvalEmpId: any;
+  requestComments: any;
+  Projectcode:string;
+  Status:string;
+
+  getapprovalStats(project_code,status) {
+    this.Projectcode=project_code;
+    this.Status=status;
+    this.approvalObj.Project_Code = project_code;
+
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      this.requestDetails= data as [];
+      // console.log(this.requestDetails, "req")
+      if (this.requestDetails.length > 0) {
+        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestDate = (this.requestDetails[0]['Request_date']);
+        this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+        this.requestComments = (this.requestDetails[0]['Remarks']);
+      }
+      // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
+    });
+  }
+
+  sideviw() {
+    document.getElementById("proactbar").classList.add("kt-quick-panel--on");
+    document.getElementById("sumdet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  closeApproval() {
+    document.getElementById("proactbar").classList.remove("kt-quick-panel--on");
+    document.getElementById("sumdet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.Clear_Feilds();
+    this.notifyService.showError("Cancelled", '');    
+  }
+
+  comments:string;
+  commentSelected:string;
+
+  typeChange(){
+    this.comments="";
+    this.commentSelected="";
+  }
+
+  selectedType: string;
+  _Message:string;
+
+  submitApproval() {
+    if (this.selectedType == '1') {
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.Projectcode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.Remarks = this.comments;
+      if(this.requestType=='New Project' || this.requestType=='Project Complete' || this.requestType=='Deadline Extend'){
+        this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+          this.GetProjectsByUserName();
+        });
+      }
+      else{
+        this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      }
+      
+    }
+    else if (this.selectedType == '2') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    else if (this.selectedType == '3') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    else if (this.selectedType == '4') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
+    document.getElementById("sumdet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.Clear_Feilds();
+    this.closeInfo();
+    this.GetProjectsByUserName();
+  }
+
+
+  Clear_Feilds() {
+    this.selectedType = null;
+    this.commentSelected = null;
   }
 }

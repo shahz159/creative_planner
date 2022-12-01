@@ -42,7 +42,8 @@
                     (onDeSelect)="Memo_Deselect()" style="flex: 3;">
                 </ng-multiselect-dropdown>
 
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" [disabled]="!ngDropdwonMemo" (click)="_AddLink()">Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" [disabled]="!ngDropdwonMemo"
+                    (click)="_AddLink()">Link</button>
             </div>
         </li>
         <li class="kt-nav__foot"></li>
@@ -55,7 +56,8 @@
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
             <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeLinkSideBar()">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
+                (click)="closeLinkSideBar()">
                 <i class="fa fa-times"></i>
             </a>
         </div>
@@ -64,7 +66,7 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
             <p class="text-primary">
-               Portfolios</p>
+                Portfolios</p>
             <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
@@ -89,15 +91,14 @@
 
                 <ng-multiselect-dropdown appFocusOnClick [placeholder]="'Select Portfolio(s)'"
                     class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Portfolio"
-                    [data]="_portfoliosList" [(ngModel)]="ngDropdwonPort" 
-                    (onSelect)="Portfolio_Select(ngDropdwonPort)"
-                    (onDeSelect)="Portfolio_Deselect(ngDropdwonPort)" 
-                    (onSelectAll)="Portfolio_SelectAll($event)" 
-                    (onDeSelectAll)="Portfolio_DeSelectAll()"
-                    style="flex: 3;">
+                    [data]="_portfoliosList" [(ngModel)]="ngDropdwonPort" (onSelect)="Portfolio_Select(ngDropdwonPort)"
+                    (onDeSelect)="Portfolio_Deselect(ngDropdwonPort)" (onSelectAll)="Portfolio_SelectAll($event)"
+                    (onDeSelectAll)="Portfolio_DeSelectAll()" style="flex: 3;">
                 </ng-multiselect-dropdown>
 
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" [disabled]="_SelectedPorts==' '|| _SelectedPorts==null" (click)="addProjectToPortfolio()">Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold"
+                    [disabled]="_SelectedPorts==' '|| _SelectedPorts==null"
+                    (click)="addProjectToPortfolio()">Link</button>
             </div>
         </li>
         <li class="kt-nav__foot"></li>
@@ -117,77 +118,8 @@
         </div>
     </div>
     <div class="card-body" *ngFor="let item of ProjectInfo_List">
-        <div class="d-flex align-items-center mb-3">
-            <div class="d-flex flex-grow-1 align-items-center">
-                <div class="name-box text-center">
-                    {{initials}}
-                </div>
-                <div class="w-100 names-response">
-                    <span clas="fs-10">Responsible</span>
-                    <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
-                </div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-info btn-sm py-1 pr-2" (click)="bttn_RACI()">RACIS
-                    <i class="ml-2 fa fa-chevron-down"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Raci Details -->
-        <div class="card border-0 shadow-sm mb-3" [hidden]="_raciDetails" id="raciDetails">
-            <div class="card-body">
-                <div class="my-2"><label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACIS
-                        Details</label></div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Project_Owner}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="mt-2 mb-1 text-muted fs-7">Authority</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Team_Autho}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="mt-2 mb-1 text-muted fs-7">Coordinator</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Team_Coor}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="mt-2 mb-1 text-muted fs-7">Informer</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Team_Informer}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="mt-2 mb-1 text-muted fs-7">Support</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Team_Support}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Raci Ends -->
+
+
         <div class=" border-top">
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
@@ -247,7 +179,7 @@
                     </span>
                 </p>
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed'">
                 <!-- Percentage Bar -->
                 <div class="progress_bar">
                     <div *ngIf="ProjectStatus=='Not Started'">
@@ -465,8 +397,7 @@
                                     </div>
                                     <div *ngIf="item.Status=='Completion Under Approval'">
                                         <h5 class="my-1 font-14 text-primary">{{item.Status}}
-                                        </h5>
-
+                                        </h5>                                        
                                     </div>
                                     <div *ngIf="item.Status=='Completed'">
                                         <h5 class="my-1 font-14 text-success">{{item.Status}}
@@ -530,7 +461,7 @@
                     </div>
                     <div class="col-md-4" *ngIf="item.ReportType">
                         <p class="mt-2 mb-1 text-muted fs-7">Category</p>
-                        <div class="d-flex align-items-center" >
+                        <div class="d-flex align-items-center">
                             <i class="fas fa-bars  fs-3 text-muted mr-2"></i>
                             <div class="w-100">
                                 <h5 class="my-1 font-14">{{item.ReportType}} </h5>
@@ -559,6 +490,83 @@
             </div> -->
             </div>
         </div>
+
+        <!-- RACIS -->
+        <div class="card-body">
+            <div class="  border-top d-flex align-items-center mb-3">
+                <div class="d-flex flex-grow-1 align-items-center">
+                    <div class="name-box text-center">
+                        {{initials}}
+                    </div>
+                    <div class="w-100 names-response">
+                        <span clas="fs-10">Responsible</span>
+                        <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm py-1 pr-2" (click)="bttn_RACI()">RACIS
+                        <i class="ml-2 fa fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Raci Details -->
+            <div class="card border-0 shadow-sm mb-3" [hidden]="_raciDetails" id="raciDetails">
+                <div class="card-body">
+                    <div class="my-2"><label
+                            class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACIS
+                            Details</label></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.Project_Owner}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mt-2 mb-1 text-muted fs-7">Authority</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.Team_Autho}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mt-2 mb-1 text-muted fs-7">Coordinator</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.Team_Coor}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mt-2 mb-1 text-muted fs-7">Informer</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.Team_Informer}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mt-2 mb-1 text-muted fs-7">Support</p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-caret-right  fs-2 text-success mr-2"></i>
+                                <div class="w-100">
+                                    <h5 class="my-1 font-14">{{item.Team_Support}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Raci Ends -->
 
         <!-- ADD DMS  -->
         <div class=" border-top">
@@ -614,7 +622,7 @@
         <!-- ADD DMS  End-->
 
         <!-- Linked Portfolios -->
-        <div class=" border-top">            
+        <div class=" border-top">
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
@@ -642,26 +650,26 @@
                         <tbody>
                             <tr *ngFor="let tezz of _portfoliolist; let i=index">
                                 <td class="tr-9">
-                                    <a href="javascript:void(0)" 
-                                    (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)"
-                                      *ngIf="tezz.Portfolio_Name !=''">{{tezz.Portfolio_Name}}</a>
+                                    <a href="javascript:void(0)"
+                                        (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)"
+                                        *ngIf="tezz.Portfolio_Name !=''">{{tezz.Portfolio_Name}}</a>
                                 </td>
                                 <td class="align-top curser-pointer"
-                                (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
-                                    <i class="fas fa-trash-alt text-primary"  *ngIf="tezz.Portfolio_Name !=''"></i>
+                                    (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
+                                    <i class="fas fa-trash-alt text-primary" *ngIf="tezz.Portfolio_Name !=''"></i>
                                 </td>
                             </tr>
 
                         </tbody>
                         <!-- <ng-template #NoPortfolio> -->
-                            <p style="color:gray">{{noPort}}</p>
+                        <p style="color:gray">{{noPort}}</p>
                         <!-- </ng-template> -->
                     </table>
                 </div>
-            </div>       
+            </div>
         </div>
-      
-         <!-- Linked Portfolios -->
+
+        <!-- Linked Portfolios -->
 
         <!-- Subtask List -->
         <div class=" border-top" *ngFor="let task of Subtask_List;let i=index">
@@ -917,8 +925,9 @@
             <div class="d-block align-items-center justify-content-between mt-3">
 
                 <div class="my-2">
-                    <button type="button" class="btn btn-info btn-sm py-1 d-flex align-items-center asgn-colpse collapsed" data-toggle="collapse" data-target="#assignlapse"
-                    aria-expanded="false"><i
+                    <button type="button"
+                        class="btn btn-info btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                        data-toggle="collapse" data-target="#assignlapse" aria-expanded="false"><i
                             class="fa fa-chart-bar"></i>Assigned Details <i class="fa fa-chevron-up ml-2 m-0"></i>
                     </button>
                     <!-- <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
@@ -1005,12 +1014,12 @@
                                 <div class="col-md-4" *ngIf="item.Remarks != '' && item.Remarks!='null'">
                                     <p class="mt-2 mb-1 text-muted fs-7"
                                         *ngIf="item.Remarks != '' && item.Remarks!='null'">Remarks</p>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-registered fs-2 text-muted mr-2"></i>
-                                            <div class="w-100">
-                                                <h6 class="my-1 font-14">{{item.Remarks}}</h6>
-                                            </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-registered fs-2 text-muted mr-2"></i>
+                                        <div class="w-100">
+                                            <h6 class="my-1 font-14">{{item.Remarks}}</h6>
                                         </div>
+                                    </div>
                                     <!-- <div class="d-flex align-items-center">
 
                                         <div class="w-100">
