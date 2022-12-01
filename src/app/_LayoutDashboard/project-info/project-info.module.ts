@@ -5,19 +5,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectInfoRoutingModule } from './project-info-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectInfoComponent } from './project-info.component';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
+// import { FullCalendarModule } from '@fullcalendar/angular';
+// import dayGridPlugin from '@fullcalendar/daygrid';
+// import interactionPlugin from '@fullcalendar/interaction';
+// import listPlugin from '@fullcalendar/list';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FocusOnClickDirective } from './focus-on-click.directive';
 
 
-FullCalendarModule.registerPlugins([
-  dayGridPlugin,
-  interactionPlugin,
-  listPlugin,
-]);
+// FullCalendarModule.registerPlugins([
+//   dayGridPlugin,
+//   interactionPlugin,
+//   listPlugin,
+// ]);
 
 @NgModule({
 
