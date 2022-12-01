@@ -1,3 +1,4 @@
+
 .height-adjust {
     height: auto;
     max-height: 60vh;
@@ -1032,8 +1033,33 @@ background-color: #f1f3f4;
 ::ng-deep .mutlidropdown-set .multiselect-dropdown .dropdown-btn{
     height: auto !important;
 }
-
-
+::ng-deep .fc-info {
+    background-color: #3788d8 !important;
+    color: #fff !important;
+}
+::ng-deep .fc-suc {
+    background-color: #1dc9b7 !important;
+    color: #fff !important;
+}
+::ng-deep .fc-grey {
+    background-color: #adb3af !important;
+    color: #fff !important;
+}
+::ng-deep .fc .fc-list-event:hover td{
+    background-color: unset !important;
+}
+::ng-deep .fc-info .fc-daygrid-event-dot{
+    border-color: #ffffff;
+}
+::ng-deep .fc-suc .fc-daygrid-event-dot{
+    border-color: #ffffff;
+}
+::ng-deep .fc-grey .fc-daygrid-event-dot{
+    border-color: #ffffff;
+}
+::ng-deep .fc .fc-daygrid-day-frame{
+    height: 100px !important;
+}
 @media Screen and (max-width: 1600px) {
 
 .table-time {
@@ -1070,3 +1096,4 @@ background-color: #f1f3f4;
         width: 100%;
     }
 }
+

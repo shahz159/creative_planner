@@ -12,7 +12,7 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { LinkService } from 'src/app/_Services/link.service';
 import { CalenderService } from 'src/app/_Services/calender.service';
-
+ 
 import * as _ from 'underscore';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -880,7 +880,7 @@ export class DashboardComponent implements OnInit {
 
     if (!isFound) {
       var dynamicScripts = [
-        "../../../creativeplanner/assets/js/timehover.js",
+        "../../../testcreativeplanner/assets/js/timehover.js",
       ];
       // var dynamicScripts = [
       //   environment.assetsurl + "../../../assets/js/dashboard/jquery.knob.min.js",
@@ -1037,17 +1037,17 @@ export class DashboardComponent implements OnInit {
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson);
         this.calendarOptions = {
-          // plugins: [ dayGridPlugin, interactionPlugin ,timeGrigPlugin],
           initialView: 'dayGridMonth',
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+            right: 'dayGridMonth,dayGridWeek,dayGridDay,listMonth'
           },
           themeSystem: "solar",
+          weekNumbers:true,
           eventClick: this.handleEventClick.bind(this),
           events: this.Scheduledjson,
-          dayMaxEvents: 6
+          dayMaxEvents: 4
         };
       });
   }
@@ -1075,19 +1075,19 @@ export class DashboardComponent implements OnInit {
   }
   GetCalendarProjects() {
     let Empno: string = this.Current_user_ID;
-    this.calendarOptions = {
-      //plugins: [ dayGridPlugin, interactionPlugin ],
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
-      },
-      themeSystem: "solar",
-      eventClick: this.handleEventClick.bind(this),
-      events: this._CalendarProjectsList,
-      dayMaxEvents: 6
-    };
+    // this.calendarOptions = {
+    //   //plugins: [ dayGridPlugin, interactionPlugin ],
+    //   initialView: 'dayGridMonth',
+    //   headerToolbar: {
+    //     left: 'prev,next today',
+    //     center: 'title',
+    //     right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+    //   },
+    //   themeSystem: "solar",
+    //   eventClick: this.handleEventClick.bind(this),
+    //   events: this._CalendarProjectsList,
+    //   dayMaxEvents: 6
+    // };
 
     this.userProjects();
   }
@@ -1100,18 +1100,18 @@ export class DashboardComponent implements OnInit {
         this._ActualProjectList = data as CompletedProjectsDTO[];
         //Sorting...
         this._CalendarProjectsList = this._ActualProjectList.sort((a, b) => (a.ProjectType > b.ProjectType) ? 1 : -1);
-        this.calendarOptions = {
-          // plugins: [ dayGridPlugin, interactionPlugin ],
-          initialView: 'dayGridMonth',
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
-          },
-          eventClick: this.handleEventClick.bind(this),
-          events: this._CalendarProjectsList,
-          dayMaxEvents: 10,
-        };
+        // this.calendarOptions = {
+        //   // plugins: [ dayGridPlugin, interactionPlugin ],
+        //   initialView: 'dayGridMonth',
+        //   headerToolbar: {
+        //     left: 'prev,next today',
+        //     center: 'title',
+        //     right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+        //   },
+        //   eventClick: this.handleEventClick.bind(this),
+        //   events: this._CalendarProjectsList,
+        //   dayMaxEvents: 10,
+        // };
       });
     //this.LoadingBar.stop();
   }
@@ -1126,21 +1126,21 @@ export class DashboardComponent implements OnInit {
         //Filtering
         this._CalendarProjectsList = this._ActualProjectList.filter(
           user => user.TeamRes == this.CurrentUser_fullname);
-        this.calendarOptions = {
-          //plugins: [ dayGridPlugin, interactionPlugin ],
-          initialView: 'dayGridMonth',
+        // this.calendarOptions = {
+        //   //plugins: [ dayGridPlugin, interactionPlugin ],
+        //   initialView: 'dayGridMonth',
 
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
-          },
-          themeSystem: 'yeti',
+        //   headerToolbar: {
+        //     left: 'prev,next today',
+        //     center: 'title',
+        //     right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+        //   },
+        //   themeSystem: 'yeti',
 
-          eventClick: this.handleEventClick.bind(this),
-          events: this._CalendarProjectsList,
-          dayMaxEvents: 10,
-        };
+        //   eventClick: this.handleEventClick.bind(this),
+        //   events: this._CalendarProjectsList,
+        //   dayMaxEvents: 10,
+        // };
         // console.log(JSON.stringify(this._CalendarProjectsList),"calendar data");
       });
 
@@ -1157,18 +1157,18 @@ export class DashboardComponent implements OnInit {
         //Filtering
         this._CalendarProjectsList = this._ActualProjectList.filter(
           user => user.ProjectOwner == this.CurrentUser_fullname);
-        this.calendarOptions = {
-          //plugins: [ dayGridPlugin, interactionPlugin ],
-          initialView: 'dayGridMonth',
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
-          },
-          eventClick: this.handleEventClick.bind(this),
-          events: this._CalendarProjectsList,
-          dayMaxEvents: 10,
-        };
+        // this.calendarOptions = {
+        //   //plugins: [ dayGridPlugin, interactionPlugin ],
+        //   initialView: 'dayGridMonth',
+        //   headerToolbar: {
+        //     left: 'prev,next today',
+        //     center: 'title',
+        //     right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+        //   },
+        //   eventClick: this.handleEventClick.bind(this),
+        //   events: this._CalendarProjectsList,
+        //   dayMaxEvents: 10,
+        // };
       });
   }
   GetDashboardSummary() {
@@ -1641,4 +1641,3 @@ export class DashboardComponent implements OnInit {
   }
 
 }
-

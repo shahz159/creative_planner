@@ -8,7 +8,7 @@ import { DashboardComponent } from './dashboard.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import timeGrigPlugin from '@fullcalendar/timegrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -28,7 +28,7 @@ FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,
   listPlugin,
-  timeGrigPlugin
+  timeGridPlugin
 ]);
 
 @NgModule({
