@@ -513,21 +513,6 @@ margin:0px 10px;
     border: 1px solid transparent;
     font-weight: 600;
 }
-.btn-app{
-    background: #fff;
-    border: 1px solid #cfcbcb;
-    color: #1e1f21;
-    font-size:  1rem;
-    height: 28px;
-    line-height: 28px;
-    padding: 0 12px;
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    justify-content: center;
-    border-radius: 6px;
-    margin-right: 8px;
-}
 .sideInfobar {
     height: 100%;
     width: 0;
@@ -556,24 +541,6 @@ margin:0px 10px;
 .accordion-1 .collapsed .fa-chevron-up:before{
     content: "\f078";
     margin-right: 4px;
-}
-.lbl-suc{
-    border: 1px solid #13d33c;
-}
-.lbl-war{
-    border: 1px solid #ffac15;
-}
-.lbl-dan{
-    border: 1px solid #ff2c2c;
-}
-span.textts {
-    color: #8993A4;
-    font-size: 12px;
-    padding: 0px 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-top: 2px;
 }
 #sideTab1.nav-pills .nav-item .nav-link.active, #tasks-tabs.nav-pills .nav-item .nav-link.active {
     background-color: transparent;

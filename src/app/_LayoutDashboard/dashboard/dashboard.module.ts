@@ -6,11 +6,11 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGrigPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DatePipe } from '@angular/common';
@@ -19,16 +19,16 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
-import { AngularEditorModule } from '@kolkov/angular-editor';
-import { MaterialModule } from "src/app/material-module";
 
+import { MaterialModule } from "src/app/material-module";
+import { AngularEditorModule } from '@kolkov/angular-editor';
 // import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
-
 FullCalendarModule.registerPlugins([
-  dayGridPlugin,
   interactionPlugin,
+  dayGridPlugin,
   listPlugin,
+  timeGrigPlugin
 ]);
 
 @NgModule({
@@ -40,6 +40,7 @@ FullCalendarModule.registerPlugins([
     //SidebarComponent
   ],
   imports: [
+    AngularEditorModule,
     CommonModule,
     FormsModule,
     DashboardRoutingModule,
@@ -51,7 +52,6 @@ FullCalendarModule.registerPlugins([
     MatIconModule,
     MatCardModule
     ,MaterialModule
-    ,AngularEditorModule
     // NgxDaterangepickerMd.forRoot()
   ],
   providers:[DatePipe],

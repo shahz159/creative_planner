@@ -30,6 +30,10 @@ export class CalenderService {
     this.obj_CalenderDTO.EndTime=obj.EndTime;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGettimeslabs", this.obj_CalenderDTO);
   }
+  NewGetScheduledtimejson(obj:CalenderDTO){
+    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
+  }
 
   NewInsertCalender(obj: CalenderDTO){
     
