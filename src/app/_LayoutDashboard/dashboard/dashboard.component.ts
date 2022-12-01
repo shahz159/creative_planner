@@ -226,7 +226,7 @@ export class DashboardComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '0',
+    minHeight: '5rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit {
         'textColor',
         'backgroundColor',
         'customClasses',
-        'link',
+        
         'unlink',
         'insertImage',
         'insertVideo',
@@ -377,8 +377,9 @@ export class DashboardComponent implements OnInit {
           console.log(data, "m");
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
+          this.GetScheduledJson();
         });
-      this.GetScheduledJson();
+      
       this.Title_Name = null;
       this.ngEmployeeDropdown = null;
       this.Description_Type = null;
@@ -880,7 +881,7 @@ export class DashboardComponent implements OnInit {
 
     if (!isFound) {
       var dynamicScripts = [
-        "../../../testcreativeplanner/assets/js/timehover.js",
+        "/testcreativeplanner/assets/js/timehover.js",
       ];
       // var dynamicScripts = [
       //   environment.assetsurl + "../../../assets/js/dashboard/jquery.knob.min.js",
@@ -934,17 +935,9 @@ export class DashboardComponent implements OnInit {
 
         date.setDate(date.getDate() + 1);
       }
-      // this.daysSelected = dates;
-
-      // const dd=[];
-      // dd.push("2022-11-17");
-      // this.daysSelected=dd;
-
+      this.daysSelected = dates;
       this.Checkdatetimetable(this.daysSelectedII);
       this.calendar.updateTodaysDate();
-      // this.getDatesInRange(, new Date(moment(end).format(format2)))
-
-
     }
     else if (val.value == 3) {
       const format2 = "YYYY-MM-DD";
@@ -997,6 +990,7 @@ export class DashboardComponent implements OnInit {
           this.daysSelectedII.push(jsonData);
           date.setMonth(date.getMonth() + 1);
         }
+        this.daysSelected = dates;
       }
       this.Checkdatetimetable(this.daysSelectedII);
       this.calendar.updateTodaysDate();

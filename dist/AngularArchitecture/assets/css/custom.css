@@ -423,6 +423,7 @@ h3.popover-header {
 .info-icon-cir{
   font-size: 20px;
   color: #5867dd;
+  color: #2786fb;
 }
 
 .sideInfobar .kt-widget1 .kt-widget1__item{
@@ -963,14 +964,14 @@ svg.feather {
 .grid-template-columns-7 {
     grid-template-columns: repeat(7,minmax(0,1fr)) !important;
 }
-.gap-3 {
-    gap: 3rem;
+.gap-1 {
+    gap: 1rem;
 }
 .gap-2 {
     gap: 2rem;
 }
-.gap-1 {
-    gap: 1rem;
+.gap-3 {
+    gap: 3rem;
 }
 .grid{
     display: grid;
@@ -1048,12 +1049,55 @@ svg.feather {
 .h-100px {
     height: 100px !important;
 }
-gap-1{
-    gap: 0.5rem;
+.gap-4{
+    gap: 4rem;
 }
-gap-2{
-    gap: 1rem;
+.gap-5{
+    gap: 5rem;
 }
-gap-3{
-    gap: 1.5rem;
+.gap-6{
+    gap: 6rem;
 }
+.arrow-none:after{
+    content: none;
+}
+
+.btn-app {
+    background: #fff;
+    border: 1px solid #cfcbcb;
+    color: #1e1f21;
+    font-size: 1rem;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    justify-content: center;
+    border-radius: 6px;
+    margin-right: 8px;
+  }
+  .lbl-suc{
+    border: 1px solid #13d33c;
+  }
+  .lbl-war{
+    border: 1px solid #ffac15;
+  }
+  .lbl-dan{
+    border: 1px solid #ff2c2c;
+  }
+  .lbl-new1{
+    border: 1px solid teal;
+  }  
+  .lbl-transfer{
+    border: 1px solid #f318e10d;
+  }
+  span.textts {
+    color: #8993A4;
+    font-size: 12px;
+    padding: 0px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+  }
