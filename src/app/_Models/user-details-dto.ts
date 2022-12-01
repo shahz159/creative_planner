@@ -32,6 +32,7 @@ export class UserDetailsDTO {
     RowsOfPage: number;
     SelectedBlock_No:string;
     SelectedEmp_No:string;
+    ApprovalEmpID: string;
 
     SelectedEmployee:string;
     SelectedCompany:string;

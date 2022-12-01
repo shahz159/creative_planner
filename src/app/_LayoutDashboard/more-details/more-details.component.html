@@ -64,13 +64,13 @@
                         </div>
                         <!--inprocess button-->
                         <!--progress bar start-->
-                        <div class="d-flex flex-column ml-3">
+                        <div class="d-flex flex-column ml-3" *ngIf="Status != 'Completed' && Status!='Completion Under Approval'">
                             <span class="fs-6 font-bold" [ngClass]="{'text-dark':ProjectStatus=='Not Started',
-                        'text-primary':ProjectStatus=='Continuos-InProcess',    
-                        'text-success':ProjectStatus=='Completed',
-                        'text-warning':ProjectStatus=='InProcess',
-                        'text-underApp':ProjectStatus=='UnderCompletion',
-                        'text-info':ProjectStatus=='Just Started'}" data-toggle="tooltip" title="Progess Status!">
+                                'text-primary':ProjectStatus=='Continuos-InProcess',    
+                                'text-success':ProjectStatus=='Completed',
+                                'text-warning':ProjectStatus=='InProcess',
+                                'text-underApp':ProjectStatus=='UnderCompletion',
+                                'text-info':ProjectStatus=='Just Started'}" data-toggle="tooltip" title="Progess Status!">
                                 {{ProjectStatus}}
                             </span>
                             <!-- text-dark - first div -->
@@ -79,7 +79,7 @@
                                 <div class="progress-bar bg-warning" role="progressbar" style="width: 46%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <span class="text-muted fs-7 fw-bold pl-2">46%</span>
-                        </div> -->
+                            </div> -->
                             <div *ngIf="ProjectStatus=='Not Started'">
                                 <div class="d-flex align-items-center w-200px">
                                     <!-- <small class="progress_bar_title"> -->
@@ -158,7 +158,8 @@
 
 
                     </div>
-                    <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId)">
+                    <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId)" data-toggle="tooltip"
+                    title="Project Actions!">
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
                                     || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
                                     ||  Status =='ToDo Achieved')">
@@ -169,7 +170,14 @@
                         class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
                             <i class="fas fa-check mr-2"></i>
-                            Project Completion
+                            Project Submission
+                        </button>
+                    </div>
+                    <div *ngIf="(ProjectBlockName == 'Standard Tasks')" class=" pro-act ml-2">
+                        <button class="btn  btn22 btn-pill" (click)="notinAction()" >
+                            <!-- -->
+                            <i class="fas fa-check mr-2"></i>
+                            Project Submission
                         </button>
                     </div>
                 </div>
@@ -1425,7 +1433,7 @@
                                                         alt="image">
                                                 </div>
                                                 <div>
-                                                    <span class="kt-widget__desc pt-1"
+                                                    <span class="kt-widget__desc pt-1 curser-pointer"
                                                         (click)="openPDF_Standard(item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</span>
                                                     <div class="kt-widget__desc pt-1">
                                                         <small>{{item.Reportdate|date:'medium'}}</small>
@@ -1455,7 +1463,7 @@
                                                             src="assets/images/pdf.svg" alt="image">
                                                     </div>
                                                     <div>
-                                                        <span class="kt-widget__desc pt-1"
+                                                        <span class="kt-widget__desc pt-1 curser-pointer"
                                                             (click)="openPDF(item.CD,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
                                                         <div class="kt-widget__desc pt-1">
                                                             <small>{{item.CD|date:'medium'}}</small>
@@ -1886,7 +1894,7 @@
             </div>
         </div>
         <div class="form-group mt-3">
-            <label>Attachments</label>
+            <label>Attachments</label><span class="text-danger">*</span>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">
@@ -1931,7 +1939,8 @@
 
 
         <div class="form-group mb-1">
-            <button type="submit" class="btn btn-primary" [disabled]="_remarks==''" (click)="updateMainProject()">Submit
+            <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
+                (click)="updateMainProject()">Submit
             </button>
         </div>
     </div>
@@ -1991,7 +2000,7 @@
                 style="margin-top: 0px; margin-bottom: 0px; height: 300px;"></textarea>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" [disabled]="_remarks==''"
+            <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='') || (selectedFile==null)"
                 (click)="OnUpdateClick()">Submit</button>
         </div>
     </div>
@@ -2010,7 +2019,8 @@
         </div>
     </div>
     <div class="py-3 px-4">
-        <div class="proctdetls d-flex justify-content-between align-items-center" id="ProjectDetails_Main">
+        <div class="proctdetls d-flex gap-5 w-100 align-items-center" [ngClass]="{ ' ' : Status!='Deadline Extend Under Approval',
+                'justify-content-between' : Status=='Deadline Extend Under Approval'}" id="ProjectDetails_Main">
             <div class="d-flex align-items-center">
                 <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2"><svg width="24" height="24"
                             viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
@@ -2063,7 +2073,7 @@
             <div class="card-title mb-0">
                 <!-- <div class="card-title mb-0" data-toggle="collapse" data-target="#proj_act_acc" aria-expanded="true" aria-controls="proj_act_acc"> -->
                 <div class="d-flex justify-content-between align-items-center">
-                    <span class="det-text pro-nm pl-1 text-blue">Project Actions</span>
+                    <span class="det-text pro-nm pl-1 text-blue">Project Actions<span style="color:red">*</span></span>
                     <i class="fas fa-chevron-up text-info1 mr-2 d-none"></i>
                 </div>
             </div>
@@ -2073,22 +2083,28 @@
                 <div class="pro_act_div card-body px-0">
                     <div class="form-group mb-2">
                         <div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline" (click)="typeChange()">
                                 <label class="form-check-label lbl-suc btn-app">
                                     <input id="rdbButtons_0" type="radio" class="form-check-input" name="rdbButtons"
                                         value="1" checked="checked" [(ngModel)]="selectedType">Accept
                                 </label>
                             </div>
-                            <div class="form-check-inline d-none">
+                            <div class="form-check-inline d-none" (click)="typeChange()">
                                 <label class="form-check-label lbl-war btn-app">
                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
                                         value="2" [(ngModel)]="selectedType">Hold
                                 </label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline" (click)="typeChange()">
                                 <label class="form-check-label lbl-dan btn-app">
                                     <input id="rdbButtons_2" type="radio" class="form-check-input" name="rdbButtons"
                                         value="3" [(ngModel)]="selectedType">Reject
+                                </label>
+                            </div>
+                            <div class="form-check-inline d-none" (click)="typeChange()">
+                                <label class="form-check-label lbl-new1 btn-app">
+                                    <input id="rdbButtons_0" type="radio" class="form-check-input" name="rdbButtons"
+                                        value="4" checked="checked" [(ngModel)]="selectedType">Transfer
                                 </label>
                             </div>
                         </div>
@@ -2096,19 +2112,36 @@
                     <div class="d-flex flex-grow-1r">
                         <div class="col-md-12 checked-rad pl-1 pt-3">
                             <div class="appr-comts">
-                                <div class="form-group">
-                                    <label class="mb-2">Enter your Comment(optional)</label>
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="mb-2">Select Comment</label>
+
+                                <div class="form-group" *ngIf="selectedType=='1'" (click)="clickonselect()">
+                                    <label class="mb-2">Select Comment</label><span style="color:red">*</span>
                                     <select class="form-control" [(ngModel)]="commentSelected">
                                         <option value=""> -- select an option -- </option>
                                         <option>Accepted</option>
                                         <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
                                         <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted
                                         </option>
+                                        <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
+                                            Accepted
+                                        </option>
                                     </select>
+                                </div>
+                                <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
+                                    <label class="mb-2">Select Comment</label><span style="color:red">*</span>
+                                    <select class="form-control" [(ngModel)]="commentSelected">
+                                        <option value=""> -- select an option -- </option>
+                                        <!-- <option>Accepted</option> -->
+                                        <option *ngIf="Status == 'Under Approval'">New project Rejected</option>
+                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Rejected
+                                        </option>
+                                        <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
+                                            Rejected
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="mb-2">Enter your Comment(optional)</label>
+                                    <textarea class="form-control" [(ngModel)]="comments">{{commentSelected}}</textarea>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">

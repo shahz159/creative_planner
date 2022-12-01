@@ -79,6 +79,7 @@ export class MoreDetailsComponent implements OnInit {
   timedata: any = [];
   EndDate1: any = new Date();
   commentSelected: string;
+  comments: string;
   selectedType: string;
   date = new Date();
   dateF = new FormControl(new Date());
@@ -136,6 +137,15 @@ export class MoreDetailsComponent implements OnInit {
   requestComments: any;
   requestDetails:any;
 
+  clickonselect(){
+    this.comments=this.commentSelected;
+  }
+
+  typeChange(){
+    this.comments="";
+    this.commentSelected="";
+  }
+
   getapprovalStats() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
@@ -159,7 +169,8 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.commentSelected;
+      this.approvalObj.Remarks = this.comments;
+      // alert(this.comments);
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
@@ -167,15 +178,20 @@ export class MoreDetailsComponent implements OnInit {
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           this.GetProjectDetails();
           this.GetSubtask_Details();
+          this.getapprovalStats();
         });
 
     }
 
     else if (this.selectedType == '2') {
+      
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
 
     else if (this.selectedType == '3') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
@@ -2626,8 +2642,9 @@ export class MoreDetailsComponent implements OnInit {
           // this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this._remarks = "";
           this._inputAttachments = "";
-          this.GetSubtask_Details();
           this.GetProjectDetails();
+          this.GetSubtask_Details();
+          
           // Rebinding    
 
           this.notifyService.showInfo("Successfully Updated", '');
@@ -2903,12 +2920,14 @@ export class MoreDetailsComponent implements OnInit {
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
+    fd.append("Emp_No", this.Current_user_ID);
     this.service._fileuploadService(fd).
       subscribe(event => {
-        //console.log(event);
+        console.log(event,"PC");
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
           this.notifyService.showSuccess("", "File uploaded successfully");
+          // this.notifyService.showSuccess(event[0]['Message'], "Success");
           this.notifyService.showInfo("", "Project Updated");
         }
         else if (event.type === HttpEventType.Response) {
@@ -2967,6 +2986,11 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
+  }
+
+
+  notinAction(){
+    this.notifyService.showError("Development Under Maintainance", 'Cancelled');
   }
 
 }
