@@ -1025,7 +1025,7 @@
                             {{item.DisplayName}}
                         </ng-option>
                     </ng-select> -->
-                    <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
+                    <ng-multiselect-dropdown [placeholder]="'Select Guest '" class="mutlidropdown-set"
                                 name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
                                 [settings]="dropdownSettings_Emp" [data]="_EmployeeListForDropdown"
                                 (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
@@ -1160,9 +1160,9 @@
                         </div>
                     </div>
                 </div>
-                <ng-container *ngFor="let zero of daysSelectedII">
+                <!-- <ng-container *ngFor="let zero of daysSelectedII">
                     <span>{{zero.Date}}-------{{zero.StartTime}}-------{{zero.EndTime}}</span><br>
-                </ng-container>
+                </ng-container> -->
                 <div class="form-group w-matc">
                     <label class="">Repeat on</label>
                     <mat-select name="Select Type" placeholder="Do not repeat" class="form-control"
