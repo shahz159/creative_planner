@@ -1047,7 +1047,8 @@
                 <!-- <div><input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/></div> -->
                 
                 <div class="section-1" id="Location_Name"  style="display:none">
-                    <div class="form-group">
+                    <input ngx-google-places-autocomplete class="form-control" (onAddressChange)="handleAddressChange($event)"/>
+                    <!-- <div class="form-group">
                         <label class="cus-lbl">Location </label>
                         <textarea class="form-control" placeholder="Enter Full Address"  [(ngModel)]="Location_Type"></textarea>
                     </div>
@@ -1060,7 +1061,7 @@
                             <label class="cus-lbl">Longitude </label>
                             <input class="form-control" placeholder="Enter Longitude Ex:15.000000" [(ngModel)]="Longtitude_Type">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-group" id="Descrip_Name"  style="display:none">
                     <label class="cus-lbl">Description </label>
@@ -1097,6 +1098,9 @@
                             </div>
                         </div>
                     </div> -->
+                    <input class="rangepic form-control" type="text" ngxDaterangepickerMd 
+                    [(ngModel)]="selected" [showCustomRangeLabel]="false" [linkedCalendars]="true" [showClearButton]="true"
+                    (datesUpdated)="datesUpdated($event)" placeholder="MM/DD/YYYY" />
                     <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
                             <div class="d-flex gap-15">

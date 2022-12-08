@@ -25,6 +25,7 @@ import { DatePipe } from '@angular/common';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { forEach } from '@angular-devkit/schematics';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
 @Component({
@@ -302,7 +303,28 @@ export class DashboardComponent implements OnInit {
     this._subname1 = false;
   }
   ngOnInit() {
-    this.MinLastNameLength=true;
+    this.calendarOptions = {
+      initialView: 'timeGridDay',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      },
+      themeSystem: "solar",
+      weekNumbers: true,
+      eventClick: this.handleEventClick.bind(this),
+      events: this.Scheduledjson,
+      dayMaxEvents: 4,
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short'
+      },
+      nowIndicator: true,
+      allDaySlot: false
+    };
+
+    this.MinLastNameLength = true;
     this._subname = false;
     this._subname1 = false;
     let _shr = moment(new Date()).format("HH");
@@ -368,7 +390,7 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
-  MinLastNameLength:boolean;
+  MinLastNameLength: boolean;
   LastLengthValidation11() {
     if (this.Title_Name.trim().length < 3) {
       this.MinLastNameLength = false;
@@ -377,7 +399,7 @@ export class DashboardComponent implements OnInit {
       this.MinLastNameLength = true;
     }
   }
-  
+
   OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -423,14 +445,14 @@ export class DashboardComponent implements OnInit {
         var columnName = "EventNumber";
         element[columnName] = this.ScheduleType == "Task" ? 0 : this.EventNumber;
         var columnName = "Portfolio_name";
-        element[columnName] = this.Portfolio == undefined ? "" :  this.Portfolio.toString();
+        element[columnName] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
         var columnName = "DMS_Name";
         element[columnName] = "";
       });
- 
+
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
-    
-      console.log(JSON.stringify(finalarray),"finalarray")
+
+      console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
           console.log(data, "m");
@@ -479,11 +501,11 @@ export class DashboardComponent implements OnInit {
       document.getElementById("core_viw123").style.display = "block";
       document.getElementById("core_viw121").style.display = "none";
       document.getElementById("core_viw222").style.display = "none";
-      
+
     }
     else {
       this.ScheduleType = "Event";
-      
+
       document.getElementById("subtaskid").style.display = "none";
       // document.getElementById("Link_Name").style.display = "block";
       document.getElementById("Guest_Name").style.display = "block";
@@ -492,14 +514,14 @@ export class DashboardComponent implements OnInit {
       document.getElementById("core_viw121").style.display = "block";
       document.getElementById("core_viw123").style.display = "none";
       document.getElementById("core_viw222").style.display = "block";
-      
+
     }
- 
+
   }
-  Note_deadlineexpire:boolean;
+  Note_deadlineexpire: boolean;
   GetSubtasklistfromProject(MasterCode) {
     this.BlockNameProject.forEach(element => {
-    
+
       if (element.Project_Code == MasterCode) {
 
         this.Projectstartdate = element.StatDate;
@@ -509,23 +531,23 @@ export class DashboardComponent implements OnInit {
         var number = this.calculateDiff(this.projectEnddate);
         const format2 = "YYYY-MM-DD"
         if (number >= 90) {
-        
+
           this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
-          this.Note_deadlineexpire=false;
+          this.Note_deadlineexpire = false;
         }
         else {
-          if(number < 0){
-           if(this.ScheduleType=="Task"){
-            this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
-            this.Note_deadlineexpire=true;
-           }
-           else{
-            this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
-           }
+          if (number < 0) {
+            if (this.ScheduleType == "Task") {
+              this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+              this.Note_deadlineexpire = true;
+            }
+            else {
+              this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+            }
           }
-          else{
+          else {
             this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
-           this.Note_deadlineexpire=false;
+            this.Note_deadlineexpire = false;
           }
         }
       }
@@ -707,7 +729,7 @@ export class DashboardComponent implements OnInit {
   Doubleclick(event: any) {
     this.preventSingleClick = true;
     clearTimeout(this.timer);
-    
+
     this._calenderDto.Scheduled_date = this.doubleclickdate;
     this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
       ((data) => {
@@ -732,8 +754,8 @@ export class DashboardComponent implements OnInit {
       this._total = element.SlotsJson.length;
     });
   }
-  Portfolio:any;
-  Portfoliolist_1:[];
+  Portfolio: any;
+  Portfoliolist_1: [];
   GetProjectAndsubtashDrpforCalender() {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
@@ -741,9 +763,9 @@ export class DashboardComponent implements OnInit {
 
         // console.log(data)
         this.BlockNameProject = JSON.parse(data['Projectlist']);
-      
+
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-   
+
 
         // this.BlockNameProject = data as [];
         this.dropdownSettings_Emp = {
@@ -757,7 +779,7 @@ export class DashboardComponent implements OnInit {
           closeDropDownOnSelection: true
         }
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        
+
       })
 
   }
@@ -1125,29 +1147,43 @@ export class DashboardComponent implements OnInit {
       ((data) => {
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson);
+        // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
         this.calendarOptions = {
-          initialView: 'dayGridMonth',
+          initialView: 'timeGridDay',
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listMonth'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
           themeSystem: "solar",
           weekNumbers: true,
           eventClick: this.handleEventClick.bind(this),
           events: this.Scheduledjson,
-          dayMaxEvents: 4
+          dayMaxEvents: 4,
+          eventTimeFormat: {
+            hour: 'numeric',
+            minute: '2-digit',
+            meridiem: 'short'
+          },
+          nowIndicator: true,
+          allDaySlot: false
         };
       });
   }
 
-
-
-
-
+  public handleAddressChange(address: Address) {
+    this.Location_Type = address.formatted_address;
+  }
+  pipe = new DatePipe('en-US');
+  datesUpdated($event) {
+    //alert($event.startDate);
+    if (this.pipe.transform($event.startDate, 'longDate') != null) {
+      alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
+      alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
+    }
+  }
   // End Here
   // Scheduling Work
-
 
   handleEventClick(arg) {
     this.ProjectCode = arg.event._def.extendedProps.Project_Code;

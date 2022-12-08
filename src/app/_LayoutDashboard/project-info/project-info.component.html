@@ -118,6 +118,162 @@
         </div>
     </div>
     <div class="card-body" *ngFor="let item of ProjectInfo_List">
+        <div class="">
+            <div class="d-flex  align-items-center justify-content-between">
+                <div class>
+                    <div class="my-2">
+                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="bi bi-calendar2-week"></i>Project Actions
+                        </label>
+                    </div>
+    
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm py-1" >
+                        Collapse
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <div class="align-items-center">
+                    <h5 class="fs-5 mb-2 d-inline-blck" id="">Test by author</h5>
+                </div>
+            </div>
+
+            
+            <div class="py-2 px-3">
+                <div class="proctdetls d-flex gap-5 w-100 align-items-center" [ngClass]="{ ' ' : Status!='Deadline Extend Under Approval',
+                        'justify-content-between' : Status=='Deadline Extend Under Approval'}" id="ProjectDetails_Main">
+                    <div class="d-flex align-items-center">
+                        <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2"><svg width="24" height="24"
+                                    viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                                    <path
+                                        d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
+                                    </path>
+                                </svg></span></div>
+                        <div class="action-content">
+                            <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
+                            <h5 class="mt-1 text-blue">29-11-2022</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class=""><span class="svg-icon svg-icon-2x text-info mr-2"><svg _ngcontent-jrv-c350="" width="24"
+                                    height="24" viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                                    <path _ngcontent-jrv-c350="" d="M30.5,9h-7.8l-3.6-3.6C18.2,4.5,16.9,4,15.6,4h-5.1C6.9,4,4,6.9,4,10.5v19c0,3.6,2.9,6.5,6.5,6.5h19c3.6,0,6.5-2.9,6.5-6.5v-15C36,11.5,33.5,9,
+                            30.5,9z M33,29.5c0,1.9-1.6,3.5-3.5,3.5h-19C8.6,33,7,31.4,7,29.5v-19C7,8.6,8.6,7,10.5,7h5.1c0.5,0,1,0.2,1.4,0.6l4.1,4c0.3,0.3,0.7,0.4,1.1,0.4h8.4c1.4,
+                            0,2.5,1.1,2.5,2.5L33,29.5L33,29.5z M13.5,13L13.5,13c0.8,0,1.5,0.7,1.5,1.5v13c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-13C12,13.7,12.7,13,13.5,13z
+                            M25.5,18L25.5,18c0.8,0,1.5,0.7,1.5,1.5v8c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-8C24,18.7,24.7,18,25.5,18z M19.5,22L19.5,22c0.8,0,1.5,0.7,1.5,1
+                            .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z"></path>
+                                </svg></span></div>
+                        <div class="action-content">
+                            <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
+                            <h5 class="mt-1 text-blue">Project Complete</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center" *ngIf="Status=='Deadline Extend Under Approval'">
+                        <div class=""><span class="svg-icon svg-icon-2x text-dangr mr-2"><svg width="24" height="24"
+                                    viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor">
+                                    <path
+                                        d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
+                                    </path>
+                                </svg></span></div>
+                        <div class="action-content">
+                            <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
+                            <h5 class="mt-1 text-blue">2-12-2022</h5>
+                            <!-- <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- accordian_section-->
+
+        <div class="px-3 m-auto">
+
+
+            <div class="">
+                <div class="card-title mb-0">
+                    <!-- <div class="card-title mb-0" data-toggle="collapse" data-target="#proj_act_acc" aria-expanded="true" aria-controls="proj_act_acc"> -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="det-text pro-nm pl-1 text-blue">Project Actions<span style="color:red">*</span></span>
+                        <i class="fas fa-chevron-up text-info1 mr-2 d-none"></i>
+                    </div>
+                </div>
+
+                <div id="proj_act_acc" class="px-1">
+
+                    <div class="pro_act_div card-body px-0">
+                        <div class="form-group mb-2">
+                            <div>
+                                <div class="form-check-inline" (click)="typeChange()">
+                                    <!-- del later <label class="form-check-label lbl-suc btn-app"  data-toggle="collapse" data-target="#comts1" aria-expanded="true" aria-controls="comts1"> -->
+                                    <label class="form-check-label lbl-suc btn-app">
+                                        <input id="rdbButtons_0" type="radio" class="form-check-input" name="rdbButtons"
+                                            value="1" checked="checked" [(ngModel)]="selectedType">Accept
+                                    </label>
+                                </div>
+                                <div class="form-check-inline" (click)="typeChange()">
+                                    <label class="form-check-label lbl-dan btn-app">
+                                        <input id="rdbButtons_2" type="radio" class="form-check-input" name="rdbButtons"
+                                            value="3" [(ngModel)]="selectedType">Reject
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" id="comts1">
+                            <div class="col-md-12 checked-rad pl-1 pt-3">
+                                <div class="appr-comts">
+
+                                    <div class="form-group" (click)="clickonselect()">
+                                        <label class="mb-2">Select Comment</label><span style="color:red">*</span>
+                                        <select class="form-control" [(ngModel)]="commentSelected">
+                                            <option value=""> -- select an option -- </option>
+                                            <option>Accepted</option>
+                                            <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
+                                            <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted
+                                            </option>
+                                            <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
+                                                Accepted
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
+                                        <label class="mb-2">Select Comment</label><span style="color:red">*</span>
+                                        <select class="form-control" [(ngModel)]="commentSelected">
+                                            <option value=""> -- select an option -- </option>
+                                            <!-- <option>Accepted</option> -->
+                                            <option *ngIf="Status == 'Under Approval'">New project Rejected</option>
+                                            <option *ngIf="Status == 'Completion Under Approval'">Project Complete Rejected
+                                            </option>
+                                            <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
+                                                Rejected
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-2">Enter your Comment(optional)</label>
+                                        <textarea class="form-control" [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
+                                        [disabled]="!commentSelected || !selectedType">Submit</button>
+                                    <button class="btn btn-sm btn-secondary" (click)="closeApproval()">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- <div class="none-checked margin-auto">
+                                <img src="assets/images/bg-no.jpg" height="300px" alt="select project actions">
+                                <div class="text-black h5 mt-3">To Manage Project , select Project Actions</div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
 
         <div class=" border-top">
@@ -492,8 +648,8 @@
         </div>
 
         <!-- RACIS -->
-        <div class="card-body">
-            <div class="  border-top d-flex align-items-center mb-3">
+        <div class="border-top">
+            <div class="  d-flex align-items-center my-3">
                 <div class="d-flex flex-grow-1 align-items-center">
                     <div class="name-box text-center">
                         {{initials}}
