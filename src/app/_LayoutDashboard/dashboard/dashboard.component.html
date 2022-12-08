@@ -967,16 +967,18 @@
             </div> -->
             <div class="form-group"  >
                 <label class="cus-lbl" >Title<span class="text-danger">*</span> </label>
-                <input class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name">
+                <input class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name" minlength="1" maxlength="50" (keyup)="LastLengthValidation11()">
+                <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
+                
             </div>
-
-            <div class="form-group">
+            
+            <div class="form-group" id="core_viw123">
                 <label class="cus-lbl">Select Project </label>
-                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
+                <ng-select  class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
                     (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
                         {{item.BlockNameProject}}</ng-option>
-                </ng-select>
+                </ng-select >
                 <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
                     <span class="d-inline-flex align-items-center"><i
                             class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
@@ -987,10 +989,19 @@
                     <span class="d-inline-flex align-items-center ml-2"><i
                             class="fas fa-star mr-2"></i>{{Status_project}}</span>
                 </div>
+                <span *ngIf ="_subname == true" style="color:red">Please select project!</span>
             </div>
 
-
-            <div class="content-main show pt-0" id="core_viw" >
+            <div class="form-group"  id="core_viw121" style="display:none">
+                <label class="cus-lbl">Select Project </label>
+                <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
+                   >
+                    <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
+                        {{item.BlockNameProject}}</ng-option>
+                </ng-select >
+           
+            </div>
+            <div class="content-main show pt-0" id="core_viw"  >
                 <div class="form-group" id="subtaskid" >
                     <label class="cus-lbl">Select Action</label>
                     <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask"
@@ -1009,7 +1020,16 @@
                                 class="fas fa-star mr-2"></i>{{_status}}</span>
                     </div>
                 </div>
+         
 
+                <div class="form-group"  id="core_viw222" style="display:none">
+                    <label class="cus-lbl">Select Portfolio </label>
+                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project" [(ngModel)]="Portfolio">
+                        <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
+                            {{item.Portfolio_Name}}</ng-option>
+                    </ng-select >
+               
+                </div>
                 
                 <!-- <div class="form-group" id="Link_Name" style="display:none">
                     <label class="cus-lbl">Link </label>
@@ -1017,20 +1037,14 @@
                 </div> -->
                 <div class="form-group" id="Guest_Name"  style="display:none">
                     <label class="cus-lbl">Add Guest </label>
-                    <!-- <select class="form-control" [(ngModel)]="User_Name">
-                        <option>Select</option>
-                    </select> -->
-                    <!-- <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="User_Name" placeholder="Select Employee" >
-                        <ng-option [value]="item.Emp_No" *ngFor="let item of _EmployeeListForDropdown">
-                            {{item.DisplayName}}
-                        </ng-option>
-                    </ng-select> -->
+                    
                     <ng-multiselect-dropdown [placeholder]="'Select Guest '" class="mutlidropdown-set"
                                 name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
                                 [settings]="dropdownSettings_Emp" [data]="_EmployeeListForDropdown"
                                 (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
                             </ng-multiselect-dropdown>
                 </div>
+                <!-- <div><input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/></div> -->
                 
                 <div class="section-1" id="Location_Name"  style="display:none">
                     <div class="form-group">
@@ -1108,6 +1122,9 @@
                                     </div>
                                 </div>
 
+                            </div>
+                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'">
+                                Note:Selected Project is Expired,Please Extend your Project Deadline date
                             </div>
 
 
@@ -1536,8 +1553,11 @@
 
 
                 </div>
-                <div class="form-group mb-1">
-                    <button type="submit" class="btn btn-primary" [disabled]="!Title_Name ||!Endtms ||!Startts"  (click)="OnSubmitSchedule()">Submit</button>
+                <div class="form-group mb-1" *ngIf="ScheduleType=='Task'">
+                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "  (click)="OnSubmitSchedule()">Submit</button>
+                </div>
+                <div class="form-group mb-1" *ngIf="ScheduleType=='Event'">
+                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts"  (click)="OnSubmitSchedule()">Submit</button>
                 </div>
 
                 <!-- <div class="content-main" id="stan_viw"> -->
