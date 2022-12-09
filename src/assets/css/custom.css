@@ -1101,3 +1101,30 @@ svg.feather {
     text-overflow: ellipsis;
     margin-top: 2px;
   }
+  
+.p-cb{
+    padding:1.25rem !important;
+  }
+  .pl-cb{
+    padding-left:1.25rem !important;
+  }
+  .pr-cb{
+    padding-right:1.25rem !important;
+  }
+  .pt-cb{
+    padding-top:1.25rem !important;
+  }
+  .pb-cb{
+    padding-bottom:1.25rem !important;
+  }
+  .px-cb{
+    padding-right:1.25rem !important;
+    padding-left:1.25rem !important;
+  }
+  .py-cb{
+    padding-top:1.25rem !important;
+    padding-bottom:1.25rem !important;
+  }
+  .bg-gry{
+    background: #f9fafb;
+  }

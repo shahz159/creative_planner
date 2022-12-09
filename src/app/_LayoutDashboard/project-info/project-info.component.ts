@@ -15,6 +15,8 @@ import * as _ from 'underscore';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
 
 @Component({
   selector: 'app-project-info',
@@ -25,6 +27,7 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 export class ProjectInfoComponent implements OnInit,OnDestroy {  
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
+    public approvalservice: ApprovalsService,
     private notifyService: NotificationService,
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
@@ -52,12 +55,23 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   interval: any;
   MoreDetailsList: any;
   
+  approvalObj = new ApprovalDTO();
+  requestDate: any;
+  requestDeadline: any;
+  requestType: any;
+  approvalEmpId: any;
+  requestComments: any;
+  requestDetails:any;
+  commentSelected: string;
+  comments: string;
+  selectedType: string;
 
   ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
+      this.getapprovalStats();
       this.fun_LoadProjectDetails();
     });
 
@@ -181,10 +195,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   closeInfo() {
+    this.selectedType = null;
+    this.commentSelected = null;
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    
 
     this.ngOnDestroy();
   }
@@ -700,5 +717,73 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
     }
   }
-  
+
+  clickonselect(){
+    this.comments=this.commentSelected;
+  }
+  typeChange(){
+    this.comments="";
+    this.commentSelected="";
+  }
+  submitApproval() {
+    if (this.selectedType == '1') {
+
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.Remarks = this.comments;
+      // alert(this.comments);
+
+      this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+          // this.GetProjectDetails();
+          // this.GetSubtask_Details();
+          // this.getapprovalStats();
+        });
+
+    }
+
+    else if (this.selectedType == '2') {
+      
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+
+    else if (this.selectedType == '3') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    else if (this.selectedType == '4') {
+      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    }
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none"; 
+
+  }
+  comments_list: any;
+  getapprovalStats() {
+    this.approvalObj.Project_Code = this.projectCode;
+
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      this.requestDetails= data as [];
+      if (this.requestDetails.length > 0) {
+        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestDate = (this.requestDetails[0]['Request_date']);
+        this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+        this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+      }
+      console.log(this.comments_list, "req")
+
+      // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
+    });
+  }
+
+  resetApproval(){
+    this.selectedType = null;
+    this.commentSelected = null;
+  }
 }

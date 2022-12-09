@@ -2114,8 +2114,8 @@
                             <div class="appr-comts">
 
                                 <div class="form-group" *ngIf="selectedType=='1'" (click)="clickonselect()">
-                                    <label class="mb-2">Select Comment</label><span style="color:red">*</span>
-                                    <select class="form-control" [(ngModel)]="commentSelected">
+                                    <label class="mb-2">Select Comment</label>
+                                    <!-- <select class="form-control" [(ngModel)]="commentSelected">
                                         <option value=""> -- select an option -- </option>
                                         <option>Accepted</option>
                                         <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
@@ -2124,29 +2124,51 @@
                                         <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
                                             Accepted
                                         </option>
-                                    </select>
+                                    </select> -->
+                                    <ng-select required #action="ngModel" name="comment_accept" placeholder="Select Comment" id="comment_accept"
+                                        [(ngModel)]="commentSelected">
+                                        <ng-option [value]="item.Req_Coments" *ngFor="let item of comments_list">
+                                            {{item.Req_Coments}}
+                                        </ng-option>
+                                    </ng-select>
                                 </div>
                                 <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
-                                    <label class="mb-2">Select Comment</label><span style="color:red">*</span>
-                                    <select class="form-control" [(ngModel)]="commentSelected">
+                                    <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+                                    <!-- <select class="form-control" [(ngModel)]="commentSelected">
                                         <option value=""> -- select an option -- </option>
-                                        <!-- <option>Accepted</option> -->
-                                        <option *ngIf="Status == 'Under Approval'">New project Rejected</option>
-                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Rejected
+                                        <option>Accepted</option>
+                                        <option *ngIf="Status == 'Under Approval'">New project Accepted</option>
+                                        <option *ngIf="Status == 'Completion Under Approval'">Project Complete Accepted
                                         </option>
                                         <option *ngIf="Status == 'Deadline Extend Under Approval'">Deadline Extend
-                                            Rejected
+                                            Accepted
                                         </option>
-                                    </select>
+                                    </select> -->
+                                    <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type" id="rej_type"
+                                        [(ngModel)]="rejectType" (click)="rejectApproval()">
+                                        <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
+                                            {{item.RejectType}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
                                 </div>
-                                <div class="form-group">
-                                    <label class="mb-2">Enter your Comment(optional)</label>
+                                <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect();rejectComments()">
+                                    <label class="mb-2">Select Comment</label>
+                                    <ng-select required #action="ngModel" name="comment_reject" placeholder="Select Comment" id="comment_reject"
+                                        [(ngModel)]="commentSelected">
+                                        <ng-option [value]="item.Req_Coments" *ngFor="let item of rejectcommentsList">
+                                            {{item.Req_Coments}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1'">
+                                    <label class="mb-2">Edit Your Comment</label><span style="color:red">*</span>
                                     <textarea class="form-control" [(ngModel)]="comments">{{commentSelected}}</textarea>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
-                                    [disabled]="!commentSelected || !selectedType">Submit</button>
+                                    [disabled]="!comments || !selectedType">Submit</button>
                                 <button class="btn btn-sm btn-secondary" (click)="closeApproval()">Cancel</button>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import * as _ from 'underscore';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
-import { DateAdapter } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -41,6 +41,8 @@ export class MoreDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
+    // private _adapter: DateAdapter<any>,
+    // @Inject(MAT_DATE_LOCALE) private _locale: string,
     public approvalservice: ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
@@ -83,11 +85,14 @@ export class MoreDetailsComponent implements OnInit {
   selectedType: string;
   date = new Date();
   dateF = new FormControl(new Date());
-
+  today: number;
+  currenthours: any;
+  currentminutes: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    
 
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
@@ -122,10 +127,28 @@ export class MoreDetailsComponent implements OnInit {
     });
 
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
+    this.currenthours = this.date.getHours();
+    this.currentminutes = this.date.getMinutes();
+    // alert(this.currenthours);
+    // alert(this.currentminutes);
     // alert(this.current_Date);
   }
+  date11:any;
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
+    
+    // if(this.current_Date==this.date11){
+    //   alert("same day");
+    // }
+    // else{
+    //   alert("different day")
+    // }
+        // this._locale = 'IN';
+    // this._adapter.setLocale(this._locale);
+    // if (this._locale === 'IN') {
+    //   return 'DD/MM/YYYY';
+    // }
+    
     // alert(this.current_Date);
   }
 
@@ -142,10 +165,13 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   typeChange(){
-    this.comments="";
-    this.commentSelected="";
+    this.comments=null;
+    this.commentSelected=null;
+    this.rejectType=null;
   }
-
+  comments_list:any;
+  reject_list:any;
+  rejectType:any;
   getapprovalStats() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
@@ -158,9 +184,37 @@ export class MoreDetailsComponent implements OnInit {
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+        this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
       }
+      // console.log(this.reject_list, "req")
+      
       // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
+  }
+  rejDesc:any;
+  rejectcommentsList: any;
+
+  rejectApproval(){
+    console.log(this.rejectType);
+    this.reject_list.forEach(element => {
+      if(this.rejectType==element.TypeID){
+        this.rejDesc=element.Reject_Description;
+      }
+    });
+  }
+
+  rejectComments(){
+    debugger
+    console.log(this.rejectType);
+
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.rejectType=this.rejectType;
+    this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
+      console.log(data,"reject");
+      this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
+    });
+
   }
 
   submitApproval() {
@@ -346,9 +400,14 @@ export class MoreDetailsComponent implements OnInit {
   s_ind: number;
   e_ind: number;
 
+  timedata1:any;
+  stdata:any;
+  etdata:any;
   getDarTime() {
+    debugger
+    this.timedata=[];
 
-    this.timedata = ["08:00",
+    this.timedata1 = ["08:00",
       "08:15", "08:30", "08:45", "09:00",
       "09:15", "09:30", "09:45", "10:00",
       "10:15", "10:30", "10:45", "11:00",
@@ -363,13 +422,29 @@ export class MoreDetailsComponent implements OnInit {
       "19:15", "19:30", "19:45", "20:00"];
     // $("#d-date").val(this.current_Date);
 
-
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-    this.objProjectDto.date = this.current_Date;
+    this.date11= moment(new Date()).format("MM/DD/YYYY");
+    this.objProjectDto.date = this.current_Date;   
+
+
+    if(this.current_Date==this.date11)
+    {
+      this.timedata1.forEach(element => {
+        const [shours, sminutes] = element.split(":");
+        if(shours<=this.currenthours) //&& sminutes<=this.currentminutes -- for exact time 
+        this.timedata.push(element);
+      });
+    }
+    else{
+      this.timedata1.forEach(element => {
+        this.timedata.push(element);
+      });
+    }
 
     this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
       .subscribe(data => {
+        debugger
         this.timeList = JSON.parse(data[0]['time_json']);
         if (this.timeList.length != 0) {
           this.bol = false;
@@ -2502,7 +2577,7 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
     window.open(proofDoc);
 
   }
@@ -2527,7 +2602,7 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
-    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + "/" + docName);
+    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + cd_date + "/" + docName);
     window.open(docName);
   }
 
@@ -2967,6 +3042,8 @@ export class MoreDetailsComponent implements OnInit {
   coresecondary: boolean = true;
   darcreate() {
     this.dateF = new FormControl(new Date());
+    // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
+    // alert(this.dateF.value);
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }

@@ -23,6 +23,15 @@ export class ApprovalsService {
 
   }
 
+  GetRejectComments(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no=obj.Emp_no;
+    this.obj_approvalDTO.rejectType = obj.rejectType;
+    
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectCommentsbyRejectType", this.obj_approvalDTO);
+
+  }
+
+
 
   InsertAcceptApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;

@@ -6,5 +6,6 @@ export class ApprovalDTO {
     Status: string;
     Remarks: string;
     message: string;
+    rejectType:any;
 
 }

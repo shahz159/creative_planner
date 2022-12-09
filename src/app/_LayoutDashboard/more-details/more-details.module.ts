@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
@@ -27,5 +28,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatFormFieldModule
   ],
   providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe]
+    // ,{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })
 export class MoreDetailsModule { }
