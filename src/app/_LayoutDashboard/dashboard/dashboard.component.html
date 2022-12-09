@@ -1024,7 +1024,7 @@
 
                 <div class="form-group"  id="core_viw222" style="display:none">
                     <label class="cus-lbl">Select Portfolio </label>
-                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project" [(ngModel)]="Portfolio">
+                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio" [(ngModel)]="Portfolio">
                         <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
                             {{item.Portfolio_Name}}</ng-option>
                     </ng-select >
@@ -1047,6 +1047,7 @@
                 <!-- <div><input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/></div> -->
                 
                 <div class="section-1" id="Location_Name"  style="display:none">
+                    <label class="cus-lbl">Location </label>
                     <input ngx-google-places-autocomplete class="form-control" (onAddressChange)="handleAddressChange($event)"/>
                     <!-- <div class="form-group">
                         <label class="cus-lbl">Location </label>
@@ -1098,6 +1099,7 @@
                             </div>
                         </div>
                     </div> -->
+                    <label class="cus-lbl">Select Daterange <span class="text-danger">*</span></label>
                     <input class="rangepic form-control" type="text" ngxDaterangepickerMd 
                     [(ngModel)]="selected" [showCustomRangeLabel]="false" [linkedCalendars]="true" [showClearButton]="true"
                     (datesUpdated)="datesUpdated($event)" placeholder="MM/DD/YYYY" />

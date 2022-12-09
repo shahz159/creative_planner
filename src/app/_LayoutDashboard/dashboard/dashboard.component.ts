@@ -1178,8 +1178,8 @@ export class DashboardComponent implements OnInit {
   datesUpdated($event) {
     //alert($event.startDate);
     if (this.pipe.transform($event.startDate, 'longDate') != null) {
-      alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
-      alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
+      // alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
+      // alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
     }
   }
   // End Here
@@ -1703,7 +1703,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+    this.selected=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
