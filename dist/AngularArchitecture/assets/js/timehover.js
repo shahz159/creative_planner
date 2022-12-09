@@ -1,8 +1,9 @@
 var _selectedId = $('#hdnSelectedId').val();
 var _SecondSelectedId = $('#hdnSecondSelectedId').val();
 var _total = $('#hdntotal').val();
- 
-$('table tr td').on("mouseenter", function () {
+ //tbl_times
+$('#tbl_times tr td').on("mouseenter", function () {
+    
     if (_selectedId != 0 && _SecondSelectedId == 0) {
         for (var i = 1; i <= _total; i++) {
 

@@ -6,23 +6,25 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
+
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DatePipe } from '@angular/common';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatCardModule} from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 import { MaterialModule } from "src/app/material-module";
 import { AngularEditorModule } from '@kolkov/angular-editor';
-// import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 FullCalendarModule.registerPlugins([
   interactionPlugin,
@@ -33,9 +35,9 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
   declarations: [
-    DashboardComponent,
-   
-   // DefaultComponent,
+    DashboardComponent
+
+    // DefaultComponent,
     //SidebarComponent
     //SidebarComponent
   ],
@@ -51,10 +53,11 @@ FullCalendarModule.registerPlugins([
     MatDialogModule, MatChipsModule, MatFormFieldModule,
     MatIconModule,
     MatCardModule
-    ,MaterialModule
-    // NgxDaterangepickerMd.forRoot()
+    , MaterialModule
+    , GooglePlaceModule
+    , NgxDaterangepickerMd.forRoot()
   ],
-  providers:[DatePipe],
-  exports:[DashboardComponent] 
+  providers: [DatePipe],
+  exports: [DashboardComponent]
 })
 export class DashboardModule { }
