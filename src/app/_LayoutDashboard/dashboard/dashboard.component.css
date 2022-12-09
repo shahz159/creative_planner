@@ -1033,7 +1033,7 @@ background-color: #f1f3f4;
 ::ng-deep .mutlidropdown-set .multiselect-dropdown .dropdown-btn{
     height: auto !important;
 }
-::ng-deep .fc-info {
+/* ::ng-deep .fc-info {
     background-color: #3788d8 !important;
     color: #fff !important;
 }
@@ -1044,21 +1044,25 @@ background-color: #f1f3f4;
 ::ng-deep .fc-grey {
     background-color: #adb3af !important;
     color: #fff !important;
-}
+} */
 ::ng-deep .fc .fc-list-event:hover td{
     background-color: unset !important;
 }
 ::ng-deep .fc-info .fc-daygrid-event-dot{
-    border-color: #ffffff;
+    border-color:  #3788d8 !important;;
 }
 ::ng-deep .fc-suc .fc-daygrid-event-dot{
-    border-color: #ffffff;
+    border-color: #1dc9b7 !important;
 }
 ::ng-deep .fc-grey .fc-daygrid-event-dot{
-    border-color: #ffffff;
+    border-color: #adb3af !important;   
 }
 ::ng-deep .fc .fc-daygrid-day-frame{
     height: 100px !important;
+}
+::ng-deep .ng-select-multiple {
+min-height: 36px;
+height: auto !important;
 }
 @media Screen and (max-width: 1600px) {
 
