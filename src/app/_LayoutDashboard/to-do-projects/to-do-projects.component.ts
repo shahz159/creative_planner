@@ -156,15 +156,17 @@ export class ToDoProjectsComponent implements OnInit {
   Attachments: string = "";
   FileName: string = null;
   Pid: number;
+  cloud:boolean;
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
     EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
-    PCost, duration, standardduration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType) {
+    PCost, duration, standardduration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType,cloud) {
 
     this.BsService.SetNewPojectCode(Pcode);
     this.BsService.SetNewPojectName(Pname);
     this.SubmissionType = SubmissionType;
     this.Pid = pid;
+    this.cloud=cloud;
     this.activeClass = true;
     this._topbar = false;
     this.paragraph_msg = true;
@@ -413,7 +415,7 @@ export class ToDoProjectsComponent implements OnInit {
   _IsPdf: boolean;
   src: any;
 
-  LoadDocument(url: string) {
+  LoadDocument(cloud,Pcode,Resp, url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
     // contenttype=".pdf";
@@ -423,10 +425,19 @@ export class ToDoProjectsComponent implements OnInit {
     // else if (contenttype == ".jpg" || contenttype == ".png" || contenttype == ".PNG" || contenttype == ".jpeg") {
     //   this._IsPdf = false;
     // }
-
     this.src = url;
-    var myWindow = window.open(url);
-    myWindow.focus();
+
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
+    
+    if(cloud==false){
+      var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/"  + url);
+      myWindow.focus();
+    }
+    else if(cloud==true){
+      var myWindow = window.open(url);
+      myWindow.focus();
+    }
     //this.cd.detectChanges();
     //$('#documentPreview').modal('toggle');
   }

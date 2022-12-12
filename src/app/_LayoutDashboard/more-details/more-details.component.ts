@@ -129,27 +129,10 @@ export class MoreDetailsComponent implements OnInit {
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
-    // alert(this.currenthours);
-    // alert(this.currentminutes);
-    // alert(this.current_Date);
   }
   date11:any;
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
-    
-    // if(this.current_Date==this.date11){
-    //   alert("same day");
-    // }
-    // else{
-    //   alert("different day")
-    // }
-        // this._locale = 'IN';
-    // this._adapter.setLocale(this._locale);
-    // if (this._locale === 'IN') {
-    //   return 'DD/MM/YYYY';
-    // }
-    
-    // alert(this.current_Date);
   }
 
   approvalObj = new ApprovalDTO();
@@ -224,7 +207,6 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
       this.approvalObj.Remarks = this.comments;
-      // alert(this.comments);
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
@@ -282,7 +264,6 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.arr = this.darList;
-        // alert(1);
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -456,7 +437,6 @@ export class MoreDetailsComponent implements OnInit {
           });
           let l = this.endtimearr.length;
           this.lastEndtime = this.endtimearr[l - 1];
-          // alert(this.lastEndtime);
         }
         else if (this.timeList.length == 0) {
           this.bol = true;
@@ -506,7 +486,6 @@ export class MoreDetailsComponent implements OnInit {
 
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
-    // alert(this.Sub_ProjectCode);
     this.Sub_Desc = item.Project_Description;
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
@@ -584,7 +563,6 @@ export class MoreDetailsComponent implements OnInit {
           this.Status = this.ProjectInfo_List[0]['Status'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
-          // alert(this.Comp_No);
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
@@ -2577,33 +2555,40 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
-    window.open(proofDoc);
+   window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    // window.open(proofDoc);
 
   }
 
-  openPDF(cd_date, docName) {
-    cd_date = new Date(cd_date);
+  openPDF(cloud, docName) {
+   
     let FileUrl: string;
-    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
-    let Day = cd_date.getDate();
-    let Month = cd_date.getMonth() + 1;
-    let Year = cd_date.getFullYear();
-    if (Month < 10) {
-      this._month = '0' + Month;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    
+    if(cloud==false){
+      window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/"  + docName);
     }
-    else {
-      this._month = Month;
+    else if(cloud==true){
+      window.open(docName);
     }
-    if (Day < 10) {
-      this._day = '0' + Day;
-    }
-    else {
-      this._day = Day;
-    }
-    var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
-    // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + cd_date + "/" + docName);
-    window.open(docName);
+     // let cd_date = new Date();
+     // FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+    // let Day = cd_date.getDate();
+    // let Month = cd_date.getMonth() + 1;
+    // let Year = cd_date.getFullYear();
+    // if (Month < 10) {
+    //   this._month = '0' + Month;
+    // }
+    // else {
+    //   this._month = Month;
+    // }
+    // if (Day < 10) {
+    //   this._day = '0' + Day;
+    // }
+    // else {
+    //   this._day = Day;
+    // }
+    // var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
   }
 
   Subtask_List: any;
@@ -2840,7 +2825,6 @@ export class MoreDetailsComponent implements OnInit {
 
       this.objProjectDto.Project_EndDate = this._ProjDeadline;
       this.objProjectDto.Project_Code = Pcode;
-      //  alert(Pcode);
       this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
 
@@ -3014,7 +2998,7 @@ export class MoreDetailsComponent implements OnInit {
         this.getapprovalStats();
       });
   }
-  LoadDocument(url: string) {
+  LoadDocument(cloud,Pcode, Resp, url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
     // contenttype=".pdf";
@@ -3024,10 +3008,22 @@ export class MoreDetailsComponent implements OnInit {
     // else if (contenttype == ".jpg" || contenttype == ".png" || contenttype == ".PNG" || contenttype == ".jpeg") {
     //   this._IsPdf = false;
     // }
-
     this.src = url;
-    var myWindow = window.open(url);
-    myWindow.focus();
+
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
+    
+    if(cloud==false){
+      var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/"  + url);
+      myWindow.focus();
+    }
+    else if(cloud==true){
+      var myWindow = window.open(url);
+      myWindow.focus();
+    }
+   
+    // var myWindow = window.open(url);
+    // myWindow.focus();
     //this.cd.detectChanges();
     //$('#documentPreview').modal('toggle');
   }
@@ -3043,7 +3039,6 @@ export class MoreDetailsComponent implements OnInit {
   darcreate() {
     this.dateF = new FormControl(new Date());
     // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
-    // alert(this.dateF.value);
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }

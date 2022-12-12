@@ -1120,7 +1120,7 @@
                                                             <i class="fas fa-paperclip text-muted mr-1"></i>
                                                             <a class="text-info curser-pointer"
                                                                 title="Click To Open File"
-                                                                (click)="LoadDocument(item.CompleteProofDoc)">
+                                                                (click)="LoadDocument(item.IsCloud,item.Project_Code, item.Team_Res,item.CompleteProofDoc)">
                                                                 <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
@@ -1298,7 +1298,7 @@
                                                             <i class="fas fa-paperclip text-muted mr-1"></i>
                                                             <a class="text-info curser-pointer"
                                                                 title="Click To Open File"
-                                                                (click)="LoadDocument(item.CompleteProofDoc)">
+                                                                (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
                                                                 <b>{{item.Sourcefile}}</b></a>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
@@ -1436,7 +1436,7 @@
                                                     <span class="kt-widget__desc pt-1 curser-pointer"
                                                         (click)="openPDF_Standard(item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</span>
                                                     <div class="kt-widget__desc pt-1">
-                                                        <small>{{item.Reportdate|date:'medium'}}</small>
+                                                        <small>{{item.Reportdate|date:'fullDate'}}</small>
                                                     </div>
                                                     <div class="kt-widget__desc pt-1" style="color:  #FFA500;">
                                                         <small>{{item.Remarks}}</small>
@@ -1464,9 +1464,9 @@
                                                     </div>
                                                     <div>
                                                         <span class="kt-widget__desc pt-1 curser-pointer"
-                                                            (click)="openPDF(item.CD,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
+                                                            (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
                                                         <div class="kt-widget__desc pt-1">
-                                                            <small>{{item.CD|date:'medium'}}</small>
+                                                            <small>{{item.LastUpdate | date:'fullDate'}}</small>
                                                         </div>
                                                         <div class="kt-widget__desc pt-1" style="color:  #FFA500;">
                                                             <small>{{item.Remarks}}</small>

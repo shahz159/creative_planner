@@ -196,7 +196,7 @@
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
                         item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,item.StandardDuration,
-                        item.Client_Name,item.Remarks,item.Remarkss,item.CD,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType)">
+                        item.Client_Name,item.Remarks,item.Remarkss,item.CD,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType,item.IsCloud)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
                             </p>
@@ -372,7 +372,7 @@
                             <span data-toggle="tooltip" title="Uploaded Document!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
                                 class="fas fa-file-pdf text-muted mr-1" ></i>
                             <a class="text-info curser-pointer" title="Click To Open File"  
-                                (click)="LoadDocument(Attachments)" ><b>{{FileName}}</b></a></span>
+                                (click)="LoadDocument(cloud,_ProjectCode,EmpNo_Res,Attachments)" ><b>{{FileName}}</b></a></span>
                             <!-- <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-paperclip text-muted mr-1"></i>
                                 <a (click)="LoadDocument(Attachments)">{{FileName}}</a>
@@ -522,7 +522,7 @@
                                     <span data-toggle="tooltip" title="Uploaded File!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.Sourcefile != ''"><i
                                             class="fas fa-file-pdf text-muted mr-1"></i>
                                         <a class="text-info curser-pointer"
-                                            (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
+                                            (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
                                     <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
                                         <i class="fas fa-registered text-muted mr-1"></i>
                                         <b>{{item.Remarks}}</b>
@@ -594,7 +594,7 @@
                                                 <span data-toggle="tooltip" title="Uploaded File!" class="mr-3 text-nowrap mb-2 d-inline-block" ><i
                                                         class="fas fa-file-pdf text-muted mr-1" *ngIf="item.Sourcefile != ''"></i>
                                                     <a class="text-info curser-pointer"
-                                                        (click)="LoadDocument(item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
+                                                        (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
 
                                                 <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap  d-inline-block" 
                                                     *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
