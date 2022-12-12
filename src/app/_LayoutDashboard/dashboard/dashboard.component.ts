@@ -136,6 +136,7 @@ export class DashboardComponent implements OnInit {
   selected: Date | null;
   minDate = moment().format("YYYY-MM-DD").toString();
   maxDate = "";
+  
   // minDate = "2022-11-01";
   // maxDate = "2022-11-30";
   selecteddays: any[] = [];
@@ -304,11 +305,11 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     this.calendarOptions = {
-      initialView: 'timeGridDay',
+      initialView: 'listDay',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
       },
       themeSystem: "solar",
       weekNumbers: true,
@@ -387,6 +388,18 @@ export class DashboardComponent implements OnInit {
     this.GetScheduledJson();
     this.maxDate = moment(moment().add(90, 'days')).format("YYYY-MM-DD").toString();
     //this.userProjects();
+    $('.eventfc').on('click', function(){
+        $('.eve-modal').addClass('open');
+    });
+    $(document).on("click", function(e) {
+      if ($(e.target).is(".eve-modal") === false) {
+        $(this).removeClass("open");
+      }
+    });
+  }
+
+  closeevearea(){
+    $('.eve-modal').removeClass('open');
   }
   // Scheduling Work
   // Start Here
@@ -1149,11 +1162,11 @@ export class DashboardComponent implements OnInit {
         console.log(this.Scheduledjson);
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
         this.calendarOptions = {
-          initialView: 'timeGridDay',
+          initialView: 'listDay',
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
           },
           themeSystem: "solar",
           weekNumbers: true,
@@ -1178,8 +1191,8 @@ export class DashboardComponent implements OnInit {
   datesUpdated($event) {
     //alert($event.startDate);
     if (this.pipe.transform($event.startDate, 'longDate') != null) {
-      // alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
-      // alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
+      alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
+      alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
     }
   }
   // End Here

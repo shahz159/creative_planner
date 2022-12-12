@@ -398,6 +398,7 @@
                         <i class="far fa-calendar-alt"></i> My Calendar
                     </h5>
                     <div class="d-flex">
+                        <button class="btn btn-sm btn-info mb-2 eventfc mr-2">Event</button>
                         <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button>
                         <div class="dropdown">
                             <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button"
@@ -812,6 +813,211 @@
     </div>
 </div>
 
+
+<div class="eve-modal" tabindex="-1" role="dialog">
+    <div class="card">
+        <div class="head-c bg-white">
+            <div class="icons-flex float-right">
+                <div class="icons-right">
+                    <span class="tool-span">
+                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L3 16.82V21h4.18L20.41 7.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z"></path>
+                        </svg>
+                    </span>
+                </div>
+                <div class="icons-right">
+                    <span class="tool-span">
+                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z"></path><path d="M9 8h2v9H9zm4 0h2v9h-2z"></path></svg>
+                    </span>
+                </div>
+                <div class="icons-right">
+                    <span class="tool-span" (click)="closeevearea()">
+                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="">
+                <div class="main-title">
+                    <div class="boxcl-div">
+                        <div class="box-cl" style="background-color: rgb(3, 155, 229);"></div>
+                    </div>
+                    <div class="title-right" id="">
+                        <div class="title-area">
+                            <div class="title-main">
+                                <span id="title1">Testing 2345</span>
+                            </div>
+                            <div class="title-day">Monday, December 12<span class="day-dot">⋅</span><span>11:30am – 1:30pm</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"></path>
+                                <circle cx="12" cy="9" r="2.5"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Devbox Software Pvt Ltd</div>
+                            <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                <path d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">2 guests</div>
+                            <div class="sub-s text-ellp">1 yes, 1 awaiting</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="avar-div">
+                    <div class="d-flex align-items-center">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" style="width: 20px;" width="24px" height="24px">
+                                    <path fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path>
+                                    <path fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path>
+                                    <rect fill="none" width="192" height="192"></rect>
+                                </svg>
+                            </span>
+                        </div>                        
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">Mohammed Mateen</div>
+                                <div class="sub-s text-ellp">Organizer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px">
+                                    <path fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path>
+                                    <path fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path>
+                                    <rect fill="none" width="192" height="192"></rect>
+                                </svg>
+                            </span>
+                        </div>                        
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">Mohammed Mateen</div>
+                                <div class="sub-s text-ellp">Organizer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn" style="width: 20px;">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zm-9-2h16V8H4v11zm9-9h5v2h-5v-2zm0 4h5v2h-5v-2zm-4-4v3h3a3 3 0 1 1-3-3zM2 3h20v2H2V3z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Master Coding School Of Angular testing 12345</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn" style="width: 20px;">
+                                <path fill="none" d="M0 0h24v24H0z"/>
+                                <path d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zM19 4H5v16h14V4zm-7.707 9.121l4.243-4.242 1.414 1.414-5.657 5.657-3.89-3.89 1.415-1.414 2.475 2.475z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Create Events in Dashboard</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area py-2">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <img alt="Logo" src="../../../assets/images/dms-logo.png" style="filter: grayscale(1);width: 20px;">
+
+                            <!-- <img alt="Logo" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Application Development</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area py-2">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"  class="svg-icn">
+                                <path fill="none" d="M0 0h24v24H0z"/><path d="M13 6v15h-2V6H5V4h14v2z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Description</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area py-2">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">30 Minutes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eve-area py-2">
+                    <div class="left-icon">
+                        <span class="side-icns" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path fill="none" d="M0 0h24v24H0z"/>
+                                <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 4h5v4H6v-4z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div class="">
+                            <div class="main-s">Mohammed Mateen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- New Side InformationBar -->
 <div id="mysideInfobar" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
@@ -1129,7 +1335,7 @@
                                 </div>
 
                             </div>
-                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'">
+                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                                 Note:Selected Project is Expired,Please Extend your Project Deadline date
                             </div>
 
