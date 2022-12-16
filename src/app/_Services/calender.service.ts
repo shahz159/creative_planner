@@ -35,6 +35,10 @@ export class CalenderService {
     this.obj_CalenderDTO.EmpNo = obj.EmpNo;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
+  NewClickEventJSON(obj:CalenderDTO){
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
+  }
 
   NewInsertCalender(obj: CalenderDTO){
     

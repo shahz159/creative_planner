@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
+import * as moment from 'moment';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -105,6 +106,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+   
     this._projcode = false;
     this._desbool = false;
     this._subname = false;

@@ -49,11 +49,12 @@
         <div class="form-group flex-1">
             <label>Start Date : <span class="text-danger">*</span></label>
             <div class="input-group">
-                <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
+                <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()"  [min]="disablePreviousDate"
                     [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                   
                 <div class="input-group-text p-0">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 ></mat-datepicker>
                 </div>
             </div>
             <span *ngIf ="_sdate == true" style="color:red">Start Date required!</span>

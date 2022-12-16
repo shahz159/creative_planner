@@ -398,9 +398,40 @@
                         <i class="far fa-calendar-alt"></i> My Calendar
                     </h5>
                     <div class="d-flex">
-                        <button class="btn btn-sm btn-info mb-2 eventfc mr-2">Event</button>
-                        <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button>
-                        <div class="dropdown">
+
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
+                                data-toggle="dropdown" aria-expanded="false">
+                                <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                        viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                            <rect fill="#000000" opacity="0.3"
+                                                transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                x="4" y="11" width="16" height="2" rx="1" />
+                                        </g>
+                                    </svg> -->
+                                    <svg width="36" height="36" viewBox="0 0 36 36">
+                                        <path fill="#34A853" d="M16 16v14h4V20z"></path>
+                                        <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+                                        <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                                        <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
+                                        <path fill="none" d="M0 0h36v36H0z"></path>
+                                    </svg>
+                                </span>
+                                <span class="tsk"> {{ScheduleType}}</span>
+
+                            </button>
+                            <div class="dropdown-menu drop-cus">
+                                <a class="dropdown-item" (click)="Task_type(1)">Task</a>
+                                <a class="dropdown-item" (click)="Task_type(2)">Event</a>
+                            </div>
+                        </div>
+
+                        <!-- <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button> -->
+                        <div class="dropdown" style="margin-top: 11px;">
                             <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button"
                                 aria-haspopup="true" aria-expanded="false">{{Project_Mode}}</a>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -813,203 +844,290 @@
     </div>
 </div>
 
-
-<div class="eve-modal" tabindex="-1" role="dialog">
-    <div class="card">
-        <div class="head-c bg-white">
-            <div class="icons-flex float-right">
-                <div class="icons-right">
-                    <span class="tool-span">
-                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L3 16.82V21h4.18L20.41 7.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="icons-right">
-                    <span class="tool-span">
-                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z"></path><path d="M9 8h2v9H9zm4 0h2v9h-2z"></path></svg>
-                    </span>
-                </div>
-                <div class="icons-right">
-                    <span class="tool-span" (click)="closeevearea()">
-                        <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="">
-                <div class="main-title">
-                    <div class="boxcl-div">
-                        <div class="box-cl" style="background-color: rgb(3, 155, 229);"></div>
-                    </div>
-                    <div class="title-right" id="">
-                        <div class="title-area">
-                            <div class="title-main">
-                                <span id="title1">Testing 2345</span>
-                            </div>
-                            <div class="title-day">Monday, December 12<span class="day-dot">⋅</span><span>11:30am – 1:30pm</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"></path>
-                                <circle cx="12" cy="9" r="2.5"></circle>
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Devbox Software Pvt Ltd</div>
-                            <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
-                                <path d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">2 guests</div>
-                            <div class="sub-s text-ellp">1 yes, 1 awaiting</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="avar-div">
-                    <div class="d-flex align-items-center">
-                        <div class="px-2">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" style="width: 20px;" width="24px" height="24px">
-                                    <path fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path>
-                                    <path fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path>
-                                    <rect fill="none" width="192" height="192"></rect>
-                                </svg>
-                            </span>
-                        </div>                        
-                        <div class="rgt-des">
-                            <div class="">
-                                <div class="main-s">Mohammed Mateen</div>
-                                <div class="sub-s text-ellp">Organizer</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="px-2">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px">
-                                    <path fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path>
-                                    <path fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path>
-                                    <rect fill="none" width="192" height="192"></rect>
-                                </svg>
-                            </span>
-                        </div>                        
-                        <div class="rgt-des">
-                            <div class="">
-                                <div class="main-s">Mohammed Mateen</div>
-                                <div class="sub-s text-ellp">Organizer</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn" style="width: 20px;">
-                                <path fill="none" d="M0 0h24v24H0z"></path>
-                                <path d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zm-9-2h16V8H4v11zm9-9h5v2h-5v-2zm0 4h5v2h-5v-2zm-4-4v3h3a3 3 0 1 1-3-3zM2 3h20v2H2V3z">
+<div class="bg-ovr">
+    <div class="eve-modal open" tabindex="-1" role="dialog">
+        <div class="card flex-1 mb-3">
+            <div class="head-c bg-white">
+                <div class="icons-flex float-right">
+                    <div class="icons-right">
+                        <span class="tool-span">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L3 16.82V21h4.18L20.41 7.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z">
                                 </path>
                             </svg>
                         </span>
                     </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Master Coding School Of Angular testing 12345</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn" style="width: 20px;">
-                                <path fill="none" d="M0 0h24v24H0z"/>
-                                <path d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zM19 4H5v16h14V4zm-7.707 9.121l4.243-4.242 1.414 1.414-5.657 5.657-3.89-3.89 1.415-1.414 2.475 2.475z"/>
+                    <div class="icons-right">
+                        <span class="tool-span">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
+                                </path>
+                                <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Create Events in Dashboard</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area py-2">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <img alt="Logo" src="../../../assets/images/dms-logo.png" style="filter: grayscale(1);width: 20px;">
-
-                            <!-- <img alt="Logo" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
-                        </span>
-                    </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Application Development</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eve-area py-2">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"  class="svg-icn">
-                                <path fill="none" d="M0 0h24v24H0z"/><path d="M13 6v15h-2V6H5V4h14v2z"/>
+                    <div class="icons-right">
+                        <span class="tool-span" (click)="closeevearea()">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+                                </path>
                             </svg>
                         </span>
                     </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Description</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="" *ngFor="let item of EventScheduledjson">
+                    <div id="NameDate" class="main-title">
+                        <div class="boxcl-div">
+                            <div class="box-cl" style="background-color: rgb(3, 155, 229);"></div>
+                        </div>
+                        <div class="title-right" id="">
+                            <div class="title-area">
+                                <div class="title-main">
+                                    <span id="title1">{{item.Task_Name}}</span>
+                                    <span style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline ml-3">
+                                        {{item.Schedule_Type}}
+                                    </span>
+                                </div>
+                                <div class="title-day">{{item.Schedule_date| date:'dd, MMMM YYYY'}}<span
+                                        class="day-dot">⋅</span>
+                                    <span>{{item.St_Time}}–
+                                        {{item.Ed_Time}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="eve-area py-2">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
-                                <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">30 Minutes</div>
+                    <div id="location" class="eve-area" *ngIf="item.Location!=''">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z">
+                                    </path>
+                                    <circle cx="12" cy="9" r="2.5"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">{{item.Location}}</div>
+                                <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
+                                    Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div> -->
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="eve-area py-2">
-                    <div class="left-icon">
-                        <span class="side-icns" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path fill="none" d="M0 0h24v24H0z"/>
-                                <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 4h5v4H6v-4z"/>
-                            </svg>
-                        </span>
+                    <div id="userlength" class="eve-area" *ngIf="User_Scheduledjson.length > 0">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                    <path
+                                        d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">{{User_Scheduledjson.length}} guests</div>
+                                <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="rgt-des">
-                        <div class="">
-                            <div class="main-s">Mohammed Mateen</div>
+                    <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
+                        <div *ngFor="let _user of User_Scheduledjson" class="d-flex align-items-center">
+                            <div class="px-2">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"
+                                        enable-background="new 0 0 192 192" style="width: 20px;" width="24px"
+                                        height="24px">
+                                        <path fill="#E0E0E0"
+                                            d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z">
+                                        </path>
+                                        <path fill="#BDBDBD"
+                                            d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z">
+                                        </path>
+                                        <path fill="#BDBDBD"
+                                            d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z">
+                                        </path>
+                                        <rect fill="none" width="192" height="192"></rect>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s">{{_user.TM_DisplayName}}</div>
+                                    <div class="sub-s text-ellp">{{_user.Designation_Name}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="project" class="eve-area" *ngIf="Project_NameScheduledjson.length > 0">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn" style="width: 20px;">
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path
+                                        d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zm-9-2h16V8H4v11zm9-9h5v2h-5v-2zm0 4h5v2h-5v-2zm-4-4v3h3a3 3 0 1 1-3-3zM2 3h20v2H2V3z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s pro-nm">Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-div" *ngIf="Project_NameScheduledjson.length > 0">
+                        <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
+                            <div class="px-2">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M16 12l-6 6V6z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div>
+                                    <div class="main-s">{{_pro.Project_Name}}</div>
+                                    <div class="main-s" *ngIf="item.Schedule_Type=='Task'">{{item.Master_code}}</div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="portfolio" class="eve-area" *ngIf="portfolio_Scheduledjson.length > 0">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn" style="width: 20px;">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path
+                                        d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zM19 4H5v16h14V4zm-7.707 9.121l4.243-4.242 1.414 1.414-5.657 5.657-3.89-3.89 1.415-1.414 2.475 2.475z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s pro-nm">Portfolios</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-div" *ngIf="portfolio_Scheduledjson.length > 0">
+                        <div class="d-flex align-items-center" *ngFor="let _prot of portfolio_Scheduledjson">
+                            <div class="px-2">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M16 12l-6 6V6z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div>
+                                    <div class="main-s">{{_prot.Portfolio_Name}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dms" class="eve-area py-2" *ngIf="item.DMS_Name != ''">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <img alt="Logo" src="../../../assets/images/dms-logo.png"
+                                    style="filter: grayscale(1);width: 20px;">
+
+                                <!-- <img alt="Logo" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s pro-nm">Linked DMS</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-div" *ngIf="item.DMS_Name != ''">
+                        <div class="d-flex align-items-center">
+                            <div class="px-2">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M16 12l-6 6V6z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div>
+                                    <div class="main-s">{{item.DMS_Name}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s" [innerHTML]="item.Description"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="duration" class="eve-area py-2">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                    <path
+                                        d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">{{item.Minutes}} Minutes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="createdby" class="eve-area py-2">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path
+                                        d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 4h5v4H6v-4z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">{{item.Created_by}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1098,7 +1216,7 @@
 <div id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1 border-bottom">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="m-0">Schedule Task</h4>
+            <h4 class="m-0">Schedule {{ScheduleType}}</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
                 <i class="fa fa-times"></i>
             </a>
@@ -1125,36 +1243,6 @@
                             </div>
 
 
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
-                                    data-toggle="dropdown" aria-expanded="false">
-                                    <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                            viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
-                                                <rect fill="#000000" opacity="0.3"
-                                                    transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                    x="4" y="11" width="16" height="2" rx="1" />
-                                            </g>
-                                        </svg> -->
-                                        <svg width="36" height="36" viewBox="0 0 36 36">
-                                            <path fill="#34A853" d="M16 16v14h4V20z"></path>
-                                            <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
-                                            <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
-                                            <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
-                                            <path fill="none" d="M0 0h36v36H0z"></path>
-                                        </svg>
-                                    </span>
-                                    {{ScheduleType}}
-                                </button>
-                                <div class="dropdown-menu drop-cus">
-                                    <a class="dropdown-item"  (click)="Task_type(1)" >Task</a>
-                                    <a class="dropdown-item" (click)="Task_type(2)" >Event</a>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -1171,20 +1259,21 @@
                 <span>Note :</span>&nbsp;
                   <span class="">{{typetext}}</span>
             </div> -->
-            <div class="form-group"  >
-                <label class="cus-lbl" >Title<span class="text-danger">*</span> </label>
-                <input class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name" minlength="1" maxlength="50" (keyup)="LastLengthValidation11()">
+            <div class="form-group">
+                <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
+                <input class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name" minlength="1"
+                    maxlength="50" (keyup)="LastLengthValidation11()">
                 <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
-                
+
             </div>
-            
+
             <div class="form-group" id="core_viw123">
                 <label class="cus-lbl">Select Project </label>
-                <ng-select  class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
+                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
                     (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
                         {{item.BlockNameProject}}</ng-option>
-                </ng-select >
+                </ng-select>
                 <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
                     <span class="d-inline-flex align-items-center"><i
                             class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
@@ -1195,20 +1284,20 @@
                     <span class="d-inline-flex align-items-center ml-2"><i
                             class="fas fa-star mr-2"></i>{{Status_project}}</span>
                 </div>
-                <span *ngIf ="_subname == true" style="color:red">Please select project!</span>
+                <span *ngIf="_subname == true" style="color:red">Please select project!</span>
             </div>
 
-            <div class="form-group"  id="core_viw121" style="display:none">
+            <div class="form-group" id="core_viw121" style="display:none">
                 <label class="cus-lbl">Select Project </label>
-                <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
-                   >
+                <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project"
+                    [(ngModel)]="MasterCode">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
                         {{item.BlockNameProject}}</ng-option>
-                </ng-select >
-           
+                </ng-select>
+
             </div>
-            <div class="content-main show pt-0" id="core_viw"  >
-                <div class="form-group" id="subtaskid" >
+            <div class="content-main show pt-0" id="core_viw">
+                <div class="form-group" id="subtaskid">
                     <label class="cus-lbl">Select Action</label>
                     <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask"
                         (change)="getChangeSubtaskDetais($event)">
@@ -1226,35 +1315,47 @@
                                 class="fas fa-star mr-2"></i>{{_status}}</span>
                     </div>
                 </div>
-         
 
-                <div class="form-group"  id="core_viw222" style="display:none">
-                    <label class="cus-lbl">Select Portfolio </label>
-                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio" [(ngModel)]="Portfolio">
+
+                <div class="form-group" id="core_viw222" style="display:none">
+                    <label class="cus-lbl">Add Portfolio </label>
+                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio"
+                        [(ngModel)]="Portfolio">
                         <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
                             {{item.Portfolio_Name}}</ng-option>
-                    </ng-select >
-               
+                    </ng-select>
+
                 </div>
-                
+
+                <div class="form-group" id="core_Dms" style="display:none">
+                    <label class="cus-lbl">Add DMS </label>
+                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select DMS"
+                        [(ngModel)]="SelectDms">
+                        <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
+                            {{item.Subject}} </ng-option>
+                    </ng-select>
+
+                </div>
+
                 <!-- <div class="form-group" id="Link_Name" style="display:none">
                     <label class="cus-lbl">Link </label>
                     <input class="form-control" placeholder="link" type="LinK" [(ngModel)]="Link_Type">
                 </div> -->
-                <div class="form-group" id="Guest_Name"  style="display:none">
+                <div class="form-group" id="Guest_Name" style="display:none">
                     <label class="cus-lbl">Add Guest </label>
-                    
+
                     <ng-multiselect-dropdown [placeholder]="'Select Guest '" class="mutlidropdown-set"
-                                name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
-                                [settings]="dropdownSettings_Emp" [data]="_EmployeeListForDropdown"
-                                (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
-                            </ng-multiselect-dropdown>
+                        name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown" [settings]="dropdownSettings_Emp"
+                        [data]="_EmployeeListForDropdown" (onSelect)="OnEmpSelect($event)"
+                        (onDeSelect)="OnEmpDeselect()">
+                    </ng-multiselect-dropdown>
                 </div>
                 <!-- <div><input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/></div> -->
-                
-                <div class="section-1" id="Location_Name"  style="display:none">
+
+                <div class="section-1" id="Location_Name" style="display:none">
                     <label class="cus-lbl">Location </label>
-                    <input ngx-google-places-autocomplete class="form-control" (onAddressChange)="handleAddressChange($event)"/>
+                    <input ngx-google-places-autocomplete class="form-control"
+                        (onAddressChange)="handleAddressChange($event)" />
                     <!-- <div class="form-group">
                         <label class="cus-lbl">Location </label>
                         <textarea class="form-control" placeholder="Enter Full Address"  [(ngModel)]="Location_Type"></textarea>
@@ -1270,7 +1371,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="form-group" id="Descrip_Name"  style="display:none">
+                <div class="form-group" id="Descrip_Name" style="display:none">
                     <label class="cus-lbl">Description </label>
                     <!-- <textarea class="form-control" placeholder="Description" [(ngModel)]="Description_Type"></textarea> -->
                     <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
@@ -1280,50 +1381,81 @@
                         <option>Select Subtask</option>
                     </select>
                 </div> -->
+
+
                 <div class="form-group">
-                    <!-- <div class="">
-                        <div class="d-flex align-items-center">
-                            <div class="input-group align-items-center dropfocus  dropdown">
-                                <input class="kt-input form-control" type="text" placeholder="Start Time"
-                                    data-toggle="dropdown" [(ngModel)]="Startts">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <ng-container *ngFor="let item of StartTimearr">
-                                        <a class="dropdown-item"
-                                            (click)="addstarttime(item.TSStart)">{{item.TSStart}}</a>
-                                    </ng-container>
+                    <!-- satrt -->
+
+                    <div class="d-flex gap-1">
+                        <div class="form-group flex-1">
+                            <label>Start Date : <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                    (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                    [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                <div class="input-group-text p-0">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
                                 </div>
                             </div>
-                            <span aria-label=" to ">–</span>
-                            <div class="input-group align-items-center dropfocus  dropdown">
-                                <input class="kt-input form-control" type="text" placeholder="End Time"
-                                    data-toggle="dropdown" [(ngModel)]="Endtms">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <ng-container *ngFor="let item of StartTimearr">
-                                        <a class="dropdown-item" (click)="addendtime(item.TSEnd)">{{item.TSEnd}}</a>
-                                    </ng-container>
-                                </div>
-                            </div>
+
                         </div>
-                    </div> -->
-                    <label class="cus-lbl">Select Daterange <span class="text-danger">*</span></label>
-                    <input class="rangepic form-control" type="text" ngxDaterangepickerMd 
-                    [(ngModel)]="selected" [showCustomRangeLabel]="false" [linkedCalendars]="true" [showClearButton]="true"
-                    (datesUpdated)="datesUpdated($event)" placeholder="MM/DD/YYYY" />
+                        <div class="form-group flex-1">
+                            <label>End Date :<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
+                                    (dateChange)="selectEndDate($event)" [min]="_StartDate" [(ngModel)]="_EndDate"
+                                    placeholder="End Date" class="form-control">
+                                <div class="input-group-text p-0">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- end -->
+                    <!-- <label class="cus-lbl">Select Daterange <span class="text-danger">*</span></label>
+                    <input class="rangepic form-control" type="text" ngxDaterangepickerMd [(ngModel)]="selected"
+                        [showCustomRangeLabel]="false" [linkedCalendars]="true" [showClearButton]="true"
+                        placeholder="MM/DD/YYYY" /> -->
                     <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
                             <div class="d-flex gap-15">
+                                <div class="form-group flex-1">
+                                    <label class="cus-lbl">Start Time </label>
+                                    <ng-select class="kt-input form-control" (open)="onfocus($event)"
+                                        placeholder="Start Time" [(ngModel)]="Startts">
+                                        <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item"
+                                            (click)="addstarttime(item)">
+                                            {{item}}</ng-option>
+                                    </ng-select>
+                                </div>
 
-                                <div class="form-group dropfocus ml-0 dropdown mb-3">
-                                    <label class="cus-lbl">Start Time <span class="text-danger">*</span></label>
+                                <!-- ---End ---- -->
+                                <!-- <div class="form-group dropfocus ml-0 dropdown mb-3">
+                                    <label class="cus-lbl">Start Time1 <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" placeholder="Start Time"
                                         data-toggle="dropdown" [(ngModel)]="Startts">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <ng-container *ngFor="let item of StartTimearr">
-                                            <a class="dropdown-item" (click)="addstarttime(item)">{{item}}</a>
+                                        <ng-container *ngFor="let item of StartTimearr; let i=index">
+                                            <a class="dropdown-item" (click)="addstarttime(item)"
+                                               >{{item}}</a>
                                         </ng-container>
                                     </div>
+                                </div> -->
+
+                                <div class="form-group flex-1">
+                                    <label class="cus-lbl">End Time </label>
+                                    <ng-select class="kt-input form-control" (open)="onfocus($event)"
+                                        placeholder="End Time" [(ngModel)]="Endtms">
+                                        <ng-option *ngFor="let item1 of EndTimearr" [value]="item1"
+                                            (click)="addendtime(item1)">
+                                            {{item1}}</ng-option>
+                                    </ng-select>
                                 </div>
-                                <div class="form-group dropfocus ml-0 dropdown mb-3">
+                                <!-- <div class="form-group dropfocus ml-0 dropdown mb-3">
                                     <label class="cus-lbl">End Time <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" placeholder="End Time"
                                         data-toggle="dropdown" [(ngModel)]="Endtms">
@@ -1332,21 +1464,63 @@
                                             <a class="dropdown-item" (click)="addendtime(item1)">{{item1}}</a>
                                         </ng-container>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                             <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                                 Note:Selected Project is Expired,Please Extend your Project Deadline date
                             </div>
+                            <div class="form-group flex-1">
+                                <label class="">Repeat on</label>
+                                <mat-select name="Select Type" placeholder="Do not repeat" class="form-control"
+                                    (selectionChange)="SelectDropDown($event)">
 
+                                    <mat-option [value]="1">Daily</mat-option>
+                                    <mat-option [value]="2">Weekly</mat-option>
+                                    <mat-option [value]="3">Monthly</mat-option>
+
+                                </mat-select>
+
+                            </div>
+
+                            <div class="ml-0 form-group" style="display: none;" id="weekly_121">
+
+                                <label class="">Days</label>
+                                <div class="pt-1">
+                                    <div class="d-flex">
+
+                                        <ng-container *ngFor="let item of dayArr">
+                                            <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                    type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                    class="rep-chk" />
+                                                {{item.Day}}
+                                            </div>
+                                        </ng-container>
+
+                                    </div>
+                                </div>
+                            </div>
 
                             <mat-card class="demo-inline-calendar-card ">
                                 <div>
+                                    <!-- (selectedChange)="select($event)"
+                                        [dateClass]="isSelected"  -->
                                     <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)"
                                         [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate">
                                     </mat-calendar>
                                 </div>
                             </mat-card>
+                            <!-- <div class="input-group">
+                                <input matInput  [matDatepicker]="picker12" (click)="picker12.open()" 
+                                (dateChange)="select($event)"     placeholder="Start Date" class="form-control">
+                                <div class="input-group-text p-0">
+                                    <mat-datepicker-toggle matSuffix [for]="picker12"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker12  [dateClass]="isSelected"
+                                    ></mat-datepicker>
+                                </div>
+                            </div> -->
+
 
                         </div>
 
@@ -1357,7 +1531,7 @@
                             <input type="hidden" id="hdntotal" value="{{this._total}}">
                             <div class="d-flex align-items-center justify-content-between w-100 px-3 mb-2">
                                 <span class="badge badge-light-primary">{{doubleclickdate}}</span>
-                                <select (change)="getavltime($event)"  class="form-control w-maxc">
+                                <select (change)="getavltime($event)" class="form-control w-maxc">
                                     <option>select</option>
                                     <option [id]="time.count" [value]="time.count" *ngFor="let time of Avaliabletime">
                                         {{time.StartTime}} - {{time.EndTime}}
@@ -1392,86 +1566,8 @@
                 <!-- <ng-container *ngFor="let zero of daysSelectedII">
                     <span>{{zero.Date}}-------{{zero.StartTime}}-------{{zero.EndTime}}</span><br>
                 </ng-container> -->
-                <div class="form-group w-matc">
-                    <label class="">Repeat on</label>
-                    <mat-select name="Select Type" placeholder="Do not repeat" class="form-control"
-                        (selectionChange)="SelectDropDown($event)">
 
-                        <mat-option [value]="1">Daily</mat-option>
-                        <mat-option [value]="2">Weekly</mat-option>
-                        <mat-option [value]="3">Monthly</mat-option>
 
-                    </mat-select>
-                    <!-- <ng-select placeholder="Select" (change)="SelectDropDown($event.value)"
-                class="">
-                <ng-option [value]=item *ngFor="let item of Weekly">{{item}}</ng-option>
-              
-            </ng-select> -->
-                    <!-- <div class="dropfocus wc-cus dropdown ml-0">
-                        <input class="kt-input form-control" type="text" placeholder="Do not repeat"
-                            data-toggle="dropdown">
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item">Daily</a>
-                            <a class="dropdown-item" (click)=" SelectDropDown(1)">Weekly</a>
-                            <a class="dropdown-item">Monthly</a>
-                           
-                        </div>
-                    </div> -->
-                </div>
-
-                <div class="ml-0 form-group" style="display: none;" id="weekly_121">
-                    <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Weekly'" -->
-                    <label class="">Days</label>
-                    <div class="pt-1">
-                        <div class="d-flex">
-                            <!-- [ngClass]="day ? 'repeat-day active' : 'repeat-day'" -->
-                            <!-- <div *ngFor="let item of dayArr"
-                                [ngClass]="selectDay==item ? 'repeat-day active' : 'repeat-day'"
-                                (click)="selectedDay(item)" [(ngModel)]="selectDay">
-                                <input type="checkbox" class="rep-chk" />
-                                {{item}}
-                            </div>
-                            <br> -->
-                            <ng-container *ngFor="let item of dayArr">
-                                <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                    <input (change)="selectedDay($event)" id="{{item.value}}" type="checkbox"
-                                        name="DaysChk" value="{{item.value}}" class="rep-chk" />
-                                    {{item.Day}}
-                                </div>
-                            </ng-container>
-
-                            <!-- <div class="repeat-day">
-                                Su
-                            </div>
-                            <div class="repeat-day">
-                                M
-                            </div>
-                            <div class="repeat-day active">
-                                T
-                            </div>
-                            <div class="repeat-day">
-                                W
-                            </div>
-                            <div class="repeat-day">
-                                T
-                            </div>
-                            <div class="repeat-day">
-                                F
-                            </div>
-                            <div class="repeat-day">
-                                S
-                            </div> -->
-
-                            <!-- <input class="kt-input form-control" type="text" placeholder="Calender" matInput
-                                [matDatepicker]="picker1" (click)="picker1.open()" placeholder="Select Date"
-                                name="date" />
-                            <div class="input-group-text p-0">
-                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
 
                 <div *ngIf="isChecked == '1'">
                     <!-- <div class="form-group">Customize Dates
@@ -1766,10 +1862,12 @@
 
                 </div>
                 <div class="form-group mb-1" *ngIf="ScheduleType=='Task'">
-                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "  (click)="OnSubmitSchedule()">Submit</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
+                        (click)="OnSubmitSchedule()">Submit</button>
                 </div>
                 <div class="form-group mb-1" *ngIf="ScheduleType=='Event'">
-                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts"  (click)="OnSubmitSchedule()">Submit</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts"
+                        (click)="OnSubmitSchedule()">Submit</button>
                 </div>
 
                 <!-- <div class="content-main" id="stan_viw"> -->
