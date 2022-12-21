@@ -20,7 +20,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { forEach } from '@angular-devkit/schematics';
@@ -252,7 +252,7 @@ export class DashboardComponent implements OnInit {
   Project_NameScheduledjson: any[] = [];
   portfolio_Scheduledjson: any[] = [];
   User_Scheduledjson: any[] = [];
-  DMS_Scheduledjson: any[] = [];
+  DMS_Scheduledjson: any = [];
   Portfolio: any;
   Portfoliolist_1: [];
   Note_deadlineexpire: boolean;
@@ -445,6 +445,15 @@ export class DashboardComponent implements OnInit {
     $('.side_view').removeClass('position-fixed');
 
   }
+  evereq() {
+    $('.bg-ovr1').addClass('d-block');
+    $('.side_view').addClass('position-fixed');
+  }
+  closeevearea1() {
+    $('.bg-ovr1').removeClass('d-block');
+    $('.side_view').removeClass('position-fixed');
+
+  }
   // Scheduling Work
   // Start Here
 
@@ -527,10 +536,10 @@ export class DashboardComponent implements OnInit {
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
 
-      console.log(JSON.stringify(finalarray), "finalarray")
+      // console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-          console.log(data, "m");
+          // console.log(data, "m");
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
           this.GetScheduledJson();
@@ -541,11 +550,11 @@ export class DashboardComponent implements OnInit {
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
-          this.St_date = "";
+          this.St_date = null;
           this.Ed_date = null;
           this._status = null;
           this.SelectDms = null;
-          this.Location_Type = "";
+          this.Location_Type = null;
           this.Allocated_subtask = null;
           this.Projectstartdate = "";
           this.projectEnddate = null;
@@ -562,6 +571,7 @@ export class DashboardComponent implements OnInit {
           this.minDate = moment().format("YYYY-MM-DD").toString();;
           this.maxDate = null;
           this.calendar.updateTodaysDate();
+          this.TImetable();
 
         });
 
@@ -642,7 +652,7 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
         ((data) => {
-          console.log(data);
+          // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
 
@@ -839,6 +849,7 @@ export class DashboardComponent implements OnInit {
           if (found) {
             this.Timechangearry.forEach(element2 => {
               if (element2.Date == element) {
+             
 
                 var jsonData = {};
                 var columnName = "Date";
@@ -875,7 +886,7 @@ export class DashboardComponent implements OnInit {
       ((data) => {
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
         this.calendar.updateTodaysDate();
-        console.log("First value Array" + JSON.stringify(this.daysSelectedII))
+        // console.log("First value Array" + JSON.stringify(this.daysSelectedII))
       });
   }
   Doubleclick(event: any) {
@@ -893,7 +904,7 @@ export class DashboardComponent implements OnInit {
       })
     // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
-    console.log(event)
+    // console.log(event)
     this.calendar.updateTodaysDate();
 
   }
@@ -955,20 +966,20 @@ export class DashboardComponent implements OnInit {
           this.Alltimes.push(element.TSStart);
         });
 
-        console.log(this.EndTimearr[0]);
-        console.log("Array" + this.EndTimearr);
+        // console.log(this.EndTimearr[0]);
+        // console.log("Array" + this.EndTimearr);
       });
   }
-  addstarttime(TSStart) {
-
+  addstarttime() {
+// alert(this.Startts);
     this.Alltimes = [];
     this.StartTimearr.forEach(element => {
       this.Alltimes.push(element);
     });
-    this.Startts = TSStart;
-    let _index = this.StartTimearr.indexOf(TSStart);
+    // this.Startts = this.Startts;
+    let _index = this.StartTimearr.indexOf(this.Startts);
     this.EndTimearr = this.Alltimes.splice(_index + 1);
-    this.Startts = TSStart;
+    // this.Startts = TSStart;
     this.Endtms = this.EndTimearr[0];
 
     this.daysSelectedII = [];
@@ -995,8 +1006,8 @@ export class DashboardComponent implements OnInit {
         jsonData[columnName] = element;
         var columnNames = "StartTime";
         jsonData[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        jsonData[columnNamee] = this.Endtms;
+        var columnNames = "EndTime";
+        jsonData[columnName] = this.Endtms;
         this.daysSelectedII.push(jsonData);
       }
     });
@@ -1088,7 +1099,7 @@ export class DashboardComponent implements OnInit {
           }
         });
       }
-      console.log("Updated Array" + JSON.stringify(this.Timechangearry))
+      // console.log("Updated Array" + JSON.stringify(this.Timechangearry))
       this.calendar.updateTodaysDate();
       this._selectedId = 0;
       this._SecondSelectedId = 0;
@@ -1292,6 +1303,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
+  dmsIdjson:any=[];
   GetClickEventJSON_Calender(arg) {
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
@@ -1299,30 +1311,53 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "Testing");
+        // console.log(this.EventScheduledjson, "Testing");
          
         this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
         this.portfolio_Scheduledjson =JSON.parse( this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
-       
+        this.DMS_Scheduledjson =this.DMS_Scheduledjson.split(',');
+        
+        
+        if (this.DMS_Scheduledjson.length > 0) {
+          this.DMS_Scheduledjson.forEach(element => {
+            var jsonData = {};
+            var columnName = "MailId";
+            jsonData[columnName] = element;
+            this.dmsIdjson.push(jsonData);
+          });
+        }
+        this.dmsIdjson=JSON.stringify(this.dmsIdjson);
+        console.log(this.dmsIdjson,"ids");
+
+        this._LinkService._GetMemosSubject(this.dmsIdjson).
+        subscribe((data) => {
+          this._MemosSubjectList = JSON.parse(data['JsonData']);
+          console.log("Subject Name ------------>", this._MemosSubjectList);
+        });
+        // console.log(this.dmsIdjson,"ids");
       });
   }
 
+  
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        console.log(this.Scheduledjson, "Testing");
+        // console.log(this.Scheduledjson, "Testing");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
         this.calendarOptions = {
+          
           initialView: 'listMonth',
+          
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
+          
           themeSystem: "solar",
           weekNumbers: true,
           eventClick: this.GetClickEventJSON_Calender.bind(this),
@@ -1383,7 +1418,7 @@ export class DashboardComponent implements OnInit {
     this.daysSelectedII = [];
   }
 
-  End
+ // End
   // alert( this.minDate);
   // alert( this.maxDate);
   // alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
@@ -1392,7 +1427,7 @@ export class DashboardComponent implements OnInit {
   // Scheduling Work
 
   handleEventClick(arg) {
-    console.log(arg, "ttttt")
+    // console.log(arg, "ttttt")
     this.ProjectCode = arg.event._def.extendedProps.Schedule_ID;
     alert(arg.event._def.extendedProps.Schedule_ID)
     // this.router.navigate(["../backend/dashboard/projectinfo", this.ProjectCode]);
@@ -1578,7 +1613,7 @@ export class DashboardComponent implements OnInit {
 
     var url = document.baseURI + this.page_Name;
     var myurl = `${url}/${Mode}`;
-    console.log(myurl)
+    // console.log(myurl)
     var myWindow = window.open(myurl);
     myWindow.focus();
 
@@ -1677,8 +1712,24 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
 
+ 
   // Add Dms and Delete Functionality
+//   Memo_Idarry:any=[];
+// GetMemosbymemo_Id(){
+// let memoarry=[];
+// memoarry=this.DMS_Name;
+// if (memoarry.length > 0) {
+//   memoarry.forEach(element => {
+//     var columnName = "DMS_Name";
+//     element[columnName] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+// memoarry
+ 
 
+// });
+
+// }
+
+// }
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -1686,7 +1737,7 @@ export class DashboardComponent implements OnInit {
 
         this.Memos_List = JSON.parse(data['JsonData']);
 
-        console.log(this.Memos_List, "test iiii");
+        // console.log(this.Memos_List, "test iiii");
 
       });
   }
@@ -1740,6 +1791,7 @@ export class DashboardComponent implements OnInit {
           else {
             this._mappedMemos = this._dbMemoIdList.length;
           }
+       
         }
         else {
           this._mappedMemos = 0;
@@ -1835,65 +1887,6 @@ export class DashboardComponent implements OnInit {
 
     return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
   }
-  // OnSubmitcalender() {
-
-  //   this.SelectStartdate = this.datepipe.transform(this.SelectStartdate, 'MM/dd/yyyy');
-
-  //   this.Selectenddate = this.datepipe.transform(this.Selectenddate, 'MM/dd/yyyy');
-
-  //   this._calenderDto.Emp_No = this.Current_user_ID;
-  //   if (this._Exec_BlockName == 'Standard Tasks') {
-  //     this._calenderDto.Project_Code = this.MasterCode;
-  //     if (this.selectDay == 'S') {
-  //       this._calenderDto.Weekday = "Sunday";
-  //     }
-  //     else if (this.selectDay == 'M') {
-  //       this._calenderDto.Weekday = "Monday";
-  //     }
-  //     else if (this.selectDay == 'T') {
-  //       this._calenderDto.Weekday = "Tuesday";
-  //     }
-  //     else if (this.selectDay == 'W') {
-  //       this._calenderDto.Weekday = "Wednesday";
-  //     }
-  //     else if (this.selectDay == 'Th') {
-  //       this._calenderDto.Weekday = "Thursday";
-  //     }
-  //     else if (this.selectDay == 'F') {
-  //       this._calenderDto.Weekday = "Friday";
-  //     }
-  //     else if (this.selectDay == 'Sa') {
-  //       this._calenderDto.Weekday = "Saturday";
-  //     }
-  //   }
-  //   else {
-  //     this._calenderDto.Project_Code = this.Subtask;
-  //   }
-
-  //   this._calenderDto.Start_date = this.SelectStartdate;
-  //   this._calenderDto.End_date = this.Selectenddate;
-  //   this._calenderDto.Start_time = this.Startts;
-  //   this._calenderDto.End_time = this.Endtms;
-  //   // this._calenderDto.Status  = true;
-
-  //   console.log(this._calenderDto.Weekday, "Insert test");
-  //   this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
-  //     (data => {
-  //       console.log(data, "m");
-  //       this._Message = data['message'];
-  //       this.notifyService.showSuccess(this._Message, "Success");
-  //     });
-
-  //   this.MasterCode = null;
-  //   this.Subtask = null;
-  //   this.Startts = null;
-  //   this.Endtms = null;
-  //   this.SelectStartdate = null;
-  //   this.Selectenddate = null;
-  //   this.selectDay = null;
-
-  // }
-
   openschd() {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -1980,7 +1973,15 @@ export class DashboardComponent implements OnInit {
   }
 
   onfocus(val) {
-    console.log(val);
+    // console.log(val);
   }
 
+  OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 }

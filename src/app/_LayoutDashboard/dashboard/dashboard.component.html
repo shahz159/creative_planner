@@ -398,7 +398,10 @@
                         <i class="far fa-calendar-alt"></i> My Calendar
                     </h5>
                     <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-info btn-noti mr-3 mb-1"  (click)="evereq()">Event Request</button>
 
+                        </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
                                 data-toggle="dropdown" aria-expanded="false">
@@ -846,7 +849,7 @@
 
 <div class="bg-ovr">
     <div class="eve-modal open" tabindex="-1" role="dialog">
-        <div class="card flex-1 mb-3">
+        <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
                 <div class="icons-flex float-right">
                     <div class="icons-right">
@@ -1001,7 +1004,8 @@
                             </div>
                             <div class="rgt-des">
                                 <div>
-                                    <div class="main-s">{{_pro.Project_Name}}</div>
+                                    <div class="main-s"><a href="javascript:void(0)" (click)="moreDetails(_pro.stringval)">
+                                        {{_pro.Project_Name}}</a></div>
                                     <div class="main-s" *ngIf="item.Schedule_Type=='Task'">{{item.Master_code}}</div>
                                     
                                 </div>
@@ -1039,7 +1043,9 @@
                             </div>
                             <div class="rgt-des">
                                 <div>
-                                    <div class="main-s">{{_prot.Portfolio_Name}}</div>
+                                    <div class="main-s"><a href="javascript:void(0)"
+                                         (click)="OnCardClick(_prot.numberval)">
+                                        {{_prot.Portfolio_Name}}</a></div>
                                 </div>
                             </div>
                         </div>
@@ -1056,7 +1062,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">Linked DMS</div>
+                                <div class="main-s pro-nm">DMS</div>
                             </div>
                         </div>
                     </div>
@@ -1071,9 +1077,12 @@
                                     </svg>
                                 </span>
                             </div>
-                            <div class="rgt-des">
-                                <div>
-                                    <div class="main-s">{{item.DMS_Name}}</div>
+                            <div class="rgt-des" >
+                                <div *ngFor="let itemMemos of _MemosSubjectList; let i=index">
+                                    <div class="main-s" >
+                                        <a href="javascript:void(0)" (click)="openUrl(itemMemos.Url)">
+                                            {{itemMemos.Subject}}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1135,7 +1144,35 @@
         </div>
     </div>
 </div>
-
+<div class="bg-ovr1">
+    <div class="eve-modal1 open" tabindex="-1" role="dialog">
+        <div class="card flex-1 mb-3 border-0">
+            <div class="head-c bg-white">
+                <div class="icons-flex">
+                    <h4 class="flex-1 mb-0">List</h4>
+                    <div class="icons-right">
+                        <span class="tool-span" (click)="closeevearea1()">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="reqlst">
+                    <ul class="requl list-group">
+                        <li class="list-group-item">Request 1</li>
+                        <li class="list-group-item">Request 2</li>
+                        <li class="list-group-item">Request 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- New Side InformationBar -->
 <div id="mysideInfobar" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
@@ -1426,9 +1463,9 @@
                                 <div class="form-group flex-1">
                                     <label class="cus-lbl">Start Time </label>
                                     <ng-select class="kt-input form-control" (open)="onfocus($event)"
-                                        placeholder="Start Time" [(ngModel)]="Startts">
+                                        placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                         <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item"
-                                            (click)="addstarttime(item)">
+                                            >
                                             {{item}}</ng-option>
                                     </ng-select>
                                 </div>
@@ -1451,7 +1488,7 @@
                                     <ng-select class="kt-input form-control" (open)="onfocus($event)"
                                         placeholder="End Time" [(ngModel)]="Endtms">
                                         <ng-option *ngFor="let item1 of EndTimearr" [value]="item1"
-                                            (click)="addendtime(item1)">
+                                            >
                                             {{item1}}</ng-option>
                                     </ng-select>
                                 </div>
