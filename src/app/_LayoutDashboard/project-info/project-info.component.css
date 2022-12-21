@@ -242,3 +242,10 @@
   color: #494f54;
 
 }
+.prv-cmts{
+ max-height: 200px;
+ overflow: auto; 
+}
+.collapsed .fa-chevron-up:before, .dwn-arw .fa-chevron-up:before {
+  content: "\f078";
+}

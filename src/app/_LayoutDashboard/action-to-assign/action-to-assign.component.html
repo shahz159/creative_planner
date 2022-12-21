@@ -46,11 +46,11 @@
         </div>
 
 
-        <div class="d-flex gap-1" (click)="datesCheck()">
+        <div class="d-flex gap-1">
             <div class="form-group flex-1">
                 <label>Start Date : </label>
                 <!-- <span class="text-danger">*</span> -->
-                <div class="input-group">
+                <div class="input-group" (click)="startdatechecker()">
                     <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
                         placeholder="Start Date" class="form-control">
                     <div class="input-group-text p-0">
@@ -58,14 +58,14 @@
                         <mat-datepicker #picker1></mat-datepicker>
                     </div>
                 </div>
-                <span *ngIf ="noStartDate == true" style="color:red">Start Date required!</span>
+                <span *ngIf ="noStartDate==true" style="color:red">Start Date required!</span>
             </div>
 
-            <div class="form-group flex-1">
+            <div class="form-group flex-1" *ngIf="_StartDate!=null">
                 <label>End Date :</label>
                 <!-- <span class="text-danger">*</span> -->
-                <div class="input-group">
-                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="disablePreviousDate" [(ngModel)]="_EndDate"
+                <div class="input-group" (click)="datesCheck()">
+                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
                         placeholder="End Date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -73,6 +73,19 @@
                     </div>
                 </div>
                 <span *ngIf ="noEndDate == true" style="color:red">End Date required!</span>
+            </div>
+            <div class="form-group flex-1" *ngIf="_StartDate==null">
+                <label>End Date :</label>
+                <!-- <span class="text-danger">*</span> -->
+                <div class="input-group" (click)="enddateChecker()">
+                    <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
+                        (click)="picker2.open()" 
+                        placeholder="End Date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -105,7 +118,7 @@
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-primary"
-            [disabled]="!SelectedEmplList || noStartDate==true || noEndDate==true"
+            [disabled]="!SelectedEmplList"
                 (click)="OnAssignTask_Submit()" style="width: 150px;">Submit
             </button>
         </div>

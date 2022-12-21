@@ -74,14 +74,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.getapprovalStats();
       this.fun_LoadProjectDetails();
     });
-
-    // $(".asgn-colpse").on('click', function(event){
-    //   $('#mysideInfobar').animate({
-    //     scrollTop: $(".asgn-colpse").offset().top - 100 // Means Less header height
-    // },400);
-    // })
-
   }
+  
+  scrldwn(){
+    $('#mysideInfobar').animate({scrollTop: $(document).height() + $('#mysideInfobar').height()});
+  }
+
 
   initials: string;
   Project_Responsible;
@@ -197,7 +195,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   closeInfo() {
     this.selectedType = null;
     this.commentSelected = null;
-    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -722,8 +720,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.comments=this.commentSelected;
   }
   typeChange(){
-    this.comments="";
-    this.commentSelected="";
+    this.comments=null;
+    this.commentSelected=null;
+    this.rejectType=null;
   }
   submitApproval() {
     if (this.selectedType == '1') {
@@ -738,9 +737,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         subscribe((data) => {
           this._Message = (data['message']);
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          // this.GetProjectDetails();
-          // this.GetSubtask_Details();
-          // this.getapprovalStats();
+          
+          this.fun_LoadProjectDetails();
+          this.getapprovalStats();
         });
 
     }
@@ -763,6 +762,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   }
   comments_list: any;
+  initials1:any;
+  Submitted_By:string;
+  prviousCommentsList:any;
   getapprovalStats() {
     this.approvalObj.Project_Code = this.projectCode;
 
@@ -775,6 +777,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+        this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+        this.prviousCommentsList= JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+        const fullName = this.Submitted_By.split(' ');
+          this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+          this.initials1= this.initials1.toUpperCase();
       }
       console.log(this.comments_list, "req")
 
@@ -785,5 +793,54 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   resetApproval(){
     this.selectedType = null;
     this.commentSelected = null;
+  }
+
+  rejDesc:any;
+  rejectcommentsList: any;
+  reject_list:any;
+  rejectType:any;
+
+  rejectApproval(){
+    console.log(this.rejectType);
+    this.reject_list.forEach(element => {
+      if(this.rejectType==element.TypeID){
+        this.rejDesc=element.Reject_Description;
+      }
+    });
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.rejectType=this.rejectType;
+    if(this.requestType=='New Project')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Reject Release')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Hold')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='Project Complete')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Reject Release')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Hold')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Deadline Extend')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Deadline Extend Hold')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Standardtask Enactive')
+      this.approvalObj.Status='Enactive-Reject';
+      else if(this.requestType=='Project Forward')
+      this.approvalObj.Status='Forward Reject';
+      else if(this.requestType=='Project Hold')
+      this.approvalObj.Status='Project Hold Reject';
+      else if(this.requestType=='Revert Back')
+      this.approvalObj.Status='Revert Reject';
+      
+    this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
+      this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
+    });
+  }
+
+  rejectComments(){
+
+
   }
 }

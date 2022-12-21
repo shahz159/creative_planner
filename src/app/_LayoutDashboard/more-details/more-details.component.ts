@@ -155,6 +155,9 @@ export class MoreDetailsComponent implements OnInit {
   comments_list:any;
   reject_list:any;
   rejectType:any;
+  initials1:any;
+  Submitted_By:string;
+  
   getapprovalStats() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
@@ -169,6 +172,10 @@ export class MoreDetailsComponent implements OnInit {
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+        this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        const fullName = this.Submitted_By.split(' ');
+        this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+        this.initials1= this.initials1.toUpperCase();
       }
       // console.log(this.reject_list, "req")
       
@@ -188,13 +195,13 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   rejectComments(){
-    debugger
-    console.log(this.rejectType);
+    // debugger
+    // console.log(this.rejectType);
 
     this.approvalObj.Emp_no=this.Current_user_ID;
     this.approvalObj.rejectType=this.rejectType;
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
-      console.log(data,"reject");
+      // console.log(data,"reject");
       this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
     });
 

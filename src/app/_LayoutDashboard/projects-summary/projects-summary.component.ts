@@ -614,7 +614,7 @@ export class ProjectsSummaryComponent implements OnInit {
   _MainProjectStatus: string;
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").style.width = "65%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("sumdet").classList.add("position-fixed");
@@ -624,8 +624,7 @@ export class ProjectsSummaryComponent implements OnInit {
 
   closeInfo() {
     this.Clear_Feilds();
-    document.getElementById("mysideInfobar").style.width = "0";
-    document.getElementById("proactbar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -808,20 +807,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
   }
 
-  sideviw() {
-    document.getElementById("proactbar").classList.add("kt-quick-panel--on");
-    document.getElementById("sumdet").classList.add("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "block";
-  }
-
-  closeApproval() {
-    document.getElementById("proactbar").classList.remove("kt-quick-panel--on");
-    document.getElementById("sumdet").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    this.Clear_Feilds();
-    this.notifyService.showError("Cancelled", '');    
-  }
-
+ 
   comments:string;
   commentSelected:string;
 

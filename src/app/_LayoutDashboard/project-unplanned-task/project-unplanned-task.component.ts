@@ -85,11 +85,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
+    this.router.navigate(["UnplannedTask/"]);
     this.GetTodoProjects();
     this.GetAssignFormEmployeeDropdownList();
-    // alert(this._selectedcatid);
-    // alert(this._selectedcatname);
-    // <<<<<<< HEAD
     
       tippy('#tippy1', {
         content: "Runway Tasks!!",
@@ -415,13 +413,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CallOnSubmitCategory() {
     // console.log('A');
     this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
+    // this.GetTodoProjects();
 
     // setTimeout(function(){
     //   alert(this._selectedcatid);
     //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
     // },3000);
    
-    
   }
 
   Mdl_CategoryName: string = "";
@@ -461,7 +459,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-    debugger
+    // debugger
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -512,10 +510,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   closeInfo() {
+    // alert(1);
+    this.router.navigate(["UnplannedTask/"]); 
+    this.clearFeilds();  
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    this.clearFeilds();    
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("prodetbar").classList.remove("kt-quick-panel--on");
   }
 
   ProjectTypelist: any;
@@ -529,8 +528,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   public task_id: number;
 
   GetProjectTypeList(taskName, id) {
+    // debugger
     this._taskName = taskName;
     this.task_id = id;
+    this.router.navigate(["UnplannedTask/ActionToAssign/"]);
     this.BsService.SetNewAssignId(this.task_id);
     this.BsService.SetNewAssignedName(this._taskName);
     let typeoftask: any = "IFRT";
@@ -546,14 +547,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //   });
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
-    this.router.navigate(["UnplannedTask/ActionToAssign/"]);
+    
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     $("#mysideInfobar").scrollTop(0);
+    
   }
 
   detailsbar() {
-    document.getElementById("prodetbar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
@@ -563,14 +564,17 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _AssignId: number;
 
   ActionToProject_Click(taskName, Assignid) {
+    // debugger
     this._taskName = taskName;
     this._AssignId = Assignid;
+    this.router.navigate(["UnplannedTask/ActionToProject/"]);
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
-    this.router.navigate(["UnplannedTask/ActionToProject/"]);
+    
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     $("#mysideInfobar").scrollTop(0);
+   
     //this.GetProjectsByUserName();
   }
 
@@ -805,8 +809,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").style.width = "50%";
-    // document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
     this.router.navigate(["UnplannedTask/projectinfo/", pcode]);
   }
