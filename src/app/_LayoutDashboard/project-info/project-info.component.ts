@@ -532,6 +532,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this._MemosNotFound = "";
           this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
           this._JsonString = data[0]['JsonData'];
+          console.log(this._JsonString);
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               // console.log("------------>", data);

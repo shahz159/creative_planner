@@ -25,7 +25,9 @@ export class LinkService {
     return this.http.post(this.rootUrl + "ApplicationLinkAPI/NewGetApplication_Details", this.ObjLinkDTO);
   }
   GetMemosByEmployeeCode(CurrentUser) {
+
     this.ObjLinkDTO.EmployeeCode = CurrentUser;
+
     return this.http.post(this.DMS_URL + "LatestCommunicationAPI/NewGetMemosByEmployeeCode", this.ObjLinkDTO);
   }
   InsertMemosOn_ProjectCode(projCode, appId, memoId, UserId) {

@@ -894,7 +894,7 @@ export class HomeComponent implements OnInit {
   }
 
   dummy_function(name, id) {
-    var url = document.baseURI + name;
+    var url = document.baseURI + name;  
     var myurl = `${url}/${id}`;
     var myWindow = window.open(myurl, id);
     myWindow.focus();

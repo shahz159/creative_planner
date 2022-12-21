@@ -109,6 +109,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+   
     this._projcode = false;
     this._desbool = false;
     this._subname = false;

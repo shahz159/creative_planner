@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardComponent } from './dashboard.component';
+import { DashboardComponent, MY_FORMATS } from './dashboard.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 
@@ -25,7 +25,9 @@ import { MaterialModule } from "src/app/material-module";
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DatePickerFormatDirective } from "./date-picker-format.directive";
 FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,
@@ -35,7 +37,7 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,DatePickerFormatDirective
 
     // DefaultComponent,
     //SidebarComponent
@@ -57,7 +59,11 @@ FullCalendarModule.registerPlugins([
     , GooglePlaceModule
     , NgxDaterangepickerMd.forRoot()
   ],
-  providers: [DatePipe],
+  providers: [DatePipe
+    ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+  ],
   exports: [DashboardComponent]
 })
 export class DashboardModule { }
+
