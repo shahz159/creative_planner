@@ -1082,7 +1082,7 @@ export class PortfolioProjectsComponent implements OnInit {
   openInfo2(pcode) {
     this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     //document.getElementById("mysideInfobar").style.width = "410px";
-    document.getElementById("mysideInfobar").style.width = "70%";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     //setTimeout((this.closeInfo2),1000, "Hello", "John");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -1097,7 +1097,7 @@ export class PortfolioProjectsComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0%";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }

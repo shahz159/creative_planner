@@ -47,7 +47,11 @@ th {
     vertical-align: middle;
     align-items: center;
 }
-
+@media (max-width: 1024px){
+    .kt-portlet__head {
+        overflow: auto;
+    }
+}
 
 /* .table td:last-child{
     text-align: right;
@@ -1132,3 +1136,18 @@ svg.feather {
     min-height: 36px;
     height: auto !important;
   }
+  .kt-quick-panel--on{
+    width: 65% !important;
+}
+@media Screen and (max-width: 1024px) {
+
+    .kt-quick-panel--on {
+        width: 75% !important;
+    }
+}
+@media Screen and (max-width: 768px) {
+
+    .kt-quick-panel--on {
+        width: 100% !important;
+    }
+}

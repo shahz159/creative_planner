@@ -302,9 +302,6 @@
 .kt-inbox__icon .dropdown-menu.dropdown-menu-sm {
   width: 150px;
 }
-.kt-quick-panel--on{
-  width: 50% !important;
-}
 .dropdown-reply ul li a .kt-nav__link-icon {
   width: 20px;
 }

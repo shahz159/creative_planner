@@ -9,6 +9,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
 import { rgbToHsl } from '@amcharts/amcharts4/.internal/core/utils/Colors';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-action-to-assign',
@@ -48,6 +49,7 @@ export class ActionToAssignComponent implements OnInit {
     public ProjectTypeService: ProjectTypeService,
     private dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe,
+    public router: Router,
     public BsService: BsServiceService
     , public _projectunplanned: ProjectUnplannedTaskComponent) {
 
@@ -113,7 +115,6 @@ export class ActionToAssignComponent implements OnInit {
   noEndDate: boolean = false;
 
   datesCheck() {
-    this.noStartDate = false;
     this.noEndDate = false;
   }
 
@@ -218,6 +219,7 @@ export class ActionToAssignComponent implements OnInit {
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
           this._projectunplanned.OnCategoryClick(this.cat_id,this.cat_name);
+          
           let message: string = data['Message'];
           this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -237,9 +239,11 @@ export class ActionToAssignComponent implements OnInit {
   // this._CompletedList = JSON.parse(data['CompletedList']);
 
   closeInfo() {
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "none";
     this.clearFeilds();
+    this.router.navigate(["UnplannedTask/"]); 
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("mysideInfobar_NewSubtask").classList.remove("kt-quick-panel--on");
     //document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   }
@@ -257,6 +261,8 @@ export class ActionToAssignComponent implements OnInit {
     this.selectedProjectCode = "";
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
+    this.noStartDate=false;
+    this.noEndDate=false;
   }
 
   GetAssignFormEmployeeDropdownList() {
@@ -277,4 +283,20 @@ export class ActionToAssignComponent implements OnInit {
         };
       });
   }
+
+  startdatechecker(){
+    this.noStartDate=false;
+    this.noEndDate=true;
+    this._EndDate=null;
+  }
+  myFilter:any;
+  enddateChecker(){
+    this.noStartDate=true;
+    this.myFilter = (d: Date | null): boolean => {
+      const day = (d || new Date()).getDay();
+      // Prevent Saturday and Sunday from being selected.
+      return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
+    };
+  }
+
 }

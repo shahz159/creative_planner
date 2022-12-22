@@ -58,6 +58,9 @@ export class ActionToProjectComponent implements OnInit {
   _edate: boolean;
   _selectemp: boolean;
   _Urlid: any;
+  public cat_id: any;
+  cat_name: any = "";
+
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -114,6 +117,8 @@ export class ActionToProjectComponent implements OnInit {
     this._edate = false;
     this._selectemp = false;
     this._Urlid = this.route.snapshot.params['id'];
+    this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
+    this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -147,7 +152,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   onFilterChange(event) {
-    this.filterText = event
+    this.filterText = event;
     this.GetProjectsByUserName();
   }
 
@@ -296,9 +301,13 @@ export class ActionToProjectComponent implements OnInit {
       if (this._inputAttachments.length > 0) {
         this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
       }
-      var datestrStart = (new Date(this._StartDate)).toUTCString();
-      var datestrEnd = (new Date(this._EndDate)).toUTCString();
-
+    
+      var datestrStart = moment(this._StartDate).format();
+      var datestrEnd = moment(this._EndDate).format();
+      // alert(datestrStart)
+      // alert(datestrEnd)
+      console.log(datestrStart,"startdate")
+      console.log(datestrEnd,"enddate")
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Team_Autho", this.EmpNo_Autho);
@@ -340,20 +349,18 @@ export class ActionToProjectComponent implements OnInit {
         if (this._Urlid == 1) {
           debugger
           this._Todoproject.CallOnSubmitAction();
-
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
         }
         else {
           this._MoreDetails.CallOnSubmitAction();
-          this._projectunplanned.CallOnSubmitCategory();
-
+          this._projectunplanned.OnCategoryClick(this.cat_id,this.cat_name);;
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
         }
-        this.closeInfo();
-
-
-
-
-
-        this._inputAttachments = [];
+       
       });
       // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
       // this._projectunplanned.CallOnSubmitCategory();
@@ -366,7 +373,12 @@ export class ActionToProjectComponent implements OnInit {
       // this._MoreDetails.CallOnSubmitAction();
     });
   }
-
+   convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [ day,mnth,date.getFullYear() ].join("-");
+  }
   sweetAlert() {
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
@@ -403,17 +415,15 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     this.Clear_Feilds();
-    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
-
   }
 
   Clear_Feilds() {
-  
+    this.selectedProjectCodelist = [];  
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
     this._Description = null;
@@ -424,14 +434,28 @@ export class ActionToProjectComponent implements OnInit {
     this._edate = false;
     this._selectemp = false;
     this._StartDate = null;
-    this._EndDate = null;
+    this._EndDate = null; 
     this._remarks = "";
-    this._allocated = 0;
+    this._allocated = null;
     this._inputAttachments = [];
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
-    this.selectedProjectCodelist = [];
+   
     (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  }
+
+  startdatechecker(){
+    this._sdate=false;
+    this._EndDate=null;
+  }
+  myFilter:any;
+  enddateChecker(){
+    this._sdate=true;
+    this.myFilter = (d: Date | null): boolean => {
+      const day = (d || new Date()).getDay();
+      // Prevent Saturday and Sunday from being selected.
+      return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
+    };
   }
 }
