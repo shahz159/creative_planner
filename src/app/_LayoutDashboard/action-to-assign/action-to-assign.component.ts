@@ -218,7 +218,9 @@ export class ActionToAssignComponent implements OnInit {
 
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
-          this._projectunplanned.OnCategoryClick(this.cat_id,this.cat_name);
+          this._projectunplanned.getCatid();
+          this.router.navigate(["UnplannedTask/"]);
+          
           
           let message: string = data['Message'];
           this.notifyService.showSuccess("Task sent to assign projects", message);
@@ -241,7 +243,7 @@ export class ActionToAssignComponent implements OnInit {
   closeInfo() {
     this.clearFeilds();
     this.router.navigate(["UnplannedTask/"]); 
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("mysideInfobar_NewSubtask").classList.remove("kt-quick-panel--on");

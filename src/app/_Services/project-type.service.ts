@@ -441,7 +441,13 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
+  } 
+
+  _GetRunwayCatId(EmpID) {
+    this._ObjCompletedProj.Emp_No = EmpID;
+    return this.http.post(this.rootUrl + "Notification/NewGetRunwayCatId", this._ObjCompletedProj);
   }
+
 
   _GetAssignedProjects(objDTO: CompletedProjectsDTO) {
 

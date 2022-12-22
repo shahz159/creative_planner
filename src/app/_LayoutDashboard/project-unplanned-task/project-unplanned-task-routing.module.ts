@@ -6,7 +6,7 @@ const routes: Routes = [{
   path: '', component: ProjectUnplannedTaskComponent,
   children:[
     {
-      path: 'ActionToProject',
+      path: 'ActionToProject/:id',
       loadChildren: () => import('../action-to-project/action-to-project.module').then(m => m.ActionToProjectModule)
     },
     {

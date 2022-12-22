@@ -85,9 +85,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
-    this.router.navigate(["UnplannedTask/"]);
-    this.GetTodoProjects();
+   
+    this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
+    
+
     
       tippy('#tippy1', {
         content: "Runway Tasks!!",
@@ -150,7 +152,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //     // delay: [1000, 200]
     //   });
     // }
+  }
 
+  newCatid:any;
+  getCatid(){
+    this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
+      (data) => {
+        this.newCatid=(data[0]['CategoryId']);
+        this.GetTodoProjects();
+      });
+      this.router.navigate(["UnplannedTask/"]);
   }
 
   _Demotext: string = "";
@@ -210,7 +221,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   GetTodoProjects() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
-    this._ObjCompletedProj.CategoryId = this._Categoryid;
+    this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
@@ -220,12 +231,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         // console.log(this.ActionedAssigned_Josn)
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        if(this.ActionedSubtask_Json.length>0){
+        if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0){
            
           document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
@@ -514,7 +525,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.router.navigate(["UnplannedTask/"]); 
     this.clearFeilds();  
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
     document.getElementById("rightbar-overlay").style.display = "none";
+    
   }
 
   ProjectTypelist: any;
@@ -548,8 +563,10 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
     
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
     $("#mysideInfobar").scrollTop(0);
     
   }
@@ -567,12 +584,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     // debugger
     this._taskName = taskName;
     this._AssignId = Assignid;
-    this.router.navigate(["UnplannedTask/ActionToProject/"]);
+    this.router.navigate(["UnplannedTask/ActionToProject/2"]);
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
     
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
     $("#mysideInfobar").scrollTop(0);
    
     //this.GetProjectsByUserName();

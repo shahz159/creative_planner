@@ -353,9 +353,16 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
+        else if(this._Urlid == 2){
+          this._projectunplanned.getCatid();
+          this.router.navigate(["UnplannedTask/"]);
+          
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
+        }
         else {
           this._MoreDetails.CallOnSubmitAction();
-          this._projectunplanned.OnCategoryClick(this.cat_id,this.cat_name);;
           this.Clear_Feilds();
           this.closeInfo();
           this._inputAttachments = [];
@@ -415,8 +422,13 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
+    // alert(this._Urlid);
+    if(this._Urlid==2){
+      this.router.navigate(["UnplannedTask/"]);
+    }
     this.Clear_Feilds();
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
