@@ -139,8 +139,7 @@
             }
         }
     },
-    "defaultProject": "AngularArchitecture",
     "cli": {
-        "analytics": "5fc16da6-0741-4cdf-a394-8f2ec8ff6de3"
+        "analytics": "false"
     }
 }

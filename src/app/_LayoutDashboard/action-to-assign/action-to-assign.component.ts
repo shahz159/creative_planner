@@ -10,6 +10,7 @@ import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-
 import { rgbToHsl } from '@amcharts/amcharts4/.internal/core/utils/Colors';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-action-to-assign',
@@ -140,17 +141,22 @@ export class ActionToAssignComponent implements OnInit {
         // current_Date: any = this.datepipe.transform(new Date(), 'yyyy/MM/dd');
         // datestrStart = (new Date(this._StartDate)).toUTCString();
         // datestrEnd = (new Date(this._EndDate)).toUTCString();
-        datestrStart = this.datepipe.transform(this._StartDate, 'yyyy/MM/dd HH:MM:SS');
-        datestrEnd = this.datepipe.transform(this._EndDate, 'yyyy/MM/dd HH:MM:SS');
+        // datestrStart = this.datepipe.transform(this._StartDate, 'yyyy/MM/dd HH:MM:SS');
+        // datestrEnd = this.datepipe.transform(this._EndDate, 'yyyy/MM/dd HH:MM:SS');
+
+        datestrStart = moment(this._StartDate).format();
+        datestrEnd = moment(this._EndDate).format();
 
         this._ObjAssigntaskDTO.StartDate = datestrStart;
         this._ObjAssigntaskDTO.EndDate = datestrEnd;
       }
-
       else {
-        datestrStart = this.datepipe.transform(new Date(), 'yyyy/MM/dd HH:MM:SS');
-        datestrEnd = this.datepipe.transform(new Date(), 'yyyy/MM/dd HH:MM:SS');
+        // datestrStart = this.datepipe.transform(new Date(), 'yyyy/MM/dd HH:MM:SS');
+        // datestrEnd = this.datepipe.transform(new Date(), 'yyyy/MM/dd HH:MM:SS');
 
+        datestrStart = moment(new Date()).format();
+        datestrEnd = moment(new Date()).format();
+        
         this._ObjAssigntaskDTO.StartDate = datestrStart;
         this._ObjAssigntaskDTO.EndDate = datestrEnd;
       }
