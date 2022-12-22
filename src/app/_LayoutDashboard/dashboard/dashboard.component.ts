@@ -102,6 +102,7 @@ export class DashboardComponent implements OnInit {
   Ed_date: string;
   _status: string;
   Allocated_subtask: number;
+  TM_DisplayName:string;
   SubmissionName: string;
   _Exec_BlockName: string = "";
   day: boolean = false;
@@ -492,7 +493,7 @@ export class DashboardComponent implements OnInit {
       this._subname1 = true;
       return false;
     }
-    if (this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) {
+    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined )&&this.ScheduleType == "Task") {
       this._subname = true;
       return false;
     }
@@ -514,11 +515,11 @@ export class DashboardComponent implements OnInit {
         var columnName = "Title_Name";
         element[columnName] = this.Title_Name;
         var columnName = "MasterCode";
-        element[columnName] = this.MasterCode.toString();
+        element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var columnName = "User_Name";
-        element[columnName] = this._SelectedEmpIds_String == undefined ? "" : this._SelectedEmpIds_String;
+        element[columnName] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
         var columnName = "Location_Type";
         element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
         var columnName = "Description";
@@ -556,6 +557,7 @@ export class DashboardComponent implements OnInit {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Allocated_subtask = null;
+          this.TM_DisplayName=null;
           this.Projectstartdate = "";
           this.projectEnddate = null;
           this.Status_project = null;
@@ -679,6 +681,7 @@ export class DashboardComponent implements OnInit {
         this.Ed_date = element.Enddate;
         this._status = element.Status;
         this.Allocated_subtask = element.Allocated
+        this.TM_DisplayName=element.TM_DisplayName
       }
     });
 
@@ -927,19 +930,19 @@ export class DashboardComponent implements OnInit {
         this.BlockNameProject = JSON.parse(data['Projectlist']);
 
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-
+console.log( this._EmployeeListForDropdown,"test")
 
         // this.BlockNameProject = data as [];
-        this.dropdownSettings_Emp = {
-          singleSelection: false,
-          idField: 'Emp_No',
-          textField: 'TM_DisplayName',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 5,
-          allowSearchFilter: true,
-          closeDropDownOnSelection: true
-        }
+        // this.dropdownSettings_Emp = {
+        //   singleSelection: false,
+        //   idField: 'Emp_No',
+        //   textField: 'TM_DisplayName',
+        //   selectAllText: 'Select All',
+        //   unSelectAllText: 'UnSelect All',
+        //   itemsShowLimit: 5,
+        //   allowSearchFilter: true,
+        //   closeDropDownOnSelection: true
+        // }
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
 
       })
@@ -1918,7 +1921,7 @@ export class DashboardComponent implements OnInit {
     this.Ed_date = null;
     this._status = null;
     this.Portfolio = null;
-    this.Location_Type = "";
+    this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
     this.projectEnddate = null;
