@@ -65,6 +65,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+    this.router.navigate(["UnplannedTask/"]); 
   }
 
   IfNoCategoryFound: string;
@@ -520,16 +521,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   }
 
+
   closeInfo() {
     // alert(1);
-    this.router.navigate(["UnplannedTask/"]); 
+   
     this.clearFeilds();  
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
     document.getElementById("rightbar-overlay").style.display = "none";
-    
+    this.router.navigate(["UnplannedTask/"]); 
   }
 
   ProjectTypelist: any;
