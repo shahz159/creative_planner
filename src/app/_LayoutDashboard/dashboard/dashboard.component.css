@@ -1286,10 +1286,20 @@ height: auto !important;
     border-radius: 4px;
     display: inline-block;
 }
+.list-group-item a.fc-event1{
+    display: flex;
+}
 .list-group-item a.fc-event1:hover{
-    width: max-content;
-    padding-right: 4px;
     cursor: pointer;
+    color: #2786fb;
+}
+.text-grey-2{
+    color: #76828e;
+    fill: #76828e;
+}
+.list-group-item a.fc-event1:hover .text-grey-2{
+    color: #2786fb;
+    fill: #2786fb;
 }
 @media Screen and (max-width: 1600px) {
 
