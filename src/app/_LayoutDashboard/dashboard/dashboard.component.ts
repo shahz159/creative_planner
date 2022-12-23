@@ -446,15 +446,6 @@ export class DashboardComponent implements OnInit {
     $('.side_view').removeClass('position-fixed');
 
   }
-  evereq() {
-    $('.bg-ovr1').addClass('d-block');
-    $('.side_view').addClass('position-fixed');
-  }
-  closeevearea1() {
-    $('.bg-ovr1').removeClass('d-block');
-    $('.side_view').removeClass('position-fixed');
-
-  }
   // Scheduling Work
   // Start Here
 
@@ -1443,9 +1434,11 @@ console.log( this._EmployeeListForDropdown,"test")
   }
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+    document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+
 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -1892,6 +1885,18 @@ console.log( this._EmployeeListForDropdown,"test")
     dateSent = new Date(dateSent);
 
     return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
+  }
+  
+  evereq() {
+    document.getElementById("reqsideInfobar").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  closeevearea1() {
+    document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
   }
   openschd() {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
