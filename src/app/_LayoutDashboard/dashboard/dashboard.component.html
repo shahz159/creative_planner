@@ -1152,7 +1152,7 @@
                 <div class="icons-flex">
                     <h4 class="flex-1 mb-0">List</h4>
                     <div class="icons-right">
-                        <span class="tool-span" (click)="closeevearea1()">
+                        <span class="tool-span">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
@@ -1163,13 +1163,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="reqlst">
-                    <ul class="requl list-group">
-                        <li class="list-group-item">Request 1</li>
-                        <li class="list-group-item">Request 2</li>
-                        <li class="list-group-item">Request 3</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -1179,6 +1172,111 @@
     <router-outlet></router-outlet>
 </div>
 
+<div id="reqsideInfobar" class="sideInfobar animate-right">
+    <div class="px-4 pt-4 pb-1 border-bottom">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+          <h4 class="m-0">Request List</h4>
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeevearea1()">
+            <i class="fa fa-times"></i>
+          </a>
+        </div>
+    </div>
+    <div class="px-4 pt-2">
+        <div class="reqlst">
+            <ul class="requl list-group">
+                <li class="list-group-item">
+                    <a class="fc-event1 align-items-center justify-content-between">
+                        <div class="main-title w-auto">
+                          <div class="day-dot"></div>
+                          <div id="" class="title-right">
+                            <div class="title-area">
+                              <div class="title-main ml-1">
+                                <span id="title1">Task monthly</span>
+                              </div>
+                              <div class="d-flex align-items-center">
+                                <div class="px-2 text-grey-2">
+                                  <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                      <path fill="none" d="M0 0h24v24H0z"></path>
+                                      <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM6.023 15.416C7.491 17.606 9.695 19 12.16 19c2.464 0 4.669-1.393 6.136-3.584A8.968 8.968 0 0 0 12.16 13a8.968 8.968 0 0 0-6.137 2.416zM12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+                                    </svg>
+                                  </span>
+                                </div>
+                                <div class="main-s text-grey-2">Waseem Akram</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex text-grey-2  align-items-center">
+                          <span class="mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                            </svg>
+                          </span>
+                          <div class="text-grey-2 font-600">
+                            <div>01, December 2022</div>
+                            <div>00:00– 01:00</div>
+                          </div>
+                        </div>
+                      </a>
+                </li>
+                
+                <li class="list-group-item">
+                    <a class="fc-event1 align-items-center justify-content-between">
+                        <div class=""><div class="day-dot"></div><span>12:00am-Monthly Standard Task Test</span></div>
+                        <div class="d-flex align-items-center">
+                            <div class="px-2 text-grey-2">
+                              <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z"/>
+                                    <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM6.023 15.416C7.491 17.606 9.695 19 12.16 19c2.464 0 4.669-1.393 6.136-3.584A8.968 8.968 0 0 0 12.16 13a8.968 8.968 0 0 0-6.137 2.416zM12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                              </span>
+                            </div>
+                            <div class="main-s text-grey-2">Waseem Akram</div>
+                        </div>
+                        <div class="d-flex text-grey-2">
+                            <span class="mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z"/>
+                                    <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"/>
+                                </svg>
+                            </span>
+                            <span>01, December 2022</span>
+                        </div>
+                    </a>
+                </li>
+                
+                <li class="list-group-item">
+                    <a class="fc-event1 align-items-center justify-content-between">
+                        <div class=""><div class="day-dot"></div><span>12:00am-Monthly Standard Task Test</span></div>
+                        <div class="d-flex align-items-center">
+                            <div class="px-2 text-grey-2">
+                              <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z"/>
+                                    <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zM6.023 15.416C7.491 17.606 9.695 19 12.16 19c2.464 0 4.669-1.393 6.136-3.584A8.968 8.968 0 0 0 12.16 13a8.968 8.968 0 0 0-6.137 2.416zM12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                              </span>
+                            </div>
+                            <div class="main-s text-grey-2">Waseem Akram</div>
+                        </div>
+                        <div class="d-flex text-grey-2">
+                            <span class="mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z"/>
+                                    <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"/>
+                                </svg>
+                            </span>
+                            <span>01, December 2022</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <!-- Notification Modal -->
 <div class="modal fade" id="notifymodal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel"
     aria-hidden="true">
@@ -1543,7 +1641,7 @@
                                 <label class="">Repeat on</label>
                                 <mat-select name="Select Type" placeholder="Do not repeat" class="form-control"
                                     (selectionChange)="SelectDropDown($event)">
-
+                                    <mat-option [value]="0">Do not repeat</mat-option>
                                     <mat-option [value]="1">Daily</mat-option>
                                     <mat-option [value]="2">Weekly</mat-option>
                                     <mat-option [value]="3">Monthly</mat-option>

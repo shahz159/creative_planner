@@ -446,15 +446,6 @@ export class DashboardComponent implements OnInit {
     $('.side_view').removeClass('position-fixed');
 
   }
-  evereq() {
-    $('.bg-ovr1').addClass('d-block');
-    $('.side_view').addClass('position-fixed');
-  }
-  closeevearea1() {
-    $('.bg-ovr1').removeClass('d-block');
-    $('.side_view').removeClass('position-fixed');
-
-  }
   // Scheduling Work
   // Start Here
 
@@ -1184,7 +1175,9 @@ console.log( this._EmployeeListForDropdown,"test")
   }
 
   SelectDropDown(val) {
-
+    if(val.value==0)
+    document.getElementById("weekly_121").style.display = "none";
+   
     if (val.value == 2) {
       document.getElementById("weekly_121").style.display = "block";
 
@@ -1308,6 +1301,7 @@ console.log( this._EmployeeListForDropdown,"test")
   }
   dmsIdjson:any=[];
   GetClickEventJSON_Calender(arg) {
+
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -1322,7 +1316,7 @@ console.log( this._EmployeeListForDropdown,"test")
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson =this.DMS_Scheduledjson.split(',');
         
-        
+        this.dmsIdjson=[];
         if (this.DMS_Scheduledjson.length > 0) {
           this.DMS_Scheduledjson.forEach(element => {
             var jsonData = {};
@@ -1330,15 +1324,17 @@ console.log( this._EmployeeListForDropdown,"test")
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
-        }
-        this.dmsIdjson=JSON.stringify(this.dmsIdjson);
-        console.log(this.dmsIdjson,"ids");
-
-        this._LinkService._GetMemosSubject(this.dmsIdjson).
+          this.dmsIdjson=JSON.stringify(this.dmsIdjson);
+          this._LinkService._GetMemosSubject(this.dmsIdjson).
         subscribe((data) => {
           this._MemosSubjectList = JSON.parse(data['JsonData']);
           console.log("Subject Name ------------>", this._MemosSubjectList);
         });
+        }
+        
+       
+
+       
         // console.log(this.dmsIdjson,"ids");
       });
   }
@@ -1440,9 +1436,11 @@ console.log( this._EmployeeListForDropdown,"test")
   }
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+    document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+
 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -1889,6 +1887,18 @@ console.log( this._EmployeeListForDropdown,"test")
     dateSent = new Date(dateSent);
 
     return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
+  }
+  
+  evereq() {
+    document.getElementById("reqsideInfobar").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  closeevearea1() {
+    document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
   }
   openschd() {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
