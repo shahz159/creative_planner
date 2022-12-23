@@ -1175,7 +1175,9 @@ console.log( this._EmployeeListForDropdown,"test")
   }
 
   SelectDropDown(val) {
-
+    if(val.value==0)
+    document.getElementById("weekly_121").style.display = "none";
+   
     if (val.value == 2) {
       document.getElementById("weekly_121").style.display = "block";
 
