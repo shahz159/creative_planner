@@ -109,7 +109,6 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
-   
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -127,7 +126,7 @@ export class ActionToProjectComponent implements OnInit {
 
   CurrentUser_ID: string;
   _EmployeeListForDropdown = [];
-  selectedProjectCodelist = [];
+  selectedProjectCodelist:any;
 
   GetAllEmployeesForAssignDropdown() {
     let obj: any = {
@@ -156,10 +155,11 @@ export class ActionToProjectComponent implements OnInit {
     this.GetProjectsByUserName();
   }
 
-  selectedProjectCode: string;
+  selectedProjectCode: any;
 
-  ProjectOnSelect(obj) {
-    this.selectedProjectCode = obj['Project_Code'];
+  ProjectOnSelect() {
+    // this.selectedProjectCode = obj['Project_Code'];
+    this.selectedProjectCode=this.selectedProjectCodelist;
     this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
       this.ProjectDeadLineDate = data["DeadLine"];
     })
@@ -235,7 +235,7 @@ export class ActionToProjectComponent implements OnInit {
 
   OnSubmit() {
 
-    if ( this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined) {
+    if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
       return false;
     }
@@ -355,8 +355,6 @@ export class ActionToProjectComponent implements OnInit {
         }
         else if(this._Urlid == 2){
           this._projectunplanned.getCatid();
-          this.router.navigate(["UnplannedTask/"]);
-          
           this.Clear_Feilds();
           this.closeInfo();
           this._inputAttachments = [];
@@ -426,12 +424,18 @@ export class ActionToProjectComponent implements OnInit {
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);
     }
+    else if(this._Urlid==1){
+      this.router.navigate(["./backend/ToDoProjects/"]);
+    }
+    else{
+      this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
+    }
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
   }
 
   Clear_Feilds() {

@@ -64,7 +64,6 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     // this.GetApplicationDetails();
     this.GetProjectsByUserName();
-    this.getDropdownsDataFromDB();
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
 
@@ -354,7 +353,10 @@ export class ProjectsSummaryComponent implements OnInit {
         this._CurrentpageRecords = this._ProjectDataList.length;
         // console.log("ProjectList----------->", this._ProjectDataList.length);
       }
+      this.getDropdownsDataFromDB();
     });
+    
+
   }
 
   LastPage:number;

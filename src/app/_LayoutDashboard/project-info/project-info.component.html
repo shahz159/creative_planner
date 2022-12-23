@@ -443,7 +443,7 @@
                             <div class="d-flex mt-2 mb-1 ">
                                 <p class="m-0 text-muted fs-7">End Date</p>
                                 <!-- End Date Edit-->
-                                <div class="dropdown">
+                                <div class="dropdown" (click)="underDev()">
                                     <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
@@ -484,7 +484,7 @@
                                     </div>
                                 </div>
                                 <!-- Project Hold-->
-                                <div class="dropdown">
+                                <div class="dropdown" (click)="underDev()">
                                     <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-pause ml-2 mb-1 curser-pointer"></i>
@@ -824,7 +824,7 @@
                         <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
                     </div>
                     <!--Transfer-->
-                    <div class="ml-2 mt-3">
+                    <div class="ml-2 mt-3" (click)="underDev()">
                         <div class="dropdown">
                             <button class="btn btn-info btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">

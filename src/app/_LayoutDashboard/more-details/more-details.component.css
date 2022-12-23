@@ -951,3 +951,11 @@ input[type=number] {
     max-height: 200px;
     overflow-y: auto;
 }
+.tasks_views.rbn-bx{
+position: relative;
+}
+.action-btn{
+    position: absolute;
+    right:0;
+    z-index: 999;
+}

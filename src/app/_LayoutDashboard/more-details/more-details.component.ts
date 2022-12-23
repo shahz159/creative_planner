@@ -771,7 +771,7 @@ export class MoreDetailsComponent implements OnInit {
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
@@ -781,12 +781,13 @@ export class MoreDetailsComponent implements OnInit {
     // this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
     this.GetSubtask_Details();
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
   }
 
   closeApproval() {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
@@ -2860,7 +2861,7 @@ export class MoreDetailsComponent implements OnInit {
 
   OnAddTaskClick() {
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode, "ActionToProject"]);
-    document.getElementById("mysideInfobar1").classList.add("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.add("kt-action-panel--on");
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2868,6 +2869,7 @@ export class MoreDetailsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
+    $("#mysideInfobar1").scrollTop(0);
   }
 
   selectedFile: any = null;
@@ -3039,6 +3041,7 @@ export class MoreDetailsComponent implements OnInit {
     //  console.log('A');
     let a = await this.GetSubtask_Details();
     let b = await this.GetProjectDetails();
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }

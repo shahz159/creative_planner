@@ -840,8 +840,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     });
   }
 
-  rejectComments(){
-
-
+  underDev(){
+    this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
 }
