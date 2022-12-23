@@ -1308,6 +1308,7 @@ console.log( this._EmployeeListForDropdown,"test")
   }
   dmsIdjson:any=[];
   GetClickEventJSON_Calender(arg) {
+
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -1322,7 +1323,7 @@ console.log( this._EmployeeListForDropdown,"test")
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson =this.DMS_Scheduledjson.split(',');
         
-        
+        this.dmsIdjson=[];
         if (this.DMS_Scheduledjson.length > 0) {
           this.DMS_Scheduledjson.forEach(element => {
             var jsonData = {};
@@ -1330,15 +1331,17 @@ console.log( this._EmployeeListForDropdown,"test")
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
-        }
-        this.dmsIdjson=JSON.stringify(this.dmsIdjson);
-        console.log(this.dmsIdjson,"ids");
-
-        this._LinkService._GetMemosSubject(this.dmsIdjson).
+          this.dmsIdjson=JSON.stringify(this.dmsIdjson);
+          this._LinkService._GetMemosSubject(this.dmsIdjson).
         subscribe((data) => {
           this._MemosSubjectList = JSON.parse(data['JsonData']);
           console.log("Subject Name ------------>", this._MemosSubjectList);
         });
+        }
+        
+       
+
+       
         // console.log(this.dmsIdjson,"ids");
       });
   }
