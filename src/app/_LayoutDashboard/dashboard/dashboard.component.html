@@ -1152,7 +1152,7 @@
                 <div class="icons-flex">
                     <h4 class="flex-1 mb-0">List</h4>
                     <div class="icons-right">
-                        <span class="tool-span" (click)="closeevearea1()">
+                        <span class="tool-span">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
@@ -1163,13 +1163,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="reqlst">
-                    <ul class="requl list-group">
-                        <li class="list-group-item">Request 1</li>
-                        <li class="list-group-item">Request 2</li>
-                        <li class="list-group-item">Request 3</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -1179,6 +1172,31 @@
     <router-outlet></router-outlet>
 </div>
 
+<div id="reqsideInfobar" class="sideInfobar animate-right">
+    <div class="px-4 pt-4 pb-1 border-bottom">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+          <h4 class="m-0">Request List</h4>
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeevearea1()">
+            <i class="fa fa-times"></i>
+          </a>
+        </div>
+    </div>
+    <div class="px-4 pt-2">
+        <div class="reqlst">
+            <ul class="requl list-group">
+                <li class="list-group-item"><a class="fc-event1"><div class="day-dot"></div>12:00am-Monthly Standard Task Test</a></li>
+                <li class="list-group-item fc-daygrid-event-harness" style="margin-top: 0px;">
+                    <a class="fc-daygrid-event fc-daygrid-dot-event  fc-event-start fc-event-end fc-event-past fc-grey fc-event1" tabindex="0">
+                        <div class="fc-daygrid-event-dot"></div>
+                        <div class="fc-event-time">12:00am</div>
+                        <div class="fc-event-title">-Monthly Standard Task Test</div>
+                    </a>
+                </li>
+                <li class="list-group-item"><a class="fc-event1"><div class="day-dot"></div>12:00am-Monthly Standard Task Test</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 <!-- Notification Modal -->
 <div class="modal fade" id="notifymodal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel"
     aria-hidden="true">
