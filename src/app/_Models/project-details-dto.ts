@@ -19,6 +19,7 @@ export class ProjectDetailsDTO {
     Emp_Comp_No: string;
     Team_Res: string;
     Project_EndDate: string;
+    Project_holddate: string;
 
     Team_Autho: string;
 

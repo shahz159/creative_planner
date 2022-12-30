@@ -615,11 +615,30 @@ export class ProjectTypeService {
     this.ObjDto.Emp_No = EmpNo;
     this.ObjDto.Project_Code=obj.Project_Code;
     this.ObjDto.Project_EndDate=obj.Project_EndDate;
+    this.ObjDto.Remarks=obj.Remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectDeadlineExtend", this.ObjDto);
   }
 
+  
+  _ProjectHoldService(obj: ProjectDetailsDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjDto.Emp_No = EmpNo;
+    this.ObjDto.Project_Code=obj.Project_Code;
+    this.ObjDto.Project_holddate=obj.Project_holddate;
+    this.ObjDto.Remarks=obj.Remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectHold", this.ObjDto);
+  }
 
 
+getDeadlineCountbyProjectcode(pCode){
+  this.ObjDto.Project_Code=pCode;
+  return this.http.post(this.rootUrl + "Category/NewGetDeadlineCountbyPCode", this.ObjDto);
+}
+
+getHoldDatebyProjectcode(pCode){
+  this.ObjDto.Project_Code=pCode;
+  return this.http.post(this.rootUrl + "Category/NewGetProjectHoldDatebyPCode", this.ObjDto);
+}
 
   SharingDataService(obj) {
     return obj;

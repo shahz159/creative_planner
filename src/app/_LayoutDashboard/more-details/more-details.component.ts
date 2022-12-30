@@ -106,6 +106,7 @@ export class MoreDetailsComponent implements OnInit {
     this.dar_details();
     this.getResponsibleActions();
     this.getapprovalStats();
+    this.getdeadlinecount();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
 
@@ -159,11 +160,11 @@ export class MoreDetailsComponent implements OnInit {
   Submitted_By:string;
   
   getapprovalStats() {
+    this.approvalEmpId=null;
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails= data as [];
-      // console.log(this.requestDetails, "req")
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -186,30 +187,47 @@ export class MoreDetailsComponent implements OnInit {
   rejectcommentsList: any;
 
   rejectApproval(){
-    console.log(this.rejectType);
+    this.commentSelected=null;
+    this.comments="";
     this.reject_list.forEach(element => {
       if(this.rejectType==element.TypeID){
         this.rejDesc=element.Reject_Description;
       }
     });
-  }
-
-  rejectComments(){
-    // debugger
-    // console.log(this.rejectType);
-
     this.approvalObj.Emp_no=this.Current_user_ID;
     this.approvalObj.rejectType=this.rejectType;
+    if(this.requestType=='New Project')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Reject Release')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Hold')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='Project Complete')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Reject Release')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Hold')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Deadline Extend')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Deadline Extend Hold')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Standardtask Enactive')
+      this.approvalObj.Status='Enactive-Reject';
+      else if(this.requestType=='Project Forward')
+      this.approvalObj.Status='Forward Reject';
+      else if(this.requestType=='Project Hold')
+      this.approvalObj.Status='Project Hold Reject';
+      else if(this.requestType=='Revert Back')
+      this.approvalObj.Status='Revert Reject';
+      
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
-      // console.log(data,"reject");
       this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
     });
-
   }
 
   submitApproval() {
     if (this.selectedType == '1') {
-
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -223,25 +241,33 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
           this.getapprovalStats();
         });
-
     }
-
-    else if (this.selectedType == '2') {
-      
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-
+    // else if (this.selectedType == '2') {
+    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    // }
     else if (this.selectedType == '3') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.rejectType = this.rejectType;
+      this.approvalObj.Remarks = this.comments;
+
+      this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showWarning(this._Message,"Rejected Successfully");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+        });
     }
-    else if (this.selectedType == '4') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
+    // else if (this.selectedType == '4') {
+    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    // }
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none"; 
-
   }
 
   getnextDeadline() {
@@ -260,7 +286,7 @@ export class MoreDetailsComponent implements OnInit {
   totalRecords: any;
   _CurrentpageRecords: any;
   CurrentPageNo: number = 1;
-  arr: any = [];
+  darArray: any = [];
 
   dar_details() {
     this.noTimeline = false;
@@ -270,7 +296,7 @@ export class MoreDetailsComponent implements OnInit {
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-        this.arr = this.darList;
+        this.darArray = this.darList;
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -290,9 +316,8 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darList.forEach(element => {
-          this.arr.push(element);
+          this.darArray.push(element);
         });
-
         if (this.darList) {
           this._CurrentpageRecords = this.darList.length;
         }
@@ -634,7 +659,7 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if (this.Status == 'New Project Rejected') {
+          if (this.Status == 'Project Hold') {
             this.actionButton = true;
           }
           if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected'
@@ -642,7 +667,6 @@ export class MoreDetailsComponent implements OnInit {
             || this.Status == 'Project Hold') {
             this.darbutton = false;
           }
-
         }
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -3075,4 +3099,11 @@ export class MoreDetailsComponent implements OnInit {
     this.notifyService.showError("Development Under Maintainance", 'Cancelled');
   }
 
+deadlineCount:any;
+getdeadlinecount(){
+  this.service.getDeadlineCountbyProjectcode(this.URL_ProjectCode).subscribe(data=>
+    {
+      this.deadlineCount=data['deadlineCount'];
+    })
+}
 }

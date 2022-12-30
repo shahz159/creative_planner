@@ -208,7 +208,6 @@ h3.popover-header {
 /* .bs-popover-right>.arrow{
     display: none;
 } */
-
 .mutlidropdown-set .multiselect-dropdown {
     width: 230px !important;
     height: 33px;
@@ -1173,4 +1172,8 @@ svg.feather {
 
 .sideInfobar::-webkit-scrollbar-track {
     background: #F1F1F1;
+}
+
+::ng-deep .input-group-append .mat-icon-button {
+    height: 35px !important;
 }
