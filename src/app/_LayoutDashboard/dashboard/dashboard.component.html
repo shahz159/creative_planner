@@ -853,8 +853,8 @@
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
                 <div class="icons-flex float-right">
-                    <div class="icons-right">
-                        <span class="tool-span">
+                    <div class="icons-right" id="hiddenedit" >
+                        <span class="tool-span"  (click)="ReshudingTaskandEvent()">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L3 16.82V21h4.18L20.41 7.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z">
@@ -863,8 +863,8 @@
                         </span>
                     </div>
                     <div class="icons-right">
-                        <span class="tool-span">
-                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                        <span class="tool-span" >
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns" (click)="sweetAlert2()">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
                                 </path>
@@ -1405,7 +1405,7 @@
 
             <div class="form-group" id="core_viw123">
                 <label class="cus-lbl">Select Project </label>
-                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode"
+                <ng-select class="kt-input form-control" placeholder="Select Project" [(ngModel)]="MasterCode" 
                     (change)="GetSubtasklistfromProject($event)">
                     <ng-option *ngFor="let item of  BlockNameProject" [value]="item.Project_Code">
                         {{item.BlockNameProject}}</ng-option>
@@ -1504,7 +1504,7 @@
 
 
                     <label class="cus-lbl">Add Guest </label>
-                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Guest "
+                    <ng-select [multiple]="true" class="kt-input form-control" name="ngEmployeeDropdown" placeholder="Select Guest "
                         [(ngModel)]="ngEmployeeDropdown">
                         <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                             {{item.DisplayName}} </ng-option>
@@ -1592,7 +1592,7 @@
                             <div class="d-flex gap-15">
                                 <div class="form-group flex-1">
                                     <label class="cus-lbl">Start Time </label>
-                                    <ng-select class="kt-input form-control" (open)="onfocus($event)"
+                                    <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
                                         placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                         <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item"
                                             >
