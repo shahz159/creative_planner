@@ -17,6 +17,8 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-project-info',
@@ -29,11 +31,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     public _LinkService: LinkService,
     public approvalservice: ApprovalsService,
     private notifyService: NotificationService,
+    public datepipe: DatePipe,
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
     private route: ActivatedRoute,
     private elementRef: ElementRef) {
       this.objPortfolioDto= new PortfolioDTO();
+      this.objProjectDto = new ProjectDetailsDTO();
   }
 
   @Input() inputFromParent: string;
@@ -56,6 +60,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   MoreDetailsList: any;
   
   approvalObj = new ApprovalDTO();
+  objProjectDto: ProjectDetailsDTO;
   requestDate: any;
   requestDeadline: any;
   requestType: any;
@@ -73,7 +78,18 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.projectCode = Pcode;
       this.getapprovalStats();
       this.fun_LoadProjectDetails();
+      this.getdeadlinecount();
+      this.getProjectHoldDate();
     });
+    this.EndDate1.setDate(this.EndDate1.getDate() + 1);
+    this.minhold.setDate(this.minhold.getDate()+1);
+    this.maxhold.setDate(this.minhold.getDate()+90);
+  //   $('.date-drop').on('hide.bs.dropdown', function (event) {
+  //     var tigger = $(".dropdown-menu");
+  //       if( tigger !== event.target && !tigger.has(event.target).length){
+  //            event.preventDefault();
+  //       } 
+  // });
   }
   
   scrldwn(){
@@ -100,6 +116,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
  _portfoliolist:any;
  _portfolioLength: any;
   objPortfolioDto : PortfolioDTO;
+  EndDate1: any = new Date();
+  minhold: any = new Date();
+  maxhold: any = new Date();
 
   fun_LoadProjectDetails() { 
     
@@ -126,7 +145,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           //console.log("ProjectDetails-->", this.ProjectInfo_List);
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
-
+          this.EndDate1 = this.date2;
           this.Pid = this.ProjectInfo_List[0]['id'];
           this._MasterCode = this.ProjectInfo_List[0]['Project_Code'];
           this._ProjectName = this.ProjectInfo_List[0]['Project_Name'];
@@ -183,7 +202,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         }
         else{
           this.noPort="";
-          console.log(this._portfoliolist,this.Pid, this._MasterCode,this._ProjectName,this.Current_user_ID,"portfolio list");
+          // console.log(this._portfoliolist,this.Pid, this._MasterCode,this._ProjectName,this.Current_user_ID,"portfolio list");
         }
       });
     this._OpenMemosInfo(this.projectCode);
@@ -195,12 +214,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   closeInfo() {
     this.selectedType = null;
     this.commentSelected = null;
+    this.comments="";
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    
-
     this.ngOnDestroy();
   }
 
@@ -266,7 +284,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       arr.push({ Port_Id: element.Portfolio_ID })
       this._SelectedPorts = arr;
     });
-    console.log("Selected Ports In Array--->", this._SelectedPorts);
+    // console.log("Selected Ports In Array--->", this._SelectedPorts);
     // console.log(this.ngDropdwonPort,"ports");
   
   }
@@ -445,7 +463,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       arr.push({ MailId: element.MailId })
       this._SelectedMemos = arr;
     });
-    console.log("Deselect Memos--->", this._SelectedMemos)
+    // console.log("Deselect Memos--->", this._SelectedMemos)
   }
 
   _onRowClick(projectCode) {
@@ -491,7 +509,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         }
         else {
           this._mappedMemos = 0;
-          console.log("No Memos linked For This Project...")
+          console.log("No Memos linked For This Project...");
         }
       });
     document.getElementById("LinkSideBar").style.width = "100%";    
@@ -532,7 +550,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this._MemosNotFound = "";
           this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
           this._JsonString = data[0]['JsonData'];
-          console.log(this._JsonString);
+          // console.log(this._JsonString);
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               // console.log("------------>", data);
@@ -607,11 +625,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
       // console.log("Table Ids-->", this._SelectedIdsfromDb);
       this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
-      console.log("After Joins Final Output=======>", this.memoId);
+      // console.log("After Joins Final Output=======>", this.memoId);
     }
     else {
       this.memoId = JSON.stringify(this._SelectedMemos);
-      console.log("Ëlse Block...Executed---->", this.memoId);
+      // console.log("Ëlse Block...Executed---->", this.memoId);
     }
     let UserId = this.Current_user_ID;
     if (this._SelectedMemos.length > 0) {
@@ -692,8 +710,18 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this._modelProjDesc = null;
     this._modelProjectName = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
+
+    // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.remove("d-block");
+    this._ProjDeadline = null;
+    this.extend_remarks="";
+
+    (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
+    this.Holddate = null;
+    this.hold_remarks="";
   }
   _modelProjAlloc:number=0;
+  
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
       this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID, this._modelProjAlloc).subscribe(data => {
@@ -720,19 +748,19 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   clickonselect(){
     this.comments=this.commentSelected;
   }
+
   typeChange(){
     this.comments=null;
     this.commentSelected=null;
     this.rejectType=null;
   }
+
   submitApproval() {
     if (this.selectedType == '1') {
-
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
       this.approvalObj.Remarks = this.comments;
-      // alert(this.comments);
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
@@ -742,31 +770,44 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
         });
-
     }
-
-    else if (this.selectedType == '2') {
-      
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-
+    // else if (this.selectedType == '2') {
+    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    // }
     else if (this.selectedType == '3') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.rejectType = this.rejectType;
+      this.approvalObj.Remarks = this.comments;
+
+      this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showWarning(this._Message,"Rejected Successfully");
+          
+          this.fun_LoadProjectDetails();
+          this.getapprovalStats();
+        });
     }
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
-    document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "none"; 
-
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
+    // document.getElementById("rightbar-overlay").style.display = "none";
+    this.closeInfo();
   }
+
   comments_list: any;
   initials1:any;
   Submitted_By:string;
   prviousCommentsList:any;
+
   getapprovalStats() {
+    this.approvalEmpId=null;
+    this.selectedType = null;
+    this.commentSelected = null;
+    this.comments="";
     this.approvalObj.Project_Code = this.projectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
@@ -785,7 +826,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials1= this.initials1.toUpperCase();
       }
-      console.log(this.comments_list, "req")
+      // console.log(this.comments_list, "req")
 
       // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
@@ -802,7 +843,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   rejectType:any;
 
   rejectApproval(){
-    console.log(this.rejectType);
+    this.commentSelected=null;
+    this.comments="";
     this.reject_list.forEach(element => {
       if(this.rejectType==element.TypeID){
         this.rejDesc=element.Reject_Description;
@@ -843,4 +885,97 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   underDev(){
     this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
+
+//Edit deadline
+_ProjDeadline: string;
+extend_remarks:string;
+
+onEditDeadline(id, enddate) {
+  (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.add("d-block");
+  document.getElementsByClassName("date-drop2")[0].classList.remove("d-block");
+
+  // this._ProjDeadline = enddate;
+  this.Editbutton = true;
+  (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
+}
+
+onProject_ExtendDeadline(id, Pcode) {
+  this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+  // alert(Pcode);
+  if (this._ProjDeadline != null) {
+
+    this.objProjectDto.Project_EndDate = this._ProjDeadline;
+    this.objProjectDto.Project_Code = Pcode;
+    this.objProjectDto.Remarks= this.extend_remarks;
+    this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
+      this._Message = data['message'];
+
+      if (this._Message == 'Project Deadline not Updated') {
+        this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+        this.fun_LoadProjectDetails();
+      }
+      else if (this._Message == 'Project Deadline Updated') {
+        this.notifyService.showSuccess(this._Message+" by "+this.Current_user_ID, "Success");
+        this.fun_LoadProjectDetails();
+      }
+    });
+    this.onCancel(id);
+  }
+  else {
+    this.notifyService.showInfo("Deadline date cannot be empty", "Please select date.");
+  }
+}
+
+deadlineCount:any;
+getdeadlinecount(){
+  this.service.getDeadlineCountbyProjectcode(this.projectCode).subscribe(data=>
+    {
+      this.deadlineCount=data['deadlineCount'];
+    })
+}
+
+// Hold Project
+Holddate:string;
+hold_remarks: string;
+
+
+onHoldClick(id) {
+  (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.add("d-block");
+  document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
+
+  this.Editbutton = true;
+  (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
+}
+
+onProject_Hold(id, Pcode) {
+  this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
+  // alert(Pcode);
+  if (this.Holddate != null) {
+
+    this.objProjectDto.Project_holddate = this.Holddate;
+    this.objProjectDto.Project_Code = Pcode;
+    this.objProjectDto.Remarks= this.hold_remarks;
+    this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
+      this._Message = data['message'];
+      
+      if (this._Message == 'Project Hold Updated') {
+        this.notifyService.showSuccess(this._Message+" by "+this.Current_user_ID, "Success");
+        this.fun_LoadProjectDetails();
+      }
+    });
+    this.onCancel(id);
+  }
+  else {
+    this.notifyService.showInfo("Project Hold date cannot be empty", "Please select a date.");
+  }
+}
+
+
+proj_holddate:any;
+getProjectHoldDate(){
+  this.service.getHoldDatebyProjectcode(this.projectCode).subscribe(data=>
+    {
+      this.proj_holddate=data['Project_holddate'];
+    })
+}
 }

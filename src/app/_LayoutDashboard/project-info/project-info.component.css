@@ -249,3 +249,17 @@
 .collapsed .fa-chevron-up:before, .dwn-arw .fa-chevron-up:before {
   content: "\f078";
 }
+.date-drop1, .date-drop2 {
+  width: 350px;
+}
+::ng-deep .input-group-append .mat-icon-button {
+  height: 35px !important;
+}
+.date-drop1{
+  position: absolute;
+    left: -329px;
+}
+.date-drop2{
+  position: absolute;
+    left: -332px
+}
