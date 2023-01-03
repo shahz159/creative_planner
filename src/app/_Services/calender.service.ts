@@ -21,6 +21,8 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetProjectandsubtaskDrp", this.obj_CalenderDTO);
 
   }
+
+
   // starttime:string;
   // min:number;
   // endtime:string;
@@ -37,13 +39,18 @@ export class CalenderService {
   }
   NewClickEventJSON(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+  
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
   }
+  NewRescheduling_table(id){
+  this.obj_CalenderDTO.Schedule_ID= id;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewGetRessheduling_table", this.obj_CalenderDTO);
+}
 
   NewInsertCalender(obj: CalenderDTO){
     
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
-  
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_Calender", this.obj_CalenderDTO);
   }
 
