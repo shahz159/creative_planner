@@ -1293,3 +1293,14 @@ export class PortfolioProjectsComponent implements OnInit {
       });
   }
 }
+/// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
+// <ng-option [value]="com.Com_No" *ngFor="let com of Company_List" >
+// {{com.Com_Name}}
+// </ng-option>
+// </ng-select> -->
+// <!-- <ng-select  [placeholder]="' TM Name '" 
+// multiple="true" [(ngModel)]="ngEmployeeDropdown" (change)="OnEmpSelect()">
+// <ng-option [value]="usr.Emp_No" *ngFor="let usr of EmployeeList">
+// <a *ngIf="usr.Emp_No!=Current_user_ID">{{usr.TM_DisplayName}}</a>
+// </ng-option>
+// </ng-select> -->

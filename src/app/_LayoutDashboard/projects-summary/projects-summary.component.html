@@ -345,6 +345,11 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
                                                             <span class="text-danger font-weight-400">Delay</span>
+                                                            <span *ngIf="item.Delaydays>0"
+                                                                class="text-danger delayDays">
+                                                                <strong>({{item.Delaydays}}
+                                                                    Days)</strong>
+                                                            </span>
                                                         </div>
                                                         <!-- Other Status -->
                                                         <div *ngIf="item.Status=='InProcess'">
