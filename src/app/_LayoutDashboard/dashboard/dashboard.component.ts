@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
   ProjectListArray: any;
   BlockNameProject1: any;
   Timeslab: any;
-  MasterCode:any = [];
+  MasterCode: any = [];
   MasterCode1: any = [];
   Subtask: any;
   Startts: any;
@@ -583,25 +583,28 @@ export class DashboardComponent implements OnInit {
           this.MasterCode = [];
           // this.MasterCode1 = [];
           this.arr = (this.EventScheduledjson[0]['Project_code']);
-          // this.arr.forEach(element => {
-          //   this.MasterCode.push(element.Project_Name);
-          //   this.MasterCode1.push(element.stringval);
-          // });
+          this.arr.forEach(element => {
+            // this.MasterCode.push(element.Project_Name);
+            this.MasterCode.push(element.stringval);
+          });
           this.Portfolio = [];
           this.Portfolio1 = [];
           this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
           this.arr1.forEach(element => {
-            this.Portfolio.push(element.Portfolio_Name);
-            this.Portfolio1.push(element.numberval);
+            // this.Portfolio.push(element.Portfolio_Name);
+            this.Portfolio.push(element.numberval);
           });
 
           this.ngEmployeeDropdown = [];
           this.ngEmployeeDropdown1 = [];
           // alert(this.EventScheduledjson[0]['Add_guests'])
-          this.arr1 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
-          this.arr1.forEach(element => {
-            this.ngEmployeeDropdown.push(element.TM_DisplayName);
-            this.ngEmployeeDropdown1.push(element.Emp_No);
+          this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+          this.arr2.forEach(element => {
+            // this.ngEmployeeDropdown.push(element.TM_DisplayName);
+            // this.ngEmployeeDropdown.push(element.numberval);
+            this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+
+
 
           });
           this.SelectDms = [];
@@ -612,8 +615,8 @@ export class DashboardComponent implements OnInit {
           for (var i = 0; i < arr3.length; i++) {
             this.Memos_List.forEach(element => {
               if (element.MailId == arr3[i]) {
-                this.SelectDms.push(element.Subject);
-                this.SelectDms1.push(element.MailId);
+                // this.SelectDms.push(element.Subject);
+                this.SelectDms.push(element.MailId);
               }
             });
           }
@@ -740,6 +743,8 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
+          this._StartDate = null;
+          this._EndDate = null;
           this._status = null;
           this.SelectDms = null;
           this.Location_Type = null;
@@ -798,16 +803,16 @@ export class DashboardComponent implements OnInit {
 
         var columnName = "Title_Name";
         element[columnName] = this.Title_Name;
-       
-          var columnName = "MasterCode";
-          element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
-          alert(this.MasterCode + "MasterCode");
-        
+
+        var columnName = "MasterCode";
+        element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+        // alert(this.MasterCode + "MasterCode");
+
 
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var columnName = "User_Name";
-        element[columnName] = this.ngEmployeeDropdown1 == undefined ? "" : this.ngEmployeeDropdown1.toString();
+        element[columnName] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
         var columnName = "Location_Type";
         element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
         var columnName = "Description";
@@ -817,9 +822,9 @@ export class DashboardComponent implements OnInit {
         var columnName = "EventNumber";
         element[columnName] = this.ScheduleType == "Task" ? 0 : this.EventNumber;
         var columnName = "Portfolio_name";
-        element[columnName] = this.Portfolio1 == undefined ? "" : this.Portfolio1.toString();
+        element[columnName] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
         var columnName = "DMS_Name";
-        element[columnName] = this.SelectDms1 == undefined ? "" : this.SelectDms1.toString();
+        element[columnName] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
       });
 
@@ -873,11 +878,12 @@ export class DashboardComponent implements OnInit {
           this.TImetable();
 
         });
+        this.closeschd();
     }
     else {
       alert('Please Select Valid Date and Time');
     }
-    this.closeschd();
+    
   }
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
@@ -1227,7 +1233,7 @@ export class DashboardComponent implements OnInit {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        console.log(this.ProjectListArray, "Project List Array");
+        console.log(this._EmployeeListForDropdown, "Project List Array");
       });
   }
   EmployeeOnSelect(obj) {
@@ -1573,7 +1579,7 @@ export class DashboardComponent implements OnInit {
 
     let arr = [];
     this.EmployeeDropdown = emp['Emp_No'];
-    //console.log("Selected Employees---->", JSON.stringify(this.ngEmployeeDropdown));
+    console.log("Selected Employees---->", JSON.stringify(this.ngEmployeeDropdown));
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
 
     this.ngEmployeeDropdown2.forEach(element => {
@@ -2234,6 +2240,8 @@ export class DashboardComponent implements OnInit {
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
+    this._StartDate = null;
+    this._EndDate = null;
     this._status = null;
     this.Portfolio = null;
     this.Location_Type = null;
