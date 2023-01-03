@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 //import { ScriptService } from 'src/app/_Services/script.service';
@@ -6,7 +6,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import * as moment from 'moment'
 // import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 // import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, TitleStrategy } from '@angular/router';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 //import { LoadingBarService } from '@ngx-loading-bar/core';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -80,10 +80,11 @@ export class DashboardComponent implements OnInit {
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
   _calenderDto: CalenderDTO;
-  BlockNameProject: any;
+  ProjectListArray: any;
   BlockNameProject1: any;
   Timeslab: any;
-  MasterCode: any = [];
+  MasterCode:any = [];
+  MasterCode1: any = [];
   Subtask: any;
   Startts: any;
   Endtms: any;
@@ -248,6 +249,7 @@ export class DashboardComponent implements OnInit {
   loadAPI: Promise<any>;
   dropdownSettings_Emp: IDropdownSettings = {};
   ngEmployeeDropdown: any;
+  ngEmployeeDropdown1: any = [];
   ngEmployeeDropdown2: any = [];
   EmployeeDropdown: string;
   monthdates: any[] = [];
@@ -259,12 +261,15 @@ export class DashboardComponent implements OnInit {
   User_Scheduledjson: any[] = [];
   DMS_Scheduledjson: any = [];
   Portfolio: any = [];
+  Portfolio1: any = [];
   Portfoliolist_1: [];
   Note_deadlineexpire: boolean;
   MinLastNameLength: boolean;
   _SelectedEmployees: any = [];
   _SelectedEmpIds_String: string;
   SelectDms: any;
+  SelectDms1: any;
+
   _StartDate: any;
   _EndDate: any;
 
@@ -328,18 +333,28 @@ export class DashboardComponent implements OnInit {
   _hrtime: any;
   _subname: boolean;
   _subname1: boolean;
+  Project_Code: string;
+  // selectedCar: string;
+
+  // cars = [
+  //   { id: '1', name: 'Volvo' },
+  //   { id: '2', name: 'Saab' },
+  //   { id: '3', name: 'Opel' },
+  //   { id: '4', name: 'Audi' },
+  // ];
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe, public dialog: MatDialog,
     private notifyService: NotificationService,
-    public _LinkService: LinkService, private CalenderService: CalenderService
+    public _LinkService: LinkService, private CalenderService: CalenderService,
+    private cd: ChangeDetectorRef
   ) {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this._calenderDto = new CalenderDTO;
-    this.BlockNameProject = [];
+
     this.BlockNameProject1 = [];
     this.Timeslab = [];
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
@@ -347,9 +362,9 @@ export class DashboardComponent implements OnInit {
     this._subname1 = false;
   }
   ngOnInit() {
-
-
-
+    // this.ProjectListArray = [];
+    this.Project_Code = "";
+    // this.selectedCar = '3';
     // this.calendar.updateTodaysDate();
     this.calendarOptions = {
       initialView: 'listMonth',
@@ -381,7 +396,7 @@ export class DashboardComponent implements OnInit {
     // this.Startts = this._hrtime.toString() + ':00';
     // this.Endtms = this._hrtime.toString() + ':15';
     this.ScheduleType = "Create"
-    this.GetProjectAndsubtashDrpforCalender();
+
     this.GetTimeslabfordate();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.typetext = "This Project consists of Core/Secondary Projects";
@@ -443,7 +458,10 @@ export class DashboardComponent implements OnInit {
     jsonData[columnNamee] = this.Endtms;
     this.daysSelectedII.push(jsonData)
     this.Checkdatetimetable(this.daysSelectedII);
-    this.calendar.updateTodaysDate();
+    this.GetProjectAndsubtashDrpforCalender();
+    // this.calendar.updateTodaysDate();
+
+
   }
 
   closeevearea() {
@@ -505,8 +523,10 @@ export class DashboardComponent implements OnInit {
   arr: any = [];
   arr1: any = [];
   arr2: any = [];
+  editTask: boolean = false;
 
   ReshudingTaskandEvent() {
+    this.editTask = true;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
@@ -536,7 +556,15 @@ export class DashboardComponent implements OnInit {
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-          this.MasterCode = (this.EventScheduledjson[0]['Project_code'][0].Project_Name);
+
+
+          // var jsonDataPC = {};
+          // var columnName = "BlockNameProject";
+          // jsonDataPC[columnNamee] = this.EventScheduledjson[0]['Project_code'][0].Project_Name;
+          // var columnName = "Project_Code";
+          // jsonDataPC[columnNamee] = this.EventScheduledjson[0]['Project_code'][0].stringval;
+          // this.MasterCode.push(jsonDataPC);
+          this.MasterCode = this.EventScheduledjson[0]['Project_code'][0].stringval;
 
           document.getElementById("subtaskid").style.display = "block";
           // document.getElementById("Link_Name").style.display = "none";
@@ -547,28 +575,37 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw121").style.display = "none";
           document.getElementById("core_viw222").style.display = "none";
           document.getElementById("core_Dms").style.display = "none";
+
+          this.MasterCode = (this.EventScheduledjson[0]['Project_code'][0].stringval);
         }
         else if (this.ScheduleType == 'Event') {
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
+          // this.MasterCode1 = [];
           this.arr = (this.EventScheduledjson[0]['Project_code']);
-          this.arr.forEach(element => {
-            this.MasterCode.push(element.Project_Name);
-          });
+          // this.arr.forEach(element => {
+          //   this.MasterCode.push(element.Project_Name);
+          //   this.MasterCode1.push(element.stringval);
+          // });
           this.Portfolio = [];
+          this.Portfolio1 = [];
           this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
           this.arr1.forEach(element => {
             this.Portfolio.push(element.Portfolio_Name);
+            this.Portfolio1.push(element.numberval);
           });
 
           this.ngEmployeeDropdown = [];
-          alert(this.EventScheduledjson[0]['Add_guests'])
+          this.ngEmployeeDropdown1 = [];
+          // alert(this.EventScheduledjson[0]['Add_guests'])
           this.arr1 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
           this.arr1.forEach(element => {
             this.ngEmployeeDropdown.push(element.TM_DisplayName);
+            this.ngEmployeeDropdown1.push(element.Emp_No);
 
           });
           this.SelectDms = [];
+          this.SelectDms1 = [];
           let arr3 = [];
           var str = (this.EventScheduledjson[0]['DMS_Name']);
           arr3 = str.split(",");
@@ -576,6 +613,7 @@ export class DashboardComponent implements OnInit {
             this.Memos_List.forEach(element => {
               if (element.MailId == arr3[i]) {
                 this.SelectDms.push(element.Subject);
+                this.SelectDms1.push(element.MailId);
               }
             });
           }
@@ -632,6 +670,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitSchedule() {
+    alert(this.MasterCode.toString() + "submit");
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -685,7 +724,7 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-      // console.log(JSON.stringify(finalarray), "finalarray")
+      //  console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
           // console.log(data, "m");
@@ -724,8 +763,116 @@ export class DashboardComponent implements OnInit {
           this.TImetable();
 
         });
+    }
+    else {
+      alert('Please Select Valid Date and Time');
+    }
+    this.closeschd();
+  }
 
+  OnSubmitReSchedule() {
+    // alert(this.MasterCode1 + "MasterCode1-update")
+    // alert(this.MasterCode + "MasterCode-update")
+    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+      this._subname1 = true;
+      return false;
+    }
+    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+      this._subname = true;
+      return false;
+    }
+    var now = new Date();
+    let timestamp = "";
+    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+    this.EventNumber = timestamp;
+    let finalarray = [];
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == false);
+    // alert(finalarray.length)
+    if (finalarray.length > 0) {
+      finalarray.forEach(element => {
+        var columnName = "Emp_No";
+        element[columnName] = this.Current_user_ID;
+        var columnNames = "ScheduleType";
+        element[columnNames] = this.ScheduleType == "Task" ? 1 : 2;
 
+        var columnName = "Title_Name";
+        element[columnName] = this.Title_Name;
+       
+          var columnName = "MasterCode";
+          element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+          alert(this.MasterCode + "MasterCode");
+        
+
+        // var columnName = "Link_Type";
+        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+        var columnName = "User_Name";
+        element[columnName] = this.ngEmployeeDropdown1 == undefined ? "" : this.ngEmployeeDropdown1.toString();
+        var columnName = "Location_Type";
+        element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
+        var columnName = "Description";
+        element[columnName] = this.Description_Type == undefined ? "" : this.Description_Type;
+        var columnName = "Subtask";
+        element[columnName] = this.Subtask == undefined ? "" : this.Subtask;
+        var columnName = "EventNumber";
+        element[columnName] = this.ScheduleType == "Task" ? 0 : this.EventNumber;
+        var columnName = "Portfolio_name";
+        element[columnName] = this.Portfolio1 == undefined ? "" : this.Portfolio1.toString();
+        var columnName = "DMS_Name";
+        element[columnName] = this.SelectDms1 == undefined ? "" : this.SelectDms1.toString();
+
+      });
+
+      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this.Schedule_ID != 0) {
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+      }
+      else {
+        this._calenderDto.Schedule_ID = 0;
+      }
+      console.log(JSON.stringify(finalarray), "finalarray")
+      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+        (data => {
+          // console.log(data, "m");
+          this._Message = data['message'];
+          this.notifyService.showSuccess(this._Message, "Success");
+          this.GetScheduledJson();
+          this.Title_Name = null;
+          this.ngEmployeeDropdown = null;
+          this.ngEmployeeDropdown1 = null;
+          this.Description_Type = null;
+          this.MasterCode = null;
+          this.MasterCode1 = null;
+          this.Subtask = null;
+          this.Startts = null;
+          this.Endtms = null;
+          this.St_date = null;
+          this.Ed_date = null;
+          this._status = null;
+          this.SelectDms = null;
+          this.SelectDms1 = null;
+          this.Location_Type = null;
+          this.Allocated_subtask = null;
+          this.TM_DisplayName = null;
+          this.Projectstartdate = "";
+          this.projectEnddate = null;
+          this.Status_project = null;
+          this.AllocatedHours = null;
+          this.daysSelectedII = [];
+          this.Avaliabletime = [];
+          this.timeslotsavl = [];
+          this.singleselectarry = [];
+          this.daysSelected = [];
+          this.selected = null;
+          this.TImetable();
+          this.Portfolio = null;
+          this.Portfolio1 = null;
+          this.minDate = moment().format("YYYY-MM-DD").toString();;
+          this.maxDate = null;
+          this.calendar.updateTodaysDate();
+          this.TImetable();
+
+        });
     }
     else {
       alert('Please Select Valid Date and Time');
@@ -763,9 +910,13 @@ export class DashboardComponent implements OnInit {
 
     }
 
+
+    // this.Project_Code = "4001176";
+
   }
   GetSubtasklistfromProject(MasterCode) {
-    this.BlockNameProject.forEach(element => {
+
+    this.ProjectListArray.forEach(element => {
 
       if (element.Project_Code == MasterCode) {
 
@@ -806,7 +957,7 @@ export class DashboardComponent implements OnInit {
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
 
-      this.BlockNameProject.forEach(element => {
+      this.ProjectListArray.forEach(element => {
         if (element.Project_Code == MasterCode) {
           this._Exec_BlockName = element.Exec_BlockName;
           this.SubmissionName = element.Submission;
@@ -1028,7 +1179,7 @@ export class DashboardComponent implements OnInit {
         this.calendar.updateTodaysDate();
       }
     }, delay);
-    
+
 
   }
   Checkdatetimetable(_array) {
@@ -1071,31 +1222,13 @@ export class DashboardComponent implements OnInit {
   }
 
   GetProjectAndsubtashDrpforCalender() {
-
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-
-        // console.log(data)
-        this.BlockNameProject = JSON.parse(data['Projectlist']);
-
+        this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-        console.log(this._EmployeeListForDropdown, "test")
-
-        // this.BlockNameProject = data as [];
-        // this.dropdownSettings_Emp = {
-        //   singleSelection: false,
-        //   idField: 'Emp_No',
-        //   textField: 'TM_DisplayName',
-        //   selectAllText: 'Select All',
-        //   unSelectAllText: 'UnSelect All',
-        //   itemsShowLimit: 5,
-        //   allowSearchFilter: true,
-        //   closeDropDownOnSelection: true
-        // }
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-
-      })
-
+        console.log(this.ProjectListArray, "Project List Array");
+      });
   }
   EmployeeOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
@@ -1333,11 +1466,11 @@ export class DashboardComponent implements OnInit {
   }
 
   SelectDropDown(val) {
-    
-    if (val.value == 0){
-      this.daysSelectedII=[];
-      this.daysSelected=[];
-          this.singleselectarry=[];
+
+    if (val.value == 0) {
+      this.daysSelectedII = [];
+      this.daysSelected = [];
+      this.singleselectarry = [];
       this.Checkdatetimetable(this.daysSelectedII);
       this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "none";
@@ -1474,13 +1607,13 @@ export class DashboardComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
-        if (this.Project_dateScheduledjson >= this._StartDate) {
-          document.getElementById("hiddenedit").style.display = "block";
+        // if (this.Project_dateScheduledjson >= this._StartDate) {
+        //   document.getElementById("hiddenedit").style.display = "block";
 
-        }
-        else {
-          document.getElementById("hiddenedit").style.display = "none";
-        }
+        // }
+        // else {
+        //   document.getElementById("hiddenedit").style.display = "none";
+        // }
 
 
         this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
