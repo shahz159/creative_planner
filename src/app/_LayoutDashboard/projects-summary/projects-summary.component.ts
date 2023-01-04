@@ -725,9 +725,10 @@ export class ProjectsSummaryComponent implements OnInit {
     this.projCode = projCode;
     this.service._GetDARAchievements(projCode)
       .subscribe((data) => {
-        this._DARList = data;
+        console.log(data,"dar");
+        this._DARList = JSON.parse(data[0]['DAR_AchievementJson']);
         if (this._DARList.length) {
-          this._DarAchievement = data[0]['WorkAchieved'];
+          this._DarAchievement = this._DARList[0]['WorkAchieved']== null ? "Not Found" : this._DARList[0]['WorkAchieved'];
         }
         else {
           this._DarAchievement = "Not Found";
