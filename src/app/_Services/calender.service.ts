@@ -42,6 +42,11 @@ export class CalenderService {
   
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
   }
+  NewGetEvent_request(obj:CalenderDTO){
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+  
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetEvent_request", this.obj_CalenderDTO);
+  }
   NewRescheduling_table(id){
   this.obj_CalenderDTO.Schedule_ID= id;
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetRessheduling_table", this.obj_CalenderDTO);

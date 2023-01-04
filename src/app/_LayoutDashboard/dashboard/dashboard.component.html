@@ -402,7 +402,7 @@
                      </ng-select> -->
                     <div class="d-flex">
                         <div class="d-flex align-items-center">
-                            <button class="btn btn-sm btn-info btn-noti mr-3 mb-1" (click)="evereq()">Event
+                            <button class="btn btn-sm btn-info btn-noti mr-3 mb-1" (click)="evereq()" attr.data-content={{Event_requests1.length}}>Event
                                 Request</button>
 
                         </div>
@@ -1189,7 +1189,7 @@
         </div>
     </div>
     <div class="px-4 pt-2">
-        <div class="reqlst">
+        <div class="reqlst" *ngFor="let item of Event_requests1 " (click)=" GetclickEventRequest_details(item.Schedule_ID)">
             <ul class="requl list-group">
                 <li class="list-group-item">
                     <a class="fc-event1 align-items-center justify-content-between">
@@ -1198,7 +1198,7 @@
                             <div id="" class="title-right">
                                 <div class="title-area">
                                     <div class="title-main ml-1">
-                                        <span id="title1">Task monthly</span>
+                                        <span id="title1">{{item.Task_Name}}</span>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <div class="px-2 text-grey-2">
@@ -1212,7 +1212,7 @@
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="main-s text-grey-2">Waseem Akram</div>
+                                        <div class="main-s text-grey-2">{{item.TM_DisplayName}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -1227,14 +1227,14 @@
                                 </svg>
                             </span>
                             <div class="text-grey-2 font-600">
-                                <div>01, December 2022</div>
-                                <div>00:00– 01:00</div>
+                                <div>{{item.Scheduled_date}}</div>
+                                <div>{{item.StartTime}}– {{item.EndTime}}</div>
                             </div>
                         </div>
                     </a>
                 </li>
 
-                <li class="list-group-item">
+                <!-- <li class="list-group-item">
                     <a class="fc-event1 align-items-center justify-content-between">
                         <div class="">
                             <div class="day-dot"></div><span>12:00am-Monthly Standard Task Test</span>
@@ -1292,7 +1292,7 @@
                             <span>01, December 2022</span>
                         </div>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

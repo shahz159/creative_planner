@@ -367,11 +367,14 @@ export class DashboardComponent implements OnInit {
     // this.selectedCar = '3';
     // this.calendar.updateTodaysDate();
     this.calendarOptions = {
-      initialView: 'listMonth',
+     
+      initialView: 'listWeek',
+      //  timeZone: 'local',
+      //     initialDate:new Date(2023,  ),
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
       themeSystem: "solar",
       weekNumbers: true,
@@ -385,6 +388,7 @@ export class DashboardComponent implements OnInit {
       },
       nowIndicator: true,
       allDaySlot: false
+      
     };
 
     this.MinLastNameLength = true;
@@ -427,6 +431,7 @@ export class DashboardComponent implements OnInit {
           this.messageForEmpty = true;
         }
       });
+      
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.maxDate = moment(moment().add(90, 'days')).format("YYYY-MM-DD").toString();
@@ -460,7 +465,7 @@ export class DashboardComponent implements OnInit {
     this.Checkdatetimetable(this.daysSelectedII);
     this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
-
+    this.Event_requests();
 
   }
 
@@ -471,6 +476,66 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
+  GetclickEventRequest_details(id) {
+
+    $('.bg-ovr').addClass('d-block');
+    $('.side_view').addClass('position-fixed');
+    this._calenderDto.Schedule_ID = id;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        console.log(this.EventScheduledjson, "Testing");
+        this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
+        // if (this.Project_dateScheduledjson >= this._StartDate) {
+        //   document.getElementById("hiddenedit").style.display = "block";
+
+        // }
+        // else {
+        //   document.getElementById("hiddenedit").style.display = "none";
+        // }
+
+
+        this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
+        this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+        this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+        this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
+        this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
+
+        this.dmsIdjson = [];
+        if (this.DMS_Scheduledjson.length > 0) {
+          this.DMS_Scheduledjson.forEach(element => {
+            var jsonData = {};
+            var columnName = "MailId";
+            jsonData[columnName] = element;
+            this.dmsIdjson.push(jsonData);
+          });
+          this.dmsIdjson = JSON.stringify(this.dmsIdjson);
+          this._LinkService._GetMemosSubject(this.dmsIdjson).
+            subscribe((data) => {
+              this._MemosSubjectList = JSON.parse(data['JsonData']);
+              console.log("Subject Name ------------>", this._MemosSubjectList);
+            });
+        }
+
+
+
+
+        // console.log(this.dmsIdjson,"ids");
+      });
+  }
+  Event_requests1:any=[];
+  Event_requests(){
+    
+    this._calenderDto.Emp_No = this.Current_user_ID;
+   
+    this.CalenderService.NewGetEvent_request(this._calenderDto).subscribe
+      ((data) => {
+        
+       this.Event_requests1=data;
+      //  console.log(this.Event_requests1,"Event11")
+      });
+
+  }
   sweetAlert2() {
 
     // console.log(dateOne)
@@ -673,7 +738,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitSchedule() {
-    alert(this.MasterCode.toString() + "submit");
+    // alert(this.MasterCode.toString() + "submit");
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1233,7 +1298,7 @@ export class DashboardComponent implements OnInit {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        console.log(this._EmployeeListForDropdown, "Project List Array");
+        // console.log(this._EmployeeListForDropdown, "Project List Array");
       });
   }
   EmployeeOnSelect(obj) {
@@ -1611,7 +1676,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "Testing");
+        // console.log(this.EventScheduledjson, "Testing");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         // if (this.Project_dateScheduledjson >= this._StartDate) {
         //   document.getElementById("hiddenedit").style.display = "block";
@@ -1660,12 +1725,14 @@ export class DashboardComponent implements OnInit {
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
         this.calendarOptions = {
 
-          initialView: 'listMonth',
-
+          initialView: 'listWeek',
+          // timeZone: 'local',
+          // initialDate:new Date(1, 3-9, 2023),
+          
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
 
           themeSystem: "solar",
@@ -1680,6 +1747,7 @@ export class DashboardComponent implements OnInit {
           },
           nowIndicator: true,
           allDaySlot: false,
+          
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -2201,9 +2269,11 @@ export class DashboardComponent implements OnInit {
   }
 
   evereq() {
+    this.Event_requests();
     document.getElementById("reqsideInfobar").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
   }
   closeevearea1() {
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
