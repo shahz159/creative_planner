@@ -1262,7 +1262,7 @@ height: auto !important;
    position: relative;
 }
 .btn-noti::before {
-    content: "5"; 
+    content: attr(data-content);
     position: absolute;
     top: -0.5em; 
     right: -0.5em; 
