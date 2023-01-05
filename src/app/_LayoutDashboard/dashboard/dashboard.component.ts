@@ -523,16 +523,9 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
-<<<<<<< HEAD
-  Event_requests1:any=[];
-  Event_requests(){
-   
-    
-=======
   Event_requests1: any = [];
   Event_requests() {
 
->>>>>>> 0a428d71145ebd2f153ece6a4ebe61440087e156
     this._calenderDto.Emp_No = this.Current_user_ID;
 
     this.CalenderService.NewGetEvent_request(this._calenderDto).subscribe
