@@ -11,6 +11,9 @@ import { ProjectInfoComponent } from './project-info.component';
 // import listPlugin from '@fullcalendar/list';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FocusOnClickDirective } from './focus-on-click.directive';
+import { DatePipe } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 // FullCalendarModule.registerPlugins([
@@ -28,10 +31,13 @@ import { FocusOnClickDirective } from './focus-on-click.directive';
     ProjectInfoRoutingModule,
     NgMultiSelectDropDownModule,
     NgSelectModule,
-    ReactiveFormsModule
+    DatePipe,
+    ReactiveFormsModule,
+    MatDatepickerModule, MatFormFieldModule
 
   ],
-  declarations: [ ProjectInfoComponent, FocusOnClickDirective ],
+  declarations: [ ProjectInfoComponent, FocusOnClickDirective],
+  providers:[DatePipe]
  //exports:[ProjectInfoComponent]
   
 })

@@ -460,7 +460,7 @@
                                                             (click)="openInfo(item.Project_Code,item.Project_Name)"> 
                                                                 <i class="fa fa-info-circle info-icon-cir"></i>      
                                                             </a>
-                                                            <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
+                                                            <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="moreDetails(item.Project_Code)"
                                                                 role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
                                                                 <i class="fa fa-chart-bar info-icon-cir"></i>
                                                             </a>

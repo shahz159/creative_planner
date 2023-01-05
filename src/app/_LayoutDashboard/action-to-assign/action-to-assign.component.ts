@@ -51,9 +51,8 @@ export class ActionToAssignComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe,
     public router: Router,
-    public BsService: BsServiceService
-    , public _projectunplanned: ProjectUnplannedTaskComponent) {
-
+    public BsService: BsServiceService,
+    public _projectunplanned: ProjectUnplannedTaskComponent) {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);

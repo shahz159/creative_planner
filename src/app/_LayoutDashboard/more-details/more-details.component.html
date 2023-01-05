@@ -158,7 +158,7 @@
 
 
                     </div>
-                    <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId)" data-toggle="tooltip"
+                    <div class=" pro-act" *ngIf="(Current_user_ID == approvalEmpId) && (requestType!='Project Forward')" data-toggle="tooltip"
                     title="Project Actions!">
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
                                     || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
@@ -187,7 +187,7 @@
                             title="Project Name!">{{ProjectName}}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="this.Current_user_ID == this.Owner || this.Responsible || this.Authority">
+                            *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -211,7 +211,7 @@
                     <span id="Span_DescName_{{Pid}}" data-toggle="tooltip"
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
-                        id="EidtBtn_{{Pid}}">
+                        id="EidtBtn_{{Pid}}" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
@@ -287,9 +287,10 @@
                                     </ng-template>
                                     <ng-template #othertask>
                                         <h5 class="mt-1 d-flex align-items-start" id="Span_Deadline_{{Pid}}">
-                                            {{StartDate|date:'dd-MM-yyyy'}} / {{EndDate}}
+                                            {{StartDate|date:'dd-MM-yyyy'}} /   <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
+                                            <h5 style="color:red"  data-toggle="kt-tooltip" title="Extended Deadline!!" *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <span class="text-info fs-8" [hidden]="Editbutton"
-                                                (click)="onEditDeadline(Pid,EndDate)">
+                                                (click)="onEditDeadline(Pid,EndDate)" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
                                                 <i class="fas fa-edit ml-2 mt-1 curser-pointer"></i>
                                             </span>
                                             <span class="kt-inbox__subject mt-2" style="display:none;"
@@ -658,7 +659,8 @@
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
                                 href="#Milestones"><span class="nav-text">Milestones</span></a></li>
                         <li class="nav-item" (click)="GetDMS_Memos()"><a class="nav-link" id="DMS1" data-toggle="tab"
-                                href="#DMS" aria-controls="profile"><span class="nav-text">DMS</span></a></li>
+                                href="#DMS" aria-controls="profile"><span class="nav-text">DMS</span>
+                                <span class="noti" *ngIf="dmslist!=0">{{dmslist}}</span></a></li>
                         <!-- <li class="nav-item"><a class="nav-link" id="Links1" data-toggle="tab" href="#Links"><span
                             class="nav-text">Links</span></a></li> -->
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
@@ -997,18 +999,24 @@
                         <div class="tab-content" id="task-tabbview">
                             <div class="tab-pane fade show active" id="tasks_1" role="tabpanel"
                                 aria-labelledby="tasks-1">
-                                <div class="tasks_views">
+                                <div class="tasks_views rbn-bx">                                    
+                                    <div class="text-right action-btn">
+                                        <!-- (click)="OnAddTaskClick()" -->
+                                        <button *ngIf="inProcessCount!=0 || subTaskCount==0" (click)="sweetAlert()"
+                                            [hidden]="actionButton" title="Create New Action"
+                                            class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                class="fas fa-plus mr-2"></i>New Action</button>
+                                                
+                                            <!-- (click)="OnAddTaskClick()" -->
+                                            <button *ngIf="inProcessCount==0 && completedCount!=0"
+                                            (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
+                                            class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                class="fas fa-plus mr-2"></i>New Action</button>
+                                    </div>
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
                                         <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div>
-                                        <div class="text-right">
-                                            <!-- (click)="OnAddTaskClick()" -->
-                                            <button *ngIf="inProcessCount!=0" (click)="sweetAlert()"
-                                                [hidden]="actionButton" title="Create New Action"
-                                                class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
-                                        </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="inProcessCount!=0">
                                             <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
@@ -1187,13 +1195,6 @@
                                         <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div>
-                                        <div class="text-right">
-                                            <!-- (click)="OnAddTaskClick()" -->
-                                            <button *ngIf="inProcessCount==0 && completedCount!=0"
-                                                (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
-                                                class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
-                                        </div>
                                         <div class="ribbon-content scrollbar1" *ngIf="completedCount !=0">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
                                             <div class="subtask-list" *ngFor="let item of CompletedList">
@@ -1405,7 +1406,7 @@
                                     </tr>
 
                                 </tbody>
-                                <p style="color:gray">{{_MemosNotFound}}</p>
+                                <p style="color:gray" >{{_MemosNotFound}}</p>
                             </table>
                         </div>
                     </div>
@@ -1504,7 +1505,7 @@
                         </div>
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div class="item-b  ribbon-content scrollbar1">
-                                <div class="mb-3" *ngFor="let item of arr">
+                                <div class="mb-3" *ngFor="let item of darArray">
                                     <!-- <div class="list-header">
                                     <h4 class="header-date">
                                         {{item.SubmissionDate | date: 'fullDate'}}
@@ -1529,7 +1530,7 @@
                                                     <td>{{i+1}}</td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <div class="initial-box color-7 b-50 mr-2">{{InitR}} </div>
+                                                            <div class="initial-box color-7 b-50 mr-2">{{dar.Initial}} </div>
                                                             <span class="user--name">{{dar.EmpName}}</span>
                                                         </div>
                                                     </td>
@@ -2006,7 +2007,7 @@
     </div>
 </div>
 
-<div class="sideInfobar animate-right" id="mysideInfobar">
+<div class="sideInfobar animate-right" id="mysideInfobar" *ngIf="requestType!='Project Forward'">
     <div class="card">
         <div class="card-body">
             <div class="">
@@ -2131,8 +2132,8 @@
                                     </ng-select>
                                     <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
                                 </div>
-                                <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect();rejectComments()">
-                                    <label class="mb-2">Select Comment</label>
+                                <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
+                                    <label class="mb-2">User Defined Comments</label>
                                     <ng-select required #action="ngModel" name="comment_reject" placeholder="Select Comment" id="comment_reject"
                                         [(ngModel)]="commentSelected">
                                         <ng-option [value]="item.Req_Coments" *ngFor="let item of rejectcommentsList">
@@ -2141,7 +2142,7 @@
                                     </ng-select>
                                 </div>
                                 <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1'">
-                                    <label class="mb-2">Edit Your Comment</label><span style="color:red">*</span>
+                                    <label class="mb-2">Enter Your Comment</label><span style="color:red">*</span>
                                     <textarea class="form-control" [(ngModel)]="comments">{{commentSelected}}</textarea>
                                 </div>
                             </div>

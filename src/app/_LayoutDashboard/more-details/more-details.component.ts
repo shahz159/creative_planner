@@ -106,6 +106,8 @@ export class MoreDetailsComponent implements OnInit {
     this.dar_details();
     this.getResponsibleActions();
     this.getapprovalStats();
+    this.getdeadlinecount();
+    this.GetDMS_Memos();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
 
@@ -159,11 +161,11 @@ export class MoreDetailsComponent implements OnInit {
   Submitted_By:string;
   
   getapprovalStats() {
+    this.approvalEmpId=null;
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails= data as [];
-      // console.log(this.requestDetails, "req")
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -186,30 +188,47 @@ export class MoreDetailsComponent implements OnInit {
   rejectcommentsList: any;
 
   rejectApproval(){
-    console.log(this.rejectType);
+    this.commentSelected=null;
+    this.comments="";
     this.reject_list.forEach(element => {
       if(this.rejectType==element.TypeID){
         this.rejDesc=element.Reject_Description;
       }
     });
-  }
-
-  rejectComments(){
-    // debugger
-    // console.log(this.rejectType);
-
     this.approvalObj.Emp_no=this.Current_user_ID;
     this.approvalObj.rejectType=this.rejectType;
+    if(this.requestType=='New Project')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Reject Release')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='New Project Hold')
+      this.approvalObj.Status='New Project Rejected';
+      else if(this.requestType=='Project Complete')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Reject Release')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Project Complete Hold')
+      this.approvalObj.Status='Project Complete Rejected';
+      else if(this.requestType=='Deadline Extend')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Deadline Extend Hold')
+      this.approvalObj.Status='Rejected';
+      else if(this.requestType=='Standardtask Enactive')
+      this.approvalObj.Status='Enactive-Reject';
+      else if(this.requestType=='Project Forward')
+      this.approvalObj.Status='Forward Reject';
+      else if(this.requestType=='Project Hold')
+      this.approvalObj.Status='Project Hold Reject';
+      else if(this.requestType=='Revert Back')
+      this.approvalObj.Status='Revert Reject';
+      
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
-      // console.log(data,"reject");
       this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
     });
-
   }
 
   submitApproval() {
     if (this.selectedType == '1') {
-
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -223,25 +242,33 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
           this.getapprovalStats();
         });
-
     }
-
-    else if (this.selectedType == '2') {
-      
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-
+    // else if (this.selectedType == '2') {
+    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    // }
     else if (this.selectedType == '3') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.rejectType = this.rejectType;
+      this.approvalObj.Remarks = this.comments;
+
+      this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showWarning(this._Message,"Rejected Successfully");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+        });
     }
-    else if (this.selectedType == '4') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
+    // else if (this.selectedType == '4') {
+    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+    // }
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none"; 
-
   }
 
   getnextDeadline() {
@@ -260,7 +287,7 @@ export class MoreDetailsComponent implements OnInit {
   totalRecords: any;
   _CurrentpageRecords: any;
   CurrentPageNo: number = 1;
-  arr: any = [];
+  darArray: any = [];
 
   dar_details() {
     this.noTimeline = false;
@@ -270,7 +297,7 @@ export class MoreDetailsComponent implements OnInit {
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-        this.arr = this.darList;
+        this.darArray = this.darList;
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -290,9 +317,8 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darList.forEach(element => {
-          this.arr.push(element);
+          this.darArray.push(element);
         });
-
         if (this.darList) {
           this._CurrentpageRecords = this.darList.length;
         }
@@ -634,7 +660,7 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if (this.Status == 'New Project Rejected') {
+          if (this.Status == 'Project Hold') {
             this.actionButton = true;
           }
           if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected'
@@ -642,7 +668,6 @@ export class MoreDetailsComponent implements OnInit {
             || this.Status == 'Project Hold') {
             this.darbutton = false;
           }
-
         }
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -658,7 +683,8 @@ export class MoreDetailsComponent implements OnInit {
 
   AddDms() {
     this._LinkSideBar = false;
-    this._onRowClick(this.projectCode);
+    this.GetDMS_Memos();
+    this._onRowClick(this.URL_ProjectCode);
   }
 
   GetMemosByEmployeeId() {
@@ -723,6 +749,8 @@ export class MoreDetailsComponent implements OnInit {
     // console.log("projt Code------->",projectCode);
     // this._displayProjName = ProjName;
     this.GetMemosByEmployeeId();
+    this.GetDMS_Memos();
+
     this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
       subscribe((data) => {
         let Table_data: any = data;
@@ -771,7 +799,7 @@ export class MoreDetailsComponent implements OnInit {
   closeInfo() {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
@@ -781,12 +809,13 @@ export class MoreDetailsComponent implements OnInit {
     // this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
     this.GetSubtask_Details();
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
   }
 
   closeApproval() {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
@@ -2393,6 +2422,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
+  dmslist:number;
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2405,12 +2435,14 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              // console.log("Subject Name ------------>", this._MemosSubjectList);
+              this.dmslist= this._MemosSubjectList.length;
+              console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
+          this.dmslist=0;
         }
       });
   }
@@ -2472,10 +2504,12 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               //console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
+              this.dmslist=this._MemosSubjectList.length;
               //console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
+          this.dmslist=0;
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
         }
@@ -2483,7 +2517,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   _AddLink() {
-    let _ProjectCode: string = this.Selected_Projectcode;
+    let _ProjectCode: string = this.URL_ProjectCode;
     let appId: number = 101;//this._ApplicationId;
     //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
@@ -2499,13 +2533,14 @@ export class MoreDetailsComponent implements OnInit {
     if (this._SelectedMemos.length > 0) {
       this._LinkService.InsertMemosOn_ProjectCode(_ProjectCode, appId, this.memoId, UserId).
         subscribe((data) => {
-          this.UpdateMemos(this.projectCode)
-          this.GetMemosByEmployeeId();
+          this.UpdateMemos(_ProjectCode);
+          // this.GetDMS_Memos();
           //this.GetProjectsByUserName();
           let Returndata: any = data['Message'];
           this.notifyService.showSuccess("", Returndata);
           this.ngDropdwonMemo = [];
           this._SelectedMemos = [];
+          
         });
     }
     else {
@@ -2860,7 +2895,7 @@ export class MoreDetailsComponent implements OnInit {
 
   OnAddTaskClick() {
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode, "ActionToProject"]);
-    document.getElementById("mysideInfobar1").classList.add("kt-quick-panel--on");
+    document.getElementById("mysideInfobar1").classList.add("kt-action-panel--on");
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2868,6 +2903,7 @@ export class MoreDetailsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
+    $("#mysideInfobar1").scrollTop(0);
   }
 
   selectedFile: any = null;
@@ -3039,6 +3075,7 @@ export class MoreDetailsComponent implements OnInit {
     //  console.log('A');
     let a = await this.GetSubtask_Details();
     let b = await this.GetProjectDetails();
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }
@@ -3072,4 +3109,11 @@ export class MoreDetailsComponent implements OnInit {
     this.notifyService.showError("Development Under Maintainance", 'Cancelled');
   }
 
+deadlineCount:any;
+getdeadlinecount(){
+  this.service.getDeadlineCountbyProjectcode(this.URL_ProjectCode).subscribe(data=>
+    {
+      this.deadlineCount=data['deadlineCount'];
+    })
+}
 }

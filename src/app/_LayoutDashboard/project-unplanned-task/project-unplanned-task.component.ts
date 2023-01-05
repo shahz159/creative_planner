@@ -65,7 +65,6 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
-    this.router.navigate(["UnplannedTask/"]); 
   }
 
   IfNoCategoryFound: string;
@@ -86,11 +85,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
-   
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
-    
-
     
       tippy('#tippy1', {
         content: "Runway Tasks!!",
@@ -229,7 +225,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -237,7 +233,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0){
+        if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
            
           document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
@@ -522,17 +518,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
 
-  closeInfo() {
-    // alert(1);
-   
-    this.clearFeilds();  
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    this.router.navigate(["UnplannedTask/"]); 
-  }
-
+ 
   ProjectTypelist: any;
   _taskName: string = "";
   _description: string;
@@ -835,16 +821,24 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
     this.router.navigate(["UnplannedTask/projectinfo/", pcode]);
   }
-}
-  // else {
-  //   let NewDemoTasksList = {
-  //     id: 4,
-  //     name: _Demotext,
-  //   };
-  //   this.DemoTasksList.push(NewDemoTasksList);
-  //   this.DemoTasksList = this.DemoTasksList;
-  //   this._Demotext = "";
-  //   this.notifyService.showSuccess("Successfully Added", "Add Message")
-  // }
 
+  closeInfo() {
+    this.clearFeilds();  
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.router.navigate(["UnplannedTask/"]); 
+  }
+
+  moreDetails(ProjectCode) {
+    let name: string = 'MoreDetails';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${ProjectCode}`;
+    var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
+
+}
+  
 

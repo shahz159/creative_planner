@@ -64,7 +64,6 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     // this.GetApplicationDetails();
     this.GetProjectsByUserName();
-    this.getDropdownsDataFromDB();
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
 
@@ -336,6 +335,9 @@ export class ProjectsSummaryComponent implements OnInit {
   portfolioId: number;
   count_LinkedProjects: number;
   Current_user_ID: string;
+  Type:string;
+  type1:string = "RACIS Projects";
+  type2:string = "ALL Projects";
 
   GetProjectsByUserName() {
     // this.LoadingBar.start();
@@ -343,7 +345,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
-      console.log("Summary Data---->", this._ProjectDataList);
+       console.log("Summary Data---->", this._ProjectDataList);
       // this.count_LinkedProjects= this._ProjectDataList.filter(x => x.Link_Status === true).length 
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
@@ -354,7 +356,10 @@ export class ProjectsSummaryComponent implements OnInit {
         this._CurrentpageRecords = this._ProjectDataList.length;
         // console.log("ProjectList----------->", this._ProjectDataList.length);
       }
+      this.getDropdownsDataFromDB();
     });
+    
+
   }
 
   LastPage:number;
@@ -723,9 +728,10 @@ export class ProjectsSummaryComponent implements OnInit {
     this.projCode = projCode;
     this.service._GetDARAchievements(projCode)
       .subscribe((data) => {
-        this._DARList = data;
+        console.log(data,"dar");
+        this._DARList = JSON.parse(data[0]['DAR_AchievementJson']);
         if (this._DARList.length) {
-          this._DarAchievement = data[0]['WorkAchieved'];
+          this._DarAchievement = this._DARList[0]['WorkAchieved']== null ? "Not Found" : this._DARList[0]['WorkAchieved'];
         }
         else {
           this._DarAchievement = "Not Found";

@@ -274,10 +274,13 @@ export class HomeComponent implements OnInit {
   NoOfPages: number = 1;
 
   getPortfolio_List() {
+    debugger
     this._objStatusDTO.PageNumber = this.Portfolio_CurrentPage;
     this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
       (data) => {
+        debugger
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
+        console.log(this._ListProjStat,"test");
         this.NoOfRecordsPerPage = this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);

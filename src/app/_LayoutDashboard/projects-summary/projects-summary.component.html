@@ -6,9 +6,18 @@
             <div class="kt-portlet kt-portlet--bordered-semi">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title mr-4">
-                            <strong> Projects Summary</strong>
-                        </h3>
+                        <div class="dropdown">                            
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               RACIS Projects Summary
+                               <!-- {{Type}} -->
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a >RACIS Projects Summary</a>
+                                <a >ALL Projects Summary</a>
+                                <!-- [ngClass]="Type=='Assigned by me' ? 'dropdown-item active' : 'dropdown-item'" [ngClass]="Type=='Assigned to me' ? 'dropdown-item active' : 'dropdown-item'"   -->
+                                <!-- *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)"*ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)" -->
+                            </div>
+                        </div>
                     </div>
                     <div class="kt-portlet__head-label mr-2">
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
@@ -345,6 +354,11 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
                                                             <span class="text-danger font-weight-400">Delay</span>
+                                                            <span *ngIf="item.Delaydays>0"
+                                                                class="text-danger delayDays">
+                                                                <strong>({{item.Delaydays}}
+                                                                    Days)</strong>
+                                                            </span>
                                                         </div>
                                                         <!-- Other Status -->
                                                         <div *ngIf="item.Status=='InProcess'">

@@ -1076,7 +1076,7 @@ height: auto !important;
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 999999999;
+    z-index: 999;
     overflow-x: hidden;
     display: none;
 }
@@ -1262,7 +1262,7 @@ height: auto !important;
    position: relative;
 }
 .btn-noti::before {
-    content: "5"; 
+    content: attr(data-content);
     position: absolute;
     top: -0.5em; 
     right: -0.5em; 
@@ -1297,9 +1297,12 @@ height: auto !important;
     color: #76828e;
     fill: #76828e;
 }
-.list-group-item a.fc-event1:hover .text-grey-2{
+.list-group-item a.fc-event1:hover .text-grey-2, .list-group-item a.fc-event1:hover .title-main{
     color: #2786fb;
     fill: #2786fb;
+}
+.font-600{
+    font-weight: 600 !important;
 }
 @media Screen and (max-width: 1600px) {
 

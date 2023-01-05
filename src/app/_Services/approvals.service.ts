@@ -43,4 +43,15 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService", this.obj_approvalDTO);
 
   }
+
+  InsertRejectApprovalService(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Request_type = obj.Request_type;
+    this.obj_approvalDTO.rejectType = obj.rejectType;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertRejectApprovalsService", this.obj_approvalDTO);
+
+  }
 }

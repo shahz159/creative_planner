@@ -231,6 +231,10 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!this.Count_ToDoAchieved) {
           this.Count_ToDoAchieved = 0;
         }
+        this.Count_ToDoCompleted = rez['ToDo Completed'];
+        if (!this.Count_ToDoCompleted) {
+          this.Count_ToDoCompleted = 0;
+        }
         let ProjectHolded: number = rez['Project Holded'];
         if (!ProjectHolded) {
           ProjectHolded = 0;
@@ -600,6 +604,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   deletedBy: string;
   Count_ToDoAchieved: any;
+  Count_ToDoCompleted: any;
 
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
@@ -634,6 +639,10 @@ export class PortfolioProjectsComponent implements OnInit {
               this.Count_ToDoAchieved = rez['ToDo Achieved'];
               if (!this.Count_ToDoAchieved) {
                 this.Count_ToDoAchieved = 0;
+              }
+              this.Count_ToDoCompleted = rez['ToDo Completed'];
+              if (!this.Count_ToDoCompleted) {
+                this.Count_ToDoCompleted = 0;
               }
               this.CountCompleted = rez['Completed'];
               if (!this.CountCompleted) {
@@ -774,6 +783,9 @@ export class PortfolioProjectsComponent implements OnInit {
   labelToDoAchieved() {
     this._PortProjStatus = "ToDo Achieved";
     // this._PortProjStatus.includes('ToDo Achieved');
+  }
+  labelToDoCompleted() {
+    this._PortProjStatus = "ToDo Completed";
   }
 
   labelUA() {
@@ -1293,3 +1305,14 @@ export class PortfolioProjectsComponent implements OnInit {
       });
   }
 }
+/// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
+// <ng-option [value]="com.Com_No" *ngFor="let com of Company_List" >
+// {{com.Com_Name}}
+// </ng-option>
+// </ng-select> -->
+// <!-- <ng-select  [placeholder]="' TM Name '" 
+// multiple="true" [(ngModel)]="ngEmployeeDropdown" (change)="OnEmpSelect()">
+// <ng-option [value]="usr.Emp_No" *ngFor="let usr of EmployeeList">
+// <a *ngIf="usr.Emp_No!=Current_user_ID">{{usr.TM_DisplayName}}</a>
+// </ng-option>
+// </ng-select> -->

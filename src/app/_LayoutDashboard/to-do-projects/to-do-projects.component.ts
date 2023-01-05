@@ -66,29 +66,12 @@ export class ToDoProjectsComponent implements OnInit {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     //this._ProjectName = "Project Name"
     this.GetProjectsByUserName();
-    this.applyFilters();
+    // this.applyFilters();
    
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
-
-    // this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No).subscribe(
-    //   (data) => {
-
-    //     this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-    //     this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-
-    //     if(this.Subtask_List == ''){
-    //       this._subtaskDetails= false;
-    //     }
-    //     if(this.CompletedList == ''){
-    //       this._CompletedDetails=false;
-    //     }
-    //     if(this.Subtask_List == '' && this.CompletedList ==''){
-    //       this._projectDetails=false;
-    //     }
-    //   });
   }
 
   _ProjectDataList: any;
@@ -121,6 +104,7 @@ export class ToDoProjectsComponent implements OnInit {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
     });
+     this.router.navigate(["./backend/ToDoProjects/"]);
   }
 
   _ProjectName: string;
@@ -222,6 +206,7 @@ export class ToDoProjectsComponent implements OnInit {
    
   let a= await this.GetSubtask_Details();
   let b =await this.GetProjectsByUserName();
+  this.router.navigate(["./backend/ToDoProjects/"]);
   }
 //  CallOnSubmitAction() {
 //     //  console.log('A');
@@ -386,7 +371,7 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnAddTaskClick() {
     this.router.navigate(["./backend/ToDoProjects/ActionToProject/1"]);
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
      document.getElementById("rightbar-overlay").style.display = "block";
@@ -394,6 +379,7 @@ export class ToDoProjectsComponent implements OnInit {
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
+    $("#mysideInfobar").scrollTop(0);
   }
 
   // OnADDClick() {
@@ -496,8 +482,10 @@ export class ToDoProjectsComponent implements OnInit {
 
   closeInfo() {
     // debugger
-  
+    this.Checkbox_checked = 0;
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
@@ -506,8 +494,7 @@ export class ToDoProjectsComponent implements OnInit {
      $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
-   
-    
+    this.router.navigate(["./backend/ToDoProjects/"]);
   }
 
   Clear_Feilds() {

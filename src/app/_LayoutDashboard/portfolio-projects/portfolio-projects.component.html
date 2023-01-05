@@ -127,6 +127,12 @@
                             style="background-color: #BB8FCE;"> {{Count_ToDoAchieved}} ToDo
                             Achieved</a>
                     </ng-container>
+                    <ng-container *ngIf="Count_ToDoAchieved > 0">
+                        <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm py-10px text-white"
+                            style="background-color: #BB8FCE;"> {{Count_ToDoCompleted}} ToDo
+                            Completed</a>
+                    </ng-container>
 
                     <!-- </div> -->
                     <!-- <div class="kt-portlet__head-toolbar"> -->
@@ -189,6 +195,7 @@
                                             'NewprojectRejected':item1.Status=='New Project Rejected',
                                             'projecthold':item1.Status=='Project Hold',
                                             'TodoAchieved':item1.Status=='ToDo Achieved',
+                                            'ToDoCompleted':item1.Status=='ToDo Completed',
                                             'NewTodo':item1.Status=='New Todo'}">
                                                 <div class="card-body d-flex align-items-center justify-content-around">
                                                    
@@ -345,6 +352,11 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Achieved'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #BB8FCE;">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='ToDo Completed'">
                                                             <span class="font-weight-400"
                                                                 style="color: #BB8FCE;">{{item1.Status}}
                                                             </span>
