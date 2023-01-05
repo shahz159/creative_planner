@@ -146,6 +146,19 @@ export class ProjectTypeService {
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
+  GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjUserDetails.Emp_No = EmpNo;
+    this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
+    this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
+    this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.PageNumber = obj.PageNumber;
+    this.ObjUserDetails.PageSize = obj.PageSize;
+    this.ObjUserDetails.SearchText = obj.SearchText;
+    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByOwner_ForSummary", this.ObjUserDetails);
+  }
+  
   GetProjectsByUserName_Service_ForProjectsTODO(obj: UserDetailsDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjUserDetails.Emp_No = EmpNo;
@@ -396,6 +409,15 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsDataForSummary", this.objDropdownsDTO);
+  }
+  GetDropDownsOwnerData_ForSummary(obj: DropdownDTO) {
+    this.objDropdownsDTO.EmpNo = obj.EmpNo;
+    this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
+    this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
+    this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
+    //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsOwnerDataForSummary", this.objDropdownsDTO);
   }
   clearSession(): void {
     localStorage.clear();

@@ -63,7 +63,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this._subtaskDiv = true;
     this.Current_user_ID = localStorage.getItem('EmpNo');
     // this.GetApplicationDetails();
-    this.GetProjectsByUserName();
+    this.GetProjectsByUserName(this.type1);
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
 
@@ -339,25 +339,40 @@ export class ProjectsSummaryComponent implements OnInit {
   type1:string = "RACIS Projects";
   type2:string = "ALL Projects";
 
-  GetProjectsByUserName() {
-    // this.LoadingBar.start();
+  GetProjectsByUserName(type) {
+    this.Type=type;
+    if(this.Type=='ALL Projects'){
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
        console.log("Summary Data---->", this._ProjectDataList);
-      // this.count_LinkedProjects= this._ProjectDataList.filter(x => x.Link_Status === true).length 
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
-        // this.LoadingBar.stop();
       }
       this.un_FilteredProjects = this.ActualDataList;
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
-        // console.log("ProjectList----------->", this._ProjectDataList.length);
       }
       this.getDropdownsDataFromDB();
     });
+    }
+    else if(this.Type=='RACIS Projects'){
+      this.ObjUserDetails.PageNumber = this.CurrentPageNo;
+      this.ObjUserDetails.PageSize = 30;
+      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
+        this._ProjectDataList = data;
+         console.log("Summary Data---->", this._ProjectDataList);
+        this.ActualDataList = data;
+        if (this._ProjectDataList.length > 0) {
+        }
+        this.un_FilteredProjects = this.ActualDataList;
+        if (this._ProjectDataList) {
+          this._CurrentpageRecords = this._ProjectDataList.length;
+        }
+      this.getDropdownsDataFromDB();
+      });
+    }
     
 
   }
@@ -366,7 +381,8 @@ export class ProjectsSummaryComponent implements OnInit {
   lastPagerecords:number;
 
   getDropdownsDataFromDB() {
-    this._objDropdownDTO.EmpNo = this.Current_user_ID;
+    if(this.Type=='ALL Projects'){
+      this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
@@ -413,6 +429,56 @@ export class ProjectsSummaryComponent implements OnInit {
         }
         // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
       });
+    }
+    else if(this.Type=='RACIS Projects'){
+      this._objDropdownDTO.EmpNo = this.Current_user_ID;
+      this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
+      this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
+      this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
+      this._objDropdownDTO.Selected_SearchText = this.searchText;
+      // this._objDropdownDTO.PortfolioId = null;
+      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO)
+        .subscribe((data) => {
+          //Emp
+          if (this.selectedItem_Emp.length == 0) {
+            this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
+          }
+          else {
+            this.EmpCountInFilter = this.selectedItem_Emp[0];
+          }
+          //Type
+          if (this.selectedItem_Type.length == 0) {
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+          }
+          else {
+            this.TypeContInFilter = this.selectedItem_Type[0];
+          }
+          //Status
+          if (this.selectedItem_Status.length == 0) {
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          }
+          else {
+            this.StatusCountFilter = this.selectedItem_Status[0];
+          }
+          this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
+          this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
+          this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
+  
+          let _vl = this._totalProjectsCount / 30;
+          let _vl1 = _vl % 1;
+          if (_vl1 > 0.000) {
+            this.LastPage = Math.trunc(_vl) + 1;
+          }
+          else {
+            this.LastPage = Math.trunc(_vl);
+          }
+  
+          if(this.CurrentPageNo == this.LastPage){
+            this.lastPagerecords=30;
+          }
+          // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
+        });
+    }
   }
 
   checkedItems_Status: any = [];
@@ -543,7 +609,8 @@ export class ProjectsSummaryComponent implements OnInit {
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
     }).join(',');
-    //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
+    if(this.Type=='ALL Projects'){
+      //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
@@ -568,7 +635,32 @@ export class ProjectsSummaryComponent implements OnInit {
       });
     //Filtering Checkbox de
     this.getDropdownsDataFromDB();
-    
+    }
+    else if(this.Type=='RACIS Projects'){
+      this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
+      this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
+      this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
+      this.ObjUserDetails.PageNumber = this.CurrentPageNo;
+      this.ObjUserDetails.PageSize = 30;
+      this.ObjUserDetails.SearchText = this.searchText;
+      this.ObjUserDetails.PortfolioId = null;
+      //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
+      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
+        .subscribe(data => {
+          //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
+          this._ProjectDataList = data;
+          this._CurrentpageRecords = this._ProjectDataList.length;
+          if (this._ProjectDataList.length == 0) {
+            this._filtersMessage = "No more projects matched your search";
+            this._filtersMessage2 = " Clear the filters & try again";
+          }
+          else {
+            this._filtersMessage = "";
+            this._filtersMessage2 = "";
+          }
+        });
+    this.getDropdownsDataFromDB();
+    }
   }
 
   resetFilters() {
@@ -824,43 +916,6 @@ export class ProjectsSummaryComponent implements OnInit {
 
   selectedType: string;
   _Message:string;
-
-  submitApproval() {
-    if (this.selectedType == '1') {
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.Projectcode;
-      this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
-      if(this.requestType=='New Project' || this.requestType=='Project Complete' || this.requestType=='Deadline Extend'){
-        this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          this.GetProjectsByUserName();
-        });
-      }
-      else{
-        this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-      }
-      
-    }
-    else if (this.selectedType == '2') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-    else if (this.selectedType == '3') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-    else if (this.selectedType == '4') {
-      this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    }
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
-    document.getElementById("sumdet").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    this.Clear_Feilds();
-    this.closeInfo();
-    this.GetProjectsByUserName();
-  }
-
 
   Clear_Feilds() {
     this.selectedType = null;
