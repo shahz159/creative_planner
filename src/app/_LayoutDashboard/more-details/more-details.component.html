@@ -659,7 +659,8 @@
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
                                 href="#Milestones"><span class="nav-text">Milestones</span></a></li>
                         <li class="nav-item" (click)="GetDMS_Memos()"><a class="nav-link" id="DMS1" data-toggle="tab"
-                                href="#DMS" aria-controls="profile"><span class="nav-text">DMS</span></a></li>
+                                href="#DMS" aria-controls="profile"><span class="nav-text">DMS</span>
+                                <span class="noti" *ngIf="dmslist!=0">{{dmslist}}</span></a></li>
                         <!-- <li class="nav-item"><a class="nav-link" id="Links1" data-toggle="tab" href="#Links"><span
                             class="nav-text">Links</span></a></li> -->
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
@@ -1405,7 +1406,7 @@
                                     </tr>
 
                                 </tbody>
-                                <p style="color:gray">{{_MemosNotFound}}</p>
+                                <p style="color:gray" >{{_MemosNotFound}}</p>
                             </table>
                         </div>
                     </div>

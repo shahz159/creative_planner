@@ -107,6 +107,7 @@ export class MoreDetailsComponent implements OnInit {
     this.getResponsibleActions();
     this.getapprovalStats();
     this.getdeadlinecount();
+    this.GetDMS_Memos();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
 
@@ -682,7 +683,8 @@ export class MoreDetailsComponent implements OnInit {
 
   AddDms() {
     this._LinkSideBar = false;
-    this._onRowClick(this.projectCode);
+    this.GetDMS_Memos();
+    this._onRowClick(this.URL_ProjectCode);
   }
 
   GetMemosByEmployeeId() {
@@ -747,6 +749,8 @@ export class MoreDetailsComponent implements OnInit {
     // console.log("projt Code------->",projectCode);
     // this._displayProjName = ProjName;
     this.GetMemosByEmployeeId();
+    this.GetDMS_Memos();
+
     this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
       subscribe((data) => {
         let Table_data: any = data;
@@ -2418,6 +2422,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
+  dmslist:number;
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2430,12 +2435,14 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              // console.log("Subject Name ------------>", this._MemosSubjectList);
+              this.dmslist= this._MemosSubjectList.length;
+              console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
+          this.dmslist=0;
         }
       });
   }
@@ -2497,10 +2504,12 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               //console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
+              this.dmslist=this._MemosSubjectList.length;
               //console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
+          this.dmslist=0;
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
         }
@@ -2508,7 +2517,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   _AddLink() {
-    let _ProjectCode: string = this.Selected_Projectcode;
+    let _ProjectCode: string = this.URL_ProjectCode;
     let appId: number = 101;//this._ApplicationId;
     //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
@@ -2524,13 +2533,14 @@ export class MoreDetailsComponent implements OnInit {
     if (this._SelectedMemos.length > 0) {
       this._LinkService.InsertMemosOn_ProjectCode(_ProjectCode, appId, this.memoId, UserId).
         subscribe((data) => {
-          this.UpdateMemos(this.projectCode)
-          this.GetMemosByEmployeeId();
+          this.UpdateMemos(_ProjectCode);
+          // this.GetDMS_Memos();
           //this.GetProjectsByUserName();
           let Returndata: any = data['Message'];
           this.notifyService.showSuccess("", Returndata);
           this.ngDropdwonMemo = [];
           this._SelectedMemos = [];
+          
         });
     }
     else {

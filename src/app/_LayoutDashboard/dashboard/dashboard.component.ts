@@ -367,7 +367,7 @@ export class DashboardComponent implements OnInit {
     // this.selectedCar = '3';
     // this.calendar.updateTodaysDate();
     this.calendarOptions = {
-     
+
       initialView: 'listWeek',
       //  timeZone: 'local',
       //     initialDate:new Date(2023,  ),
@@ -388,7 +388,7 @@ export class DashboardComponent implements OnInit {
       },
       nowIndicator: true,
       allDaySlot: false
-      
+
     };
 
     this.MinLastNameLength = true;
@@ -431,7 +431,7 @@ export class DashboardComponent implements OnInit {
           this.messageForEmpty = true;
         }
       });
-      
+
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.maxDate = moment(moment().add(90, 'days')).format("YYYY-MM-DD").toString();
@@ -523,17 +523,23 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
+<<<<<<< HEAD
   Event_requests1:any=[];
   Event_requests(){
    
     
+=======
+  Event_requests1: any = [];
+  Event_requests() {
+
+>>>>>>> 0a428d71145ebd2f153ece6a4ebe61440087e156
     this._calenderDto.Emp_No = this.Current_user_ID;
-   
+
     this.CalenderService.NewGetEvent_request(this._calenderDto).subscribe
       ((data) => {
-        
-       this.Event_requests1=data;
-      //  console.log(this.Event_requests1,"Event11")
+
+        this.Event_requests1 = data;
+        //  console.log(this.Event_requests1,"Event11")
       });
 
   }
@@ -944,12 +950,12 @@ export class DashboardComponent implements OnInit {
           this.TImetable();
 
         });
-        this.closeschd();
+      this.closeschd();
     }
     else {
       alert('Please Select Valid Date and Time');
     }
-    
+
   }
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
@@ -1729,7 +1735,7 @@ export class DashboardComponent implements OnInit {
           initialView: 'listWeek',
           // timeZone: 'local',
           // initialDate:new Date(1, 3-9, 2023),
-          
+
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -1748,7 +1754,7 @@ export class DashboardComponent implements OnInit {
           },
           nowIndicator: true,
           allDaySlot: false,
-          
+
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
