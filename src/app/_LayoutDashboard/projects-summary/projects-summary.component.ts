@@ -335,6 +335,9 @@ export class ProjectsSummaryComponent implements OnInit {
   portfolioId: number;
   count_LinkedProjects: number;
   Current_user_ID: string;
+  Type:string;
+  type1:string = "RACIS Projects";
+  type2:string = "ALL Projects";
 
   GetProjectsByUserName() {
     // this.LoadingBar.start();

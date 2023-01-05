@@ -477,7 +477,7 @@ export class DashboardComponent implements OnInit {
   // Scheduling Work
   // Start Here
   GetclickEventRequest_details(id) {
-
+    this.closeevearea1();
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = id;
@@ -525,6 +525,7 @@ export class DashboardComponent implements OnInit {
   }
   Event_requests1:any=[];
   Event_requests(){
+   
     
     this._calenderDto.Emp_No = this.Current_user_ID;
    
