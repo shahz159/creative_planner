@@ -2385,4 +2385,10 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
+  openfooter(){
+    document.getElementById("ft_body").classList.toggle("go-up");
+    document.getElementById("secfootr").classList.toggle("opend");
+    document.getElementById("main-foot").classList.toggle("overflow-hidden");
+  }
 }
