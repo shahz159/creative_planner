@@ -257,7 +257,7 @@ export class DashboardComponent implements OnInit {
   EventScheduledjson: any[] = [];
   Project_NameScheduledjson: any[] = [];
   Project_dateScheduledjson: any[] = [];
-  Schedule_type1:any
+  Schedule_type1: any
   portfolio_Scheduledjson: any[] = [];
   User_Scheduledjson: any[] = [];
   DMS_Scheduledjson: any = [];
@@ -485,10 +485,10 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-         console.log(this.EventScheduledjson, "Testing1");
+        console.log(this.EventScheduledjson, "Testing1");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
- 
-       
+
+
         // if (this.Project_dateScheduledjson <= this._StartDate ) {
         //   document.getElementById("hiddenedit").style.display = "block";
 
@@ -1681,21 +1681,17 @@ export class DashboardComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
-        this.Schedule_type1=this.EventScheduledjson[0].Schedule_Type;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         console.log(this.EventScheduledjson, "Testing12");
-        if ( (this.Schedule_type1=='Event') || (this.Project_dateScheduledjson >= this._StartDate))  {
+        if ((this.Schedule_type1 == 'Event') || (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
 
         }
-        
-        else  {
+        else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
         }
-       
-
-
         this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
