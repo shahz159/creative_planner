@@ -1012,7 +1012,7 @@
                                 <div>
                                     <div class="main-s"><a href="javascript:void(0)"
                                             (click)="moreDetails(_pro.stringval)">
-                                            {{_pro.Project_Name}}</a>-({{_pro.TM_DisplayName}})</div>
+                                            {{_pro.Project_Name}}</a>{{_pro.TM_DisplayName}}</div>
                                     <div class="main-s" *ngIf="item.Schedule_Type=='Task'">{{item.Master_code}}</div>
 
                                 </div>
@@ -1148,7 +1148,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foot-main overflow-hidden" id="main-foot">
+            <div class="foot-main overflow-hidden" id="main-foot" >
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <span class="flex-1" aria-hidden="true">Going?</span>
                     <div class="foot-leftsec">

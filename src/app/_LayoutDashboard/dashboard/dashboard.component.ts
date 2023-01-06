@@ -624,7 +624,8 @@ export class DashboardComponent implements OnInit {
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-
+          this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.MasterCode = (this.MasterCode[0].stringval);
 
           // var jsonDataPC = {};
           // var columnName = "BlockNameProject";
@@ -632,7 +633,7 @@ export class DashboardComponent implements OnInit {
           // var columnName = "Project_Code";
           // jsonDataPC[columnNamee] = this.EventScheduledjson[0]['Project_code'][0].stringval;
           // this.MasterCode.push(jsonDataPC);
-          this.MasterCode = this.EventScheduledjson[0]['Project_code'][0].stringval;
+          // this.MasterCode = this.EventScheduledjson[0]['Project_code'][0].stringval;
 
           document.getElementById("subtaskid").style.display = "block";
           // document.getElementById("Link_Name").style.display = "none";
@@ -644,13 +645,12 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw222").style.display = "none";
           document.getElementById("core_Dms").style.display = "none";
 
-          this.MasterCode = (this.EventScheduledjson[0]['Project_code'][0].stringval);
         }
         else if (this.ScheduleType == 'Event') {
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           // this.MasterCode1 = [];
-          this.arr = (this.EventScheduledjson[0]['Project_code']);
+          this.arr =JSON.parse (this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             // this.MasterCode.push(element.Project_Name);
             this.MasterCode.push(element.stringval);
@@ -1686,13 +1686,18 @@ export class DashboardComponent implements OnInit {
         if ((this.Schedule_type1 == 'Event') || (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
-
+        }
+        else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
+          document.getElementById("hiddenedit").style.display = "block";
+          document.getElementById("deleteendit").style.display = "block";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
         }
-        this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
+        debugger
+        this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
+       
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
