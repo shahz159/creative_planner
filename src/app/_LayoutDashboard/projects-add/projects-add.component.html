@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
     <!--Begin::Row    DIV ONE -->
     <div class="row">
         <div class="col-lg-12">
@@ -382,7 +382,7 @@
                                                                 Hold</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
-                                                            <span class="text-primary font-weight-400">ToDo
+                                                            <span class="text-success font-weight-400">ToDo
                                                                 Completed</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Todo'">
@@ -390,7 +390,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="text-warning font-weight-400">Completion
+                                                            <span class="text-primary font-weight-400">Completion
                                                                 Under
                                                                 Approval
                                                             </span>
@@ -423,7 +423,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="text-info font-weight-400">Deadline Extend
+                                                            <span class="text-primary font-weight-400">Deadline Extend
                                                                 Under Approval
                                                             </span>
                                                         </div>
@@ -473,3 +473,5 @@
 <!-- <div id="mysideInfobar" class="sideInfobar animate-right">
     <app-project-info [inputFromParent]="parentToChild" *ngIf='_loadChildComponent'></app-project-info>
 </div> -->
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>

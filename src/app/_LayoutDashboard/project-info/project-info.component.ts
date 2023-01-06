@@ -204,6 +204,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.noPort="";
           // console.log(this._portfoliolist,this.Pid, this._MasterCode,this._ProjectName,this.Current_user_ID,"portfolio list");
         }
+        
       });
     this._OpenMemosInfo(this.projectCode);
   }
