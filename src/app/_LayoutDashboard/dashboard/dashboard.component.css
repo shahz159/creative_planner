@@ -1063,6 +1063,9 @@ background-color: #f1f3f4;
 ::ng-deep .fc .fc-daygrid-day-frame{
     height: 100px !important;
 }
+::ng-deep .fc .fc-list-event-title a {
+    cursor: pointer;
+}
 ::ng-deep .ng-select-multiple {
 min-height: 36px;
 height: auto !important;
