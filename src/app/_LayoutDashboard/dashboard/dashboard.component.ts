@@ -447,6 +447,21 @@ export class DashboardComponent implements OnInit {
 
     //   }
     // });
+
+    // $(function () {
+    // $(document).on('keydown', function(e){
+
+    //     if(e.keyCode == 27) {
+    //         if ($('.bg-ovr').hasClass('d-block')) {
+    //             $('.bg-ovr').removeClass('d-block');
+    //             $('.side_view').removeClass('position-fixed');
+
+    //         }
+    //       }
+    //           });
+    //     });
+
+
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
@@ -742,6 +757,7 @@ export class DashboardComponent implements OnInit {
 
   OnSubmitSchedule() {
     // alert(this.MasterCode.toString() + "submit");
+    
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -836,11 +852,12 @@ export class DashboardComponent implements OnInit {
           this.TImetable();
 
         });
+        this.closeschd();
     }
     else {
       alert('Please Select Valid Date and Time');
     }
-    this.closeschd();
+   
   }
 
   OnSubmitReSchedule() {
@@ -2303,7 +2320,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+    this._StartDate = moment().format("YYYY-MM-DD").toString();
+    this._EndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();;
     this.maxDate = null;
     this.selected = null;
@@ -2320,8 +2338,7 @@ export class DashboardComponent implements OnInit {
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
-    this._StartDate = null;
-    this._EndDate = null;
+   
     this._status = null;
     this.Portfolio = null;
     this.Location_Type = null;
