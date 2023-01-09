@@ -288,9 +288,12 @@
                                     <ng-template #othertask>
                                         <h5 class="mt-1 d-flex align-items-start" id="Span_Deadline_{{Pid}}">
                                             {{StartDate|date:'dd-MM-yyyy'}} /   <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
-                                            <h5 style="color:red"  data-toggle="kt-tooltip" title="Extended Deadline!!" *ngIf="deadlineCount>0">{{EndDate}}</h5>
+                                            <h5 style="color:red"  data-toggle="kt-tooltip" title="Extended Deadline for {{deadlineCount}} times!!" *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <span class="text-info fs-8" [hidden]="Editbutton"
-                                                (click)="onEditDeadline(Pid,EndDate)" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
+                                                (click)="onEditDeadline(Pid,EndDate)" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
+                                                && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
+                                                Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
+                                                && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
                                                 <i class="fas fa-edit ml-2 mt-1 curser-pointer"></i>
                                             </span>
                                             <span class="kt-inbox__subject mt-2" style="display:none;"

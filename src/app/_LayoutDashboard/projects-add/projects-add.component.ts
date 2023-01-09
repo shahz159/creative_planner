@@ -131,11 +131,12 @@ export class ProjectsAddComponent implements OnInit {
       this.un_FilteredProjects = this.ActualDataList;
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
-        this._totalProjectsCount = this._ProjectDataList.length;
+        // this._totalProjectsCount = this._ProjectDataList.length;
         console.log("ProjectList----------->", this._ProjectDataList.length);
         //console.log("ProjectList----------->", this._ProjectDataList);
       }
     });
+    this.getDropdownsDataFromDB();
   }
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
@@ -382,12 +383,17 @@ export class ProjectsAddComponent implements OnInit {
   openInfo(pcode, pName) {
     this._portfolioId = this.activatedRoute.snapshot.params.portfolioId;
     this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId + "/projectinfo", pcode]);
-    document.getElementById("mysideInfobar").style.width = "70%";
+    
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
   _objStatusDTO: StatusDTO;
   //Save Portfolio

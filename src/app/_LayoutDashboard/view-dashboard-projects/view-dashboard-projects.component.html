@@ -226,7 +226,7 @@
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
                                             <thead>
                                                 <tr>
-                                                    <th> </th>
+                                                    <th style="width: 100px;"> </th>
                                                     <th><strong>Task Name</strong></th>
                                                     <th><strong>Description</strong></th>
                                                     <th><strong>Type</strong></th>
@@ -242,10 +242,15 @@
                                                     <!-- Project details info column -->
                                                     <td class="kt-widget__title mb-0 ">
                                                         <a data-toggle="tooltip" title="Project Details!"
-                                                            class="curser-pointer text-nowrap ml-1 mb-2 d-inline-block text-info"
+                                                            class="btn px-0 mr-2"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
                                                             (click)="openInfo(item.Project_Code,item.Project_Name)">
-                                                            <i class="fa fa-info-circle info-icon-cir"></i> &nbsp;&nbsp;
+                                                            <i class="fa fa-info-circle info-icon-cir"></i>
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            *ngIf="item.Project_Code != null && item.Status !='Pending'"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a>
                                                     </td>
                                                     <td class="kt-widget__title mb-0 text-ellipsis w-max-180px">
@@ -269,7 +274,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="text-center py-4" style="color: lightgrey">
+                                        <div class="text-center" style="color: lightgrey">
                                             <h4>{{notSelectedAnything_msg}} </h4>
                                             <p> {{notSelectedAnything_msg2}}</p>
                                         </div>
@@ -286,7 +291,7 @@
                                             role="grid" style="width: 0px;">
                                             <thead>
                                                 <tr role="row">
-                                                    <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                                                    <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
                                                     </th>
@@ -363,10 +368,14 @@
                                                     <!-- Information Icon -->
                                                     <!-- <td></td> -->
                                                     <td align="center">
-                                                        <a tabindex="0" class="btn mr-2" role="button" placement="right"
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                                             data-trigger="focus">
                                                             <i class="fa fa-info-circle info-icon-cir"
                                                                 (click)="openInfo(item.Project_Code, item.Project_Name)"></i>
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a>
                                                     </td>
                                                     <td>
@@ -442,7 +451,7 @@
                                                                 Hold</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
-                                                            <span class="text-primary font-weight-400">ToDo
+                                                            <span class="text-success font-weight-400">ToDo
                                                                 Completed</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Todo'">
@@ -450,13 +459,13 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="text-warning font-weight-400">Completion
+                                                            <span class="text-primary font-weight-400">Completion
                                                                 Under
                                                                 Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-info font-weight-400">Completed
+                                                            <span class="text-success font-weight-400">Completed
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
@@ -483,7 +492,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="text-info font-weight-400">Deadline Extend
+                                                            <span class="text-primary font-weight-400">Deadline Extend
                                                                 Under Approval
                                                             </span>
                                                         </div>

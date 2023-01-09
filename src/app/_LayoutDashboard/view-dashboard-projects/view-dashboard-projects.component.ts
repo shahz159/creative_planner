@@ -584,13 +584,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this.Z2A1 = true;
     }
   }
-  moreDetails() {
-    let name: string = 'MoreDetails';
-    var url = document.baseURI + name;
-    var myurl = `${url}/${this.pCode}`;
-    var myWindow = window.open(myurl, this.pCode);
-    myWindow.focus();
-  }
+ 
   //DMs Add And Delete 
   _DBMemosIDList: any;
   dropdownSettings_Memo: IDropdownSettings = {};
@@ -789,6 +783,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
       });
     //Displaying Right Side Bar... 
     document.getElementById("MemosSideBar").style.width = "350px";
+  }
+
+  moreDetails(pcode) {
+    let name: string = 'MoreDetails';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
   }
 
 }
