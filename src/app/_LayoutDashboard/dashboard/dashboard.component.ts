@@ -447,6 +447,21 @@ export class DashboardComponent implements OnInit {
 
     //   }
     // });
+
+    // $(function () {
+    // $(document).on('keydown', function(e){
+
+    //     if(e.keyCode == 27) {
+    //         if ($('.bg-ovr').hasClass('d-block')) {
+    //             $('.bg-ovr').removeClass('d-block');
+    //             $('.side_view').removeClass('position-fixed');
+
+    //         }
+    //       }
+    //           });
+    //     });
+
+
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
