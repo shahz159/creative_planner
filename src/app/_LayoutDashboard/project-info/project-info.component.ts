@@ -772,9 +772,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.getapprovalStats();
         });
     }
-    // else if (this.selectedType == '2') {
-    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    // }
+    else if (this.selectedType == '2') {
+      this.notifyService.showError("Conditional Accept", "Failed");
+    }
     else if (this.selectedType == '3') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;

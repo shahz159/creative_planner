@@ -55,7 +55,7 @@
 <div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right" [hidden]="_LinkSideBar1">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
                 (click)="closeLinkSideBar()">
                 <i class="fa fa-times"></i>
@@ -302,7 +302,7 @@
                                                     <span
                                                         class="kt-badge kt-badge--inline kt-badge--unified-info">{{item.Request_type}}</span>
                                                     <span
-                                                        class="dt kt-badge kt-badge--inline kt-badge--unified-dark">{{item.Req_date}}</span>
+                                                        class="dt kt-badge kt-badge--inline kt-badge--unified-dark">{{item.Req_date | date:'dd-MM-yyyy'}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -338,6 +338,12 @@
                                                 </label>
                                             </div>
                                             <div class="form-check-inline" (click)="typeChange()">
+                                                <label class="form-check-label lbl-war btn-app">
+                                                    <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
+                                                        value="2" [(ngModel)]="selectedType">Conditional Accept
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline" (click)="typeChange()">
                                                 <label class="form-check-label lbl-dan btn-app">
                                                     <input id="rdbButtons_2" type="radio" class="form-check-input"
                                                         name="rdbButtons" value="3" [(ngModel)]="selectedType">Reject
@@ -347,20 +353,7 @@
                                     </div>
                                     <div class="" id="comts1">
                                         <div class="col-md-12 checked-rad pl-1 pt-3">
-                                            <div class="appr-comts">
-                                                <div class="form-group" *ngIf="selectedType=='1'"
-                                                    (click)="clickonselect()">
-                                                    <label class="mb-2">Select Comment</label>
-                                                    <ng-select required #action="ngModel" name="comment_accept"
-                                                        placeholder="Select Comment" id="comment_accept"
-                                                        [(ngModel)]="commentSelected">
-                                                        <ng-option [value]="item.Req_Coments"
-                                                            *ngFor="let item of comments_list">
-                                                            {{item.Req_Coments}}
-                                                        </ng-option>
-                                                    </ng-select>
-                                                </div>
-                                                <div class="form-group" *ngIf="selectedType=='3'"
+                                            <div class="form-group" *ngIf="selectedType=='3'"
                                                     (click)="clickonselect()">
                                                     <label class="mb-2">Reject Type</label><span
                                                         style="color:red">*</span>
@@ -375,9 +368,29 @@
                                                     <span *ngIf="rejectType!=1 && rejectType"
                                                         style="color:grey">{{rejDesc}}</span>
                                                 </div>
+                                            <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
+                                                <label class="mb-2">Enter Comments</label><span
+                                                    style="color:red">*</span>
+                                                <textarea class="form-control h-100px   "
+                                                    [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                            </div>
+                                            <div class="appr-comts">
+                                                <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'"
+                                                    (click)="clickonselect()">
+                                                    <label class="mb-2">Select From Existing Comments</label>
+                                                    <ng-select required #action="ngModel" name="comment_accept"
+                                                        placeholder="Select Comment" id="comment_accept"
+                                                        [(ngModel)]="commentSelected">
+                                                        <ng-option [value]="item.Req_Coments"
+                                                            *ngFor="let item of comments_list">
+                                                            {{item.Req_Coments}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </div>
+                                                
                                                 <div class="form-group" *ngIf="selectedType=='3'"
                                                     (click)="clickonselect()">
-                                                    <label class="mb-2">User Defined Comments</label>
+                                                    <label class="mb-2">Select From Existing Comments</label>
                                                     <ng-select required #action="ngModel" name="comment_reject"
                                                         placeholder="Select Comment" id="comment_reject"
                                                         [(ngModel)]="commentSelected">
@@ -387,15 +400,10 @@
                                                         </ng-option>
                                                     </ng-select>
                                                 </div>
-                                                <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1'">
-                                                    <label class="mb-2">Enter Your Comment</label><span
-                                                        style="color:red">*</span>
-                                                    <textarea class="form-control"
-                                                        [(ngModel)]="comments">{{commentSelected}}</textarea>
-                                                </div>
+                                                
                                             </div>
                                             <div class="d-flex justify-content-end mb-2"
-                                                *ngIf="selectedType=='3' || selectedType=='1'">
+                                                *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
                                                 <button class="btn btn-sm py-1 btn-info mr-2" (click)="submitApproval()"
                                                     [disabled]="!comments || !selectedType">Submit</button>
                                                 <button class="btn btn-sm py-1 btn-secondary"
@@ -999,7 +1007,7 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
-                        <i class="fa fa-chart-bar"></i>Add DMS
+                        <i class="fa fa-chart-bar"></i>Add to Link
                     </button>
                 </div>
             </div>
@@ -1045,13 +1053,13 @@
                 <div class>
                     <div class="my-2">
                         <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
-                            <i class="fa fa-file-alt mr-2"></i> Linked Portfolios
+                            <i class="fa fa-file-alt mr-2"></i>Portfolio Link
                         </label>
                     </div>
                 </div>
                 <div>
                     <button type="button" class="btn btn-info btn-sm py-1" (click)="AddPortfolio()">
-                        <i class="fa fa-chart-bar"></i>Add Portfolio
+                        <i class="fa fa-chart-bar"></i>Add to Link
                     </button>
                 </div>
             </div>

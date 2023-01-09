@@ -1439,14 +1439,15 @@
                                                 <div>
                                                     <span class="kt-widget__desc pt-1 curser-pointer"
                                                         (click)="openPDF_Standard(item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</span>
-                                                    <div class="kt-widget__desc pt-1">
-                                                        <small>{{item.Reportdate|date:'fullDate'}}</small>
-                                                    </div>
+                                                    
                                                     <div class="kt-widget__desc pt-1" style="color:  #FFA500;">
                                                         <small>{{item.Remarks}}</small>
                                                     </div>
                                                     <div class="kt-widget__desc pt-1">
                                                         <small>Submitted By : {{item.SubmittedBy}}</small>
+                                                    </div>
+                                                    <div class="kt-widget__desc pt-1">
+                                                        <small>Submitted Date : {{item.Reportdate|date:'fullDate'}}</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -1477,6 +1478,9 @@
                                                         </div>
                                                         <div class="kt-widget__desc pt-1">
                                                             <small>Submitted By : {{item.SubmittedBy}}</small>
+                                                        </div>
+                                                        <div class="kt-widget__desc pt-1">
+                                                            <small>Submitted Date : {{item.Rec_Date|date:'fullDate'}}</small>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -1610,7 +1614,7 @@
                                                                 <span
                                                                     class="kt-badge kt-badge--inline kt-badge--unified-info">{{item.Req_Type}}</span>
                                                                 <span
-                                                                    class="comment-info dt kt-badge kt-badge--inline kt-badge--unified-dark">{{item.Req_DL}}</span>
+                                                                    class="comment-info dt kt-badge kt-badge--inline kt-badge--unified-dark">{{item.Req_DL | date:'dd-MM-yyyy'}}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1631,7 +1635,7 @@
                                                                 <span
                                                                     class="kt-badge kt-badge--inline kt-badge--unified-info">{{item.Req_Type}}</span>
                                                                 <span
-                                                                    class="kt-badge kt-badge--inline kt-badge--unified-dark comment-info dt">{{item.Req_DL}}</span>
+                                                                    class="kt-badge kt-badge--inline kt-badge--unified-dark comment-info dt">{{item.Req_DL | date:'dd-MM-yyyy'}}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2093,10 +2097,10 @@
                                         value="1" checked="checked" [(ngModel)]="selectedType">Accept
                                 </label>
                             </div>
-                            <div class="form-check-inline d-none" (click)="typeChange()">
+                            <div class="form-check-inline" (click)="typeChange()">
                                 <label class="form-check-label lbl-war btn-app">
                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
-                                        value="2" [(ngModel)]="selectedType">Hold
+                                        value="2" [(ngModel)]="selectedType">Conditional Accept
                                 </label>
                             </div>
                             <div class="form-check-inline" (click)="typeChange()">
@@ -2116,15 +2120,6 @@
                     <div class="d-flex flex-grow-1r">
                         <div class="col-md-12 checked-rad pl-1 pt-3">
                             <div class="appr-comts">
-                                <div class="form-group" *ngIf="selectedType=='1'" (click)="clickonselect()">
-                                    <label class="mb-2">Select Comment</label>
-                                    <ng-select required #action="ngModel" name="comment_accept" placeholder="Select Comment" id="comment_accept"
-                                        [(ngModel)]="commentSelected">
-                                        <ng-option [value]="item.Req_Coments" *ngFor="let item of comments_list">
-                                            {{item.Req_Coments}}
-                                        </ng-option>
-                                    </ng-select>
-                                </div>
                                 <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
                                     <label class="mb-2">Reject Type</label><span style="color:red">*</span>
                                     <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type" id="rej_type"
@@ -2135,8 +2130,22 @@
                                     </ng-select>
                                     <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
                                 </div>
+                                <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
+                                    <label class="mb-2">Enter Comments</label><span style="color:red">*</span>
+                                    <textarea class="form-control h-100px" [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                </div>
+                                <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'" (click)="clickonselect()">
+                                    <label class="mb-2">Select From Existing Comments</label>
+                                    <ng-select required #action="ngModel" name="comment_accept" placeholder="Select Comment" id="comment_accept"
+                                        [(ngModel)]="commentSelected">
+                                        <ng-option [value]="item.Req_Coments" *ngFor="let item of comments_list">
+                                            {{item.Req_Coments}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                
                                 <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
-                                    <label class="mb-2">User Defined Comments</label>
+                                    <label class="mb-2">Select From Existing Comments</label>
                                     <ng-select required #action="ngModel" name="comment_reject" placeholder="Select Comment" id="comment_reject"
                                         [(ngModel)]="commentSelected">
                                         <ng-option [value]="item.Req_Coments" *ngFor="let item of rejectcommentsList">
@@ -2144,10 +2153,7 @@
                                         </ng-option>
                                     </ng-select>
                                 </div>
-                                <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1'">
-                                    <label class="mb-2">Enter Your Comment</label><span style="color:red">*</span>
-                                    <textarea class="form-control" [(ngModel)]="comments">{{commentSelected}}</textarea>
-                                </div>
+                               
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
