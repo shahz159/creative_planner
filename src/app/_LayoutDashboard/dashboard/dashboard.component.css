@@ -1319,6 +1319,7 @@ height: auto !important;
 .foot-main{
     position: relative;
     width: 100%;
+    min-height: 50px;
 }
 .br-top{
     border-top: #dadce0 1px solid;
