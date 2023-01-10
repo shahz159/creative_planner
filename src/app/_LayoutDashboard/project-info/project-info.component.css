@@ -263,3 +263,14 @@
   position: absolute;
     left: -332px
 }
+.w-45 {
+  width: 45% !important;
+}
+.w-55 {
+  width: 55% !important;
+}
+::ng-deep .no-ellip span.ng-option-label {
+    text-overflow: unset;
+    white-space: break-spaces;
+
+}

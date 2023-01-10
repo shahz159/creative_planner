@@ -187,7 +187,7 @@
             <!--&& item.Status!='InProcess' && item.Status!='Delay' && item.Status!='New Project Rejected'" -->
             <div class>
                 <div class="my-2">
-                    <button type="button" class="btn btn-info btn-sm py-1 d-flex align-items-center"
+                    <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
                         data-toggle="collapse" href="#pro_actns" role="button" aria-expanded="true"
                         aria-controls="pro_actns" *ngIf="requestType!='Project Forward'">
                         Project Actions<i class="fa fa-chevron-up ml-2 m-0"></i>
@@ -212,7 +212,7 @@
             <div class="card-body px-0">
 
                 <div class="d-flex">
-                    <div class="flex-1 w-50">
+                    <div class=" w-45">
 
                         <div class="px-cb">
                             <!-- <div class="align-items-center">
@@ -314,7 +314,7 @@
 
                     <!-- accordian_section-->
 
-                    <div class="px-3 w-50 flex-1 br-cus">
+                    <div class="px-3 w-55 flex-1 br-cus">
                         <div class="">
                             <div class="card-title mb-0">
                                 <!-- <div class="card-title mb-0" data-toggle="collapse" data-target="#proj_act_acc" aria-expanded="true" aria-controls="proj_act_acc"> -->
@@ -337,7 +337,8 @@
                                                         [(ngModel)]="selectedType">Accept
                                                 </label>
                                             </div>
-                                            <div class="form-check-inline" (click)="typeChange()">
+                                            <div class="form-check-inline" *ngIf="requestType=='New Project' || requestType=='Project Complete'"
+                                                 (click)="typeChange()">
                                                 <label class="form-check-label lbl-war btn-app">
                                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
                                                         value="2" [(ngModel)]="selectedType">Conditional Accept
@@ -379,7 +380,7 @@
                                                     (click)="clickonselect()">
                                                     <label class="mb-2">Select From Existing Comments</label>
                                                     <ng-select required #action="ngModel" name="comment_accept"
-                                                        placeholder="Select Comment" id="comment_accept"
+                                                        placeholder="Select Comment" id="comment_accept" class="no-ellip"
                                                         [(ngModel)]="commentSelected">
                                                         <ng-option [value]="item.Req_Coments"
                                                             *ngFor="let item of comments_list">
@@ -889,7 +890,7 @@
                     <!--Transfer-->
                     <div class="ml-2 mt-3" (click)="underDev()">
                         <div class="dropdown">
-                            <button class="btn btn-info btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
+                            <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-forward"></i>
                                 <span class="ml-1">Transfer</span>
@@ -930,7 +931,7 @@
 
                 </div>
                 <div>
-                    <button type="button" class="btn btn-info btn-sm py-1 pr-2 dwn-arw" (click)="bttn_RACI()">RACIS
+                    <button type="button" class="btn btn-primary btn-sm py-1 pr-2 dwn-arw" (click)="bttn_RACI()">RACIS
                         <i class="ml-1 mb-1 fa fa-chevron-up"></i>
                     </button>
                 </div>
@@ -1355,7 +1356,7 @@
 
                 <div class="my-2">
                     <button type="button" id="asgnid-colpse" (click)="scrldwn()"
-                        class="btn btn-info btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                        class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
                         data-toggle="collapse" data-target="#assignlapse" aria-expanded="false"><i
                             class="fa fa-chart-bar"></i>Assigned Details <i class="fa fa-chevron-up ml-2 m-0"></i>
                     </button>

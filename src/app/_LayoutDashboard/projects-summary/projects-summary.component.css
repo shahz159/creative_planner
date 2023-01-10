@@ -1154,7 +1154,12 @@ div#mat-select-0-panel{
 .bg-today {
   background-color: #342bf0 !important;
 }
-
+.w-45 {
+  width: 45% !important;
+}
+.w-55 {
+  width: 55% !important;
+}
 @media only screen and (max-width: 768px) {
   .dropdown-menu-md.bg-ground{
     width: 80vw;
