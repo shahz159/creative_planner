@@ -337,7 +337,8 @@
                                                         [(ngModel)]="selectedType">Accept
                                                 </label>
                                             </div>
-                                            <div class="form-check-inline" (click)="typeChange()">
+                                            <div class="form-check-inline" *ngIf="requestType=='New Project' || requestType=='Project Complete'"
+                                                 (click)="typeChange()">
                                                 <label class="form-check-label lbl-war btn-app">
                                                     <input id="rdbButtons_1" type="radio" class="form-check-input" name="rdbButtons"
                                                         value="2" [(ngModel)]="selectedType">Conditional Accept
