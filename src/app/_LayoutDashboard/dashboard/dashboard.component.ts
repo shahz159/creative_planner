@@ -519,7 +519,7 @@ export class DashboardComponent implements OnInit {
       });
 
     }
-    else if(this.EventAction_type==3){
+    else if(this.EventAction_type==2){
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.flagid = this.EventAction_type;
       this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -541,7 +541,7 @@ export class DashboardComponent implements OnInit {
         });
   
       }
-      else if(this.EventAction_type==2){
+      else if(this.EventAction_type==3){
         this._calenderDto.Emp_No = this.Current_user_ID;
         this._calenderDto.flagid = this.EventAction_type;
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -563,6 +563,28 @@ export class DashboardComponent implements OnInit {
           });
     
         }
+        else if(this.EventAction_type==4){
+          this._calenderDto.Emp_No = this.Current_user_ID;
+          this._calenderDto.flagid = this.EventAction_type;
+          this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+            ((data) => {
+              this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+            });
+          this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+          this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+      
+          this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+            ((data) => {
+              this.GetScheduledJson();
+              this._Message = data['message'];
+              this.notifyService.showSuccess(this._Message, "Rejected");
+              
+              this.closeevearea();
+      
+      
+            });
+      
+          }
 
   }
  
