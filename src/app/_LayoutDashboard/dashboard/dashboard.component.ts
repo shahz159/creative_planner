@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { transition } from '@angular/animations';
 import { getElement } from '@amcharts/amcharts4/core';
+import { ThemeService } from 'ng2-charts';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
 export const MY_FORMATS = {
@@ -258,6 +259,7 @@ export class DashboardComponent implements OnInit {
   Project_NameScheduledjson: any[] = [];
   Project_dateScheduledjson: any[] = [];
   Schedule_type1: any
+  Status1:any;
   portfolio_Scheduledjson: any[] = [];
   User_Scheduledjson: any[] = [];
   DMS_Scheduledjson: any = [];
@@ -492,6 +494,30 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
+  Event_acceptandReject() {
+
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = 1;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      });
+    this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+
+    this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+      ((data) => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "Success");
+        this.GetScheduledJson();
+        this.closeevearea();
+
+
+      });
+
+
+
+  }
   GetclickEventRequest_details(id) {
     this.closeevearea1();
     $('.bg-ovr').addClass('d-block');
@@ -665,7 +691,7 @@ export class DashboardComponent implements OnInit {
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           // this.MasterCode1 = [];
-          this.arr =JSON.parse (this.EventScheduledjson[0]['Project_code']);
+          this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             // this.MasterCode.push(element.Project_Name);
             this.MasterCode.push(element.stringval);
@@ -757,7 +783,7 @@ export class DashboardComponent implements OnInit {
 
   OnSubmitSchedule() {
     // alert(this.MasterCode.toString() + "submit");
-    
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -852,12 +878,12 @@ export class DashboardComponent implements OnInit {
           this.TImetable();
 
         });
-        this.closeschd();
+      this.closeschd();
     }
     else {
       alert('Please Select Valid Date and Time');
     }
-   
+
   }
 
   OnSubmitReSchedule() {
@@ -1699,22 +1725,32 @@ export class DashboardComponent implements OnInit {
         console.log(this.EventScheduledjson, "Testing");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.Status1=this.EventScheduledjson[0].Status;
         console.log(this.EventScheduledjson, "Testing12");
-        if ((this.Schedule_type1 == 'Event') || (this.Project_dateScheduledjson >= this._StartDate)) {
+        if ((this.Schedule_type1 == 'Event')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
+          document.getElementById("main-foot").style.display = "none";
+        }
+        else if((this.Schedule_type1 == 'Event') && (this.Status1=='Pending')){
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "none";
+          document.getElementById("main-foot").style.display = "block";
+
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
+          document.getElementById("main-foot").style.display = "none";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
+          document.getElementById("main-foot").style.display = "none";
         }
         debugger
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
-       
+
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
@@ -2338,7 +2374,7 @@ export class DashboardComponent implements OnInit {
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
-   
+
     this._status = null;
     this.Portfolio = null;
     this.Location_Type = null;
@@ -2408,7 +2444,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
 
-  openfooter(){
+  openfooter() {
     document.getElementById("ft_body").classList.toggle("go-up");
     document.getElementById("secfootr").classList.toggle("opend");
     document.getElementById("main-foot").classList.toggle("overflow-hidden");
