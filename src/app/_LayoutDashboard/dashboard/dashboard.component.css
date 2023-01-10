@@ -1444,6 +1444,24 @@ height: auto !important;
 .text-gry{
     color: #5f6368;
 }
+.statusicn {
+    position: absolute;
+    bottom: 2px;
+    height: 14px;
+    right: 1px;
+    width: 14px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    display: block;
+    font-size: 14px;
+}
+
+.statusicn {
+        font-size: 18px;
+    font-weight: 500;
+    line-height: 14px;
+    text-align: center;
+}
 @media Screen and (max-width: 1600px) {
 
 .table-time {
