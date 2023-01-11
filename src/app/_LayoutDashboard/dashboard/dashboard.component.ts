@@ -510,9 +510,10 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
       ((data) => {
         this.GetScheduledJson();
+        this.Event_requests();
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
-        
+        this.calendar.updateTodaysDate();
         this.closeevearea();
 
 
@@ -532,9 +533,10 @@ export class DashboardComponent implements OnInit {
       this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
         ((data) => {
           this.GetScheduledJson();
+          this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
-          
+          this.calendar.updateTodaysDate();
           this.closeevearea();
   
   
@@ -554,9 +556,10 @@ export class DashboardComponent implements OnInit {
         this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
           ((data) => {
             this.GetScheduledJson();
+            this.Event_requests();
             this._Message = data['message'];
             this.notifyService.showSuccess(this._Message, "Rejected");
-            
+            this.calendar.updateTodaysDate();
             this.closeevearea();
     
     
@@ -576,9 +579,10 @@ export class DashboardComponent implements OnInit {
           this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
             ((data) => {
               this.GetScheduledJson();
+              this.Event_requests();
               this._Message = data['message'];
               this.notifyService.showSuccess(this._Message, "Rejected");
-              
+              this.calendar.updateTodaysDate();
               this.closeevearea();
       
       
@@ -603,17 +607,18 @@ this.EventAction_type=val;
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing1");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1=this.EventScheduledjson[0].Status;
-        if ((this.Schedule_type1 == 'Event')  && (this.Status1!='Pending')) {
+        if ((this.Schedule_type1 == 'Event')  && (this.Status1!='Pending'&& this.Status1!='Accepted') ) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if((this.Schedule_type1 == 'Event') && (this.Status1=='Pending')){
+        else if((this.Schedule_type1 == 'Event') && (this.Status1=='Pending'|| this.Status1=='Accepted')){
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
           document.getElementById("main-foot").style.display = "block";
@@ -1815,18 +1820,19 @@ this.EventAction_type=val;
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1=this.EventScheduledjson[0].Status;
         console.log(this.EventScheduledjson, "Testing12");
-        if ((this.Schedule_type1 == 'Event')  && (this.Status1!='Pending')) {
+        if ((this.Schedule_type1 == 'Event')  && (this.Status1!='Pending'&& this.Status1!='Accepted')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if((this.Schedule_type1 == 'Event') && (this.Status1=='Pending')){
+        else if((this.Schedule_type1 == 'Event') && (this.Status1=='Pending'|| this.Status1=='Accepted')){
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
           document.getElementById("main-foot").style.display = "block";
