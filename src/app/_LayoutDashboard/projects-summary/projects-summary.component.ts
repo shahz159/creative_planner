@@ -16,6 +16,8 @@ import * as _ from 'underscore';
 import { ParameterService } from "src/app/_Services/parameter.service";
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 //import { ViewChild } from '@angular/core';
@@ -40,6 +42,7 @@ export class ProjectsSummaryComponent implements OnInit {
     private ShareParameter: ParameterService,
     // private loadingBar: LoadingBarService,
     private router: Router,
+    public BsService: BsServiceService,
     public approvalservice: ApprovalsService,
     private notifyService: NotificationService) {
     this.ObjUserDetails = new UserDetailsDTO();
@@ -63,6 +66,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this._subtaskDiv = true;
     this.Current_user_ID = localStorage.getItem('EmpNo');
     // this.GetApplicationDetails();
+    this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
@@ -341,6 +345,8 @@ export class ProjectsSummaryComponent implements OnInit {
 
   GetProjectsByUserName(type) {
     this.Type=type;
+    this.BsService.setProjectSummaryType(type);
+
     if(this.Type=='ALL Projects'){
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
@@ -725,7 +731,7 @@ export class ProjectsSummaryComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+    this.router.navigate(["/backend/ProjectsSummary/"]);
   }
 
   _totalMemos: number;

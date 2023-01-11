@@ -265,13 +265,14 @@
                             [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval'
                                          }">
                             <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
-                                [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" *ngIf="Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval'">
+                                [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval')
+                                     && (this.CurrentUser_ID == this.EmpNo_Own || this.CurrentUser_ID == this.EmpNo_Res || this.CurrentUser_ID == this.EmpNo_Autho)">
                             {{_ProjectName}}
                             <span></span>
                         </label>
                         <!--   [hidden]="EmpNo_Own!=CurrentUser_ID"-->
                         <span class="text-info"  [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-                            id="EidtBtn_{{Pid}}" *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho">
+                            id="EidtBtn_{{Pid}}" *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.CurrentUser_ID == this.EmpNo_Res || this.CurrentUser_ID == this.EmpNo_Autho">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mt-2 pl-30px" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -290,6 +291,7 @@
                         <p class="mb-3 mt-1 pl-30px h5" style="color:grey; font-size: small;">
                             <span data-toggle="tooltip" title="Project Description!" id="Span_DescName_{{Pid}}">{{Proj_Desc}}</span>
                             <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
+                            *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.CurrentUser_ID == this.EmpNo_Res || this.CurrentUser_ID == this.EmpNo_Autho"
                                 id="EidtBtn_{{Pid}}">
                                 <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                             </span>
@@ -403,6 +405,7 @@
                                     <span data-toggle="tooltip" title="Action Name!" class="mr-2" id="SpanProjName_{{item.id}}"> {{item.Project_Name}}</span>
                                     <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                     <span class="text-info" [hidden]="Editbutton" id="EidtBtn_{{item.id}}"
+                                    *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.CurrentUser_ID == this.EmpNo_Res || this.CurrentUser_ID == this.EmpNo_Autho"
                                         (click)="OnEditProject(item.id,item.Project_Name)">
                                         <i class="fas fa-edit"></i>
                                     </span>
@@ -424,6 +427,7 @@
                                     <span data-toggle="tooltip" title="Action Description!" class="mr-2" id="Span_DescName_{{item.id}}">
                                         {{item.Project_Description}}</span>
                                     <span class="text-info" [hidden]="Editbutton"
+                                    *ngIf="this.CurrentUser_ID == this.EmpNo_Own || this.CurrentUser_ID == this.EmpNo_Res || this.CurrentUser_ID == this.EmpNo_Autho"
                                         (click)="OnEditProject_Desc(item.id,item.Project_Description)">
                                         <i class="fas fa-edit"></i>
                                     </span>
@@ -834,7 +838,7 @@
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-          <h4 class="font-weight-bold m-0">Project Completion</h4>
+          <h4 class="font-weight-bold m-0">Project Submission</h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"  (click)="closeInfoProject()">
             <i class="fa fa-times"></i>
           </a>

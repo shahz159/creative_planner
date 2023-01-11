@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ParameterService } from 'src/app/_Services/parameter.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { MatDialog } from '@angular/material/dialog';
-
+import { Router } from '@angular/router';
 //import { CalendarOptions } from '@fullcalendar/angular';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
@@ -19,6 +19,8 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { DatePipe } from '@angular/common';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 
 @Component({
   selector: 'app-project-info',
@@ -31,6 +33,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     public _LinkService: LinkService,
     public approvalservice: ApprovalsService,
     private notifyService: NotificationService,
+    public router: Router,
+    public BsService: BsServiceService,
+    public _projectSummary: ProjectsSummaryComponent,
+
+
     public datepipe: DatePipe,
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
@@ -38,6 +45,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     private elementRef: ElementRef) {
       this.objPortfolioDto= new PortfolioDTO();
       this.objProjectDto = new ProjectDetailsDTO();
+      this.BsService.bs_SummaryType.subscribe(t => {
+        this.Summarytype = t;
+      });
   }
 
   @Input() inputFromParent: string;
@@ -58,6 +68,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   _openInfoSideBar: boolean = false;
   interval: any;
   MoreDetailsList: any;
+  Summarytype:string;
   
   approvalObj = new ApprovalDTO();
   objProjectDto: ProjectDetailsDTO;
@@ -76,6 +87,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.route.paramMap.subscribe(params => {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
+
       this.getapprovalStats();
       this.fun_LoadProjectDetails();
       this.getdeadlinecount();
@@ -121,7 +133,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   maxhold: any = new Date();
 
   fun_LoadProjectDetails() { 
-    
+    // alert(this.Summarytype);
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
         //console.log("Project Details---->", data);
@@ -220,6 +232,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this.router.navigate(["/backend/ProjectsSummary/"]);
+
     this.ngOnDestroy();
   }
 
@@ -754,8 +768,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.comments=null;
     this.commentSelected=null;
     this.rejectType=null;
+    this.noRejectType=false;
   }
-
+  noRejectType:boolean=false;
   submitApproval() {
     if (this.selectedType == '1') {
       this.approvalObj.Emp_no = this.Current_user_ID;
@@ -770,26 +785,54 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
+          this.router.navigate(["/backend/ProjectsSummary/"]);
+          this._projectSummary.GetProjectsByUserName(this.Summarytype);
         });
     }
     else if (this.selectedType == '2') {
-      this.notifyService.showError("Conditional Accept", "Failed");
-    }
-    else if (this.selectedType == '3') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.rejectType = this.rejectType;
       this.approvalObj.Remarks = this.comments;
 
-      this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
-          this.notifyService.showWarning(this._Message,"Rejected Successfully");
+          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
+          this.router.navigate(["/backend/ProjectsSummary/"]);
+          this._projectSummary.GetProjectsByUserName(this.Summarytype);
+
         });
+    }
+    else if (this.selectedType == '3') {
+      if(this.rejectType==null || this.rejectType==undefined || this.rejectType==''){
+        this.noRejectType=true;
+        this.notifyService.showError("Please select Reject Type","Failed");
+        return false;
+      }
+      else{
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.projectCode;
+        this.approvalObj.Request_type = this.requestType;
+        this.approvalObj.rejectType = this.rejectType;
+        this.approvalObj.Remarks = this.comments;
+
+        this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            this.notifyService.showSuccess(this._Message,"Rejected Successfully");
+            
+            this.fun_LoadProjectDetails();
+            this.getapprovalStats();
+            this.router.navigate(["/backend/ProjectsSummary/"]);
+            this._projectSummary.GetProjectsByUserName(this.Summarytype);
+
+          });
+      }
+      
     }
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
@@ -836,6 +879,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   resetApproval(){
     this.selectedType = null;
     this.commentSelected = null;
+    this.noRejectType=false;
   }
 
   rejDesc:any;
@@ -846,6 +890,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   rejectApproval(){
     this.commentSelected=null;
     this.comments="";
+    this.noRejectType=false;
     this.reject_list.forEach(element => {
       if(this.rejectType==element.TypeID){
         this.rejDesc=element.Reject_Description;

@@ -50,7 +50,7 @@
                         <!--inprocess button-->
                         <div class="d-flex"
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project'
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
                                              && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks'">
 
@@ -166,7 +166,8 @@
                             Project Actions
                         </button>
                     </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay') && (ProjectBlockName != 'Standard Tasks')"
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks') 
+                            && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                         class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
                             <i class="fas fa-check mr-2"></i>
@@ -187,7 +188,7 @@
                             title="Project Name!">{{ProjectName}}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
+                            *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -211,7 +212,7 @@
                     <span id="Span_DescName_{{Pid}}" data-toggle="tooltip"
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
-                        id="EidtBtn_{{Pid}}" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status != 'Completed')">
+                        id="EidtBtn_{{Pid}}" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
@@ -290,7 +291,7 @@
                                             {{StartDate|date:'dd-MM-yyyy'}} /   <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
                                             <h5 style="color:red"  data-toggle="kt-tooltip" title="Extended Deadline for {{deadlineCount}} times!!" *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <span class="text-info fs-8" [hidden]="Editbutton"
-                                                (click)="onEditDeadline(Pid,EndDate)" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
+                                                (click)="onEditDeadline(Pid,EndDate)" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
                                                 && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
                                                 Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
                                                 && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
@@ -1037,7 +1038,8 @@
                                                             {{item.Project_Name}}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                                         <span class="text-info" [hidden]="Editbutton"
-                                                            id="EidtBtn_{{item.id}}"
+                                                            id="EidtBtn_{{item.id}}" 
+                                                            *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo"
                                                             (click)="OnEditProject(item.id,item.Project_Name)">
                                                             <i class="fas fa-edit"></i>
                                                         </span>
@@ -1063,6 +1065,7 @@
                                                             data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
+                                                            *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
                                                             <i class="fas fa-edit"></i>
                                                         </span>
@@ -1208,12 +1211,12 @@
                                                             data-toggle="tooltip" title="Action Name!">
                                                             {{item.Project_Name}}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
-                                                        <span class="text-info" [hidden]="Editbutton"
+                                                        <!-- <span class="text-info" [hidden]="Editbutton"
                                                             id="EidtBtn_{{item.id}}"
                                                             (click)="OnEditProject(item.id,item.Project_Name)">
                                                             <i class="fas fa-edit"></i>
-                                                        </span>
-                                                        <span class="kt-inbox__subject" style="display:none;"
+                                                        </span> -->
+                                                        <!-- <span class="kt-inbox__subject" style="display:none;"
                                                             id="spanTextbox_{{item.id}}">
                                                             <div class="d-flex">
                                                                 <input type="text" class="form-control text-"
@@ -1228,17 +1231,17 @@
                                                                         (click)="onCancel(item.id)">Cancel</button>
                                                                 </div>
                                                             </div>
-                                                        </span>
+                                                        </span> -->
                                                     </p>
                                                     <p class="mb-3">
                                                         <span class="mr-2" id="Span_DescName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
-                                                        <span class="text-info" [hidden]="Editbutton"
+                                                        <!-- <span class="text-info" [hidden]="Editbutton"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
                                                             <i class="fas fa-edit"></i>
-                                                        </span>
-                                                        <span class="kt-inbox__subject" style="display:none;"
+                                                        </span> -->
+                                                        <!-- <span class="kt-inbox__subject" style="display:none;"
                                                             id="spanTextarea_{{item.id}}">
                                                             <div class="d-flex">
                                                                 <input type="text" class="form-control"
@@ -1253,7 +1256,7 @@
                                                                         (click)="onCancel(item.id)">Cancel</button>
                                                                 </div>
                                                             </div>
-                                                        </span>
+                                                        </span> -->
 
                                                     </p>
 
@@ -1879,7 +1882,7 @@
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0">Project Completion</h4>
+            <h4 class="font-weight-bold m-0">Project Submission</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
                 (click)="closeInfoProject()">
                 <i class="fa fa-times"></i>
