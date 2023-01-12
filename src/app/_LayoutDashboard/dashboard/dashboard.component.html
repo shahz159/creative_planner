@@ -594,7 +594,8 @@
                                                 <p class="kt-widget5__desc mb-0">
                                                     {{item.Project_Name}}
                                                 </p>
-                                                <p class="kt-widget5__desc mb-0" title="{{item.Req_Coments}}">
+                                                <p class="kt-widget5__desc mb-0" title="{{item.Req_Coments}}"
+                                                     *ngIf="item.Req_Coments!='undefined'">
                                                     Comments : {{item.Req_Coments}}
                                                 </p>
                                                 <p class="kt-widget5__desc mb-0">
