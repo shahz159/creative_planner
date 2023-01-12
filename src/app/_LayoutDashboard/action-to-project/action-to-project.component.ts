@@ -347,7 +347,7 @@ export class ActionToProjectComponent implements OnInit {
         // this.closeInfo();
        
         if (this._Urlid == 1) {
-          debugger
+          // debugger
           this._Todoproject.CallOnSubmitAction();
           this.Clear_Feilds();
           this.closeInfo();

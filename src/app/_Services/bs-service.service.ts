@@ -24,6 +24,9 @@ export class BsServiceService {
 
   private _Authority = new BehaviorSubject<any>(null);
 
+  private _SummaryType = new BehaviorSubject<any>(null);
+
+
   bs_projectCode = this._Pcode.asObservable();
   bs_ProjectName = this._PName.asObservable();
 
@@ -37,6 +40,8 @@ export class BsServiceService {
 
   bs_SelectedProjectCode = this._projectCode.asObservable();
   bs_Authority = this._Authority.asObservable();
+
+  bs_SummaryType = this._SummaryType.asObservable();
 
 
 
@@ -70,6 +75,10 @@ export class BsServiceService {
     this._projectCode.next(pcode);
   }
   setProjectAuthoity(auth){
-    this._Authority.next(auth)
+    this._Authority.next(auth);
+  }
+
+  setProjectSummaryType(type){
+    this._SummaryType.next(type);
   }
 }

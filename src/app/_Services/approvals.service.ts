@@ -44,6 +44,17 @@ export class ApprovalsService {
 
   }
 
+  
+  InsertConditionalAcceptApprovalService(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Request_type = obj.Request_type;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertConditionalAcceptApprovalService", this.obj_approvalDTO);
+
+  }
+
   InsertRejectApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;

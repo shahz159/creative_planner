@@ -8,7 +8,7 @@ const routes: Routes = [{
   path: '', component: ProjectsSummaryComponent,
   children:[
     {
-      path: 'projectinfo/:projectcode',
+      path: 'projectinfo/:projectcode/:id',
       loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
     }
   ]

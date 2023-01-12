@@ -143,7 +143,8 @@
                 <!--edit project name-->
                 <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
                     id="EidtBtn_single{{Pid}}"
-                    *ngIf="(this.Current_user_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho) && (item.Status!='Completed')">
+                    *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
+                         && (item.Status!='Completed')">
                     <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                 </span>
                 <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
@@ -163,7 +164,8 @@
             <p><span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
                 <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
                     id="EidtBtn_single{{Pid}}"
-                    *ngIf="(this.Current_user_ID == this.EmpNo_Own || this.EmpNo_Res || this.EmpNo_Autho) && (item.Status!='Completed')">
+                    *ngIf="(Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
+                         && (item.Status!='Completed')">
                     <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                 </span>
                 <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
@@ -182,7 +184,7 @@
         </div>
 
 
-        <div class="d-flex  align-items-center justify-content-between" *ngIf="(Current_user_ID == approvalEmpId)  && 
+        <div class="d-flex  align-items-center justify-content-between" *ngIf="(Current_user_ID  == approvalEmpId)  && 
                 (item.Status!='Completed') ">
             <!--&& item.Status!='InProcess' && item.Status!='Delay' && item.Status!='New Project Rejected'" -->
             <div class>
@@ -206,7 +208,7 @@
                 </button>
             </div> -->
         </div>
-        <div class="card card-itm1 mt-2 collapse show" id="pro_actns" *ngIf="(Current_user_ID == approvalEmpId) && (requestType!='Project Forward')">
+        <div class="card card-itm1 mt-2 collapse show" id="pro_actns" *ngIf="(Current_user_ID  == approvalEmpId) && (requestType!='Project Forward')">
             <!-- &&  -->
             <!-- item.Status!='Completed' && item.Status!='InProcess' && item.Status!='Delay' && item.Status!='New Project Rejected'" -->
             <div class="card-body px-0">
@@ -368,6 +370,8 @@
                                                     </ng-select>
                                                     <span *ngIf="rejectType!=1 && rejectType"
                                                         style="color:grey">{{rejDesc}}</span>
+                                                        <span *ngIf="noRejectType==true"
+                                                        style="color:red">Please select Reject type!!</span>
                                                 </div>
                                             <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
                                                 <label class="mb-2">Enter Comments</label><span
@@ -393,7 +397,7 @@
                                                     (click)="clickonselect()">
                                                     <label class="mb-2">Select From Existing Comments</label>
                                                     <ng-select required #action="ngModel" name="comment_reject"
-                                                        placeholder="Select Comment" id="comment_reject"
+                                                        placeholder="Select Comment" id="comment_reject" class="no-ellip"
                                                         [(ngModel)]="commentSelected">
                                                         <ng-option [value]="item.Req_Coments"
                                                             *ngFor="let item of rejectcommentsList">
@@ -451,7 +455,7 @@
                             <div class="d-flex mt-2 mb-1 ">
                                 <p class="m-0 text-muted fs-7">End Date</p>
                                 <!-- End Date Edit-->
-                                <div class="dropdown" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
+                                <div class="dropdown" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
                                                         && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
                                                         item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
                                                         && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
@@ -518,7 +522,7 @@
                                     </div>
                                 </div>
                                 <!-- Project Hold-->    
-                                <div class="dropdown" *ngIf="(this.Current_user_ID == this.Owner || this.Responsible || this.Authority) && (item.Status!='Project Hold' && item.Status!='Completed')">
+                                <div class="dropdown" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed')">
                                     <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         (click)="onHoldClick(Pid)">
@@ -888,7 +892,7 @@
                         <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
                     </div>
                     <!--Transfer-->
-                    <div class="ml-2 mt-3" (click)="underDev()">
+                    <div class="ml-2 mt-3" (click)="underDev()" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
                         <div class="dropdown">
                             <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
@@ -1143,10 +1147,10 @@
                                     <!-- <span class="bg-success">{{item.Status}}</span> -->
                                 </div>
                                 <div *ngIf="task.SubProject_Status=='Delay'">
-                                    <h5 class="my-1 font-14 text-danger" *ngIf="item.Delayday<=0">
+                                    <h5 class="my-1 font-14 text-danger" *ngIf="task.Delayday==0">
                                         {{task.SubProject_Status}}</h5>
-                                        <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays>0" data-toggle="tooltip"
-                                             title="{{item.Delaydays}} Days Delay!">
+                                        <h5 class="my-1 font-14 text-danger" *ngIf="task.Delaydays>0" data-toggle="tooltip"
+                                             title="{{task.Delaydays}} Days Delay!">
                                             {{task.SubProject_Status}}</h5>
                                     <!-- <span class="font-weight-400">{{item.Status}}</span> -->
                                 </div>

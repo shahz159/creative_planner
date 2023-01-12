@@ -14,6 +14,7 @@ import { FocusOnClickDirective } from './focus-on-click.directive';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
 
 
 // FullCalendarModule.registerPlugins([
@@ -37,7 +38,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective],
-  providers:[DatePipe]
+  providers:[DatePipe, ProjectsSummaryComponent]
  //exports:[ProjectInfoComponent]
   
 })

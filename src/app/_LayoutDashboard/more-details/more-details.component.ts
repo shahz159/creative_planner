@@ -244,7 +244,19 @@ export class MoreDetailsComponent implements OnInit {
         });
     }
     else if (this.selectedType == '2') {
-      this.notifyService.showError("Conditional Accept", "Failed");
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = this.requestType;
+      this.approvalObj.Remarks = this.comments;
+
+      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+        });
     }
     else if (this.selectedType == '3') {
       this.approvalObj.Emp_no = this.Current_user_ID;
