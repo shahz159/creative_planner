@@ -17,6 +17,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { DatePipe } from '@angular/common';
+import { NotificationService } from 'src/app/_Services/notification.service';
 
 
 
@@ -39,7 +40,7 @@ import { DatePipe } from '@angular/common';
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule
   ]
-,providers:[ProjectUnplannedTaskComponent,MoreDetailsComponent,DatePipe],
+,providers:[NotificationService,ProjectUnplannedTaskComponent,MoreDetailsComponent,DatePipe],
 
 exports:[
     ToDoProjectsComponent

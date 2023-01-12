@@ -718,7 +718,7 @@ export class ProjectsSummaryComponent implements OnInit {
 
   openInfo(pcode, pName) {
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
-    this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode]);
+    this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("sumdet").classList.add("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");

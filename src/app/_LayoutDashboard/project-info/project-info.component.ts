@@ -81,9 +81,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   commentSelected: string;
   comments: string;
   selectedType: string;
+  _Urlid:any;
 
   ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this._Urlid = this.route.snapshot.params['id'];
+    // alert(this._Urlid);
+
     this.route.paramMap.subscribe(params => {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
@@ -140,7 +144,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
-          // console.log(this._portfoliolist.length,"port");
+          console.log(this.ProjectInfo_List,"pt");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
@@ -232,8 +236,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    this.router.navigate(["/backend/ProjectsSummary/"]);
-
+    if(this._Urlid=='1'){
+      this.router.navigate(["/backend/ProjectsSummary/"]);
+    }
     this.ngOnDestroy();
   }
 
@@ -785,8 +790,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
-          this.router.navigate(["/backend/ProjectsSummary/"]);
+          if(this._Urlid =='1'){
+            this.router.navigate(["/backend/ProjectsSummary/"]);
           this._projectSummary.GetProjectsByUserName(this.Summarytype);
+          }
+          
         });
     }
     else if (this.selectedType == '2') {
@@ -802,8 +810,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
-          this.router.navigate(["/backend/ProjectsSummary/"]);
+          if(this._Urlid =='1'){
+            this.router.navigate(["/backend/ProjectsSummary/"]);
           this._projectSummary.GetProjectsByUserName(this.Summarytype);
+          }
 
         });
     }
@@ -827,9 +837,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             
             this.fun_LoadProjectDetails();
             this.getapprovalStats();
-            this.router.navigate(["/backend/ProjectsSummary/"]);
+            if(this._Urlid =='1'){
+              this.router.navigate(["/backend/ProjectsSummary/"]);
             this._projectSummary.GetProjectsByUserName(this.Summarytype);
-
+            }
           });
       }
       

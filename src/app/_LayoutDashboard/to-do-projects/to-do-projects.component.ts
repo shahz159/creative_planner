@@ -219,6 +219,7 @@ export class ToDoProjectsComponent implements OnInit {
 //   }
 
   ProjectInfoDetails() {
+    debugger
     // var myWindow = window.open(myurl);
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);

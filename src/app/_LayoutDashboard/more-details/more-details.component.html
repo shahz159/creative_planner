@@ -50,7 +50,7 @@
                         <!--inprocess button-->
                         <div class="d-flex"
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
                                              && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks'">
 
@@ -1038,8 +1038,7 @@
                                                             {{item.Project_Name}}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                                         <span class="text-info" [hidden]="Editbutton"
-                                                            id="EidtBtn_{{item.id}}" 
-                                                            *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo"
+                                                            id="EidtBtn_{{item.id}}"
                                                             (click)="OnEditProject(item.id,item.Project_Name)">
                                                             <i class="fas fa-edit"></i>
                                                         </span>
@@ -1065,7 +1064,6 @@
                                                             data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
-                                                            *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
                                                             <i class="fas fa-edit"></i>
                                                         </span>
