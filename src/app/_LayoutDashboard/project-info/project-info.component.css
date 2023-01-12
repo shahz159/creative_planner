@@ -226,7 +226,7 @@
 .comment-list{
   padding-bottom: 1.25rem;
 }
-.comment-text{
+.comt-text{
   /* color: #14171a; */
   margin-left: 5px;
   margin-top: 2px;
@@ -235,7 +235,7 @@
 .blw .dt {
   margin: 0 10px;
 }
-.comment-info {
+.comt-info {
   margin-left: 5px;
   font-size: 12px;
   font-weight: 500;

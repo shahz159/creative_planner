@@ -959,3 +959,28 @@ position: relative;
     right:0;
     z-index: 999;
 }
+.abs-btn {
+    position: absolute;
+    right: 0;
+}
+.comt-info {
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #494f54;
+}
+.comt-text {
+    margin-left: 5px;
+    margin-top: 2px;
+    font-size: 14px;
+}
+.blw .dt {
+    margin: 0 10px;
+}
+.bg-grey1 {
+    background: #f3f6fb;
+}
+.prv-cmts {
+    max-height: 200px;
+    overflow: auto;
+}
