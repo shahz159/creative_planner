@@ -1535,11 +1535,11 @@
                     </ng-select>
                     <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">
                         <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-2"></i>
-                            {{St_date}},</span>
+                            {{St_date  | date:'dd-MM-yyyy'}}</span>
                         <span class="d-inline-flex align-items-center ml-2"><i
-                                class="fas fa-calendar-alt mr-2"></i>{{Ed_date}},</span>
+                                class="fas fa-calendar-alt mr-2"></i>{{Ed_date | date:'dd-MM-yyyy'}}</span>
                         <span class="d-inline-flex align-items-center ml-2"><i
-                                class="fas fa-clock mr-2"></i>{{Allocated_subtask}},</span>
+                                class="fas fa-clock mr-2"></i>{{Allocated_subtask}}</span>
                         <span class="d-inline-flex align-items-center ml-2"><i
                                 class="fas fa-star mr-2"></i>{{_status}}</span>
                         <!-- <span class="d-inline-flex align-items-center ml-2"><i

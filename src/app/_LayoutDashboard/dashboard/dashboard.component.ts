@@ -951,8 +951,7 @@ this.EventAction_type=val;
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
-          this._StartDate = null;
-          this._EndDate = null;
+          
           this._status = null;
           this.SelectDms = null;
           this.Location_Type = null;
@@ -1408,6 +1407,7 @@ this.EventAction_type=val;
       });
   }
   Doubleclick(event: any) {
+    
     this.preventSingleClick = true;
     clearTimeout(this.timer);
 
