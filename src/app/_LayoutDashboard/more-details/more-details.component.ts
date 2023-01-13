@@ -153,12 +153,16 @@ export class MoreDetailsComponent implements OnInit {
     this.comments=null;
     this.commentSelected=null;
     this.rejectType=null;
+    this.noRejectType=false;
   }
+  
   comments_list:any;
   reject_list:any;
   rejectType:any;
   initials1:any;
   Submitted_By:string;
+  prviousCommentsList:any;
+  noRejectType:boolean=false;
   
   getapprovalStats() {
     this.approvalEmpId=null;
@@ -175,6 +179,7 @@ export class MoreDetailsComponent implements OnInit {
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        this.prviousCommentsList= JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
         this.initials1= this.initials1.toUpperCase();
@@ -190,6 +195,7 @@ export class MoreDetailsComponent implements OnInit {
   rejectApproval(){
     this.commentSelected=null;
     this.comments="";
+    this.noRejectType=false;
     this.reject_list.forEach(element => {
       if(this.rejectType==element.TypeID){
         this.rejDesc=element.Reject_Description;
@@ -259,20 +265,28 @@ export class MoreDetailsComponent implements OnInit {
         });
     }
     else if (this.selectedType == '3') {
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.rejectType = this.rejectType;
-      this.approvalObj.Remarks = this.comments;
+      if(this.rejectType==null || this.rejectType==undefined || this.rejectType==''){
+        this.noRejectType=true;
+        this.notifyService.showError("Please select Reject Type","Failed");
+        return false;
+      }
+      else{
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = this.requestType;
+        this.approvalObj.rejectType = this.rejectType;
+        this.approvalObj.Remarks = this.comments;
 
-      this.approvalservice.InsertRejectApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          this.notifyService.showWarning(this._Message,"Rejected Successfully");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-          this.getapprovalStats();
+        this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            this.notifyService.showWarning(this._Message,"Rejected Successfully");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
         });
+      }
+      
     }
     // else if (this.selectedType == '4') {
     //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
@@ -3021,6 +3035,7 @@ export class MoreDetailsComponent implements OnInit {
 
     this.selectedType = null;
     this.commentSelected = null;
+    this.noRejectType=false;
     // this.ngOnInit();
   }
 

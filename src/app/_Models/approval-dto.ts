@@ -7,5 +7,6 @@ export class ApprovalDTO {
     Remarks: string;
     message: string;
     rejectType:any;
-
+    deadline:string;
+    Responsible:string;
 }

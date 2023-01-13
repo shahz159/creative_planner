@@ -1978,6 +1978,7 @@ this.EventAction_type=val;
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
+    document.getElementById("actyInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 
@@ -2436,8 +2437,23 @@ this.EventAction_type=val;
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
+
   closeevearea1() {
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
+  }
+  
+  actyside() {
+    document.getElementById("actyInfobar").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+  }
+  
+  closeevearea2() {
+    document.getElementById("actyInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 

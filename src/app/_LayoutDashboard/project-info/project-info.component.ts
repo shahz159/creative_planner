@@ -53,6 +53,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   @Input() inputFromParent: string;
   projectCode: string;
   ProjectInfo_List: any;
+  Employee_List: any;
   Subtask_List: SubTaskDTO[];
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
@@ -143,8 +144,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         //console.log("Project Details---->", data);
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
+          console.log(this.Employee_List,'EMPList');
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
-          console.log(this.ProjectInfo_List,"pt");
+          // console.log(this.ProjectInfo_List,"pt");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
@@ -739,6 +742,11 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
     this.Holddate = null;
     this.hold_remarks="";
+
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmpNo=null;
+    this.TransDate = null;
+    this.transfer_remarks="";
   }
   _modelProjAlloc:number=0;
   
@@ -940,6 +948,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   }
 
   underDev(){
+  this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+
+    console.log(this.selectedEmpNo,this.transfer_remarks,this.TransDate,"transfer");
     this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
 
@@ -950,6 +961,8 @@ extend_remarks:string;
 onEditDeadline(id, enddate) {
   (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.add("d-block");
   document.getElementsByClassName("date-drop2")[0].classList.remove("d-block");
+  // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
+
 
   // this._ProjDeadline = enddate;
   this.Editbutton = true;
@@ -999,6 +1012,8 @@ hold_remarks: string;
 onHoldClick(id) {
   (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.add("d-block");
   document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
+  // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
+
 
   this.Editbutton = true;
   (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
@@ -1034,5 +1049,24 @@ getProjectHoldDate(){
     {
       this.proj_holddate=data['Project_holddate'];
     })
+}
+
+//Transfer Project
+selectedEmpNo: string = null;
+transfer_remarks:string;
+TransDate:string;
+
+EmployeeOnSelect(obj) {
+  this.selectedEmpNo = obj;
+}
+
+onTransferClick(id) {
+  (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
+  // document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
+  // document.getElementsByClassName("date-drop2")[0].classList.remove("d-block");
+
+
+  this.Editbutton = true;
+  (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
 }
 }
