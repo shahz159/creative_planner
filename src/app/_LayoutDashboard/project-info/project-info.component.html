@@ -466,11 +466,9 @@
                                         <!-- [hidden]="Editbutton" -->
                                         <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
                                     </span>
-
                                     <div id="DeadlineArea_{{Pid}}"
                                         class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1">
                                         <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
-                                            <!-- -->
                                             <li class="kt-nav__head py-0">
                                                 <div>Deadline Extend</div>
                                             </li>
@@ -892,31 +890,67 @@
                         <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
                     </div>
                     <!--Transfer-->
-                    <div class="ml-2 mt-3" (click)="underDev()" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
-                        <div class="dropdown">
+                    <div class="ml-2 mt-3 ">
+                        <div class="dropdown" *ngIf="(Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
+                                && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
+                                item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
+                                && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
                             <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                                aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
                                 <i class="fa fa-forward"></i>
                                 <span class="ml-1">Transfer</span>
                             </button>
-                            <div id="div-pro1" class="dropdown-menu dropdown-menu-right dropdown-menu-fit hold-drop">
-                                <ul class="kt-nav pb-4" (click)="$event.stopPropagation();">
+                            <div  id="TransferArea_{{Pid}}"
+                                 class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3">
+                                 <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
                                     <li class="kt-nav__head py-0">
-                                        <div>Transfer Project</div>
+                                        <div>Project Transfer</div>
                                     </li>
-
                                     <li class="kt-nav__separator"></li>
                                     <div class=" height-scroll h-scr">
                                         <div class="px-4 py-3">
-                                            <div class="form-group">
-                                                <label>Date</label>
-                                                <select class="form-control">
-                                                    <option>Select</option>
-                                                </select>
+                                            <div  class="form-group">
+                                                <label> Transfer To <span class="text-danger">*</span> : <strong></strong></label>
+                                                <ng-select reuired #transfer="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
+                                                    <ng-option [value]="item.Emp_No" *ngFor="let item of Employee_List">
+                                                        {{item.DisplayName}}
+                                                    </ng-option>
+                                                </ng-select>
+                                                <!-- <span style="color:red">Transfer to required!</span>  (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label>Select New Deadline<span class="text-danger">*</span></label>
+                                                <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
+                                                #Transdt="ngModel"
+                                                (click)="picker4.open();"
+                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                                [(ngModel)]="TransDate" class="form-control"
+                                                name="date">
+                                                <div class="input-group-append">
+                                                        <mat-datepicker-toggle matSuffix [for]="picker4" class="btn-secondary">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker class="form-group" #picker4></mat-datepicker>
+                                                </div>
+                                            </div> -->
+                                            <div class="form-group input-group">
+                                                <label>Select New Deadline<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
+                                                                #Transdt="ngModel"
+                                                                (click)="picker4.open();"
+                                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                                                [(ngModel)]="TransDate" class="form-control"
+                                                                name="date">
+                                                    <div class="input-group-append">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker4" class="btn-secondary">
+                                                            </mat-datepicker-toggle>
+                                                            <mat-datepicker class="form-group" #picker4></mat-datepicker>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Remarks</label>
-                                                <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                <textarea class="form-control" [(ngModel)]="transfer_remarks" placeholder="" rows="2" cols="20"
                                                     style="height:70px;"></textarea>
                                             </div>
                                         </div>
@@ -924,8 +958,9 @@
                                     </div>
                                     <li class="kt-nav__separator"></li>
                                     <li class="px-4">
-                                        <a class="btn btn-info btn-sm mr-2 text-white">Submit</a>
-                                        <a class="btn btn-outline-info btn-sm text-dark-75">Close</a>
+                                        <a class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedEmpNo || !TransDate || !transfer_remarks" 
+                                                (click)="underDev()">Submit</a>
+                                        <a class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</a>
                                     </li>
                                 </ul>
                             </div>
