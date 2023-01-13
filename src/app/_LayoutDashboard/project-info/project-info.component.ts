@@ -53,6 +53,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   @Input() inputFromParent: string;
   projectCode: string;
   ProjectInfo_List: any;
+  Employee_List: any;
   Subtask_List: SubTaskDTO[];
   subtaskNotFoundMsg: string;
   _TotalSubtaskCount: number;
@@ -143,8 +144,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         //console.log("Project Details---->", data);
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
+          console.log(this.Employee_List,'EMPList');
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
-          console.log(this.ProjectInfo_List,"pt");
+          // console.log(this.ProjectInfo_List,"pt");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
