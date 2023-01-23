@@ -482,7 +482,9 @@
     text-transform: capitalize;
     position: relative;
 }
-
+.month-arr .repeat-day {
+    margin-bottom: 8px;
+}
 .dropfocus {
     margin: 0px 0px;
 }
