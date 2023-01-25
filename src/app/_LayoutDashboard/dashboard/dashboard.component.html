@@ -1950,15 +1950,15 @@
                                 </div>
                             </div>
 
-                            <div class="ml-0 form-group" style="display: none;" id="weekly_122">
+                            <!-- <div class="ml-0 form-group" style="display: none;" id="weekly_122">
 
                                 <label class="">Monthly</label>
                                 <div class="pt-1">
-                                    <div class="d-flex flex-wrap month-arr">
+                                    <div class="d-none flex-wrap month-arr">
 
                                         <ng-container *ngFor="let item of MonthArr">
                                             <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                                <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                <input (change)="SelectDropDown($event)" id="{{item.value}}"
                                                     type="checkbox" name="DaysChk" value="{{item.value}}"
                                                     class="rep-chk" />
                                                 {{item.Day}}
@@ -1967,7 +1967,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- <div class="input-group">
                                 <input matInput  [matDatepicker]="picker12" (click)="picker12.open()" 
@@ -1985,7 +1985,7 @@
 
                     <div class="d-flex align-items-start gap-1 flex-nowrap">
 
-                        <div class="wc-cus">
+                        <div class="wc-cus" style="display:none" id="calender_1" >
                             
 
                             <mat-card class="demo-inline-calendar-card ">

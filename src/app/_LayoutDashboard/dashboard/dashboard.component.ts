@@ -790,14 +790,14 @@ export class DashboardComponent implements OnInit {
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event") {
+        if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
           var IsActive = "IsActive";
-          jsonData[IsActive] = 0;
+          jsonData[IsActive] = 1;
         }
         this.daysSelectedII.push(jsonData);
-        if (this.ScheduleType == "Task") {
-          this.Checkdatetimetable(this.daysSelectedII);
-        }
+        // if (this.ScheduleType == "Task") {
+        //   this.Checkdatetimetable(this.daysSelectedII);
+        // }
         this.calendar.updateTodaysDate();
 
         if (this.ScheduleType == 'Task') {
@@ -936,8 +936,9 @@ export class DashboardComponent implements OnInit {
       + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
     this.EventNumber = timestamp;
     let finalarray = [];
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == false);
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     // alert(finalarray.length)
+   
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         var columnName = "Emp_No";
@@ -1150,14 +1151,14 @@ export class DashboardComponent implements OnInit {
     jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
     jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event") {
+    if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
       var IsActive = "IsActive";
-      jsonData[IsActive] = 0;
+      jsonData[IsActive] = 1;
     }
     this.daysSelectedII.push(jsonData)
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
     if (value == 1) {
       this.ScheduleType = "Task";
       document.getElementById("subtaskid").style.display = "block";
@@ -1326,18 +1327,18 @@ export class DashboardComponent implements OnInit {
       jsonData[columnNames] = this.Startts;
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
-      if (this.ScheduleType == "Event") {
+      if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
         var IsActive = "IsActive";
-        jsonData[IsActive] = 0;
+        jsonData[IsActive] = 1;
       }
       this.daysSelectedII.push(jsonData)
     });
 
     this.calendar.updateTodaysDate();
 
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
 
   }
 
@@ -1361,14 +1362,14 @@ export class DashboardComponent implements OnInit {
     jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
     jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event") {
+    if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
       var IsActive = "IsActive";
-      jsonData[IsActive] = 0;
+      jsonData[IsActive] = 1;
     }
     this.daysSelectedII.push(jsonData)
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
 
     this.calendar.updateTodaysDate();
 
@@ -1393,14 +1394,14 @@ export class DashboardComponent implements OnInit {
     jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
     jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event") {
+    if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
       var IsActive = "IsActive";
-      jsonData[IsActive] = 0;
+      jsonData[IsActive] = 1;
     }
     this.daysSelectedII.push(jsonData)
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
 
     this.calendar.updateTodaysDate();
   }
@@ -1477,16 +1478,16 @@ export class DashboardComponent implements OnInit {
             jsonData[columnNames] = this.Startts;
             var columnNamee = "EndTime";
             jsonData[columnNamee] = this.Endtms;
-            if (this.ScheduleType == "Event") {
+            if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
               var IsActive = "IsActive";
-              jsonData[IsActive] = 0;
+              jsonData[IsActive] = 1;
             }
             this.daysSelectedII.push(jsonData);
           }
         });
-        if (this.ScheduleType == "Task") {
-          this.Checkdatetimetable(this.daysSelectedII);
-        }
+        // if (this.ScheduleType == "Task") {
+        //   this.Checkdatetimetable(this.daysSelectedII);
+        // }
 
         this.calendar.updateTodaysDate();
       }
@@ -1498,13 +1499,13 @@ export class DashboardComponent implements OnInit {
 
 
     this._calenderDto.json = JSON.stringify(_array);
-    // console.log(this._calenderDto.json,"ieieie")
+  
     this._calenderDto.EmpNo = this.Current_user_ID;
     this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
       ((data) => {
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
         this.calendar.updateTodaysDate();
-        // console.log("First value Array" + JSON.stringify(this.daysSelectedII))
+       
       });
   }
 
@@ -1616,16 +1617,16 @@ export class DashboardComponent implements OnInit {
         jsonData[columnNames] = this.Startts;
         var columnNames = "EndTime";
         jsonData[columnName] = this.Endtms;
-        if (this.ScheduleType == "Event") {
+        if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
           var IsActive = "IsActive";
-          jsonData[IsActive] = 0;
+          jsonData[IsActive] = 1;
         }
         this.daysSelectedII.push(jsonData);
       }
     });
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
     this.calendar.updateTodaysDate();
   }
   addendtime(TSEnd) {
@@ -1666,17 +1667,17 @@ export class DashboardComponent implements OnInit {
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event") {
+        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
           var IsActive = "IsActive";
-          jsonData[IsActive] = 0;
+          jsonData[IsActive] = 1;
         }
 
         this.daysSelectedII.push(jsonData);
       }
     });
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
     this.calendar.updateTodaysDate();
 
   }
@@ -1835,14 +1836,14 @@ this.selectedrecuvalue=val.value.toString();
       this.calendar.updateTodaysDate();
 
       document.getElementById("weekly_121").style.display = "block";
-      document.getElementById("weekly_122").style.display = "none";
+      document.getElementById("calender_1").style.display = "none";
 
     }
     else if (val.value == 1) {
 
 
       document.getElementById("weekly_121").style.display = "none";
-      document.getElementById("weekly_122").style.display = "none";
+      document.getElementById("calender_1").style.display = "none";
 
       var start = moment(this.minDate);
       var end = moment(this.maxDate);
@@ -1865,9 +1866,9 @@ this.selectedrecuvalue=val.value.toString();
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event") {
+        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
           var IsActive = "IsActive";
-          jsonData[IsActive] = 0;
+          jsonData[IsActive] = 1;
         }
 
 
@@ -1876,24 +1877,16 @@ this.selectedrecuvalue=val.value.toString();
         date.setDate(date.getDate() + 1);
       }
       this.daysSelected = dates;
-      if (this.ScheduleType == "Task") {
-        this.Checkdatetimetable(this.daysSelectedII);
-      }
+      // if (this.ScheduleType == "Task") {
+      //   this.Checkdatetimetable(this.daysSelectedII);
+      // }
       this.calendar.updateTodaysDate();
 
     }
     else if (val.value == 3) {
-      this.daysSelectedII = [];
-      this.daysSelected = [];
-      this.singleselectarry = [];
-      // this.Checkdatetimetable(this.daysSelectedII);
-      for (let index = 0; index < this.dayArr.length; index++) {
-        this.dayArr[index].checked = false;
+     
 
-      }
-      this.calendar.updateTodaysDate();
-
-      document.getElementById("weekly_122").style.display = "block";
+      document.getElementById("calender_1").style.display = "block";
       
       const format2 = "YYYY-MM-DD";
       var start = moment(this.minDate);
@@ -1946,9 +1939,9 @@ this.selectedrecuvalue=val.value.toString();
           jsonData[columnNames] = this.Startts;
           var columnNamee = "EndTime";
           jsonData[columnNamee] = this.Endtms;
-          if (this.ScheduleType == "Event") {
+          if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
             var IsActive = "IsActive";
-            jsonData[IsActive] = 0;
+            jsonData[IsActive] = 1;
           }
           this.daysSelectedII.push(jsonData);
           date.setMonth(date.getMonth() + 1);
@@ -1956,9 +1949,9 @@ this.selectedrecuvalue=val.value.toString();
         this.daysSelected = dates;
       }
 
-      if (this.ScheduleType == "Task") {
-        this.Checkdatetimetable(this.daysSelectedII);
-      }
+      // if (this.ScheduleType == "Task") {
+      //   this.Checkdatetimetable(this.daysSelectedII);
+      // }
       this.calendar.updateTodaysDate();
       
     }
@@ -2019,9 +2012,9 @@ this.selectedrecuvalue=val.value.toString();
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event") {
+        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
           var IsActive = "IsActive";
-          jsonData[IsActive] = 0;
+          jsonData[IsActive] = 1;
         }
         this.daysSelectedII.push(jsonData);
         date.setMonth(date.getMonth() + 1);
@@ -2029,9 +2022,9 @@ this.selectedrecuvalue=val.value.toString();
       this.daysSelected = dates;
     }
 
-    if (this.ScheduleType == "Task") {
-      this.Checkdatetimetable(this.daysSelectedII);
-    }
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
     this.calendar.updateTodaysDate();
   }
   OnEmpSelect(emp: string) {
@@ -2199,15 +2192,15 @@ this.selectedrecuvalue=val.value.toString();
       jsonData[columnNames] = this.Startts;
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
-      if (this.ScheduleType == "Event") {
+      if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
         var IsActive = "IsActive";
-        jsonData[IsActive] = 0;
+        jsonData[IsActive] = 1;
       }
       this.daysSelectedII.push(jsonData)
 
-      if (this.ScheduleType == "Task") {
-        this.Checkdatetimetable(this.daysSelectedII);
-      }
+      // if (this.ScheduleType == "Task") {
+      //   this.Checkdatetimetable(this.daysSelectedII);
+      // }
       this.calendar.updateTodaysDate();
 
     }
