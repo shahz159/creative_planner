@@ -28,7 +28,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { data } from 'jquery';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
-
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 
 
 @Component({
@@ -46,12 +46,14 @@ export class MoreDetailsComponent implements OnInit {
     public approvalservice: ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
+    public _projectSummary: ProjectsSummaryComponent,
     private notifyService: NotificationService, public dateAdapter: DateAdapter<Date>,
     private dialog: MatDialog,
     public datepipe: DatePipe,
-    private BsService: BsServiceService) {
+    public BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
+   
   }
 
   projectCode: string;
@@ -88,6 +90,7 @@ export class MoreDetailsComponent implements OnInit {
   today: number;
   currenthours: any;
   currentminutes: any;
+  Summarytype:string;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -108,9 +111,10 @@ export class MoreDetailsComponent implements OnInit {
     this.getapprovalStats();
     this.getdeadlinecount();
     this.GetDMS_Memos();
+    this.GetprojectComments();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
-
+   
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -238,7 +242,12 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
@@ -253,7 +262,12 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
 
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
@@ -2437,12 +2451,14 @@ export class MoreDetailsComponent implements OnInit {
   _DBMemosIDList: any;
   _CommentsList: any;
   _EvenRecordsList: any
+  commentsLength:number;
 
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
       subscribe((data) => {
         // console.log("Comments data----------->",data)
         this._CommentsList = JSON.parse(data[0]['CommentsJson']);
+        this.commentsLength=this._CommentsList.length;
         // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
         // console.log("Comments-List--------->",this._CommentsList)
       });
@@ -2978,7 +2994,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   OnClickCheckboxProjectUpdate() {
-    this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
+     this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data['Message'] == 1) {
           Swal.fire({
@@ -3066,8 +3082,10 @@ export class MoreDetailsComponent implements OnInit {
         this.GetSubtask_Details();
         this.GetProjectDetails();
         this.getapprovalStats();
+        this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
+
   LoadDocument(cloud,Pcode, Resp, url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";

@@ -145,7 +145,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
-          console.log(this.Employee_List,'EMPList');
+          // console.log(this.Employee_List,'EMPList');
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
           // console.log(this.ProjectInfo_List,"pt");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
@@ -748,6 +748,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.TransDate = null;
     this.transfer_remarks="";
   }
+
+  onTransferCancel(id){
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmpNo=null;
+    this.TransDate = null;
+    this.transfer_remarks="";
+  }
   _modelProjAlloc:number=0;
   
   OnProject_Rename(id, Pcode) {
@@ -789,8 +796,12 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
-
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
@@ -800,17 +811,20 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           this.getapprovalStats();
           if(this._Urlid =='1'){
             this.router.navigate(["/backend/ProjectsSummary/"]);
-          this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            this._projectSummary.GetProjectsByUserName(this.Summarytype);
           }
-          
         });
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
-
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
@@ -822,7 +836,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             this.router.navigate(["/backend/ProjectsSummary/"]);
           this._projectSummary.GetProjectsByUserName(this.Summarytype);
           }
-
         });
     }
     else if (this.selectedType == '3') {

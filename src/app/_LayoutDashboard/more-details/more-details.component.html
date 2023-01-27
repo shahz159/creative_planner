@@ -677,7 +677,9 @@
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
                                 aria-controls="profile"><span class="nav-text">Notes</span></a></li>
                         <li class="nav-item" (click)="GetprojectComments()"><a class="nav-link" id="Comments1"
-                                data-toggle="tab" href="#Comments"><span class="nav-text">Comments</span></a></li>
+                                data-toggle="tab" href="#Comments"><span class="nav-text">Comments</span>
+                                <span class="noti">{{commentsLength}}</span>
+                            </a></li>
                         <li class="nav-item"><a class="nav-link" id="People1" data-toggle="tab" href="#People"
                                 aria-controls="profile"><span class="nav-text">People</span></a></li>
                         <li class="nav-item"><a class="nav-link" id="Meeting1" data-toggle="tab" href="#Meeting"><span
@@ -2081,12 +2083,10 @@
                     <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
                     <h5 class="mt-1 text-blue">{{requestDeadline|date:'dd-MM-yyyy'}}</h5>
                     <!-- <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5> -->
-
                 </div>
             </div>
         </div>
         <div class="">
-            
             <h5 class="mb-1 kt-portlet__head-title text-blue"></h5>
             
             <a class="btn--1 btn-info--1 btn-sm--1 text-info py-2" data-toggle="collapse"
@@ -2114,7 +2114,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 
@@ -2176,7 +2175,12 @@
                                     <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
                                     <span *ngIf="noRejectType==true" style="color:red">Please select Reject type!!</span>
                                 </div>
-                                <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
+                                <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'">
+                                    <label class="mb-2">Enter Comments</label>
+                                    <!-- <span style="color:red">*</span> -->
+                                    <textarea class="form-control h-100px" [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                </div>
+                                <div class="form-group" *ngIf="selectedType=='3'">
                                     <label class="mb-2">Enter Comments</label><span style="color:red">*</span>
                                     <textarea class="form-control h-100px" [(ngModel)]="comments">{{commentSelected}}</textarea>
                                 </div>
@@ -2201,9 +2205,14 @@
                                 </div>
                                
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
-                                    [disabled]="!comments || !selectedType">Submit</button>
+                            <div class="d-flex justify-content-end" *ngIf="selectedType=='3'">
+                                <button type="submit" class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
+                                    [disabled]="!comments || !selectedType" primary="true">Submit</button>
+                                <button class="btn btn-sm btn-secondary" (click)="closeApproval()">Cancel</button>
+                            </div>
+                            <div class="d-flex justify-content-end" *ngIf="selectedType=='1' || selectedType=='2'">
+                                <button type="submit" class="btn btn-sm btn-info mr-2" (click)="submitApproval()"
+                                    [disabled]="!selectedType" primary="true">Submit</button>
                                 <button class="btn btn-sm btn-secondary" (click)="closeApproval()">Cancel</button>
                             </div>
                         </div>

@@ -1073,11 +1073,12 @@ export class PortfolioProjectsComponent implements OnInit {
   submissiontype: any;
   StandardDuration: any;
 
-  moreDetails() {
+  
+  moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
-    var myurl = `${url}/${this.pCode}`;
-    var myWindow = window.open(myurl, this.pCode);
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
 
@@ -1304,6 +1305,8 @@ export class PortfolioProjectsComponent implements OnInit {
         }
       });
   }
+
+  
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
 // <ng-option [value]="com.Com_No" *ngFor="let com of Company_List" >

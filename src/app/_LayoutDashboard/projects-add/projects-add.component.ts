@@ -574,11 +574,12 @@ export class ProjectsAddComponent implements OnInit {
       this.Z2A = true;
     }
   }
-  moreDetails() {
+  
+  moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
-    var myurl = `${url}/${this.pCode}`;
-    var myWindow = window.open(myurl, this.pCode);
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
 

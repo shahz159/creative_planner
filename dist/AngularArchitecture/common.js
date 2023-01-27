@@ -1,1 +1,72 @@
-"use strict";(self.webpackChunkAngularArchitecture=self.webpackChunkAngularArchitecture||[]).push([[592],{84956:(d,i,r)=>{r.d(i,{P:()=>l});class l{constructor(){this.sortOrder=1,this.collator=new Intl.Collator(void 0,{numeric:!0,sensitivity:"base"})}startSort(s,o,a=""){return"desc"===o&&(this.sortOrder=-1),(c,e)=>"date"===a?this.sortData(new Date(c[s]),new Date(e[s])):this.collator.compare(c[s],e[s])*this.sortOrder}sortData(s,o){return s<o?-1*this.sortOrder:s>o?1*this.sortOrder:0*this.sortOrder}}},66402:(d,i,r)=>{r.d(i,{t:()=>l});class l{}},81196:(d,i,r)=>{r.d(i,{d:()=>c});var l=r(66402),n=r(10397),s=r(94650),o=r(80529),a=r(77983);let c=(()=>{class e{constructor(t,h){this.http=t,this.commonUrl=h,this.rootUrl=this.commonUrl.apiurl,this.ObjPolicyDTO=new l.t,this.objEmpDetailsDTO=new n.r}GetPolicyDetails(t){return this.ObjPolicyDTO.UserId=t,this.http.post(this.rootUrl+"Policy/NewGetPolicyDetails",this.ObjPolicyDTO)}InsertUserPolicyAgreement(t,h){return this.ObjPolicyDTO.PolicyId=t,this.ObjPolicyDTO.UserId=h,this.http.post(this.rootUrl+"Policy/NewInsertUserPolicyAgreement",this.ObjPolicyDTO)}ChangeUserPassword(t){return this.objEmpDetailsDTO.Emp_No=t.Emp_No,this.objEmpDetailsDTO.OldPassword=t.OldPassword,this.objEmpDetailsDTO.NewPassword=t.NewPassword,this.objEmpDetailsDTO.ConfirmPassword=t.ConfirmPassword,this.http.post(this.rootUrl+"Policy/NewUpdateUserPassword",this.objEmpDetailsDTO)}}return e.\u0275fac=function(t){return new(t||e)(s.\u0275\u0275inject(o.eN),s.\u0275\u0275inject(a.C))},e.\u0275prov=s.\u0275\u0275defineInjectable({token:e,factory:e.\u0275fac,providedIn:"root"}),e})()}}]);
+"use strict";
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["common"],{
+
+/***/ 66402:
+/*!***************************************!*\
+  !*** ./src/app/_Models/policy-dto.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PolicyDTO": () => (/* binding */ PolicyDTO)
+/* harmony export */ });
+class PolicyDTO {
+}
+
+
+/***/ }),
+
+/***/ 81196:
+/*!*********************************************!*\
+  !*** ./src/app/_Services/policy.service.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PolicyService": () => (/* binding */ PolicyService)
+/* harmony export */ });
+/* harmony import */ var _Models_policy_dto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_Models/policy-dto */ 66402);
+/* harmony import */ var _Models_employee_dto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../_Models/employee-dto */ 10397);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 22560);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 58987);
+/* harmony import */ var _apiurl_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./apiurl.service */ 77983);
+
+
+
+
+
+class PolicyService {
+    constructor(http, commonUrl) {
+        this.http = http;
+        this.commonUrl = commonUrl;
+        this.rootUrl = this.commonUrl.apiurl;
+        this.ObjPolicyDTO = new _Models_policy_dto__WEBPACK_IMPORTED_MODULE_0__.PolicyDTO;
+        this.objEmpDetailsDTO = new _Models_employee_dto__WEBPACK_IMPORTED_MODULE_1__.EmployeeDTO;
+    }
+    GetPolicyDetails(userId) {
+        this.ObjPolicyDTO.UserId = userId;
+        return this.http.post(this.rootUrl + "Policy/NewGetPolicyDetails", this.ObjPolicyDTO);
+    }
+    InsertUserPolicyAgreement(policyId, userId) {
+        this.ObjPolicyDTO.PolicyId = policyId;
+        this.ObjPolicyDTO.UserId = userId;
+        return this.http.post(this.rootUrl + "Policy/NewInsertUserPolicyAgreement", this.ObjPolicyDTO);
+    }
+    ChangeUserPassword(obj) {
+        this.objEmpDetailsDTO.Emp_No = obj.Emp_No;
+        this.objEmpDetailsDTO.OldPassword = obj.OldPassword;
+        this.objEmpDetailsDTO.NewPassword = obj.NewPassword;
+        this.objEmpDetailsDTO.ConfirmPassword = obj.ConfirmPassword;
+        return this.http.post(this.rootUrl + "Policy/NewUpdateUserPassword", this.objEmpDetailsDTO);
+    }
+}
+PolicyService.ɵfac = function PolicyService_Factory(t) { return new (t || PolicyService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_apiurl_service__WEBPACK_IMPORTED_MODULE_2__.ApiurlService)); };
+PolicyService.ɵprov = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: PolicyService, factory: PolicyService.ɵfac, providedIn: 'root' });
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=common.js.map
