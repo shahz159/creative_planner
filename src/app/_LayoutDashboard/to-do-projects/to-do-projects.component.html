@@ -262,11 +262,11 @@
                     <div class="col-lg-12">
                         <label data-toggle="tooltip" title="Project Name!" id="SpanProjName_{{Pid}}"
                             class="text-info strong h5"
-                            [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval') 
+                            [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval') 
                                 && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)}">
                             <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
                                 [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" 
-                                *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Project_Status != 'Under Approval') && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
+                                *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval') && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
                             {{_ProjectName}}
                             <span></span>
                         </label>
@@ -334,18 +334,18 @@
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{PstDT | date:'dd-MM-yyyy'}}</b>
                             </span>
-                            <span data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck != 'Standard Tasks'">
+                            <span data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck != 'Routine Tasks'">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{PEndDT | date:'dd-MM-yyyy'}}</b>
                             </span>
-                            <span data-toggle="tooltip" title="Submission Type!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck == 'Standard Tasks'">
+                            <span data-toggle="tooltip" title="Submission Type!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="Proj_ExecBlck == 'Standard Tasks' || Proj_ExecBlck == 'Routine Tasks'">
                                 <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                 <b>{{SubmissionType}}</b>
                             </span>
                             <span data-toggle="tooltip" title="Project Duration!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                 <i class="fas fa-clock text-muted mr-1"></i>
-                                <b *ngIf="Proj_ExecBlck != 'Standard Tasks'">{{Duration}} Hrs</b>
-                                <b *ngIf="Proj_ExecBlck == 'Standard Tasks'">{{standardDuration}} Hrs</b>
+                                <b *ngIf="Proj_ExecBlck != 'Standard Tasks'&& Proj_ExecBlck !== 'Routine Tasks'">{{Duration}} Hrs</b>
+                                <b *ngIf="Proj_ExecBlck == 'Standard Tasks' || Proj_ExecBlck == 'Routine Tasks'">{{standardDuration}}</b>
                             </span>
                             <span data-toggle="tooltip" title="Project Cost!" class="text-nowrap mb-2 d-inline-block">
                                 <i class="fab fa-dev text-muted mr-1"></i>

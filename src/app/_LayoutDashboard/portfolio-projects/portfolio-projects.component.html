@@ -245,7 +245,7 @@
                                                     <div class="mx-2 p-1">
                                                         <span class="kt-widget__other text-nowrap ng-star-inserted"> 
                                                             <div
-                                                                *ngIf="item1.Exec_BlockName=='Standard Tasks';else Projecttype">
+                                                                *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
                                                             </div>

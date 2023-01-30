@@ -416,7 +416,7 @@ export class MoreDetailsComponent implements OnInit {
     this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.objProjectDto.Project_Name = this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -3128,7 +3128,7 @@ export class MoreDetailsComponent implements OnInit {
   darcreate() {
     this.dateF = new FormControl(new Date());
     // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
     else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {

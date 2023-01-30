@@ -21,10 +21,10 @@
                     <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
                         <!-- <i class="fas fa-code-branch"></i> -->
                         <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
-                        <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks')">
+                        <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
                                 *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'  || Status=='Project Hold'  || Status=='Deadline Extend Under Approval'
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks'
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks' || ProjectBlockName =='Routine Tasks'
                                          || Status=='New Project' || Status=='Project Complete Rejected' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold'"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                 [ngClass]="{'bg-success':Status=='Completed',
@@ -38,7 +38,7 @@
                                 {{Status}}</label>
                             <!-- 'bg-coral' :  Status== 'New Todo', -->
                         </ng-container>
-                        <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks')">
+                        <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
                                 {{SubmissionName}}</label>
@@ -52,7 +52,7 @@
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
                                              && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
-                                             && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks'">
+                                             && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
 
                             <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                             <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
@@ -166,7 +166,7 @@
                             Project Actions
                         </button>
                     </div>
-                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks') 
+                    <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
                             && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                         class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
@@ -174,7 +174,7 @@
                             Project Submission
                         </button>
                     </div>
-                    <div *ngIf="(ProjectBlockName == 'Standard Tasks')" class=" pro-act ml-2">
+                    <div *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')" class=" pro-act ml-2">
                         <button class="btn  btn22 btn-pill" (click)="notinAction()" >
                             <!-- -->
                             <i class="fas fa-check mr-2"></i>
@@ -278,9 +278,9 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Project Duration</h6>
-                                    <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks'); then othertask;">
+                                    <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks'); then othertask;">
                                     </ng-container>
-                                    <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks'); then standardtask;">
+                                    <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks'); then standardtask;">
                                     </ng-container>
                                     <ng-template #standardtask>
                                         <h5 class="mt-1">{{StartDate|date:'dd-MM-yyyy'}} / {{SubmissionName}}
@@ -347,9 +347,9 @@
                                 <div class="action-content d-flex align-items-center">
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
-                                        <h5 class="mt-1" *ngIf="ProjectBlockName != 'Standard Tasks'">{{maxDuration}}Hrs
+                                        <h5 class="mt-1" *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks'">{{maxDuration}}Hrs
                                         </h5>
-                                        <h5 class="mt-1" *ngIf="ProjectBlockName == 'Standard Tasks'">
+                                        <h5 class="mt-1" *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks'">
                                             {{standardDuration}}</h5>
                                     </div>
 
@@ -358,9 +358,9 @@
                                     </div>
                                     <div class="">
                                         <h6 class="txtm-cus pt-1">Duration</h6>
-                                        <h5 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">
+                                        <h5 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'" class="mt-1">
                                             {{Difference_In_Days}} days</h5>
-                                        <h5 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">Continuous</h5>
+                                        <h5 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'" class="mt-1">Continuous</h5>
                                     </div>
                                 </div>
                             </div>
@@ -721,9 +721,9 @@
                                                             <div class="kt-portlet__body px-3">
                                                                 <h5><strong>DAR Summary</strong></h5>
                                                                 <h6>Total Max Duration : <span
-                                                                        *ngIf="ProjectBlockName != 'Standard Tasks'"><b>{{maxDuration}}Hrs</b></span>
+                                                                        *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks'"><b>{{maxDuration}}Hrs</b></span>
                                                                     <span
-                                                                        *ngIf="ProjectBlockName == 'Standard Tasks'"><b>{{standardDuration}}</b></span>
+                                                                        *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks'"><b>{{standardDuration}}</b></span>
                                                                 </h6>
                                                                 <div id="DARSummary" style="width: 100%; height: 400px">
                                                                 </div>
@@ -809,7 +809,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4" *ngIf="ProjectBlockName != 'Standard Tasks'">
+                                                    <div class="col-lg-4" *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
                                                         <h4>People on the project (RACIS)</h4>
                                                         <div
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
@@ -1180,9 +1180,9 @@
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
-                                                            <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">
+                                                            <h6 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'" class="mt-1">
                                                                 {{item.SubtaskDuration}} days</h6>
-                                                            <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">
+                                                            <h6 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'" class="mt-1">
                                                                 Continuous</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
@@ -1321,9 +1321,9 @@
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Duration</h6>
-                                                            <h6 *ngIf="ProjectBlockName!='Standard Tasks'" class="mt-1">
+                                                            <h6 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'" class="mt-1">
                                                                 {{item.SubtaskDuration}} days</h6>
-                                                            <h6 *ngIf="ProjectBlockName=='Standard Tasks'" class="mt-1">
+                                                            <h6 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'" class="mt-1">
                                                                 Continuous</h6>
                                                         </span>
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
@@ -1396,7 +1396,7 @@
                         <div class="bg-white p-3 mb-2">
                             <div>
                                 <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
-                                    <i class="fa fa-chart-bar"></i>Add DMS
+                                    <i class="fa fa-chart-bar"></i>Link DMS
                                 </button>
                             </div>
                             <table class="table">
@@ -1528,7 +1528,7 @@
                                                     <th style="width: 50px;">S.No.</th>
                                                     <th style="width: 280px;">Employee</th>
                                                     <th style="width: 280px;"
-                                                        *ngIf="ProjectBlockName != 'Standard Tasks'">Action Name</th>
+                                                        *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">Action Name</th>
                                                     <th>Achievement</th>
                                                     <th style="width: 80px;">Start</th>
                                                     <th style="width: 80px;">End</th>
@@ -1544,7 +1544,7 @@
                                                             <span class="user--name">{{dar.EmpName}}</span>
                                                         </div>
                                                     </td>
-                                                    <td *ngIf="ProjectBlockName != 'Standard Tasks'">{{dar.ProjectName}}
+                                                    <td *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">{{dar.ProjectName}}
                                                     </td>
                                                     <td>{{dar.WorkAchieved}}</td>
                                                     <td>{{dar.starttime}}</td>
@@ -2235,7 +2235,7 @@
 <div id="LinkSideBar" class="sideInfobar animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i>Link DMS</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
                 (click)="closeLinkSideBar()">
                 <i class="fa fa-times"></i>
@@ -2289,7 +2289,7 @@
 
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
-                *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'To do List' && inProcessCount!=0 ">
+                *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && ProjectBlockName != 'To do List' && inProcessCount!=0 ">
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                     [(ngModel)]="actionCode" (click)="getResponsibleActions()">
