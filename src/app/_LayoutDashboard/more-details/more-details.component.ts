@@ -252,10 +252,19 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
+          }
+          this.Clear_Feilds();
+
         });
     }
     else if (this.selectedType == '2') {
@@ -272,10 +281,18 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
+          }
+          this.Clear_Feilds();
+
         });
     }
     else if (this.selectedType == '3') {
@@ -294,10 +311,17 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertRejectApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
+            if(this._Message=='Not Authorized'){
+              this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+              this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+            }
+            else{
             this.notifyService.showWarning(this._Message,"Rejected Successfully");
             this.GetProjectDetails();
             this.GetSubtask_Details();
             this.getapprovalStats();
+            }
+            this.Clear_Feilds();
         });
       }
       

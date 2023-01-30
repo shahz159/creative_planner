@@ -37,6 +37,7 @@ import { GrdFilterPipePipe } from 'src/app/Shared/Filter/grd-filter-pipe.pipe'
 //import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { LinkService } from 'src/app/_Services/link.service';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 
 @Component({
   selector: 'app-portfolio-projects',
@@ -107,6 +108,7 @@ export class PortfolioProjectsComponent implements OnInit {
     // private loadingBar: LoadingBarService,
     private _snackBar: MatSnackBar,
     private dialog: MatDialog,
+    public BsService: BsServiceService,
     public _LinkService: LinkService) {
     //this.ObjUserDetails = new UserDetailsDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
@@ -130,8 +132,10 @@ export class PortfolioProjectsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       var id = params.get('portfolioId');
       this.Url_portfolioId = parseInt(id);
+      this.BsService.setSelectedPortId(this.Url_portfolioId);
     });
     this.GetPortfolioProjectsByPid();
+    this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
   }
 
   _PortfolioDetailsById: any;
@@ -1093,7 +1097,7 @@ export class PortfolioProjectsComponent implements OnInit {
   // }
 
   openInfo2(pcode) {
-    this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
+    this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode,"2"]);
     //document.getElementById("mysideInfobar").style.width = "410px";
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     //setTimeout((this.closeInfo2),1000, "Hello", "John");
@@ -1113,7 +1117,9 @@ export class PortfolioProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
   }
+
 
   // share_Users() {
   // }

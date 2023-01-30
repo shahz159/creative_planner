@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
-
+import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-projects.component';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -38,7 +38,7 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective],
-  providers:[DatePipe, ProjectsSummaryComponent]
+  providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent]
  //exports:[ProjectInfoComponent]
   
 })
