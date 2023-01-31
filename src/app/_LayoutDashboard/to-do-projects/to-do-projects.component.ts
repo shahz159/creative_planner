@@ -219,11 +219,10 @@ export class ToDoProjectsComponent implements OnInit {
 //   }
 
   ProjectInfoDetails() {
-    debugger
     // var myWindow = window.open(myurl);
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
-    this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode]);
+    this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode,"5"]);
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);

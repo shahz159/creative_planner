@@ -22,6 +22,9 @@ import { DatePipe } from '@angular/common';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-projects.component';
+import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-dashboard-projects.component';
+import { ProjectsAddComponent } from '../projects-add/projects-add.component';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 
 @Component({
   selector: 'app-project-info',
@@ -38,7 +41,9 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     public BsService: BsServiceService,
     public _projectSummary: ProjectsSummaryComponent,
     public _portfolioprojects: PortfolioProjectsComponent,
-
+    public _viewdashboard: ViewDashboardProjectsComponent,
+    public _toDo: ToDoProjectsComponent,
+    public _projectsAdd: ProjectsAddComponent,
     public datepipe: DatePipe,
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
@@ -85,6 +90,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   selectedType: string;
   _Urlid:any;
   port_id:any;
+  Mode:string ="UnderApproval";
 
   ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -100,7 +106,6 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.getdeadlinecount();
       this.getProjectHoldDate();
     });
-   
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
     this.minhold.setDate(this.minhold.getDate()+1);
     this.maxhold.setDate(this.minhold.getDate()+90);
@@ -249,6 +254,16 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
       // alert(this.port_id);
       this.router.navigate(["../portfolioprojects/" + this.port_id+"/"]);
+    }
+    else if(this._Urlid=='3'){
+      this.router.navigate(["../ViewProjects/" + this.Mode]);
+    }
+    else if(this._Urlid=='4'){
+      this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
+      this.router.navigate(["../AddProjectsToPortfolio/" + this.port_id]);
+    }
+    else if(this._Urlid=='5'){
+      this.router.navigate(["./backend/ToDoProjects/"]);
     }
     this.ngOnDestroy();
   }
@@ -830,6 +845,16 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             // this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
             // this.router.navigate(["../portfolioprojects/" + this.port_id+"/"]);
           }
+          else if(this._Urlid =='3'){
+            this._viewdashboard.GetCompletedProjects();
+          }
+          else if(this._Urlid =='4'){
+            this._projectsAdd.GetProjectsByUserName();
+            this._projectsAdd.getDropdownsDataFromDB();
+          }
+          else if(this._Urlid =='5'){
+            this._toDo.GetProjectsByUserName();
+          }
           }
         });
     }
@@ -861,9 +886,17 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
           else if(this._Urlid =='2'){
             this._portfolioprojects.GetPortfolioProjectsByPid();
           }
+          else if(this._Urlid =='3'){
+            this._viewdashboard.GetCompletedProjects();
           }
-          
-          
+          else if(this._Urlid =='4'){
+            this._projectsAdd.GetProjectsByUserName();
+            this._projectsAdd.getDropdownsDataFromDB();
+          }
+          else if(this._Urlid =='5'){
+            this._toDo.GetProjectsByUserName();
+          }
+          }
         });
     }
     else if (this.selectedType == '3') {
@@ -897,8 +930,18 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
             else if(this._Urlid =='2'){
               this._portfolioprojects.GetPortfolioProjectsByPid();
             }
+            else if(this._Urlid =='3'){
+              this._viewdashboard.GetCompletedProjects();
             }
-            
+            else if(this._Urlid =='4'){
+              this._projectsAdd.GetProjectsByUserName();
+              this._projectsAdd.getDropdownsDataFromDB();
+            }
+            else if(this._Urlid =='5'){
+              this._toDo.GetProjectsByUserName();
+              this._toDo.GetSubtask_Details();
+            }
+            }
           });
       }
       
