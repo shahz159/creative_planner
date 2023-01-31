@@ -149,9 +149,9 @@ h5 {
     transition: all .3s ease !important;
 }
 
-.action-count:hover {
+/* .action-count:hover {
     transform: scale(1.02);
-}
+} */
 .action-content{
     flex-grow: 1;
 }
@@ -983,4 +983,19 @@ position: relative;
 .prv-cmts {
     max-height: 200px;
     overflow: auto;
+}
+.date-drop1, .date-drop2, .date-drop3 {
+    width: 350px;
+}
+.date-drop2{
+    top: 0px;
+    transform: translate3d(-330px, 20px, 0px);
+    left: 0px;
+}
+.date-drop3{
+    /* top: 0px;
+    transform: translate3d(-330px, 20px, 0px);
+    left: 0px; */
+    top: 26px;
+    left: -262px;
 }

@@ -321,6 +321,51 @@
                                                     </div>
                                                 </div>
                                             </span>
+                                            
+                                            <div class="dropdown">
+                                                <span  type="button" id="hold-icn" data-toggle="dropdown" aria-haspopup="true"
+                                                 aria-expanded="false" class="dropdown-toggle no-after text-info" (click)="onHoldClick()">
+                                                    <i  class="fas fa-pause ml-2 mb-1 curser-pointer"></i></span>
+
+                                                    
+                                                <div id="HoldArea" class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop2 z-1k">
+                                                <ul class="kt-nav pb-0"  (click)="$event.stopPropagation();">
+                                                    <li class="kt-nav__head py-0">
+                                                        <div>Project Hold</div>
+                                                    </li>
+
+                                                    <li class="kt-nav__separator"></li>
+                                                    <div class=" height-scroll h-scr">
+                                                        <div class="px-4 py-3">
+                                                            <div class="form-group input-group">
+                                                                <label>Select Date<span class="text-danger">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input type="date" class="form-control"
+                                                                                name="date">
+                                                                    <div class="input-group-append">
+                                                                            <mat-datepicker-toggle class="btn-secondary">
+                                                                            </mat-datepicker-toggle>
+                                                                            <mat-datepicker class="form-group"></mat-datepicker>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-1">
+                                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                                    style="height:70px;"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <li class="kt-nav__separator"></li>
+                                                </ul>                                        
+                                                <div class="px-4 pb-3">
+                                                    <button class="btn btn-info btn-sm mr-2 text-white">Submit</button>
+                                                    <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closehold()">Close</button>
+                                            
+                                                </div>
+                                            </div>
+                                            </div>
                                         </h5>
                                     </ng-template>
                                     <progress value="50" max="100" class="project-duration-bar d-none"></progress>
@@ -461,7 +506,65 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Responsible</h6>
-                                    <h5 class="mt-1">{{Responsible}}</h5>
+                                    <div class="d-flex align-items-center">                                        
+                                        <h5 class="mt-1">{{Responsible}}</h5>
+                                        <!--Transfer-->
+                                        <div class="ml-2">
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false" (click)="onTransferClick()" >
+                                                    <i class="fa fa-forward"></i>
+                                                    <span class="ml-1">Transfer</span>
+                                                </button>
+                                                <div  id="TransferArea"
+                                                    class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3 z-1k">
+                                                    <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
+                                                        <li class="kt-nav__head py-0">
+                                                            <div>Project Transfer</div>
+                                                        </li>
+                                                        <li class="kt-nav__separator"></li>
+                                                        <div class=" height-scroll h-scr">
+                                                            <div class="px-4 py-3">
+                                                                <div  class="form-group">
+                                                                    <label> Transfer To <span class="text-danger">*</span> : <strong></strong></label>
+                                                                    <ng-select placeholder="Select Employee" >
+                                                                        <ng-option>
+                                                                            DisplayName
+                                                                        </ng-option>
+                                                                    </ng-select>
+                                                                </div>
+                                                                <div class="form-group input-group">
+                                                                    <label>Select New Deadline<span class="text-danger">*</span></label>
+                                                                    <div class="input-group">
+                                                                        <input placeholder="Select Date"  class="form-control"name="date">
+                                                                        <div class="input-group-append">
+                                                                                <mat-datepicker-toggle class="btn-secondary">
+                                                                                </mat-datepicker-toggle>
+                                                                                <mat-datepicker class="form-group"></mat-datepicker>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Remarks<span class="text-danger">*</span></label>
+                                                                    <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                                        style="height:70px;"></textarea>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </ul>
+                                                                                        
+                                                    <div class="px-4 pb-3">
+                                                        <button class="btn btn-info btn-sm mr-2 text-white">Submit</button>
+                                                        <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closetransfer()">Close</button>
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Transfer end-->
+                                    </div>
                                 </div>
                             </div>
                         </div>
