@@ -1042,7 +1042,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   underDev(){
   this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
-
+  
     console.log(this.selectedEmpNo,this.transfer_remarks,this.TransDate,"transfer");
     this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
@@ -1151,13 +1151,11 @@ TransDate:string;
 
 EmployeeOnSelect(obj) {
   this.selectedEmpNo = obj;
+  alert(this.selectedEmpNo);
 }
 
 onTransferClick(id) {
   (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
-  // document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
-  // document.getElementsByClassName("date-drop2")[0].classList.remove("d-block");
-
 
   this.Editbutton = true;
   (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();

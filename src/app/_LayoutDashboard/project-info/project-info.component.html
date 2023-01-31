@@ -911,7 +911,7 @@
                             <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
                                 <i class="fa fa-forward"></i>
-                                <span class="ml-1">Transfer</span>
+                                <span class="ml-1">Project Transfer</span>
                             </button>
                             <div  id="TransferArea_{{Pid}}"
                                  class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3">
@@ -924,12 +924,12 @@
                                         <div class="px-4 py-3">
                                             <div  class="form-group">
                                                 <label> Transfer To <span class="text-danger">*</span> : <strong></strong></label>
-                                                <ng-select reuired #transfer="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
+                                                <ng-select reuired #transfer="ngModel" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
                                                     <ng-option [value]="item.Emp_No" *ngFor="let item of Employee_List">
-                                                        {{item.DisplayName}}
+                                                        <a *ngIf="item.Responsible!=item.Emp_No">{{item.DisplayName}}</a>
                                                     </ng-option>
                                                 </ng-select>
-                                                <!-- <span style="color:red">Transfer to required!</span>  (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
+                                                <!-- <span style="color:red">Transfer to required!</span>  (Change)="EmployeeOnSelect($event)" (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
                                             </div>
                                             <!-- <div class="form-group">
                                                 <label>Select New Deadline<span class="text-danger">*</span></label>
@@ -951,6 +951,7 @@
                                                     <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
                                                                 #Transdt="ngModel"
                                                                 (click)="picker4.open();"
+                                                                (keydown.enter)="onProject_Hold(Pid,_MasterCode);"
                                                                 [min]="minhold" [max]="maxhold" placeholder="Select Date"
                                                                 [(ngModel)]="TransDate" class="form-control"
                                                                 name="date">
