@@ -1059,6 +1059,18 @@ background-color: #f1f3f4;
 ::ng-deep .fc-suc .fc-daygrid-event-dot{
     border-color: #1dc9b7 !important;
 }
+::ng-deep .fc-yellow .fc-daygrid-event-dot{
+    border-color: #e5e914 !important;
+    
+}
+::ng-deep .fc-red .fc-daygrid-event-dot{
+    border-color: #f10505 !important;   
+    text-decoration: line-through;
+}
+::ng-deep .fc-red {
+    border-color: #f10505 !important;   
+    text-decoration: line-through;
+}
 ::ng-deep .fc-grey .fc-daygrid-event-dot{
     border-color: #adb3af !important;   
 }

@@ -29,10 +29,10 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { transition } from '@angular/animations';
-import { getElement } from '@amcharts/amcharts4/core';
-import { ThemeService } from 'ng2-charts';
-import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+// import { transition } from '@angular/animations';
+// import { getElement } from '@amcharts/amcharts4/core';
+// import { ThemeService } from 'ng2-charts';
+// import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
 export const MY_FORMATS = {
@@ -116,37 +116,37 @@ export class DashboardComponent implements OnInit {
   dayArr: any = [
     {
       "Day": "S",
-      "value": "0",
+      "value": "Sun",
       "checked": false
     },
     {
       "Day": "M",
-      "value": "1",
+      "value": "Mon",
       "checked": false
     },
     {
       "Day": "T",
-      "value": "2",
+      "value": "Tue",
       "checked": false
     },
     {
       "Day": "W",
-      "value": "3",
+      "value": "Wed",
       "checked": false
     },
     {
       "Day": "Th",
-      "value": "4",
+      "value": "Thu",
       "checked": false
     },
     {
       "Day": "Fr",
-      "value": "5",
+      "value": "Fri",
       "checked": false
     },
     {
       "Day": "Sa",
-      "value": "6",
+      "value": "Sat",
       "checked": false
     }
   ];
@@ -185,6 +185,7 @@ export class DashboardComponent implements OnInit {
   // calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
   // calendarEvents: EventInput[] = [];
   //For dates
+  AllDatesSDandED: any[] = [];
   daysSelected: any[] = [];
   selectdaytime: any[] = [];
   daysSelectedII: any[] = [];
@@ -379,6 +380,7 @@ export class DashboardComponent implements OnInit {
   //   { id: '3', name: 'Opel' },
   //   { id: '4', name: 'Audi' },
   // ];
+  _labelName: string;
   constructor(public service: ProjectTypeService,
     //private loadingBar: LoadingBarService,
     private router: Router,
@@ -399,7 +401,10 @@ export class DashboardComponent implements OnInit {
     this._subname1 = false;
   }
   ngOnInit() {
-    this.selectedrecuvalue="0";
+    this._labelName = "Schedule Date :";
+    document.getElementById("div_endDate").style.display = "none";
+
+    this.selectedrecuvalue = "0";
     this.display = 'none';
     // this.ProjectListArray = [];
     this.Project_Code = "";
@@ -474,49 +479,35 @@ export class DashboardComponent implements OnInit {
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.maxDate = moment(moment().add(90, 'days')).format("YYYY-MM-DD").toString();
-    //this.userProjects();
-    // $('.eventfc').on('click', function () {
-    //   $('.eve-modal').addClass('open');
-    // });
-    // $(document).on("click", function (e) {
-    //   if ($(e.target).is(".eve-modal") === false) {
-    //     $('.bg-ovr').removeClass('d-block');
-    //   $('.side_view').removeClass('position-fixed');
-
-    //   }
-    // });
-
-    // $(function () {
-    // $(document).on('keydown', function(e){
-
-    //     if(e.keyCode == 27) {
-    //         if ($('.bg-ovr').hasClass('d-block')) {
-    //             $('.bg-ovr').removeClass('d-block');
-    //             $('.side_view').removeClass('position-fixed');
-
-    //         }
-    //       }
-    //           });
-    //     });
 
 
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
-    // this.daysSelected = [];
-    // this.singleselectarry = [];
+
+    var start = moment(this.minDate);
+    var end = moment(this.maxDate);
+
+    // const format2 = "YYYY-MM-DD";
+    // const d1 = new Date(moment(start).format(format2));
+    // const d2 = new Date(moment(end).format(format2));
+    // const date = new Date(d1.getTime());
     // this.daysSelectedII = [];
-    // this.daysSelected.push(this._StartDate);
-    // this.singleselectarry.push(this._StartDate);
-    // var jsonData = {};
-    // var columnName = "Date";
-    // jsonData[columnName] = this._StartDate;
+
+    this.AllDatesSDandED = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
     // var columnNames = "StartTime";
     // jsonData[columnNames] = this.Startts;
     // var columnNamee = "EndTime";
     // jsonData[columnNamee] = this.Endtms;
-    // this.daysSelectedII.push(jsonData)
-    // this.Checkdatetimetable(this.daysSelectedII);
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = moment().format('dddd').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+
     this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this.Event_requests();
@@ -647,12 +638,12 @@ export class DashboardComponent implements OnInit {
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted')) {
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
           document.getElementById("main-foot").style.display = "block";
@@ -767,6 +758,8 @@ export class DashboardComponent implements OnInit {
   editTask: boolean = false;
 
   ReshudingTaskandEvent() {
+    document.getElementById("div_endDate").style.display = "none";
+    document.getElementById("div_recurrence").style.display = "none";
     this.editTask = true;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -780,39 +773,24 @@ export class DashboardComponent implements OnInit {
         document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
-
-        this.daysSelected.push(this.EventScheduledjson[0]['Schedule_date']);
-        this.singleselectarry.push(this.EventScheduledjson[0]['Schedule_date']);
+        this.AllDatesSDandED = [];
         var jsonData = {};
         var columnName = "Date";
-        jsonData[columnName] = (this.EventScheduledjson[0]['Schedule_date']);
-        var columnNames = "StartTime";
-        jsonData[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
-          var IsActive = "IsActive";
-          jsonData[IsActive] = 1;
-        }
-        this.daysSelectedII.push(jsonData);
-        // if (this.ScheduleType == "Task") {
-        //   this.Checkdatetimetable(this.daysSelectedII);
-        // }
-        this.calendar.updateTodaysDate();
-
+        jsonData[columnName] =this.EventScheduledjson[0]['Schedule_date'];
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = "NA";
+        this.AllDatesSDandED.push(jsonData);
+        // alert(this.EventScheduledjson[0]['Schedule_date']);
+        this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
+        this.minDate= this.EventScheduledjson[0]['Schedule_date'];
+        // this._EndDate = moment().format("YYYY-MM-DD").toString();
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.MasterCode = (this.MasterCode[0].stringval);
-
-          // var jsonDataPC = {};
-          // var columnName = "BlockNameProject";
-          // jsonDataPC[columnNamee] = this.EventScheduledjson[0]['Project_code'][0].Project_Name;
-          // var columnName = "Project_Code";
-          // jsonDataPC[columnNamee] = this.EventScheduledjson[0]['Project_code'][0].stringval;
-          // this.MasterCode.push(jsonDataPC);
-          // this.MasterCode = this.EventScheduledjson[0]['Project_code'][0].stringval;
 
           document.getElementById("subtaskid").style.display = "block";
           // document.getElementById("Link_Name").style.display = "none";
@@ -844,15 +822,9 @@ export class DashboardComponent implements OnInit {
 
           this.ngEmployeeDropdown = [];
           this.ngEmployeeDropdown1 = [];
-          // alert(this.EventScheduledjson[0]['Add_guests'])
           this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
           this.arr2.forEach(element => {
-            // this.ngEmployeeDropdown.push(element.TM_DisplayName);
-            // this.ngEmployeeDropdown.push(element.numberval);
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
-
-
-
           });
           this.SelectDms = [];
           this.SelectDms1 = [];
@@ -881,6 +853,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
+          
+          
         }
 
       });
@@ -888,7 +862,6 @@ export class DashboardComponent implements OnInit {
 
     this.closeevearea();
   }
-
   LastLengthValidation11() {
     if (this.Title_Name.trim().length < 3) {
       this.MinLastNameLength = false;
@@ -918,7 +891,6 @@ export class DashboardComponent implements OnInit {
       this.Endtms = (parseInt(_shr) + 1).toString() + ':30';
     }
   }
-
   OnSubmitSchedule() {
     // alert(this.MasterCode.toString() + "submit");
 
@@ -936,11 +908,49 @@ export class DashboardComponent implements OnInit {
       + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
     this.EventNumber = timestamp;
     let finalarray = [];
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+          const day = this.dayArr[index].value;
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+
+    }
+
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-    // alert(finalarray.length)
-   
+
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+
+        var columnNames = "StartTime";
+        element[columnNames] = this.Startts;
+        var columnNamee = "EndTime";
+        element[columnNamee] = this.Endtms;
+
         var columnName = "Emp_No";
         element[columnName] = this.Current_user_ID;
         var columnNames = "ScheduleType";
@@ -972,11 +982,12 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
+
       }
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-      //  console.log(JSON.stringify(finalarray), "finalarray")
+      console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
           // console.log(data, "m");
@@ -1023,10 +1034,9 @@ export class DashboardComponent implements OnInit {
     }
 
   }
-
   OnSubmitReSchedule() {
-    // alert(this.MasterCode1 + "MasterCode1-update")
-    // alert(this.MasterCode + "MasterCode-update")
+    // alert(this.MasterCode.toString() + "submit");
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1041,10 +1051,51 @@ export class DashboardComponent implements OnInit {
       + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
     this.EventNumber = timestamp;
     let finalarray = [];
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == false);
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+      // alert(this.daysSelectedII.length);
+      // console.log(this.AllDatesSDandED)
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+          const day = this.dayArr[index].value;
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+
+    }
+
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     // alert(finalarray.length)
+
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+
+        var columnNames = "StartTime";
+        element[columnNames] = this.Startts;
+        var columnNamee = "EndTime";
+        element[columnNamee] = this.Endtms;
+
         var columnName = "Emp_No";
         element[columnName] = this.Current_user_ID;
         var columnNames = "ScheduleType";
@@ -1052,12 +1103,8 @@ export class DashboardComponent implements OnInit {
 
         var columnName = "Title_Name";
         element[columnName] = this.Title_Name;
-
         var columnName = "MasterCode";
         element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
-        // alert(this.MasterCode + "MasterCode");
-
-
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var columnName = "User_Name";
@@ -1080,6 +1127,7 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
+
       }
       else {
         this._calenderDto.Schedule_ID = 0;
@@ -1093,18 +1141,16 @@ export class DashboardComponent implements OnInit {
           this.GetScheduledJson();
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
-          this.ngEmployeeDropdown1 = null;
           this.Description_Type = null;
           this.MasterCode = null;
-          this.MasterCode1 = null;
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
+
           this._status = null;
           this.SelectDms = null;
-          this.SelectDms1 = null;
           this.Location_Type = null;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -1120,7 +1166,6 @@ export class DashboardComponent implements OnInit {
           this.selected = null;
           this.TImetable();
           this.Portfolio = null;
-          this.Portfolio1 = null;
           this.minDate = moment().format("YYYY-MM-DD").toString();;
           this.maxDate = null;
           this.calendar.updateTodaysDate();
@@ -1134,31 +1179,23 @@ export class DashboardComponent implements OnInit {
     }
 
   }
+
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("div_recurrence").style.display = "block";
+    document.getElementById("weekly_121").style.display = "none";
+    document.getElementById("div_endDate").style.display = "none";
     this.daysSelected = [];
     this.singleselectarry = [];
     this.daysSelectedII = [];
     this.daysSelected.push(this._StartDate);
     this.singleselectarry.push(this._StartDate);
 
-    var jsonData = {};
-    var columnName = "Date";
-    jsonData[columnName] = this._StartDate;
-    var columnNames = "StartTime";
-    jsonData[columnNames] = this.Startts;
-    var columnNamee = "EndTime";
-    jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
-      var IsActive = "IsActive";
-      jsonData[IsActive] = 1;
-    }
-    this.daysSelectedII.push(jsonData)
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
-    // }
+
+
+
     if (value == 1) {
       this.ScheduleType = "Task";
       document.getElementById("subtaskid").style.display = "block";
@@ -1189,6 +1226,23 @@ export class DashboardComponent implements OnInit {
     }
 
 
+    const format2 = "YYYY-MM-DD";
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = (moment(this.minDate).format(format2));
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 1;
+    }
+
+
+    this.daysSelectedII.push(jsonData);
+
+    console.log(this.daysSelectedII, "default")
     // this.Project_Code = "4001176";
 
   }
@@ -1269,143 +1323,111 @@ export class DashboardComponent implements OnInit {
     //Checked the day
     let objIndex = this.dayArr.findIndex((obj => obj.value == days.target.value));
     this.dayArr[objIndex].checked = days.target.checked;
-    const format2 = "YYYY-MM-DD";
-    //Get dates by selected day
-    var start = moment(this.minDate);
-    var end = moment(this.maxDate);
-    var result = [];
-    for (let index = 0; index < this.dayArr.length; index++) {
-      if (this.dayArr[index].checked) {
-        const day = parseInt(this.dayArr[index].value);
-        // start = start.subtract(7, "days");
-        var current = start.clone();
-        while (current.day(7 + day).isSameOrBefore(end)) {
-          let _d = new Date(current.clone().format(format2));
-          let _d1 = new Date(start.format(format2));
+    // const format2 = "YYYY-MM-DD";
+    // //Get dates by selected day
+    // var start = moment(this.minDate);
+    // var end = moment(this.maxDate);
+    // var result = [];
+    // this.daysSelectedII = [];
+    // for (let index = 0; index < this.dayArr.length; index++) {
+    //   if (this.dayArr[index].checked) {
+    //     const day = this.dayArr[index].value;
+    //     var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+    //     this.daysSelectedII = this.daysSelectedII.concat(newArray);
+    //     // this.daysSelected.forEach(element => {
+    //     //   var jsonData = {};
+    //     //   var columnName = "Date";
+    //     //   jsonData[columnName] = element;
+    //     //   var columnNames = "StartTime";
+    //     //   jsonData[columnNames] = this.Startts;
+    //     //   var columnNamee = "EndTime";
+    //     //   jsonData[columnNamee] = this.Endtms;
+    //     //   if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+    //     //     var IsActive = "IsActive";
+    //     //     jsonData[IsActive] = 1;
+    //     //   }
+    //     //   this.daysSelectedII.push(jsonData)
+    //     // });
+    //     // // start = start.subtract(7, "days");
+    //     // var current = start.clone();
+    //     // while (current.day(7 + day).isSameOrBefore(end)) {
+    //     //   let _d = new Date(current.clone().format(format2));
+    //     //   let _d1 = new Date(start.format(format2));
 
-          if (_d >= _d1) {
-            result.push(current.clone());
-          }
+    //     //   if (_d >= _d1) {
+    //     //     result.push(current.clone());
+    //     //   }
 
-        }
-      }
-
-    }
-
-
-
-    //result = result.map(m => moment(m).format(format2));
-    // make a Set to hold values from namesToDeleteArr
-
-
-    // use filter() method
-    // to filter only those elements
-    // that need not to be deleted from the array
-
-
-    this.daysSelected = result.map(m => moment(m).format(format2));
-    const namesToDeleteSet = new Set(this.daysSelected);
-    this.singleselectarry = this.singleselectarry.filter((name) => {
-      // return those elements not in the namesToDeleteSet
-      return !namesToDeleteSet.has(name);
-    });
-    this.singleselectarry.forEach(element => {
-      this.daysSelected.push(moment(element).format(format2))
-    });
-    // this.daysSelected.push({ format2 });
-
-
-
-    this.daysSelectedII = [];
-
-    this.daysSelected.forEach(element => {
-
-      var jsonData = {};
-      var columnName = "Date";
-      jsonData[columnName] = element;
-      var columnNames = "StartTime";
-      jsonData[columnNames] = this.Startts;
-      var columnNamee = "EndTime";
-      jsonData[columnNamee] = this.Endtms;
-      if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
-        var IsActive = "IsActive";
-        jsonData[IsActive] = 1;
-      }
-      this.daysSelectedII.push(jsonData)
-    });
-
-    this.calendar.updateTodaysDate();
-
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
+    //     // }
+    //   }
     // }
-
   }
-
   selectStartDate(event) {
+
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._EndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
 
+    var start = moment(this.minDate);
+    var end = moment(this.maxDate);
 
-    this.daysSelected = [];
-    this.singleselectarry = [];
+    const format2 = "YYYY-MM-DD";
+    const d1 = new Date(moment(start).format(format2));
+    const d2 = new Date(moment(end).format(format2));
+    const date = new Date(d1.getTime());
     this.daysSelectedII = [];
-    this.daysSelected.push(sd);
-    this.singleselectarry.push(sd);
 
+    this.AllDatesSDandED = [];
     var jsonData = {};
     var columnName = "Date";
-    jsonData[columnName] = sd;
+    jsonData[columnName] = (moment(date).format(format2));
     var columnNames = "StartTime";
     jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
     jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
-      var IsActive = "IsActive";
-      jsonData[IsActive] = 1;
-    }
-    this.daysSelectedII.push(jsonData)
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
-    // }
-
-    this.calendar.updateTodaysDate();
-
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = event.value.format('dddd').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+    // alert(event.value.format('dddd').substring(0,3));
   }
-
   selectEndDate(event) {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      this.dayArr[index].checked = false;
+    }
 
     this._EndDate = event.value;
     this.maxDate = event.value.format("YYYY-MM-DD").toString();
-    let sd = this._StartDate.format("YYYY-MM-DD").toString();
 
-    this.daysSelected = [];
-    this.singleselectarry = [];
+    var start = moment(this.minDate);
+    var end = moment(this.maxDate);
+    const format2 = "YYYY-MM-DD";
+    const d1 = new Date(moment(start).format(format2));
+    const d2 = new Date(moment(end).format(format2));
+    const date = new Date(d1.getTime());
     this.daysSelectedII = [];
-    this.daysSelected.push(sd);
-    this.singleselectarry.push(sd);
-
-    var jsonData = {};
-    var columnName = "Date";
-    jsonData[columnName] = sd;
-    var columnNames = "StartTime";
-    jsonData[columnNames] = this.Startts;
-    var columnNamee = "EndTime";
-    jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
+    this.AllDatesSDandED = [];
+    const dates = [];
+    while (date <= d2) {
+      dates.push(moment(date).format(format2));
+      var jsonData = {};
+      var columnName = "Date";
+      jsonData[columnName] = (moment(date).format(format2));
+      var columnNames = "StartTime";
+      jsonData[columnNames] = this.Startts;
+      var columnNamee = "EndTime";
+      jsonData[columnNamee] = this.Endtms;
       var IsActive = "IsActive";
       jsonData[IsActive] = 1;
+      var Day = "Day";
+      jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+      this.AllDatesSDandED.push(jsonData);
+      date.setDate(date.getDate() + 1);
     }
-    this.daysSelectedII.push(jsonData)
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
-    // }
-
-    this.calendar.updateTodaysDate();
+    console.log(this.daysSelectedII, "Day Added array")
   }
-
   isSelected = (event: any) => {
     // const date =
     //   event.getFullYear() +
@@ -1478,7 +1500,7 @@ export class DashboardComponent implements OnInit {
             jsonData[columnNames] = this.Startts;
             var columnNamee = "EndTime";
             jsonData[columnNamee] = this.Endtms;
-            if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
+            if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
               var IsActive = "IsActive";
               jsonData[IsActive] = 1;
             }
@@ -1499,17 +1521,15 @@ export class DashboardComponent implements OnInit {
 
 
     this._calenderDto.json = JSON.stringify(_array);
-  
+
     this._calenderDto.EmpNo = this.Current_user_ID;
     this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
       ((data) => {
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
         this.calendar.updateTodaysDate();
-       
+
       });
   }
-
-
   Doubleclick(event: any) {
 
     this.preventSingleClick = true;
@@ -1539,7 +1559,6 @@ export class DashboardComponent implements OnInit {
       this._total = element.SlotsJson.length;
     });
   }
-
   GetProjectAndsubtashDrpforCalender() {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
@@ -1588,46 +1607,58 @@ export class DashboardComponent implements OnInit {
     this.Endtms = this.EndTimearr[0];
 
     this.daysSelectedII = [];
-    this.daysSelected.forEach(element => {
-      const found = this.Timechangearry.some(el => el.Date === element);
-      if (found) {
-        this.Timechangearry.forEach(element2 => {
-          if (element2.Date == element) {
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = this.minDate;
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    if (this.ScheduleType == "Event") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 0;
+    }
+    this.daysSelectedII.push(jsonData)
+    // this.daysSelected.forEach(element => {
+    //   const found = this.Timechangearry.some(el => el.Date === element);
+    //   if (found) {
+    //     this.Timechangearry.forEach(element2 => {
+    //       if (element2.Date == element) {
 
-            var jsonData = {};
-            var columnName = "Date";
-            jsonData[columnName] = element2.Date;
-            var columnNames = "StartTime";
-            jsonData[columnNames] = this.Startts;
-            var columnNamee = "EndTime";
-            jsonData[columnNamee] = this.Endtms;
-            if (this.ScheduleType == "Event") {
-              var IsActive = "IsActive";
-              jsonData[IsActive] = 0;
-            }
-            this.daysSelectedII.push(jsonData)
-          }
-        });
-      }
-      else {
-        var jsonData = {};
-        var columnName = "Date";
-        jsonData[columnName] = element;
-        var columnNames = "StartTime";
-        jsonData[columnNames] = this.Startts;
-        var columnNames = "EndTime";
-        jsonData[columnName] = this.Endtms;
-        if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
-          var IsActive = "IsActive";
-          jsonData[IsActive] = 1;
-        }
-        this.daysSelectedII.push(jsonData);
-      }
-    });
+    //         var jsonData = {};
+    //         var columnName = "Date";
+    //         jsonData[columnName] = element2.Date;
+    //         var columnNames = "StartTime";
+    //         jsonData[columnNames] = this.Startts;
+    //         var columnNamee = "EndTime";
+    //         jsonData[columnNamee] = this.Endtms;
+    //         if (this.ScheduleType == "Event") {
+    //           var IsActive = "IsActive";
+    //           jsonData[IsActive] = 0;
+    //         }
+    //         this.daysSelectedII.push(jsonData)
+    //       }
+    //     });
+    //   }
+    //   else {
+    //     var jsonData = {};
+    //     var columnName = "Date";
+    //     jsonData[columnName] = element;
+    //     var columnNames = "StartTime";
+    //     jsonData[columnNames] = this.Startts;
+    //     var columnNames = "EndTime";
+    //     jsonData[columnName] = this.Endtms;
+    //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+    //       var IsActive = "IsActive";
+    //       jsonData[IsActive] = 1;
+    //     }
+    //     this.daysSelectedII.push(jsonData);
+    //   }
+    // });
     // if (this.ScheduleType == "Task") {
     //   this.Checkdatetimetable(this.daysSelectedII);
     // }
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
   }
   addendtime(TSEnd) {
 
@@ -1635,50 +1666,62 @@ export class DashboardComponent implements OnInit {
     if (this.Startts > this.Endtms) {
       this.Endtms = this.Startts;
     }
-
     this.daysSelectedII = [];
-    this.daysSelected.forEach(element => {
-      const found = this.Timechangearry.some(el => el.Date === element);
-      if (found) {
-        this.Timechangearry.forEach(element2 => {
-          if (element2.Date == element) {
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = this.minDate;
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    if (this.ScheduleType == "Event") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 0;
+    }
+    this.daysSelectedII.push(jsonData)
+    // this.daysSelectedII = [];
+    // this.daysSelected.forEach(element => {
+    //   const found = this.Timechangearry.some(el => el.Date === element);
+    //   if (found) {
+    //     this.Timechangearry.forEach(element2 => {
+    //       if (element2.Date == element) {
 
-            var jsonData = {};
-            var columnName = "Date";
-            jsonData[columnName] = element2.Date;
-            var columnNames = "StartTime";
-            jsonData[columnNames] = this.Startts;
-            var columnNamee = "EndTime";
-            jsonData[columnNamee] = this.Endtms;
-            if (this.ScheduleType == "Event") {
-              var IsActive = "IsActive";
-              jsonData[IsActive] = 0;
-            }
+    //         var jsonData = {};
+    //         var columnName = "Date";
+    //         jsonData[columnName] = element2.Date;
+    //         var columnNames = "StartTime";
+    //         jsonData[columnNames] = this.Startts;
+    //         var columnNamee = "EndTime";
+    //         jsonData[columnNamee] = this.Endtms;
+    //         if (this.ScheduleType == "Event") {
+    //           var IsActive = "IsActive";
+    //           jsonData[IsActive] = 0;
+    //         }
 
-            this.daysSelectedII.push(jsonData)
-          }
-        });
-      }
-      else {
-        var jsonData = {};
-        var columnName = "Date";
-        jsonData[columnName] = element;
-        var columnNames = "StartTime";
-        jsonData[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
-          var IsActive = "IsActive";
-          jsonData[IsActive] = 1;
-        }
+    //         this.daysSelectedII.push(jsonData)
+    //       }
+    //     });
+    //   }
+    //   else {
+    //     var jsonData = {};
+    //     var columnName = "Date";
+    //     jsonData[columnName] = element;
+    //     var columnNames = "StartTime";
+    //     jsonData[columnNames] = this.Startts;
+    //     var columnNamee = "EndTime";
+    //     jsonData[columnNamee] = this.Endtms;
+    //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+    //       var IsActive = "IsActive";
+    //       jsonData[IsActive] = 1;
+    //     }
 
-        this.daysSelectedII.push(jsonData);
-      }
-    });
+    //     this.daysSelectedII.push(jsonData);
+    //   }
+    // });
     // if (this.ScheduleType == "Task") {
     //   this.Checkdatetimetable(this.daysSelectedII);
     // }
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
 
   }
   TimeClick(id, stime) {
@@ -1806,38 +1849,54 @@ export class DashboardComponent implements OnInit {
 
     }
   }
-selectedrecuvalue:string;
+  selectedrecuvalue: string;
 
   SelectDropDown(val) {
-this.selectedrecuvalue=val.value.toString();
+    this.selectedrecuvalue = val.value.toString();
+    this._labelName = "Start Date :";
+    document.getElementById("div_endDate").style.display = "block";
     if (val.value == 0) {
+      this._labelName = "Schedule Date :";
+      document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];
       this.daysSelected = [];
       this.singleselectarry = [];
-     
+
       // this.Checkdatetimetable(this.daysSelectedII);
       for (let index = 0; index < this.dayArr.length; index++) {
         this.dayArr[index].checked = false;
 
       }
+      const format2 = "YYYY-MM-DD";
+      var jsonData = {};
+      var columnName = "Date";
+      jsonData[columnName] = (moment(this.minDate).format(format2));
+      var columnNames = "StartTime";
+      jsonData[columnNames] = this.Startts;
+      var columnNamee = "EndTime";
+      jsonData[columnNamee] = this.Endtms;
+
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 1;
+
+
+
+      this.daysSelectedII.push(jsonData);
       this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("weekly_122").style.display = "none";
     }
     if (val.value == 2) {
-      this.daysSelectedII = [];
-      this.daysSelected = [];
-      this.singleselectarry = [];
+      // this.daysSelectedII = [];
+      // this.daysSelected = [];
+      // this.singleselectarry = [];
       // this.Checkdatetimetable(this.daysSelectedII);
       for (let index = 0; index < this.dayArr.length; index++) {
         this.dayArr[index].checked = false;
-
       }
-      this.calendar.updateTodaysDate();
-
+      // this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "block";
       document.getElementById("calender_1").style.display = "none";
-
     }
     else if (val.value == 1) {
 
@@ -1866,7 +1925,7 @@ this.selectedrecuvalue=val.value.toString();
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
+        if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
           var IsActive = "IsActive";
           jsonData[IsActive] = 1;
         }
@@ -1884,10 +1943,10 @@ this.selectedrecuvalue=val.value.toString();
 
     }
     else if (val.value == 3) {
-     
+
 
       document.getElementById("calender_1").style.display = "block";
-      
+
       const format2 = "YYYY-MM-DD";
       var start = moment(this.minDate);
       const d1 = new Date(moment(start).format(format2));
@@ -1939,7 +1998,7 @@ this.selectedrecuvalue=val.value.toString();
           jsonData[columnNames] = this.Startts;
           var columnNamee = "EndTime";
           jsonData[columnNamee] = this.Endtms;
-          if (this.ScheduleType == "Event" ||this.ScheduleType == "Task") {
+          if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
             var IsActive = "IsActive";
             jsonData[IsActive] = 1;
           }
@@ -1953,12 +2012,12 @@ this.selectedrecuvalue=val.value.toString();
       //   this.Checkdatetimetable(this.daysSelectedII);
       // }
       this.calendar.updateTodaysDate();
-      
+
     }
-  
+
   }
 
-  selectmonthlydays(days){
+  selectmonthlydays(days) {
     let objIndex = this.MonthArr.findIndex((obj => obj.value == days.target.value));
     this.MonthArr[objIndex].checked = days.target.checked;
     const format2 = "YYYY-MM-DD";
@@ -2012,7 +2071,7 @@ this.selectedrecuvalue=val.value.toString();
         jsonData[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
+        if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
           var IsActive = "IsActive";
           jsonData[IsActive] = 1;
         }
@@ -2070,12 +2129,12 @@ this.selectedrecuvalue=val.value.toString();
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
         console.log(this.EventScheduledjson, "Testing12");
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted')) {
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted'  && this.Status1 != 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted'  || this.Status1 == 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "none";
           document.getElementById("main-foot").style.display = "block";
@@ -2192,7 +2251,7 @@ this.selectedrecuvalue=val.value.toString();
       jsonData[columnNames] = this.Startts;
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
-      if (this.ScheduleType == "Event"||this.ScheduleType == "Task") {
+      if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
         var IsActive = "IsActive";
         jsonData[IsActive] = 1;
       }
@@ -2717,6 +2776,7 @@ this.selectedrecuvalue=val.value.toString();
 
   closeschd() {
 
+
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -2754,14 +2814,27 @@ this.selectedrecuvalue=val.value.toString();
     this.singleselectarry = [];
     this.Avaliabletime = [];
     this.TImetable();
-    this.selectedrecuvalue="0";
+    this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
     });
-  
-   
+    this.AllDatesSDandED = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+    // var columnNames = "StartTime";
+    // jsonData[columnNames] = this.Startts;
+    // var columnNamee = "EndTime";
+    // jsonData[columnNamee] = this.Endtms;
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = moment().format('dddd').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+    this.GetTimeslabfordate();
+
   }
 
   showcore() {
