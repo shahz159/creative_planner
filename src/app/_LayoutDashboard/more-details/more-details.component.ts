@@ -2885,6 +2885,21 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     this._ProjDeadline = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
+
+
+  }
+  onHoldClick(){
+    (<HTMLInputElement>document.getElementById("HoldArea")).classList.add("d-block");
+  }  
+  onTransferClick(){
+    (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
+  }
+  closehold(){
+    (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
+  }  
+  closetransfer(){
+    (<HTMLInputElement>document.getElementById("TransferArea")).classList.remove("d-block");
+
   }
 
   _Message: string;
