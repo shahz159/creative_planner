@@ -28,7 +28,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { data } from 'jquery';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
-
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 
 
 @Component({
@@ -46,12 +46,14 @@ export class MoreDetailsComponent implements OnInit {
     public approvalservice: ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
+    public _projectSummary: ProjectsSummaryComponent,
     private notifyService: NotificationService, public dateAdapter: DateAdapter<Date>,
     private dialog: MatDialog,
     public datepipe: DatePipe,
-    private BsService: BsServiceService) {
+    public BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
+   
   }
 
   projectCode: string;
@@ -88,6 +90,7 @@ export class MoreDetailsComponent implements OnInit {
   today: number;
   currenthours: any;
   currentminutes: any;
+  Summarytype:string;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -108,9 +111,10 @@ export class MoreDetailsComponent implements OnInit {
     this.getapprovalStats();
     this.getdeadlinecount();
     this.GetDMS_Memos();
+    this.GetprojectComments();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
-
+   
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -238,30 +242,57 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
 
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
+          }
+          this.Clear_Feilds();
+
         });
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
 
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
+          }
+          this.Clear_Feilds();
+
         });
     }
     else if (this.selectedType == '3') {
@@ -280,10 +311,17 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertRejectApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
+            if(this._Message=='Not Authorized'){
+              this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+              this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+            }
+            else{
             this.notifyService.showWarning(this._Message,"Rejected Successfully");
             this.GetProjectDetails();
             this.GetSubtask_Details();
             this.getapprovalStats();
+            }
+            this.Clear_Feilds();
         });
       }
       
@@ -402,7 +440,7 @@ export class MoreDetailsComponent implements OnInit {
     this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.objProjectDto.Project_Name = this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -2437,12 +2475,14 @@ export class MoreDetailsComponent implements OnInit {
   _DBMemosIDList: any;
   _CommentsList: any;
   _EvenRecordsList: any
+  commentsLength:number;
 
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
       subscribe((data) => {
         // console.log("Comments data----------->",data)
         this._CommentsList = JSON.parse(data[0]['CommentsJson']);
+        this.commentsLength=this._CommentsList.length;
         // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
         // console.log("Comments-List--------->",this._CommentsList)
       });
@@ -2845,6 +2885,21 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     this._ProjDeadline = null;
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
+
+
+  }
+  onHoldClick(){
+    (<HTMLInputElement>document.getElementById("HoldArea")).classList.add("d-block");
+  }  
+  onTransferClick(){
+    (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
+  }
+  closehold(){
+    (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
+  }  
+  closetransfer(){
+    (<HTMLInputElement>document.getElementById("TransferArea")).classList.remove("d-block");
+
   }
 
   _Message: string;
@@ -2978,7 +3033,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   OnClickCheckboxProjectUpdate() {
-    this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
+     this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data['Message'] == 1) {
           Swal.fire({
@@ -3066,8 +3121,10 @@ export class MoreDetailsComponent implements OnInit {
         this.GetSubtask_Details();
         this.GetProjectDetails();
         this.getapprovalStats();
+        this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
+
   LoadDocument(cloud,Pcode, Resp, url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
@@ -3110,7 +3167,7 @@ export class MoreDetailsComponent implements OnInit {
   darcreate() {
     this.dateF = new FormControl(new Date());
     // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
     else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {

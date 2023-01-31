@@ -738,6 +738,20 @@ export class HomeComponent implements OnInit {
   //loadrstop: any = this.LoadingBar_state.stop();
   hidetotalProjects: boolean = false;
   PortfolioName: any;
+  special:boolean=false;
+  specialnote:string="special characters `~!@#$%^&*()-_=+,<.>/?;:'"+'"'+"[]{}| not allowed";
+
+  omit_number(event) { //         key = event.keyCode;  (Both can be used)
+    if(( (event.charCode > 96 && event.charCode < 123) || (event.charCode > 64 && event.charCode < 91) || (event.charCode >= 48 && event.charCode <= 57) || event.charCode <= 32)){
+      this.special=false;
+      return true;
+    }
+    else{
+      this.notifyService.showInfo('','Allowed characters: a-z, A-Z, 0-9');
+      this.special=true;
+      return false;
+    }
+}
 
   Displayprojectlist() {
     if (this._portfolioName != "") {

@@ -324,7 +324,7 @@
                                                     </td>
                                                     <td>
                                                         <div
-                                                            *ngIf="item.Exec_BlockName=='Standard Tasks';else Projecttype">
+                                                            *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                             <span
                                                                 class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
                                                         </div>

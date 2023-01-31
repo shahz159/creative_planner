@@ -3,7 +3,7 @@
 <div id="LinkSideBar" class="sideInfobar shadow-0 animate-right" [hidden]="_LinkSideBar">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link DMS</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
                 (click)="closeLinkSideBar()">
                 <i class="fa fa-times"></i>
@@ -55,7 +55,7 @@
 <div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right" [hidden]="_LinkSideBar1">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Project</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
                 (click)="closeLinkSideBar()">
                 <i class="fa fa-times"></i>
@@ -373,10 +373,16 @@
                                                         <span *ngIf="noRejectType==true"
                                                         style="color:red">Please select Reject type!!</span>
                                                 </div>
-                                            <div class="form-group" *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
+                                            <div class="form-group" *ngIf="selectedType=='3'">
                                                 <label class="mb-2">Enter Comments</label><span
                                                     style="color:red">*</span>
-                                                <textarea class="form-control h-100px   "
+                                                <textarea class="form-control h-100px"
+                                                    [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                            </div>
+                                            <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'">
+                                                <label class="mb-2">Enter Comments</label>
+                                                <!-- <span style="color:red">*</span> -->
+                                                <textarea class="form-control h-100px"
                                                     [(ngModel)]="comments">{{commentSelected}}</textarea>
                                             </div>
                                             <div class="appr-comts">
@@ -408,9 +414,16 @@
                                                 
                                             </div>
                                             <div class="d-flex justify-content-end mb-2"
-                                                *ngIf="selectedType=='3' || selectedType=='1' || selectedType=='2'">
-                                                <button class="btn btn-sm py-1 btn-info mr-2" (click)="submitApproval()"
-                                                    [disabled]="!comments || !selectedType">Submit</button>
+                                                *ngIf="selectedType=='3'">
+                                                <button type="submit" class="btn btn-sm py-1 btn-info mr-2" (click)="submitApproval()"
+                                                    [disabled]="!comments || !selectedType" primary="true">Submit</button>
+                                                <button class="btn btn-sm py-1 btn-secondary"
+                                                    (click)="resetApproval()">Reset</button>
+                                            </div>
+                                            <div class="d-flex justify-content-end mb-2"
+                                                *ngIf="selectedType=='1' || selectedType=='2'">
+                                                <button type="submit" class="btn btn-sm py-1 btn-info mr-2" (click)="submitApproval()"
+                                                    [disabled]="!selectedType" primary="true">Submit</button>
                                                 <button class="btn btn-sm py-1 btn-secondary"
                                                     (click)="resetApproval()">Reset</button>
                                             </div>
@@ -441,7 +454,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' else EndDate" class="col-md-4">
+                    <div *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') else EndDate" class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Submission Type</p>
                         <div class="d-flex align-items-center">
                             <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
@@ -588,7 +601,7 @@
                         </div>
                     </ng-template>
                     <!--  -->
-                    <div *ngIf="item.Exec_BlockName !='Standard Tasks'" class="col-md-4">
+                    <div *ngIf="item.Exec_BlockName !='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'" class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
                         <div class="d-flex align-items-center">
                             <i class="fa fa-clock fs-3 text-muted mr-2"></i>
@@ -604,7 +617,7 @@
                     <h5>{{item.Duration}} days</h5>
                 </div> -->
 
-                    <div *ngIf="item.Exec_BlockName=='Standard Tasks'" class="col-md-4">
+                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'" class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
                         <!-- <h5>{{item.StandardDuration}}</h5> -->
                         <div class="d-flex align-items-center">
@@ -617,7 +630,7 @@
                 </div>
                 <div class="row">
                     <!-- New Column -->
-                    <div *ngIf="item.Exec_BlockName!='Standard Tasks'" class="col-md-4">
+                    <div *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'" class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                         <div class="d-flex align-items-center">
                             <i class="fa fa-clock fs-3 text-muted mr-2"></i>
@@ -626,7 +639,7 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="item.Exec_BlockName=='Standard Tasks'" class="col-md-4 pricevalues text-left py-0">
+                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'" class="col-md-4 pricevalues text-left py-0">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                         <div class="d-flex align-items-center">
                             <i class="fa fa-clock fs-3 text-muted mr-2"></i>
@@ -809,7 +822,7 @@
             </div>
 
             <div class="card-body"
-                *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks'">
+                *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
                 <!-- Percentage Bar -->
                 <div class="progress_bar">
                     <div *ngIf="ProjectStatus=='Not Started'">
@@ -898,7 +911,7 @@
                             <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
                                 <i class="fa fa-forward"></i>
-                                <span class="ml-1">Transfer</span>
+                                <span class="ml-1">Project Transfer</span>
                             </button>
                             <div  id="TransferArea_{{Pid}}"
                                  class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3">
@@ -911,12 +924,12 @@
                                         <div class="px-4 py-3">
                                             <div  class="form-group">
                                                 <label> Transfer To <span class="text-danger">*</span> : <strong></strong></label>
-                                                <ng-select reuired #transfer="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
+                                                <ng-select reuired #transfer="ngModel" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
                                                     <ng-option [value]="item.Emp_No" *ngFor="let item of Employee_List">
-                                                        {{item.DisplayName}}
+                                                        <a *ngIf="item.Responsible!=item.Emp_No">{{item.DisplayName}}</a>
                                                     </ng-option>
                                                 </ng-select>
-                                                <!-- <span style="color:red">Transfer to required!</span>  (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
+                                                <!-- <span style="color:red">Transfer to required!</span>  (Change)="EmployeeOnSelect($event)" (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
                                             </div>
                                             <!-- <div class="form-group">
                                                 <label>Select New Deadline<span class="text-danger">*</span></label>
@@ -938,6 +951,7 @@
                                                     <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
                                                                 #Transdt="ngModel"
                                                                 (click)="picker4.open();"
+                                                                (keydown.enter)="onProject_Hold(Pid,_MasterCode);"
                                                                 [min]="minhold" [max]="maxhold" placeholder="Select Date"
                                                                 [(ngModel)]="TransDate" class="form-control"
                                                                 name="date">
@@ -956,13 +970,16 @@
                                         </div>
 
                                     </div>
-                                    <li class="kt-nav__separator"></li>
-                                    <li class="px-4">
-                                        <a class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedEmpNo || !TransDate || !transfer_remarks" 
-                                                (click)="underDev()">Submit</a>
-                                        <a class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</a>
-                                    </li>
                                 </ul>
+                                                                    
+                                <div class="px-4 pb-3">
+                                    <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedEmpNo || !TransDate || !transfer_remarks" 
+                                    (click)="underDev()">Submit</button>
+                                    <button *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'" class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</button>
+                                    <button  *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'" class="btn btn-outline-info btn-sm text-dark-75" (click)="onTransferCancel(Pid)">Close</button>
+
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1047,7 +1064,7 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
-                        <i class="fa fa-chart-bar"></i>Add to Link
+                        <i class="fa fa-chart-bar"></i>Link DMS
                     </button>
                 </div>
             </div>
@@ -1099,7 +1116,7 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-info btn-sm py-1" (click)="AddPortfolio()">
-                        <i class="fa fa-chart-bar"></i>Add to Link
+                        <i class="fa fa-chart-bar"></i>Link Portfolio
                     </button>
                 </div>
             </div>

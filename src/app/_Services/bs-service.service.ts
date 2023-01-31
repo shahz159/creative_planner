@@ -25,6 +25,8 @@ export class BsServiceService {
   private _Authority = new BehaviorSubject<any>(null);
 
   private _SummaryType = new BehaviorSubject<any>(null);
+  private _portId = new BehaviorSubject<any>(null);
+
 
 
   bs_projectCode = this._Pcode.asObservable();
@@ -42,6 +44,7 @@ export class BsServiceService {
   bs_Authority = this._Authority.asObservable();
 
   bs_SummaryType = this._SummaryType.asObservable();
+  bs_SelectedPortId = this._portId.asObservable();
 
 
 
@@ -80,5 +83,9 @@ export class BsServiceService {
 
   setProjectSummaryType(type){
     this._SummaryType.next(type);
+  }
+
+  setSelectedPortId(portid) {
+    this._portId.next(portid);
   }
 }

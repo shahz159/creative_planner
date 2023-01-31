@@ -250,13 +250,18 @@
                                                     anytime.</p> -->
                                                 <input type="text" class="form-control"
                                                     placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
-                                                    (keydown.enter)="Displayprojectlist()"
+                                                    (keydown.enter)="Displayprojectlist()" (keypress)="omit_number($event)" type="text"
                                                     [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
 
                                                 <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
                                         required</p>-->
                                                 <span>
                                                     <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
+                                                </span>
+                                                <span>
+                                                    <p class="text-danger mb-0 py-1" *ngIf="special==true">
+                                                        {{specialnote}}
+                                                    </p>
                                                 </span>
                                             </li>
                                             <!-- <li class="kt-nav__separator"></li> -->

@@ -8,7 +8,7 @@ const routes: Routes = [{
   component: ViewDashboardProjectsComponent,
   children: [
     {
-      path: 'projectinfo/:projectcode',
+      path: 'projectinfo/:projectcode/:id',
       loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
       
     }

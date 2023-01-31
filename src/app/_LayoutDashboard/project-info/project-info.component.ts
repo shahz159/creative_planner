@@ -21,6 +21,10 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { DatePipe } from '@angular/common';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
+import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-projects.component';
+import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-dashboard-projects.component';
+import { ProjectsAddComponent } from '../projects-add/projects-add.component';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 
 @Component({
   selector: 'app-project-info',
@@ -36,8 +40,10 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     public router: Router,
     public BsService: BsServiceService,
     public _projectSummary: ProjectsSummaryComponent,
-
-
+    public _portfolioprojects: PortfolioProjectsComponent,
+    public _viewdashboard: ViewDashboardProjectsComponent,
+    public _toDo: ToDoProjectsComponent,
+    public _projectsAdd: ProjectsAddComponent,
     public datepipe: DatePipe,
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
@@ -83,6 +89,8 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
   comments: string;
   selectedType: string;
   _Urlid:any;
+  port_id:any;
+  Mode:string ="UnderApproval";
 
   ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -145,7 +153,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
-          console.log(this.Employee_List,'EMPList');
+          // console.log(this.Employee_List,'EMPList');
           this._portfoliolist= JSON.parse(data[0]['Portfolio_json']);          
           // console.log(this.ProjectInfo_List,"pt");
          // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
@@ -241,6 +249,21 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     if(this._Urlid=='1'){
       this.router.navigate(["/backend/ProjectsSummary/"]);
+    }
+    else if(this._Urlid=='2'){
+      this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
+      // alert(this.port_id);
+      this.router.navigate(["../portfolioprojects/" + this.port_id+"/"]);
+    }
+    else if(this._Urlid=='3'){
+      this.router.navigate(["../ViewProjects/" + this.Mode]);
+    }
+    else if(this._Urlid=='4'){
+      this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
+      this.router.navigate(["../AddProjectsToPortfolio/" + this.port_id]);
+    }
+    else if(this._Urlid=='5'){
+      this.router.navigate(["./backend/ToDoProjects/"]);
     }
     this.ngOnDestroy();
   }
@@ -748,6 +771,13 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
     this.TransDate = null;
     this.transfer_remarks="";
   }
+
+  onTransferCancel(id){
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmpNo=null;
+    this.TransDate = null;
+    this.transfer_remarks="";
+  }
   _modelProjAlloc:number=0;
   
   OnProject_Rename(id, Pcode) {
@@ -789,40 +819,84 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
-
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
       this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
           if(this._Urlid =='1'){
             this.router.navigate(["/backend/ProjectsSummary/"]);
-          this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            this._projectSummary.GetProjectsByUserName(this.Summarytype);
           }
-          
+          else if(this._Urlid =='2'){
+            this._portfolioprojects.GetPortfolioProjectsByPid();
+            // this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
+            // this.router.navigate(["../portfolioprojects/" + this.port_id+"/"]);
+          }
+          else if(this._Urlid =='3'){
+            this._viewdashboard.GetCompletedProjects();
+          }
+          else if(this._Urlid =='4'){
+            this._projectsAdd.GetProjectsByUserName();
+            this._projectsAdd.getDropdownsDataFromDB();
+          }
+          else if(this._Urlid =='5'){
+            this._toDo.GetProjectsByUserName();
+          }
+          }
         });
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
-      this.approvalObj.Remarks = this.comments;
-
+      if(this.comments=='' || this.comments==null){
+        this.approvalObj.Remarks = 'Accepted';
+      }
+      else{
+        this.approvalObj.Remarks = this.comments;
+      }
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
+          if(this._Message=='Not Authorized'){
+            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+          }
+          else{
           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
           if(this._Urlid =='1'){
             this.router.navigate(["/backend/ProjectsSummary/"]);
           this._projectSummary.GetProjectsByUserName(this.Summarytype);
           }
-
+          else if(this._Urlid =='2'){
+            this._portfolioprojects.GetPortfolioProjectsByPid();
+          }
+          else if(this._Urlid =='3'){
+            this._viewdashboard.GetCompletedProjects();
+          }
+          else if(this._Urlid =='4'){
+            this._projectsAdd.GetProjectsByUserName();
+            this._projectsAdd.getDropdownsDataFromDB();
+          }
+          else if(this._Urlid =='5'){
+            this._toDo.GetProjectsByUserName();
+          }
+          }
         });
     }
     else if (this.selectedType == '3') {
@@ -841,13 +915,32 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
         this.approvalservice.InsertRejectApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
+            if(this._Message=='Not Authorized'){
+              this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
+              this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+            }
+            else{
             this.notifyService.showSuccess(this._Message,"Rejected Successfully");
-            
             this.fun_LoadProjectDetails();
             this.getapprovalStats();
             if(this._Urlid =='1'){
               this.router.navigate(["/backend/ProjectsSummary/"]);
             this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            }
+            else if(this._Urlid =='2'){
+              this._portfolioprojects.GetPortfolioProjectsByPid();
+            }
+            else if(this._Urlid =='3'){
+              this._viewdashboard.GetCompletedProjects();
+            }
+            else if(this._Urlid =='4'){
+              this._projectsAdd.GetProjectsByUserName();
+              this._projectsAdd.getDropdownsDataFromDB();
+            }
+            else if(this._Urlid =='5'){
+              this._toDo.GetProjectsByUserName();
+              this._toDo.GetSubtask_Details();
+            }
             }
           });
       }
@@ -949,7 +1042,7 @@ export class ProjectInfoComponent implements OnInit,OnDestroy {
 
   underDev(){
   this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
-
+  
     console.log(this.selectedEmpNo,this.transfer_remarks,this.TransDate,"transfer");
     this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
@@ -1058,13 +1151,11 @@ TransDate:string;
 
 EmployeeOnSelect(obj) {
   this.selectedEmpNo = obj;
+  alert(this.selectedEmpNo);
 }
 
 onTransferClick(id) {
   (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
-  // document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
-  // document.getElementsByClassName("date-drop2")[0].classList.remove("d-block");
-
 
   this.Editbutton = true;
   (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
