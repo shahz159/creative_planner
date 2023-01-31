@@ -262,11 +262,18 @@
                     <div class="col-lg-12">
                         <label data-toggle="tooltip" title="Project Name!" id="SpanProjName_{{Pid}}"
                             class="text-info strong h5"
-                            [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval') 
+                            [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks') 
+                                && (Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && 
+                                Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='New Project Rejected'
+                                && Project_Status!='Standardtask Enactive Hold')
                                 && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)}">
                             <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
                                 [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" 
-                                *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval') && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
+                                *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval'  && Project_Status!='New Project Rejected'
+                                 && Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && 
+                                Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval'
+                                && Project_Status!='Standardtask Enactive Hold') 
+                                && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
                             {{_ProjectName}}
                             <span></span>
                         </label>

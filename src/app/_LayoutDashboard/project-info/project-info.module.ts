@@ -16,6 +16,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
 import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-projects.component';
+import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-dashboard-projects.component';
+import { ProjectsAddComponent } from '../projects-add/projects-add.component';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -38,7 +41,8 @@ import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-proj
 
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective],
-  providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent]
+  providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
+             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent]
  //exports:[ProjectInfoComponent]
   
 })

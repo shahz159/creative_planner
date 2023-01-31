@@ -66,6 +66,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   edited: boolean = false;
 
   Current_user_ID = localStorage.getItem('EmpNo');
+  
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
@@ -76,8 +77,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj = new CompletedProjectsDTO();
 
   }
+  
   Mode: string;
   _subtaskDiv: boolean;
+
   ngOnInit() {
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
@@ -86,7 +89,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.Mode = this.activatedRoute.snapshot.params.Mode;
     this.GetCompletedProjects();
     this.getAssignedProjects(this.type1); 
-    
+    this.router.navigate(["../ViewProjects/" + this.Mode]);
     // this.notFoundData=true;
     //this.AssignedTask = true;
     //this.projectsDataTable = false;
@@ -108,7 +111,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   MoreDetailsList: any;
   openInfo(pcode,  pName) {
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode]);
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode,"3"]);
      //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -117,6 +120,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this.router.navigate(["../ViewProjects/" + this.Mode]);
+
   }
 
   _CloseMemosidebar() {

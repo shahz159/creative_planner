@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'underscore';
 import { LinkService } from 'src/app/_Services/link.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 @Component({
   selector: 'app-projects-add',
   templateUrl: './projects-add.component.html',
@@ -58,6 +59,7 @@ export class ProjectsAddComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    public BsService: BsServiceService,
     public _LinkService: LinkService,
     private activatedRoute: ActivatedRoute
 
@@ -100,8 +102,9 @@ export class ProjectsAddComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       var id = params.get('portfolioId');
       this.Url_portfolioId = parseInt(id);
+      this.BsService.setSelectedPortId(this.Url_portfolioId);
     });
-
+    this.router.navigate(["../AddProjectsToPortfolio/" + this.Url_portfolioId]);
     this.service.GetProjectsBy_portfolioId(this.Url_portfolioId)
       .subscribe((data) => {
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
@@ -382,7 +385,7 @@ export class ProjectsAddComponent implements OnInit {
   duration: any; submissiontype: string; StandardDuration: string;
   openInfo(pcode, pName) {
     this._portfolioId = this.activatedRoute.snapshot.params.portfolioId;
-    this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId + "/projectinfo", pcode]);
+    this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId + "/projectinfo", pcode,"4"]);
     
     document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -394,6 +397,7 @@ export class ProjectsAddComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId]);
   }
   _objStatusDTO: StatusDTO;
   //Save Portfolio
