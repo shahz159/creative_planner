@@ -15,7 +15,7 @@ h5 {
 }
 
 .project-description .d-flex span {
-    color: #969696;
+    /* color: #969696; */
     font-size: 13px;
 }
 
@@ -996,6 +996,10 @@ position: relative;
     /* top: 0px;
     transform: translate3d(-330px, 20px, 0px);
     left: 0px; */
-    top: 26px;
-    left: -262px;
+    top: 28px;
+    left: -213px;
+}
+.date-drop1{
+    top: 19px;
+    left: -327px;
 }

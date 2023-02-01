@@ -53,7 +53,7 @@ export class MoreDetailsComponent implements OnInit {
     public BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
-   
+
   }
 
   projectCode: string;
@@ -90,12 +90,12 @@ export class MoreDetailsComponent implements OnInit {
   today: number;
   currenthours: any;
   currentminutes: any;
-  Summarytype:string;
+  Summarytype: string;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
-    
+
 
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
@@ -114,7 +114,9 @@ export class MoreDetailsComponent implements OnInit {
     this.GetprojectComments();
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
-   
+    this.minhold.setDate(this.minhold.getDate() + 1);
+    this.maxhold.setDate(this.minhold.getDate() + 90);
+
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
@@ -136,7 +138,7 @@ export class MoreDetailsComponent implements OnInit {
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
   }
-  date11:any;
+  date11: any;
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
   }
@@ -147,35 +149,45 @@ export class MoreDetailsComponent implements OnInit {
   requestType: any;
   approvalEmpId: any;
   requestComments: any;
-  requestDetails:any;
+  requestDetails: any;
 
-  clickonselect(){
-    this.comments=this.commentSelected;
+  clickonselect() {
+    this.comments = this.commentSelected;
   }
 
-  typeChange(){
-    this.comments=null;
-    this.commentSelected=null;
-    this.rejectType=null;
-    this.noRejectType=false;
+  typeChange() {
+    this.comments = null;
+    this.commentSelected = null;
+    this.rejectType = null;
+    this.noRejectType = false;
   }
-  
-  comments_list:any;
-  reject_list:any;
-  rejectType:any;
-  initials1:any;
-  Submitted_By:string;
-  prviousCommentsList:any;
-  noRejectType:boolean=false;
-  
+
+  comments_list: any;
+  reject_list: any;
+  rejectType: any;
+  initials1: any;
+  Submitted_By: string;
+  prviousCommentsList: any;
+  noRejectType: boolean = false;
+  transfer_json: any;
+  forwardType: string;
+  pro_act: boolean = true;
+  newResponsible: any;
+
+
   getapprovalStats() {
-    this.approvalEmpId=null;
+    this.approvalEmpId = null;
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-      this.requestDetails= data as [];
+      this.requestDetails = data as [];
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
+        this.forwardType = (this.requestDetails[0]['ForwardType']);
+        if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
+          this.pro_act = false;
+        }
+
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
@@ -183,160 +195,239 @@ export class MoreDetailsComponent implements OnInit {
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
-        this.prviousCommentsList= JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
-        this.initials1= this.initials1.toUpperCase();
+        this.initials1 = this.initials1.toUpperCase();
+        this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+        this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+        this.newResponsible = (this.transfer_json[0]['newResp']);
       }
       // console.log(this.reject_list, "req")
-      
       // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
   }
-  rejDesc:any;
+  rejDesc: any;
   rejectcommentsList: any;
 
-  rejectApproval(){
-    this.commentSelected=null;
-    this.comments="";
-    this.noRejectType=false;
+  rejectApproval() {
+    this.commentSelected = null;
+    this.comments = "";
+    this.noRejectType = false;
     this.reject_list.forEach(element => {
-      if(this.rejectType==element.TypeID){
-        this.rejDesc=element.Reject_Description;
+      if (this.rejectType == element.TypeID) {
+        this.rejDesc = element.Reject_Description;
       }
     });
-    this.approvalObj.Emp_no=this.Current_user_ID;
-    this.approvalObj.rejectType=this.rejectType;
-    if(this.requestType=='New Project')
-      this.approvalObj.Status='New Project Rejected';
-      else if(this.requestType=='New Project Reject Release')
-      this.approvalObj.Status='New Project Rejected';
-      else if(this.requestType=='New Project Hold')
-      this.approvalObj.Status='New Project Rejected';
-      else if(this.requestType=='Project Complete')
-      this.approvalObj.Status='Project Complete Rejected';
-      else if(this.requestType=='Project Complete Reject Release')
-      this.approvalObj.Status='Project Complete Rejected';
-      else if(this.requestType=='Project Complete Hold')
-      this.approvalObj.Status='Project Complete Rejected';
-      else if(this.requestType=='Deadline Extend')
-      this.approvalObj.Status='Rejected';
-      else if(this.requestType=='Deadline Extend Hold')
-      this.approvalObj.Status='Rejected';
-      else if(this.requestType=='Standardtask Enactive')
-      this.approvalObj.Status='Enactive-Reject';
-      else if(this.requestType=='Project Forward')
-      this.approvalObj.Status='Forward Reject';
-      else if(this.requestType=='Project Hold')
-      this.approvalObj.Status='Project Hold Reject';
-      else if(this.requestType=='Revert Back')
-      this.approvalObj.Status='Revert Reject';
-      
-    this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data =>{
-      this.rejectcommentsList=JSON.parse(data[0]['reject_CommentsList']);
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.rejectType = this.rejectType;
+    if (this.requestType == 'New Project')
+      this.approvalObj.Status = 'New Project Rejected';
+    else if (this.requestType == 'New Project Reject Release')
+      this.approvalObj.Status = 'New Project Rejected';
+    else if (this.requestType == 'New Project Hold')
+      this.approvalObj.Status = 'New Project Rejected';
+    else if (this.requestType == 'Project Complete')
+      this.approvalObj.Status = 'Project Complete Rejected';
+    else if (this.requestType == 'Project Complete Reject Release')
+      this.approvalObj.Status = 'Project Complete Rejected';
+    else if (this.requestType == 'Project Complete Hold')
+      this.approvalObj.Status = 'Project Complete Rejected';
+    else if (this.requestType == 'Deadline Extend')
+      this.approvalObj.Status = 'Rejected';
+    else if (this.requestType == 'Deadline Extend Hold')
+      this.approvalObj.Status = 'Rejected';
+    else if (this.requestType == 'Standardtask Enactive')
+      this.approvalObj.Status = 'Enactive-Reject';
+    else if (this.requestType == 'Project Forward')
+      this.approvalObj.Status = 'Forward Reject';
+    else if (this.requestType == 'Project Hold')
+      this.approvalObj.Status = 'Project Hold Reject';
+    else if (this.requestType == 'Revert Back')
+      this.approvalObj.Status = 'Revert Reject';
+
+    this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
+      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
     });
   }
 
   submitApproval() {
-    if (this.selectedType == '1') {
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = this.requestType;
-      if(this.comments=='' || this.comments==null){
-        this.approvalObj.Remarks = 'Accepted';
-      }
-      else{
-        this.approvalObj.Remarks = this.comments;
-      }
 
-      this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
+    if (this.requestType != 'Project Forward') {
 
-          if(this._Message=='Not Authorized'){
-            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
-            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
-          }
-          else{
-          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-          this.getapprovalStats();
-          }
-          this.Clear_Feilds();
 
-        });
-    }
-    else if (this.selectedType == '2') {
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = this.requestType;
-      if(this.comments=='' || this.comments==null){
-        this.approvalObj.Remarks = 'Accepted';
-      }
-      else{
-        this.approvalObj.Remarks = this.comments;
-      }
-
-      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          if(this._Message=='Not Authorized'){
-            this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
-            this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
-          }
-          else{
-          this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-          this.getapprovalStats();
-          }
-          this.Clear_Feilds();
-
-        });
-    }
-    else if (this.selectedType == '3') {
-      if(this.rejectType==null || this.rejectType==undefined || this.rejectType==''){
-        this.noRejectType=true;
-        this.notifyService.showError("Please select Reject Type","Failed");
-        return false;
-      }
-      else{
+      if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Project_Code = this.URL_ProjectCode;
         this.approvalObj.Request_type = this.requestType;
-        this.approvalObj.rejectType = this.rejectType;
-        this.approvalObj.Remarks = this.comments;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
 
-        this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+        this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if(this._Message=='Not Authorized'){
-              this.notifyService.showError("project not approved.",'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project','Please contact the Project Owner');
+
+            if (this._Message == 'Not Authorized') {
+              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
             }
-            else{
-            this.notifyService.showWarning(this._Message,"Rejected Successfully");
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+            }
+            this.Clear_Feilds();
+
+          });
+      }
+      else if (this.selectedType == '2') {
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = this.requestType;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+
+        this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            if (this._Message == 'Not Authorized') {
+              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            }
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+            }
+            this.Clear_Feilds();
+
+          });
+      }
+      else if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              }
+              else {
+                this.notifyService.showWarning(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+              }
+              this.Clear_Feilds();
+            });
+        }
+
+      }
+      // else if (this.selectedType == '4') {
+      //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      // }
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
+    }
+
+    else if (this.requestType == 'Project Forward') {
+
+      if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              }
+              else {
+                this.notifyService.showWarning(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+              }
+              this.Clear_Feilds();
+            });
+        }
+      }
+      else if (this.selectedType == '1') {
+        this.Employee_List.forEach(element => {
+          if (element.Emp_No == this.newResponsible) {
+            this.new_Res = element.DisplayName;
+          }
+        });
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Responsible = this.newResponsible;
+        this.approvalObj.deadline = this.requestDeadline;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+
+        this.approvalservice.InsertTransferApprovalService(this.approvalObj).subscribe(data => {
+          this._Message = data['message'];
+
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " by " + this.Owner +'('+ this.Current_user_ID+ ')', "Successfully Transferred");
             this.GetProjectDetails();
             this.GetSubtask_Details();
             this.getapprovalStats();
-            }
-            this.Clear_Feilds();
+            this.GetprojectComments();
+          }
+
         });
+        this.closeInfo();
+
       }
-      
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
     }
-    // else if (this.selectedType == '4') {
-    //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-    // }
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
-    document.getElementById("moredet").classList.remove("position-fixed");
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "none"; 
   }
 
   getnextDeadline() {
-
     return this.datepipe.transform(this.EndDate, 'MM-dd-YYYY');
   }
 
@@ -440,7 +531,7 @@ export class MoreDetailsComponent implements OnInit {
     this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.objProjectDto.Project_Name = this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -478,12 +569,12 @@ export class MoreDetailsComponent implements OnInit {
   s_ind: number;
   e_ind: number;
 
-  timedata1:any;
-  stdata:any;
-  etdata:any;
+  timedata1: any;
+  stdata: any;
+  etdata: any;
   getDarTime() {
     debugger
-    this.timedata=[];
+    this.timedata = [];
 
     this.timedata1 = ["08:00",
       "08:15", "08:30", "08:45", "09:00",
@@ -502,19 +593,18 @@ export class MoreDetailsComponent implements OnInit {
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-    this.date11= moment(new Date()).format("MM/DD/YYYY");
-    this.objProjectDto.date = this.current_Date;   
+    this.date11 = moment(new Date()).format("MM/DD/YYYY");
+    this.objProjectDto.date = this.current_Date;
 
 
-    if(this.current_Date==this.date11)
-    {
+    if (this.current_Date == this.date11) {
       this.timedata1.forEach(element => {
         const [shours, sminutes] = element.split(":");
-        if(shours<=this.currenthours) //&& sminutes<=this.currentminutes -- for exact time 
-        this.timedata.push(element);
+        if (shours <= this.currenthours) //&& sminutes<=this.currentminutes -- for exact time 
+          this.timedata.push(element);
       });
     }
-    else{
+    else {
       this.timedata1.forEach(element => {
         this.timedata.push(element);
       });
@@ -648,12 +738,14 @@ export class MoreDetailsComponent implements OnInit {
   Status: any;
   Pid: number;
   Comp_No: string;
+  Employee_List: any;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
           // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Pid = this.ProjectInfo_List[0]['id'];
@@ -2475,20 +2567,20 @@ export class MoreDetailsComponent implements OnInit {
   _DBMemosIDList: any;
   _CommentsList: any;
   _EvenRecordsList: any
-  commentsLength:number;
+  commentsLength: number;
 
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
       subscribe((data) => {
         // console.log("Comments data----------->",data)
         this._CommentsList = JSON.parse(data[0]['CommentsJson']);
-        this.commentsLength=this._CommentsList.length;
+        this.commentsLength = this._CommentsList.length;
         // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
         // console.log("Comments-List--------->",this._CommentsList)
       });
   }
 
-  dmslist:number;
+  dmslist: number;
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2501,14 +2593,14 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              this.dmslist= this._MemosSubjectList.length;
+              this.dmslist = this._MemosSubjectList.length;
               console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
-          this.dmslist=0;
+          this.dmslist = 0;
         }
       });
   }
@@ -2570,12 +2662,12 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               //console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              this.dmslist=this._MemosSubjectList.length;
+              this.dmslist = this._MemosSubjectList.length;
               //console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
-          this.dmslist=0;
+          this.dmslist = 0;
           this._MemosSubjectList = [];
           this._MemosNotFound = "No memos linked";
         }
@@ -2606,7 +2698,7 @@ export class MoreDetailsComponent implements OnInit {
           this.notifyService.showSuccess("", Returndata);
           this.ngDropdwonMemo = [];
           this._SelectedMemos = [];
-          
+
         });
     }
     else {
@@ -2663,24 +2755,24 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-   window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
     // window.open(proofDoc);
 
   }
 
   openPDF(cloud, docName) {
-   
+
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-    
-    if(cloud==false){
-      window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/"  + docName);
+
+    if (cloud == false) {
+      window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
     }
-    else if(cloud==true){
+    else if (cloud == true) {
       window.open(docName);
     }
-     // let cd_date = new Date();
-     // FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+    // let cd_date = new Date();
+    // FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
     // let Day = cd_date.getDate();
     // let Month = cd_date.getMonth() + 1;
     // let Year = cd_date.getFullYear();
@@ -2812,7 +2904,7 @@ export class MoreDetailsComponent implements OnInit {
           this._inputAttachments = "";
           this.GetProjectDetails();
           this.GetSubtask_Details();
-          
+
           // Rebinding    
 
           this.notifyService.showInfo("Successfully Updated", '');
@@ -2860,6 +2952,7 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
 
   }
+  extend_remarks: string;
 
   onEditDeadline(id, enddate) {
     // this._ProjDeadline = enddate;
@@ -2884,22 +2977,48 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     this._ProjDeadline = null;
+    this.extend_remarks = "";
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
 
+    (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
+    this.Holddate = null;
+    this.hold_remarks = "";
 
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmp_No = null;
+    this.TransDate = null;
+    this.transfer_remarks = "";
   }
-  onHoldClick(){
-    (<HTMLInputElement>document.getElementById("HoldArea")).classList.add("d-block");
-  }  
-  onTransferClick(){
-    (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
-  }
-  closehold(){
-    (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
-  }  
-  closetransfer(){
-    (<HTMLInputElement>document.getElementById("TransferArea")).classList.remove("d-block");
 
+  onHoldClick(id) {
+    // (<HTMLInputElement>document.getElementById("HoldArea")).classList.add("d-block");
+    (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.add("d-block");
+    document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
+    // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
+
+
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
+  }
+  onTransferClick(id) {
+    // (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
+
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
+  }
+  closehold(id) {
+    // (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
+    (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
+    this.Holddate = null;
+    this.hold_remarks = "";
+  }
+  closetransfer(id) {
+    // (<HTMLInputElement>document.getElementById("TransferArea")).classList.remove("d-block");
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmpNo = null;
+    this.TransDate = null;
+    this.transfer_remarks = "";
   }
 
   _Message: string;
@@ -2948,6 +3067,7 @@ export class MoreDetailsComponent implements OnInit {
 
       this.objProjectDto.Project_EndDate = this._ProjDeadline;
       this.objProjectDto.Project_Code = Pcode;
+      this.objProjectDto.Remarks = this.extend_remarks;
       this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
 
@@ -2966,7 +3086,33 @@ export class MoreDetailsComponent implements OnInit {
       this.notifyService.showInfo("Deadline date cannot be empty", "Please select date.");
     }
   }
+  Holddate: string;
+  hold_remarks: string;
+  minhold: any = new Date();
+  maxhold: any = new Date();
 
+  onProject_Hold(id, Pcode) {
+    this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
+    // alert(Pcode);
+    if (this.Holddate != null) {
+
+      this.objProjectDto.Project_holddate = this.Holddate;
+      this.objProjectDto.Project_Code = Pcode;
+      this.objProjectDto.Remarks = this.hold_remarks;
+      this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == 'Project Hold Updated') {
+          this.notifyService.showSuccess(this._Message + " by " + this.Current_user_ID, "Success");
+          this.GetProjectDetails();
+        }
+      });
+      this.onCancel(id);
+    }
+    else {
+      this.notifyService.showInfo("Project Hold date cannot be empty", "Please select a date.");
+    }
+  }
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
@@ -3033,7 +3179,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   OnClickCheckboxProjectUpdate() {
-     this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
+    this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data['Message'] == 1) {
           Swal.fire({
@@ -3090,7 +3236,7 @@ export class MoreDetailsComponent implements OnInit {
 
     this.selectedType = null;
     this.commentSelected = null;
-    this.noRejectType=false;
+    this.noRejectType = false;
     // this.ngOnInit();
   }
 
@@ -3107,7 +3253,7 @@ export class MoreDetailsComponent implements OnInit {
     fd.append("Emp_No", this.Current_user_ID);
     this.service._fileuploadService(fd).
       subscribe(event => {
-        console.log(event,"PC");
+        console.log(event, "PC");
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
           this.notifyService.showSuccess("", "File uploaded successfully");
@@ -3125,7 +3271,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  LoadDocument(cloud,Pcode, Resp, url: string) {
+  LoadDocument(cloud, Pcode, Resp, url: string) {
     // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
     // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
     // contenttype=".pdf";
@@ -3139,16 +3285,16 @@ export class MoreDetailsComponent implements OnInit {
 
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
-    
-    if(cloud==false){
-      var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/"  + url);
+
+    if (cloud == false) {
+      var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/" + url);
       myWindow.focus();
     }
-    else if(cloud==true){
+    else if (cloud == true) {
       var myWindow = window.open(url);
       myWindow.focus();
     }
-   
+
     // var myWindow = window.open(url);
     // myWindow.focus();
     //this.cd.detectChanges();
@@ -3167,7 +3313,7 @@ export class MoreDetailsComponent implements OnInit {
   darcreate() {
     this.dateF = new FormControl(new Date());
     // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
-    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName =='Routine Tasks' || this.ProjectBlockName == 'To do List') {
+    if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
     else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
@@ -3189,15 +3335,97 @@ export class MoreDetailsComponent implements OnInit {
   }
 
 
-  notinAction(){
+  notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Cancelled');
   }
 
-deadlineCount:any;
-getdeadlinecount(){
-  this.service.getDeadlineCountbyProjectcode(this.URL_ProjectCode).subscribe(data=>
-    {
-      this.deadlineCount=data['deadlineCount'];
+  deadlineCount: any;
+  getdeadlinecount() {
+    this.service.getDeadlineCountbyProjectcode(this.URL_ProjectCode).subscribe(data => {
+      this.deadlineCount = data['deadlineCount'];
     })
-}
+  }
+
+  //project transfer
+
+  sweetAlert1(id, pcode) {
+    Swal.fire({
+      title: 'Project Transfer!!',
+      text: 'Do you really want to transfer this project ?',
+      // icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.onProject_Transfer(id, pcode);
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Project Not Transferred!',
+          'error'
+        )
+        this.onCancel(id);
+      }
+    });
+
+  }
+
+  selectedEmp_No: string = null;
+  transfer_remarks: string;
+  TransDate: string;
+  new_Res: string;
+
+  onProject_Transfer(id, Pcode) {
+    this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+    // alert(Pcode);
+    this.Employee_List.forEach(element => {
+      if (element.Emp_No == this.selectedEmp_No) {
+        this.new_Res = element.DisplayName;
+      }
+    });
+
+    if (this.TransDate != null) {
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Responsible = this.selectedEmp_No;
+      this.approvalObj.deadline = this.TransDate;
+      this.approvalObj.Project_Code = Pcode;
+      this.approvalObj.Remarks = this.transfer_remarks;
+
+      this.approvalservice.InsertTransferApprovalService(this.approvalObj).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '1') {
+          this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " by " + this.Owner + '('+ this.Current_user_ID+ ')', "Successfully Transferred");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+          this.GetprojectComments();
+
+        }
+        else if (this._Message == '2') {
+          this.notifyService.showSuccess("Project Transfer request sent to Project Owner -" + this.Owner + '(' + this.Owner_EmpNo + ')', "Transfer under approval!");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+          this.GetprojectComments();
+        }
+        else if (this._Message == '3') {
+          this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
+        }
+      });
+      this.onCancel(id);
+      this.closeInfo();
+    }
+    else {
+      this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
+    }
+  }
+
+  onTransferCancel(id) {
+    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
+    this.selectedEmp_No = null;
+    this.TransDate = null;
+    this.transfer_remarks = "";
+  }
 }
