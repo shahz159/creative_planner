@@ -1069,7 +1069,7 @@ background-color: #f1f3f4;
 }
 ::ng-deep .fc-red {
     border-color: #f10505 !important;   
-    text-decoration: line-through;
+    text-decoration: line-through !important;
 }
 ::ng-deep .fc-grey .fc-daygrid-event-dot{
     border-color: #adb3af !important;   
@@ -1080,9 +1080,43 @@ background-color: #f1f3f4;
 ::ng-deep .fc .fc-list-event-title a {
     cursor: pointer;
 }
+::ng-deep .fc .fc-daygrid-event-dot{
+    border-width: 5px;
+}
+::ng-deep .fc-req .fc-daygrid-event-dot{
+    border-radius: 8px;
+    border: 3px solid #3788d8  !important;
+    width: 8px;
+    height: 6px;
+}
 ::ng-deep .ng-select-multiple {
 min-height: 36px;
 height: auto !important;
+}
+::ng-deep .fc-timegrid-event.fc-req, ::ng-deep .fc-timegrid-event.fc-red {
+    color: #3788d8;
+    background: transparent;
+}
+::ng-deep .fc-timegrid-event.fc-req .fc-event-main{
+    color: #3788d8;
+    background: transparent;
+}
+::ng-deep .fc-timegrid-event.fc-red {
+    border-color: #3788d8 !important;
+}
+::ng-deep .fc-timegrid-event-harness {
+    min-height: 20px;
+}
+::ng-deep .fc-timegrid-event.fc-red .fc-event-main{
+    text-decoration: line-through !important;
+    color: #3788d8;
+    background: transparent;
+}
+::ng-deep {
+    --fc-small-font-size: 1rem;
+}
+:host {
+    --fc-small-font-size: 1rem;
 }
 .bg-ovr, .bg-ovr1 {
     width: 100%;
