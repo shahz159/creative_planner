@@ -645,7 +645,7 @@ export class DashboardComponent implements OnInit {
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "block";
 
         }
@@ -950,6 +950,8 @@ export class DashboardComponent implements OnInit {
         element[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         element[columnNamee] = this.Endtms;
+        var columnName = "IsDeleted";
+        element[columnName] = 0;
 
         var columnName = "Emp_No";
         element[columnName] = this.Current_user_ID;
@@ -1095,7 +1097,8 @@ export class DashboardComponent implements OnInit {
         element[columnNames] = this.Startts;
         var columnNamee = "EndTime";
         element[columnNamee] = this.Endtms;
-
+        var columnName = "IsDeleted";
+        element[columnName] = 0;
         var columnName = "Emp_No";
         element[columnName] = this.Current_user_ID;
         var columnNames = "ScheduleType";
@@ -2136,7 +2139,7 @@ export class DashboardComponent implements OnInit {
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted'  || this.Status1 == 'Rejected')) {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "block";
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
