@@ -1131,6 +1131,9 @@ svg.feather {
   .bg-gry{
     background: #f9fafb;
   }
+  .z-1k{
+    z-index: 1000;
+  }
   ::ng-deep ng-select.kt-input {
     min-height: 36px;
     height: auto !important;

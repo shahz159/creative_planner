@@ -521,7 +521,34 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
+  Maybe_event(val){
+    
+     this.EventAction_type=val;
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.flagid = this.EventAction_type;
+      this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        });
+      this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+      this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+
+      this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+        ((data) => {
+          this.GetScheduledJson();
+          this.Event_requests();
+          this._Message = data['message'];
+          this.notifyService.showSuccess(this._Message, "May be");
+          this.calendar.updateTodaysDate();
+          this.closeevearea();
+
+
+        });
+
+    
+  }
   Event_acceptandReject() {
+    alert(this.EventAction_type )
     if (this.EventAction_type == 1) {
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.flagid = this.EventAction_type;
@@ -614,6 +641,7 @@ export class DashboardComponent implements OnInit {
         });
 
     }
+   
 
   }
 
@@ -638,12 +666,12 @@ export class DashboardComponent implements OnInit {
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected')) {
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected'&& this.Status1 != 'May be')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected'|| this.Status1 == 'May be')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "block";
