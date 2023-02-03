@@ -229,12 +229,12 @@
                                 </div>
                             </div>
                         </div> -->
-                        <!--Transfer end-->
+                        <!--Transfer end  -->
                         <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
                                 && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval'&&
                                 Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
                                 && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
-                            <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
+                            <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
                                 <i class="fa fa-forward"></i>
                                 <span class="ml-1">Project Transfer</span>
@@ -297,23 +297,23 @@
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
                                     || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
                                     ||  Status =='ToDo Achieved' || Status=='InProcess')">
-                                    <i class="fas fa-check-circle"></i>
+                                    <i class="fas fa-check-circle mr-1"></i>
                             Project Actions
                         </button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
                             && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                         class=" pro-act ml-2">
-                        <button class="btn  btn22 btn-pill" (click)="OnClickCheckboxProjectUpdate()">
-                            <i class="fas fa-check mr-2"></i>
+                        <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()">
+                            <i class="fas fa-check"></i>
                             Project Submission
                         </button>
                     </div>
                     <div *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')"
                         class=" pro-act ml-2">
-                        <button class="btn  btn22 btn-pill" (click)="notinAction()">
-                            <!-- -->
-                            <i class="fas fa-check mr-2"></i>
+                        <button class="btn  btn22" (click)="notinAction()">
+                            <!-- btn-pill btn-pill  mr-2-->
+                            <i class="fas fa-check"></i>
                             Project Submission
                         </button>
                     </div>
