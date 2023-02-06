@@ -548,7 +548,7 @@ export class DashboardComponent implements OnInit {
     
   }
   Event_acceptandReject() {
-    alert(this.EventAction_type )
+  
     if (this.EventAction_type == 1) {
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.flagid = this.EventAction_type;
