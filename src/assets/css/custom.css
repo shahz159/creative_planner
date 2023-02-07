@@ -1180,3 +1180,6 @@ svg.feather {
 ::ng-deep .input-group-append .mat-icon-button {
     height: 35px !important;
 }
+button[disabled] {
+    cursor: not-allowed;
+  }

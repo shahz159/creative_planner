@@ -30,33 +30,42 @@
                             <li class="nav-item">
                                 <a class="nav-link show active" data-toggle="tab"
                                     href="#topbar_notifications_notifications" role="tab"
-                                    aria-selected="true">Alerts</a>
+                                    aria-selected="true">Inbox</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#topbar_notifications_events" role="tab"
-                                    aria-selected="false">Events</a>
+                                    aria-selected="false">Alerts</a>
                             </li>
                         </ul>
                     </div>
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true"
-                                data-height="300" data-mobile-height="200">
+                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer" data-scroll="true"
+                                data-height="300" data-mobile-height="200" *ngFor="let noti of _NotificationActivity">
                                 <a class="kt-notification__item">
                                     <div class="kt-notification__item-icon">
                                         <i class="flaticon2-line-chart kt-font-success"></i>
                                     </div>
                                     <div class="kt-notification__item-details">
                                         <div class="kt-notification__item-title">
-                                            Subtask Created For Dr Cafe.
+                                            Project: {{noti.Project_Name}}
+                                        </div>
+                                        <div class="kt-notification__item-title">
+                                            Type: {{noti.Req_Type}}
                                         </div>
                                         <div class="kt-notification__item-time">
-                                            2 hrs ago
+                                            Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            Comments: {{noti.Req_Coments}}
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            By: {{noti.SubmittedBy}}
                                         </div>
                                     </div>
                                 </a>
-                                <a class="kt-notification__item">
+                                <!-- <a class="kt-notification__item">
                                     <div class="kt-notification__item-icon">
                                         <i class="flaticon2-box-1 kt-font-brand"></i>
                                     </div>
@@ -94,7 +103,7 @@
                                             5 hrs ago
                                         </div>
                                     </div>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
 
@@ -141,6 +150,7 @@
                                     </div>
                                 </a>
                             </div>
+                            <button (click)="notification()">View all</button>
                         </div>
                     </div>
                 </form>

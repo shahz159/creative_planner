@@ -18,6 +18,7 @@ import { DefaultLayoutComponent } from './_Layouts/default-layout/default-layout
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NotificationComponent } from './_LayoutDashboard/notification/notification.component';
 
 
 
@@ -37,7 +38,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DefaultLayoutComponent,
     HeaderComponent,
     SidebarComponent,
-    ConfirmDialogComponent    
+    ConfirmDialogComponent,
+    NotificationComponent    
     
 
   
