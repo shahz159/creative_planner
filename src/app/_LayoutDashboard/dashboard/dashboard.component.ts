@@ -89,6 +89,8 @@ export class DashboardComponent implements OnInit {
   MasterCode1: any = [];
   Subtask: any;
   Startts: any;
+  PropStart: any;
+  PurposeEnd: any;
   Endtms: any;
   Alltimes: any = [];
   SelectStartdate: any;
@@ -306,7 +308,7 @@ export class DashboardComponent implements OnInit {
   _SelectedEmpIds_String: string;
   SelectDms: any;
   SelectDms1: any;
-
+  Proposedate: any;
   _StartDate: any;
   _EndDate: any;
   display: string;
@@ -521,34 +523,58 @@ export class DashboardComponent implements OnInit {
   }
   // Scheduling Work
   // Start Here
-  Maybe_event(val){
-    
-     this.EventAction_type=val;
-      this._calenderDto.Emp_No = this.Current_user_ID;
-      this._calenderDto.flagid = this.EventAction_type;
-      this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-        ((data) => {
-          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        });
-      this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-      this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+  proposecahngedate(event) {
+    this.Proposedate = event.value.format("YYYY-MM-DD").toString()
+  }
+  proposenewtime() {
 
-      this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
-        ((data) => {
-          this.GetScheduledJson();
-          this.Event_requests();
-          this._Message = data['message'];
-          this.notifyService.showSuccess(this._Message, "May be");
-          this.calendar.updateTodaysDate();
-          this.closeevearea();
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.propose_date = this.Proposedate;
+    this._calenderDto.propose_stt = this.PropStart;
+    this._calenderDto.propose_edt = this.PurposeEnd;
+
+    this.CalenderService.NewGetproposenewtime(this._calenderDto).subscribe
+      ((data) => {
+        this.GetScheduledJson();
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "May be");
+        // $('#propse').collapse('toggle')
+        $('#propse').toggle();
+        this.pro_date=this.Proposedate;
+        this.pro_sttime=this.PropStart;
+        this.pro_edtime=this.PurposeEnd;
+        this.Status1="Proposed";
+      });
+
+  }
+  Maybe_event(val) {
+
+    this.EventAction_type = val;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = this.EventAction_type;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      });
+    this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+
+    this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+      ((data) => {
+        this.GetScheduledJson();
+        this.Event_requests();
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "May be");
+        this.calendar.updateTodaysDate();
+        this.closeevearea();
 
 
-        });
+      });
 
-    
+
   }
   Event_acceptandReject() {
-  
+
     if (this.EventAction_type == 1) {
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.flagid = this.EventAction_type;
@@ -641,7 +667,7 @@ export class DashboardComponent implements OnInit {
         });
 
     }
-   
+
 
   }
 
@@ -653,6 +679,9 @@ export class DashboardComponent implements OnInit {
     this.EventAction_type = val;
 
   }
+  pro_date:any;
+  pro_sttime:any;
+  pro_edtime:any;
   GetclickEventRequest_details(id) {
     this.closeevearea1();
     $('.bg-ovr').addClass('d-block');
@@ -660,18 +689,19 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        debugger
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "Testing1");
+        console.log(this.EventScheduledjson, "Testing111");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected'&& this.Status1 != 'May be')) {
+     
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected'|| this.Status1 == 'May be')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "block";
@@ -804,7 +834,7 @@ export class DashboardComponent implements OnInit {
         this.AllDatesSDandED = [];
         var jsonData = {};
         var columnName = "Date";
-        jsonData[columnName] =this.EventScheduledjson[0]['Schedule_date'];
+        jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
         var IsActive = "IsActive";
         jsonData[IsActive] = 1;
         var Day = "Day";
@@ -812,7 +842,7 @@ export class DashboardComponent implements OnInit {
         this.AllDatesSDandED.push(jsonData);
         // alert(this.EventScheduledjson[0]['Schedule_date']);
         this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
-        this.minDate= this.EventScheduledjson[0]['Schedule_date'];
+        this.minDate = this.EventScheduledjson[0]['Schedule_date'];
         // this._EndDate = moment().format("YYYY-MM-DD").toString();
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
@@ -881,8 +911,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
-          
-          
+
+
         }
 
       });
@@ -1625,6 +1655,19 @@ export class DashboardComponent implements OnInit {
         // console.log("Array" + this.EndTimearr);
       });
   }
+
+  purposeaddtime() {
+    this.Alltimes = [];
+    this.StartTimearr.forEach(element => {
+      this.Alltimes.push(element);
+    });
+    // this.Startts = this.Startts;
+    let _index = this.StartTimearr.indexOf(this.PropStart);
+    this.EndTimearr = this.Alltimes.splice(_index + 1);
+    // this.Startts = TSStart;
+    this.PurposeEnd = this.EndTimearr[0];
+
+  }
   addstarttime() {
     // alert(this.Startts);
     this.Alltimes = [];
@@ -1690,6 +1733,13 @@ export class DashboardComponent implements OnInit {
     //   this.Checkdatetimetable(this.daysSelectedII);
     // }
     // this.calendar.updateTodaysDate();
+  }
+  purposeEndtime(TSEnd) {
+    this.PurposeEnd = TSEnd;
+    if (this.PropStart > this.PurposeEnd) {
+      this.PurposeEnd = this.PropStart;
+    }
+
   }
   addendtime(TSEnd) {
 
@@ -2147,7 +2197,7 @@ export class DashboardComponent implements OnInit {
   dmsIdjson: any = [];
 
   GetClickEventJSON_Calender(arg) {
-
+    this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -2159,13 +2209,20 @@ export class DashboardComponent implements OnInit {
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
+        this.Proposedate = this.EventScheduledjson[0].Schedule_date;
+        this.PropStart = this.EventScheduledjson[0].St_Time;
+        this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
+        this.pro_date=this.EventScheduledjson[0].Purposedate;
+        this.pro_sttime=this.EventScheduledjson[0].PurposeStarttime;
+        this.pro_edtime=this.EventScheduledjson[0].PurposeEndtime;
         console.log(this.EventScheduledjson, "Testing12");
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted'  && this.Status1 != 'Rejected')) {
+       
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "block";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "none";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted'  || this.Status1 == 'Rejected')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "block";
           document.getElementById("main-foot").style.display = "block";
