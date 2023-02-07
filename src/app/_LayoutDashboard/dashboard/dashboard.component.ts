@@ -65,6 +65,9 @@ export class DashboardComponent implements OnInit {
   _NotificationActivityList: NotificationActivityDTO[];
   _RequestActivity: [];
   _DarActivityList: [];
+  _NotificationActivity: [];
+  _AlertActivity:[];
+  notilength:number;
   Emp_No: string;
   _Notification: any;
   projectactivity_Div: boolean;
@@ -400,6 +403,8 @@ export class DashboardComponent implements OnInit {
     this._subname = false;
     this._subname1 = false;
   }
+
+
   ngOnInit() {
     this._labelName = "Schedule Date :";
     document.getElementById("div_endDate").style.display = "none";
@@ -461,6 +466,10 @@ export class DashboardComponent implements OnInit {
         this._NotificationActivityList = data as NotificationActivityDTO[];
         this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
         this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
+        this._NotificationActivity = JSON.parse(this._NotificationActivityList[0]['Notification_Json']);
+        this.notilength = this._NotificationActivity.length;
+        this._AlertActivity = JSON.parse(this._NotificationActivityList[0]['Alert_Json']);
+        console.log(this._NotificationActivity,this._AlertActivity,'Notif');
       });
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
@@ -2591,6 +2600,13 @@ export class DashboardComponent implements OnInit {
     var url = document.baseURI + name;
     var myurl = `${url}/${ProjectCode}`;
     var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
+  notification() {
+    let name: string = 'Notification';
+    var url = document.baseURI + name;
+    var myurl = `${url}`;
+    var myWindow = window.open(myurl);
     myWindow.focus();
   }
 

@@ -23,6 +23,11 @@ export const DEFAULT_ROUTES: Routes = [
 
      },
      {
+          path: 'Notification', canActivate: [AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/notification/notification.module').then(m => m.NotificationModule),
+
+     },
+     {
           path: 'portfolioprojects/:portfolioId', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/portfolio-projects/portfolio-projects.module').then(m => m.PortfolioProjectsModule)
 

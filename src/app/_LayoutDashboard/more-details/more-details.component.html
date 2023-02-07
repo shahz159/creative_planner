@@ -278,6 +278,7 @@
                                                 <textarea class="form-control" [(ngModel)]="transfer_remarks" placeholder="" rows="2" cols="20"
                                                     style="height:70px;"></textarea>
                                             </div>
+                                            <span class="text-danger">Note: (*) are mandatory!</span>
                                         </div>
                                     </div>
                                 </ul>
@@ -482,7 +483,7 @@
                                             <li class="kt-nav__head py-0">
                                                 <div>Deadline Extend</div>
                                             </li>
-
+                                            <!-- [min]="EndDate1" -->
                                             <li class="kt-nav__separator"></li>
                                             <div class=" height-scroll h-scr">
                                                 <div class="px-4 py-3">
@@ -493,7 +494,7 @@
                                                                      #Deadlinetext="ngModel"
                                                                     (click)="picker2.open();"
                                                                     (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                                    [min]="EndDate1" placeholder="Select Date"
+                                                                     [min]="minhold" [max]="maxhold" placeholder="Select Date"
                                                                     [(ngModel)]="_ProjDeadline" class="form-control"
                                                                     name="date">
                                                                 <div class="input-group-append">
@@ -509,6 +510,7 @@
                                                         <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
                                                             style="height:70px;"></textarea>
                                                     </div>
+                                                    <span class="text-danger">Note: (*) are mandatory!</span>
                                                 </div>
                                             </div>
                                             <li class="kt-nav__separator"></li>
@@ -578,6 +580,7 @@
                                                                         rows="2" cols="20"
                                                                         style="height:70px;"></textarea>
                                                                 </div>
+                                                            <span class="text-danger">Note: (*) are mandatory!</span>
                                                             </div>
 
                                                         </div>
@@ -2241,7 +2244,7 @@
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
                 style="height: 264px; margin-top: 0px; margin-bottom: 0px;"></textarea>
         </div>
-
+        <span class="text-danger">Note: (*) are mandatory!</span>
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
@@ -2304,6 +2307,7 @@
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
                 style="margin-top: 0px; margin-bottom: 0px; height: 300px;"></textarea>
         </div>
+        <span class="text-danger">Note: (*) are mandatory!</span>
         <div class="form-group">
             <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='') || (selectedFile==null)"
                 (click)="OnUpdateClick()">Submit</button>
