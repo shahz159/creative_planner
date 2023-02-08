@@ -1675,3 +1675,6 @@ height: auto !important;
     color: #a1a5b7;
     fill: none;
 }
+.kt-notification{
+    border-top: 1px solid #d7e3fa;
+}

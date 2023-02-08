@@ -145,7 +145,7 @@
                     id="EidtBtn_single{{Pid}}"
                     *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
                          && (item.Status!='Completed')">
-                    <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
                 </span>
                 <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
                     <div class="d-flex">
@@ -166,7 +166,7 @@
                     id="EidtBtn_single{{Pid}}"
                     *ngIf="(Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
                          && (item.Status!='Completed')">
-                    <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
                 </span>
                 <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
                     <div class="d-flex">
@@ -479,7 +479,7 @@
                                         (click)="onEditDeadline(Pid)">
                                         <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
                                         <!-- [hidden]="Editbutton" -->
-                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
                                     </span>
                                     <div id="DeadlineArea_{{Pid}}"
                                         class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1">
@@ -540,7 +540,7 @@
                                     <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         (click)="onHoldClick(Pid)">
-                                        <i class="fas fa-pause ml-2 mb-1 curser-pointer"></i>
+                                        <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
                                     </span>
                                     <!-- <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -913,7 +913,8 @@
                                 item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
                                 && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
                             <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
+                                aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
+                                data-toggle="tooltip" title="click to transfer">
                                 <i class="fa fa-forward"></i>
                                 <span class="ml-1">Project Transfer</span>
                             </button>

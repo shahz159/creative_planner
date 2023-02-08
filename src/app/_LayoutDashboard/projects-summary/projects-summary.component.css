@@ -1150,7 +1150,20 @@ div#mat-select-0-panel{
   right: -4px;
   top: -5px;
 }
-
+.kt-widget__details {
+  min-width: 90px;
+}
+.kt-media-group .kt-media.kt-media--sm img {
+  max-width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.kt-media-group .kt-media.kt-media--sm span {
+  width: 25px;
+  height: 25px;
+  background: #deecf8;
+  color: #2786fb;
+}
 .bg-today {
   background-color: #342bf0 !important;
 }
