@@ -1373,6 +1373,7 @@ height: auto !important;
     border-top: #dadce0 1px solid;
 }
 .foot-body {
+    background: #fff;
     border-top: #dadce0 1px solid;
     -webkit-align-items: center;
     align-items: center;
@@ -1383,7 +1384,6 @@ height: auto !important;
     -webkit-flex: none;
     flex: none;
     min-height: 48px;
-    -webkit-justify-content: flex-end;
     justify-content: flex-end;
     padding-left: 16px;
     padding-right: 16px;
@@ -1400,6 +1400,9 @@ height: auto !important;
 .foot-leftsec .line-m {
     margin: 13px 8px 14px 8px;
     height: auto;
+}
+.foot-calendar .demo-inline-calendar-card{
+    max-width: 250px;
 }
 .chev-dn{
     cursor: pointer;

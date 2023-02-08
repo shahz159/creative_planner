@@ -49,6 +49,14 @@ export class CalenderService {
     this.obj_CalenderDTO.EmpNo = obj.EmpNo;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetAcceptedRequeste", this.obj_CalenderDTO);
   }
+  NewGetproposenewtime(obj:CalenderDTO){
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.propose_date = obj.propose_date;
+    this.obj_CalenderDTO.propose_stt = obj.propose_stt;
+    this.obj_CalenderDTO.propose_edt = obj.propose_edt;
+
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetProposenewdate", this.obj_CalenderDTO);
+  }
   NewGetEvent_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
   
