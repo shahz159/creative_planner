@@ -25,7 +25,7 @@
                             Notifications &nbsp;
                             <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">4 new</span>
                         </h3>
-                        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand  kt-notification-item-padding-x mt-0"
+                        <!-- <ul class="d-none nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand  kt-notification-item-padding-x mt-0"
                             role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link show active" data-toggle="tab"
@@ -36,16 +36,20 @@
                                 <a class="nav-link" data-toggle="tab" href="#topbar_notifications_events" role="tab"
                                     aria-selected="false">Alerts</a>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer" data-scroll="true"
-                                data-height="300" data-mobile-height="200" *ngFor="let noti of _NotificationActivity">
-                                <a class="kt-notification__item">
+                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325" data-scroll="true"
+                                data-height="300" data-mobile-height="200">
+                                <a class="kt-notification__item" *ngFor="let noti of _NotificationActivity">
                                     <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-line-chart kt-font-success"></i>
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fb6b9e" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
+                                              </svg>                                              
+                                        </span>
                                     </div>
                                     <div class="kt-notification__item-details">
                                         <div class="kt-notification__item-title">
@@ -65,49 +69,13 @@
                                         </div>
                                     </div>
                                 </a>
-                                <!-- <a class="kt-notification__item">
-                                    <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-box-1 kt-font-brand"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title">
-                                            Creative Planner Project
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            3 hrs ago
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="kt-notification__item">
-                                    <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-chart2 kt-font-danger"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title">
-                                            RunWay Module Subtask Added
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            3 hrs ago
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="kt-notification__item">
-                                    <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-image-file kt-font-warning"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title">
-                                            Process Detail Module Subtask Added
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            5 hrs ago
-                                        </div>
-                                    </div>
-                                </a> -->
+                            </div>
+                            <div class="py-3 text-center border-top">
+                                <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View All</a>
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="topbar_notifications_events" role="tabpanel">
+                        <div class="tab-pane" id="topbar_notifications_events d-none" role="tabpanel">
                             <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true"
                                 data-height="300" data-mobile-height="200">
                                 <a class="kt-notification__item">
@@ -123,34 +91,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a class="kt-notification__item">
-                                    <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-chart2 kt-font-danger"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title">
-                                            RunWay Module Subtask Added
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            3 hrs ago
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="kt-notification__item">
-                                    <div class="kt-notification__item-icon">
-                                        <i class="flaticon2-image-file kt-font-warning"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title">
-                                            Process Detail Module Subtask Added
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            5 hrs ago
-                                        </div>
-                                    </div>
-                                </a>
                             </div>
-                            <button (click)="notification()">View all</button>
                         </div>
                     </div>
                 </form>
