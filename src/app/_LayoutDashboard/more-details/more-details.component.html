@@ -235,7 +235,8 @@
                                 Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
                                 && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
                             <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)" >
+                                aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
+                                data-toggle="tooltip" title="click to transfer">
                                 <i class="fa fa-forward"></i>
                                 <span class="ml-1">Project Transfer</span>
                             </button>
@@ -298,14 +299,15 @@
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
                                     || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
                                     ||  Status =='ToDo Achieved' || Status=='InProcess')">
-                                    <i class="fas fa-check-circle mr-1"></i>
+                                    <i class="fas fa-check-circle mr-1"  data-toggle="tooltip" title="action required"></i>
                             Project Actions
                         </button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
                             && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                         class=" pro-act ml-2">
-                        <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()">
+                        <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()"
+                                data-toggle="tooltip" title="submit project">
                             <i class="fas fa-check"></i>
                             Project Submission
                         </button>
@@ -327,7 +329,7 @@
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
                             *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
-                            <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
                             <div class="d-flex">
@@ -352,7 +354,7 @@
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}"
                         *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
-                        <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
                         <div class="d-flex">
@@ -475,7 +477,7 @@
                                     <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false"
                                         (click)="onEditDeadline(Pid)">
-                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer"></i>
+                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
                                     </span>
                                     <div id="DeadlineArea_{{Pid}}"
                                         class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
@@ -530,7 +532,7 @@
                                                 <span type="button" id="hold-icn" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false"
                                                     class="dropdown-toggle no-after text-info" (click)="onHoldClick(Pid)">
-                                                    <i class="fas fa-pause ml-2 mb-1 curser-pointer"></i></span>
+                                                    <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i></span>
 
 
                                                 <div id="HoldArea_{{Pid}}"
