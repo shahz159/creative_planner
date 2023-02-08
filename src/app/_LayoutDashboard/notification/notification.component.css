@@ -1,0 +1,22 @@
+.card.brdr {
+    border-left: 4px solid #2786fb;
+    border-radius: 5px;
+}
+.pro-rsec {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.tic-abt {
+    color: #8898aa!important;
+}
+.notifi-list .card-title {
+    color: #32325d;
+    line-height: 1.5;
+}
+.pro-dc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
