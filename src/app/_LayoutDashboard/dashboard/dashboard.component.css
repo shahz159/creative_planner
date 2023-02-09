@@ -1054,17 +1054,17 @@ background-color: #f1f3f4;
 ::ng-deep .fc .fc-list-event:hover td{
     background-color: unset !important;
 }
-::ng-deep .fc-info .fc-daygrid-event-dot{
+::ng-deep .fc-info .fc-daygrid-event-dot, ::ng-deep .fc-info .fc-list-event-dot{
     border-color:  #3788d8 !important;;
 }
-::ng-deep .fc-suc .fc-daygrid-event-dot{
+::ng-deep .fc-suc .fc-daygrid-event-dot, ::ng-deep .fc-suc .fc-list-event-dot{
     border-color: #1dc9b7 !important;
 }
-::ng-deep .fc-yellow .fc-daygrid-event-dot{
+::ng-deep .fc-yellow .fc-daygrid-event-dot, ::ng-deep .fc-yellow .fc-list-event-dot{
     border-color: #e5e914 !important;
     
 }
-::ng-deep .fc-red .fc-daygrid-event-dot{
+::ng-deep .fc-red .fc-daygrid-event-dot, ::ng-deep .fc-red .fc-list-event-dot{
     border-color: #f10505 !important;   
     text-decoration: line-through;
 }
@@ -1072,7 +1072,7 @@ background-color: #f1f3f4;
     border-color: #f10505 !important;   
     text-decoration: line-through !important;
 }
-::ng-deep .fc-grey .fc-daygrid-event-dot{
+::ng-deep .fc-grey .fc-daygrid-event-dot, ::ng-deep .fc-grey .fc-list-event-dot{
     border-color: #adb3af !important;   
 }
 ::ng-deep .fc .fc-daygrid-day-frame{
@@ -1087,8 +1087,8 @@ background-color: #f1f3f4;
 ::ng-deep .fc-req .fc-daygrid-event-dot{
     border-radius: 8px;
     border: 3px solid #3788d8  !important;
-    width: 8px;
-    height: 6px;
+    width: 10px;
+    height: 4px;
 }
 ::ng-deep .ng-select-multiple {
 min-height: 36px;
