@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
   typetext: string;
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
-  Current_user_ID: any;
+  Current_user_ID: any; 
   messageForEmpty: boolean;
   myDate: number;
   CurrentUser_fullname: string;
@@ -404,6 +404,7 @@ export class DashboardComponent implements OnInit {
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
     this._subname = false;
     this._subname1 = false;
+    this.notificationDTO=new NotificationActivityDTO();
   }
 
 
@@ -463,15 +464,12 @@ export class DashboardComponent implements OnInit {
 
     this.CurrentUser_fullname = localStorage.getItem('UserfullName');
     this.GetDashboardSummary();
+    this.getDashboardnotifications();
     this.service.GetActivities(this.Current_user_ID).subscribe(
       (data) => {
         this._NotificationActivityList = data as NotificationActivityDTO[];
         this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
         this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
-        this._NotificationActivity = JSON.parse(this._NotificationActivityList[0]['Notification_Json']);
-        this.notilength = this._NotificationActivity.length;
-        this._AlertActivity = JSON.parse(this._NotificationActivityList[0]['Alert_Json']);
-        console.log(this._NotificationActivity, this._AlertActivity, 'Notif');
       });
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
@@ -525,6 +523,17 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this.Event_requests();
 
+  }
+
+  notificationDTO: NotificationActivityDTO;
+  getDashboardnotifications(){
+    this.notificationDTO.Emp_No=this.Current_user_ID;
+    this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
+      (data) => {
+          this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+          this.notilength = (data[0]['notificationcount']);
+          console.log(data,'Notif');
+      });
   }
 
   closeevearea() {
@@ -2688,7 +2697,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
   notification() {
-    let name: string = 'Notification';
+    let name: string = 'Notifications';
     var url = document.baseURI + name;
     var myurl = `${url}`;
     var myWindow = window.open(myurl);

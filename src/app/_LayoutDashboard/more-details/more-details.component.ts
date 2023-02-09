@@ -335,7 +335,7 @@ export class MoreDetailsComponent implements OnInit {
                 this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
               }
               else {
-                this.notifyService.showWarning(this._Message, "Rejected Successfully");
+                this.notifyService.showError(this._Message, "Rejected Successfully");
                 this.GetProjectDetails();
                 this.GetSubtask_Details();
                 this.getapprovalStats();
@@ -378,7 +378,7 @@ export class MoreDetailsComponent implements OnInit {
                 this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
               }
               else {
-                this.notifyService.showWarning(this._Message, "Rejected Successfully");
+                this.notifyService.showError(this._Message, "Rejected Successfully");
                 this.GetProjectDetails();
                 this.GetSubtask_Details();
                 this.getapprovalStats();
@@ -409,13 +409,22 @@ export class MoreDetailsComponent implements OnInit {
           this._Message = data['message'];
 
           if (this._Message == '1') {
-            this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " by " + this.Owner +'('+ this.Current_user_ID+ ')', "Successfully Transferred");
+            this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible +'('+ this.Responsible_EmpNo+ ')', "Successfully Transferred");
             this.GetProjectDetails();
             this.GetSubtask_Details();
             this.getapprovalStats();
             this.GetprojectComments();
           }
-
+          else if (this._Message == '2') {
+            this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
+            this.GetprojectComments();
+          }
+          else if (this._Message == '4' || this._Message == null) {
+            this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
+          }
         });
         this.closeInfo();
 
@@ -3396,7 +3405,7 @@ export class MoreDetailsComponent implements OnInit {
         this._Message = data['message'];
 
         if (this._Message == '1') {
-          this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " by " + this.Owner + '('+ this.Current_user_ID+ ')', "Successfully Transferred");
+          this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '('+ this.Responsible_EmpNo+ ')', "Successfully Transferred");
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
@@ -3404,13 +3413,20 @@ export class MoreDetailsComponent implements OnInit {
 
         }
         else if (this._Message == '2') {
-          this.notifyService.showSuccess("Project Transfer request sent to Project Owner -" + this.Owner + '(' + this.Owner_EmpNo + ')', "Transfer under approval!");
+          this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getapprovalStats();
           this.GetprojectComments();
         }
         else if (this._Message == '3') {
+          this.notifyService.showSuccess("Project Transfer request sent to Project Owner -" + this.Owner + '(' + this.Owner_EmpNo + ')', "Transfer under approval!");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+          this.GetprojectComments();
+        }
+        else if (this._Message == '4') {
           this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
         }
       });

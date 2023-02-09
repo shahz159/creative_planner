@@ -9,5 +9,7 @@ export class NotificationActivityDTO {
     Date:Date;
     RequestActivity_Json:any;
     DarActivity_Json:any;
+    PageSize:any;
+    PageNumber:any;
 }
 

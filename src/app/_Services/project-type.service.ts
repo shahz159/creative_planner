@@ -324,6 +324,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetNotificationActivities", this.ObjNotificationDto)
   }
 
+  GetDashboardnotifications(obj: NotificationActivityDTO) {
+    this.ObjNotificationDto.Emp_No = obj.Emp_No;
+    return this.http.post(this.rootUrl + "Notification/NewGetDashboardNotifications", this.ObjNotificationDto)
+  }
+
+  GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {
+    this.ObjNotificationDto.Emp_No = obj.Emp_No;
+    this.ObjNotificationDto.PageNumber = obj.PageNumber;
+    this.ObjNotificationDto.PageSize = obj.PageSize;
+    return this.http.post(this.rootUrl + "Notification/NewGetViewAllNotifications", this.ObjNotificationDto)
+  }
+  
   SetFavourite_Service(portfolioId, isfav, empId) {
     this.ObjStatusDTO.Portfolio_ID = portfolioId;
     this.ObjStatusDTO.IsFavourite = isfav;

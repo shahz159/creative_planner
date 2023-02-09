@@ -249,7 +249,7 @@
                                     <li class="kt-nav__separator"></li>
                                     <div class=" height-scroll h-scr">
                                         <div class="px-4 py-3">
-                                            <div  class="form-group">
+                                            <div  class="form-group" id="Transtext_{{Pid}}"> 
                                                 <label> Transfer To <span class="text-danger">*</span> : <strong></strong></label>
                                                 <ng-select reuired #transfer="ngModel" [(ngModel)]="selectedEmp_No" placeholder="Select Employee" >
                                                     <ng-option [value]="item.Emp_No" *ngFor="let item of Employee_List">
@@ -260,7 +260,7 @@
                                             <div class="form-group input-group">
                                                 <label>Select New Deadline<span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
+                                                    <input matInput [matDatepicker]="picker4"  
                                                                 #Transdt="ngModel"
                                                                 (click)="picker4.open();"
                                                                 (keydown.enter)="onProject_Transfer(Pid,_MasterCode);"
@@ -294,8 +294,7 @@
                     </div>
                     <!--Transfer end-->
                     </div>
-                    <div class=" pro-act ml-2" *ngIf="(Current_user_ID == approvalEmpId) && (pro_act==true)"
-                        data-toggle="tooltip" title="Project Actions!">
+                    <div class=" pro-act ml-2" *ngIf="(Current_user_ID == approvalEmpId) && (pro_act==true)">
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
                                     || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
                                     ||  Status =='ToDo Achieved' || Status=='InProcess')">
@@ -1875,7 +1874,8 @@
                                 <div style="text-align:center"> <button class="btn btn-info loadMore"
                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                                         [hidden]="_CurrentpageRecords<10">
-                                        Load More!</button></div>
+                                        Load More!</button>
+                                </div>
                             </div>
                         </div>
                     </div>

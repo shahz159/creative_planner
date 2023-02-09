@@ -20,3 +20,55 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.sideInfobar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    border-left: 1px solid #b3bcff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    /* padding-top: 60px; */
+  }
+  .sideInfobar .kt-portlet__head{
+    background-color: #f5f6fc;
+  }
+  
+  .sideInfobar .closebtn {
+      text-decoration: none;
+      color: #333;
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  .info-icon-cir{
+    font-size: 20px;
+    color: #5867dd;
+  }
+  
+  .sideInfobar .kt-widget1 .kt-widget1__item{
+    border-bottom: 0.07rem dashed #dedede;
+    padding: 6px;
+  }
+  .sideInfobar .kt-widget1 .kt-widget1__item.dark{
+    border-bottom: 0.07rem dashed rgba(0,0,0,0.3);
+  }
+  
+  
+  .sideInfobar .kt-widget1 .kt-widget1__item .kt-widget1__info .kt-widget1__title{
+    font-weight: 600;
+  }
+  .sideInfobar .title-sidebar{
+      width: 270px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }

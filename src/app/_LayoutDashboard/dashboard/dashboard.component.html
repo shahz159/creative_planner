@@ -13,7 +13,9 @@
         <div class="kt-header__topbar-item dropdown">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i
-                        class="flaticon2-bell-alarm-symbol"></i></span>
+                        class="flaticon2-bell-alarm-symbol"></i>
+                        <span class="noti text-white" *ngIf="notilength!=0">{{notilength}}</span>
+                </span>
                 <!-- <span class="kt-badge kt-badge--danger">4</span> -->
 
             </div>
@@ -23,7 +25,7 @@
                     <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b pt-3">
                         <h3 class="kt-head__title">
                             Notifications &nbsp;
-                            <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">4 new</span>
+                            <span class="btn btn-label-primary btn-sm btn-bold btn-font-md" *ngIf="notilength!=0">{{notilength}} new</span>
                         </h3>
                         <!-- <ul class="d-none nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand  kt-notification-item-padding-x mt-0"
                             role="tablist">
@@ -41,7 +43,7 @@
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325" data-scroll="true"
+                            <div *ngIf="notilength!=0" class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325" data-scroll="true"
                                 data-height="300" data-mobile-height="200">
                                 <a class="kt-notification__item" *ngFor="let noti of _NotificationActivity">
                                     <div class="kt-notification__item-icon">
@@ -51,7 +53,7 @@
                                               </svg>                                              
                                         </span>
                                     </div>
-                                    <div class="kt-notification__item-details">
+                                    <div class="kt-notification__item-details" (click)="moreDetails(noti.Project_Code)">
                                         <div class="kt-notification__item-title">
                                             Project: {{noti.Project_Name}}
                                         </div>
@@ -61,16 +63,20 @@
                                         <div class="kt-notification__item-time">
                                             Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
                                         </div>
-                                        <div class="kt-notification__item-time">
+                                        <!-- <div class="kt-notification__item-time">
                                             Comments: {{noti.Req_Coments}}
-                                        </div>
+                                        </div> -->
                                         <div class="kt-notification__item-details">
                                             By: {{noti.SubmittedBy}}
                                         </div>
                                     </div>
                                 </a>
                             </div>
+                            <div *ngIf="notilength==0" class="kt-notification kt-margin-t-10 kt-margin-b-10" style="color: lightgrey">
+                                <h5>No Notifications available</h5>
+                            </div>
                             <div class="py-3 text-center border-top">
+                                <!-- *ngIf="notilength>5" -->
                                 <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View All</a>
                             </div>
                         </div>
