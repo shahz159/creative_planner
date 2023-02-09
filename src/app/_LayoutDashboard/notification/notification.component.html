@@ -31,26 +31,31 @@
                     </div> -->
 
                     
-                    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+                    <div class="card my-1 shadow-sm brdr notifi-list mb-2"  *ngFor="let item of notifArray">
                         <div class="card-body row">
                             <div class="col">
                                 <div class="pro-dc">
                                     <div class="">
                                         <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
-                                            <i class="fa fa-clone mr-2"></i>Standard Tasks </label>
-                                        <span class="h6 text-muted mb-0 ml-2"><i class="far fa-calendar-alt mr-1"></i>31-10-2022</span>
+                                            <i class="fa fa-clone mr-2"></i>{{item.Exec_BlockName}}</label>
+                                        <span class="h6 text-muted mb-0 ml-2"><i class="far fa-calendar-alt mr-1"></i>{{item.Rec_Date | date:'dd-MM-yyyy' }}</span>
                                     </div>
                                     <div>
-                                        <span class="h6 text-muted mb-0 mr-1"><i class="far fa-user mr-1"></i>Stevee Smith Smith smith</span>
+                                        <span class="h6 text-muted mb-0 mr-1"><i class="far fa-user mr-1"></i>{{item.SubmittedBy}}</span>
                                     </div>
                                 </div>
-                                <h5 class="card-title text-capitalize mb-0"> Testing deadline for approvals in old Ep. </h5>
-                                <span class="h6 tic-abt mb-0"> Comments: Test by author. This project is about deadline for approvals in old Execution Planner.</span>
+                                <h5 class="card-title text-capitalize mb-0">
+                                    <i class="fa fa-info-circle info-icon-cir curser-pointer" (click)="openInfo(item.Project_Code)"></i>
+                                    <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 ml-2" (click)="moreDetails(item.Project_Code)"></i>
+                                    {{item.Project_Name}}</h5>
+                                <span class="h6 tic-abt mb-0"> Request Type: {{item.Req_Type}}</span><br>
+                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments"> Comments: {{item.Req_Coments}}</span>
+                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments==null || 
+                                      item.Req_Coments=='' || item.Req_Coments==undefined"> Comments: NA</span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+<!--                <div class="card my-1 shadow-sm brdr notifi-list mb-2">
                         <div class="card-body row">
                             <div class="col">
                                 <div class="pro-dc">
@@ -67,10 +72,25 @@
                                 <span class="h6 tic-abt mb-0"> Comments: Test by author. This project is about deadline for approvals in old Execution Planner.</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
+                <div class="text-center py-4" style="color: lightgrey" *ngIf="notilength==0">
+                    <h4>{{_filtersMessage}}</h4>
+                </div>
+                <div style="text-align:center"> <button class="btn btn-info loadMore"
+                    (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
+                    [hidden]="_CurrentpageRecords<20">
+                    Load More!</button>
             </div>
+            </div>
+
         </div>
+
     </div>
 
+    <div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+    <div id="mysideInfobar" class="sideInfobar animate-right">
+        <router-outlet></router-outlet>
+    </div>
 </div>

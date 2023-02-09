@@ -23,7 +23,7 @@ export const DEFAULT_ROUTES: Routes = [
 
      },
      {
-          path: 'Notification', canActivate: [AuthGuard],
+          path: 'Notifications', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/notification/notification.module').then(m => m.NotificationModule),
 
      },

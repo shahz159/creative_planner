@@ -1128,6 +1128,9 @@ svg.feather {
     padding-top:1.25rem !important;
     padding-bottom:1.25rem !important;
   }
+  .mh-325 {
+    max-height: 325px!important;
+}
   .bg-gry{
     background: #f9fafb;
   }

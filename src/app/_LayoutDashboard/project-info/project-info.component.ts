@@ -101,6 +101,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         3       View dashboard Projects
         4       Projects Add to Portfolio
         5       ToDo Projects
+        6       Notifications
         
   */
 
@@ -278,6 +279,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     }
     else if (this._Urlid == '5') {
       this.router.navigate(["./backend/ToDoProjects/"]);
+    }
+    else if (this._Urlid == '6') {
+      this.router.navigate(["Notifications"]);
     }
     this.ngOnDestroy();
   }
@@ -872,6 +876,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               else if (this._Urlid == '5') {
                 this._toDo.GetProjectsByUserName();
               }
+              else if (this._Urlid == '6') {
+                this.router.navigate(["Notifications"]);
+              }
             }
           });
       }
@@ -912,6 +919,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '5') {
                 this._toDo.GetProjectsByUserName();
+              }
+              else if (this._Urlid == '6') {
+                this.router.navigate(["Notifications"]);
               }
             }
           });
@@ -957,6 +967,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 else if (this._Urlid == '5') {
                   this._toDo.GetProjectsByUserName();
                   this._toDo.GetSubtask_Details();
+                }
+                else if (this._Urlid == '6') {
+                  this.router.navigate(["Notifications"]);
                 }
               }
             });
@@ -1013,6 +1026,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                   this._toDo.GetProjectsByUserName();
                   this._toDo.GetSubtask_Details();
                 }
+                else if (this._Urlid == '6') {
+                  this.router.navigate(["Notifications"]);
+                }
               }
             });
         }
@@ -1039,7 +1055,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this._Message = data['message'];
 
           if (this._Message == '1') {
-            this.notifyService.showSuccess("Project transferred to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " by " + this.Project_Owner +'('+this.Current_user_ID+')', "Successfully Transferred");
+            this.notifyService.showSuccess("Project transferred to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " from " + this.Project_Responsible +'('+this.EmpNo_Res+')', "Successfully Transferred");
             this.fun_LoadProjectDetails();
             this.getapprovalStats();
             if (this._Urlid == '1') {
@@ -1059,9 +1075,37 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             else if (this._Urlid == '5') {
               this._toDo.GetProjectsByUserName();
             }
+            else if (this._Urlid == '6') {
+              this.router.navigate(["Notifications"]);
+            }
           }
-          else if (this._Message == '3') {
-            this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
+          else if (this._Message == '2') {
+            this.notifyService.showSuccess("Project Transfer request sent to the transferee -"+this.new_Res+'('+this.approvalObj.Responsible+')', "Transfer under approval!");
+            this.fun_LoadProjectDetails();
+            this.getapprovalStats();
+            if (this._Urlid == '1') {
+              this.router.navigate(["/backend/ProjectsSummary/"]);
+              this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            }
+            else if (this._Urlid == '2') {
+              this._portfolioprojects.GetPortfolioProjectsByPid();
+            }
+            else if (this._Urlid == '3') {
+              this._viewdashboard.GetCompletedProjects();
+            }
+            else if (this._Urlid == '4') {
+              this._projectsAdd.GetProjectsByUserName();
+              this._projectsAdd.getDropdownsDataFromDB();
+            }
+            else if (this._Urlid == '5') {
+              this._toDo.GetProjectsByUserName();
+            }
+            else if (this._Urlid == '6') {
+              this.router.navigate(["Notifications"]);
+            }
+          }
+          else if (this._Message == '4' || this._Message == null) {
+            this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
           }
         });
       
@@ -1313,6 +1357,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
 
   new_Res:string;
+
   onProject_Transfer(id, Pcode) {
     this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
     this.Employee_List.forEach(element => {
@@ -1332,7 +1377,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this._Message = data['message'];
 
         if (this._Message == '1') {
-          this.notifyService.showSuccess("Project transferred to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " by " + this.Project_Owner +'('+this.Current_user_ID+')', "Successfully Transferred");
+          this.notifyService.showSuccess("Project transferred to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " from " + this.Project_Responsible +'('+this.EmpNo_Res+')', "Successfully Transferred");
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
           if (this._Urlid == '1') {
@@ -1352,8 +1397,36 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           else if (this._Urlid == '5') {
             this._toDo.GetProjectsByUserName();
           }
+          else if (this._Urlid == '6') {
+            this.router.navigate(["Notifications"]);
+          }
         }
         else if (this._Message == '2') {
+          this.notifyService.showSuccess("Project Transfer request sent to the transferee -"+this.new_Res+'('+this.approvalObj.Responsible+')', "Transfer under approval!");
+          this.fun_LoadProjectDetails();
+          this.getapprovalStats();
+          if (this._Urlid == '1') {
+            this.router.navigate(["/backend/ProjectsSummary/"]);
+            this._projectSummary.GetProjectsByUserName(this.Summarytype);
+          }
+          else if (this._Urlid == '2') {
+            this._portfolioprojects.GetPortfolioProjectsByPid();
+          }
+          else if (this._Urlid == '3') {
+            this._viewdashboard.GetCompletedProjects();
+          }
+          else if (this._Urlid == '4') {
+            this._projectsAdd.GetProjectsByUserName();
+            this._projectsAdd.getDropdownsDataFromDB();
+          }
+          else if (this._Urlid == '5') {
+            this._toDo.GetProjectsByUserName();
+          }
+          else if (this._Urlid == '6') {
+            this.router.navigate(["Notifications"]);
+          }
+        }
+        else if (this._Message == '3') {
           this.notifyService.showSuccess("Project Transfer request sent to Project Owner -"+this.Project_Owner +'('+this.EmpNo_Own+')', "Transfer under approval!");
           this.fun_LoadProjectDetails();
           this.getapprovalStats();
@@ -1374,8 +1447,11 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           else if (this._Urlid == '5') {
             this._toDo.GetProjectsByUserName();
           }
+          else if (this._Urlid == '6') {
+            this.router.navigate(["Notifications"]);
+          }
         }
-        else if(this._Message == '3'){
+        else if(this._Message == '4'){
           this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
         }
       });

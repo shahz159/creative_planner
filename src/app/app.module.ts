@@ -38,8 +38,8 @@ import { NotificationComponent } from './_LayoutDashboard/notification/notificat
     DefaultLayoutComponent,
     HeaderComponent,
     SidebarComponent,
-    ConfirmDialogComponent,
-    NotificationComponent    
+    ConfirmDialogComponent
+    // NotificationComponent    
     
 
   
