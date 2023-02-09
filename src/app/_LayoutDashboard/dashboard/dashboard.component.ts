@@ -470,13 +470,6 @@ export class DashboardComponent implements OnInit {
         this._NotificationActivityList = data as NotificationActivityDTO[];
         this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
         this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
-<<<<<<< HEAD
-=======
-        this._NotificationActivity = JSON.parse(this._NotificationActivityList[0]['Notification_Json']);
-        this.notilength = this._NotificationActivity.length;
-        this._AlertActivity = JSON.parse(this._NotificationActivityList[0]['Alert_Json']);
-        console.log(this._NotificationActivity, this._AlertActivity, 'Notif');
->>>>>>> f574f74a3db8083746adac42b84cd7055364aaa4
       });
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
