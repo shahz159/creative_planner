@@ -1020,7 +1020,7 @@
                                     <div class="sub-s text-ellp">{{_user.Designation_Name}}</div>
                                     <div class="sub-s text-ellp d-flex align-items-center" *ngIf="_user.Status=='Proposed'">
                                         <i class="material-icons fs-7 mr-1" aria-hidden="true">schedule</i>
-                                        Proposal: {{pro_date}}, {{pro_sttime}} – {{pro_edtime}}</div>
+                                        Proposal: {{_user.Purposedate}}, {{_user.PurposeStarttime}} – {{_user.PurposeEndtime}}</div>
                                 </div>
                             </div>
                         </div>
@@ -1882,6 +1882,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
+                                <label class="">Day</label>
+                                <div class="pt-1">
+                                    <div class="d-flex flex-wrap">
+                                        <ng-container *ngFor="let item of MonthArr">
+                                            <div [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                    type="checkbox" name="monthChk" value="{{item.value}}"
+                                                    class="rep-chk" />
+                                                {{item.Day}}
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -2148,12 +2163,14 @@
                             </div>
                         </div>
                     </div> -->
+
+                    <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')" -->
                     <div class="form-group" id="dayrep"
-                        *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')">
+                      >
                         <label class="">Repeat on</label>
                         <div class="pt-1">
-                            <div class="d-flex">
-                                <div class="repeat-month" *ngFor="let item of monthArr">
+                            <div class="">
+                                <div class="repeat-month" *ngFor="let item of MonthArr">
                                     {{item}}
                                 </div>
                                 <!-- <div class="repeat-month">
