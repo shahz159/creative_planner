@@ -1235,7 +1235,7 @@
                         <div class="mt-3 collapse" id="propse">
                             <div class="foot-calendar">
                                 <input [matDatepicker]="basicDatepicker"  (click)="basicDatepicker.open()"
-                                (dateChange)="proposecahngedate($event)" class="form-control"  [(ngModel)]="Proposedate">
+                                (dateChange)="proposecahngedate($event)" class="form-control"  [min]="disablePreviousDate"  [(ngModel)]="Proposedate">
                                 <mat-datepicker-toggle matSuffix [for]="basicDatepicker">
                                  
                                 </mat-datepicker-toggle>
@@ -1729,7 +1729,7 @@
                 <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
             </div>
             <div class="form-group" id="core_viw123">
-                <label class="cus-lbl">Select Project </label>
+                <label class="cus-lbl">Select Project <span class="text-danger" *ngIf="ScheduleType=='Task'">*</span> </label>
                 <ng-select placeholder="Select Project" [(ngModel)]="MasterCode"
                     (change)="GetSubtasklistfromProject($event)">
                     <ng-option [value]="car.Project_Code"
