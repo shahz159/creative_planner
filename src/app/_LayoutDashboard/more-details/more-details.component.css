@@ -1003,3 +1003,7 @@ position: relative;
     top: 19px;
     left: -327px;
 }
+.subtask-list .sub-det {
+    font-weight: 400;
+    font-size: 12px;
+}
