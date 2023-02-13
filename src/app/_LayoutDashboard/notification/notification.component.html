@@ -35,8 +35,10 @@
                         <div class="card-body row">
                             <div class="col">
                                 <div class="pro-dc">
-                                    <div class="">
-                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-info-circle info-icon-cir curser-pointer mr-1" (click)="openInfo(item.Project_Code)"></i>
+                                        <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 mx-2" (click)="moreDetails(item.Project_Code)"></i>
+                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mx-1">
                                             <i class="fa fa-clone mr-2"></i>{{item.Exec_BlockName}}</label>
                                         <span class="h6 text-muted mb-0 ml-2"><i class="far fa-calendar-alt mr-1"></i>{{item.Rec_Date | date:'dd-MM-yyyy' }}</span>
                                     </div>
@@ -45,8 +47,6 @@
                                     </div>
                                 </div>
                                 <h5 class="card-title text-capitalize mb-0">
-                                    <i class="fa fa-info-circle info-icon-cir curser-pointer" (click)="openInfo(item.Project_Code)"></i>
-                                    <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 ml-2" (click)="moreDetails(item.Project_Code)"></i>
                                     {{item.Project_Name}}</h5>
                                 <span class="h6 tic-abt mb-0"> Request Type: {{item.Req_Type}}</span><br>
                                 <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments"> Comments: {{item.Req_Coments}}</span>
@@ -88,9 +88,10 @@
 
     </div>
 
-    <div id="rightbar-overlay" (click)="closeInfo()"></div>
+</div>
 
-    <div id="mysideInfobar" class="sideInfobar animate-right">
-        <router-outlet></router-outlet>
-    </div>
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+<div id="mysideInfobar" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
 </div>
