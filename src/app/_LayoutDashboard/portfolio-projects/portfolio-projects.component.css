@@ -1098,7 +1098,12 @@
   background-color: #342bf0 !important;
 }
 
-
+.card.brdr.brlight {
+  border-left: 4px solid transparent;
+}
+/* .icond {
+  width: 100px;
+} */
 /* .portfolio-search{
   width: 30px;
   box-sizing: border-box;
