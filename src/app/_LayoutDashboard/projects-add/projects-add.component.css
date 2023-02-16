@@ -1043,6 +1043,9 @@
   background-color: #342bf0 !important;
 }
 
+#project-4 thead tr th:nth-child(2), #project-4 tbody tr td:nth-child(2) {
+  width: 7%;
+}
 
 @media only screen and (max-width: 768px) {
   .dropdown-menu-md.bg-ground{
