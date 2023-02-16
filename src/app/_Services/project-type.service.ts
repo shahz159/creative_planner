@@ -634,22 +634,30 @@ export class ProjectTypeService {
     this.ObjCategoryDTO.CurrentUser = obj.CurrentUser;
     return this.http.post(this.rootUrl + "Category/NewCategoryRenameDelete", this.ObjCategoryDTO);
   }
-
-  _ProjectRenameService(id, pname, Desc, Currentuser, Allocated) {
+  
+  _ProjectRenameService(id, pname, Desc, Currentuser) {
     this.ObjDto.Project_Id = id;
     this.ObjDto.Project_Name = pname;
     this.ObjDto.Project_Description = Desc;
     this.ObjDto.Emp_No = Currentuser;
-    this.ObjDto.Duration = Allocated;
     return this.http.post(this.rootUrl + "Category/NewProjectRename", this.ObjDto);
   }
 
-  _ProjectDeadlineExtendService(obj: ProjectDetailsDTO) {
+  _NewProjectDurationService(pcode,duration,remarks,emp_no) {
+    this.ObjDto.Project_Code = pcode;
+    this.ObjDto.Duration = duration;
+    this.ObjDto.Emp_No = emp_no;
+    this.ObjDto.Remarks = remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectDuration", this.ObjDto);
+  }
+
+  _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjDto.Emp_No = EmpNo;
-    this.ObjDto.Project_Code=obj.Project_Code;
-    this.ObjDto.Project_EndDate=obj.Project_EndDate;
-    this.ObjDto.Remarks=obj.Remarks;
+    this.ObjDto.Project_Code=pcode;
+    this.ObjDto.Project_EndDate=enddate;
+    this.ObjDto.Project_StartDate=startdate;
+    this.ObjDto.Remarks=remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectDeadlineExtend", this.ObjDto);
   }
 

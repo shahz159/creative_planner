@@ -429,14 +429,13 @@
                                         </h5>
                                     </ng-template>
                                     <ng-template #othertask>
-                                        <h5 class="mt-1 d-flex align-items-start" id="Span_Deadline_{{Pid}}">
-                                            {{StartDate|date:'dd-MM-yyyy'}} / <h5 *ngIf="deadlineCount==0">{{EndDate}}
-                                            </h5>
+                                        <div class="mt-1 d-flex align-items-start">
+                                            <h5>{{StartDate|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
                                             <h5 style="color:red" data-toggle="kt-tooltip"
                                                 title="Extended Deadline for {{deadlineCount}} times!!"
                                                 *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <!-- <span class="text-info fs-8" [hidden]="Editbutton"
-                                                (click)="onEditDeadline(Pid,EndDate)"
+                                                (click)="onEditDeadline(Pid,EndDate)"  id="Span_Deadline_{{Pid}}"
                                                 *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
                                                 && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
                                                 Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
@@ -469,61 +468,61 @@
                                             </span> -->
                                             <!-- Deadline extend -->
 
-                                 <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
-                                            && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
-                                            Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
-                                            && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
-                                    <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false"
-                                        (click)="onEditDeadline(Pid)">
-                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
-                                    </span>
-                                    <div id="DeadlineArea_{{Pid}}"
-                                        class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
-                                        <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
-                                            <li class="kt-nav__head py-0">
-                                                <div>Deadline Extend</div>
-                                            </li>
-                                            <!-- [min]="EndDate1" -->
-                                            <li class="kt-nav__separator"></li>
-                                            <div class=" height-scroll h-scr">
-                                                <div class="px-4 py-3">
-                                                    <div class="form-group">
-                                                        <label>Select Date<span class="text-danger">*</span></label>
-                                                            <div class="d-flex input-group">
-                                                                <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
-                                                                     #Deadlinetext="ngModel"
-                                                                    (click)="picker2.open();"
-                                                                    (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                                     [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                                                    [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                    name="date">
-                                                                <div class="input-group-append">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
+                                                        && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
+                                                        Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
+                                                        && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
+                                                <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"
+                                                    (click)="onEditDeadline(Pid)">
+                                                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
+                                                </span>
+                                                <div id="DeadlineArea_{{Pid}}"
+                                                    class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
+                                                    <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
+                                                        <li class="kt-nav__head py-0">
+                                                            <div>Deadline Extend</div>
+                                                        </li>
+                                                        <!-- [min]="EndDate1" -->
+                                                        <li class="kt-nav__separator"></li>
+                                                        <div class=" height-scroll h-scr">
+                                                            <div class="px-4 py-3">
+                                                                <div class="form-group">
+                                                                    <label>Select Date<span class="text-danger">*</span></label>
+                                                                        <div class="d-flex input-group">
+                                                                            <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
+                                                                                #Deadlinetext="ngModel"
+                                                                                (click)="picker2.open();"
+                                                                                (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
+                                                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                                                                [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                                name="date">
+                                                                            <div class="input-group-append">
 
-                                                                    <mat-datepicker-toggle matSuffix [for]="picker2" class="btn-secondary">
-                                                                    </mat-datepicker-toggle>
-                                                                    <mat-datepicker class="form-group" #picker2></mat-datepicker>
+                                                                                <mat-datepicker-toggle matSuffix [for]="picker2" class="btn-secondary">
+                                                                                </mat-datepicker-toggle>
+                                                                                <mat-datepicker class="form-group" #picker2></mat-datepicker>
+                                                                            </div>
+                                                                        </div>
                                                                 </div>
+                                                                <div class="form-group mb-1">
+                                                                    <label>Remarks<span class="text-danger">*</span></label>
+                                                                    <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                                                                        style="height:70px;"></textarea>
+                                                                </div>
+                                                                <span class="text-danger">Note: (*) are mandatory!</span>
                                                             </div>
+                                                        </div>
+                                                        <li class="kt-nav__separator"></li>
+                                                    </ul>
+                                                    <div class="px-4 pb-3">
+                                                        <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!_ProjDeadline || !extend_remarks"
+                                                            (click)="onProject_ExtendDeadline(Pid,_MasterCode)">Submit</button>
+                                                            <button class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</button>
+                                                        
                                                     </div>
-                                                    <div class="form-group mb-1">
-                                                        <label>Remarks<span class="text-danger">*</span></label>
-                                                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
-                                                            style="height:70px;"></textarea>
-                                                    </div>
-                                                    <span class="text-danger">Note: (*) are mandatory!</span>
                                                 </div>
                                             </div>
-                                            <li class="kt-nav__separator"></li>
-                                        </ul>
-                                        <div class="px-4 pb-3">
-                                            <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!_ProjDeadline || !extend_remarks"
-                                                  (click)="onProject_ExtendDeadline(Pid,_MasterCode)">Submit</button>
-                                                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</button>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
                                             <!-- Deadline extend end-->
 
                                             <!-- Project Hold -->
@@ -598,7 +597,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </h5>
+                                        </div>
                                     </ng-template>
                                     <progress value="50" max="100" class="project-duration-bar d-none"></progress>
                                 </div>
@@ -1374,23 +1373,131 @@
 
                                                     </p>
 
-                                                    <p class="mb-1">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                    <div class="mb-1 d-flex align-items-start sub-det">
+                                                        <span class="text-nowrap mb-2 d-inline-block"
                                                             data-toggle="tooltip" title="Start Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block"
+                                                        
+                                                        <div class="dropdown show" *ngIf="item.StartDate >= EndDate1">
+                                                            <span type="button" id="start-icn" data-toggle="dropdown" 
+                                                                (click)="onEditStartDate(item.id)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
+                                                              <i data-toggle="tooltip" title="edit start date" class="fas fa-edit ml-1 mb-1 curser-pointer" ></i>
+                                                            </span>
+                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-start z-1k" id="StartDateArea_{{item.id}}">
+                                                              <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
+                                                                <li class="kt-nav__head py-0">
+                                                                  <div>New Start Date - ({{item.Project_Name}})</div>
+                                                                </li>
+                                                                <li class="kt-nav__separator"></li>
+                                                                <div class="height-scroll h-scr">
+                                                                  <div class="px-4 py-3">
+                                                                    <div class="form-group input-group">
+                                                                        <label>Select Start Date <span class="text-danger">*</span></label>
+                                                                        <!-- <div class="input-group date" data-provide="datepicker">
+                                                                            <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                            <div class="input-group-addon input-group-append">
+                                                                                <i class="fa fa-calendar input-group-text"></i>
+                                                                            </div>
+                                                                        </div> -->
+                                                                        <div class="d-flex input-group">
+                                                                            <input matInput [matDatepicker]="picker6" id="StartDatetext_{{item.id}}"
+                                                                                #actionend="ngModel"
+                                                                                (click)="picker6.open();"
+                                                                                (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
+                                                                                [min]="item.StartDate" [max]="maxhold" placeholder="Select Date"
+                                                                                [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                                name="date">
+                                                                            <div class="input-group-append">
+                                                                                <mat-datepicker-toggle matSuffix [for]="picker6" class="btn-secondary">
+                                                                                </mat-datepicker-toggle>
+                                                                                <mat-datepicker class="form-group" #picker6></mat-datepicker>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group mb-1">
+                                                                      <label>Remarks <span class="text-danger">*</span>
+                                                                      </label>
+                                                                      <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                                                                    </div>
+                                                                    <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                  </div>
+                                                                </div>
+                                                                <li class="kt-nav__separator"></li>
+                                                              </ul>
+                                                              <div class="px-4 pb-3">
+                                                                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!extend_remarks || !_ProjDeadline" (click)="onAction_ExtendDPG(item.id,item.Project_Code)"> Submit </button>
+                                                                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closeAction(item.id)">Close</button>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <span class="ml-3  text-nowrap mb-2 d-inline-block"
                                                             data-toggle="tooltip" title="End Date!">
                                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                                             <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                                         </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
+                                                        <div class="dropdown show">  
+                                                            <span type="button" id="end-icn" data-toggle="dropdown" aria-haspopup="true"
+                                                                (click)="onEditEndDate(item.id)" aria-expanded="true" class="dropdown-toggle no-after text-info">
+                                                              <i data-toggle="tooltip" title="edit end date" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                            </span>
+                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-end z-1k" id="EndDateArea_{{item.id}}">
+                                                              <ul class="kt-nav pb-0"> 
+                                                                <li class="kt-nav__head py-0">
+                                                                  <div>New End Date - ({{item.Project_Name}})</div>
+                                                                </li>
+                                                                <li class="kt-nav__separator"></li>
+                                                                <div class="height-scroll h-scr">
+                                                                  <div class="px-4 py-3">
+                                                                    <div class="form-group input-group">
+                                                                        <label>Select End Date <span class="text-danger">*</span></label>
+                                                                        <div class="d-flex input-group">
+                                                                            <input matInput [matDatepicker]="picker5" id="EndDatetext_{{item.id}}"
+                                                                                #actionend="ngModel"
+                                                                                (click)="picker5.open();"
+                                                                                (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
+                                                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                                                                [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                                name="date">
+                                                                            <div class="input-group-append">
+                                                                                <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                                                                </mat-datepicker-toggle>
+                                                                                <mat-datepicker class="form-group" #picker5></mat-datepicker>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- <div class="input-group date" data-provide="datepicker">
+                                                                            <input class="form-control" id="wodate1" name="date" 
+                                                                               [min]="minhold" [max]="maxhold" placeholder="MM/DD/YYYY" value="{{current_Date}}" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                            <div class="input-group-addon input-group-append">
+                                                                                <i class="fa fa-calendar input-group-text"></i>
+                                                                            </div>
+                                                                        </div> -->
+                                                                    </div>
+                                                                    <div class="form-group mb-1">
+                                                                      <label>Remarks <span class="text-danger">*</span>
+                                                                      </label>
+                                                                      <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                                                                    </div>
+                                                                    <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                  </div>
+                                                                </div>
+                                                                <li class="kt-nav__separator"></li>
+                                                              </ul>
+                                                              <div class="px-4 pb-3">
+                                                                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!extend_remarks || !_ProjDeadline" (click)="onAction_ExtendDeadline(item.id,item.Project_Code)"> Submit </button>
+                                                                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closeAction(item.id)">Close</button>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <span class="ml-3 text-nowrap mb-2 d-inline-block"
                                                             data-toggle="tooltip" title="Action Cost!">
                                                             <i class="fas fa-wallet text-muted mr-1"></i>
                                                             <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                                         </span>
-                                                    </p>
+                                                    </div>
                                                     <p class="mb-2">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block"
                                                             data-toggle="tooltip" title="Action Responsible!">
@@ -1429,12 +1536,55 @@
                                                             <b>{{item.Remarks}}</b>
                                                         </span>
                                                     </p>
-                                                    <p class="mb-2">
+                                                    <div class="mb-2 d-flex align-items-start sub-det">
                                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                                             <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">
-                                                                {{item.SubtaskAllocated}} Hrs
-                                                            </h6>
+                                                            <div class="d-flex align-items-center">
+                                                                <h6 class="mt-1">{{item.SubtaskAllocated}} Hrs</h6>
+
+                                                                <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && Current_user_ID==item.Team_Res">
+                                                                    <span type="button" id="alloc-icn" data-toggle="dropdown" 
+                                                                           (click)="OnEditProject_Alloc(item.id)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
+                                                                      <i data-toggle="tooltip" title="edit duration" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                    </span>
+                                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k" id="AllocArea_{{item.id}}">
+                                                                      <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
+                                                                        <li class="kt-nav__head py-0">
+                                                                          <div style="white-space: break-spaces;">Add Allocated Hours - ({{item.Project_Name}})</div>
+                                                                        </li>
+                                                                        <li class="kt-nav__separator"></li>
+                                                                        <div class="height-scroll h-scr">
+                                                                          <div class="px-4 py-3">
+                                                                            <div class="form-group">
+                                                                                <label>Add Hours <span class="text-danger">*</span></label>
+                                                                                <!-- <div class="input-group date" data-provide="datepicker">
+                                                                                    <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                                    <div class="input-group-addon input-group-append">
+                                                                                        <i class="fa fa-clock input-group-text"></i>
+                                                                                    </div>
+                                                                                </div> -->
+                                                                                <input type="number" class="form-control" id="AllocFocus_{{item.id}}" placeholder="hrs"
+                                                                                     [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" >
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">*Allocation per day limit is 10 hours.</span>
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
+                                                                            </div>
+                                                                            <div class="form-group mb-1">
+                                                                              <label>Remarks <span class="text-danger">*</span>
+                                                                              </label>
+                                                                              <textarea [(ngModel)]="alloc_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                                                                            </div>
+                                                                            <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                          </div>
+                                                                        </div>
+                                                                        <li class="kt-nav__separator"></li>
+                                                                      </ul>
+                                                                      <div class="px-4 pb-3">
+                                                                        <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!alloc_remarks || !_modelProjAlloc" (click)="onProject_updateDuration(item.id,item.Project_Code)"> Submit </button>
+                                                                        <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closeDuration(item.id)">Close</button>
+                                                                      </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
                                                                 {{item.SubtaskAllocated}} Hrs</h6>
                                                             <span class="text-info" [hidden]="Editbutton" 
@@ -1480,7 +1630,7 @@
                                                             <h6 class="mt-1" *ngIf="totalSubtaskHours == 0"> 0% </h6>
                                                             <!-- <h6 class="mt-1" *ngIf="maxDuration == 0">{{(totalPercent / subTaskCount) | percent:'.1-2'}}</h6> -->
                                                         </span>
-                                                    </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

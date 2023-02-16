@@ -53,7 +53,6 @@ export class MoreDetailsComponent implements OnInit {
     public BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
-
   }
 
   projectCode: string;
@@ -95,8 +94,6 @@ export class MoreDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
-
-
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -113,7 +110,8 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
 
-    this.EndDate1.setDate(this.EndDate1.getDate() + 1);
+    this.EndDate1 = moment(new Date()).format("MM/DD/YYYY");
+    // alert(this.EndDate1)
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
 
@@ -121,7 +119,6 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data => {
         let projectType: any = (data[0]['ProjectType']);
         this.IsData = (data[0]['DARGraphCalculations_Json']);
-        //console.log("data isnull/not---->", this.IsData);
         if (projectType == '001' || projectType == '002') {
           this.CoreSecodaryCharts();
         }
@@ -133,12 +130,13 @@ export class MoreDetailsComponent implements OnInit {
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
-
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
   }
+
   date11: any;
+  
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
   }
@@ -174,7 +172,6 @@ export class MoreDetailsComponent implements OnInit {
   pro_act: boolean = true;
   newResponsible: any;
 
-
   getapprovalStats() {
     this.approvalEmpId = null;
     this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -187,7 +184,6 @@ export class MoreDetailsComponent implements OnInit {
         if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
           this.pro_act = false;
         }
-
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
@@ -202,10 +198,9 @@ export class MoreDetailsComponent implements OnInit {
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
         this.newResponsible = (this.transfer_json[0]['newResp']);
       }
-      // console.log(this.reject_list, "req")
-      // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
   }
+
   rejDesc: any;
   rejectcommentsList: any;
 
@@ -253,8 +248,6 @@ export class MoreDetailsComponent implements OnInit {
   submitApproval() {
 
     if (this.requestType != 'Project Forward') {
-
-
       if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -265,11 +258,9 @@ export class MoreDetailsComponent implements OnInit {
         else {
           this.approvalObj.Remarks = this.comments;
         }
-
         this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-
             if (this._Message == 'Not Authorized') {
               this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
               this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
@@ -282,7 +273,6 @@ export class MoreDetailsComponent implements OnInit {
               this.GetprojectComments();
             }
             this.Clear_Feilds();
-
           });
       }
       else if (this.selectedType == '2') {
@@ -311,7 +301,6 @@ export class MoreDetailsComponent implements OnInit {
               this.GetprojectComments();
             }
             this.Clear_Feilds();
-
           });
       }
       else if (this.selectedType == '3') {
@@ -344,11 +333,7 @@ export class MoreDetailsComponent implements OnInit {
               this.Clear_Feilds();
             });
         }
-
       }
-      // else if (this.selectedType == '4') {
-      //   this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
-      // }
       document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       document.getElementById("moredet").classList.remove("position-fixed");
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -356,7 +341,6 @@ export class MoreDetailsComponent implements OnInit {
     }
 
     else if (this.requestType == 'Project Forward') {
-
       if (this.selectedType == '3') {
         if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
           this.noRejectType = true;
@@ -427,7 +411,6 @@ export class MoreDetailsComponent implements OnInit {
           }
         });
         this.closeInfo();
-
       }
       document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       document.getElementById("moredet").classList.remove("position-fixed");
@@ -508,10 +491,8 @@ export class MoreDetailsComponent implements OnInit {
   minutes: any;
   hours: any;
   temp: any;
-  // end: boolean = true;
 
   submitDar() {
-
     if (this.starttime != null && this.endtime != null) {
       const [shours, sminutes] = this.starttime.split(":");
       const [ehours, eminutes] = this.endtime.split(":");
@@ -559,9 +540,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
-        // console.log(this._Message);
       });
-    // console.log(this.objProjectDto, "testingDar");
     this.dar_details();
     this.getDarTime();
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -577,14 +556,13 @@ export class MoreDetailsComponent implements OnInit {
   lastEndtime: any;
   s_ind: number;
   e_ind: number;
-
   timedata1: any;
   stdata: any;
   etdata: any;
+
   getDarTime() {
     debugger
     this.timedata = [];
-
     this.timedata1 = ["08:00",
       "08:15", "08:30", "08:45", "09:00",
       "09:15", "09:30", "09:45", "10:00",
@@ -598,18 +576,16 @@ export class MoreDetailsComponent implements OnInit {
       "17:15", "17:30", "17:45", "18:00",
       "18:15", "18:30", "18:45", "19:00",
       "19:15", "19:30", "19:45", "20:00"];
-    // $("#d-date").val(this.current_Date);
 
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.date11 = moment(new Date()).format("MM/DD/YYYY");
     this.objProjectDto.date = this.current_Date;
 
-
     if (this.current_Date == this.date11) {
       this.timedata1.forEach(element => {
         const [shours, sminutes] = element.split(":");
-        if (shours <= this.currenthours) //&& sminutes<=this.currentminutes -- for exact time 
+        if (shours <= this.currenthours)
           this.timedata.push(element);
       });
     }
@@ -640,7 +616,6 @@ export class MoreDetailsComponent implements OnInit {
           this.starttimearr = [];
           this.endtimearr = [];
         }
-        // console.log(this.bol,this.timeList,"json",this.starttimearr,"starttime",this.endtimearr,"endtime");    
       });
   }
 
@@ -651,19 +626,13 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   CoreSecodaryCharts() {
-    //this.TaskChart();
-    //this.UserGraphs();
     this.DARSummaryChart();
     this.ProjectCompletionChart();
     if (this.IsData != null) {
       this.HybridDrillChart();
       this.SubtaskSummaryChart();
     }
-    // this.ProjectCompleteChart();
-    // this.GetDMS_Memos();
-    //this.getAttachments();
     this.ProjectTrendChart();
-    // this.dummyChart();
   }
 
   OtherCharts() {
@@ -696,10 +665,6 @@ export class MoreDetailsComponent implements OnInit {
     // document
     // this.Block3 = false;
   }
-
-  // closeInfo() {
-  //   document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-  // }
 
   _inputAttachments: string;
   _inputAttachments2: string;
@@ -764,9 +729,8 @@ export class MoreDetailsComponent implements OnInit {
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name']
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
-          this.EndDate1 = this.EndDate;
+          // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
-
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];
@@ -782,7 +746,6 @@ export class MoreDetailsComponent implements OnInit {
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
-
 
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
@@ -825,7 +788,7 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if (this.Status == 'Project Hold') {
+          if (this.Status == 'Project Hold' || this.ProjectBlockName=='To do List' || this.ProjectBlockName=='Standard Tasks' || this.ProjectBlockName=='Routine Tasks') {
             this.actionButton = true;
           }
           if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected'
@@ -2830,7 +2793,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          console.log(data, "standard status");
+          // console.log(data, "standard status");
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
@@ -2934,6 +2897,10 @@ export class MoreDetailsComponent implements OnInit {
   _modelProjectName: string;
   _modelProjDesc: string;
   _ProjDeadline: string;
+  action_enddate:string;
+  action_startdate:string;
+  action_remarks:string;  
+  alloc_remarks:string;
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
@@ -2953,12 +2920,12 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   _modelProjAlloc: number = 0;
-  OnEditProject_Alloc(id, allocated) {
-    this._modelProjAlloc = allocated;
+  OnEditProject_Alloc(id) {
+    // this._modelProjAlloc = allocated;
     this.Editbutton = true;
-    (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "block";
-    (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
+    // (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("AllocFocus_" + id)).focus();
 
   }
   extend_remarks: string;
@@ -2966,10 +2933,26 @@ export class MoreDetailsComponent implements OnInit {
   onEditDeadline(id, enddate) {
     // this._ProjDeadline = enddate;
     this.Editbutton = true;
-    (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
   }
+
+  
+  onEditEndDate(id){
+    this.Editbutton = true;
+    // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("EndDatetext_" + id)).focus(); 
+  }
+
+  onEditStartDate(id){
+    this.Editbutton = true;
+    // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("StartDatetext_" + id)).focus(); 
+  }
+
 
   onCancel(id) {
 
@@ -2983,8 +2966,10 @@ export class MoreDetailsComponent implements OnInit {
     this._modelProjDesc = null;
     this._modelProjectName = null;
 
-    (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
+    // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.remove("d-block");
+
     this._ProjDeadline = null;
     this.extend_remarks = "";
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
@@ -2997,6 +2982,24 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
+
+
+  }
+
+  closeAction(id){
+    this.Editbutton=false;
+    this._ProjDeadline = null;
+    this.extend_remarks = "";
+
+    (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "none";
+  }
+  
+  closeDuration(id){
+    this.Editbutton=false;
+    this._modelProjAlloc=null;
+    this.alloc_remarks="";
+    (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "none";
   }
 
   onHoldClick(id) {
@@ -3048,7 +3051,7 @@ export class MoreDetailsComponent implements OnInit {
 
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID, this._modelProjAlloc).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
@@ -3069,15 +3072,10 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onProject_ExtendDeadline(id, Pcode) {
-
-    // $("#Deadlinetext_").val(this.EndDate);
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    console.log(this._ProjDeadline,id,Pcode,"act");
     if (this._ProjDeadline != null) {
-
-      this.objProjectDto.Project_EndDate = this._ProjDeadline;
-      this.objProjectDto.Project_Code = Pcode;
-      this.objProjectDto.Remarks = this.extend_remarks;
-      this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(Pcode,this._ProjDeadline,null,this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -3092,9 +3090,84 @@ export class MoreDetailsComponent implements OnInit {
       this.onCancel(id);
     }
     else {
-      this.notifyService.showInfo("Deadline date cannot be empty", "Please select date.");
+      this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
   }
+
+  onAction_ExtendDeadline(id, Pcode) {
+    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    console.log(this._ProjDeadline,id,Pcode,"act");
+    if (this._ProjDeadline != null) {
+        this.service._ProjectDeadlineExtendService(Pcode,this._ProjDeadline,null,this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == 'Project Deadline not Updated') {
+          this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == 'Project Deadline Updated') {
+          this.notifyService.showSuccess(this._Message, "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.closeAction(id);
+    }
+    else {
+      this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
+    }
+  }
+
+  onAction_ExtendDPG(id, Pcode) {
+    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    console.log(this._ProjDeadline,id,Pcode,"act");
+    if (this._ProjDeadline != null) {
+      this.service._ProjectDeadlineExtendService(Pcode,null,this._ProjDeadline,this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == 'Project Deadline not Updated') {
+          this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == 'Project Start-Date Updated') {
+          this.notifyService.showSuccess(this._Message, "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.closeAction(id);
+    }
+    else {
+      this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
+    }
+  }
+
+  onProject_updateDuration(id,pcode){
+
+    if (this._modelProjAlloc != null && this._modelProjAlloc!=0) {
+      this.service._NewProjectDurationService(pcode,this._modelProjAlloc,this.alloc_remarks,this.Current_user_ID).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Action duration not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Action duration added successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.closeDuration(id);
+    }
+    else {
+      this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value"); 
+    }
+  }
+
   Holddate: string;
   hold_remarks: string;
   minhold: any = new Date();
@@ -3328,7 +3401,6 @@ export class MoreDetailsComponent implements OnInit {
     else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
       this.coresecondary = false;
     }
-
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3342,7 +3414,6 @@ export class MoreDetailsComponent implements OnInit {
     this.notifyService.showError("Cancelled", '');
     this.Clear_Feilds();
   }
-
 
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Cancelled');
@@ -3377,7 +3448,6 @@ export class MoreDetailsComponent implements OnInit {
         this.onCancel(id);
       }
     });
-
   }
 
   selectedEmp_No: string = null;

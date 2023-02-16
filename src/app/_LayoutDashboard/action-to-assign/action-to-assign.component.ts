@@ -186,8 +186,6 @@ export class ActionToAssignComponent implements OnInit {
           this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
         }
       }
-
-
       //console.log("Sending Obj..",this._ObjAssigntaskDTO)
       const fd = new FormData();
       fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
@@ -214,24 +212,13 @@ export class ActionToAssignComponent implements OnInit {
         fd.append("AssignId", this.task_id.toString());
       }
       fd.append("AssignedBy", this.CurrentUser_ID);
-
-      // alert(datestrStart);
-      // alert(datestrEnd);
-
-      // alert(this.cat_id);
-      // alert(this.cat_name);
-
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
           this._projectunplanned.getCatid();
           this.router.navigate(["UnplannedTask/"]);
           
-          
           let message: string = data['Message'];
           this.notifyService.showSuccess("Task sent to assign projects", message);
-
-          // alert(1);
-         
 
           this.clearFeilds();
           this.closeInfo();

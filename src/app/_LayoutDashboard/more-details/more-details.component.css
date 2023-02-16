@@ -1003,3 +1003,25 @@ position: relative;
     top: 19px;
     left: -327px;
 }
+.act-start {
+    top: 0px;
+    transform: translate3d(-133px, -60px, 0px);
+    left: 0px;
+}
+.act-end{
+    top: 0px;
+    transform: translate3d(-133px, -60px, 0px);
+    left: 0px;
+}
+.act-alloc{
+    top: 0px;
+    transform: translate3d(-91px, -147px, 0px);
+    left: 0px;
+}
+.act-start, .act-end, .act-alloc{
+    width: 350px;
+}
+.subtask-list .sub-det {
+    font-weight: 400;
+    font-size: 12px;
+}

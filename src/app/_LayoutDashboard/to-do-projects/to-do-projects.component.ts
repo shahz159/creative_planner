@@ -722,8 +722,8 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   OnProject_Rename(id, Pcode) {
-    if (this._modelProjectName != "" && this._modelProjDesc != "" && this._modelProjAlloc!= 0) {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID, this._modelProjAlloc).subscribe(data => {
+    if (this._modelProjectName != "" && this._modelProjDesc != "") {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
@@ -740,6 +740,30 @@ export class ToDoProjectsComponent implements OnInit {
     }
     else {
       this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+    }
+  }
+
+  onProject_updateDuration(id,pcode){
+
+    if (this._modelProjAlloc != null && this._modelProjAlloc!=0) {
+      this.service._NewProjectDurationService(pcode,this._modelProjAlloc,null,this.CurrentUser_ID).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Action duration not updated", "Failed");
+          this.GetSubtask_Details();
+          this.GetProjectsByUserName();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Action duration added successfully", "Success");
+          this.GetSubtask_Details();
+          this.GetProjectsByUserName();
+        }
+      });
+      this.onCancel(id);
+    }
+    else {
+      this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value"); 
     }
   }
 

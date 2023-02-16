@@ -14,10 +14,10 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i
                         class="flaticon2-bell-alarm-symbol"></i>
-                        <span class="noti text-white" *ngIf="notilength!=0">{{notilength}}</span>
+                        <span class="noti text-white" *ngIf="notilength!=0 && notilength<=99">{{notilength}}</span>
+                        <span class="noti text-white" *ngIf="notilength>99">99+</span>
                 </span>
                 <!-- <span class="kt-badge kt-badge--danger">4</span> -->
-
             </div>
             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
                 <form>
@@ -55,10 +55,10 @@
                                     </div>
                                     <div class="kt-notification__item-details" (click)="moreDetails(noti.Project_Code)">
                                         <div class="kt-notification__item-title">
-                                            Project: {{noti.Project_Name}}
+                                            {{noti.Project_Name}}
                                         </div>
                                         <div class="kt-notification__item-title">
-                                            Type: {{noti.Req_Type}}
+                                            Request Type: {{noti.Req_Type}}
                                         </div>
                                         <div class="kt-notification__item-time">
                                             Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}

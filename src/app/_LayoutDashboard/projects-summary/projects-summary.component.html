@@ -263,7 +263,7 @@
                                                     <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Users: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> Users
+                                                        <i class="fas fa-sort"></i> RACIS
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
@@ -350,18 +350,52 @@
                                                         <div class="kt-widget__details">
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
-                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                                                </a> -->
+                                                                  <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image"> -->
+
+                                                                <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Owner}}</span>
                                                                 </a>
-                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
                                                                 </a>
-                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                <!-- <a *ngIf="item.Owner==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Informer: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
+                                                                </a>  && item.Owner!=item.Informer && item.Owner!=item.Informer
+                                                                <a *ngIf="item.Owner==item.Coord" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Coordinator: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
+                                                                </a> -->
+                                                                <!-- <a *ngIf="item.Resp!=item.Autho && item.Resp==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Informer: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Resp}}</span>  && item.Resp!=item.Informer
+                                                                </a> -->
+                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Resp}}</span>
+                                                                  </a>
+                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Autho}}</span>
                                                                 </a>
-                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Autho}}</span>
+                                                                  </a>
+                                                                <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator:{{item.Team_Coor}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                    <span>{{item.Coord}}</span>
+                                                                  </a>
+                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Informer:{{item.Team_Informer}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                    <span>{{item.Informer}}</span>
+                                                                  </a> -->
+                                                                  <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Support}}</span>
+                                                                  </a>
+                                                                <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
                                                                   <span>1+</span>
                                                                 </a>
+                                                                <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>1+</span>
+                                                                  </a>
                                                               </div>
                                                             </div>
                                                             <span class="pin-icn d-none">

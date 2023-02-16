@@ -141,6 +141,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
   createdBy:any;
+  lastProject:any;
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -170,8 +171,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
         
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-        debugger
-        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this._PortfolioDetailsById);
+        this.lastProject=this._ProjectsListBy_Pid.length;
+        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this.lastProject);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         //console.log('JsonStatusCount------->', this._StatusCountDB);
@@ -611,14 +612,131 @@ export class PortfolioProjectsComponent implements OnInit {
   Count_ToDoCompleted: any;
 
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
-    this.deletedBy = this.Current_user_ID;
+    if(this.lastProject==1){
+      this.deletedBy = this.Current_user_ID;
     //if (createdBy == this.Current_user_ID) {
     let String_Text = 'Delete';
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         mode: 'delete',
         title1: 'Confirmation ',
-        message1: proj_Name
+        message1: proj_Name,
+        message2 : 'Note: Deleting all the projects will delete the portfolio.',
+        message3 : 'Hint: Before deleting this project, Please add more projects to avail "' +this._PortFolio_Namecardheader+'" portfolio.'
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
+          this.service.GetProjectsBy_portfolioId(this._Pid)
+            .subscribe((data) => {
+              //console.log("qwerty" + data);
+              this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+              this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
+              this.TotalProjects = this._ProjectsListBy_Pid.length;
+              var rez = {};
+              this._ProjectsListBy_Pid.forEach(function (item) {
+                rez[item.Status] ? rez[item.Status]++ : rez[item.Status] = 1;
+              });
+              // this.CountInprocess = rez['InProcess'];
+              // this.CountDelay = rez['Delay'];
+              this.CountInprocess = rez['InProcess'];
+              if (!this.CountInprocess) {
+                this.CountInprocess = 0;
+              }
+              this.Count_ToDoAchieved = rez['ToDo Achieved'];
+              if (!this.Count_ToDoAchieved) {
+                this.Count_ToDoAchieved = 0;
+              }
+              this.Count_ToDoCompleted = rez['ToDo Completed'];
+              if (!this.Count_ToDoCompleted) {
+                this.Count_ToDoCompleted = 0;
+              }
+              this.CountCompleted = rez['Completed'];
+              if (!this.CountCompleted) {
+                this.CountCompleted = 0;
+              }
+              this.CountDelay = rez['Delay'];
+              if (!this.CountDelay) {
+                this.CountDelay = 0;
+              }
+              this.CountNewProject = rez['New Project'];
+              if (!this.CountNewProject) {
+                this.CountNewProject = 0;
+              }
+              this.countnewprojecRejected = rez['New Project Rejected'];
+              if (!this.countnewprojecRejected) {
+                this.countnewprojecRejected = 0;
+              }
+              //Step Two
+              this.countprojectCompletelyRejected = rez['Project Complete Rejected'];
+              if (!this.countprojectCompletelyRejected) {
+                this.countprojectCompletelyRejected = 0;
+              }
+              this.CountForward = rez['Forward Under Approval'];
+              if (!this.CountForward) {
+                this.CountForward = 0;
+              }
+              this.CountCompletionUA = rez['Completion Under Approval'];
+              if (!this.CountCompletionUA) {
+                this.CountCompletionUA = 0;
+              }
+              this.CountDeadLineExtendedUA = rez['Deadline Extended Under Approval'];
+              if (!this.CountDeadLineExtendedUA) {
+                this.CountDeadLineExtendedUA = 0;
+              }
+              this.CountProjectHoldUA = rez['Project Hold Under Approval'];
+              if (!this.CountProjectHoldUA) {
+                this.CountProjectHoldUA = 0;
+              }
+              this.CountUnderApproval = rez['Under Approval'];
+              if (!this.CountUnderApproval) {
+                this.CountUnderApproval = 0;
+              }
+              this.CountProjectHold = rez['Project Hold'];
+              if (!this.CountProjectHold) {
+                this.CountProjectHold = 0;
+              }
+
+              let ProjectHolded: number = rez['Project Hold'];
+              if (!ProjectHolded) {
+                ProjectHolded = 0;
+              }
+              let EnactiveUA: number = rez['Enactive Under Approval'];
+              if (!EnactiveUA) {
+                EnactiveUA = 0;
+              }
+              this.CountAll_UA = this.CountForward + this.CountCompletionUA + this.CountDeadLineExtendedUA + this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
+              this.CountNewProject = this.CountNewProject;
+              this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
+              // console.log("rejecteds Projects Count---->", this.CountRejecteds)
+              this.CountProjectHold = this.CountProjectHold + ProjectHolded;
+              this.notifyService.showSuccess("Deleted successfully ", '');
+              this.notifyService.showInfo("Please add projects to avail this portfolio",'Alert');
+            });
+          this._objStatusDTO.Emp_No = this.Current_user_ID;
+          this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+            (data) => {
+              this._ListProjStat = data as StatusDTO[];
+              this.cdr.detectChanges();
+            });
+        })
+      }
+      else {
+        this.notifyService.showInfo("Action Cancelled ", '');
+      }
+    });
+    }
+    else{
+      this.deletedBy = this.Current_user_ID;
+    //if (createdBy == this.Current_user_ID) {
+    let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: proj_Name,
+        message2 : 'Note: Deleting all the projects will delete the portfolio.'
       }
     });
     confirmDialog.afterClosed().subscribe(result => {
@@ -721,6 +839,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this.notifyService.showInfo("Action Cancelled ", '');
       }
     });
+    }
+    
      //}
     //  else {
     // this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');

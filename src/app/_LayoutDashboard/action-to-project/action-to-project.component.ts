@@ -342,12 +342,10 @@ export class ActionToProjectComponent implements OnInit {
       }
 
       this.service._InsertNewSubtask(fd).subscribe(data => {
-        this.notifyService.showInfo("Created Successfully", "Action");
         // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
         // this.closeInfo();
        
         if (this._Urlid == 1) {
-          // debugger
           this._Todoproject.CallOnSubmitAction();
           this.Clear_Feilds();
           this.closeInfo();
@@ -377,6 +375,7 @@ export class ActionToProjectComponent implements OnInit {
       // setTimeout(this._MoreDetails.CallOnSubmitAction, 3000);
       // this._MoreDetails.CallOnSubmitAction();
     });
+    this.notifyService.showInfo("Created Successfully", "Action");
   }
    convert(str) {
     var date = new Date(str),
