@@ -890,9 +890,8 @@
                         </span>
                     </div>
                     <div class="icons-right" id="deleteendit">
-                        <span class="tool-span">
-                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns"
-                                (click)="sweetAlert2()">
+                        <span class="tool-span"  data-toggle="modal" data-target="#delevent">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
                                 </path>
@@ -900,6 +899,8 @@
                             </svg>
                         </span>
                     </div>
+                   
+
                     <div class="icons-right">
                         <span class="tool-span" (click)="closeevearea()">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
@@ -924,6 +925,10 @@
                                     <span style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline ml-3">
                                         {{item.Schedule_Type}}
+                                    </span>
+                                    <span style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline ml-3" *ngIf="item.Recurrence!=''">
+                                        {{item.Recurrence}}
                                     </span>
                                 </div>
                                 <div class="title-day">{{item.Schedule_date| date:'dd, MMMM YYYY'}}<span
@@ -1324,6 +1329,47 @@
     </div>
 </div>
 
+
+
+<div class="modal fade" id="delevent" tabindex="-1" role="dialog" aria-labelledby="delevent"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete recurring event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="rescontent" style="color: #3c4043;">
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" (click)="AllDelete_event(1)" name="optradio" checked><span class="ml-2" >This Event
+                                Only</span>
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" (click)="AllDelete_event(2)" name="optradio"><span class="ml-2">This and Following Events</span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" (click)="AllDelete_event(3)" name="optradio"><span class="ml-2">All
+                                Events</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="text-gry fs-5 mr-3" data-dismiss="modal">Close</a>
+                <a type="button" class="text-info fs-5" (click)="AlldeleteSchedule()" data-dismiss="modal">
+                    Save changes</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="responsemodal" tabindex="-1" role="dialog" aria-labelledby="responsemodal"
     aria-hidden="true">
@@ -2222,22 +2268,22 @@
                     </div>
 
                 </div>
-                <div class="form-group mb-1" *ngIf="ScheduleType=='Task' && editTask==false">
+                <div class="form-group mb-1" *ngIf="editTask==false">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
                         (click)="OnSubmitSchedule()">Submit</button>
                 </div>
-                <div class="form-group mb-1" *ngIf="ScheduleType=='Task' && editTask==true">
+                <div class="form-group mb-1" *ngIf="editTask==true">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
-                        (click)="OnSubmitReSchedule()">Update</button>
+                        (click)="OnSubmitReSchedule()">Submit</button>
                 </div>
-                <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==false">
+                <!-- <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==false">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts"
                         (click)="OnSubmitSchedule()">Submit</button>
-                </div>
-                <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==true">
+                </div> -->
+                <!-- <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==true">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts"
-                        (click)="OnSubmitReSchedule()">Update</button>
-                </div>
+                        (click)="OnSubmitReSchedule()">Submit</button>
+                </div> -->
 
 
 
