@@ -69,7 +69,7 @@
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
                     <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                        class="badge badge-primary kt-badge--inline mr-2 py-10px btn-sm"> Total {{TotalProjects}}
+                        class="badge bdg-new kt-badge--inline mr-2 py-10px btn-sm"> <span class="count">{{TotalProjects}}</span> Total 
                         Projects</a>
                     <!-- End -->
                     <ng-container *ngIf="CountInprocess>0">
