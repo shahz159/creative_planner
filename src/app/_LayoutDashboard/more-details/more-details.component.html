@@ -1406,7 +1406,7 @@
                                                                                 #actionend="ngModel"
                                                                                 (click)="picker6.open();"
                                                                                 (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
-                                                                                [min]="item.StartDate" [max]="maxhold" placeholder="Select Date"
+                                                                                [min]="minDate" [max]="maxhold" placeholder="Select Date"
                                                                                 [(ngModel)]="_ProjDeadline" class="form-control"
                                                                                 name="date">
                                                                             <div class="input-group-append">
