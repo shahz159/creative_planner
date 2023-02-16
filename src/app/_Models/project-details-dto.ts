@@ -18,6 +18,7 @@ export class ProjectDetailsDTO {
 
     Emp_Comp_No: string;
     Team_Res: string;
+    Project_StartDate:string;
     Project_EndDate: string;
     Project_holddate: string;
 
@@ -40,7 +41,6 @@ export class ProjectDetailsDTO {
 
     checked: boolean;
     ClientName: string;
-    Project_StartDate: string;
     Project_Cost: number;
     Projects_Json: string;
     ReportType: string;

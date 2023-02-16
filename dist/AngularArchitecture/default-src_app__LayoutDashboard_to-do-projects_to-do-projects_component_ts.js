@@ -1565,7 +1565,7 @@ class ToDoProjectsComponent {
 
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "" && this._modelProjAlloc != 0) {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID, this._modelProjAlloc).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();

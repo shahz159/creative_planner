@@ -800,7 +800,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID, this._modelProjAlloc).subscribe(data => {
+      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "");
         // this.GetSubtask_Details();
@@ -1240,11 +1240,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     // alert(Pcode);
     if (this._ProjDeadline != null) {
-
-      this.objProjectDto.Project_EndDate = this._ProjDeadline;
-      this.objProjectDto.Project_Code = Pcode;
-      this.objProjectDto.Remarks = this.extend_remarks;
-      this.service._ProjectDeadlineExtendService(this.objProjectDto).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(Pcode,this._ProjDeadline,null,this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {

@@ -232,9 +232,9 @@ function DashboardComponent_div_22_a_1_Template(rf, ctx) {
   if (rf & 2) {
     const noti_r37 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵtextInterpolate1"](" Project: ", noti_r37.Project_Name, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵtextInterpolate1"](" ", noti_r37.Project_Name, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵtextInterpolate1"](" Type: ", noti_r37.Req_Type, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵtextInterpolate1"](" Request Type: ", noti_r37.Req_Type, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵtextInterpolate1"](" Requested On: ", _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵpipeBind2"](12, 4, noti_r37.Rec_Date, "dd-MM-yyyy"), " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](3);
@@ -37096,9 +37096,9 @@ function __classPrivateFieldIn(state, receiver) {
 /***/ }),
 
 /***/ 13892:
-/*!********************************************************************************!*\
-  !*** ./node_modules/@fullcalendar/interaction/node_modules/tslib/tslib.es6.js ***!
-  \********************************************************************************/
+/*!*************!*\
+  !*** tslib ***!
+  \*************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -37383,9 +37383,9 @@ function __classPrivateFieldIn(state, receiver) {
 /***/ }),
 
 /***/ 7782:
-/*!*************!*\
-  !*** tslib ***!
-  \*************/
+/*!*************************************************************************!*\
+  !*** ./node_modules/@fullcalendar/list/node_modules/tslib/tslib.es6.js ***!
+  \*************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
