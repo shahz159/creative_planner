@@ -1,4 +1,5 @@
 export class CalenderDTO {
+    flag_id:number;
     propose_date:string;
     propose_stt:string;
     propose_edt:string;

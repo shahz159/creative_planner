@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
   typetext: string;
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
-  Current_user_ID: any; 
+  Current_user_ID: any;
   messageForEmpty: boolean;
   myDate: number;
   CurrentUser_fullname: string;
@@ -330,23 +330,23 @@ export class DashboardComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        'bold',
-        'italic',
-        'underline',
+        // 'bold',
+        // 'italic',
+        // 'underline',
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        'insertUnorderedList',
-        'insertOrderedList',
+        // 'insertUnorderedList',
+        // 'insertOrderedList',
         'heading',
-        'fontName'
+        // 'fontName'
       ],
       [
-        'fontSize',
-        'textColor',
-        'backgroundColor',
+        // 'fontSize',
+        // 'textColor',
+        // 'backgroundColor',
         'customClasses',
 
         'unlink',
@@ -377,6 +377,14 @@ export class DashboardComponent implements OnInit {
   _subname: boolean;
   _subname1: boolean;
   Project_Code: string;
+  flagevent: number;
+  flag_id: number;
+  Schedule_ID: number = 0;
+  pro_date: any;
+  pro_sttime: any;
+  pro_edtime: any;
+  Event_requests1: any = [];
+  EventAction_type: number;
   // selectedCar: string;
 
   // cars = [
@@ -404,11 +412,12 @@ export class DashboardComponent implements OnInit {
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
     this._subname = false;
     this._subname1 = false;
-    this.notificationDTO=new NotificationActivityDTO();
+    this.notificationDTO = new NotificationActivityDTO();
   }
 
 
   ngOnInit() {
+    this.flagevent =1;
     this._labelName = "Schedule Date :";
     document.getElementById("div_endDate").style.display = "none";
 
@@ -524,15 +533,15 @@ export class DashboardComponent implements OnInit {
     this.Event_requests();
 
   }
-
+  
   notificationDTO: NotificationActivityDTO;
-  getDashboardnotifications(){
-    this.notificationDTO.Emp_No=this.Current_user_ID;
+  getDashboardnotifications() {
+    this.notificationDTO.Emp_No = this.Current_user_ID;
     this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
-          this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
-          this.notilength = (data[0]['notificationcount']);
-          console.log(data,'Notif');
+        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        this.notilength = (data[0]['notificationcount']);
+        console.log(data, 'Notif');
       });
   }
 
@@ -693,14 +702,12 @@ export class DashboardComponent implements OnInit {
   onCloseHandled() {
     this.display = 'none';
   }
-  EventAction_type: number;
+ 
   Action_event(val) {
     this.EventAction_type = val;
 
   }
-  pro_date: any;
-  pro_sttime: any;
-  pro_edtime: any;
+  
   GetclickEventRequest_details(id) {
     this.closeevearea1();
     $('.bg-ovr').addClass('d-block');
@@ -767,7 +774,7 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
-  Event_requests1: any = [];
+ 
   Event_requests() {
 
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -780,53 +787,61 @@ export class DashboardComponent implements OnInit {
       });
 
   }
-  sweetAlert2() {
+  // sweetAlert2() {
 
-    // console.log(dateOne)
-    // console.log(dateTwo)
+  //   // console.log(dateOne)
+  //   // console.log(dateTwo)
 
 
-    Swal.fire({
-      title: 'Delete Schedule Time ?',
-      text: 'Do you Want to Delete!!',
-      // icon: 'warning',
-      // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((response: any) => {
-      if (response.value) {
-        this.Reshuleduling_table();
-      } else if (response.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Not Deleted',
-          'error'
-        )
-      }
-    });
-  }
-  Schedule_ID: number = 0;
+  //   Swal.fire({
+  //     title: 'Delete Schedule Time ?',
+  //     text: 'Do you Want to Delete!!',
+  //     // icon: 'warning',
+  //     // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Yes',
+  //     cancelButtonText: 'No'
+  //   }).then((response: any) => {
+  //     if (response.value) {
+  //       this.Reshuleduling_table();
+  //     } else if (response.dismiss === Swal.DismissReason.cancel) {
+  //       Swal.fire(
+  //         'Cancelled',
+  //         'Not Deleted',
+  //         'error'
+  //       )
+  //     }
+  //   });
+  // }
+ 
   Reshuleduling_table() {
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
-        this.deleteSchedule(this.Schedule_ID);
+        
       });
 
   }
+  
+  AllDelete_event(val) {
+    this.flagevent = val;
+   
 
-  deleteSchedule(id) {
-    // alert(id);
-    this.CalenderService.NewRescheduling_table(id).subscribe
-      (data => {
-        this.notifyService.showSuccess("Deleted Successfully", "Success!!");
-        this.closeevearea();
-        this.GetScheduledJson();
+  }
+ 
+  AlldeleteSchedule() {
+   
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.flag_id = this.flagevent;
+    this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Deleted Successfully","Success");
+      this.closeevearea();
+      this.GetScheduledJson();
+    })
 
-      });
+
   }
   f1: any;
   arr: any = [];
@@ -835,6 +850,7 @@ export class DashboardComponent implements OnInit {
   editTask: boolean = false;
 
   ReshudingTaskandEvent() {
+
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("div_recurrence").style.display = "none";
     this.editTask = true;
@@ -881,6 +897,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw222").style.display = "none";
           document.getElementById("core_Dms").style.display = "none";
           document.getElementById("Monthly_121").style.display = "none";
+          document.getElementById("weekly_121").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -924,6 +941,7 @@ export class DashboardComponent implements OnInit {
 
 
           // document.getElementById("startid").innerHTML=(this.EventScheduledjson[0]['St_Time']);
+          document.getElementById("weekly_121").style.display = "none";
           document.getElementById("Monthly_121").style.display = "none";
           document.getElementById("subtaskid").style.display = "none";
           // document.getElementById("Link_Name").style.display = "block";
@@ -1026,7 +1044,6 @@ export class DashboardComponent implements OnInit {
       for (let index = 0; index < this.MonthArr.length; index++) {
         if (this.MonthArr[index].checked == true) {
           const day = this.MonthArr[index].value;
-
           var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
           this.daysSelectedII = this.daysSelectedII.concat(newArray);
         }
@@ -1040,38 +1057,55 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
 
-        var columnNames = "StartTime";
-        element[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        element[columnNamee] = this.Endtms;
-        var columnName = "IsDeleted";
-        element[columnName] = 0;
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
 
-        var columnName = "Emp_No";
-        element[columnName] = this.Current_user_ID;
-        var columnNames = "ScheduleType";
-        element[columnNames] = this.ScheduleType == "Task" ? 1 : 2;
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
 
-        var columnName = "Title_Name";
-        element[columnName] = this.Title_Name;
-        var columnName = "MasterCode";
-        element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vRecurrence = "Recurrence"
+        element[vRecurrence] = this.selectedrecuvalue;
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.Title_Name;
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var columnName = "User_Name";
-        element[columnName] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
-        var columnName = "Location_Type";
-        element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
-        var columnName = "Description";
-        element[columnName] = this.Description_Type == undefined ? "" : this.Description_Type;
-        var columnName = "Subtask";
-        element[columnName] = this.Subtask == undefined ? "" : this.Subtask;
-        var columnName = "EventNumber";
-        element[columnName] = this.ScheduleType == "Task" ? 0 : this.EventNumber;
-        var columnName = "Portfolio_name";
-        element[columnName] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
-        var columnName = "DMS_Name";
-        element[columnName] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+
+        var vDescription = "Description";
+        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
       });
 
@@ -1117,7 +1151,7 @@ export class DashboardComponent implements OnInit {
           this.selected = null;
           this.TImetable();
           this.Portfolio = null;
-          this.minDate = moment().format("YYYY-MM-DD").toString();;
+          this.minDate = moment().format("YYYY-MM-DD").toString();
           this.maxDate = null;
           this.calendar.updateTodaysDate();
           this.TImetable();
@@ -1187,37 +1221,56 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
 
-        var columnNames = "StartTime";
-        element[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        element[columnNamee] = this.Endtms;
-        var columnName = "IsDeleted";
-        element[columnName] = 0;
-        var columnName = "Emp_No";
-        element[columnName] = this.Current_user_ID;
-        var columnNames = "ScheduleType";
-        element[columnNames] = this.ScheduleType == "Task" ? 1 : 2;
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
 
-        var columnName = "Title_Name";
-        element[columnName] = this.Title_Name;
-        var columnName = "MasterCode";
-        element[columnName] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
+
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vRecurrence = "Recurrence"
+        element[vRecurrence] = this.selectedrecuvalue;
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.Title_Name;
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var columnName = "User_Name";
-        element[columnName] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
-        var columnName = "Location_Type";
-        element[columnName] = this.Location_Type == undefined ? "" : this.Location_Type;
-        var columnName = "Description";
-        element[columnName] = this.Description_Type == undefined ? "" : this.Description_Type;
-        var columnName = "Subtask";
-        element[columnName] = this.Subtask == undefined ? "" : this.Subtask;
-        var columnName = "EventNumber";
-        element[columnName] = this.ScheduleType == "Task" ? 0 : this.EventNumber;
-        var columnName = "Portfolio_name";
-        element[columnName] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
-        var columnName = "DMS_Name";
-        element[columnName] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+
+        var vDescription = "Description";
+        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
 
       });
 
@@ -1979,19 +2032,21 @@ export class DashboardComponent implements OnInit {
     this.selectedrecuvalue = val.value.toString();
     this._labelName = "Start Date :";
     document.getElementById("div_endDate").style.display = "block";
+    for (let index = 0; index < this.dayArr.length; index++) {
+      this.dayArr[index].checked = false;
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      this.MonthArr[index].checked = false;
+    }
     if (val.value == 0) {
       this._labelName = "Schedule Date :";
-      document.getElementById("calender_1").style.display = "none";
+      document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];
       this.daysSelected = [];
       this.singleselectarry = [];
-
       // this.Checkdatetimetable(this.daysSelectedII);
-      for (let index = 0; index < this.dayArr.length; index++) {
-        this.dayArr[index].checked = false;
 
-      }
       const format2 = "YYYY-MM-DD";
       var jsonData = {};
       var columnName = "Date";
@@ -2017,9 +2072,7 @@ export class DashboardComponent implements OnInit {
       // this.daysSelected = [];
       // this.singleselectarry = [];
       // this.Checkdatetimetable(this.daysSelectedII);
-      for (let index = 0; index < this.dayArr.length; index++) {
-        this.dayArr[index].checked = false;
-      }
+
       // this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "block";
       document.getElementById("Monthly_121").style.display = "none";
@@ -2070,7 +2123,7 @@ export class DashboardComponent implements OnInit {
     }
     else if (val.value == 3) {
 
-
+      document.getElementById("weekly_121").style.display = "none";
       document.getElementById("Monthly_121").style.display = "block";
 
       const format2 = "YYYY-MM-DD";
