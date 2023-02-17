@@ -1101,6 +1101,20 @@
 .card.brdr.brlight {
   border-left: 4px solid transparent;
 }
+
+.bdg-new {
+  background-color: rgb(123 104 238 / 15%);
+  color: #7b68ee;
+  font-size: 12px;
+  font-weight: 500;
+}
+span.count {
+  background: #9886eb;
+  padding: 0px 4px;
+  color: #ffffff;
+  cursor: auto;
+  border-radius: 3px;
+}
 /* .icond {
   width: 100px;
 } */

@@ -110,8 +110,8 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
 
-    this.EndDate1 = moment(new Date()).format("MM/DD/YYYY");
-    // alert(this.EndDate1)
+    this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
+    this.minDate.setDate(this.minDate.getDate());
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
 
@@ -2793,7 +2793,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          // console.log(data, "standard status");
+          console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
@@ -3171,6 +3171,7 @@ export class MoreDetailsComponent implements OnInit {
   Holddate: string;
   hold_remarks: string;
   minhold: any = new Date();
+  minDate: any = new Date();
   maxhold: any = new Date();
 
   onProject_Hold(id, Pcode) {

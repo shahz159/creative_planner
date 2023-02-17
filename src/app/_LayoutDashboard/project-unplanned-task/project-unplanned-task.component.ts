@@ -87,6 +87,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
+    this.getrunwayCount();
     
       tippy('#tippy1', {
         content: "Runway Tasks!!",
@@ -213,6 +214,40 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   LoadDocument(url: string){
     var myWindow = window.open(url);
     myWindow.focus();
+  }
+
+
+  status_list:any;
+  procount:any;
+  catcount:any;
+  acceptCount: any;
+  pendingCount:any;
+  rejectCount:any;
+
+  getrunwayCount(){
+    this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
+      (data) => {
+        this.procount = JSON.parse(data[0]['Procount']);
+        this.catcount = JSON.parse(data[0]['CatCount']);
+        this.status_list = JSON.parse(data[0]['statuscount']);
+        this.status_list.forEach(element => {
+          if(element.Status=='Accepted'){
+            this.acceptCount = element.SCount;
+          }
+          if(element.Status=='Pending'){
+            this.pendingCount = element.SCount;
+          }
+          if(element.Status=='Rejected'){
+            this.rejectCount = element.SCount;
+          }
+        });
+      });
+      console.log(this.acceptCount,this.pendingCount,this.rejectCount,"count");
+  }
+
+  underDev() {
+    this.notifyService.showError("**Development under maintainance", "Failed!!");
   }
 
   GetTodoProjects() {
