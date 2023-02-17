@@ -599,7 +599,7 @@
                                 <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
                                 <div class="w-100">
                                     <h5 class="my-1 font-14" *ngIf="deadlineCount==0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
-                                    <h5 class="my-1 font-14" style="color:red" data-toggle="kt-tooltip" title="Extended Deadline {{deadlineCount}} times!!"  *ngIf="deadlineCount>0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                    <h5 class="my-1 font-14" style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip" title="Extended Deadline {{deadlineCount}} times!!"  *ngIf="deadlineCount>0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
                                 </div>
                             </div>
                         </div>
