@@ -1679,7 +1679,8 @@ height: auto !important;
     border-top: 1px solid #d7e3fa;
 }
 .noti {
-    background: #F3547D !important;
+    background: #F3547D;
+    background: #9886eb !important;
     border-radius: 500px !important;
     padding: 0.2em 0.5rem 0.35rem 0.5rem;
     min-width: 1.429rem;
