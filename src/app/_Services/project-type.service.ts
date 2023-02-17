@@ -462,6 +462,7 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = Emp_No;
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardSummaryCount", this.ObjNotificationDto);
   }
+
   _GetCompletedProjects(objDTO: CompletedProjectsDTO) {
 
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
@@ -477,6 +478,13 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
   } 
 
+  
+  _GetCategoryCountforRunway(objDTO: CompletedProjectsDTO) {
+
+    this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
+    return this.http.post(this.rootUrl + "Notification/NewGetCategoryCountforRunway", this._ObjCompletedProj);
+  }
+  
   _GetRunwayCatId(EmpID) {
     this._ObjCompletedProj.Emp_No = EmpID;
     return this.http.post(this.rootUrl + "Notification/NewGetRunwayCatId", this._ObjCompletedProj);
