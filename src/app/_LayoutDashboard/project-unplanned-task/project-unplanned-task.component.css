@@ -1221,10 +1221,13 @@ ul {
 }
 
 .count-height {
-    max-height: 200px;
-    overflow-y: auto;
+    height: 200px;
+    overflow-y: hidden;
 }
 
+.count-height:hover {
+    overflow-y: auto;
+}
 
 /* .count-height .justify-content-between{
   border-bottom: 1px solid #f1f1f1;
@@ -1847,4 +1850,47 @@ mat-icon {
 .kt-badge.kt-badge--unified-warning1 {
     color: #F3AA0F;
     background: rgb(255 184 34 / 25%);
+}
+.bdg-new {
+    background-color: rgb(123 104 238 / 15%);
+    color: #7b68ee;
+    font-size: 12px;
+    font-weight: 500;
+}
+span.count {
+    background: #9886eb;
+    padding: 0px 4px;
+    color: #ffffff;
+    cursor: auto;
+    border-radius: 3px;
+}
+.bdg-suc{
+    background-color: rgb(104 238 198 / 15%);
+    color: #1dc9b7;
+}
+.bdg-suc span.count {
+    background: #1dc9b7;
+}
+.bdg-war{
+    background-color: rgb(255 154 54 / 21%);
+    color: #dd9600;
+}
+.bdg-war span.count {
+    background: #ffb822;
+}
+.bdg-dan{
+    background-color: rgb(238 104 104 / 15%);
+    color: #dc3545;
+}
+.bdg-dan span.count {
+    background: #dc3545;
+}
+.count-list.count-header {
+    display: flex;
+    align-items: center;
+}   
+.topy-filtr .dropdown-menu {
+    padding: 20px;
+    width: 400px;
+    top: 10px !important;
 }
