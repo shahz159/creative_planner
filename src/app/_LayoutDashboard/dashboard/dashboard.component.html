@@ -916,7 +916,8 @@
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
-                            <div class="box-cl" style="background-color: rgb(3, 155, 229);"></div>
+                            <div class="box-cl" *ngIf="item.Schedule_Type!='Task'" style="background-color: rgb(3, 155, 229);"></div>
+                            <div class="box-cl" *ngIf="item.Schedule_Type!='Event'" style="background-color: rgb(3, 229, 14);"></div>
                         </div>
                         <div class="title-right" id="">
                             <div class="title-area">
@@ -927,8 +928,9 @@
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span style="height: 18px;"
-                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline ml-3" *ngIf="item.Recurrence!=''">
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline ml-3" *ngIf="item.Recurrence!='DO NoT Repeat'" > 
                                         {{item.Recurrence}}
+                                        
                                     </span>
                                 </div>
                                 <div class="title-day">{{item.Schedule_date| date:'dd, MMMM YYYY'}}<span
