@@ -156,15 +156,15 @@ export class DashboardComponent implements OnInit {
     }
   ];
   MonthArr: any = [
-    { "Day": "1", "value": "1", "checked": false },
-    { "Day": "2", "value": "2", "checked": false },
-    { "Day": "3", "value": "3", "checked": false },
-    { "Day": "4", "value": "4", "checked": false },
-    { "Day": "5", "value": "5", "checked": false },
-    { "Day": "6", "value": "6", "checked": false },
-    { "Day": "7", "value": "7", "checked": false },
-    { "Day": "8", "value": "8", "checked": false },
-    { "Day": "9", "value": "9", "checked": false },
+    { "Day": "01", "value": "01", "checked": false },
+    { "Day": "02", "value": "02", "checked": false },
+    { "Day": "03", "value": "03", "checked": false },
+    { "Day": "04", "value": "04", "checked": false },
+    { "Day": "05", "value": "05", "checked": false },
+    { "Day": "06", "value": "06", "checked": false },
+    { "Day": "07", "value": "07", "checked": false },
+    { "Day": "08", "value": "08", "checked": false },
+    { "Day": "09", "value": "09", "checked": false },
     { "Day": "10", "value": "10", "checked": false },
     { "Day": "11", "value": "11", "checked": false },
     { "Day": "12", "value": "12", "checked": false },
@@ -524,8 +524,9 @@ export class DashboardComponent implements OnInit {
     jsonData[IsActive] = 1;
     var Day = "Day";
     jsonData[Day] = moment().format('dddd').substring(0, 3);
-    var DayNum = "DayNum";
-    jsonData[DayNum] = moment().format('DD').substring(0, 3);
+    var DayNum1 = "DayNum";
+    jsonData[DayNum1] = moment( this._StartDate).format('DD').substring(0, 3);
+    
     this.AllDatesSDandED.push(jsonData);
 
     this.GetProjectAndsubtashDrpforCalender();
@@ -852,7 +853,8 @@ export class DashboardComponent implements OnInit {
   ReshudingTaskandEvent() {
 
     document.getElementById("div_endDate").style.display = "none";
-    document.getElementById("div_recurrence").style.display = "none";
+    document.getElementById("div_recurrence").style.display = "block";
+    
     this.editTask = true;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -866,6 +868,7 @@ export class DashboardComponent implements OnInit {
         document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
+       
         this.AllDatesSDandED = [];
         var jsonData = {};
         var columnName = "Date";
@@ -886,7 +889,7 @@ export class DashboardComponent implements OnInit {
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.MasterCode = (this.MasterCode[0].stringval);
-
+          this.selectedrecuvalue=(this.EventScheduledjson[0]['Recurrence']);
           document.getElementById("subtaskid").style.display = "block";
           // document.getElementById("Link_Name").style.display = "none";
           document.getElementById("Guest_Name").style.display = "none";
@@ -896,8 +899,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw121").style.display = "none";
           document.getElementById("core_viw222").style.display = "none";
           document.getElementById("core_Dms").style.display = "none";
-          document.getElementById("Monthly_121").style.display = "none";
-          document.getElementById("weekly_121").style.display = "none";
+          // document.getElementById("Monthly_121").style.display = "none";
+          // document.getElementById("weekly_121").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -941,8 +944,8 @@ export class DashboardComponent implements OnInit {
 
 
           // document.getElementById("startid").innerHTML=(this.EventScheduledjson[0]['St_Time']);
-          document.getElementById("weekly_121").style.display = "none";
-          document.getElementById("Monthly_121").style.display = "none";
+          // document.getElementById("weekly_121").style.display = "none";
+          // document.getElementById("Monthly_121").style.display = "none";
           document.getElementById("subtaskid").style.display = "none";
           // document.getElementById("Link_Name").style.display = "block";
           document.getElementById("Guest_Name").style.display = "block";
@@ -1037,6 +1040,7 @@ export class DashboardComponent implements OnInit {
       }
     }
     else if (this.selectedrecuvalue == "3") {
+      
       if (this.MonthArr.filter(x => x.checked == true).length == 0) {
         alert('Please select day');
         return false;
@@ -2199,6 +2203,7 @@ export class DashboardComponent implements OnInit {
   selectmonthlydays(day) {
     let objIndex = this.MonthArr.findIndex((obj => obj.value == day.target.value));
     this.MonthArr[objIndex].checked = day.target.checked;
+
 
     // const format2 = "YYYY-MM-DD";
     // var start = moment(this.minDate);
