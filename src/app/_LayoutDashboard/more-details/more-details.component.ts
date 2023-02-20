@@ -2879,10 +2879,10 @@ export class MoreDetailsComponent implements OnInit {
 
           // Rebinding    
 
-          this.notifyService.showInfo("Successfully Updated", '');
           this.closeInfo();
 
         });
+        this.notifyService.showInfo("Successfully Updated", '');
     }
   }
 
