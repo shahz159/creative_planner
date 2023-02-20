@@ -1738,8 +1738,8 @@
                                                             {{item.SubProject_Status}}
                                                         </span>
                                                     </p>
-                                                    <p class="mb-1" *ngIf="item.Sourcefile">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
+                                                    <p class="mb-1">
+                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Sourcefile">
                                                             <i class="fas fa-paperclip text-muted mr-1"></i>
                                                             <a class="text-info curser-pointer"
                                                                 title="Click To Open File"
@@ -2461,7 +2461,7 @@
         </div>
         <span class="text-danger">Note: (*) are mandatory!</span>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='') || (selectedFile==null)"
+            <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')"
                 (click)="OnUpdateClick()">Submit</button>
         </div>
     </div>
