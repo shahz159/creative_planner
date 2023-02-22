@@ -258,7 +258,8 @@
                                                 </ng-select>
                                             </div>
                                             <div class="form-group input-group">
-                                                <label>Select New Deadline<span class="text-danger">*</span></label>
+                                                <label>Set new deadline (optional):</label>
+                                                <!-- <span class="text-danger">*</span> -->
                                                 <div class="input-group">
                                                     <input matInput [matDatepicker]="picker4"  
                                                                 #Transdt="ngModel"
@@ -273,18 +274,19 @@
                                                             <mat-datepicker class="form-group" #picker4></mat-datepicker>
                                                     </div>
                                                 </div>
+                                                <span style="color:gray">Existing Deadline: {{EndDate}}</span>
                                             </div>
                                             <div class="form-group">
-                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                <label>Remarks<span class="text-danger">*</span>:</label>
                                                 <textarea class="form-control" [(ngModel)]="transfer_remarks" placeholder="" rows="2" cols="20"
                                                     style="height:70px;"></textarea>
                                             </div>
-                                            <span class="text-danger">Note: (*) are mandatory!</span>
+                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                         </div>
                                     </div>
                                 </ul>
                                 <div class="px-4 pb-3">
-                                    <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedEmp_No || !TransDate || !transfer_remarks" 
+                                    <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedEmp_No || !transfer_remarks" 
                                     (click)="sweetAlert1(Pid,_MasterCode)">Submit</button>
                                     <button *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'" class="btn btn-outline-info btn-sm text-dark-75" (click)="onCancel(Pid)">Close</button>
                                     <button  *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'" class="btn btn-outline-info btn-sm text-dark-75" (click)="onTransferCancel(Pid)">Close</button>
@@ -431,7 +433,7 @@
                                     <ng-template #othertask>
                                         <div class="mt-1 d-flex align-items-start">
                                             <h5>{{StartDate|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
-                                            <h5 style="color:red" data-toggle="kt-tooltip"
+                                            <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
                                                 title="Extended Deadline for {{deadlineCount}} times!!"
                                                 *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <!-- <span class="text-info fs-8" [hidden]="Editbutton"
@@ -510,7 +512,7 @@
                                                                     <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
                                                                         style="height:70px;"></textarea>
                                                                 </div>
-                                                                <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                             </div>
                                                         </div>
                                                         <li class="kt-nav__separator"></li>
@@ -526,7 +528,7 @@
                                             <!-- Deadline extend end-->
 
                                             <!-- Project Hold -->
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval')">
                                                 <span type="button" id="hold-icn" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false"
                                                     class="dropdown-toggle no-after text-info" (click)="onHoldClick(Pid)">
@@ -580,7 +582,7 @@
                                                                         rows="2" cols="20"
                                                                         style="height:70px;"></textarea>
                                                                 </div>
-                                                            <span class="text-danger">Note: (*) are mandatory!</span>
+                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                             </div>
 
                                                         </div>
@@ -1421,7 +1423,7 @@
                                                                       </label>
                                                                       <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                                                                     </div>
-                                                                    <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                    <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                                   </div>
                                                                 </div>
                                                                 <li class="kt-nav__separator"></li>
@@ -1480,7 +1482,7 @@
                                                                       </label>
                                                                       <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                                                                     </div>
-                                                                    <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                    <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                                   </div>
                                                                 </div>
                                                                 <li class="kt-nav__separator"></li>
@@ -1573,7 +1575,7 @@
                                                                               </label>
                                                                               <textarea [(ngModel)]="alloc_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                                                                             </div>
-                                                                            <span class="text-danger">Note: (*) are mandatory!</span>
+                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                                           </div>
                                                                         </div>
                                                                         <li class="kt-nav__separator"></li>
@@ -2396,7 +2398,7 @@
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
                 style="height: 264px; margin-top: 0px; margin-bottom: 0px;"></textarea>
         </div>
-        <span class="text-danger">Note: (*) are mandatory!</span>
+        <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
@@ -2459,7 +2461,7 @@
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
                 style="margin-top: 0px; margin-bottom: 0px; height: 300px;"></textarea>
         </div>
-        <span class="text-danger">Note: (*) are mandatory!</span>
+        <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
         <div class="form-group">
             <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')"
                 (click)="OnUpdateClick()">Submit</button>

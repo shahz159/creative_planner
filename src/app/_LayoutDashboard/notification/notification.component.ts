@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-dto';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 
 @Component({
@@ -24,9 +27,12 @@ export class NotificationComponent implements OnInit {
   notifArray: any = [];
 
   notificationDTO: NotificationActivityDTO;
+  approvalObj = new ApprovalDTO();
 
   constructor(
     public service: ProjectTypeService,
+    public approvalservice: ApprovalsService,
+    private notifyService: NotificationService,
     private router: Router
   ) {
     this.notificationDTO=new NotificationActivityDTO();
@@ -62,7 +68,7 @@ export class NotificationComponent implements OnInit {
         else {
           this._filtersMessage = "";
         }
-        console.log(this._NotificationActivity,'Notif');
+        // console.log(this._NotificationActivity,'Notif');
       });
   }
 
@@ -90,7 +96,16 @@ export class NotificationComponent implements OnInit {
 
   }
 
-  moreDetails(pcode) {
+  moreDetails(pcode,rec_date,req_type) {
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.Project_Code=pcode;
+    this.approvalObj.Request_Date=rec_date;
+    this.approvalObj.Request_type=req_type;
+    console.log(this.approvalObj,"response");
+    this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
+      console.log(data,"response-data");
+      this.notifyService.showInfo("Response recorded.",'');
+    });
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;

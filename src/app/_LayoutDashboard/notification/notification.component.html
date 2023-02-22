@@ -37,7 +37,7 @@
                                 <div class="pro-dc">
                                     <div class="d-flex align-items-center">
                                         <i class="fa fa-info-circle info-icon-cir curser-pointer mr-1" (click)="openInfo(item.Project_Code)"></i>
-                                        <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 mx-2" (click)="moreDetails(item.Project_Code)"></i>
+                                        <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 mx-2" (click)="moreDetails(item.Project_Code,item.Rec_Date,item.Req_Type)"></i>
                                         <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mx-1">
                                             <i class="fa fa-clone mr-2"></i>{{item.Exec_BlockName}}</label>
                                         <span class="h6 text-muted mb-0 ml-2"><i class="far fa-calendar-alt mr-1"></i>{{item.Rec_Date | date:'dd-MM-yyyy' }}</span>

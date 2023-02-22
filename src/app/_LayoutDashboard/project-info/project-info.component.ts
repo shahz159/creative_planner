@@ -834,7 +834,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   noRejectType: boolean = false;
   submitApproval() {
 
-    if (this.requestType != 'Project Forward') {
+    if (this.requestType != 'Project Forward' && this.requestType!='Task Complete') {
 
       if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
@@ -849,9 +849,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -895,9 +894,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -942,9 +940,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.approvalservice.InsertRejectApprovalService(this.approvalObj).
             subscribe((data) => {
               this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              if (this._Message == 'Not Authorized' || this._Message=='0') {
+                  this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
                 this.notifyService.showSuccess(this._Message, "Rejected Successfully");
@@ -1112,7 +1109,110 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       }
       this.closeInfo();
     }
-
+    else if(this.requestType == 'Task Complete'){
+      if (this.selectedType == '1') {
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.projectCode;
+        this.approvalObj.Request_Date = this.requestDate;
+        this.approvalObj.Request_type = this.requestType;
+        this.approvalObj.rejectType = null;
+        this.approvalObj.approvaltype = 'Accept';
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+        this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
+            }
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.fun_LoadProjectDetails();
+              this.getapprovalStats();
+              if (this._Urlid == '1') {
+                this.router.navigate(["/backend/ProjectsSummary/"]);
+                this._projectSummary.GetProjectsByUserName(this.Summarytype);
+              }
+              else if (this._Urlid == '2') {
+                this._portfolioprojects.GetPortfolioProjectsByPid();
+              }
+              else if (this._Urlid == '3') {
+                this._viewdashboard.GetCompletedProjects();
+              }
+              else if (this._Urlid == '4') {
+                this._projectsAdd.GetProjectsByUserName();
+                this._projectsAdd.getDropdownsDataFromDB();
+              }
+              else if (this._Urlid == '5') {
+                this._toDo.GetProjectsByUserName();
+              }
+              else if (this._Urlid == '6') {
+                this.router.navigate(["Notifications"]);
+              }
+            }
+          });
+        console.log(this.approvalObj,"task");
+      }
+      else if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_Date = this.requestDate;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+          this.approvalObj.approvaltype = 'Reject';
+          
+          this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized' || this._Message=='0') {
+                  this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.fun_LoadProjectDetails();
+                this.getapprovalStats();
+                if (this._Urlid == '1') {
+                  this.router.navigate(["/backend/ProjectsSummary/"]);
+                  this._projectSummary.GetProjectsByUserName(this.Summarytype);
+                }
+                else if (this._Urlid == '2') {
+                  this._portfolioprojects.GetPortfolioProjectsByPid();
+                }
+                else if (this._Urlid == '3') {
+                  this._viewdashboard.GetCompletedProjects();
+                }
+                else if (this._Urlid == '4') {
+                  this._projectsAdd.GetProjectsByUserName();
+                  this._projectsAdd.getDropdownsDataFromDB();
+                }
+                else if (this._Urlid == '5') {
+                  this._toDo.GetProjectsByUserName();
+                  this._toDo.GetSubtask_Details();
+                }
+                else if (this._Urlid == '6') {
+                  this.router.navigate(["Notifications"]);
+                }
+              }
+            });
+            console.log(this.approvalObj,"task");
+        }
+      }
+      else if (this.selectedType == '4') {
+        this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      }
+      this.closeInfo();
+    }
   }
 
   comments_list: any;
@@ -1152,7 +1252,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
-        this.newResponsible= (this.transfer_json[0]['newResp']);
+        if(this.requestType=='Project Forward'){
+          this.newResponsible = (this.transfer_json[0]['newResp']);
+        }
         // console.log(this.transfer_json, 'transfer');
         
       }
@@ -1332,7 +1434,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   sweetAlert(id, pcode) {
     Swal.fire({
       title: 'Project Transfer!!',
-      text: 'Do you really want to transfer this project ?',
+      html: 'Do you want to transfer the project "<b>'+this._ProjectName+'</b>" ?',
       // icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -1355,13 +1457,18 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   new_Res:string;
 
   onProject_Transfer(id, Pcode) {
-    this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+    if (this.TransDate != null) {
+        this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+    }
+    else{
+      this.TransDate=null;
+    }
     this.Employee_List.forEach(element => {
       if(element.Emp_No==this.selectedEmpNo){
         this.new_Res=element.DisplayName;    
       }
     });
-    if (this.TransDate != null) {
+    
 
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Responsible = this.selectedEmpNo;
@@ -1453,10 +1560,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       });
       this.onCancel(id);
       this.closeInfo();
-    }
-    else {
-      this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
-    }
+    // else {
+    //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
+    // }
   }
 
 }

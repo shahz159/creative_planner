@@ -261,9 +261,8 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -289,9 +288,8 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -319,9 +317,8 @@ export class MoreDetailsComponent implements OnInit {
           this.approvalservice.InsertRejectApprovalService(this.approvalObj).
             subscribe((data) => {
               this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              if (this._Message == 'Not Authorized' || this._Message=='0') {
+                  this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
                 this.notifyService.showError(this._Message, "Rejected Successfully");
@@ -339,7 +336,6 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
     }
-
     else if (this.requestType == 'Project Forward') {
       if (this.selectedType == '3') {
         if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
@@ -358,8 +354,7 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               this._Message = (data['message']);
               if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+                this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
                 this.notifyService.showError(this._Message, "Rejected Successfully");
@@ -406,7 +401,7 @@ export class MoreDetailsComponent implements OnInit {
             this.getapprovalStats();
             this.GetprojectComments();
           }
-          else if (this._Message == '4' || this._Message == null) {
+          else if (this._Message == '4' || this._Message == null || this._Message=='0') {
             this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
           }
         });
@@ -417,6 +412,77 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
     }
+    else if (this.requestType == 'Task Complete') {
+      if (this.selectedType == '1') {
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.projectCode;
+        this.approvalObj.Request_Date = this.requestDate;
+        this.approvalObj.Request_type = this.requestType;
+        this.approvalObj.rejectType = null;
+        this.approvalObj.approvaltype = 'Accept';
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+        this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            if (this._Message == 'Not Authorized' || this._Message == '0') {
+              this.notifyService.showError("project not approved", 'Failed.');
+            }
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+            }
+            this.Clear_Feilds();
+          });
+      }
+      else if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_Date = this.requestDate;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+          this.approvalObj.approvaltype = 'Reject';
+
+          this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized' || this._Message == '0') {
+                this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+              }
+              this.Clear_Feilds();
+            });
+        }
+      }
+      else if (this._Message == '4' || this._Message == null) {
+        this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
+      }
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
+    }
+
   }
 
   getnextDeadline() {
@@ -3430,10 +3496,11 @@ export class MoreDetailsComponent implements OnInit {
   //project transfer
 
   sweetAlert1(id, pcode) {
+    // alert(this.TransDate);
     Swal.fire({
       title: 'Project Transfer!!',
-      text: 'Do you really want to transfer this project ?',
-      // icon: 'warning',
+      html: 'Do you want to transfer the project "<b>'+this.ProjectName+'</b>" ?',
+      // icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
@@ -3457,15 +3524,18 @@ export class MoreDetailsComponent implements OnInit {
   new_Res: string;
 
   onProject_Transfer(id, Pcode) {
-    this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
-    // alert(Pcode);
+    if (this.TransDate != null || this.TransDate != undefined) {
+         this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+    }
+    else{
+      this.TransDate=null;
+    }
     this.Employee_List.forEach(element => {
       if (element.Emp_No == this.selectedEmp_No) {
         this.new_Res = element.DisplayName;
       }
     });
 
-    if (this.TransDate != null) {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Responsible = this.selectedEmp_No;
       this.approvalObj.deadline = this.TransDate;
@@ -3503,10 +3573,9 @@ export class MoreDetailsComponent implements OnInit {
       });
       this.onCancel(id);
       this.closeInfo();
-    }
-    else {
-      this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
-    }
+    // else {
+    //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
+    // }
   }
 
   onTransferCancel(id) {
