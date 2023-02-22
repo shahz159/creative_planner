@@ -2331,7 +2331,7 @@
 
 <!-- For Update Project-->
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
-    <div class="px-4 pt-4 pb-1">
+    <div class="px-4 pt-4 pb-2" style="border-bottom: 1px solid #ebedf2;">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
             <h4 class="font-weight-bold m-0">Project Submission</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
@@ -2340,9 +2340,10 @@
             </a>
         </div>
     </div>
-    <div class="px-4 pt-2">
+
+    <div class="content-subm px-4 pt-3" id="subtrnfer">
         <div class="">
-            <div class="d-flex align-items-center justify-content-between mt-0">
+            <div class="d-flex align-items-center justify-content-between mt-1">
                 <div>
                     <div class="my-2">
                         <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
@@ -2396,9 +2397,13 @@
         <div class="form-group">
             <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
             <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
-                style="height: 264px; margin-top: 0px; margin-bottom: 0px;"></textarea>
+                style="height: 264px; margin: 0px;"></textarea>
+                <span class="text-danger mt-1">Note: (*) are mandatory!</span>
         </div>
+<<<<<<< HEAD
         <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+=======
+>>>>>>> d1725fa4f9cf446444db35c29a96824bd186e94f
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
@@ -2406,6 +2411,75 @@
             </button>
         </div>
     </div>
+
+    <!-- Achieve Tabs -->
+    <div class="content-ach px-4 pt-2 d-none" id="achievetabs">
+        <div class="card-brdr">               
+
+            <ul class="nav nav-dark nav-bold nav-tabs nav-tabs-line mb-0 font-bolder">
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary text-hover-primary font-bolder fs-125 mr-4 py-3 active"
+                        data-toggle="tab" href="#overv-pro">Achieve</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary text-hover-primary font-bolder fs-125 mr-4 py-3" data-toggle="tab"
+                        href="#edit-pro">Not Achieve</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content py-3 profile-tab">
+            <div class="card1 brdr-0 active" id="overv-pro">
+                <div class="mt-3">
+                    <div class="form-group">
+                        <label>Attachments</label><span class="text-danger">*</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-upload" viewBox="0 0 16 16">
+                                        <path
+                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                        <path
+                                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="_file1" accept="application/pdf">
+                                <label class="custom-file-label" id="upload" for="_file1">Select a file</label>
+                            </div>
+                        </div>
+                        <span class="text-info"> *Accept only pdf files </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
+                        <textarea class="form-control" aria-label="With textarea" style="height: 264px;"></textarea>
+                        <span class="text-danger mt-1">Note: (*) are mandatory!</span>
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card1 brdr-0" id="edit-pro">
+                <div class="mt-3">
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
+                        <textarea class="form-control" aria-label="With textarea" style="height: 264px;"></textarea>
+                        <span class="text-danger mt-1">Note: (*) are mandatory!</span>
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 <!-- For Update Subtask -->
 <div id="mysideInfobar_Update" class="sideInfobar animate-right offcanvas">

@@ -1025,3 +1025,44 @@ position: relative;
     font-weight: 400;
     font-size: 12px;
 }
+.profile-tab .card1 {
+    display: none;
+}
+.dash1 .nav.nav-tabs.flex-column .nav-link {
+    border: 0 !important;
+    border-radius: 0 !important;
+	margin-bottom: 5px;
+}
+.dash1 .nav.nav-tabs.flex-column .nav-link.active {
+    border: 0 !important;
+    border-radius: 0 !important;
+	border-left: 3px solid #6658dd!important;
+	background-color: transparent;
+}
+.dash1 .nav-tabs{
+	border-bottom: 0;
+}
+.profile-tab .active .card1 {
+    display: block;
+}
+
+.tab-content>.active {
+    display: block;
+}
+
+.nav-tabs.nav-tabs-line a.nav-link.active {
+    background-color: transparent;
+    color: #595d6e;
+    border-bottom: 3px solid #7b68ee;
+}
+.text-active-primary.active {
+    transition: color .2s ease, background-color .2s ease;
+    color: #7b68ee!important;
+}
+.font-bolder {
+    font-weight: 600 !important;
+}
+.text-hover-primary:hover {
+    transition: color .2s ease, background-color .2s ease;
+    color: #7b68ee!important;
+}
