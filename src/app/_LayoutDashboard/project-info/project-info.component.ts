@@ -240,7 +240,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
           this._portfoliolist = [];
           this.noPort = "No portfolios linked"
-
         }
         else {
           this.noPort = "";
@@ -469,7 +468,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   totalPortfolios: number;
   portfolioId: any;
   _portfoliosList: any;
-  _
+  
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;

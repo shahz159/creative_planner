@@ -20,11 +20,13 @@ export class NotificationComponent implements OnInit {
   _NotificationActivity: [];
   _AlertActivity:[];
   notilength:number;
+  _totalProjectsCount:number;
   _filtersMessage:string;
   _filtersMessage2:string;
   CurrentPageNo: number = 1;
   _CurrentpageRecords: any;
-  notifArray: any = [];
+  LastPage:number;
+  lastPagerecords:number;
 
   notificationDTO: NotificationActivityDTO;
   approvalObj = new ApprovalDTO();
@@ -56,7 +58,6 @@ export class NotificationComponent implements OnInit {
       (data) => {
         this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(this._NotificationActivityList[0]['Notification_Json']);
-        this.notifArray = this._NotificationActivity;
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -70,6 +71,22 @@ export class NotificationComponent implements OnInit {
         }
         // console.log(this._NotificationActivity,'Notif');
       });
+      this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
+        (data) => {
+          this._totalProjectsCount = (data[0]['notificationcount']);
+        });
+        let _vl = this._totalProjectsCount / 20;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=20;
+        }
   }
 
   loadMore() {
@@ -80,12 +97,12 @@ export class NotificationComponent implements OnInit {
       .subscribe(data1 => {
         this._NotificationActivity = JSON.parse(data1[0]['Notification_Json']);
         this._NotificationActivity.forEach(element => {
-          this.notifArray.push(element);
         });
         if (this._NotificationActivity) {
           this._CurrentpageRecords = this._NotificationActivity.length;
         }
       });
+      console.log(this._CurrentpageRecords,this.CurrentPageNo,this.lastPagerecords,this.LastPage,'records');
   }
 
   openInfo(pcode) {
@@ -104,6 +121,7 @@ export class NotificationComponent implements OnInit {
     console.log(this.approvalObj,"response");
     this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
       console.log(data,"response-data");
+      if(data[0]['message']=='1')
       this.notifyService.showInfo("Response recorded.",'');
     });
     let name: string = 'MoreDetails';
@@ -119,4 +137,7 @@ export class NotificationComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
 
+  notinAction() {
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
+  }
 }

@@ -50,7 +50,14 @@
         </ng-select>
         <span *ngIf ="_selectemp == true" style="color:red">Assign To required!</span>
     </div>
-  
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+        <label>Action Owner : <strong></strong></label>
+        <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select Owner" >
+            <ng-option [value]="item" *ngFor="let item of ownerArr">
+                {{item}}
+            </ng-option>
+        </ng-select>
+    </div>
     <div class="d-flex gap-1">
         <div class="form-group flex-1">
             <label>Start Date : <span class="text-danger">*</span></label>

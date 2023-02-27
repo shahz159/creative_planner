@@ -327,6 +327,7 @@ export class ProjectsSummaryComponent implements OnInit {
   CurrentPageNo: number = 1;
   _filtersMessage2: string;
   _filtersMessage: string;
+  emptyspace:boolean = true;
   _ProjectDataList: any;
   ActualDataList: any;
   un_FilteredProjects: any = [];
@@ -360,6 +361,16 @@ export class ProjectsSummaryComponent implements OnInit {
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
+      if (this._ProjectDataList.length == 0) {
+        this._filtersMessage = "No more projects matched your search";
+        this._filtersMessage2 = " Clear the filters & try again";
+        this.emptyspace=false;
+      }
+      else {
+        this._filtersMessage = "";
+        this._filtersMessage2 = "";
+        this.emptyspace=true;
+      }
       this.getDropdownsDataFromDB();
     });
     }
@@ -375,6 +386,16 @@ export class ProjectsSummaryComponent implements OnInit {
         this.un_FilteredProjects = this.ActualDataList;
         if (this._ProjectDataList) {
           this._CurrentpageRecords = this._ProjectDataList.length;
+        }
+        if (this._ProjectDataList.length == 0) {
+          this._filtersMessage = "No more projects matched your search";
+          this._filtersMessage2 = " Clear the filters & try again";
+          this.emptyspace=false;
+        }
+        else {
+          this._filtersMessage = "";
+          this._filtersMessage2 = "";
+          this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
       });
@@ -633,10 +654,12 @@ export class ProjectsSummaryComponent implements OnInit {
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
           this._filtersMessage2 = " Clear the filters & try again";
+          this.emptyspace=false;
         }
         else {
           this._filtersMessage = "";
           this._filtersMessage2 = "";
+          this.emptyspace=true;
         }
       });
     //Filtering Checkbox de
@@ -659,10 +682,12 @@ export class ProjectsSummaryComponent implements OnInit {
           if (this._ProjectDataList.length == 0) {
             this._filtersMessage = "No more projects matched your search";
             this._filtersMessage2 = " Clear the filters & try again";
+            this.emptyspace=false;
           }
           else {
             this._filtersMessage = "";
             this._filtersMessage2 = "";
+            this.emptyspace=true;
           }
         });
     this.getDropdownsDataFromDB();

@@ -43,4 +43,6 @@ export class UserDetailsDTO {
     SearchText: string;
     PortfolioId:number; 
     IsPolicy:number;
+
+    Owner_empno:string;
 }
