@@ -533,15 +533,11 @@
                                             </tbody>
                                         </table>
                                         </div>
-                                        <div class="text-center py-4" style="color: lightgrey">
+                                        <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
                                             <h4>{{_filtersMessage}}</h4>
-                                            <p> {{_filtersMessage2}}</p>
+                                            <p>{{_filtersMessage2}}</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5"></div>
-                                    <div class="col-sm-12 col-md-7"></div>
                                 </div>
                             </div>
                         </div>

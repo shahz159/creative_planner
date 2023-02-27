@@ -29,6 +29,7 @@ import { FormControl } from '@angular/forms';
 import { data } from 'jquery';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class MoreDetailsComponent implements OnInit {
     public BsService: BsServiceService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
+    this.objPortfolioDto = new PortfolioDTO();
   }
 
   projectCode: string;
@@ -196,7 +198,10 @@ export class MoreDetailsComponent implements OnInit {
         this.initials1 = this.initials1.toUpperCase();
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
-        this.newResponsible = (this.transfer_json[0]['newResp']);
+        // this.newResponsible = (this.transfer_json[0]['newResp']);
+        if(this.requestType=='Project Forward'){
+          this.newResponsible = (this.transfer_json[0]['newResp']);
+        }
       }
     });
   }
@@ -261,9 +266,8 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -289,9 +293,8 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
             this._Message = (data['message']);
-            if (this._Message == 'Not Authorized') {
-              this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-              this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+            if (this._Message == 'Not Authorized' || this._Message=='0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
             else {
               this.notifyService.showSuccess("Project Approved Successfully", this._Message);
@@ -319,12 +322,11 @@ export class MoreDetailsComponent implements OnInit {
           this.approvalservice.InsertRejectApprovalService(this.approvalObj).
             subscribe((data) => {
               this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              if (this._Message == 'Not Authorized' || this._Message=='0') {
+                  this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
-                this.notifyService.showError(this._Message, "Rejected Successfully");
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
                 this.GetProjectDetails();
                 this.GetSubtask_Details();
                 this.getapprovalStats();
@@ -339,7 +341,6 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
     }
-
     else if (this.requestType == 'Project Forward') {
       if (this.selectedType == '3') {
         if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
@@ -358,11 +359,10 @@ export class MoreDetailsComponent implements OnInit {
             subscribe((data) => {
               this._Message = (data['message']);
               if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+                this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
-                this.notifyService.showError(this._Message, "Rejected Successfully");
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
                 this.GetProjectDetails();
                 this.GetSubtask_Details();
                 this.getapprovalStats();
@@ -406,7 +406,7 @@ export class MoreDetailsComponent implements OnInit {
             this.getapprovalStats();
             this.GetprojectComments();
           }
-          else if (this._Message == '4' || this._Message == null) {
+          else if (this._Message == '4' || this._Message == null || this._Message=='0') {
             this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
           }
         });
@@ -417,6 +417,77 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
     }
+    else if (this.requestType == 'Task Complete') {
+      if (this.selectedType == '1') {
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_Date = this.requestDate;
+        this.approvalObj.Request_type = this.requestType;
+        this.approvalObj.rejectType = null;
+        this.approvalObj.approvaltype = 'Accept';
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+        this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+          subscribe((data) => {
+            this._Message = (data['message']);
+            if (this._Message == 'Not Authorized' || this._Message == '0') {
+              this.notifyService.showError("project not approved", 'Failed.');
+            }
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+            }
+            this.Clear_Feilds();
+          });
+      }
+      else if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_Date = this.requestDate;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+          this.approvalObj.approvaltype = 'Reject';
+
+          this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized' || this._Message == '0') {
+                this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+              }
+              this.Clear_Feilds();
+            });
+        }
+      }
+      else if (this._Message == '4' || this._Message == null) {
+        this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
+      }
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
+    }
+
   }
 
   getnextDeadline() {
@@ -713,6 +784,8 @@ export class MoreDetailsComponent implements OnInit {
   Pid: number;
   Comp_No: string;
   Employee_List: any;
+  _portfoliolist: any;
+  portslength:any;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -720,6 +793,7 @@ export class MoreDetailsComponent implements OnInit {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
+          this._portfoliolist = JSON.parse(data[0]['Portfolio_json']);
           // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Pid = this.ProjectInfo_List[0]['id'];
@@ -796,6 +870,17 @@ export class MoreDetailsComponent implements OnInit {
             || this.Status == 'Project Hold') {
             this.darbutton = false;
           }
+        }
+
+        if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
+          this._portfoliolist = [];
+          this.noPort = "No portfolios linked";
+          this.portslength=0;
+        }
+        else {
+          this.portslength=this._portfoliolist.length;
+          this.noPort = "";
+          // console.log(this._portfoliolist,this.Pid, this._MasterCode,this._ProjectName,this.Current_user_ID,"portfolio list");
         }
       });
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
@@ -2553,6 +2638,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   dmslist: number;
+
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2707,10 +2793,11 @@ export class MoreDetailsComponent implements OnInit {
   _day: any;
   _month: any;
 
-  openPDF_Standard(repDate: Date, proofDoc) {
+  openPDF_Standard(cloud, repDate: Date, proofDoc) {
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
     let Day = repDate.getDate();
     let Month = repDate.getMonth() + 1;
     let Year = repDate.getFullYear();
@@ -2727,9 +2814,18 @@ export class MoreDetailsComponent implements OnInit {
       this._day = Day;
     }
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-    window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
-    // window.open(proofDoc);
-
+    
+    if(cloud==false){
+      if(this.Authority_EmpNo==this.Responsible_EmpNo){
+           window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      }
+      else if(this.Authority_EmpNo!=this.Responsible_EmpNo){
+        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      }
+    }
+    else if (cloud == true) {
+      window.open(proofDoc);
+    }
   }
 
   openPDF(cloud, docName) {
@@ -2738,7 +2834,12 @@ export class MoreDetailsComponent implements OnInit {
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
     if (cloud == false) {
-      window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      if(this.Authority_EmpNo==this.Responsible_EmpNo){
+        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      }
+      else if(this.Authority_EmpNo!=this.Responsible_EmpNo){
+        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      }
     }
     else if (cloud == true) {
       window.open(docName);
@@ -2793,7 +2894,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          console.log(this.Subtask_List, "status");
+          // console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
@@ -3033,7 +3134,7 @@ export class MoreDetailsComponent implements OnInit {
     this.transfer_remarks = "";
   }
 
-  _Message: string;
+  _Message: any;
 
   // OnProject_Rename(id, Pcode) {
   //   if (this._modelProjectName != "" && this._modelProjDesc != "") {
@@ -3199,6 +3300,7 @@ export class MoreDetailsComponent implements OnInit {
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
@@ -3285,6 +3387,16 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
+  OnStandardTaskSubmit(){
+         document.getElementById("mysideInfobar_ProjectsUpdate").classList.add("kt-quick-panel--on");
+          // placing the backgorund dim on opening sidebar
+          document.getElementById("rightbar-overlay").style.display = "block";
+          // Fixing the scrollbar for sidebar
+          document.getElementById("moredet").classList.add("position-fixed");
+          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+          document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+  }
+  
   Sub_ProjectName: string = "";
   _Description: string;
   _EndDate: Date = null;
@@ -3302,10 +3414,11 @@ export class MoreDetailsComponent implements OnInit {
     this._inputAttachments2 = null;
     this.selectedEmpNo = '';
     this.selected_Employee = [];
-    this.selectedFile = " ";
+    this.selectedFile = null;
     $('#uploadFile').val('');
-    $('#_upload').html('Select a file');
     $('#_pdf').val('');
+    $('#_file1').val('');
+    $('#_upload').html('Select a file');
     $('#upload').html('Select a file');
     this.actionCode = null;
     this.workdes = "";
@@ -3320,7 +3433,6 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
-    // this.ngOnInit();
   }
 
   //Project Update
@@ -3336,15 +3448,81 @@ export class MoreDetailsComponent implements OnInit {
     fd.append("Emp_No", this.Current_user_ID);
     this.service._fileuploadService(fd).
       subscribe(event => {
-        console.log(event, "PC");
+        // console.log(event, "PC");
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showSuccess("", "File uploaded successfully");
-          // this.notifyService.showSuccess(event[0]['Message'], "Success");
-          this.notifyService.showInfo("", "Project Updated");
+          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
         }
         else if (event.type === HttpEventType.Response) {
-          //console.log(event);
+          // console.log(event);
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).Message;
+          this.notifyService.showSuccess(this._Message,'Success');
+          // console.log(this._Message,this.progress,"json");
+        }
+        this.closeInfo();
+        this.GetSubtask_Details();
+        this.GetProjectDetails();
+        this.getapprovalStats();
+        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      });
+  }
+
+  changeStandard(){
+    $('#_file1').val('');
+    $('#upload').html('Select a file');
+    this.selectedFile=null;
+    this._remarks="";
+  }
+
+  achieveStandard() {
+    const fd = new FormData();
+    fd.append("Project_Code", this._MasterCode);
+    fd.append("Team_Autho", this.Authority);
+    fd.append("Remarks", this._remarks);
+    fd.append("Projectblock", this.ProjectBlock);
+    fd.append('file', this.selectedFile);
+    fd.append("Emp_No", this.Current_user_ID);
+    // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    this.service._UpdateStandardTaskSubmission(fd).
+      subscribe(event => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.progress = Math.round(event.loaded / event.total * 100);
+          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+        }
+        else if (event.type === HttpEventType.Response) {
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).Message;
+          this.notifyService.showSuccess(this._Message,'Success');
+        }
+        this.closeInfo();
+        this.GetSubtask_Details();
+        this.GetProjectDetails();
+        this.getapprovalStats();
+        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      });
+  }
+
+  notachieveStandard() {
+    this.selectedFile=null;
+    const fd = new FormData();
+    fd.append("Project_Code", this._MasterCode);
+    fd.append("Team_Autho", this.Authority);
+    fd.append("Remarks", this._remarks);
+    fd.append("Projectblock", this.ProjectBlock);
+    fd.append('file', this.selectedFile);
+    fd.append("Emp_No", this.Current_user_ID);
+    // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    this.service._UpdateStandardTaskSubmission(fd).
+      subscribe(event => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.progress = Math.round(event.loaded / event.total * 100);
+          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+        }
+        else if (event.type === HttpEventType.Response) {
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).Message;
+          this.notifyService.showSuccess(this._Message,'Success');
         }
         this.closeInfo();
         this.GetSubtask_Details();
@@ -3417,7 +3595,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   notinAction() {
-    this.notifyService.showError("Development Under Maintainance", 'Cancelled');
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
   deadlineCount: any;
@@ -3430,10 +3608,11 @@ export class MoreDetailsComponent implements OnInit {
   //project transfer
 
   sweetAlert1(id, pcode) {
+    // alert(this.TransDate);
     Swal.fire({
       title: 'Project Transfer!!',
-      text: 'Do you really want to transfer this project ?',
-      // icon: 'warning',
+      html: 'Do you want to transfer the project "<b>'+this.ProjectName+'</b>" ?',
+      // icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
@@ -3457,15 +3636,18 @@ export class MoreDetailsComponent implements OnInit {
   new_Res: string;
 
   onProject_Transfer(id, Pcode) {
-    this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
-    // alert(Pcode);
+    if (this.TransDate != null || this.TransDate != undefined) {
+         this.TransDate = this.datepipe.transform(this.TransDate, 'MM/dd/yyyy');
+    }
+    else{
+      this.TransDate=null;
+    }
     this.Employee_List.forEach(element => {
       if (element.Emp_No == this.selectedEmp_No) {
         this.new_Res = element.DisplayName;
       }
     });
 
-    if (this.TransDate != null) {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Responsible = this.selectedEmp_No;
       this.approvalObj.deadline = this.TransDate;
@@ -3503,10 +3685,9 @@ export class MoreDetailsComponent implements OnInit {
       });
       this.onCancel(id);
       this.closeInfo();
-    }
-    else {
-      this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
-    }
+    // else {
+    //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
+    // }
   }
 
   onTransferCancel(id) {
@@ -3515,4 +3696,190 @@ export class MoreDetailsComponent implements OnInit {
     this.TransDate = null;
     this.transfer_remarks = "";
   }
+
+  //Portfolio region
+
+  _LinkSideBar1: boolean = true;
+  objPortfolioDto: PortfolioDTO;
+  _portfolioLength: any;
+  dropdownSettings_Portfolio: IDropdownSettings = {};
+
+  AddPortfolio() {
+    this._LinkSideBar = true;
+    this._LinkSideBar1 = false;
+    this.getPortfolios();
+  }
+
+  getPortfolios() {
+
+    if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
+      this._portfolioLength = 0;
+
+    }
+
+    else
+      this._portfolioLength = this._portfoliolist.length;
+    // console.log(this._portfoliolist,"lll");
+
+    this.service.GetTotalPortfoliosBy_Employeeid().subscribe
+      ((data) => {
+        this.totalPortfolios = (data[0]['TotalPortfolios']);
+      });
+
+    this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
+      ((data) => {
+        this._portfoliosList = data as [];
+
+        this.dropdownSettings_Portfolio = {
+          singleSelection: false,
+          idField: 'Portfolio_ID',
+          textField: 'Portfolio_Name',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 4,
+          allowSearchFilter: true,
+          clearSearchFilter: true
+        };
+      });
+    document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  Empty_portDropdown: any;
+  _SelectedPorts: any;
+  Port_Id: number;
+
+  Portfolio_Select(selecteditems) {
+    //console.log("Selected Item---->",selecteditems)
+    let arr = [];
+    this.Empty_portDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+    // console.log("Selected Ports In Array--->", this._SelectedPorts);
+    // console.log(this.ngDropdwonPort,"ports");
+
+  }
+
+  Portfolio_SelectAll(selecteditems) {
+
+    let arr = [];
+    this.Empty_portDropdown = selecteditems;
+    // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+    //  console.log("Selected Ports In Array1--->", this._SelectedPorts);
+
+  }
+
+  Portfolio_DeSelectAll() {
+    this._SelectedPorts = [];
+    // console.log("Selected Ports In Array1--->", this._SelectedPorts);
+  }
+
+  Portfolio_Deselect(selecteditems) {
+    let arr = [];
+
+    this.Empty_portDropdown = selecteditems;
+    if (this.Empty_portDropdown != '') {
+      this.Empty_portDropdown.forEach(element => {
+        arr.push({ Port_Id: element.Portfolio_ID })
+        this._SelectedPorts = arr;
+      });
+    }
+    else {
+      this._SelectedPorts = [];
+    }
+
+    // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
+  }
+
+  selectedportID: any;
+  noPort: string;
+  ngDropdwonPort: any;
+
+  addProjectToPortfolio() {
+    this.selectedportID = JSON.stringify(this._SelectedPorts);
+    // console.log(this.selectedportID,"portids");
+    if (this.selectedportID != null) {
+      this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
+      this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
+      this.objPortfolioDto.Emp_No = this.Current_user_ID;
+
+      this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          // console.log(data);
+
+          if (this._Message == 'Updated Successfully')
+            this.notifyService.showSuccess("Project Successfully added to selected Portfolio(s)", this._Message);
+          else
+            this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
+
+        });
+    }
+
+    this.ngDropdwonPort = [];
+    this.closeLinkSideBar();
+    this.GetProjectDetails();
+    // this._openInfoSideBar = false;
+  }
+
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
+
+  deletedBy: string;
+  portfolioName: string;
+  totalPortfolios: number;
+  portfolioId: any;
+  _portfoliosList: any;
+
+  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
+    this.deletedBy = this.Current_user_ID;
+
+    this._portfoliolist.forEach(element => {
+      if (port_id == element.Portfolio_ID)
+        this.portfolioName = element.Portfolio_Name
+    });
+    //if (createdBy == this.Current_user_ID) {
+    let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: this.portfolioName
+
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
+          this.GetProjectDetails();
+          this.notifyService.showSuccess("Deleted successfully ", '');
+        });
+      }
+      else {
+        this.notifyService.showError("Action Cancelled ", '');
+      }
+    });
+  }
+
+
 }

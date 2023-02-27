@@ -575,6 +575,16 @@ export class ProjectTypeService {
       catchError(this.errorMgmt)
     );
   }
+
+  _UpdateStandardTaskSubmission(data) {
+    return this.http.post(this.rootUrl + "Notification/UpdateStandardTaskSubmission", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
   _UpdateSubtaskByProjectCode(fd) {
     // this.ObjSubTaskDTO.MasterCode = objsubtask.MasterCode;
     // this.ObjSubTaskDTO.SubTask_ProjectCode = objsubtask.SubTask_ProjectCode;

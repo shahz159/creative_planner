@@ -60,6 +60,8 @@ export class ActionToProjectComponent implements OnInit {
   _Urlid: any;
   public cat_id: any;
   cat_name: any = "";
+  CurrentUser_Name:string;
+  owner:string;
 
   constructor(
     public notifyService: NotificationService,
@@ -91,6 +93,8 @@ export class ActionToProjectComponent implements OnInit {
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
           this.ProjectDeadLineDate = data["DeadLine"];
+          this.Owner_Empno = data['Owner_empno'];
+          // console.log(data,this.ProjectDeadLineDate,this.Owner_Empno,"back");
         })
       }
     });
@@ -127,8 +131,11 @@ export class ActionToProjectComponent implements OnInit {
   CurrentUser_ID: string;
   _EmployeeListForDropdown = [];
   selectedProjectCodelist:any;
+  ownerName:string;
+  ownerArr:any =[];
 
   GetAllEmployeesForAssignDropdown() {
+    this.ownerArr=[];
     let obj: any = {
       pagenumber: 1,
       Emp_No: this.CurrentUser_ID,
@@ -137,6 +144,25 @@ export class ActionToProjectComponent implements OnInit {
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
+        this._EmployeeListForDropdown.forEach(element => {
+          if(this.Current_user_ID!=this.Owner_Empno){
+            if(element.Emp_No==this.Current_user_ID){
+              this.CurrentUser_Name=element.DisplayName;
+              this.ownerArr.push(this.CurrentUser_Name);
+            }
+            if(element.Emp_No==this.Owner_Empno){
+              this.ownerName=element.DisplayName;
+              this.ownerArr.push(this.ownerName);
+            }
+          }
+          else if(this.Current_user_ID==this.Owner_Empno){
+            if(element.Emp_No==this.Owner_Empno){
+              this.ownerName=element.DisplayName;
+              this.ownerArr.push(this.ownerName);
+            }
+          }
+        });
+
         //console.log(this.EmployeeList);
         this.dropdownSettings_EMP = {
           searchAutofocus: true,
@@ -169,6 +195,7 @@ export class ActionToProjectComponent implements OnInit {
     this.selectedProjectCode = "";
   }
 
+  Owner_Empno:string;
   GetProjectsByUserName() {
     // this.LoadingBar.start();
     this.ObjUserDetails.PageNumber = 1;
@@ -176,6 +203,7 @@ export class ActionToProjectComponent implements OnInit {
     this.ObjUserDetails.SearchText = this.filterText;
     this.service.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
+      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -228,11 +256,9 @@ export class ActionToProjectComponent implements OnInit {
       this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     }
   }
-
-
-
-
-
+  
+  ownerNo:string;
+  
   OnSubmit() {
 
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
@@ -260,6 +286,18 @@ export class ActionToProjectComponent implements OnInit {
       this._selectemp = true;
       return false;
     }
+    if(this.owner==null || this.owner==undefined || this.owner==''){
+      this.ownerNo=null;
+    }
+    else{
+      if(this.owner==this.CurrentUser_Name){
+        this.ownerNo=this.Current_user_ID;
+      }
+      else if(this.owner==this.ownerName){
+        this.ownerNo=this.Owner_Empno;
+      }
+    }
+    console.log(this.ownerNo)
 
     if (this._MasterCode == null) {
       this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
@@ -306,8 +344,8 @@ export class ActionToProjectComponent implements OnInit {
       var datestrEnd = moment(this._EndDate).format();
       // alert(datestrStart)
       // alert(datestrEnd)
-      console.log(datestrStart,"startdate")
-      console.log(datestrEnd,"enddate")
+      console.log(datestrStart,this._StartDate,"startdate")
+      console.log(datestrEnd,this._EndDate,"enddate")
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Team_Autho", this.EmpNo_Autho);
@@ -331,8 +369,9 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("Emp_No", this.CurrentUser_ID);
       fd.append("AssignTo", this.selectedEmpNo);
       fd.append("Remarks", this._remarks);
-      fd.append("EmployeeName", localStorage.getItem('UserfullName'))
-      fd.append("AssignId", this.task_id.toString())
+      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
+      fd.append("AssignId", this.task_id.toString());
+      fd.append("Owner", this.ownerNo);
 
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -342,9 +381,8 @@ export class ActionToProjectComponent implements OnInit {
       }
 
       this.service._InsertNewSubtask(fd).subscribe(data => {
-        // super.OnCategoryClick(super._selectedcatid,super._selectedcatname);
-        // this.closeInfo();
-       
+        console.log(data,"action data");
+        
         if (this._Urlid == 1) {
           this._Todoproject.CallOnSubmitAction();
           this.Clear_Feilds();
