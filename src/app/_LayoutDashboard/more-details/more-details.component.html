@@ -51,13 +51,13 @@
                         <!--inprocess button-->
                         <div class="d-flex"
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' 
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
                                              && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
 
                             <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                             <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
-                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay' || Status=='Project Hold' || Status=='Project Complete Rejected',
+                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay' || Status=='Project Hold',
                                         'bg-warning':Status=='InProcess'}" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">{{Status}}</label>
                             <div class="task-status__divider"></div>
                             <button data-toggle="tooltip" title="Project Submission!" class="task-status__controls" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
@@ -3093,6 +3093,55 @@
                 <button type="reset" class="btn btn-secondary ml-2">Reset</button>
                 <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <button class="btn btn-info btn-sm py-1 fixed-btn">
+    <label class="ml-1 mb-0" for="inpt">bottom tab</label>
+</button>
+<input id="input" type="checkbox" id="inpt" checked checked="checked"/> -->
+
+<div class="spacer-tab d-none">
+    <div class="spacer--body">
+        <div class="">
+
+            <ul class="kt-nav pb-0"> 
+                <li class="kt-nav__head py-0">
+                <div>New End Date<br>Action: <b>Project_Name</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                <div class="px-4 py-3">
+                    <div class="form-group input-group">
+                        <label>Set new End Date <span class="text-danger">*</span></label>
+                        <div class="d-flex input-group">
+                            <input placeholder="Select Date" class="form-control"
+                                name="date">
+                            <div class="input-group-append">
+                                <i class="far fa-calendar-alt"></i>
+                                <!-- <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker class="form-group" #picker5></mat-datepicker> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-1">
+                    <label>Remarks <span class="text-danger">*</span>
+                    </label>
+                    <textarea placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                    </div>
+                </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" > Submit </button>
+                <button class="btn btn-outline-info btn-sm text-dark-75">Close</button>
+            </div>
+
+
         </div>
     </div>
 </div>
