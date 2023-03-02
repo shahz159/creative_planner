@@ -11,5 +11,10 @@ export class NotificationActivityDTO {
     DarActivity_Json:any;
     PageSize:any;
     PageNumber:any;
+    SelectedEmp_No:any;
+    SelectedType:any;
+    SelectedStatus:any;
+    SelectedRequest:any;
+    SearchText:any;
 }
 

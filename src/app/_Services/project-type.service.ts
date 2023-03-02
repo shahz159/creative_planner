@@ -333,6 +333,12 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     this.ObjNotificationDto.PageNumber = obj.PageNumber;
     this.ObjNotificationDto.PageSize = obj.PageSize;
+    this.ObjNotificationDto.SelectedType = obj.SelectedType;
+    this.ObjNotificationDto.SelectedRequest = obj.SelectedRequest;
+    this.ObjNotificationDto.SelectedStatus = obj.SelectedStatus;
+    this.ObjNotificationDto.SelectedEmp_No = obj.SelectedEmp_No;
+    this.ObjNotificationDto.SearchText = obj.SearchText;
+
     return this.http.post(this.rootUrl + "Notification/NewGetViewAllNotifications", this.ObjNotificationDto)
   }
   

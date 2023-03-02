@@ -27,6 +27,13 @@ export class NotificationComponent implements OnInit {
   _CurrentpageRecords: any;
   LastPage:number;
   lastPagerecords:number;
+  emptyspace:boolean = true;
+
+  ////////////////------------------------------- Filters ------------------------------///////////////
+  EmpCountInFilter = [];
+  TypeContInFilter = [];
+  StatusCountFilter = [];
+  RequestCountFilter = [];
 
   notificationDTO: NotificationActivityDTO;
   approvalObj = new ApprovalDTO();
@@ -48,33 +55,66 @@ export class NotificationComponent implements OnInit {
     this.viewAll();
   }
 
+
   viewAll(){
 
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
+    this.notificationDTO.SelectedStatus = null;
+    this.notificationDTO.SelectedEmp_No = null;
+    this.notificationDTO.SelectedType = null;
+    this.notificationDTO.SearchText = null;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
-        this._NotificationActivityList = data as NotificationActivityDTO[];
-        this._NotificationActivity = JSON.parse(this._NotificationActivityList[0]['Notification_Json']);
+        // this._NotificationActivityList = data as NotificationActivityDTO[];
+        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        this._totalProjectsCount = (data[0]['notificationcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
         }
-
-        if(this.notilength==0){
-          this._filtersMessage = "No Notifications available";
+        //Emp
+        if (this.selectedItem_Emp.length == 0) {
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+        }
+        else {
+          this.EmpCountInFilter = this.selectedItem_Emp[0];
+        }
+         //Request
+         if (this.selectedItem_Request.length == 0) {
+          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
+        }
+        else {
+          this.RequestCountFilter = this.selectedItem_Request[0];
+        }
+        //Type
+        if (this.selectedItem_Type.length == 0) {
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+        }
+        else {
+          this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Status
+        if (this.selectedItem_Status.length == 0) {
+          this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
+        }
+        else {
+          this.StatusCountFilter = this.selectedItem_Status[0];
+        }
+        this._totalProjectsCount = JSON.parse(data[0]['notificationcount']);
+        if (this._NotificationActivity.length == 0) {
+          this._filtersMessage = "No more projects matched your search";
+          this._filtersMessage2 = " Clear the filters & try again";
+          this.emptyspace=false;
         }
         else {
           this._filtersMessage = "";
+          this._filtersMessage2 = "";
+          this.emptyspace=true;
         }
-        // console.log(this._NotificationActivity,'Notif');
       });
-      this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
-        (data) => {
-          this._totalProjectsCount = (data[0]['notificationcount']);
-        });
         let _vl = this._totalProjectsCount / 20;
         let _vl1 = _vl % 1;
         if (_vl1 > 0.000) {
@@ -83,7 +123,6 @@ export class NotificationComponent implements OnInit {
         else {
           this.LastPage = Math.trunc(_vl);
         }
-
         if(this.CurrentPageNo == this.LastPage){
           this.lastPagerecords=20;
         }
@@ -96,13 +135,10 @@ export class NotificationComponent implements OnInit {
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data1 => {
         this._NotificationActivity = JSON.parse(data1[0]['Notification_Json']);
-        this._NotificationActivity.forEach(element => {
-        });
         if (this._NotificationActivity) {
           this._CurrentpageRecords = this._NotificationActivity.length;
         }
       });
-      console.log(this._CurrentpageRecords,this.CurrentPageNo,this.lastPagerecords,this.LastPage,'records');
   }
 
   openInfo(pcode) {
@@ -136,6 +172,310 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
+
+  checkedItems_Status: any = [];
+  checkedItems_Type: any = [];
+  checkedItems_Emp: any = [];
+  checkedItems_Request: any = [];
+  selectedType_String: string;
+  selectedEmp_String: string;
+  selectedStatus_String: string;
+  selectedRequest_String: string;
+  selectedItem_Status = [];
+  selectedItem_Type = [];
+  selectedItem_Emp = [];
+  selectedItem_Request = [];
+
+
+  isStatusChecked(item) {
+    let arr = [];
+    this.StatusCountFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Status: element.Name });
+        return this.checkedItems_Status = arr;
+      }
+    });
+    let arr2 = [];
+    this.StatusCountFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Status.push(arr2);
+    this.StatusCountFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Status.length = 0;
+        this.resetFilters();
+      }
+    });
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      this.edited = false;
+    }
+    else {
+      this.edited = true;
+    }
+  }
+
+  isRequestChecked(item) {
+    let arr = [];
+    this.RequestCountFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Name: element.Name });
+        return this.checkedItems_Request = arr;
+      }
+    });
+    let arr2 = [];
+    this.RequestCountFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Request.push(arr2);
+    this.RequestCountFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Request.length = 0;
+        this.resetFilters();
+      }
+    });
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      this.edited = false;
+    }
+    else {
+      this.edited = true;
+    }
+  }
+
+  isTypeChecked(item) {
+    let arr = [];
+    this.TypeContInFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Block_No: element.Block_No });
+        return this.checkedItems_Type = arr;
+      }
+    });
+    let arr2 = [];
+    this.TypeContInFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Type.push(arr2);
+    this.TypeContInFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Type.length = 0;
+        this.resetFilters();
+      }
+    });
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      this.edited = false;
+    }
+    else {
+      this.edited = true;
+    }
+  }
+
+
+  isEmpChecked(item) {
+    let arr = [];
+    this.EmpCountInFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Emp_No: element.Emp_No });
+        return this.checkedItems_Emp = arr;
+      }
+    });
+    let arr2 = [];
+    this.EmpCountInFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Emp.push(arr2);
+    this.EmpCountInFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Emp.length = 0;
+        this.resetFilters();
+      }
+    });
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+        && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      this.edited = false;
+    }
+    else {
+      this.edited = true;
+    }
+  }
+  //Apply Filters
+  SearchbyText() {
+    this.CurrentPageNo = 1;
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.selectedEmp_String = this.checkedItems_Emp.map(select => {
+      return select.Emp_No;
+    }).join(',');
+    this.selectedRequest_String = this.checkedItems_Request.map(select => {
+      return select.Name;
+    }).join(',');
+    this.selectedType_String = this.checkedItems_Type.map(select => {
+      return select.Block_No;
+    }).join(',');
+    this.selectedStatus_String = this.checkedItems_Status.map(select => {
+      return select.Status;
+    }).join(',');
+
+    this.notificationDTO.Emp_No = this.Current_user_ID;
+    this.notificationDTO.SelectedEmp_No = this.selectedEmp_String;
+    this.notificationDTO.SelectedStatus = this.selectedStatus_String;
+    this.notificationDTO.SelectedRequest = this.selectedRequest_String;
+    this.notificationDTO.SelectedType = this.selectedType_String;
+    this.notificationDTO.PageNumber = this.CurrentPageNo;
+    this.notificationDTO.PageSize = 20;
+    this.notificationDTO.SearchText = this.searchText;
+
+    this.service.GetViewAllDashboardnotifications(this.notificationDTO)
+      .subscribe(data => {
+        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);       
+        //Emp
+        if (this.selectedItem_Emp.length == 0) {
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+        }
+        else {
+          this.EmpCountInFilter = this.selectedItem_Emp[0];
+        }
+         //Request
+         if (this.selectedItem_Request.length == 0) {
+          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
+        }
+        else {
+          this.RequestCountFilter = this.selectedItem_Request[0];
+        }
+        //Type
+        if (this.selectedItem_Type.length == 0) {
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+        }
+        else {
+          this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Status
+        if (this.selectedItem_Status.length == 0) {
+          this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
+        }
+        else {
+          this.StatusCountFilter = this.selectedItem_Status[0];
+        }
+        this._totalProjectsCount = JSON.parse(data[0]['notificationcount']);
+        
+        let _vl = this._totalProjectsCount / 20;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=20;
+        }
+        if (this._NotificationActivity) {
+          this._CurrentpageRecords = this._NotificationActivity.length;
+        }
+        if (this._NotificationActivity.length == 0) {
+          this._filtersMessage = "No more projects matched your search";
+          this._filtersMessage2 = " Clear the filters & try again";
+          this.emptyspace=false;
+        }
+        else {
+          this._filtersMessage = "";
+          this._filtersMessage2 = "";
+          this.emptyspace=true;
+        }
+      });
+  }
+
+  search_Type: any[];
+  edited: boolean = false;
+  searchText: string;
+
+  resetFilters() {
+    this.searchText = "";
+    this.search_Type = [];
+    this.CurrentPageNo = 1;
+    this.edited = false;
+    if (this.selectedItem_Type.length == 0) {
+      this.selectedType_String = null;
+      this.checkedItems_Type = [];
+    }
+    if (this.selectedItem_Request.length == 0) {
+      this.selectedRequest_String = null;
+      this.checkedItems_Request = [];
+    }
+    if (this.selectedItem_Status.length == 0) {
+      this.selectedStatus_String = null;
+      this.checkedItems_Status = [];
+    }
+    if (this.selectedItem_Emp.length == 0) {
+      this.selectedEmp_String = null;
+      this.checkedItems_Emp = [];
+    }
+    this.applyFilters();
+  }
+
+  txtSearch: string;
+  
+  resetAll() {
+    this.txtSearch = '';
+    this.selectedItem_Type.length = 0;
+    this.selectedItem_Status.length = 0;
+    this.selectedItem_Request.length = 0;
+    this.selectedItem_Emp.length = 0
+    this.resetFilters();
+  }
+
+  search(event) {
+    this.SearchbyText();
+  }
+
+  clicks1: number = 0;
+  A2Z1: boolean = true;
+  Z2A1: boolean = false;
+
+  _SortPortfoliolist() {
+    this.clicks1 += 1;
+    if (this.clicks1 != 1) {
+      this.A2Z1 = true;
+      this.Z2A1 = false;
+      this.clicks1 = 0;
+    } else {
+      this.A2Z1 = false;
+      this.Z2A1 = true;
+    }
+  }
+
+  clicks: number = 0;
+  A2Z: boolean = true;
+  Z2A: boolean = false;
+
+  // _SortProjectList() {
+  //   this.clicks += 1;
+  //   if (this.clicks != 1) {
+  //     this.A2Z = true;
+  //     this.Z2A = false;
+  //     this._NotificationActivity = this._NotificationActivity.sort((a, b) => (a.Project_Name > b.Project_Code) ? -1 : 1);
+  //     this.clicks = 0;
+  //   } else {
+  //     this.A2Z = false;
+  //     this.Z2A = true;
+  //     this._NotificationActivity = this._NotificationActivity.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
+  //   }
+  // }
 
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');

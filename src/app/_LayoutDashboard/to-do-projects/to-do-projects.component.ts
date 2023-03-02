@@ -103,6 +103,27 @@ export class ToDoProjectsComponent implements OnInit {
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
+      if (this.selectedItem_Emp.length == 0) {
+        this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+      }
+      else {
+        this.EmpCountInFilter = this.selectedItem_Emp[0];
+      }
+      //Type
+      if (this.selectedItem_Type.length == 0) {
+        this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+      }
+      else {
+        this.TypeContInFilter = this.selectedItem_Type[0];
+      }
+      //Status
+      if (this.selectedItem_Status.length == 0) {
+        this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
+      }
+      else {
+        this.StatusCountFilter = this.selectedItem_Status[0];
+      }
+      this._totalProjectsCount = JSON.parse(data[0]['ProjectsCount_Json']);
     });
      this.router.navigate(["./backend/ToDoProjects/"]);
   }
@@ -1026,7 +1047,9 @@ export class ToDoProjectsComponent implements OnInit {
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
+
   txtSearch: string;
+  
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;

@@ -51,13 +51,13 @@
                         <!--inprocess button-->
                         <div class="d-flex"
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' && Status!='Project Complete Rejected'
+                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' 
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
                                              && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
 
                             <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> -->
                             <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
-                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay' || Status=='Project Hold',
+                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-danger':Status=='Delay' || Status=='Project Hold' || Status=='Project Complete Rejected',
                                         'bg-warning':Status=='InProcess'}" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">{{Status}}</label>
                             <div class="task-status__divider"></div>
                             <button data-toggle="tooltip" title="Project Submission!" class="task-status__controls" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
