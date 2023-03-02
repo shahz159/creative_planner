@@ -72,7 +72,14 @@ export class CalenderService {
     
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-    return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_Calender", this.obj_CalenderDTO);
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
+  }
+  NewUpdateCalender(obj: CalenderDTO){
+    
+    this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.flagid = obj.flagid;
+    return this.http.post(this.rootUrl + "TestAPI/NewupdateSchedule_Calender", this.obj_CalenderDTO);
   }
 
   NewGetcheckdateandtime(obj: CalenderDTO){
