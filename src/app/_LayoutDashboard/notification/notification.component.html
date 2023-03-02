@@ -231,7 +231,7 @@
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
                                                     aria-label="User Name: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Submited By
+                                                    <i class="fas fa-sort"></i> Submitted By
                                                 </th>
                                                 <th data-order="desc" data-name="RequestDate" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
@@ -239,18 +239,19 @@
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Date
                                                 </th>
+                                                <th data-order="desc" data-name="Status" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer"
+                                                    aria-label="Status: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Submission Type
+                                                </th>
                                                 <th data-order="desc" data-name="Comments" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer cmmts text-ellipsis"
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Comments
                                                 </th>
-                                                <th data-order="desc" data-name="Status" tabindex="0"
-                                                    aria-controls="project-4" rowspan="1" colspan="1"
-                                                    class="curser-pointer"
-                                                    aria-label="Status: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Status
-                                                </th>
+                                               
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -275,128 +276,33 @@
                                                 <td>
                                                     <span class="text-info font-weight-400" 
                                                         *ngIf="item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
-                                                               || item.Req_Type=='ToDo Achieved' ">{{item.Req_Type}}</span>
-                                                    
+                                                               || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
                                                     <span class="text-danger font-weight-400" 
                                                         *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject'
-                                                               ">{{item.Req_Type}}</span>
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected'">{{item.Req_Type}}</span>
                                                     <span class="text-success font-weight-400" 
-                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'">{{item.Req_Type}}</span> 
+                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
+                                                        || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project'">{{item.Req_Type}}</span> 
                                                     <span class="text-primary font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='New Action'">{{item.Req_Type}}</span> 
                                                 </td>
 
                                                 <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
                                                 <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td>
+                                                
+                                                <td>
+                                                    <div *ngIf="item.Send_From=='WS'">
+                                                        <span class="text-info font-weight-400">Request</span>
+                                                    </div>
+                                                    <div *ngIf="item.Send_From=='WR'">
+                                                        <span class="text-primary font-weight-400">Response</span>
+                                                    </div>
+                                                </td>
                                                 <td class="cmmts text-ellipsis" data-toggle="tooltip" title="Comments"
                                                     *ngIf="item.Req_Coments">{{item.Req_Coments}}</td>
                                                 <td
                                                     *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
                                                     Not Provided</td>
-                                                <td>
-                                                    <div *ngIf="item.Status=='Under Approval'">
-                                                        <span class="text-info font-weight-400">Under
-                                                            Approval</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Delay'">
-                                                        <span class="text-danger font-weight-400">Delay</span>
-                                                        <!-- <span *ngIf="item.Delaydays>0"
-                                                            class="text-danger delayDays">
-                                                            <strong>({{item.Delaydays}}
-                                                                Days)</strong>
-                                                        </span> -->
-                                                    </div>
-                                                    <!-- Other Status -->
-                                                    <div *ngIf="item.Status=='InProcess'">
-                                                        <span class="text-warning font-weight-400">InProcess</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='ToDo InProcess'">
-                                                        <span class="text-primary font-weight-400">ToDo
-                                                            InProcess</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='New Project'">
-                                                        <span class="text-primary font-weight-400">New
-                                                            Project</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='New Project Rejected'">
-                                                        <span class="text-danger font-weight-400">New
-                                                            Project
-                                                            Rejected</span>
-                                                    </div>
-
-                                                    <div *ngIf="item.Status=='Project Hold'">
-                                                        <span class="text-danger font-weight-400">Project
-                                                            Hold</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='ToDo Completed'">
-                                                        <span class="text-primary font-weight-400">ToDo
-                                                            Completed</span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='New Todo'">
-                                                        <span class="text-primary font-weight-400">New Todo
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Completion Under Approval'">
-                                                        <span class="text-primary font-weight-400">Completion
-                                                            Under
-                                                            Approval
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Completed'">
-                                                        <span class="text-success font-weight-400">Completed
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Forward Under Approval'">
-                                                        <span class="text-warning font-weight-400">Forward
-                                                            Under
-                                                            Approval
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Project Complete Rejected'">
-                                                        <span class="text-danger font-weight-400">Project
-                                                            Complete
-                                                            Rejected
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                        <span class="text-danger font-weight-400">Enactive
-                                                            Under
-                                                            Approval
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Enactive'">
-                                                        <span class="text-danger font-weight-400">Enactive
-                                                        </span>
-                                                    </div>
-
-                                                    <div *ngIf="item.Status=='Version'">
-                                                        <span class="text-danger font-weight-400">Version
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                        <span class="text-info font-weight-400">Deadline Extend
-                                                            Under Approval
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Project Holded'">
-                                                        <span class="font-weight-400"
-                                                            style="color: #c0b5dc;">Project Holded
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                                        <span class="font-weight-400"
-                                                            style="color: #c0b5dc;">Project Hold Under Approval
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='ToDo Achieved'">
-                                                        <span class="text-info font-weight-400">ToDo Achieved
-                                                        </span>
-                                                    </div>
-                                                    <div *ngIf="item.Status=='Standardtask Enactive Hold'">
-                                                        <span class="text-danger font-weight-400">Standardtask Enactive Hold
-                                                        </span>
-                                                    </div>                                                    
-                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

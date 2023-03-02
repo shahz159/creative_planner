@@ -2704,6 +2704,8 @@ export class MoreDetailsComponent implements OnInit {
         this.notifyService.showInfo("Action Cancelled ", '');
         this.UpdateMemos(this.URL_ProjectCode);
       }
+      this.UpdateMemos(this.URL_ProjectCode);
+      this.GetDMS_Memos();
     });
   }
 

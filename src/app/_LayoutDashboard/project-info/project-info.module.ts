@@ -19,6 +19,7 @@ import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-proj
 import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-dashboard-projects.component';
 import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
+import { NotificationComponent } from '../notification/notification.component';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -42,7 +43,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective],
   providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
-             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent]
+             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent]
  //exports:[ProjectInfoComponent]
   
 })

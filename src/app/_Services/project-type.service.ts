@@ -116,6 +116,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosBy_ProjectId", this.objPortfolioDTO)
   }
 
+  GetPortfoliosForAssignTask() {
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosForAssignTask", this.objPortfolioDTO)
+  }
+
   GetTotalPortfoliosBy_Employeeid() {
     this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
     return this.http.post(this.rootUrl + "TestAPI/NewGetTotalPortfoliosofEmployee", this.objPortfolioDTO)

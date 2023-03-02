@@ -11,6 +11,7 @@ import { rgbToHsl } from '@amcharts/amcharts4/.internal/core/utils/Colors';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 
 @Component({
   selector: 'app-action-to-assign',
@@ -26,8 +27,10 @@ export class ActionToAssignComponent implements OnInit {
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
+  port_id:any;
   selectedProjectCodelist: any[];
   public EmployeeList: any;
+  public PortfolioList: any;
   disablePreviousDate = new Date();
   SelectedSubmissionType: any;
   _taskName: string = "";
@@ -76,6 +79,12 @@ export class ActionToAssignComponent implements OnInit {
     this.GetAssignFormEmployeeDropdownList();
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
+    this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
+      (data) => {
+        this.PortfolioList = data as PortfolioDTO;
+        console.log(this.PortfolioList,"portfolios");
+      }
+    )
   }
 
   _ObjCompletedProj: CompletedProjectsDTO;
@@ -90,6 +99,7 @@ export class ActionToAssignComponent implements OnInit {
       });
   }
 
+  
   selectedEmployee: string = "";
 
   EmployeeOnSelect(obj) {
@@ -212,6 +222,14 @@ export class ActionToAssignComponent implements OnInit {
         fd.append("AssignId", this.task_id.toString());
       }
       fd.append("AssignedBy", this.CurrentUser_ID);
+      if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+        this.port_id=this.port_id;
+      }
+      else{
+        this.port_id=0;
+      }
+      fd.append("Portfolio_Id", this.port_id);
+     
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
           this._projectunplanned.getCatid();
@@ -224,9 +242,7 @@ export class ActionToAssignComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         });
-      
     }
-
   }
   // this.OnCategoryClick(this._Categoryid, this._CategoryName);
   // this._TodoList = JSON.parse(data['TodoList']);

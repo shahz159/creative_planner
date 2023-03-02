@@ -26,6 +26,7 @@ import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-
 import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import Swal from 'sweetalert2';
+import { NotificationComponent } from '../notification/notification.component';
 
 @Component({
   selector: 'app-project-info',
@@ -44,6 +45,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     public _portfolioprojects: PortfolioProjectsComponent,
     public _viewdashboard: ViewDashboardProjectsComponent,
     public _toDo: ToDoProjectsComponent,
+    public _notification: NotificationComponent,
     public _projectsAdd: ProjectsAddComponent,
     public datepipe: DatePipe,
     private dialog: MatDialog,
@@ -861,8 +863,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '2') {
                 this._portfolioprojects.GetPortfolioProjectsByPid();
-                // this.BsService.bs_SelectedPortId.subscribe(c =>{this.port_id = c} );
-                // this.router.navigate(["../portfolioprojects/" + this.port_id+"/"]);
               }
               else if (this._Urlid == '3') {
                 this._viewdashboard.GetCompletedProjects();
@@ -876,6 +876,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
               }
             }
           });
@@ -919,6 +920,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
               }
             }
           });
@@ -966,17 +968,15 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
                 }
               }
             });
         }
-
       }
       else if (this.selectedType == '4') {
         this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
       }
-      // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");  
-      // document.getElementById("rightbar-overlay").style.display = "none";
       this.closeInfo();
     }
     else if (this.requestType == 'Project Forward') {
@@ -1024,6 +1024,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
                 }
               }
             });
@@ -1073,6 +1074,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
+              this._notification.viewAll();
             }
           }
           else if (this._Message == '2') {
@@ -1098,6 +1100,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
+              this._notification.viewAll();
             }
           }
           else if (this._Message == '4' || this._Message == null) {
@@ -1151,6 +1154,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
               }
             }
           });
@@ -1201,6 +1205,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
                 }
               }
             });
@@ -1255,10 +1260,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.newResponsible = (this.transfer_json[0]['newResp']);
         }
         // console.log(this.transfer_json, 'transfer');
-        
       }
       // console.log(this.comments_list, "req")
-
       // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
     });
   }
@@ -1500,7 +1503,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this._toDo.GetProjectsByUserName();
           }
           else if (this._Urlid == '6') {
-            this.router.navigate(["Notifications"]);
+            // this.router.navigate(["Notifications"]);
           }
         }
         else if (this._Message == '2') {
@@ -1525,7 +1528,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this._toDo.GetProjectsByUserName();
           }
           else if (this._Urlid == '6') {
-            this.router.navigate(["Notifications"]);
+                this.router.navigate(["Notifications"]);
+                this._notification.viewAll();
           }
         }
         else if (this._Message == '3') {
@@ -1550,7 +1554,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this._toDo.GetProjectsByUserName();
           }
           else if (this._Urlid == '6') {
-            this.router.navigate(["Notifications"]);
+            // this.router.navigate(["Notifications"]);
           }
         }
         else if(this._Message == '4'){
