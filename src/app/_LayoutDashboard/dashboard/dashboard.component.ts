@@ -185,7 +185,8 @@ export class DashboardComponent implements OnInit {
     { "Day": "27", "value": "27", "checked": false },
     { "Day": "28", "value": "28", "checked": false },
     { "Day": "29", "value": "29", "checked": false },
-    { "Day": "30", "value": "30", "checked": false }
+    { "Day": "30", "value": "30", "checked": false },
+    { "Day": "31", "value": "31", "checked": false }
   ];
   // calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
   // calendarEvents: EventInput[] = [];
@@ -418,11 +419,12 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
     // document.getElementById("div_endDate").style.display = "none";
-
+    this.MinLastNameLength = true;
     this.selectedrecuvalue = "0";
     this.display = 'none';
     // this.ProjectListArray = [];
@@ -854,16 +856,18 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+
+
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -901,6 +905,7 @@ export class DashboardComponent implements OnInit {
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
         document.getElementById("rightbar-overlay").style.display = "block";
         document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
         this.AllDatesSDandED = [];
         var jsonData = {};
         var columnName = "Date";
@@ -921,19 +926,23 @@ export class DashboardComponent implements OnInit {
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
           document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
           this.selectedrecuvalue = '1';
           this._labelName = "Schedule Date :";
           document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date :";
           document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "block";
           this.selectedrecuvalue = '2';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
           Recc = ret1.split(",");
+
           for (var i = 0; i < Recc.length; i++) {
             this.dayArr.forEach(element => {
               if (element.value == Recc[i]) {
@@ -943,6 +952,7 @@ export class DashboardComponent implements OnInit {
           }
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+          document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("div_endDate").style.display = "none";
           this._labelName = "Schedule Date :";
           this.selectedrecuvalue = '3';
@@ -1025,6 +1035,7 @@ export class DashboardComponent implements OnInit {
   hasWhiteSpace(s: string) {
     return /\s/.test(s);
   }
+
   LastLengthValidation11() {
     if (this.Title_Name.trim().length < 3) {
       this.MinLastNameLength = false;
@@ -1151,6 +1162,7 @@ export class DashboardComponent implements OnInit {
 
         var vMasterCode = "MasterCode";
         element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var vUser_Name = "User_Name";
@@ -1160,7 +1172,7 @@ export class DashboardComponent implements OnInit {
         element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
 
         var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" :this.Locationfulladd;
+        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -1203,7 +1215,7 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
-          this.Locationfulladd=null;
+          this.Locationfulladd = null;
           this._status = null;
           this.SelectDms = null;
           this.Location_Type = null;
@@ -1236,16 +1248,17 @@ export class DashboardComponent implements OnInit {
 
   }
   OnSubmitReSchedule() {
+
     this._calenderDto.flagid = this._PopupConfirmedValue;
     var start = moment(this.minDate);
-    if(this._PopupConfirmedValue==3){
+    if (this._PopupConfirmedValue == 3) {
       // start = moment(this._Oldstart_date);
-        start = moment(this.minDate);
+      start = moment(this.minDate);
     }
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
     const d1 = new Date(moment(start).format(format2));
-    
+
     const d2 = new Date(moment(end).format(format2));
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
@@ -1370,7 +1383,7 @@ export class DashboardComponent implements OnInit {
         element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
 
         var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" :this.Locationfulladd;
+        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -1388,6 +1401,11 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
       });
+      if (this._OldRecurranceId == '0') {
+        if (this.selectedrecuvalue != this._OldRecurranceId) {
+          this._calenderDto.flagid = 3;
+        }
+      }
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this.Schedule_ID != 0) {
@@ -1524,6 +1542,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("weekly_121").style.display = "none";
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Monthly_121").style.display = "none";
+    document.getElementById("Recurrence_hide").style.display = "none";
+
     this.daysSelected = [];
     this.singleselectarry = [];
     this.daysSelectedII = [];
@@ -1620,13 +1640,14 @@ export class DashboardComponent implements OnInit {
 
     });
     if (MasterCode != undefined) {
+      
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
         ((data) => {
           // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
-
+        this._subname = false;
       this.ProjectListArray.forEach(element => {
         if (element.Project_Code == MasterCode) {
           this._Exec_BlockName = element.Exec_BlockName;
@@ -2452,6 +2473,7 @@ export class DashboardComponent implements OnInit {
   dmsIdjson: any = [];
 
   GetClickEventJSON_Calender(arg) {
+   
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
@@ -2568,13 +2590,13 @@ export class DashboardComponent implements OnInit {
         };
       });
   }
-Locationfulladd:string;
+  Locationfulladd: string;
   public handleAddressChange(address: Address) {
-    
+
     this.Location_Type = address.name;
-    console.log(address,"add")
-    this.Locationfulladd=address.formatted_address;
-    
+    console.log(address, "add")
+    this.Locationfulladd = address.formatted_address;
+
   }
   // start
 
