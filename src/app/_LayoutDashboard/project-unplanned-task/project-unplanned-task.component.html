@@ -25,14 +25,17 @@
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
                             <span class="count">1</span> Assigned Task </label> -->
                           <label class="badge bdg-new bdg-suc kt-badge--inline mr-2 btn-sm py-8px">
-                            <span class="count">{{acceptCount}}</span> Accepted </label>
+                            <span class="count" *ngIf="acceptCount">{{acceptCount}}</span> 
+                            <span class="count" *ngIf="!acceptCount">0</span>Accepted </label>
                           <label class="badge bdg-new bdg-war kt-badge--inline mr-2 btn-sm py-8px">
-                            <span class="count">{{pendingCount}}</span> Pending </label>
+                            <span class="count" *ngIf="pendingCount">{{pendingCount}}</span>
+                            <span class="count" *ngIf="!pendingCount">0</span> Pending </label>
                           <label class="badge bdg-new bdg-dan kt-badge--inline mr-2 btn-sm py-8px">
-                            <span class="count">{{rejectCount}}</span> Rejected </label>
+                            <span class="count" *ngIf="rejectCount">{{rejectCount}}</span>
+                            <span class="count" *ngIf="!rejectCount">0</span> Rejected </label>
                         </div>
 
-                        <div class="dropdown-menu-left topy-filtr" id="">
+                        <div class="dropdown-menu-left topy-filtr" id="" *ngIf="status_list!=''">
                             <a class="btn btn-label-info btn-upper btn-sm btn-bold" data-toggle="dropdown"
                             style="padding: 5px 12px;">
                             <!-- filter-dot (red dot for filter)-->

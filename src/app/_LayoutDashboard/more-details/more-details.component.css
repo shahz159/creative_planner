@@ -1066,3 +1066,102 @@ position: relative;
     transition: color .2s ease, background-color .2s ease;
     color: #7b68ee!important;
 }
+.delete-btn i {
+    background: none;
+    font-size: 16px;
+    outline: none !important;
+    box-shadow: none;
+    outline: none !important;
+    height: 30px;
+    width: 30px;
+    background-color: #f5f6fc;
+    border: 1px solid #b3bcff;
+    color: #5867dd;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 10px 8px 0 0;
+    border-radius: 0;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.delete-btn {
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f2f3f7;
+    color: grey;
+    line-height: 59px;
+    padding: 0 20px;
+    transition: all 2s ease !important;
+}
+.kt-inbox__item:hover .delete-btn {
+    display: block;
+}
+.delete-btn i:hover {
+    background-color: #5867dd;
+    color: #fff;
+}
+.kt-inbox__items {
+    overflow: auto;
+    max-height: calc(100vh - 90px);
+}/* width */
+::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 5px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #F1F1F1;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .fixed-btn{
+    position: fixed;
+    z-index: 99;
+    bottom: 10px;
+    right: 10px;
+  }
+  /* input[type="checkbox"]#inhide{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    left: 0;
+  } */
+  .spacer-tab{
+    display: block;
+    position: fixed;
+    z-index: 999;
+    border: 1px solid rgb(232 234 237);
+    overflow: auto;
+    max-height: 450px;
+    opacity: 1;
+    max-width: 400px;
+    bottom: 43px;
+    right: 10px;
+    box-shadow: -1px 2px 20px #00478a21;
+    border-radius: 8px;
+    padding: 5px 0;
+    background-color: rgb(255 255 255);
+  }  
+  /* input[type="checkbox"]:checked ~ .spacer-tab{
+    display: block;    
+  } */
+  .spacer--body{
+    margin-left: 0;
+    padding-left: 10px;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: #fff;
+  }

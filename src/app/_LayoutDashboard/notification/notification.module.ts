@@ -3,13 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { NotificationRoutingModule } from './notification-routing.module';
 import { NotificationComponent } from './notification.component';
+import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
   declarations: [NotificationComponent],
   imports: [
     CommonModule,
-    NotificationRoutingModule
+    FormsModule,
+    NotificationRoutingModule,
+    Ng2SearchPipeModule
   ],
   exports:[
     NotificationComponent

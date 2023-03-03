@@ -1015,6 +1015,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");  
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -2703,6 +2704,8 @@ export class MoreDetailsComponent implements OnInit {
         this.notifyService.showInfo("Action Cancelled ", '');
         this.UpdateMemos(this.URL_ProjectCode);
       }
+      this.UpdateMemos(this.URL_ProjectCode);
+      this.GetDMS_Memos();
     });
   }
 

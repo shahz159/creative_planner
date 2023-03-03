@@ -116,6 +116,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosBy_ProjectId", this.objPortfolioDTO)
   }
 
+  GetPortfoliosForAssignTask() {
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPortfoliosForAssignTask", this.objPortfolioDTO)
+  }
+
   GetTotalPortfoliosBy_Employeeid() {
     this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
     return this.http.post(this.rootUrl + "TestAPI/NewGetTotalPortfoliosofEmployee", this.objPortfolioDTO)
@@ -333,6 +338,12 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     this.ObjNotificationDto.PageNumber = obj.PageNumber;
     this.ObjNotificationDto.PageSize = obj.PageSize;
+    this.ObjNotificationDto.SelectedType = obj.SelectedType;
+    this.ObjNotificationDto.SelectedRequest = obj.SelectedRequest;
+    this.ObjNotificationDto.SelectedStatus = obj.SelectedStatus;
+    this.ObjNotificationDto.SelectedEmp_No = obj.SelectedEmp_No;
+    this.ObjNotificationDto.SearchText = obj.SearchText;
+
     return this.http.post(this.rootUrl + "Notification/NewGetViewAllNotifications", this.ObjNotificationDto)
   }
   

@@ -242,8 +242,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
             this.rejectCount = element.SCount;
           }
         });
+      console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
       });
-      console.log(this.acceptCount,this.pendingCount,this.rejectCount,"count");
   }
 
   underDev() {
