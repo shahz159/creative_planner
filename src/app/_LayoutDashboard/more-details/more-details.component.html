@@ -1297,6 +1297,7 @@
                                 aria-labelledby="tasks-1">
                                 <div class="tasks_views rbn-bx">
                                     <div class="text-right action-btn">
+                                        <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button>
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button *ngIf="inProcessCount!=0 || subTaskCount==0" (click)="sweetAlert()"
                                             [hidden]="actionButton" title="Create New Action"
@@ -3191,7 +3192,7 @@
 </button>
 <input id="input" type="checkbox" id="inpt" checked checked="checked"/> -->
 
-<div class="spacer-tab d-none">
+<div class="spacer-tab d-none" id="btm-space">
     <div class="spacer--body">
         <div class="">
 
@@ -3202,23 +3203,30 @@
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                 <div class="px-4 py-3">
-                    <div class="form-group input-group">
+
+                    <div  class="form-group">
+                        <label > Transfer To <span  class="text-danger">*</span>
+                        </label>
+                        <select  reuired="" placeholder="Select Employee" class="form-control">
+                            <option>Select</option>
+                        </select>
+                      </div>
+
+                    <div class="form-group">
                         <label>Set new End Date <span class="text-danger">*</span></label>
                         <div class="d-flex input-group">
                             <input placeholder="Select Date" class="form-control"
                                 name="date">
                             <div class="input-group-append">
-                                <i class="far fa-calendar-alt"></i>
-                                <!-- <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
                                 </mat-datepicker-toggle>
-                                <mat-datepicker class="form-group" #picker5></mat-datepicker> -->
+                                <mat-datepicker class="form-group" #picker5></mat-datepicker>
                             </div>
                         </div>
                     </div>
                     <div class="form-group mb-1">
-                    <label>Remarks <span class="text-danger">*</span>
-                    </label>
-                    <textarea placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                        <label>Remarks <span class="text-danger">*</span></label>
+                        <textarea placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                     </div>
                 </div>
                 </div>
@@ -3226,7 +3234,7 @@
             </ul>
             <div class="px-4 pb-3">
                 <button class="btn btn-info btn-sm mr-2 text-white" > Submit </button>
-                <button class="btn btn-outline-info btn-sm text-dark-75">Close</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
             </div>
 
 

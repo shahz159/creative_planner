@@ -1146,8 +1146,8 @@ position: relative;
     overflow: auto;
     max-height: 450px;
     opacity: 1;
-    max-width: 400px;
-    bottom: 43px;
+    width: 400px;
+    bottom: 20px;
     right: 10px;
     box-shadow: -1px 2px 20px #00478a21;
     border-radius: 8px;
@@ -1160,8 +1160,10 @@ position: relative;
   .spacer--body{
     margin-left: 0;
     padding-left: 10px;
-    max-width: none;
     border-radius: 0;
     box-shadow: none;
     background-color: #fff;
   }
+ ::ng-deep .input-group-append .mat-icon-button {
+    height: 35px !important;
+}

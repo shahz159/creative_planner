@@ -1016,6 +1016,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");  
+    document.getElementById("btm-space").classList.add("d-none");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -1024,6 +1025,16 @@ export class MoreDetailsComponent implements OnInit {
     this.Clear_Feilds();
     this.GetSubtask_Details();
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
+  }
+  btmspace_opn(){
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  close_space(){
+    document.getElementById("btm-space").classList.add("d-none");
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   closeApproval() {
