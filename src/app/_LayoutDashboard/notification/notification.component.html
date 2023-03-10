@@ -239,12 +239,12 @@
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Date
                                                 </th>
-                                                <th data-order="desc" data-name="Status" tabindex="0"
+                                                <!-- <th data-order="desc" data-name="Status" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
                                                     aria-label="Status: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Submission Type
-                                                </th>
+                                                </th> -->
                                                 <th data-order="desc" data-name="Comments" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer cmmts text-ellipsis"
@@ -290,14 +290,14 @@
                                                 <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
                                                 <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td>
                                                 
-                                                <td>
+                                                <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
                                                         <span class="text-info font-weight-400">Request</span>
                                                     </div>
                                                     <div *ngIf="item.Send_From=='WR'">
                                                         <span class="text-primary font-weight-400">Response</span>
                                                     </div>
-                                                </td>
+                                                </td> -->
                                                 <td class="cmmts text-ellipsis" data-toggle="tooltip" title="Comments"
                                                     *ngIf="item.Req_Coments">{{item.Req_Coments}}</td>
                                                 <td

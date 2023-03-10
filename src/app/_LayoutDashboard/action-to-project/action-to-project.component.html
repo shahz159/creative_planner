@@ -18,7 +18,7 @@
         <!-- </ng-multiselect-dropdown> -->
         <ng-select reuired #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" placeholder="Select Project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
-                {{item.Project_Name}}
+                {{item.Project_Name |  titlecase}}
             </ng-option>
         </ng-select>
         <span *ngIf ="_projcode == true" style="color:red">Project required!</span>
