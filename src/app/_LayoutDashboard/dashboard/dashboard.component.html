@@ -5,15 +5,15 @@
     <!-- end: Header Menu -->
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-        <div class="kt-header__topbar-item">
-            <span (click)="actyside()" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
-                <i class="flaticon2-calendar-5"></i>
+        <!-- <div class="kt-header__topbar-item" >
+            <span (click)="actyside();notinAction()" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
+                <i class="flaticon2-calendar-5" id="timelinelog"></i>
             </span>
-        </div>
-        <div class="kt-header__topbar-item dropdown">
+        </div> -->
+        <div class="kt-header__topbar-item dropdown" >
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i
-                        class="flaticon2-bell-alarm-symbol"></i>
+                        class="flaticon2-bell-alarm-symbol" id="notification"></i>
                     <span class="noti text-white" *ngIf="notilength!=0 && notilength<=99">{{notilength}}</span>
                     <span class="noti text-white" *ngIf="notilength>99">99+</span>
                 </span>

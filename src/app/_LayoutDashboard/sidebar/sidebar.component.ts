@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { AuthService } from 'src/app/_Services/auth.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { NotificationService } from 'src/app/_Services/notification.service';
+import tippy from 'node_modules/tippy.js';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -15,7 +18,7 @@ export class SidebarComponent implements OnInit {
   OrganizationId:any;
   _CompNo:string;
   constructor(private router: Router,
-    private authService: AuthService,
+    private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService) { }
   loadingBar_state = this.loadingBarServce.useRef('http');
   ngOnInit(): void {
@@ -29,6 +32,96 @@ export class SidebarComponent implements OnInit {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'assets/js/test.js'}).appendTo('head');
     });
+
+    tippy('#dashboard', {
+      content: "Dashboard",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#performance', {
+      content: "Performance Dashboard",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#Portfolio', {
+      content: "Portfolios",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#summary', {
+      content: "Project Summary",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#timeline', {
+      content: "Timeline",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#todo', {
+      content: "ToDo Projects",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#assign', {
+      content: "Assign Projects",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#runway', {
+      content: "Runway tasks",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#settins', {
+      content: "Settings",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#logout', {
+      content: "Logout",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+    tippy('#creative', {
+      content: "Creative Planner",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
   }
   // AfterViewInit():void{
   //   alert('ok');  
@@ -79,7 +172,9 @@ export class SidebarComponent implements OnInit {
     myWindow.focus();
   }
   
-    
+  notinAction() {
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
+  }
   // }
   // ngOnDestroy(){
   //   this.logout();

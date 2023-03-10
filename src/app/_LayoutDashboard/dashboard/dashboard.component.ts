@@ -28,6 +28,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
+import tippy from 'node_modules/tippy.js';
+
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { empty } from 'rxjs';
@@ -518,6 +520,26 @@ export class DashboardComponent implements OnInit {
     this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this.Event_requests();
+
+    // for tippys
+    tippy('#notification', {
+      content: "Notifications",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
+    tippy('#timelinelog', {
+      content: "Timeline log",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
   }
 
   notificationDTO: NotificationActivityDTO;
@@ -3570,5 +3592,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("ft_body").classList.toggle("go-up");
     document.getElementById("secfootr").classList.toggle("opend");
     document.getElementById("main-foot").classList.toggle("overflow-hidden");
+  }
+
+  notinAction() {
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 }

@@ -654,7 +654,6 @@ export class ToDoProjectsComponent implements OnInit {
           //this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.GetSubtask_Details();
         
-          this.notifyService.showInfo("Successfully Updated", '');
           document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           document.getElementById("rightbar-overlay").style.display = "none";
           document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
@@ -662,11 +661,8 @@ export class ToDoProjectsComponent implements OnInit {
           document.getElementById("todo").classList.remove("position-fixed");
           $('#uploadFile').val('');
           $('#_upload').html('Select a file');
-         
-         
         });
-        
-        
+        this.notifyService.showInfo("Successfully Updated", '');
     }
    
   }

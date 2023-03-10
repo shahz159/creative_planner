@@ -159,6 +159,7 @@ export class NotificationComponent implements OnInit {
       console.log(data,"response-data");
       if(data[0]['message']=='1')
       this.notifyService.showInfo("Response recorded.",'');
+      this.viewAll();
     });
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;

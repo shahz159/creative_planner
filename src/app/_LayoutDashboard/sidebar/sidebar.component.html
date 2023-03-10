@@ -1,9 +1,9 @@
 <button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
 <div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
-        <div class="kt-aside__brand-logo">
+        <div class="kt-aside__brand-logo" >
             <a>
-                <img alt="Logo" src="assets/images/logo.png">
+                <img alt="Logo" src="assets/images/logo.png" id="creative">
             </a>
         </div>
     </div>
@@ -11,70 +11,79 @@
         <div id="kt_aside_menu" class="kt-aside-menu  kt-aside-menu--dropdown " data-ktmenu-vertical="1"
             data-ktmenu-dropdown="1" data-ktmenu-scroll="0">
             <ul class="kt-menu__nav pt-0">
-                <li class="kt-menu__item">
+                <li class="kt-menu__item" >
                     <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]={exact:true}
-                        class="kt-menu__link" title="Dashboard">
-                        <i class="kt-menu__link-icon flaticon2-protection"></i>
+                        class="kt-menu__link" >
+                        <i class="kt-menu__link-icon flaticon2-protection" id="dashboard"></i>
                         <span class="kt-menu__link-text">Dashboard</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a routerLink="PerformanceDashboard" routerLinkActive="active" class="kt-menu__link"
-                        title="Performance Dashboard">
-                        <!-- <i class="kt-menu__link-icon flaticon2-graph"></i> -->
-                        <i class=" kt-menu__link-icon far fa-chart-bar"></i>
+                        >
+                        <!-- <i class="kt-menu__link-icon flaticon2-graph"></i> title="Performance Dashboard" title="Dashboard"-->
+                        <i class=" kt-menu__link-icon far fa-chart-bar"  id="performance"></i>
                         <span class="kt-menu__link-text">Performance Dashboard</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
-                <li class="kt-menu__item">
+                <li class="kt-menu__item" >
                     <a routerLink="Portfolio" routerLinkActive="active" class="kt-menu__link kt-menu__toggle"
-                        title="Portfolios">
-                        <i class="kt-menu__link-icon fas fa-list"></i>
-                        <!-- <i class="kt-menu__link-icon flaticon2-calendar-5"></i> -->
+                        >
+                        <i class="kt-menu__link-icon fas fa-list" id="Portfolio"></i>
+                        <!-- <i class="kt-menu__link-icon flaticon2-calendar-5"></i> title="Portfolios"-->
                         <span class="kt-menu__link-text">Portfolios</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a routerLink="ProjectsSummary" routerLinkActive="active" class="kt-menu__link kt-menu__toggle"
-                        title="Projects Summary">
-                        <i class="kt-menu__link-icon fab fa-wpforms"></i>
+                       >
+                        <i class="kt-menu__link-icon fab fa-wpforms"  id="summary"></i>
                         <span class="kt-menu__link-text">Projects Summary </span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
-                <li class="kt-menu__item">
+                <!-- /////////<i class="fa-regular "></i>  title="Projects Summary"  title="Timeline"  title="To Do Projects"-->
+                <!-- <li class="kt-menu__item">
+                    <a routerLink="Timeline" routerLinkActive="active" (click)="notinAction()" class="kt-menu__link kt-menu__toggle"
+                       >
+                        <i class="kt-menu__link-icon fab fa-tumblr-square"  id="timeline"></i>
+                        <span class="kt-menu__link-text">Timeline </span>
+                        <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                </li> -->
+                <li class="kt-menu__item" >
                     <a routerLink="ToDoProjects" routerLinkActive="active" class="kt-menu__link kt-menu__toggle"
-                        title="To Do Projects">
-                        <i class="kt-menu__link-icon fas fa-clipboard-check"></i>
+                       >
+                        <i class="kt-menu__link-icon fas fa-clipboard-check" id="todo"></i>
                         <span class="kt-menu__link-text">To Do Prjects</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
-                <!-- Assigned -->
+                <!-- Assigned title="Task Assign"-->
                 <li class="kt-menu__item">
-                    <a (click)="Btn_AssignTask()" class="kt-menu__link kt-menu__toggle" title="Task Assign">
-                        <i class="kt-menu__link-icon fab fa-buffer"></i>
+                    <a (click)="Btn_AssignTask()" class="kt-menu__link kt-menu__toggle" >
+                        <i class="kt-menu__link-icon fab fa-buffer"  id="assign"></i>
                         <span class="kt-menu__link-text">Assigned Task</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
                 <!-- Runway Page -->
-                <li class="kt-menu__item">
-                    <a (click)="Btn_UnplannedTask()" class="kt-menu__link kt-menu__toggle" title="Runway Task">
-                        <i class="kt-menu__link-icon fas fa-registered"></i>
+                <li class="kt-menu__item" >
+                    <a (click)="Btn_UnplannedTask()" class="kt-menu__link kt-menu__toggle" >
+                        <i class="kt-menu__link-icon fas fa-registered" id="runway"></i>
                         <span class="kt-menu__link-text">Runway Task</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
-                <!-- Settings -->
+                <!-- Settings title="Settings"-->
                 <li class="kt-menu__item kt-menu__item--submenu kt-menu__item--submenu kt-menu__item--bottom-2"
                     id="kt-menu__item--submenu1" (click)="menuopen()" routerLinkActive="active"
                     data-ktmenu-submenu-toggle="click" aria-haspopup="true">
-                    <a routerLinkActive="active" class="kt-menu__link kt-menu__toggle" title="Settings">
-                        <i class="kt-menu__link-icon flaticon-avatar"></i>
+                    <a routerLinkActive="active" class="kt-menu__link kt-menu__toggle" >
+                        <i class="kt-menu__link-icon flaticon-avatar" id="settins"></i>
                         <span class="kt-menu__link-text">User Details</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
@@ -121,11 +130,11 @@
                     </a>
                 </li> -->
 
-                <!-- Settings Ends -->
+                <!-- Settings Ends title="Log Out"-->
                 <li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--bottom-1" aria-haspopup="true"
                     data-ktmenu-submenu-toggle="click" (click)="logout()">
-                    <a class="kt-menu__link kt-menu__toggle" title="Log Out">
-                        <i class="kt-menu__link-icon flaticon-logout"></i>
+                    <a class="kt-menu__link kt-menu__toggle" >
+                        <i class="kt-menu__link-icon flaticon-logout"  id="logout"></i>
                         <span class="kt-menu__link-text">Logout</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>

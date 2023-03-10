@@ -865,8 +865,8 @@ export class MoreDetailsComponent implements OnInit {
           if (this.Status == 'Project Hold' || this.ProjectBlockName=='To do List' || this.ProjectBlockName=='Standard Tasks' || this.ProjectBlockName=='Routine Tasks') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New Project Rejected'
-            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' || this.Status == 'Project Complete Rejected'
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' 
+            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' 
             || this.Status == 'Project Hold') {
             this.darbutton = false;
           }
@@ -1016,6 +1016,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");  
+    document.getElementById("btm-space").classList.add("d-none");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
     document.getElementById("moredet").classList.remove("position-fixed");
@@ -1024,6 +1025,23 @@ export class MoreDetailsComponent implements OnInit {
     this.Clear_Feilds();
     this.GetSubtask_Details();
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
+  }
+  btmspace_opn(){
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  close_space(){
+    this.selectedEmp_No = null;
+    this.TransDate = null;
+    this.transfer_remarks = "";
+    this.Holddate = null;
+    this.hold_remarks = "";
+    this._ProjDeadline = null;
+    this.extend_remarks = "";
+    document.getElementById("btm-space").classList.add("d-none");
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   closeApproval() {
@@ -3024,37 +3042,96 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   _modelProjAlloc: number = 0;
-  OnEditProject_Alloc(id) {
-    // this._modelProjAlloc = allocated;
+  editduration : boolean = false;
+  subduration:any;
+
+  OnEditProject_Alloc(id,aname,i,acode,duration) {
+    this.actionName=aname;
+    this.actCode=acode;
+    this.actnum=i;
+    this.subduration=duration;
     this.Editbutton = true;
-    // (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "block";
-    (<HTMLInputElement>document.getElementById("AllocFocus_" + id)).focus();
+    this.editduration=true;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    // this._modelProjAlloc = allocated;
+    // this.Editbutton = true;
+    // // (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "block";
+    // (<HTMLInputElement>document.getElementById("AllocFocus_" + id)).focus();
 
   }
   extend_remarks: string;
+  editDeadline: boolean =false;
 
   onEditDeadline(id, enddate) {
     // this._ProjDeadline = enddate;
     this.Editbutton = true;
+    this.edithold=false;
+    this.editDeadline=true;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+    this.editduration=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
     // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "block";
-    (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
+    // (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "block";
+    // (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
   }
 
-  
-  onEditEndDate(id){
+  actendedit : boolean = false;
+  actnum:any;
+  actCode:string;
+  actstartedit:boolean = false;
+
+  onEditEndDate(id,aname,i,acode){
+    this.actionName=aname;
+    this.actCode=acode;
+    this.actnum=i;
     this.Editbutton = true;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=true;
+    this.actstartedit=false;
+    this.editduration=false;
+
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "block";
-    (<HTMLInputElement>document.getElementById("EndDatetext_" + id)).focus(); 
+    // (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "block";
+    // (<HTMLInputElement>document.getElementById("EndDatetext_" + id)).focus(); 
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  onEditStartDate(id){
+  onEditStartDate(id,aname,i,acode){
+    this.actionName=aname;
+    this.actCode=acode;
+    this.actnum=i;
     this.Editbutton = true;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=true;
+    this.editduration=false;
+
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "block";
-    (<HTMLInputElement>document.getElementById("StartDatetext_" + id)).focus(); 
+    // (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "block";
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    // (<HTMLInputElement>document.getElementById("StartDatetext_" + id)).focus(); 
   }
 
 
@@ -3074,19 +3151,13 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.remove("d-block");
 
-    this._ProjDeadline = null;
-    this.extend_remarks = "";
+   
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
 
     (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
-    this.Holddate = null;
-    this.hold_remarks = "";
-
+    
     (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
-    this.selectedEmp_No = null;
-    this.TransDate = null;
-    this.transfer_remarks = "";
-
+    
 
   }
 
@@ -3106,22 +3177,45 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "none";
   }
 
+  edithold:boolean = false;
   onHoldClick(id) {
+    this.Editbutton=true;
+    this.edithold=true;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+    this.editduration=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
     // (<HTMLInputElement>document.getElementById("HoldArea")).classList.add("d-block");
-    (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.add("d-block");
-    document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
+    // (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.add("d-block");
+    // document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
     // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
-
-
-    this.Editbutton = true;
-    (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
+    // (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
   }
-  onTransferClick(id) {
-    // (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
-    (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
 
-    this.Editbutton = true;
-    (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
+  transferproject:boolean = false;
+
+  onTransferClick(id) {
+    this.Editbutton=true;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=true;
+    this.actstartedit=false;
+    this.actendedit=false;
+    this.editduration=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    // (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
+    // (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
+
+    // this.Editbutton = true;
+    // (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
   }
   closehold(id) {
     // (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
@@ -3191,18 +3285,18 @@ export class MoreDetailsComponent implements OnInit {
           this.GetProjectDetails();
         }
       });
-      this.onCancel(id);
+      this.close_space();
     }
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
   }
 
-  onAction_ExtendDeadline(id, Pcode) {
+  onAction_ExtendDeadline() {
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    console.log(this._ProjDeadline,id,Pcode,"act");
+    // console.log(this._ProjDeadline,id,Pcode,"act");
     if (this._ProjDeadline != null) {
-        this.service._ProjectDeadlineExtendService(Pcode,this._ProjDeadline,null,this.extend_remarks).subscribe(data => {
+        this.service._ProjectDeadlineExtendService(this.actCode,this._ProjDeadline,null,this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -3216,18 +3310,18 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
         }
       });
-      this.closeAction(id);
+      this.close_space();
     }
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
   }
 
-  onAction_ExtendDPG(id, Pcode) {
+  onAction_ExtendDPG() {
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    console.log(this._ProjDeadline,id,Pcode,"act");
+    // console.log(this._ProjDeadline,id,Pcode,"act");
     if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(Pcode,null,this._ProjDeadline,this.extend_remarks).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(this.actCode,null,this._ProjDeadline,this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -3241,17 +3335,17 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
         }
       });
-      this.closeAction(id);
+      this.close_space();
     }
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
   }
 
-  onProject_updateDuration(id,pcode){
+  onProject_updateDuration(){
 
     if (this._modelProjAlloc != null && this._modelProjAlloc!=0) {
-      this.service._NewProjectDurationService(pcode,this._modelProjAlloc,this.alloc_remarks,this.Current_user_ID).subscribe(data => {
+      this.service._NewProjectDurationService(this.actCode,this._modelProjAlloc,this.alloc_remarks,this.Current_user_ID).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == '2') {
@@ -3265,7 +3359,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
         }
       });
-      this.closeDuration(id);
+      this.close_space();
     }
     else {
       this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value"); 
@@ -3294,7 +3388,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetProjectDetails();
         }
       });
-      this.onCancel(id);
+      this.close_space();
     }
     else {
       this.notifyService.showInfo("Project Hold date cannot be empty", "Please select a date.");
@@ -3436,6 +3530,14 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
+
+    this.selectedEmp_No = null;
+    this.TransDate = null;
+    this.transfer_remarks = "";
+    this.Holddate = null;
+    this.hold_remarks = "";
+    this._ProjDeadline = null;
+    this.extend_remarks = "";
   }
 
   //Project Update
@@ -3628,7 +3730,7 @@ export class MoreDetailsComponent implements OnInit {
           'Project Not Transferred!',
           'error'
         )
-        this.onCancel(id);
+        this.close_space();
       }
     });
   }
@@ -3686,7 +3788,7 @@ export class MoreDetailsComponent implements OnInit {
           this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
         }
       });
-      this.onCancel(id);
+      this.close_space();
       this.closeInfo();
     // else {
     //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");

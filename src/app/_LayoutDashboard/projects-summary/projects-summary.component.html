@@ -311,7 +311,7 @@
                                                     </td>
                                                     <td>
                                                         <p class="kt-widget__title mb-0">
-                                                            {{item.Project_Name}}
+                                                            {{item.Project_Name |  titlecase}}
                                                         </p>
                                                     </td>
                                                     <td>
@@ -340,9 +340,7 @@
                                                     </td>
                                                     <td data-toggle="tooltip" data-placement="top"
                                                         title="{{item.LastUpdate|date:'medium'}}">
-                                                        <span href="javascript:void(0)"
-                                                            class="kt-widget__other text-info curser-pointer"
-                                                            (click)="OpenDARinfo(item.Project_Code)">
+                                                        <span class="kt-widget__other text-info">
                                                             {{item.LastUpdate|dateAgo}}</span>
                                                     </td>
                                                     <td data-toggle="tooltip" data-placement="top"
@@ -350,7 +348,10 @@
                                                         <div class="kt-widget__details">
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
-                                                                <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <!-- href="javascript:void(0)"
+                                                            
+                                                            (click)="OpenDARinfo(item.Project_Code)"
+                                                                      <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
                                                                 </a> -->
                                                                   <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image"> -->
