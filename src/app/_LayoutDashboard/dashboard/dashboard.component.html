@@ -884,7 +884,15 @@
     <div class="eve-modal open" tabindex="-1" role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
-                <div class="icons-flex float-right">
+                <div class="icons-flex float-right"  >
+                    <div id="copy_data" class="icons-right">
+                        <span class="tool-span" (click)="DublicateTaskandEvent()">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z"></path>
+                          </svg>
+                        </span>
+                      </div>
                     <div class="icons-right" id="hiddenedit">
                         <span class="tool-span" (click)="ReshudingTaskandEvent()">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
@@ -1833,11 +1841,30 @@
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 
-
+<div class="col-md-12 progress_container">
+    <div class="progress form-group" *ngIf="progress > 0">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+            [style.width.%]="progress">
+            {{progress}}
+        </div>
+    </div>
+</div>
 <div id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1 border-bottom">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2" *ngIf="editTask==false && copyTask==false">
             <h4 class="m-0">Schedule {{ScheduleType}}</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2" *ngIf="editTask==true &&  copyTask==false">
+            <h4 class="m-0">Edit {{ScheduleType}}</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2"  *ngIf="copyTask==true ">
+            <h4 class="m-0">Copy {{ScheduleType}}</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
                 <i class="fa fa-times"></i>
             </a>
@@ -1944,13 +1971,34 @@
                     <label class="cus-lbl">Description </label>
                     <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-0">
                     <label class="cus-lbl">Attachment </label>
                     <div class="custom-file pl-1">
-                      <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file">
+                      <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file" 
+                      (change)="onFileChange($event)" multiple>
+                      
                     </div>
                 </div>
-                <div class="form-group">
+
+                <div class="dropzone dropzone-multi form-group" id="">
+                    <div id="div_exixtingfiles" class="dropzone-items">
+                        <div *ngFor='let url of _lstMultipleFiales'>
+                            <div class="dropzone-item p-3 m-0 border br-0">
+                                <div class="dropzone-file">
+                                    <div class="dropzone-filename">
+                                        <span>{{url.FileName}}</span>
+                                        <strong>(<span>{{url.Size}}kb</span>)</strong>
+                                        <span (click)="RemoveSelectedFile(url.UniqueId)" class="dropzone-delete">
+                                            <i class="flaticon2-cross"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
                     <div class="d-flex gap-1">
                         <div class="form-group flex-1">
                             <label>{{_labelName}} <span class="text-danger">*</span></label>
@@ -2028,13 +2076,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group flex-1">
+                            <!-- <div class="form-group flex-1">
                                 <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
                                     (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
                                     aria-controls="collapse_repeat">Custom recurrence</button>
-                            </div>
+                            </div> -->
 
-                            <div id="collapse_repeat" class="collapse">
+                            <div>
                                 <div class="form-group flex-1" id="div_recurrence">
                                     <label class="">Repeat on</label>
                                     <mat-select name="Select Type" placeholder="Do not repeat"
@@ -2046,6 +2094,7 @@
                                         <mat-option value="3">Monthly</mat-option>
                                     </mat-select>
                                 </div>
+                                
                                 <div class="ml-0 form-group" style="display: none;" id="weekly_121">
                                     <label class="">Days</label>
                                     <div class="pt-1">
@@ -2406,10 +2455,11 @@
                     </div>
 
                 </div>
-                <div class="form-group mb-1" *ngIf="editTask==false">
+                <div class="form-group mb-1" *ngIf="editTask==false || copyTask==true">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts || !Title_Name "
                         (click)="OnSubmitSchedule()">Submit</button>
                 </div>
+
                 <div *ngIf="_AllEventTasksCount > 1 && editTask==true" class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts " data-toggle="modal"
                         data-target="#confirmpopup" (click)="viewconfirm()">Update</button>
