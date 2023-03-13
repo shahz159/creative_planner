@@ -1534,5 +1534,60 @@
             </div>
         </div>
     </div>
+
+    
+<button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2 d-none" (click)="btmspace_opn()">Edit Tab</button>
+
+<div class="spacer-tab d-none" id="btm-space">
+    <div class="spacer--body">
+        <div class="">
+
+            <ul class="kt-nav pb-0"> 
+                <li class="kt-nav__head py-0">
+                <div>New End Date<br>Action: <b>Project_Name</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                <div class="px-4 py-3">
+
+                    <div  class="form-group">
+                        <label > Transfer To <span  class="text-danger">*</span>
+                        </label>
+                        <select  reuired="" placeholder="Select Employee" class="form-control">
+                            <option>Select</option>
+                        </select>
+                      </div>
+
+                    <div class="form-group">
+                        <label>Set new End Date <span class="text-danger">*</span></label>
+                        <div class="d-flex input-group">
+                            <input placeholder="Select Date" class="form-control"
+                                name="date">
+                            <div class="input-group-append">
+                                <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker class="form-group" #picker5></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label>Remarks <span class="text-danger">*</span></label>
+                        <textarea placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                    </div>
+                </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" > Submit </button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
 </div>
 <!-- <div id="fade" onclick="document.getElementById('date_edt').style.display='none';document.getElementById('hold_pro').style.display='none';document.getElementById('div-pro1').style.display='none';document.getElementById('fade').style.display='none'" class="black_overlay"></div> -->

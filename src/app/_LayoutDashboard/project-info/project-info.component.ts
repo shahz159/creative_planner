@@ -263,6 +263,10 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
+    document.getElementById("btm-space").classList.add("d-none");
+
+    
     if (this._Urlid == '1') {
       this.router.navigate(["/backend/ProjectsSummary/"]);
     }
@@ -1566,6 +1570,13 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     // else {
     //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
     // }
+  }
+
+  btmspace_opn(){
+    document.getElementById("btm-space").classList.remove("d-none");
+  }
+  close_space(){
+    document.getElementById("btm-space").classList.add("d-none");
   }
 
 }
