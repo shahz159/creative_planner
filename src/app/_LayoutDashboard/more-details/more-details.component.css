@@ -35,6 +35,7 @@
   
   .subtask-list {
     display: flex;
+    flex-wrap: wrap;
     border-bottom: 1px solid #f1f1f1;
     padding: 10px;
     background-color: #fff;
@@ -612,20 +613,26 @@
   }
   .det-text.pro-nm {
     cursor: pointer;
-  }
-  /* Handle on hover */
-  
-  .cust-bd1::-webkit-scrollbar-thumb:hover {
+}
+/* Handle on hover */
+.lbl-act{
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+.cust-bd1::-webkit-scrollbar-thumb:hover {
     background: #009eb3;
-  }
-  @media (max-width: 1440px) {
-    .space-tabs {
-      left: 13%;
+}
+@media (max-width: 1440px) {
+    .space-tabs{
+        left: 8%;
     }
-  }
-  @media (max-width: 1300px) {
-    .space-tabs {
-      left: 11%;
+}
+@media (max-width: 1300px) {
+    .space-tabs{
+        left: 1%;
+    }
+    .space-tabs.nav-pills .nav-item {
+        margin-right: 0.1rem;
     }
   }
   @media (max-width: 1024px) {
@@ -1164,7 +1171,11 @@
     box-shadow: none;
     background-color: #fff;
   }
-  ::ng-deep .input-group-append .mat-icon-button {
+
+  .Replied_border_left_true_primary{
+    border-left: 5px solid #95bed9 !important;
+  }
+ ::ng-deep .input-group-append .mat-icon-button {
     height: 35px !important;
   }
   

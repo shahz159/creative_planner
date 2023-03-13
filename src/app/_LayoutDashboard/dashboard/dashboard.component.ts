@@ -28,7 +28,11 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
+import tippy from 'node_modules/tippy.js';
+
 import Swal from 'sweetalert2';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { empty } from 'rxjs';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -387,6 +391,8 @@ export class DashboardComponent implements OnInit {
   pro_edtime: any;
   Event_requests1: any = [];
   EventAction_type: number;
+  myFiles: string[] = [];
+  _lstMultipleFiales: any;
   // selectedCar: string;
 
   // cars = [
@@ -415,6 +421,8 @@ export class DashboardComponent implements OnInit {
     this._subname = false;
     this._subname1 = false;
     this.notificationDTO = new NotificationActivityDTO();
+    this._lstMultipleFiales = [];
+
   }
 
 
@@ -512,6 +520,26 @@ export class DashboardComponent implements OnInit {
     this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this.Event_requests();
+
+    // for tippys
+    tippy('#notification', {
+      content: "Notifications",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
+    tippy('#timelinelog', {
+      content: "Timeline log",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+    });
+
   }
 
   notificationDTO: NotificationActivityDTO;
@@ -524,6 +552,46 @@ export class DashboardComponent implements OnInit {
         this.notilength = (data[0]['notificationcount']);
         console.log(data, 'Notif');
       });
+  }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      var length = event.target.files.length;
+      for (let index = 0; index < length; index++) {
+        const file = event.target.files[index];
+        var contentType = file.type;
+        if (contentType === "application/pdf") {
+          contentType = ".pdf";
+        }
+        else if (contentType === "image/png") {
+          contentType = ".png";
+        }
+        else if (contentType === "image/jpeg") {
+          contentType = ".jpeg";
+        }
+        else if (contentType === "image/jpg") {
+          contentType = ".jpg";
+        }
+
+        this.myFiles.push(event.target.files[index].name);
+        // alert(this.myFiles.length);
+        console.log(this.myFiles, "attach")
+        //_lstMultipleFiales
+        var d = new Date().valueOf();
+        this._lstMultipleFiales = [...this._lstMultipleFiales, {
+          UniqueId: d,
+          FileName: event.target.files[index].name,
+          Size: event.target.files[index].size,
+          Files: event.target.files[index]
+        }];
+      }
+    }
+    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  }
+
+  RemoveSelectedFile(_id) {
+    var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
+    this._lstMultipleFiales.splice(removeIndex, 1);
   }
 
   closeevearea() {
@@ -703,14 +771,17 @@ export class DashboardComponent implements OnInit {
         this.Status1 = this.EventScheduledjson[0].Status;
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be')) {
-          document.getElementById("hiddenedit").style.display = "block";
-          document.getElementById("deleteendit").style.display = "block";
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
+
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "block";
-          document.getElementById("main-foot").style.display = "block";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
 
         }
 
@@ -828,29 +899,218 @@ export class DashboardComponent implements OnInit {
   arr1: any = [];
   arr2: any = [];
   editTask: boolean = false;
+  copyTask: boolean = false;
   _FutureEventTasksCount: number = 0;
   _AllEventTasksCount: number = 0;
   _OldRecurranceId: string;
   _OldRecurranceValues: string;
   _Oldstart_date: string;
+  _OldEnd_date: string;
+  _PopupConfirmedValue: number;
 
-  Customize() {
+  // Customize() {
 
-    document.getElementById("Monthly_121").style.display = "none";
-    document.getElementById("weekly_121").style.display = "none";
-    document.getElementById("div_recurrence").style.display = "block";
+  //   document.getElementById("Monthly_121").style.display = "none";
+  //   document.getElementById("weekly_121").style.display = "none";
+  //   document.getElementById("div_recurrence").style.display = "block";
+  //   document.getElementById("div_endDate").style.display = "block";
+  //   this._labelName = "Start Date :";
+  //   if (this.selectedrecuvalue == "2") {
+  //     document.getElementById("weekly_121").style.display = "block";
+  //   }
+  //   else if (this.selectedrecuvalue == "3") {
+  //     document.getElementById("Monthly_121").style.display = "block";
+  //   }
+  // }
+  DublicateTaskandEvent() {
     document.getElementById("div_endDate").style.display = "block";
-    this._labelName = "Start Date :";
-    if (this.selectedrecuvalue == "2") {
-      document.getElementById("weekly_121").style.display = "block";
-    }
-    else if (this.selectedrecuvalue == "3") {
-      document.getElementById("Monthly_121").style.display = "block";
-    }
+    this.copyTask = true;
+    this.Schedule_ID = this._calenderDto.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        console.log(this.EventScheduledjson, "test")
+        this.Schedule_ID = 0;
+        this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
+        this.Startts = (this.EventScheduledjson[0]['St_Time']);
+        this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+        this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
+        this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+
+
+
+        if (this._FutureEventTasksCount > 0) {
+          // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+          // radio1.disabled = false;
+          // radio1.checked = true;
+
+          // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+          // radio2.disabled = false;
+          // radio2.checked = false;
+
+          // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+          // radio3.disabled = false;
+          // radio3.checked = false;
+
+          // this._PopupConfirmedValue = 1;
+        }
+        else if (this._FutureEventTasksCount == 0) {
+          // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+          // radio1.disabled = false;
+          // radio1.checked = true;
+
+          // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+          // radio2.disabled = true;
+          // radio2.checked = false;
+
+          // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+          // radio3.disabled = true;
+          // radio3.checked = false;
+
+          // this._PopupConfirmedValue = 1;
+        }
+        document.getElementById("div_recurrence").style.display = "block";
+        document.getElementById("Monthly_121").style.display = "none";
+        document.getElementById("weekly_121").style.display = "none";
+        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+        document.getElementById("rightbar-overlay").style.display = "block";
+        document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+        this.AllDatesSDandED = [];
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = "NA";
+        var DayNum = "DayNum";
+        jsonData[DayNum] = "NA";
+        this.AllDatesSDandED.push(jsonData);
+        this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
+        this.minDate = this.EventScheduledjson[0]['Schedule_date'];
+        this._EndDate = this.EventScheduledjson[0]['End_date'];
+        this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
+        this.maxDate = this.EventScheduledjson[0]['End_date'];
+
+        if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
+          this.selectedrecuvalue = '0';
+          this._labelName = "Schedule Date :";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "none";
+        }
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
+          this.selectedrecuvalue = '1';
+          this._labelName = "Schedule Date :";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "none";
+        }
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+          this._labelName = "Schedule Date :";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "block";
+          document.getElementById("weekly_121").style.display = "block";
+          this.selectedrecuvalue = '2';
+          let Recc = [];
+          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+          Recc = ret1.split(",");
+
+          for (var i = 0; i < Recc.length; i++) {
+            this.dayArr.forEach(element => {
+              if (element.value == Recc[i]) {
+                element.checked = true;
+              }
+            });
+          }
+        }
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+          document.getElementById("Recurrence_hide").style.display = "block";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Monthly_121").style.display = "block";
+          this._labelName = "Schedule Date :";
+          this.selectedrecuvalue = '3';
+          let Recc = [];
+          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+          Recc = ret1.split(",");
+          for (var i = 0; i < Recc.length; i++) {
+            this.MonthArr.forEach(element => {
+              if (element.value == Recc[i]) {
+                element.checked = true;
+              }
+            });
+          }
+        }
+        if (this.ScheduleType == 'Task') {
+          this.EventScheduledjson[0]['Ed_Time']
+          this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+          this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.MasterCode = (this.MasterCode[0].stringval);
+
+          document.getElementById("subtaskid").style.display = "block";
+          // document.getElementById("Link_Name").style.display = "none";
+          document.getElementById("Guest_Name").style.display = "none";
+          document.getElementById("Location_Name").style.display = "none";
+          document.getElementById("Descrip_Name").style.display = "none";
+          document.getElementById("core_viw123").style.display = "block";
+          document.getElementById("core_viw121").style.display = "none";
+          document.getElementById("core_viw222").style.display = "none";
+          document.getElementById("core_Dms").style.display = "none";
+          // document.getElementById("Monthly_121").style.display = "none";
+          // document.getElementById("weekly_121").style.display = "none";
+
+        }
+        else if (this.ScheduleType == 'Event') {
+          this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+          this.MasterCode = [];
+          this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.arr.forEach(element => {
+            this.MasterCode.push(element.stringval);
+          });
+          this.Portfolio = [];
+          this.Portfolio1 = [];
+          this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
+          this.arr1.forEach(element => {
+            this.Portfolio.push(element.numberval);
+          });
+
+          this.ngEmployeeDropdown = [];
+          this.ngEmployeeDropdown1 = [];
+          this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+          this.arr2.forEach(element => {
+            this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+          });
+          this.SelectDms = [];
+          this.SelectDms1 = [];
+          let arr3 = [];
+          var str = (this.EventScheduledjson[0]['DMS_Name']);
+          arr3 = str.split(",");
+          for (var i = 0; i < arr3.length; i++) {
+            this.Memos_List.forEach(element => {
+              if (element.MailId == arr3[i]) {
+                this.SelectDms.push(element.MailId);
+              }
+            });
+          }
+          this.Location_Type = (this.EventScheduledjson[0]['Location']);
+          this.Description_Type = (this.EventScheduledjson[0]['Description']);
+          document.getElementById("subtaskid").style.display = "none";
+          document.getElementById("Guest_Name").style.display = "block";
+          document.getElementById("Location_Name").style.display = "block";
+          document.getElementById("Descrip_Name").style.display = "block";
+          document.getElementById("core_viw121").style.display = "block";
+          document.getElementById("core_viw123").style.display = "none";
+          document.getElementById("core_viw222").style.display = "block";
+          document.getElementById("core_Dms").style.display = "block";
+        }
+      });
+    this.closeevearea();
   }
 
   ReshudingTaskandEvent() {
-    document.getElementById("div_endDate").style.display = "none";
+    document.getElementById("div_endDate").style.display = "block";
     this.editTask = true;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -899,7 +1159,7 @@ export class DashboardComponent implements OnInit {
 
           // this._PopupConfirmedValue = 1;
         }
-        document.getElementById("div_recurrence").style.display = "none";
+        document.getElementById("div_recurrence").style.display = "block";
         document.getElementById("Monthly_121").style.display = "none";
         document.getElementById("weekly_121").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
@@ -920,24 +1180,26 @@ export class DashboardComponent implements OnInit {
         this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
         this.minDate = this.EventScheduledjson[0]['Schedule_date'];
         this._EndDate = this.EventScheduledjson[0]['End_date'];
+        this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
-          document.getElementById("div_endDate").style.display = "none";
+          // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
           this.selectedrecuvalue = '1';
           this._labelName = "Schedule Date :";
-          document.getElementById("div_endDate").style.display = "none";
+          // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date :";
-          document.getElementById("div_endDate").style.display = "none";
+          // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "block";
+          document.getElementById("weekly_121").style.display = "block";
           this.selectedrecuvalue = '2';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
@@ -953,7 +1215,8 @@ export class DashboardComponent implements OnInit {
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
           document.getElementById("Recurrence_hide").style.display = "block";
-          document.getElementById("div_endDate").style.display = "none";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Monthly_121").style.display = "block";
           this._labelName = "Schedule Date :";
           this.selectedrecuvalue = '3';
           let Recc = [];
@@ -1065,6 +1328,7 @@ export class DashboardComponent implements OnInit {
       this.Endtms = (parseInt(_shr) + 1).toString() + ':30';
     }
   }
+  progress: number = 0;
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -1199,9 +1463,58 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
+
+      let _attachmentValue = 0;
+      const frmData = new FormData();
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+      }
+      if (this._lstMultipleFiales.length > 0)
+        _attachmentValue = 1;
+      else
+        _attachmentValue = 0;
+
+      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+
       console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+          if(_attachmentValue==1){
+            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+              (event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${this.progress}%`);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('User successfully created!', event.body);
+
+                    (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    this._lstMultipleFiales = [];
+                    empty(this._lstMultipleFiales);
+                    
+                    setTimeout(() => {
+                      this.progress = 0;
+                    }, 1500);
+
+                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                }
+              }
+            )
+          }
+          //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
@@ -1408,6 +1721,11 @@ export class DashboardComponent implements OnInit {
       }
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this._OldRecurranceId == this.selectedrecuvalue) {
+        if (this._OldEnd_date != this._EndDate) {
+          this._calenderDto.flagid = 3;
+        }
+      }
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -1465,7 +1783,7 @@ export class DashboardComponent implements OnInit {
       alert('Please Select Valid Date and Time');
     }
   }
-  _PopupConfirmedValue: number;
+
   viewconfirm() {
 
     const _arraytext = [];
@@ -1538,9 +1856,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("div_recurrence").style.display = "none";
+    document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
-    document.getElementById("div_endDate").style.display = "none";
+    document.getElementById("div_endDate").style.display = "block";
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
 
@@ -1553,6 +1871,7 @@ export class DashboardComponent implements OnInit {
     this._subname = false;
     this.Note_deadlineexpire = false;
     this.editTask = false;
+    this.copyTask = false;
     if (value == 1) {
       this.ScheduleType = "Task";
       document.getElementById("subtaskid").style.display = "block";
@@ -1640,14 +1959,14 @@ export class DashboardComponent implements OnInit {
 
     });
     if (MasterCode != undefined) {
-      
+
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
         ((data) => {
           // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
-        this._subname = false;
+      this._subname = false;
       this.ProjectListArray.forEach(element => {
         if (element.Project_Code == MasterCode) {
           this._Exec_BlockName = element.Exec_BlockName;
@@ -1942,7 +2261,7 @@ export class DashboardComponent implements OnInit {
     });
     // this.Startts = this.Startts;
     let _index = this.StartTimearr.indexOf(this.Startts);
-    this.EndTimearr = this.Alltimes.splice(_index + 1);
+    this.EndTimearr = this.Alltimes.splice(_index + 12);
     // this.Startts = TSStart;
     this.Endtms = this.EndTimearr[0];
 
@@ -2212,7 +2531,7 @@ export class DashboardComponent implements OnInit {
     if (val.value == 0) {
       this._labelName = "Schedule Date :";
       document.getElementById("Monthly_121").style.display = "none";
-      document.getElementById("div_endDate").style.display = "none";
+      document.getElementById("div_endDate").style.display = "block";
       this.daysSelectedII = [];
       this.daysSelected = [];
       this.singleselectarry = [];
@@ -2473,7 +2792,7 @@ export class DashboardComponent implements OnInit {
   dmsIdjson: any = [];
 
   GetClickEventJSON_Calender(arg) {
-   
+
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
@@ -2495,24 +2814,28 @@ export class DashboardComponent implements OnInit {
         console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "block";
-          document.getElementById("deleteendit").style.display = "block";
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "block";
-          document.getElementById("main-foot").style.display = "block";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
-          document.getElementById("hiddenedit").style.display = "block";
-          document.getElementById("deleteendit").style.display = "block";
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "none";
-          document.getElementById("main-foot").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
@@ -3269,5 +3592,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("ft_body").classList.toggle("go-up");
     document.getElementById("secfootr").classList.toggle("opend");
     document.getElementById("main-foot").classList.toggle("overflow-hidden");
+  }
+
+  notinAction() {
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 }

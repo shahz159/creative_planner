@@ -17,6 +17,7 @@ import { ParameterService } from "src/app/_Services/parameter.service";
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import tippy from 'node_modules/tippy.js';
 
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -49,6 +50,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    
   }
 
   _subtaskDiv: boolean;
@@ -65,6 +67,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Current_user_ID = localStorage.getItem('EmpNo');
+   
     // this.GetApplicationDetails();
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
