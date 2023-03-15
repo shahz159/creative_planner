@@ -1186,3 +1186,6 @@ svg.feather {
 button[disabled] {
     cursor: not-allowed;
   }
+.dropzone-delete {
+    float: right;
+}

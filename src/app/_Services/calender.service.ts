@@ -74,6 +74,16 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
   }
+
+  UploadCalendarAttachmenst(data) {
+    return this.http.post(this.rootUrl + "TestAPI/NewAddCalendarAttachment", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
   NewUpdateCalender(obj: CalenderDTO){
     
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
