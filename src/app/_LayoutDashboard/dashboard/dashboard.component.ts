@@ -29,7 +29,6 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import tippy from 'node_modules/tippy.js';
-
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { empty } from 'rxjs';
@@ -393,6 +392,8 @@ export class DashboardComponent implements OnInit {
   EventAction_type: number;
   myFiles: string[] = [];
   _lstMultipleFiales: any;
+  ObjSubTaskDTO: SubTaskDTO;
+
   // selectedCar: string;
 
   // cars = [
@@ -414,7 +415,7 @@ export class DashboardComponent implements OnInit {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this._calenderDto = new CalenderDTO;
-
+    this.ObjSubTaskDTO = new SubTaskDTO();
     this.BlockNameProject1 = [];
     this.Timeslab = [];
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
@@ -427,7 +428,6 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
@@ -540,6 +540,23 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
+  }
+  timelineList:any;
+  today:any = new Date();
+  yesterday:any = new Date();
+  
+  testtimeline(){
+    // this.today = moment(new Date()).format("YYYY-MM-DD");
+    // this.yesterday.setDate(this.yesterday.getDate() - 1);
+    // this.yesterday = moment(this.yesterday).format("YYYY-MM-DD");
+
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 30;
+    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+    });
   }
 
   notificationDTO: NotificationActivityDTO;
