@@ -1588,6 +1588,9 @@ height: auto !important;
     min-width: 0;
     max-width: 80%;
 }
+.pro-name.pro-link{
+    color: #5867dd;
+}
 .header-date{
     color: #333;
 }
