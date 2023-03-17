@@ -992,7 +992,7 @@
                     <!-- Overview Section -->
                     <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
 
-                        <div class="row">
+                        <div class="row scrollbar1">
                             <div class="col-lg-12">
                                 <ul class="nav nav-pills px-3" id="myTab1" role="tablist">
                                     <li class="nav-item">
@@ -2002,7 +2002,7 @@
                     <!--  DMS Working Area -->
 
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1" >
-                        <div class="bg-white p-3 mb-2">
+                        <div class="bg-white p-3 mb-2 scrollbar1">
                             <div>
                                 <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
                                     <i class="fa fa-chart-bar"></i>Link DMS
@@ -2051,7 +2051,7 @@
                                 <p style="color:gray">{{_MemosNotFound}}</p>
                             </table> -->
                             
-                            <div class="kt-inbox mt-3">
+                            <div class="kt-inbox mt-3 scrollbar1">
                                 <div class="kt-inbox__list kt-inbox__list--shown ml-0" >
                                     <div class="kt-inbox__items flex-grow-1" data-type="inbox">
                                         <div  class="card mb-3 brdr-5 shadow-sm" 
@@ -2127,7 +2127,7 @@
                         <!-- </div>
                             </div>
                         </div> -->
-                        <div class="row" *ngIf="ProjectBlock=='003' else others">
+                        <div class="row scrollbar1" *ngIf="ProjectBlock=='003' else others">
                             <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
                                 <div class="kt-portlet mb-2">
                                     <div class="kt-portlet__body">
@@ -2159,7 +2159,7 @@
                             </div>
                         </div>
                         <ng-template #others>
-                            <div class="row">
+                            <div class="row scrollbar1">
                                 <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
                                     <div class="kt-portlet mb-2">
                                         <div class="kt-portlet__body">
@@ -2299,7 +2299,7 @@
                     <!-- Comments Section -->
                     <div class="tab-pane fade" id="Comments" role="tabpanel" aria-labelledby="Comments1">
                         <div class="card cust-card py-3">
-                            <div class="comments-list">
+                            <div class="comments-list scrollbar1">
                                 <div class="card-body p-0 cust-bd1">
                                     <ul class="commentul pr-2 px-0 pl-0">
                                         <ng-container *ngFor="let item of _CommentsList">
