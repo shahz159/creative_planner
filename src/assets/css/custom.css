@@ -153,8 +153,13 @@ th {
 .kt-aside-menu,
 .kt-aside__brand {
     background-color: #2b3643;
+    background: rgb(255,255,255);
+    background-color: #0b0f1f;
 }
-
+.kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__heading .kt-menu__link-icon,
+.kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active .kt-menu__link-icon {
+    color: #fff;
+}
 .kt-aside__brand {
     padding: 0 5px;
 }

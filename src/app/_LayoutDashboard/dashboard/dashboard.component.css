@@ -1588,6 +1588,9 @@ height: auto !important;
     min-width: 0;
     max-width: 80%;
 }
+.pro-name.pro-link{
+    color: #5867dd;
+}
 .header-date{
     color: #333;
 }
@@ -1608,7 +1611,14 @@ height: auto !important;
     display: flex;
     align-items: flex-start;
 }
-
+.timeline .timeline-item {
+    background: #ffff;
+    box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%);
+    margin-bottom: 1.5rem;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgb(111 107 107 / 8%) 0px 0px 0px 1px;
+}
 .timeline .timeline-line {
     display: block;
     content: " ";
@@ -1704,7 +1714,7 @@ height: auto !important;
 .timeline .timeline-content {
     width: 100%;
     overflow: auto;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
 }
 .timeline-text{
     color: #333;

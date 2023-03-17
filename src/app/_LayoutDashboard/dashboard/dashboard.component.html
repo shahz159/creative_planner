@@ -1581,7 +1581,7 @@
                     <!-- <span class="header-text header-date d-none">
                         14, March 2023
                     </span> -->
-                    <a  href="javascript:void(0)" class="pro-name" (click)="moreDetails(item.project_code)">
+                    <a  href="javascript:void(0)" class="pro-name pro-link" (click)="moreDetails(item.project_code)">
                         <span class="header-text" data-toggle="tooltip" title="click to open">{{item.ProjectName | titlecase}}</span>
                     </a>
                 </div>
@@ -1609,7 +1609,7 @@
                             
                             <div class="timeline-text fs-6">
                                 {{item.EmpName}}
-                                <span class="desp-txt fs-7">Logged</span>{{item.Duration}} hrs
+                                <span class="desp-txt fs-7">Logged</span> '{{item.Duration}} hrs' 
                                 <span class="ml-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
@@ -1622,8 +1622,8 @@
                                 <span class="desp-txt fs-7">Project</span> <a class="pro-link" href="javascript:void(0)">Stream Application(creative Planner) Development</a>
                             </div> -->
                             <div class="timeline-text fs-6" *ngIf="item.ActionName"><span class="desp-txt fs-7">Action</span>{{item.ActionName | titlecase}}</div>
-                            <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7">Achievement</span>{{item.WorkAchieved}}</div>
-                            <div class="timeline-text fs-6"><span class="desp-txt fs-7">Achieved Date</span>{{item.date | date:'dd-MM-yyyy'}}</div>
+                            <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item.date | date:'dd-MM-yyyy'}}</div>
+                            <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7 d-none">Achievement</span>{{item.WorkAchieved}}</div>
                         </div>
                     </div>
                     <!--end::Timeline content-->
