@@ -5,3 +5,6 @@
 .kt-aside--minimize .kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active>.kt-menu__link-icon {
     color: #5867dd !important;
 }
+.side-btn {
+    position: relative;
+}

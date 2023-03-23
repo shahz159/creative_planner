@@ -175,6 +175,14 @@ export class SidebarComponent implements OnInit {
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
+
+  
+  menutoggle(){    
+    document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
+    document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
+  }
+
+
   // }
   // ngOnDestroy(){
   //   this.logout();

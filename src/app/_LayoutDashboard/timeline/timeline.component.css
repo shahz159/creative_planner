@@ -395,6 +395,12 @@ a.ordr-a {
     background-color: #f5f7fa;
     border: 1px solid #e1e6ee;
 }
+.select-box{
+  cursor: pointer;
+}
+a.dropdown-item{
+  cursor: pointer;
+}
 @media Screen and (min-width: 1025px) {
 
 .kt-quick-panel--on{
