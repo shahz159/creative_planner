@@ -1200,7 +1200,7 @@ button[disabled] {
 .btn-mini{
     position: absolute;
     left: 100%;
-    bottom: 150px;
+    bottom: 120px;
     background-color: #242736;
     color: #eeeeee;
     height: 24px;

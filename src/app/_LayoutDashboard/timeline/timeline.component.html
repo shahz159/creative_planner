@@ -16,6 +16,33 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center mr-2">
+                            
+                            <div class="mr-3">
+                                <!-- <ng-container *ngIf="CurrentPageNo==1">
+                                    {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                                </ng-container>
+                                <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                                    {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                    CurrentPageNo}}
+                                </ng-container>
+                                <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                                    {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                                </ng-container> -->
+                                1 to 30 
+                                of
+                                <span>5</span>
+                            </div>
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" >
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                        </div>
+
+
                         <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

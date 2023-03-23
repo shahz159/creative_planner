@@ -40,6 +40,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#performance', {
       content: "Performance Dashboard",
@@ -48,6 +49,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#Portfolio', {
       content: "Portfolios",
@@ -56,6 +58,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#summary', {
       content: "Project Summary",
@@ -64,6 +67,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#timeline', {
       content: "Timeline",
@@ -72,6 +76,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#todo', {
       content: "ToDo Projects",
@@ -80,6 +85,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#assign', {
       content: "Assign Projects",
@@ -88,6 +94,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#runway', {
       content: "Runway tasks",
@@ -96,6 +103,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#settins', {
       content: "Settings",
@@ -104,6 +112,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#logout', {
       content: "Logout",
@@ -112,6 +121,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
     tippy('#creative', {
       content: "Creative Planner",
@@ -120,6 +130,7 @@ export class SidebarComponent implements OnInit {
       theme: 'gradient',
       animateFill: true,
       inertia: true,
+      placement:'right'
     });
 
   }
