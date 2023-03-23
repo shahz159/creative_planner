@@ -1,14 +1,44 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="timepage">
 
     <div class="row">
         <div class="col-lg-12">
             <!--begin:: Widgets/Authors Profit-->
             <div class="kt-portlet kt-portlet--bordered-semi">
-                <div class="kt-portlet__head">
+                <div class="kt-portlet__head align-items-center">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title cursor-pointer">
                             Timeline Logs
                         </h3>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown">
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                            id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                </svg>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                  </svg>
+                                  <a class="ordr-a" href="javascritp:void(0)">Date</a>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
+                                <span class="sort-by">Sort by</span>
+                                <a class="dropdown-item" href="#">Date</a>
+                                <a class="dropdown-item active" href="#">
+                                    Project
+                                    <span>
+                                        <a class="sort-a" href="javascritp:void(0)">(desc)</a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <a class="dropdown-item" href="#">User</a>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-info btn-sm btn-fw" (click)="darcreate()"> Create Timeline </button>
                     </div>
                 </div>
             </div>
@@ -16,8 +46,160 @@
             <div class="kt-portlet portlet-height">
                 <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
                     <div class="mt-3">
-            
-                        <div class="timeline">
+                        
+                        <div>
+                            <div class="item-b  ribbon-content scrollbar1">
+                                <div class="mt-3">
+                                    <div class="">
+                                        <h4 class="header-date p-0">
+                                            Friday, March 10, 2032
+                                        </h4>
+                                    </div>
+                                    <div class="">
+                                        <table class="time-table mb-1">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50px;">S.No.</th>
+                                                    <th style="width: 280px;">Employee</th>
+                                                    <th style="width: 280px;">
+                                                        Action Name</th>
+                                                    <th>Achievement</th>
+                                                    <th style="width: 80px;">Start</th>
+                                                    <th style="width: 80px;">End</th>
+                                                    <th style="width: 80px;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">VM
+                                                            </div>
+                                                            <span class="user--name">Venkata Maharshi</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Notifications And Timeline Activity Modules In Dashboard Page
+                                                    </td>
+                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
+                                                    <td>13:30</td>
+                                                    <td>15:00</td>
+                                                    <td>01:30 Hrs</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">VM
+                                                            </div>
+                                                            <span class="user--name">Venkata Maharshi</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Notifications And Timeline Activity Modules In Dashboard Page
+                                                    </td>
+                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
+                                                    <td>13:30</td>
+                                                    <td>15:00</td>
+                                                    <td>01:30 Hrs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                       
+                                    </div>
+
+                                    <div class="time-totals mb-3">
+                                        <div class="">
+                                            <ul class="time-totals-list">
+                                                <li class="totals-list--item">
+                                                    <span><strong>Total Hours: </strong></span>
+                                                    <span>01::30 Hrs</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="">
+                                        <h4 class="header-date p-0">
+                                            Thursday, March 9, 2032
+                                        </h4>
+                                    </div>
+                                    <div class="">
+                                        <table class="time-table mb-1">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50px;">S.No.</th>
+                                                    <th style="width: 280px;">Employee</th>
+                                                    <th style="width: 280px;">
+                                                        Action Name</th>
+                                                    <th>Achievement</th>
+                                                    <th style="width: 80px;">Start</th>
+                                                    <th style="width: 80px;">End</th>
+                                                    <th style="width: 80px;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">VM
+                                                            </div>
+                                                            <span class="user--name">Venkata Maharshi</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Notifications And Timeline Activity Modules In Dashboard Page
+                                                    </td>
+                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
+                                                    <td>13:30</td>
+                                                    <td>15:00</td>
+                                                    <td>01:30 Hrs</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">VM
+                                                            </div>
+                                                            <span class="user--name">Venkata Maharshi</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Notifications And Timeline Activity Modules In Dashboard Page
+                                                    </td>
+                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
+                                                    <td>13:30</td>
+                                                    <td>15:00</td>
+                                                    <td>01:30 Hrs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                       
+                                    </div>
+
+                                    <div class="time-totals mb-3">
+                                        <div class="">
+                                            <ul class="time-totals-list">
+                                                <li class="totals-list--item">
+                                                    <span><strong>Total Hours: </strong></span>
+                                                    <span>01::30 Hrs</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align:center"> <button class="btn btn-info loadMore">
+                                        Load More!</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="timeline d-none">
                             <div class="timeline-header sticky-header">
                                 <span class="header-text header-date d-none">
                                     14, March 2023
@@ -147,4 +329,69 @@
             </div>
         </div>
     </div>
-<div>
+</div>
+
+
+
+<div id="darsidebar" class="sideInfobar animate-right">
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i>Timeline Submission</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closedarBar()">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+    <div class="px-4 pt-2">
+
+        <div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+                <label>Action <span class="text-danger">*</span></label>
+                <select class="form-control"  name="action" placeholder="Select Action">
+                    <option>Select</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Work Description<span class="text-danger">*</span></label>
+                <textarea type="text" name="work" class="form-control h-100px"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Date<span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="date" id="d-date" required  placeholder="Select Date" class="form-control"
+                        name="date">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-1">
+                <div class="form-group w-100">
+                    <label>Start Time<span class="text-danger">*</span></label>
+                    <select class="form-control"  name="action" placeholder="Start Time">
+                        <option>Select</option>
+                    </select>
+                </div>
+
+                <div class="form-group w-100">
+                    <label>End Time<span class="text-danger">*</span></label>
+                    <select class="form-control"  name="action" placeholder="Start Time">
+                        <option>Select</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    Submit</button>
+                <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+                <button type="submit" class="btn btn-secondary ml-2">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
