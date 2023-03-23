@@ -32,6 +32,9 @@
     min-width: 0;
     max-width: 80%;
 }
+.pro-name.pro-link{
+    color: #5867dd;
+}
 .header-date{
     color: #333;
 }
@@ -177,3 +180,8 @@
     color: #64697d;
     color: #848c93;
 }
+.d-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }

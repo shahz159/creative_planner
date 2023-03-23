@@ -531,7 +531,6 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewDARDetailsByMasterCode", this.ObjSubTaskDTO);
   }
 
-
   _GetTimelineActivity(obj: SubTaskDTO) {
     // let EmpNo = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
@@ -540,6 +539,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivity", this.ObjSubTaskDTO);
   }
 
+  _GetTimelineActivityforRACIS(obj: SubTaskDTO) {
+    // let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
+    this.ObjSubTaskDTO.PageSize = obj.PageSize;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivityforRACIS", this.ObjSubTaskDTO);
+  }
+
+  _GetTimelineDurationforRACIS(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
+  }
 
   autoRefresh(interval: number): Observable<any> {
     return new Observable<any>(observer => {

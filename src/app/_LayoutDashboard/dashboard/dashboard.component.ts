@@ -544,8 +544,9 @@ export class DashboardComponent implements OnInit {
   timelineList:any;
   today:any = new Date();
   yesterday:any = new Date();
+  timelineDuration:any;
   
-  testtimeline(){
+  timelineLog(){
     // this.today = moment(new Date()).format("YYYY-MM-DD");
     // this.yesterday.setDate(this.yesterday.getDate() - 1);
     // this.yesterday = moment(this.yesterday).format("YYYY-MM-DD");
@@ -556,7 +557,26 @@ export class DashboardComponent implements OnInit {
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+      this.timelineDuration=(data[0]['TotalTime']);
     });
+  }
+
+  racisTimeline(){
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 30;
+    this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+    });
+    this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineDuration=(data[0]['TotalTime']);
+    });
+  }
+
+  viewTimeline(){
+     this.router.navigate(["../backend/Timeline"]);
   }
 
   notificationDTO: NotificationActivityDTO;
