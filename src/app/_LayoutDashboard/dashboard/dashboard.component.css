@@ -1789,3 +1789,13 @@ height: auto !important;
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
+
+button.btn-menu {
+    background: #fff;
+    padding: 0;
+    line-height: 1;
+    color: #0b0f1f;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none !important;
+}

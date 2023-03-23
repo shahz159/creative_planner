@@ -1196,6 +1196,12 @@ div#mat-select-0-panel{
 .kt-widget__title{
   width: 250px;
 }
+.select-box{
+  cursor: pointer;
+}
+a.dropdown-item{
+  cursor: pointer;
+}
 @media (max-width: 1440px){
   .kt-widget__title{
     width: 240px;
