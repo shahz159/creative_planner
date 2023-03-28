@@ -632,7 +632,6 @@ export class MoreDetailsComponent implements OnInit {
   etdata: any;
 
   getDarTime() {
-    debugger
     this.timedata = [];
     this.timedata1 = ["08:00",
       "08:15", "08:30", "08:45", "09:00",
