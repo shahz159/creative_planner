@@ -1799,3 +1799,35 @@ button.btn-menu {
     outline: none;
     box-shadow: none !important;
 }
+.loadmre {
+    position: fixed;
+    bottom: 5px;
+    text-align: center;
+    right: 20%;
+}
+.cls-float {
+    transition: transform .2s cubic-bezier(.785,.135,.15,.86) 0s;
+    position: absolute;
+    top: 10px;
+    left: -45px;
+    width: 36px;
+    height: 36px;
+    padding: 11px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    box-shadow: 0 1px 15px #00000012;
+    stroke: #979797;
+    cursor: pointer;
+    z-index: 999999;
+    right: 0;
+    margin: 0;
+    display: none;
+}
+.overflow-visible {
+    overflow: visible !important;
+}
+.open_sidebar .cls-float {
+    display: inline-flex;
+}
