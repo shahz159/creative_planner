@@ -536,6 +536,8 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
+    this.ObjSubTaskDTO.sort = obj.sort;
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivity", this.ObjSubTaskDTO);
   }
 
@@ -544,6 +546,8 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
+    this.ObjSubTaskDTO.sort = obj.sort;
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivityforRACIS", this.ObjSubTaskDTO);
   }
 

@@ -8,18 +8,19 @@
                     <div class="kt-portlet__head-label">
                         <div class="dropdown">                            
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Timeline Logs
+                                {{Type}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item">Select</a>
+                                <a class="dropdown-item"  (click)="timelineLog(type1)">My Timeline</a>
+                                <a class="dropdown-item"  (click)="timelineLog1(type2)">RACIS Timeline</a>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center mr-2">
+                        <!-- <div class="d-flex align-items-center mr-2">
                             
                             <div class="mr-3">
-                                <!-- <ng-container *ngIf="CurrentPageNo==1">
+                                <ng-container *ngIf="CurrentPageNo==1">
                                     {{CurrentPageNo}} - {{_CurrentpageRecords}}
                                 </ng-container>
                                 <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
@@ -28,19 +29,20 @@
                                 </ng-container>
                                 <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
                                     {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
-                                </ng-container> -->
-                                1 to 30 
-                                of
-                                <span>5</span>
+                                </ng-container>
+                                <span>52</span>
                             </div>
-                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" >
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" 
+                                    (click)="CurrentPageNo = CurrentPageNo - 1;timelineLog(Type)" [disabled]="CurrentPageNo==1">
                                 <i class="fas fa-angle-left mr-0"></i>
                             </button>
 
-                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                                (click)="CurrentPageNo = CurrentPageNo + 1; timelineLog(Type)"
+                                    [disabled]="_CurrentpageRecords<30">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
-                        </div>
+                        </div> -->
 
 
                         <div class="dropdown">
@@ -53,38 +55,44 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
                                   </svg>
-                                  <a class="ordr-a" href="javascritp:void(0)">Date</a>
+                                  <a class="ordr-a" href="javascritp:void(0)">{{sortType}}</a>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
                                 <span class="sort-by">Sort by</span>
-                                <a class="dropdown-item" href="#">Date</a>
-                                <a class="dropdown-item active" href="#">
-                                    Project
-                                    <span>
+                                <a [ngClass]="activeDate? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort1)">Date
+                                    <span *ngIf="activeDate==true">
                                         <a class="sort-a" href="javascritp:void(0)">(desc)</a>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
                                             <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                                         </svg>
                                     </span>
                                 </a>
-                                <a class="dropdown-item" href="#">User</a>
+                                <a [ngClass]="activeProject? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort2)">
+                                    Project
+                                    <span *ngIf="activeProject==true">
+                                        <a class="sort-a" href="javascritp:void(0)">(desc)</a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <!-- <a class="dropdown-item" (click)="notinAction()">User</a> -->
                             </div>
                         </div>
                         <button type="button" class="btn btn-info btn-sm btn-fw" (click)="darcreate()"> Create Timeline </button>
                     </div>
                 </div>
             </div>
-            <!--begin::Portlet-->
-            <div class="kt-portlet portlet-height">
+            <!--begin::Portlet 1-->
+            <div class="kt-portlet portlet-height" *ngIf="sortType=='Date'">
                 <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
                     <div class="mt-3">
-                        
-                        <div>
+                        <div class="">
                             <div class="item-b  ribbon-content scrollbar1">
-                                <div class="mt-3">
-                                    <div class="">
-                                        <h4 class="header-date p-0">
-                                            Friday, March 10, 2032
+                                <div class="mt-3" *ngFor="let item of darArray;let i =index">
+                                    <div class="timeline-header sticky-header">
+                                        <h4 class="header-date p-0 ">
+                                            {{item.SubmissionDate | date: 'fullDate'}}
                                         </h4>
                                     </div>
                                     <div class="">
@@ -93,8 +101,7 @@
                                                 <tr>
                                                     <th style="width: 50px;">S.No.</th>
                                                     <th style="width: 280px;">Employee</th>
-                                                    <th style="width: 280px;">
-                                                        Action Name</th>
+                                                    <th style="width: 280px;">Project</th>
                                                     <th>Achievement</th>
                                                     <th style="width: 80px;">Start</th>
                                                     <th style="width: 80px;">End</th>
@@ -102,135 +109,55 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
+                                                <tr *ngFor="let item1 of item.Dardata;let j=index">
+                                                    <td>{{j+1}}</td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <div class="initial-box color-7 b-50 mr-2">VM
+                                                            <div class="initial-box color-7 b-50 mr-2">{{item1.Initial}}
                                                             </div>
-                                                            <span class="user--name">Venkata Maharshi</span>
+                                                            <span class="user--name">{{item1.EmpName}}</span>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        Notifications And Timeline Activity Modules In Dashboard Page
+                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
+                                                        <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
+                                                        <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
+                                                        <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype | titlecase}}</a>
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
                                                     </td>
-                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
-                                                    <td>13:30</td>
-                                                    <td>15:00</td>
-                                                    <td>01:30 Hrs</td>
-                                                </tr>
-                                                
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <div class="initial-box color-7 b-50 mr-2">VM
-                                                            </div>
-                                                            <span class="user--name">Venkata Maharshi</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        Notifications And Timeline Activity Modules In Dashboard Page
-                                                    </td>
-                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
-                                                    <td>13:30</td>
-                                                    <td>15:00</td>
-                                                    <td>01:30 Hrs</td>
+                                                    <td>{{item1.WorkAchieved}}</td>
+                                                    <td>{{item1.starttime}}</td>
+                                                    <td>{{item1.endtime}}</td>
+                                                    <td>{{item1.Duration}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>                                       
                                     </div>
-
                                     <div class="time-totals mb-3">
                                         <div class="">
                                             <ul class="time-totals-list">
                                                 <li class="totals-list--item">
                                                     <span><strong>Total Hours: </strong></span>
-                                                    <span>01::30 Hrs</span>
+                                                    <span>{{item.TotalDuration}} Hrs</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="mt-3">
-                                    <div class="">
-                                        <h4 class="header-date p-0">
-                                            Thursday, March 9, 2032
-                                        </h4>
-                                    </div>
-                                    <div class="">
-                                        <table class="time-table mb-1">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 50px;">S.No.</th>
-                                                    <th style="width: 280px;">Employee</th>
-                                                    <th style="width: 280px;">
-                                                        Action Name</th>
-                                                    <th>Achievement</th>
-                                                    <th style="width: 80px;">Start</th>
-                                                    <th style="width: 80px;">End</th>
-                                                    <th style="width: 80px;">Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <div class="initial-box color-7 b-50 mr-2">VM
-                                                            </div>
-                                                            <span class="user--name">Venkata Maharshi</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        Notifications And Timeline Activity Modules In Dashboard Page
-                                                    </td>
-                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
-                                                    <td>13:30</td>
-                                                    <td>15:00</td>
-                                                    <td>01:30 Hrs</td>
-                                                </tr>
-                                                
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <div class="initial-box color-7 b-50 mr-2">VM
-                                                            </div>
-                                                            <span class="user--name">Venkata Maharshi</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        Notifications And Timeline Activity Modules In Dashboard Page
-                                                    </td>
-                                                    <td>Rebinding done in notifications page for the responses from the users after clicking on more info icon.</td>
-                                                    <td>13:30</td>
-                                                    <td>15:00</td>
-                                                    <td>01:30 Hrs</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>                                       
-                                    </div>
-
-                                    <div class="time-totals mb-3">
-                                        <div class="">
-                                            <ul class="time-totals-list">
-                                                <li class="totals-list--item">
-                                                    <span><strong>Total Hours: </strong></span>
-                                                    <span>01::30 Hrs</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="text-align:center"> <button class="btn btn-info loadMore">
+                                <div style="text-align:center" *ngIf="Type=='My Timeline'">
+                                     <button class="btn btn-info loadMore"
+                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
+                                        [hidden]="_CurrentpageRecords<30">
                                         Load More!</button>
+                                </div>
+                                <div style="text-align:center" *ngIf="Type=='RACIS Timeline'">
+                                     <button class="btn btn-info loadMore"
+                                    (click)="CurrentPageNo = CurrentPageNo + 1; loadMore1()"
+                                   [hidden]="_CurrentpageRecords<30">
+                                   Load More!</button>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="timeline d-none">
                             <div class="timeline-header sticky-header">
                                 <span class="header-text header-date d-none">
@@ -359,6 +286,80 @@
                     </div>
                 </div>
             </div>
+            <!--begin::Portlet 2-->
+            <div class="kt-portlet portlet-height" *ngIf="sortType=='Project'">
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                    <div class="mt-3">
+                        <div class="">
+                            <div class="item-b  ribbon-content scrollbar1">
+                                <div class="mt-3" *ngFor="let item of darArray;let i =index">
+                                    <div class="timeline-header sticky-header">
+                                        <h4 class="header-date p-0 ">
+                                            <a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item.project_code)">{{item.ProjectName | titlecase}}</a>
+                                        </h4>
+                                    </div>
+                                    <div class="">
+                                        <table class="time-table mb-1">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50px;">S.No.</th>
+                                                    <th style="width: 280px;">Employee</th>
+                                                    <th style="width: 280px;">Achieved Date</th>
+                                                    <th>Achievement</th>
+                                                    <th style="width: 80px;">Start</th>
+                                                    <th style="width: 80px;">End</th>
+                                                    <th style="width: 80px;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item1 of item.Dardata;let j=index">
+                                                    <td>{{j+1}}</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">{{item1.Initial}}
+                                                            </div>
+                                                            <span class="user--name">{{item1.EmpName}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="timeline-text fs-6">{{item1.date | date:'fullDate'}}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName">
+                                                            <span class="desp-txt fs-7">Action</span><u>{{item1.ActionName | titlecase}}</u></div>
+                                                        {{item1.WorkAchieved}}
+                                                    </td>
+                                                    <td>{{item1.starttime}}</td>
+                                                    <td>{{item1.endtime}}</td>
+                                                    <td>{{item1.Duration}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                       
+                                    </div>
+                                    <div class="time-totals mb-3">
+                                        <div class="">
+                                            <ul class="time-totals-list">
+                                                <li class="totals-list--item">
+                                                    <span><strong>Total Hours: </strong></span>
+                                                    <span>{{item.TotalDuration}} Hrs</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="text-align:center">
+                                     <button class="btn btn-info loadMore"
+                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMorebySort()"
+                                        [hidden]="_CurrentpageRecords<30">
+                                        Load More!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Portlet 2-->
         </div>
     </div>
 </div>
@@ -377,6 +378,12 @@
     <div class="px-4 pt-2">
 
         <div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+                <label>Project <span class="text-danger">*</span></label>
+                <select class="form-control"  name="action" placeholder="Select Project">
+                    <option>Select</option>
+                </select>
+            </div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
                 <label>Action <span class="text-danger">*</span></label>
                 <select class="form-control"  name="action" placeholder="Select Action">
