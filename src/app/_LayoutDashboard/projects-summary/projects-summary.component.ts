@@ -327,13 +327,13 @@ export class ProjectsSummaryComponent implements OnInit {
   //Declarations//
   master_checked: boolean = false;
   checked: boolean = false;
-  CurrentPageNo: number = 1;
   _filtersMessage2: string;
   _filtersMessage: string;
   emptyspace:boolean = true;
   _ProjectDataList: any;
   ActualDataList: any;
   un_FilteredProjects: any = [];
+  CurrentPageNo: number = 1;
   public _CurrentpageRecords: number;
   _StatusCountDB: any;
   //Properties

@@ -1627,7 +1627,7 @@
                                 </span> in
                             </div>
                             <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
-                                <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item.project_code)">{{item1.ProjectName | titlecase}}</a>
+                                <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
                             </div>
                             <div class="timeline-text fs-6" *ngIf="item1.Tasktype=='Lunch'">
                                 <span class="desp-txt fs-7">Lunch</span>
