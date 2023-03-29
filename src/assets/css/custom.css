@@ -27,11 +27,11 @@ th {
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar-track {
-    background: #fff;
+    background: #f8f9ff;
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar-thumb {
