@@ -43,8 +43,8 @@
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
                         </div> -->
-
-                        <p>Total Achievement hours: {{timelineDuration}}</p>
+                        <div class="mr-2"><span>Total Achievement hours: {{timelineDuration}}</span></div>
+                        
                         <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
                                 id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,11 +84,11 @@
             </div>
             <!--begin::Portlet 1-->
             <div class="kt-portlet portlet-height" *ngIf="sortType=='Date'">
-                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                <div class="kt-portlet__body kt-portlet__body_scroll p-0">
                     <div class="mt-3">
                         <div class="">
-                            <div class="item-b  ribbon-content scrollbar1">
-                                <div class="mt-3" *ngFor="let item of darArray;let i =index">
+                            <div class="scrollbar1">
+                                <div class="px-4" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header">
                                         <h4 class="header-date p-0 ">
                                             {{item.SubmissionDate | date: 'fullDate'}}
