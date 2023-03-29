@@ -1565,80 +1565,101 @@
     <router-outlet></router-outlet>
 </div>
 
-<div id="actyInfobar" class="sideInfobar animate-right">
-    <div class="px-4 pt-4 pb-1 border-bottom">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="m-0">Timeline Log</h4>            
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
-                (click)="closeevearea2()">
-                <i class="fa fa-times"></i>
-            </a>
+<div id="actyInfobar" class="sideInfobar animate-right ">
+    <div class="kt-portlet mb-0">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
+                <h4 class="m-0">Timeline Log</h4>            
+                <a href="javascript:void(0)" class="btn btn-icon btn-hover-info"
+                    (click)="closeevearea2()">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/>
+                    </svg>                    
+                </a>
+            </div>
+        </div>        
+        <div class="tabs-header">
+            <ul id="time-tabs" role="tablist" class="nav nav-pills px-3 time-tabs mb-0 pt-2">
+                <li class="nav-item">
+                    <a id="mytime-1" data-toggle="tab" href="#mytime_1" class="nav-link active" (click)="timelineLog()">
+                        <span class="nav-text">My Timeline</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="racis-1" data-toggle="tab" href="#racis_1" class="nav-link" (click)="racisTimeline()">
+                        <span class="nav-text">RACIS Timeline</span>
+                    </a>
+                </li>
+            </ul>
+            <span class="timeli-hrs">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
         </div>
-        <div>
-            <button class="btn-primary" (click)="racisTimeline()"> RACIS timeline</button>&nbsp;
-            <a (click)="viewTimeline()">
-                View All
-            </a>&nbsp;
-            <span>Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>&nbsp;
-        </div>
-    </div>
-    <div class="px-4 pt-2">
-        <div class="mt-3">
-            <div class="timeline" *ngFor="let item of timelineList;let i=index">
-                <div class="timeline-header sticky-header">
-                    <span class="header-text header-date">
-                        {{item.SubmissionDate | date: 'fullDate'}}
-                    </span>
-                </div>
-                <div class="timeline-item" *ngFor="let item1 of item.Dardata">
-                    <div class="timeline-icon symbol symbol-circle symbol-40px">
-                        <div class="symbol-label kt-bg-light-primary">
-                            <span class="timeline-media">
-                                {{item1.Initial}}
+        <div class="kt-portlet__body kt-portlet__body_scroll p-0">
+            <div class="tab-content" id="time-tabbview">
+                <div class="tab-pane fade show active" id="mytime_1" role="tabpanel"
+                    aria-labelledby="mytime-1">                    
+                    <div class="timeline" *ngFor="let item of timelineList;let i=index">
+                        <div class="timeline-header sticky-header">
+                            <span class="header-text header-date">
+                                {{item.SubmissionDate | date: 'fullDate'}}
                             </span>
                         </div>
-                    </div>
-                    <!--end::Timeline icon-->
-                    <div class="timeline-content mb-10 mt-n2">
-                        <div class="overflow-auto pt-2 pr-3">
-                            <div class="timeline-text fs-6">
-                                {{item1.EmpName}}
-                                <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
-                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>  
-                                    {{item1.starttime}} - {{item1.endtime}}                              
-                                </span> in
+                        <div class="timeline-item mx-4" *ngFor="let item1 of item.Dardata">
+                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                <div class="symbol-label kt-bg-light-primary">
+                                    <span class="timeline-media">
+                                        {{item1.Initial}}
+                                    </span>
+                                </div>
                             </div>
-                            <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
-                                <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
+                            <!--end::Timeline icon-->
+                            <div class="timeline-content mb-10 mt-n2">
+                                <div class="overflow-auto pt-2 pr-3">
+                                    <div class="timeline-text fs-6">
+                                        {{item1.EmpName}}
+                                        <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
+                                        <span class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>  
+                                            {{item1.starttime}} - {{item1.endtime}}                              
+                                        </span> in
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.Tasktype=='Lunch'">
+                                        <span class="desp-txt fs-7">Lunch</span>
+                                    </div>
+                                    <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
+                                        <span class="desp-txt fs-7">Personal</span>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
+                                    <!-- <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item1.date | date:'dd-MM-yyyy'}}</div> -->
+                                    <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7 d-none">Achievement</span>{{item1.WorkAchieved}}</div>
+                                </div>
                             </div>
-                            <div class="timeline-text fs-6" *ngIf="item1.Tasktype=='Lunch'">
-                                <span class="desp-txt fs-7">Lunch</span>
-                            </div>
-                            <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
-                                <span class="desp-txt fs-7">Personal</span>
-                            </div>
-                            <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
-                                <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
-                            </div>
-                            <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
-                            <!-- <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item1.date | date:'dd-MM-yyyy'}}</div> -->
-                            <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7 d-none">Achievement</span>{{item1.WorkAchieved}}</div>
+                            <!--end::Timeline content-->
                         </div>
                     </div>
-                    <!--end::Timeline content-->
                 </div>
+                <!-- <div class="tab-pane fade" id="racis_1" role="tabpanel" aria-labelledby="racis_1">
+                    Racis
+                </div> -->
             </div>
-            <div class="loadmre">
-                    <button class="btn-info btn btn-sm" (click)="viewTimeline()">
-                        View All
-                    </button>
-            </div>
-
         </div>
+        <div class="kt-portlet__foot py-2">            
+            <div class="text-center">
+                <button class="btn-info btn btn-sm" (click)="viewTimeline()">
+                    View All
+                </button>
+        </div>
+        </div>
+
     </div>
 </div>
 

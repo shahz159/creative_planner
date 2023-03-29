@@ -1196,6 +1196,58 @@ div#mat-select-0-panel{
 .kt-widget__title{
   width: 250px;
 }
+.btn-fw{
+  font-weight: 500;
+}
+.asc-ar{
+  display: none;
+}
+.btn-sort{
+  color: #0b0e1f;
+  background-color: #fff;
+  border: 1px solid #eef1f6;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+}
+a.ordr-a {
+  font-size: 14px;
+  margin-left: 5px;
+  color: #0b0e1f;
+}
+.sort-by{
+  color: #999999;
+  font-size: 12px;
+  padding: 8px;
+
+}
+.sort-a{
+  text-decoration: underline;
+}
+.sort-drop{
+  padding: 0.8rem 0;
+  min-width: 12rem;
+  margin-top: 5px;
+}
+.sort-drop .dropdown-item{
+  padding: 0.4rem 1rem;
+}
+.sort-drop .active{
+  background: #f1f6fd;
+  color: #0b0e1f;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+.sort-drop .active .ckc-icn{
+  display: inline-block;
+  color: #3b93fc;
+}
+.btn-sort:hover, .btn-sort:focus, .btn-sort:active  {
+  color: #0b0e1f;
+  background-color: #f5f7fa;
+  border: 1px solid #e1e6ee;
+}
 .select-box{
   cursor: pointer;
 }

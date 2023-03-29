@@ -58,10 +58,10 @@
                                   <a class="ordr-a" href="javascritp:void(0)">{{sortType}}</a>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
-                                <span class="sort-by">Sort by</span>
+                                <span class="sort-by pb-2">Sort by</span>
                                 <a [ngClass]="activeDate? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort1)">Date
                                     <span *ngIf="activeDate==true">
-                                        <a class="sort-a" href="javascritp:void(0)">(desc)</a>
+                                        <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
                                             <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                                         </svg>
@@ -70,7 +70,6 @@
                                 <a [ngClass]="activeProject? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort2)">
                                     Project
                                     <span *ngIf="activeProject==true">
-                                        <a class="sort-a" href="javascritp:void(0)">(desc)</a>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
                                             <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                                         </svg>
