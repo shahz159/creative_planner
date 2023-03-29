@@ -3519,7 +3519,7 @@ export class MoreDetailsComponent implements OnInit {
     this.actionCode = null;
     this.workdes = "";
     this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-    // this.dateF=null;
+    this.dateF = new FormControl(new Date());
     this.starttime = null;
     this.endtime = null;
     this.starttimearr = [];

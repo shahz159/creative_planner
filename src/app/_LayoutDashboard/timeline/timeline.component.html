@@ -11,8 +11,8 @@
                                 {{Type}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item"  (click)="timelineLog(type1)">My Timeline</a>
-                                <a class="dropdown-item"  (click)="timelineLog1(type2)">RACIS Timeline</a>
+                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1)">{{type1}}</a>
+                                <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"   (click)="timelineLog1(type2)">{{type2}}</a>
                             </div>
                         </div>
                     </div>
@@ -44,10 +44,10 @@
                             </button>
                         </div> -->
 
-
+                        <p>Total Achievement hours: {{timelineDuration}}</p>
                         <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
-                            id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
                                 </svg>
@@ -379,26 +379,41 @@
 
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
-                <label>Project <span class="text-danger">*</span></label>
-                <select class="form-control"  name="action" placeholder="Select Project">
-                    <option>Select</option>
-                </select>
+                <label>Project Type<span class="text-danger">*</span></label>
+                <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType"
+                    [(ngModel)]="project_type" (change)="getTimelineProjects()">
+                    <ng-option value="core">Core/Secondary tasks</ng-option>
+                    <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
+                </ng-select>
             </div>
-            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showProject==true">
+                <label>Project <span class="text-danger">*</span></label>
+                <ng-select required #project="ngModel" name="project" placeholder="Select Project" id="projName"
+                    [(ngModel)]="master_code" (change)="getTimelineActions()">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of projectList">
+                        {{item.Project_Name | titlecase}}
+                    </ng-option>
+                </ng-select>
+            </div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true">
                 <label>Action <span class="text-danger">*</span></label>
-                <select class="form-control"  name="action" placeholder="Select Action">
-                    <option>Select</option>
-                </select>
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
+                    [(ngModel)]="project_code" >
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
+                        {{item.Project_Name | titlecase}}
+                    </ng-option>
+                </ng-select>
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>
-                <textarea type="text" name="work" class="form-control h-100px"></textarea>
+                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"></textarea>
             </div>
-
             <div class="form-group">
                 <label>Date<span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <input type="date" id="d-date" required  placeholder="Select Date" class="form-control"
+                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
+                        [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
+                        [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
                         name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -409,24 +424,37 @@
             <div class="d-flex gap-1">
                 <div class="form-group w-100">
                     <label>Start Time<span class="text-danger">*</span></label>
-                    <select class="form-control"  name="action" placeholder="Start Time">
-                        <option>Select</option>
-                    </select>
+                    <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                        [(ngModel)]="starttime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item!=lastEndtime && bol==false">
+                            <a>{{item}}</a>
+                        </ng-option>
+                    </ng-select>
                 </div>
-
                 <div class="form-group w-100">
                     <label>End Time<span class="text-danger">*</span></label>
-                    <select class="form-control"  name="action" placeholder="Start Time">
-                        <option>Select</option>
-                    </select>
+                    <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
+                        (click)="getDarTime()" [(ngModel)]="endtime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item<=lastEndtime">
+                            <a>{{item}}</a>
+                        </ng-option>
+                    </ng-select>
+                    <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
+                        time!!</span>
                 </div>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="showAction==true"
+                    [disabled]="!master_code || !project_code || !workdes || !starttime || !endtime || endtime < starttime">
                     Submit</button>
-                <button type="reset" class="btn btn-secondary ml-2">Reset</button>
-                <button type="submit" class="btn btn-secondary ml-2">Cancel</button>
+                <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="showAction==false"
+                    [disabled]=" !master_code ||  !workdes  || !starttime || !endtime || endtime < starttime">
+                    Submit</button>
+                <button type="reset" class="btn btn-secondary ml-2" (click)="clear()">Reset</button>
+                <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
         </div>
     </div>

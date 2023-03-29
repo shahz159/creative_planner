@@ -556,6 +556,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
   }
 
+  _GetTimelineProjects(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.ProjectBlock=obj.ProjectBlock;
+    this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
+
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineProjects", this.ObjSubTaskDTO);
+  }
+
   autoRefresh(interval: number): Observable<any> {
     return new Observable<any>(observer => {
       setInterval(() => {

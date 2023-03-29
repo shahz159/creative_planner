@@ -3198,7 +3198,7 @@
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==false"
                     [disabled]=" !workdes  || !starttime || !endtime || endtime < starttime">
                     Submit</button>
-                <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+                <button type="reset" class="btn btn-secondary ml-2"(click)="Clear_Feilds()">Reset</button>
                 <button type="submit" class="btn btn-secondary ml-2" (click)="closedarBar()">Cancel</button>
             </div>
         </div>
