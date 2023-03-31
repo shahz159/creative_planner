@@ -73,6 +73,7 @@ export class TimelineComponent implements OnInit {
   temp: any;
   _Message: any;
   timelineDuration:any;
+  showtimeline:boolean=true;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -88,6 +89,8 @@ export class TimelineComponent implements OnInit {
 
   timelineLog(type){
     this.Type=type;
+    this.showtimeline=true;
+
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
@@ -98,11 +101,17 @@ export class TimelineComponent implements OnInit {
         this.timelineDuration=(data[0]['TotalTime']);
         this.darArray=this.timelineList;
         this._CurrentpageRecords=this.timelineList.length;
+        if(this.timelineList[0]['Total'] == 0){
+          this.showtimeline=false;
+          this.timelineDuration=0;
+        }
       });
   }
 
   timelineLog1(type){
     this.Type=type;
+    this.showtimeline=true;
+
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
@@ -112,6 +121,9 @@ export class TimelineComponent implements OnInit {
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.darArray=this.timelineList;
         this._CurrentpageRecords=this.timelineList.length;
+        if(this.timelineList[0]['Total'] == 0){
+          this.showtimeline=false;
+        }
       });
       this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
       (data=>{
@@ -132,6 +144,8 @@ export class TimelineComponent implements OnInit {
     }
 
     if(this.Type=='My Timeline'){
+      this.showtimeline=true;
+
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
@@ -143,9 +157,15 @@ export class TimelineComponent implements OnInit {
           this.timelineDuration=(data[0]['TotalTime']);
           this.darArray=this.timelineList;
           this._CurrentpageRecords=this.timelineList.length;
+          if(this.timelineList[0]['Total'] == 0){
+            this.showtimeline=false;
+            this.timelineDuration=0;
+          }
         });
     }
     else if(this.Type=='RACIS Timeline'){
+      this.showtimeline=true;
+
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
@@ -156,6 +176,9 @@ export class TimelineComponent implements OnInit {
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.darArray=this.timelineList;
         this._CurrentpageRecords=this.timelineList.length;
+        if(this.timelineList[0]['Total'] == 0){
+          this.showtimeline=false;
+        }
       });
       this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
       (data=>{
