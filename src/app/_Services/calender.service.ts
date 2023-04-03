@@ -84,11 +84,21 @@ export class CalenderService {
       );
   }
 
+  EditUploadCalendarAttachmenst(data) {
+    return this.http.post(this.rootUrl + "TestAPI/NewAddNewfileCalendarDocuments", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
   NewUpdateCalender(obj: CalenderDTO){
     
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.flagid = obj.flagid;
+    this.obj_CalenderDTO.attachment= obj.attachment;
     return this.http.post(this.rootUrl + "TestAPI/NewupdateSchedule_Calender", this.obj_CalenderDTO);
   }
 

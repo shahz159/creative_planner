@@ -6,6 +6,7 @@ export class CalenderDTO {
     EmpNo:string;
     EventNumber:string;
     flagid:number;
+    attachment:string;
     Project_Code:string;
     minutes:number;
     StartTime:string;

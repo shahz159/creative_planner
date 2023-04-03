@@ -1716,3 +1716,21 @@ height: auto !important;
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
+.create-btm {
+    opacity: 1;
+    animation: kt-scrolltop-show-animation .4s ease-out 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 32px;
+    right: 72px;
+    cursor: pointer;
+    z-index: 110;
+    transition: all 0.3s;
+    background: #fff;
+}
+.btm-btn .dropdown-menu{
+    width: 126px !important;
+    top: -5px !important;
+}
