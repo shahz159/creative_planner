@@ -3424,8 +3424,8 @@ export class MoreDetailsComponent implements OnInit {
   sweetAlert() {
     if (this.Status == 'Completed') {
       Swal.fire({
-        title: 'This Project is Compelted !!',
-        text: 'Do You Want To Reopen This Project ?',
+        title: 'This project is compelted !!',
+        text: 'Do you want to reopen this project ?',
         // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -3436,7 +3436,7 @@ export class MoreDetailsComponent implements OnInit {
         } else if (response.dismiss === Swal.DismissReason.cancel) {
           Swal.fire(
             'Cancelled',
-            'Action is Not Created',
+            'Action not created',
             'error'
           )
         }
@@ -3464,8 +3464,8 @@ export class MoreDetailsComponent implements OnInit {
       (data) => {
         if (data['Message'] == 1) {
           Swal.fire({
-            title: 'Unable To Complete This Project !!',
-            text: 'SubTask Status Are In Rejected or Pending ?',
+            title: 'Unable to complete this project !!',
+            text: 'Action status are in rejected or pending ?',
             // icon: 'warning',
             showCancelButton: true
           });

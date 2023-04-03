@@ -346,7 +346,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
                         <h4 class="mb-1 pro-nm d-inline-blck" id="SpanProjName_{{Pid}}" data-toggle="tooltip"
-                            title="Project Name!">{{ProjectName |  titlecase}}</h4>
+                            title="Project Name!">{{ProjectName }}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
                             *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
@@ -1344,7 +1344,7 @@
                                                     <p class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
                                                         <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Name!">
-                                                            {{item.Project_Name |  titlecase}}</span>
+                                                            {{item.Project_Name }}</span>
                                                         <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             id="EidtBtn_{{item.id}}"
@@ -1723,7 +1723,7 @@
                                                     <p class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
                                                         <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Name!">
-                                                            {{item.Project_Name |  titlecase}}</span>
+                                                            {{item.Project_Name }}</span>
                                                     </p>
                                                     <p class="mb-3">
                                                         <span class="mr-2" id="Span_DescName_{{item.id}}"
@@ -2248,7 +2248,7 @@
                                                     </td>
                                                     <td
                                                         *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
-                                                        {{dar.ProjectName |  titlecase}}
+                                                        {{dar.ProjectName }}
                                                     </td>
                                                     <td>{{dar.WorkAchieved}}</td>
                                                     <td>{{dar.starttime}}</td>
@@ -3265,7 +3265,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Deadline Extend</b><br>Project: {{ProjectName |  titlecase}}</div>
+                <div><b>Deadline Extend</b><br>Project: {{ProjectName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3310,7 +3310,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Hold Project</b><br>Project: {{ProjectName |  titlecase}}</div>
+                <div><b>Hold Project</b><br>Project: {{ProjectName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3366,7 +3366,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Project Transfer</b><br>Project: {{ProjectName |  titlecase}}</div>
+                <div><b>Project Transfer</b><br>Project: {{ProjectName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3420,7 +3420,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>New End Date</b><br>Action {{actnum}}: {{actionName |  titlecase}}</div>
+                <div><b>New End Date</b><br>Action {{actnum}}: {{actionName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3464,7 +3464,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>New End Date</b><br>Action {{actnum}}: {{actionName |  titlecase}}</div>
+                <div><b>New End Date</b><br>Action {{actnum}}: {{actionName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3508,7 +3508,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                    <div style="white-space: break-spaces;">Add Allocated Hours <br>Action {{actnum}}: {{actionName |  titlecase}}</div>
+                    <div style="white-space: break-spaces;">Add Allocated Hours <br>Action {{actnum}}: {{actionName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">

@@ -1439,7 +1439,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
   sweetAlert(id, pcode) {
     Swal.fire({
-      title: 'Project Transfer!!',
+      title: 'Project transfer!!',
       html: 'Do you want to transfer the project "<b>'+this._ProjectName+'</b>" ?',
       // icon: 'warning',
       showCancelButton: true,
@@ -1451,7 +1451,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       } else if (response.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Project Not Transferred!',
+          'Project not transferred!',
           'error'
         )
         this.onCancel(id);
