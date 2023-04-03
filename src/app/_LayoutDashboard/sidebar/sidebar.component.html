@@ -3,8 +3,10 @@
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo" >
             <a>
-                <img alt="Logo" src="assets/images/logo.png" id="creative">
+                <img alt="Logo" src="assets/images/logo.png" id="creative">             
             </a>
+            
+            <img alt="Logo" src="assets/images/cp.png" width="200px" class="logo-txt">   
         </div>
     </div>
     <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid pt-0" id="kt_aside_menu_wrapper">
@@ -46,14 +48,14 @@
                     </a>
                 </li>
                 <!-- /////////<i class="fa-regular "></i>  title="Projects Summary"  title="Timeline"  title="To Do Projects"-->
-                <!-- <li class="kt-menu__item">
-                    <a routerLink="Timeline" routerLinkActive="active" (click)="notinAction()" class="kt-menu__link kt-menu__toggle"
+                <li class="kt-menu__item">
+                    <a routerLink="Timeline" routerLinkActive="active" class="kt-menu__link kt-menu__toggle"
                        >
                         <i class="kt-menu__link-icon fab fa-tumblr-square"  id="timeline"></i>
                         <span class="kt-menu__link-text">Timeline </span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
-                </li> -->
+                </li>
                 <li class="kt-menu__item" >
                     <a routerLink="ToDoProjects" routerLinkActive="active" class="kt-menu__link kt-menu__toggle"
                        >
@@ -218,6 +220,11 @@
             </li> -->
             </ul>
         </div>
+    </div>
+    <div class="side-btn" (click)="menutoggle()">
+        <button class="btn-mini">
+            <i class="fas fa-chevron-left"></i>
+        </button>
     </div>
 </div>
 <div class="kt-aside-menu-overlay"></div>

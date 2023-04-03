@@ -263,6 +263,10 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+
+    document.getElementById("btm-space").classList.add("d-none");
+
+    
     if (this._Urlid == '1') {
       this.router.navigate(["/backend/ProjectsSummary/"]);
     }
@@ -1435,7 +1439,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
   sweetAlert(id, pcode) {
     Swal.fire({
-      title: 'Project Transfer!!',
+      title: 'Project transfer!!',
       html: 'Do you want to transfer the project "<b>'+this._ProjectName+'</b>" ?',
       // icon: 'warning',
       showCancelButton: true,
@@ -1447,7 +1451,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       } else if (response.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Project Not Transferred!',
+          'Project not transferred!',
           'error'
         )
         this.onCancel(id);
@@ -1566,6 +1570,13 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     // else {
     //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
     // }
+  }
+
+  btmspace_opn(){
+    document.getElementById("btm-space").classList.remove("d-none");
+  }
+  close_space(){
+    document.getElementById("btm-space").classList.add("d-none");
   }
 
 }

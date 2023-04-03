@@ -45,6 +45,6 @@ export class SubTaskDTO {
   RowsOfPage: number;
   PageNumber: number;
   PageSize:number;
-  
+  sort:string;
 
 }

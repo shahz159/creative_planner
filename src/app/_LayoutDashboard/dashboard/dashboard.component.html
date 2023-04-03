@@ -1,15 +1,17 @@
 <div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
     <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
-        <h4 class="pl-4 pt-4">Main Dashboard</h4>
+        <h4 class="pl-4 pt-4">
+            <button class="btn-menu btn" (click)="menutoggle()"><i class="fas fa-bars"></i></button>
+            Main Dashboard</h4>
     </div>
     <!-- end: Header Menu -->
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-        <!-- <div class="kt-header__topbar-item" >
-            <span (click)="actyside();notinAction()" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
+        <div class="kt-header__topbar-item" >
+            <span (click)="actyside();timelineLog()" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
                 <i class="flaticon2-calendar-5" id="timelinelog"></i>
             </span>
-        </div> -->
+        </div>
         <div class="kt-header__topbar-item dropdown" >
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i
@@ -1582,152 +1584,136 @@
     <router-outlet></router-outlet>
 </div>
 
-<div id="actyInfobar" class="sideInfobar animate-right">
-    <div class="px-4 pt-4 pb-1 border-bottom">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="m-0">Activity Log</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
-                (click)="closeevearea2()">
-                <i class="fa fa-times"></i>
-            </a>
-        </div>
-    </div>
-    <div class="px-4 pt-2">
-        <div class="timeline">
-            <div class="timeline-item">
-                <!--begin::Timeline line-->
-                <div class="timeline-line w-40px"></div>
-                <!--end::Timeline line-->
-                <!--begin::Timeline icon-->
-                <div class="timeline-icon symbol symbol-circle symbol-40px">
-                    <div class="symbol-label bg-light">
-                        <span class="svg-icon svg-icon-2 svg-icon-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
-                                <path opacity="0.3"
-                                    d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z"
-                                    fill="black"></path>
-                                <path
-                                    d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z"
-                                    fill="black"></path>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <!--end::Timeline icon-->
-                <div class="timeline-content mb-10 mt-n2">
-                    <div class="overflow-auto pt-3 pr-3">
-                        <div class="fs-6 mb-2">There are 2 new tasks for you in “AirPlus Mobile APp” project</div>
-                        <div class="fs-7 mb-2 text-info attach-file">
-                            There are 2 new tasks for you in “AirPlus Mobile APp” project
-                        </div>
-
-
-                        <div class="d-flex align-items-center mt-1 fs-6">
-                            <div class="d-flex align-items-center flex-1">
-
-                                <div class="symbol symbol-circle symbol-22px" data-bs-toggle="tooltip"
-                                    data-bs-boundary="window" data-bs-placement="top" title=""
-                                    data-bs-original-title="Alan Nilson">
-                                    <img src="../../../assets/images/user2.png" alt="img">
-                                </div>
-                                <div class="text-muted ml-2 fs-7">User Name </div>
-                            </div>
-                            <div class="text-muted ml-2 fs-7 d-flex align-items-center">
-                                <span class="svg-icns">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path
-                                            d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z" />
-                                    </svg>
-                                </span>
-                                <span>Date</span>
-                                <span class="svg-icns time-icn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path
-                                            d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z" />
-                                    </svg>
-                                </span>
-                                <span>Time</span>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Timeline content-->
+<div id="actyInfobar" class="sideInfobar animate-right ">
+    <div class="kt-portlet mb-0">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
+                <h4 class="m-0">Timeline Log</h4>            
+                <a href="javascript:void(0)" class="btn btn-icon btn-hover-info"
+                    (click)="closeevearea2()">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/>
+                    </svg>                    
+                </a>
             </div>
-
-
-            <div class="timeline-item">
-                <!--begin::Timeline line-->
-                <div class="timeline-line w-40px"></div>
-                <!--end::Timeline line-->
-                <!--begin::Timeline icon-->
-                <div class="timeline-icon symbol symbol-circle symbol-40px">
-                    <div class="symbol-label bg-light">
-                        <span class="svg-icon svg-icon-2 svg-icon-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
-                                <path opacity="0.3"
-                                    d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z"
-                                    fill="black"></path>
-                                <path
-                                    d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z"
-                                    fill="black"></path>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <!--end::Timeline icon-->
-                <div class="timeline-content mb-10 mt-n2">
-                    <div class="overflow-auto pt-3 pr-3">
-                        <div class="fs-6 mb-2">There are 2 new tasks for you in “AirPlus Mobile APp” project</div>
-                        <div class="fs-7 mb-2 text-info attach-file">
-                            There are 2 new tasks for you in “AirPlus Mobile APp” project
-                        </div>
-
-
-                        <div class="d-flex align-items-center mt-1 fs-6">
-                            <div class="d-flex align-items-center flex-1">
-
-                                <div class="symbol symbol-circle symbol-22px" data-bs-toggle="tooltip"
-                                    data-bs-boundary="window" data-bs-placement="top" title=""
-                                    data-bs-original-title="Alan Nilson">
-                                    <img src="../../../assets/images/user2.png" alt="img">
-                                </div>
-                                <div class="text-muted ml-2 fs-7">User Name </div>
-                            </div>
-                            <div class="text-muted ml-2 fs-7 d-flex align-items-center">
-                                <span class="svg-icns">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path
-                                            d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z" />
-                                    </svg>
-                                </span>
-                                <span>Date</span>
-                                <span class="svg-icns time-icn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path
-                                            d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z" />
-                                    </svg>
-                                </span>
-                                <span>Time</span>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Timeline content-->
-            </div>
-
+        </div>        
+        <div class="tabs-header">
+            <ul id="time-tabs" role="tablist" class="nav nav-pills px-3 time-tabs mb-0 pt-2">
+                <li class="nav-item">
+                    <a id="mytime-1" data-toggle="tab" href="#mytime_1" class="nav-link active" (click)="timelineLog()">
+                        <span class="nav-text">My Timeline</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="racis-1" data-toggle="tab" href="#racis_1" class="nav-link" (click)="racisTimeline()">
+                        <span class="nav-text">RACIS Timeline</span>
+                    </a>
+                </li>
+            </ul>
+            <span class="timeli-hrs">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
         </div>
-
+        <div class="kt-portlet__body kt-portlet__body_scroll p-0">
+            <div class="tab-content" id="time-tabbview">
+                <div class="tab-pane fade show active" id="mytime_1" role="tabpanel"
+                    aria-labelledby="mytime-1">                    
+                    <div class="timeline" *ngFor="let item of timelineList;let i=index">
+                        <div class="timeline-header sticky-header">
+                            <span class="header-text header-date">
+                                {{item.SubmissionDate | date: 'fullDate'}}
+                            </span>
+                        </div>
+                        <div class="timeline-item mx-4" *ngFor="let item1 of item.Dardata">
+                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                <div class="symbol-label kt-bg-light-primary">
+                                    <span class="timeline-media">
+                                        {{item1.Initial}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!--end::Timeline icon-->
+                            <div class="timeline-content mb-10 mt-n2">
+                                <div class="overflow-auto pt-2 pr-3">
+                                    <div class="timeline-text fs-6">
+                                        {{item1.EmpName}}
+                                        <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
+                                        <span class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>  
+                                            {{item1.starttime}} - {{item1.endtime}}                              
+                                        </span> in
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.Tasktype=='Lunch'">
+                                        <span class="desp-txt fs-7">Lunch</span>
+                                    </div>
+                                    <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
+                                        <span class="desp-txt fs-7">Personal</span>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
+                                    <!-- <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item1.date | date:'dd-MM-yyyy'}}</div> -->
+                                    <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7 d-none">Achievement</span>{{item1.WorkAchieved}}</div>
+                                </div>
+                            </div>
+                            <!--end::Timeline content-->
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="tab-pane fade" id="racis_1" role="tabpanel" aria-labelledby="racis_1">
+                    Racis
+                </div> -->
+            </div>
+        </div>
+        <div class="kt-portlet__foot py-2">            
+            <div class="text-center">
+                <button class="btn-info btn btn-sm" (click)="viewTimeline()">
+                    View All
+                </button>
+        </div>
+        </div>
 
     </div>
 </div>
+
+
+<!-- Timeline date user time flex
+    <div class="d-none align-items-center mt-1 fs-6">
+    <div class="d-flex align-items-center flex-1">
+
+        <div class="symbol symbol-circle symbol-22px" data-bs-toggle="tooltip"
+            data-bs-boundary="window" data-bs-placement="top" title=""
+            data-bs-original-title="Alan Nilson">
+            <img src="../../../assets/images/user2.png" alt="img">
+        </div>
+        <div class="text-muted ml-2 fs-7">User Name </div>
+    </div>
+    <div class="text-muted ml-2 fs-7 d-flex align-items-center">
+        <span class="svg-icns">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                    d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z" />
+            </svg>
+        </span>
+        <span>Date</span>
+        <span class="svg-icns time-icn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z" />
+            </svg>
+        </span>
+        <span>Time</span>
+
+    </div>
+</div> -->
 
 <div id="reqsideInfobar" class="sideInfobar animate-right">
     <div class="px-4 pt-4 pb-1 border-bottom">

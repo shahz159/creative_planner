@@ -278,3 +278,56 @@
     white-space: break-spaces;
 
 }
+.fixed-btn {
+  position: fixed;
+  z-index: 99;
+  bottom: 10px;
+  right: 10px;
+}
+/* input[type="checkbox"]#inhide{
+opacity: 0;
+width: 100%;
+position: absolute;
+left: 0;
+} */
+.spacer-tab {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  border: 1px solid rgb(232 234 237);
+  overflow: auto;
+  max-height: 450px;
+  opacity: 1;
+  width: 400px;
+  bottom: 20px;
+  right: 10px;
+  box-shadow: -1px 2px 20px #00478a21;
+  border-radius: 8px;
+  padding: 5px 0;
+  background-color: rgb(255 255 255);
+}
+/* input[type="checkbox"]:checked ~ .spacer-tab{
+display: block;    
+} */
+.spacer--body {
+  margin-left: 0;
+  padding-left: 10px;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #fff;
+}
+::ng-deep .input-group-append .mat-icon-button {
+  height: 35px !important;
+}
+#sidebar-overlay {
+  background-color: rgba(50, 58, 70, .2);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none;
+  z-index: 998;
+  transition: all .2s ease-out;
+  cursor: pointer;
+}

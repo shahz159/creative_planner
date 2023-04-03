@@ -632,7 +632,6 @@ export class MoreDetailsComponent implements OnInit {
   etdata: any;
 
   getDarTime() {
-    debugger
     this.timedata = [];
     this.timedata1 = ["08:00",
       "08:15", "08:30", "08:45", "09:00",
@@ -3425,8 +3424,8 @@ export class MoreDetailsComponent implements OnInit {
   sweetAlert() {
     if (this.Status == 'Completed') {
       Swal.fire({
-        title: 'This Project is Compelted !!',
-        text: 'Do You Want To Reopen This Project ?',
+        title: 'This project is compelted !!',
+        text: 'Do you want to reopen this project ?',
         // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -3437,7 +3436,7 @@ export class MoreDetailsComponent implements OnInit {
         } else if (response.dismiss === Swal.DismissReason.cancel) {
           Swal.fire(
             'Cancelled',
-            'Action is Not Created',
+            'Action not created',
             'error'
           )
         }
@@ -3465,8 +3464,8 @@ export class MoreDetailsComponent implements OnInit {
       (data) => {
         if (data['Message'] == 1) {
           Swal.fire({
-            title: 'Unable To Complete This Project !!',
-            text: 'SubTask Status Are In Rejected or Pending ?',
+            title: 'Unable to complete this project !!',
+            text: 'Action status are in rejected or pending ?',
             // icon: 'warning',
             showCancelButton: true
           });
@@ -3520,7 +3519,7 @@ export class MoreDetailsComponent implements OnInit {
     this.actionCode = null;
     this.workdes = "";
     this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-    // this.dateF=null;
+    this.dateF = new FormControl(new Date());
     this.starttime = null;
     this.endtime = null;
     this.starttimearr = [];

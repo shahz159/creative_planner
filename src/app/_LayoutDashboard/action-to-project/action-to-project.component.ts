@@ -297,7 +297,6 @@ export class ActionToProjectComponent implements OnInit {
         this.ownerNo=this.Owner_Empno;
       }
     }
-    console.log(this.ownerNo)
 
     if (this._MasterCode == null) {
       this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
@@ -307,7 +306,6 @@ export class ActionToProjectComponent implements OnInit {
       this.ObjSubTaskDTO.MasterCode = this._MasterCode;
     }
     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-      // debugger
       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
       this.EmpNo_Autho = data['Team_Autho'];
       this.ProjectBlock = data['ProjectBlock'];
@@ -364,7 +362,6 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("StartDate", datestrStart);
       fd.append("EndDate", datestrEnd);
-
       // fd.append("Allocated", this.maxAllocation.toString());
       fd.append("Emp_No", this.CurrentUser_ID);
       fd.append("AssignTo", this.selectedEmpNo);
@@ -401,7 +398,6 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
-       
       });
       // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
       // this._projectunplanned.CallOnSubmitCategory();
@@ -415,12 +411,14 @@ export class ActionToProjectComponent implements OnInit {
     });
     this.notifyService.showInfo("Created Successfully", "Action");
   }
-   convert(str) {
+   
+  convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
     return [ day,mnth,date.getFullYear() ].join("-");
   }
+
   sweetAlert() {
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
@@ -429,10 +427,9 @@ export class ActionToProjectComponent implements OnInit {
     // console.log(dateOne)
     // console.log(dateTwo)
     if (dateTwo <= dateOne) {
-
       Swal.fire({
-        title: 'Action DeadLine is Greater then Main Project DeadLine ?',
-        text: 'Do you Want to Continue For Selection Of Date After Main Project DeadLine!!',
+        title: 'Action deadLine is greater than main project deadLine ?',
+        text: 'Do you want to continue for selection of date after main project deadLine!!',
         // icon: 'warning',
         // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
         showCancelButton: true,
@@ -444,14 +441,13 @@ export class ActionToProjectComponent implements OnInit {
         } else if (response.dismiss === Swal.DismissReason.cancel) {
           Swal.fire(
             'Cancelled',
-            'Action is Not Created',
+            'Action not created',
             'error'
           )
         }
       });
     }
     else {
-
       this.OnSubmit();
     }
   }
@@ -502,7 +498,9 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate=false;
     this._EndDate=null;
   }
+
   myFilter:any;
+
   enddateChecker(){
     this._sdate=true;
     this.myFilter = (d: Date | null): boolean => {

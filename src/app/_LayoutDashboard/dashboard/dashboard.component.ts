@@ -29,7 +29,6 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import tippy from 'node_modules/tippy.js';
-
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { validationLatitudeLongitude } from "validation-latitude-longitude";
@@ -411,6 +410,8 @@ export class DashboardComponent implements OnInit {
   dmsIdjson: any = [];
   Attachments_ary: any = [];
   Locationfulladd: string;
+  ObjSubTaskDTO: SubTaskDTO;
+
   // selectedCar: string;
 
   // cars = [
@@ -432,7 +433,7 @@ export class DashboardComponent implements OnInit {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this._calenderDto = new CalenderDTO;
-
+    this.ObjSubTaskDTO = new SubTaskDTO();
     this.BlockNameProject1 = [];
     this.Timeslab = [];
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
@@ -445,7 +446,6 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
@@ -567,6 +567,43 @@ export class DashboardComponent implements OnInit {
       }
     });
 
+  }
+  timelineList:any;
+  today:any = new Date();
+  yesterday:any = new Date();
+  timelineDuration:any;
+  
+  timelineLog(){
+    // this.today = moment(new Date()).format("YYYY-MM-DD");
+    // this.yesterday.setDate(this.yesterday.getDate() - 1);
+    // this.yesterday = moment(this.yesterday).format("YYYY-MM-DD");
+
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 30;
+    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+      this.timelineDuration=(data[0]['TotalTime']);
+    });
+  }
+
+  racisTimeline(){
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 30;
+    this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+    });
+    this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+    (data=>{
+      this.timelineDuration=(data[0]['TotalTime']);
+    });
+  }
+
+  viewTimeline(){
+     this.router.navigate(["../backend/Timeline"]);
   }
 
   notificationDTO: NotificationActivityDTO;
@@ -3782,8 +3819,11 @@ export class DashboardComponent implements OnInit {
     document.getElementById("main-foot").classList.toggle("overflow-hidden");
   }
 
-  notinAction() {
-    this.notifyService.showError("Development Under Maintainance", 'Failed');
+  // notinAction() {
+  //   this.notifyService.showError("Development Under Maintainance", 'Failed');
+  // }
+  menutoggle(){    
+    document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
+    document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
-
 }

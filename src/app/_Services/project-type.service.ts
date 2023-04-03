@@ -22,7 +22,7 @@ import { DarDTO } from '../_Models/dar-dto';
 import { AssigntaskDTO } from '../_Models/assigntask-dto';
 import { CategoryDTO } from '../_Models/category-dto';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 //import { BarChartComponent } from '../_Views/bar-chart/bar-chart.component';
 @Injectable({
   providedIn: 'root'
@@ -529,6 +529,49 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
     return this.http.post(this.rootUrl + "TestAPI/NewDARDetailsByMasterCode", this.ObjSubTaskDTO);
+  }
+
+  _GetTimelineActivity(obj: SubTaskDTO) {
+    // let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
+    this.ObjSubTaskDTO.PageSize = obj.PageSize;
+    this.ObjSubTaskDTO.sort = obj.sort;
+
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivity", this.ObjSubTaskDTO);
+  }
+
+  _GetTimelineActivityforRACIS(obj: SubTaskDTO) {
+    // let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
+    this.ObjSubTaskDTO.PageSize = obj.PageSize;
+    this.ObjSubTaskDTO.sort = obj.sort;
+
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivityforRACIS", this.ObjSubTaskDTO);
+  }
+
+  _GetTimelineDurationforRACIS(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
+  }
+
+  _GetTimelineProjects(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.ProjectBlock=obj.ProjectBlock;
+    this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
+
+    return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineProjects", this.ObjSubTaskDTO);
+  }
+
+  autoRefresh(interval: number): Observable<any> {
+    return new Observable<any>(observer => {
+      setInterval(() => {
+        this._GetTimelineActivity(this.ObjSubTaskDTO).subscribe(data => {
+          observer.next(data);
+        });
+      }, interval);
+    });
   }
 
   _GetNewProjectCode(obj) {

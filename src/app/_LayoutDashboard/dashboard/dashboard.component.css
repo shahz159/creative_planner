@@ -1556,6 +1556,54 @@ height: auto !important;
 }
 
 
+.timeline-header {
+    position: relative;
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
+    border-bottom: none;
+    background-color: #fff;
+    padding: 15px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    width: 100%;
+    z-index: 14;
+}
+.sticky-header{
+    margin-top: 0px;
+    z-index: 14;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    font-size: 18px;
+}
+.pro-name {
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 80%;
+}
+.pro-name.pro-link{
+    color: #5867dd;
+}
+.header-date{
+    color: #333;
+}
+.header-text {
+    line-height: 1.42857;
+    margin-right: 5px;
+    -ms-word-break: break-word;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .timeline .timeline-item {
     position: relative;
@@ -1564,7 +1612,14 @@ height: auto !important;
     display: flex;
     align-items: flex-start;
 }
-
+.timeline .timeline-item {
+    background: #ffff;
+    box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%);
+    margin-bottom: 1.5rem;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgb(111 107 107 / 8%) 0px 0px 0px 1px;
+}
 .timeline .timeline-line {
     display: block;
     content: " ";
@@ -1582,6 +1637,9 @@ height: auto !important;
 
 .timeline .timeline-item:last-child .timeline-line {
     bottom: 100%;
+}
+.timeline-media{
+    color: #2786fb!important;
 }
 
 .w-40px {
@@ -1614,6 +1672,10 @@ height: auto !important;
 .symbol.symbol-40px .symbol-label {
     width: 40px;
     height: 40px;
+}
+.symbol.symbol-35px .symbol-label {
+    width: 35px;
+    height: 35px;
 }
 .symbol.symbol-22px>img {
     width: 22px;
@@ -1653,9 +1715,21 @@ height: auto !important;
 .timeline .timeline-content {
     width: 100%;
     overflow: auto;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
 }
-
+.timeline-text{
+    color: #333;
+    color: #29282d;
+    margin-bottom: 0.5rem;
+}
+.achv-txt{
+    color: #54585d;
+}
+.desp-txt{
+    margin-right: 5px;
+    color: #64697d;
+    color: #848c93;
+}
 ::ng-deep .timeline-content ol {
     padding-left: 20px;
 }
@@ -1716,6 +1790,7 @@ height: auto !important;
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
+<<<<<<< HEAD
 .create-btm {
     opacity: 1;
     animation: kt-scrolltop-show-animation .4s ease-out 1;
@@ -1733,4 +1808,73 @@ height: auto !important;
 .btm-btn .dropdown-menu{
     width: 126px !important;
     top: -5px !important;
+=======
+.kt-portlet__body_scroll{
+    height: calc(100vh - 156px);
+    overflow-y: auto;
+}
+.time-tabs.nav-pills .nav-item .nav-link.active, 
+.time-tabs.nav-pills .nav-item .nav-link:active, .time-tabs.nav-pills .nav-item .nav-link.active:hover {
+    background-color: transparent;
+    color: #7b68ee;
+    font-weight: 600;
+    border-bottom: 2px solid #7b68ee;
+    border-radius: 0px !important;
+}
+.time-tabs.nav-pills .nav-item .nav-link{
+    cursor: pointer;
+}
+.time-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.tabs-header .timeli-hrs {
+    position: absolute;
+    top: 16px;
+    right: 13px;
+    z-index: 1;
+}
+.tabs-header {
+    position: relative;
+}
+button.btn-menu {
+    background: #fff;
+    padding: 0;
+    line-height: 1;
+    color: #0b0f1f;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none !important;
+}
+.loadmre {
+    position: fixed;
+    bottom: 5px;
+    text-align: center;
+    right: 20%;
+}
+.cls-float {
+    transition: transform .2s cubic-bezier(.785,.135,.15,.86) 0s;
+    position: absolute;
+    top: 10px;
+    left: -45px;
+    width: 36px;
+    height: 36px;
+    padding: 11px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    box-shadow: 0 1px 15px #00000012;
+    stroke: #979797;
+    cursor: pointer;
+    z-index: 999999;
+    right: 0;
+    margin: 0;
+    display: none;
+}
+.overflow-visible {
+    overflow: visible !important;
+}
+.open_sidebar .cls-float {
+    display: inline-flex;
+>>>>>>> a70744cd33b1bca5d5f2468d3fc313d6b2dff390
 }
