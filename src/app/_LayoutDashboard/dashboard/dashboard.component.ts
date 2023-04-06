@@ -553,7 +553,7 @@ export class DashboardComponent implements OnInit {
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 30;
+    this.ObjSubTaskDTO.PageSize = 2;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -564,7 +564,7 @@ export class DashboardComponent implements OnInit {
   racisTimeline(){
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 30;
+    this.ObjSubTaskDTO.PageSize = 2;
     this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -2242,6 +2242,7 @@ export class DashboardComponent implements OnInit {
       this._total = element.SlotsJson.length;
     });
   }
+
   GetProjectAndsubtashDrpforCalender() {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
