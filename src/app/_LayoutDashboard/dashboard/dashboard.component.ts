@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import tippy from 'node_modules/tippy.js';
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { validationLatitudeLongitude } from "validation-latitude-longitude";
 import { empty } from 'rxjs';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
@@ -392,6 +393,23 @@ export class DashboardComponent implements OnInit {
   EventAction_type: number;
   myFiles: string[] = [];
   _lstMultipleFiales: any;
+  f1: any;
+  arr: any = [];
+  arr1: any = [];
+  arr2: any = [];
+  editTask: boolean = false;
+  copyTask: boolean = false;
+  create: boolean = false;
+  _FutureEventTasksCount: number = 0;
+  _AllEventTasksCount: number = 0;
+  _OldRecurranceId: string;
+  _OldRecurranceValues: string;
+  _Oldstart_date: string;
+  _OldEnd_date: string;
+  _PopupConfirmedValue: number;
+  dmsIdjson: any = [];
+  Attachments_ary: any = [];
+  Locationfulladd: string;
   ObjSubTaskDTO: SubTaskDTO;
 
   // selectedCar: string;
@@ -540,6 +558,15 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
+    $(document).on('scroll', function () {
+      var y = $(this).scrollTop();
+      if (y > 380) {
+        $('.create-btm').fadeIn();
+      } else {
+        $('.create-btm').fadeOut();
+      }
+    });
+
   }
   timelineList:any;
   today:any = new Date();
@@ -592,6 +619,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onFileChange(event) {
+
     if (event.target.files.length > 0) {
       var length = event.target.files.length;
       for (let index = 0; index < length; index++) {
@@ -609,7 +637,6 @@ export class DashboardComponent implements OnInit {
         else if (contentType === "image/jpg") {
           contentType = ".jpg";
         }
-
         this.myFiles.push(event.target.files[index].name);
         // alert(this.myFiles.length);
         console.log(this.myFiles, "attach")
@@ -629,6 +656,19 @@ export class DashboardComponent implements OnInit {
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
+  }
+  RemovedAttach: any = [];
+  RemoveExistingFile(_id) {
+    debugger
+    this.Attachment12_ary.forEach(element => {
+      if (element.file_id == _id) {
+        this.RemovedAttach.push(element.Cloud_Name)
+      }
+
+    });
+    var removeIndex = this.Attachment12_ary.map(function (item) { return item.UniqueId; }).indexOf(_id);
+    this.Attachment12_ary.splice(removeIndex, 1);
+
   }
 
   closeevearea() {
@@ -686,6 +726,7 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
   Event_acceptandReject() {
 
     if (this.EventAction_type == 1) {
@@ -915,8 +956,6 @@ export class DashboardComponent implements OnInit {
 
   AllDelete_event(val) {
     this.flagevent = val;
-
-
   }
 
   AlldeleteSchedule() {
@@ -931,19 +970,7 @@ export class DashboardComponent implements OnInit {
 
 
   }
-  f1: any;
-  arr: any = [];
-  arr1: any = [];
-  arr2: any = [];
-  editTask: boolean = false;
-  copyTask: boolean = false;
-  _FutureEventTasksCount: number = 0;
-  _AllEventTasksCount: number = 0;
-  _OldRecurranceId: string;
-  _OldRecurranceValues: string;
-  _Oldstart_date: string;
-  _OldEnd_date: string;
-  _PopupConfirmedValue: number;
+
 
   // Customize() {
 
@@ -962,6 +989,7 @@ export class DashboardComponent implements OnInit {
   DublicateTaskandEvent() {
     document.getElementById("div_endDate").style.display = "block";
     this.copyTask = true;
+    this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
@@ -1145,10 +1173,15 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
+  Attachment12_ary: any = [];
 
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "block";
+
     this.editTask = true;
+    this.copyTask = false;
+    this.create = false;
+
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
@@ -1163,6 +1196,10 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+        // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl']
+        // alert( this.Addressurl);
+        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
 
 
@@ -1219,6 +1256,8 @@ export class DashboardComponent implements OnInit {
         this._EndDate = this.EventScheduledjson[0]['End_date'];
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
+        this.EventNumber = this.EventScheduledjson[0]['EventNumber']
+
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
@@ -1344,6 +1383,7 @@ export class DashboardComponent implements OnInit {
       this.MinLastNameLength = true;
     }
   }
+
   TImetable() {
     let _shr = moment(new Date()).format("HH");
     let _s = parseInt(moment(new Date()).format("mm"));
@@ -1365,6 +1405,7 @@ export class DashboardComponent implements OnInit {
       this.Endtms = (parseInt(_shr) + 1).toString() + ':30';
     }
   }
+
   progress: number = 0;
   OnSubmitSchedule() {
 
@@ -1475,6 +1516,9 @@ export class DashboardComponent implements OnInit {
         var vLocation_fulladd = "FullAddress_loc";
         element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = this.Addressurl;
+
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -1513,11 +1557,10 @@ export class DashboardComponent implements OnInit {
 
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-
       console.log(JSON.stringify(finalarray), "finalarray")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-          if(_attachmentValue==1){
+          if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
                 switch (event.type) {
@@ -1534,11 +1577,11 @@ export class DashboardComponent implements OnInit {
                   case HttpEventType.Response:
                     console.log('User successfully created!', event.body);
 
-                    (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
                     (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
                     this._lstMultipleFiales = [];
-                    empty(this._lstMultipleFiales);
-                    
+                    // empty(this._lstMultipleFiales);
+                    // alert(this._lstMultipleFiales.length);
                     setTimeout(() => {
                       this.progress = 0;
                     }, 1500);
@@ -1597,8 +1640,8 @@ export class DashboardComponent implements OnInit {
     }
 
   }
-  OnSubmitReSchedule() {
 
+  OnSubmitReSchedule() {
     this._calenderDto.flagid = this._PopupConfirmedValue;
     var start = moment(this.minDate);
     if (this._PopupConfirmedValue == 3) {
@@ -1606,6 +1649,7 @@ export class DashboardComponent implements OnInit {
       start = moment(this.minDate);
     }
     var end = moment(this.maxDate);
+    // alert(end);
     const format2 = "YYYY-MM-DD";
     const d1 = new Date(moment(start).format(format2));
 
@@ -1642,16 +1686,17 @@ export class DashboardComponent implements OnInit {
       return false;
     }
     var now = new Date();
-    let timestamp = "";
-    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-    this.EventNumber = timestamp;
+    // let timestamp = "";
+    // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+    //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+    // this.EventNumber = timestamp;
     let finalarray = [];
     this.daysSelectedII = [];
     // const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
     const _arraytext = [];
     if (this.selectedrecuvalue == "0") {
+      debugger
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
@@ -1735,6 +1780,9 @@ export class DashboardComponent implements OnInit {
         var vLocation_fulladd = "FullAddress_loc";
         element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = this.Addressurl;
+
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -1749,7 +1797,6 @@ export class DashboardComponent implements OnInit {
 
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
-
       });
       if (this._OldRecurranceId == '0') {
         if (this.selectedrecuvalue != this._OldRecurranceId) {
@@ -1770,17 +1817,69 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
+      let _attachmentValue = 0;
+      const frmData = new FormData();
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+      }
+      if (this._lstMultipleFiales.length > 0)
+        _attachmentValue = 1;
+      else
+        _attachmentValue = 0;
+
+      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      this._calenderDto.attachment = this.RemovedAttach.toString();
+
       console.log(JSON.stringify(finalarray), "finalarray");
-
-
-
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
+          this.RemovedAttach=[];
+          // alert(data['Schedule_date'])
+          frmData.append("Schedule_date", data['Schedule_date'].toString());
+          if (_attachmentValue == 1) {
+            this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+              (event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${this.progress}%`);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('User successfully created!', event.body);
+
+                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    this._lstMultipleFiales = [];
+                    // empty(this._lstMultipleFiales);
+                    // alert(this._lstMultipleFiales.length);
+                    setTimeout(() => {
+                      this.progress = 0;
+                    }, 1500);
+
+                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                }
+              }
+            )
+          }
+
           // console.log(data, "m");
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
           this.GetScheduledJson();
           this.Title_Name = null;
+          this.RemovedAttach=[];
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.MasterCode = null;
@@ -1789,7 +1888,6 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
-
           this._status = null;
           this.SelectDms = null;
           this.Location_Type = null;
@@ -1804,6 +1902,7 @@ export class DashboardComponent implements OnInit {
           this.timeslotsavl = [];
           this.singleselectarry = [];
           this.daysSelected = [];
+          this._lstMultipleFiales = [];
           // this.Recurr_arr = [];
           this.selected = null;
           this.TImetable();
@@ -1909,6 +2008,7 @@ export class DashboardComponent implements OnInit {
     this.Note_deadlineexpire = false;
     this.editTask = false;
     this.copyTask = false;
+    this.create = true;
     if (value == 1) {
       this.ScheduleType = "Task";
       document.getElementById("subtaskid").style.display = "block";
@@ -1960,6 +2060,7 @@ export class DashboardComponent implements OnInit {
     // this.Project_Code = "4001176";
 
   }
+
   GetSubtasklistfromProject(MasterCode) {
 
     this.ProjectListArray.forEach(element => {
@@ -2019,6 +2120,7 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
   getChangeSubtaskDetais(Project_Code) {
     this.BlockNameProject1.forEach(element => {
 
@@ -2033,6 +2135,7 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
   selectedDay(days) {
 
     //Checked the day
@@ -2041,13 +2144,14 @@ export class DashboardComponent implements OnInit {
     this.dayArr[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
   }
+
   selectStartDate(event) {
 
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._EndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
-
+    this.maxDate = event.value.format("YYYY-MM-DD").toString();
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
 
@@ -2074,6 +2178,7 @@ export class DashboardComponent implements OnInit {
     this.AllDatesSDandED.push(jsonData);
     // alert(event.value.format('dddd').substring(0,3));
   }
+
   selectEndDate(event) {
     for (let index = 0; index < this.dayArr.length; index++) {
       this.dayArr[index].checked = false;
@@ -2111,6 +2216,7 @@ export class DashboardComponent implements OnInit {
     }
     console.log(this.daysSelectedII, "Day Added array")
   }
+
   isSelected = (event: any) => {
     // const date =
     //   event.getFullYear() +
@@ -2126,6 +2232,7 @@ export class DashboardComponent implements OnInit {
     return this.daysSelectedII.find(x => x.Date == date && x.IsActive == false) ? "selected" :
       this.daysSelectedII.find(y => y.Date == date && y.IsActive == true) ? "selectedinvalid" : null;
   };
+
   select(event: any) {
 
     //Tue Dec 20 2022 00:00:00 GMT+0530 (India Standard Time)
@@ -2200,6 +2307,7 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
   Checkdatetimetable(_array) {
 
 
@@ -2213,6 +2321,7 @@ export class DashboardComponent implements OnInit {
 
       });
   }
+
   Doubleclick(event: any) {
 
     this.preventSingleClick = true;
@@ -2233,6 +2342,7 @@ export class DashboardComponent implements OnInit {
     this.calendar.updateTodaysDate();
 
   }
+
   getavltime(e) {
     this.timeslotsavl = [];
     this.timeslotsavl.push(this.Avaliabletime.find(i => i.count === parseInt(e.target.value)));
@@ -2253,23 +2363,26 @@ export class DashboardComponent implements OnInit {
         // console.log(this._EmployeeListForDropdown, "Project List Array");
       });
   }
+
   EmployeeOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
     this.User_Name = obj;
   }
+
   GetTimeslabfordate() {
-    this._calenderDto.minutes = 15;
+    this._calenderDto.minutes = 5;
     // this._hrtime = parseInt(moment(new Date()).format("HH"));
     // this.Startts = this._hrtime.toString() + ':00';
-    this._calenderDto.StartTime = "08:00";
-    this._calenderDto.EndTime = "23:00";
+    this._calenderDto.StartTime = "00:00";
+    this._calenderDto.EndTime = "23:55";
 
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
 
         this._arrayObj = data as [];
         this._arrayObj.forEach(element => {
-          this.EndTimearr.push(element.TSStart);
+          this.EndTimearr.push(element.TSEnd);
+          this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
         });
@@ -2291,17 +2404,51 @@ export class DashboardComponent implements OnInit {
     this.PurposeEnd = this.EndTimearr[0];
 
   }
+
+  timearr1: any = [];
+  AllEndtime: any = [];
+  timingarryend: any = [];
+  Time_End: any = [];
   addstarttime() {
-    // alert(this.Startts);
     this.Alltimes = [];
-    this.StartTimearr.forEach(element => {
-      this.Alltimes.push(element);
+    this.EndTimearr = [];
+    this.AllEndtime = [];
+
+    this._arrayObj.forEach(element => {
+      this.EndTimearr.push(element.TSEnd);
+      this.AllEndtime.push(element.TSEnd);
+      // this.StartTimearr.push(element.TSStart);
+      this.Alltimes.push(element.TSStart);
     });
+
+    // alert(this.Startts);
+    // this.Alltimes = [];
+    // this.StartTimearr.forEach(element => {
+    //   this.Alltimes.push(element);
+    // });
     // this.Startts = this.Startts;
-    let _index = this.StartTimearr.indexOf(this.Startts);
-    this.EndTimearr = this.Alltimes.splice(_index + 12);
+
+    this.timingarryend = [];
+    this.Time_End = [];
+    this.Time_End = this.AllEndtime;
     // this.Startts = TSStart;
-    this.Endtms = this.EndTimearr[0];
+    let _index = this.Time_End.indexOf(this.Startts);
+    this.timingarryend = this.Time_End.splice(_index + 1);
+    this.EndTimearr = this.timingarryend;
+    this.timearr1 = this.Startts.split(":");
+    let vahr = this.timearr1[0];
+    let mins = this.timearr1[1].toString();
+    if (this.timearr1[0] == 23) {
+    }
+    else {
+      vahr = Number(vahr) + 1;
+    }
+
+    this.Endtms = vahr.toString() + ':' + mins;
+
+
+
+    // this.Endtms = this.EndTimearr[0];
 
     this.daysSelectedII = [];
     var jsonData = {};
@@ -2357,6 +2504,7 @@ export class DashboardComponent implements OnInit {
     // }
     // this.calendar.updateTodaysDate();
   }
+
   purposeEndtime(TSEnd) {
     this.PurposeEnd = TSEnd;
     if (this.PropStart > this.PurposeEnd) {
@@ -2364,9 +2512,11 @@ export class DashboardComponent implements OnInit {
     }
 
   }
+
   addendtime(TSEnd) {
 
     this.Endtms = TSEnd;
+
     if (this.Startts > this.Endtms) {
       this.Endtms = this.Startts;
     }
@@ -2428,6 +2578,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
 
   }
+
   TimeClick(id, stime) {
 
     if (this._selectedId == 0) {
@@ -2523,6 +2674,7 @@ export class DashboardComponent implements OnInit {
     // }
     // this._firstClick = 1;
   }
+
   public loadScript() {
     var isFound = false;
     var scripts = document.getElementsByTagName("script")
@@ -2553,8 +2705,8 @@ export class DashboardComponent implements OnInit {
 
     }
   }
-  selectedrecuvalue: string;
 
+  selectedrecuvalue: string;
   SelectDropDown(val) {
 
     this.selectedrecuvalue = val.value.toString();
@@ -2800,6 +2952,7 @@ export class DashboardComponent implements OnInit {
     // }
     this.calendar.updateTodaysDate();
   }
+
   OnEmpSelect(emp: string) {
 
     let arr = [];
@@ -2816,6 +2969,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
+
   OnEmpDeselect() {
     let arr = [];
     this.ngEmployeeDropdown2 = this.ngEmployeeDropdown;
@@ -2827,7 +2981,6 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-  dmsIdjson: any = [];
 
   GetClickEventJSON_Calender(arg) {
 
@@ -2839,7 +2992,9 @@ export class DashboardComponent implements OnInit {
       ((data) => {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+
         console.log(this.EventScheduledjson, "Testing");
+        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -2951,17 +3106,44 @@ export class DashboardComponent implements OnInit {
         };
       });
   }
-  Locationfulladd: string;
+  Addressurl: string = "";
   public handleAddressChange(address: Address) {
 
     this.Location_Type = address.name;
-    console.log(address, "add")
+    this.Addressurl = address.url;
+
+    console.log(address, "add11")
     this.Locationfulladd = address.formatted_address;
 
   }
+  addreschange() {
+    //24.668213927924413, 46.74734971286595
+    //17.4333782,78.3664286
+    const isValidStrings = ["17.4333", "78.3664"];
+    // alert(validationLatitudeLongitude.latLong(...isValidStrings));
+
+    if (this.Location_Type.includes(',')) {
+      // alert(111)
+      const loc = this.Location_Type.split(',');
+      var lat = loc[0];
+      var long = loc[1];
+      var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+      if (reg.exec("40.6892")) {
+
+        // alert(lat);
+      } else {
+      }
+      if (reg.exec(long)) {
+        // alert(long);
+      }
+      else {
+      }
+
+
+    }
+  }
+
   // start
-
-
   pipe = new DatePipe('en-US');
   orgValueChange(event) {
 
@@ -2999,14 +3181,6 @@ export class DashboardComponent implements OnInit {
     this.daysSelectedII = [];
   }
 
-  // End
-  // alert( this.minDate);
-  // alert( this.maxDate);
-  // alert(this.pipe.transform($event.startDate, 'longDate') + " " + "00:00 AM");
-  // alert(this.pipe.transform($event.endDate, 'longDate') + " " + "11:59 PM");
-  // End Here
-  // Scheduling Work
-
   handleEventClick(arg) {
     // console.log(arg, "ttttt")
     this.ProjectCode = arg.event._def.extendedProps.Schedule_ID;
@@ -3016,6 +3190,7 @@ export class DashboardComponent implements OnInit {
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
+
   closeInfo() {
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
@@ -3026,9 +3201,11 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
 
   }
+
   GetCalendarProjects() {
     let Empno: string = this.Current_user_ID;
     // this.calendarOptions = {
@@ -3047,6 +3224,7 @@ export class DashboardComponent implements OnInit {
 
     this.userProjects();
   }
+
   allProjects() {
     this.Project_Mode = "All";
     // this.LoadingBar.start();
@@ -3071,6 +3249,7 @@ export class DashboardComponent implements OnInit {
       });
     //this.LoadingBar.stop();
   }
+
   userProjects() {
     this.Project_Mode = "My";
     let Empno: string = this.Current_user_ID;
@@ -3102,6 +3281,7 @@ export class DashboardComponent implements OnInit {
 
     //this.LoadingBar.stop();
   }
+
   teamProjects() {
     this.Project_Mode = "My Team";
     let Empno: string = this.Current_user_ID;
@@ -3127,6 +3307,7 @@ export class DashboardComponent implements OnInit {
         // };
       });
   }
+
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
@@ -3172,14 +3353,17 @@ export class DashboardComponent implements OnInit {
         //console.log("counts data------>",data)
       });
   }
+
   OnClickProjAct() {
     this.projectactivity_Div = false;
     this.DARactivity_Div = true;
   }
+
   OnClickDarAct() {
     this.projectactivity_Div = true;
     this.DARactivity_Div = false;
   }
+
 
   //LiveUrl:string="creativeplanner/ViewProjects/";
   UnderApproval_Click() {
@@ -3191,6 +3375,7 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
   Delay_Click() {
     this._ProjectDataList = [];
     let Mode: string = "Delay";
@@ -3202,6 +3387,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
 
   }
+
   Rejected_Click() {
     this._ProjectDataList = [];
     let Mode: string = "Rejected";
@@ -3211,6 +3397,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
 
   }
+
   ExpiryInOneMonth_Click() {
     this._ProjectDataList = [];
     let Mode: string = "ExOneMonth";
@@ -3228,6 +3415,7 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
   Not_Started() {
     this._ProjectDataList = [];
     let Mode: string = "NotStarted";
@@ -3237,6 +3425,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
 
   }
+
   Not_Working() {
     this._ProjectDataList = [];
     let Mode: string = "NotWorking";
@@ -3246,6 +3435,7 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
 
   }
+
   Portfolio_Click() {
     //this.router.navigate(['/Portfolios/']);
     const Url = 'backend/Portfolio';
@@ -3254,9 +3444,11 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(Url);
     myWindow.focus();
   }
+
   bttn_RACI() {
     this._raciDetails = !this._raciDetails;
   }
+
   GetmemosInSideInfoBar() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.pCode).
       subscribe((data) => {
@@ -3284,10 +3476,12 @@ export class DashboardComponent implements OnInit {
         }
       });
   }
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);
   }
+
   moreDetails(ProjectCode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -3295,6 +3489,7 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl, ProjectCode);
     myWindow.focus();
   }
+
   notification() {
     let name: string = 'Notifications';
     var url = document.baseURI + name;
@@ -3303,24 +3498,6 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
 
-
-  // Add Dms and Delete Functionality
-  //   Memo_Idarry:any=[];
-  // GetMemosbymemo_Id(){
-  // let memoarry=[];
-  // memoarry=this.DMS_Name;
-  // if (memoarry.length > 0) {
-  //   memoarry.forEach(element => {
-  //     var columnName = "DMS_Name";
-  //     element[columnName] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
-  // memoarry
-
-
-  // });
-
-  // }
-
-  // }
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -3332,6 +3509,7 @@ export class DashboardComponent implements OnInit {
 
       });
   }
+
   Memo_Select(selecteditems) {
     let arr = [];
     this.Empty_MemoDropdown = selecteditems;
@@ -3340,6 +3518,7 @@ export class DashboardComponent implements OnInit {
       this._SelectedMemos = arr;
     });
   }
+
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
@@ -3348,6 +3527,7 @@ export class DashboardComponent implements OnInit {
       this._SelectedMemos = arr;
     });
   }
+
   _onRowClick(projectCode, ProjName) {
     this._SelectedIdsfromDb = [];
     this.Selected_Projectcode = projectCode;
@@ -3391,12 +3571,15 @@ export class DashboardComponent implements OnInit {
       });
     document.getElementById("LinkSideBar").style.width = "360px";
   }
+
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
   }
+
   AddDms() {
     this._onRowClick(this.ProjectCode, this.ProjectName);
   }
+
   _AddLink() {
     let _ProjectCode: string = this.Selected_Projectcode;
     let appId: number = 101;//this._ApplicationId;
@@ -3422,7 +3605,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   //Delete Memos 96290  CRS2004
   deleteMemos(memoId, pcode) {
     this._MemosSubjectList = [];
@@ -3442,6 +3624,7 @@ export class DashboardComponent implements OnInit {
         this.notifyService.showInfo("", Returndata);
       });
   }
+
   UpdateMemos(pcode) {
     this._LinkService._GetOnlyMemoIdsByProjectCode(pcode).
       subscribe((data) => {
@@ -3461,6 +3644,7 @@ export class DashboardComponent implements OnInit {
         }
       });
   }
+
   redirectTo_Portfolio(P_id: any, P_Name: string, CreatedName: string) {
     sessionStorage.setItem('portfolioId', P_id);
     sessionStorage.setItem('portfolioname', P_Name);
@@ -3471,6 +3655,7 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
   calculateDiff(dateSent) {
     let currentDate = new Date();
 
@@ -3507,6 +3692,7 @@ export class DashboardComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 
   }
+
   openschd() {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3602,6 +3788,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("core_tab").classList.remove("btn-light-primary");
     document.getElementById("sec_tab").classList.remove("btn-light-primary");
   }
+
   showsec() {
     this.typetext = "This Project consists of ToDo Task";
     document.getElementById("sec_viw").classList.add("show");
@@ -3639,5 +3826,4 @@ export class DashboardComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
-  
 }
