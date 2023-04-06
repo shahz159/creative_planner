@@ -27,11 +27,11 @@ th {
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar-track {
-    background: #fff;
+    background: #f8f9ff;
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar-thumb {
@@ -153,10 +153,6 @@ th {
 .kt-aside-menu,
 .kt-aside__brand {
     background-color: #2b3643;
-<<<<<<< HEAD
-}
-
-=======
     background: rgb(255,255,255);
     background-color: #0b0f1f;
 }
@@ -164,17 +160,13 @@ th {
 .kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active .kt-menu__link-icon {
     color: #fff;
 }
->>>>>>> a70744cd33b1bca5d5f2468d3fc313d6b2dff390
 .kt-aside__brand {
     padding: 0 5px;
 }
 
-<<<<<<< HEAD
-=======
 .kt-aside--show #creative{
     display: none;
 }
->>>>>>> a70744cd33b1bca5d5f2468d3fc313d6b2dff390
 .dataTables_filter {
     display: none;
 }
@@ -1204,8 +1196,6 @@ button[disabled] {
   }
 .dropzone-delete {
     float: right;
-<<<<<<< HEAD
-=======
 }
 .btn-mini{
     position: absolute;
@@ -1241,5 +1231,4 @@ button[disabled] {
 .kt-aside--show .logo-txt {
     width: 230px;
     transition: all 0.3s ease;
->>>>>>> a70744cd33b1bca5d5f2468d3fc313d6b2dff390
 }

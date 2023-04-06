@@ -27,7 +27,7 @@ const routes = [{
             },
             {
                 path: 'ActionToAssign',
-                loadChildren: () => __webpack_require__.e(/*! import() */ "default-src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule)
+                loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule)
             },
             {
                 path: 'projectinfo/:projectcode',
