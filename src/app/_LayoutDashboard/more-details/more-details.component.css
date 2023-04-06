@@ -1251,10 +1251,14 @@ span.guest-icns, .svg-icn {
 .guest-count{
   margin-left: 3px;
 }
-.symbol.symbol-20px .symbol-label {
+.symbol.symbol-25px .symbol-label {
   width: 25px;
   height: 25px;
   font-size: 10px;
+}
+
+.drop-users{
+  z-index:999;
 }
 .drop-users .event-user {
   margin-left: 0;
