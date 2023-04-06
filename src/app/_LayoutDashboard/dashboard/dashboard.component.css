@@ -1791,7 +1791,6 @@ height: auto !important;
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
-<<<<<<< HEAD
 .create-btm {
     opacity: 1;
     animation: kt-scrolltop-show-animation .4s ease-out 1;
@@ -1810,12 +1809,6 @@ height: auto !important;
     height: calc(100vh - 156px);
     overflow-y: auto;
 }
-=======
-.kt-portlet__body_scroll{
-    height: calc(100vh - 156px);
-    overflow-y: auto;
-}
->>>>>>> b0ac148bc712ed21379cf81536ab9c3e31e723bc
 .time-tabs.nav-pills .nav-item .nav-link.active, 
 .time-tabs.nav-pills .nav-item .nav-link:active, .time-tabs.nav-pills .nav-item .nav-link.active:hover {
     background-color: transparent;
@@ -1833,7 +1826,6 @@ height: auto !important;
 .tabs-header .timeli-hrs {
     position: absolute;
     top: 16px;
-<<<<<<< HEAD
     right: 143px;
     z-index: 1;
 }
@@ -1843,11 +1835,6 @@ height: auto !important;
     z-index: 99;
     top: 7px;
 }
-=======
-    right: 13px;
-    z-index: 1;
-}
->>>>>>> b0ac148bc712ed21379cf81536ab9c3e31e723bc
 .tabs-header {
     position: relative;
 }
