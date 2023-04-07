@@ -3888,9 +3888,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("main-foot").classList.toggle("overflow-hidden");
   }
 
-  // notinAction() {
-  //   this.notifyService.showError("Development Under Maintainance", 'Failed');
-  // }
+  notinAction() {
+    this.notifyService.showError("Development Under Maintainance", 'Failed');
+  }
   menutoggle(){    
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
