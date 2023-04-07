@@ -44,6 +44,7 @@ export class ProjectDetailsDTO {
     Project_Cost: number;
     Projects_Json: string;
     ReportType: string;
+    ReportId: any;
 
     Master_code:string;
     StartTime:any;

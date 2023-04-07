@@ -552,7 +552,8 @@
                                                 <span type="button" id="hold-icn" 
                                                     aria-haspopup="true" aria-expanded="false" (click)="onHoldClick(Pid)" 
                                                     class="dropdown-toggle no-after text-info" >
-                                                    <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i></span>
+                                                    <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
+                                                </span>
 
 
                                                 <div id="HoldArea_{{Pid}}"
@@ -777,8 +778,19 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
-                                    <h5 class="mt-1" *ngIf="Category!=null">{{Category}}</h5>
-                                    <h5 class="mt-1" *ngIf="Category==null">Software Support</h5>
+                                    <h5 class="mt-1" *ngIf="Category!=null">{{Category}}
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval' && ProjectBlockName != 'To do List')"
+                                            aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
+                                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
+                                        </span>
+                                    </h5>
+                                    <h5 class="mt-1" *ngIf="Category==null">No Category
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval' && ProjectBlockName != 'To do List')"
+                                            aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
+                                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
+                                        </span>
+                                    </h5>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -2548,7 +2560,7 @@
 
                                         <div class="event-users">
                                             <div class="eveng-guests dropdown">
-                                                <button class="btn p-0 dropdown-toggle no-after" id="eve-srt" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <a class="btn p-0 dropdown-toggle no-after d-flex-cen" id="eve-srt" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         
                                                     <span aria-hidden="true" class="guest-icns">
                                                         <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
@@ -2590,9 +2602,9 @@
                                         </div>
 
                                         <div class="event-time">
-                                            <span class="event-content">
-                                                <span class="svg-icn tim-icn">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <span class="event-content d-flex-cen">
+                                                <span class="svg-icn tim-icn mr-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>                                                      
                                                 </span>
@@ -3460,6 +3472,43 @@
     </div>
 
     <!-- project hold edit end-->
+
+  <!-- project category edit -->
+    <div class="spacer--body" *ngIf="editCategory==true">
+        <div class="">
+            <ul class="kt-nav pb-0"> 
+                <li class="kt-nav__head py-0">
+                <div><b>Edit category</b><br>Project: {{ProjectName}}</div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                <div class="px-4 py-3">
+                    <div class="form-group"> 
+                        <label> Set new category <span class="text-danger">*</span> : <strong></strong></label>
+                        <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category" >
+                            <ng-option [value]="item.ReportID" *ngFor="let item of Category_List" [disabled]="Category==item.ReportType">
+                                <a>{{item.ReportType}}</a>
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label>Remarks<span class="text-danger">*</span></label>
+                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                            style="height:70px;"></textarea>
+                    </div>
+                </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedcategory || !extend_remarks"
+                    (click)="onProject_updateCategory()">Submit</button>
+                    <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- project category edit end-->
+    
 
 
     <!-- project transfer (keydown.enter)="onProject_Transfer(Pid,_MasterCode);"-->
