@@ -723,6 +723,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectDuration", this.ObjDto);
   }
 
+  _NewProjectCategoryService(pcode,Empno,reportid,remarks) {
+    this.ObjDto.Project_Code = pcode;
+    this.ObjDto.Emp_No = Empno;
+    this.ObjDto.ReportId = reportid;
+    this.ObjDto.Remarks = remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectChangeCategory", this.ObjDto);
+  }
+
   _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjDto.Emp_No = EmpNo;

@@ -47,11 +47,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 class TimelineModule {
 }
 TimelineModule.ɵfac = function TimelineModule_Factory(t) { return new (t || TimelineModule)(); };
 TimelineModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: TimelineModule });
-TimelineModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.CommonModule,
+TimelineModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ providers: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.DatePipe], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.CommonModule,
         _timeline_routing_module__WEBPACK_IMPORTED_MODULE_0__.TimelineRoutingModule] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](TimelineModule, { imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.CommonModule,
         _timeline_routing_module__WEBPACK_IMPORTED_MODULE_0__.TimelineRoutingModule] }); })();

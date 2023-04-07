@@ -783,8 +783,10 @@ export class MoreDetailsComponent implements OnInit {
   Pid: number;
   Comp_No: string;
   Employee_List: any;
+  Category_List: any;
   _portfoliolist: any;
   portslength:any;
+  selectedcategory:any;
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -792,6 +794,7 @@ export class MoreDetailsComponent implements OnInit {
         if (data != null && data != undefined) {
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
+          this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
           this._portfoliolist = JSON.parse(data[0]['Portfolio_json']);
           // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
@@ -1038,6 +1041,7 @@ export class MoreDetailsComponent implements OnInit {
     this.hold_remarks = "";
     this._ProjDeadline = null;
     this.extend_remarks = "";
+    this.selectedcategory = null;
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3056,6 +3060,8 @@ export class MoreDetailsComponent implements OnInit {
     this.transferproject=false;
     this.actendedit=false;
     this.actstartedit=false;
+    this.editCategory=false;
+
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3069,8 +3075,9 @@ export class MoreDetailsComponent implements OnInit {
   }
   extend_remarks: string;
   editDeadline: boolean =false;
+  editCategory : boolean = false;
 
-  onEditDeadline(id, enddate) {
+  onEditDeadline(id) {
     // this._ProjDeadline = enddate;
     this.Editbutton = true;
     this.edithold=false;
@@ -3079,6 +3086,7 @@ export class MoreDetailsComponent implements OnInit {
     this.actendedit=false;
     this.actstartedit=false;
     this.editduration=false;
+    this.editCategory=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3086,6 +3094,21 @@ export class MoreDetailsComponent implements OnInit {
     // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "block";
     // (<HTMLInputElement>document.getElementById("Deadlinetext_" + id)).focus();
+  }
+
+  onEditCategory() {
+    this.Editbutton = true;
+    this.editCategory=true;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+    this.editduration=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
 
   actendedit : boolean = false;
@@ -3099,6 +3122,7 @@ export class MoreDetailsComponent implements OnInit {
     this.actnum=i;
     this.Editbutton = true;
     this.edithold=false;
+    this.editCategory=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=true;
@@ -3119,6 +3143,7 @@ export class MoreDetailsComponent implements OnInit {
     this.actnum=i;
     this.Editbutton = true;
     this.edithold=false;
+    this.editCategory=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=false;
@@ -3180,6 +3205,7 @@ export class MoreDetailsComponent implements OnInit {
   onHoldClick(id) {
     this.Editbutton=true;
     this.edithold=true;
+    this.editCategory=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=false;
@@ -3201,6 +3227,7 @@ export class MoreDetailsComponent implements OnInit {
   onTransferClick(id) {
     this.Editbutton=true;
     this.edithold=false;
+    this.editCategory=false;
     this.editDeadline=false;
     this.transferproject=true;
     this.actstartedit=false;
@@ -3362,6 +3389,28 @@ export class MoreDetailsComponent implements OnInit {
     }
     else {
       this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value"); 
+    }
+  }
+
+  onProject_updateCategory(){
+
+    if (this.selectedcategory!= null && this.extend_remarks!=null) {
+      this.service._NewProjectCategoryService(this.URL_ProjectCode,this.Current_user_ID,this.selectedcategory,this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Project Category not updated", "Failed");
+          this.GetProjectDetails();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project Category updated successfully", "Success");
+          this.GetProjectDetails();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Category cannot be empty", "Please try again with correct value"); 
     }
   }
 

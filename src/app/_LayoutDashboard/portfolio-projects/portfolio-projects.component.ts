@@ -149,7 +149,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this._PortfolioOwner = sessionStorage.getItem('PortfolioOwner');
     this._Portfolio_CreatedDT = sessionStorage.getItem('portfolioCDT');
-    this._PortProjStatus = "";
+    // this._PortProjStatus = "";
     this._ShareDetailsList = [];
     // console.log(this._PortFolio_Namecardheader, this._Pid, this.Current_user_ID);
     // this._PortfolioListTable = false;

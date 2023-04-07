@@ -84,6 +84,7 @@ export class TimelineComponent implements OnInit {
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
+
   }
 
   timelineLog(type){
