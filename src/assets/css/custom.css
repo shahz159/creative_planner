@@ -597,7 +597,9 @@ transform: rotate(45deg);
 .rounded {
     border-radius: 0.25rem!important;
 }
-
+.br-50{
+    border-radius: 50% !important;
+}
 .created-date {
     position: absolute;
     top: 15px;
@@ -958,6 +960,10 @@ svg.feather {
     align-items: center;
     justify-content: space-between;
 }
+.d-flex-cen {
+    display: flex;
+    align-items: center;
+}
 .asgn-colpse.collapsed .fa-chevron-up:before {
     content: "\f078";
 }
@@ -1231,4 +1237,8 @@ button[disabled] {
 .kt-aside--show .logo-txt {
     width: 230px;
     transition: all 0.3s ease;
+}
+.symbol.symbol-30px .symbol-label {
+    width: 30px;
+    height: 30px;
 }

@@ -659,6 +659,7 @@ export class DashboardComponent implements OnInit {
   }
   RemovedAttach: any = [];
   RemoveExistingFile(_id) {
+    alert(_id)
     debugger
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
@@ -666,7 +667,7 @@ export class DashboardComponent implements OnInit {
       }
 
     });
-    var removeIndex = this.Attachment12_ary.map(function (item) { return item.UniqueId; }).indexOf(_id);
+    var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
     this.Attachment12_ary.splice(removeIndex, 1);
 
   }
@@ -1903,6 +1904,7 @@ export class DashboardComponent implements OnInit {
           this.singleselectarry = [];
           this.daysSelected = [];
           this._lstMultipleFiales = [];
+          this.Attachment12_ary=[];
           // this.Recurr_arr = [];
           this.selected = null;
           this.TImetable();
@@ -1997,7 +1999,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("div_endDate").style.display = "block";
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
-
+    this.clearallfields();
     this.daysSelected = [];
     this.singleselectarry = [];
     this.daysSelectedII = [];
@@ -3708,7 +3710,74 @@ export class DashboardComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
-    this.minDate = moment().format("YYYY-MM-DD").toString();;
+    this.minDate = moment().format("YYYY-MM-DD").toString();
+    this.Attachment12_ary=[];
+    this.RemovedAttach=[];
+    this._lstMultipleFiales=[];
+    this.maxDate = null;
+    this.selected = null;
+    this.Title_Name = null;
+    this.ngEmployeeDropdown = null;
+    this.Description_Type = null;
+    this.SelectDms = null;
+    this.MasterCode = null;
+    this.Subtask = null;
+    this.Startts = null;
+    this.Endtms = null;
+    this.SelectStartdate = null;
+    this.Selectenddate = null;
+    this.selectDay = null;
+    this.St_date = "";
+    this.Ed_date = null;
+    this._subname = false;
+    // this.Recurr_arr = [];
+    this._status = null;
+    this.Portfolio = null;
+    this.Location_Type = null;
+    this.Allocated_subtask = null;
+    this.Projectstartdate = "";
+    this.projectEnddate = null;
+    this.Status_project = null;
+    this.AllocatedHours = null;
+    this.daysSelected = [];
+    this.selectdaytime = [];
+    this.daysSelectedII = [];
+    this.singleselectarry = [];
+    this.Avaliabletime = [];
+    this.TImetable();
+    this.selectedrecuvalue = "0";
+    this.Doubleclick(this.event);
+    this.calendar.updateTodaysDate();
+    this.dayArr.map((element) => {
+      return element.checked = false;;
+    });
+    this.AllDatesSDandED = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+    // var columnNames = "StartTime";
+    // jsonData[columnNames] = this.Startts;
+    // var columnNamee = "EndTime";
+    // jsonData[columnNamee] = this.Endtms;
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = moment().format('dddd').substring(0, 3);
+    var DayNum = "DayNum";
+    jsonData[DayNum] = moment().format('DD').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+    this.GetTimeslabfordate();
+
+  }
+
+  clearallfields() {
+
+    this._StartDate = moment().format("YYYY-MM-DD").toString();
+    this._EndDate = moment().format("YYYY-MM-DD").toString();
+    this.minDate = moment().format("YYYY-MM-DD").toString();
+    this.Attachment12_ary=[];
+    this.RemovedAttach=[];
+    this._lstMultipleFiales=[];
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
