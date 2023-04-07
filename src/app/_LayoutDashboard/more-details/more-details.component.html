@@ -3505,8 +3505,8 @@
                     <div class="form-group"> 
                         <label> Set new category <span class="text-danger">*</span> : <strong></strong></label>
                         <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category" >
-                            <ng-option [value]="item.ReportID" *ngFor="let item of Category_List">
-                                <a *ngIf="Category!=item.ReportType">{{item.ReportType}}</a>
+                            <ng-option [value]="item.ReportID" *ngFor="let item of Category_List" [disabled]="Category==item.ReportType">
+                                <a>{{item.ReportType}}</a>
                             </ng-option>
                         </ng-select>
                     </div>
