@@ -103,6 +103,7 @@ export class MoreDetailsComponent implements OnInit {
       this._MasterCode = pcode;
     });
 
+    
     this.GetProjectDetails();
     this.GetSubtask_Details();
     this.dar_details();
@@ -111,7 +112,7 @@ export class MoreDetailsComponent implements OnInit {
     this.getdeadlinecount();
     this.GetDMS_Memos();
     this.GetprojectComments();
-
+    this.GetmeetingDetails();
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
     this.minhold.setDate(this.minhold.getDate() + 1);
@@ -506,7 +507,24 @@ export class MoreDetailsComponent implements OnInit {
   _CurrentpageRecords: any;
   CurrentPageNo: number = 1;
   darArray: any = [];
-
+  meetingList:any=[];
+  meeting_arry:any=[];
+  meetinglength:any;
+GetmeetingDetails(){
+  this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+  this.service._GetMeetingList(this.ObjSubTaskDTO)
+  .subscribe(data => {
+    
+    this.meetingList=JSON.parse(data[0]['MeetingFor_projects']);
+    this.meeting_arry=this.meetingList
+    this.meetinglength=this.meeting_arry.length;
+    this.meeting_arry.forEach(element => {
+      element.usersjson=JSON.parse(element.Addguest);
+      
+    });
+  });
+  
+}
   dar_details() {
     this.noTimeline = false;
     this.ObjSubTaskDTO.MasterCode = this.URL_ProjectCode;

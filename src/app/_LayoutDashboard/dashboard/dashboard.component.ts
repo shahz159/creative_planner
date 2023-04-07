@@ -580,7 +580,7 @@ export class DashboardComponent implements OnInit {
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
+    this.ObjSubTaskDTO.PageSize = 30;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -591,7 +591,7 @@ export class DashboardComponent implements OnInit {
   racisTimeline(){
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
+    this.ObjSubTaskDTO.PageSize = 30;
     this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -659,8 +659,8 @@ export class DashboardComponent implements OnInit {
   }
   RemovedAttach: any = [];
   RemoveExistingFile(_id) {
-    alert(_id)
-    debugger
+    
+  
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
         this.RemovedAttach.push(element.Cloud_Name)

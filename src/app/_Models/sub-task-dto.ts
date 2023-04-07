@@ -4,7 +4,8 @@ export class SubTaskDTO {
   SubProject_Name :string;
   StartDate :Date;
   Start_Date: Date; 
-
+  Title:string;
+  
   End_Date: Date;
   Modified_DT: Date;
   SubProject_DeadLine:Date;

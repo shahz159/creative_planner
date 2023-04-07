@@ -530,6 +530,10 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
     return this.http.post(this.rootUrl + "TestAPI/NewDARDetailsByMasterCode", this.ObjSubTaskDTO);
   }
+  _GetMeetingList(obj: SubTaskDTO){
+    this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
+    return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
+  }
 
   _GetTimelineActivity(obj: SubTaskDTO) {
     // let EmpNo = localStorage.getItem('EmpNo');
