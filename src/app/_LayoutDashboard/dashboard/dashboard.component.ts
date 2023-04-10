@@ -574,13 +574,9 @@ export class DashboardComponent implements OnInit {
   timelineDuration:any;
   
   timelineLog(){
-    // this.today = moment(new Date()).format("YYYY-MM-DD");
-    // this.yesterday.setDate(this.yesterday.getDate() - 1);
-    // this.yesterday = moment(this.yesterday).format("YYYY-MM-DD");
-
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 30;
+    this.ObjSubTaskDTO.PageSize = 2;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -591,7 +587,7 @@ export class DashboardComponent implements OnInit {
   racisTimeline(){
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 30;
+    this.ObjSubTaskDTO.PageSize = 2;
     this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
