@@ -21,42 +21,23 @@
                     <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
                         <!-- <i class="fas fa-code-branch"></i> -->
                         <!-- <h4 class="fs-3 text-info mb-0 mr-3" data-toggle="tooltip" title="Project Code!">{{URL_ProjectCode}}</h4> -->
-                        <ng-container
-                            *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && Current_user_ID != Owner_EmpNo && Current_user_ID != Responsible_EmpNo && Current_user_ID != Authority_EmpNo)">
-                            <label data-toggle="tooltip" title="Project Status!"
-                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'  || Status=='Project Hold'  || Status=='Deadline Extend Under Approval' || Status=='Delay' || Status=='InProcess'
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks' || ProjectBlockName =='Routine Tasks'
-                                         || Status=='New Project' || Status=='Project Complete Rejected' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold'"
-                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
-                                [ngClass]="{'bg-success':Status=='Completed',
-                            'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' ||  Status =='ToDo Achieved',
-                            'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval',
-                            'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
-                            'bg-rejected': Status=='New Project Rejected' || Status=='Project Complete Rejected', 
-                            'bg-success-1' : Status=='ToDo Completed',
-                            'bg-danger':Status=='Project Hold' || Status=='Standardtask Enactive Hold' || Status=='Delay'}">
-                                {{Status}}</label>
-                            <!-- 'bg-coral' :  Status== 'New Todo', -->
-                        </ng-container>
-                        <ng-container
-                            *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && (Current_user_ID != Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo))">
+                        
+                        <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
                                 *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval'  || Status=='Project Hold'  || Status=='Deadline Extend Under Approval' 
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || ProjectBlockName =='Standard Tasks' || ProjectBlockName =='Routine Tasks'
-                                         || Status=='New Project' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold'"
+                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || Status=='InProcess' || Status=='Delay' || Status == 'New TodoProject'
+                                         || Status=='New Project' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold' || Status == 'Project Complete Rejected'"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                 [ngClass]="{'bg-success':Status=='Completed',
-                            'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' ||  Status =='ToDo Achieved',
-                            'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval',
-                            'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
-                            'bg-rejected': Status=='New Project Rejected', 
-                            'bg-success-1' : Status=='ToDo Completed',
-                            'bg-danger':Status=='Project Hold' || Status=='Standardtask Enactive Hold' || Status=='Delay'}">
+                                'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' || Status == 'New TodoProject',
+                                'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved',
+                                'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
+                                'bg-rejected': Status=='New Project Rejected', 'bg-success-1' : Status=='ToDo Completed',
+                                'bg-danger':Status=='Project Hold' || Status=='Standardtask Enactive Hold' || Status=='Delay'  ||  Status == 'Project Complete Rejected'}">
                                 {{Status}}</label>
                             <!-- 'bg-coral' :  Status== 'New Todo', -->
                         </ng-container>
-                        <ng-container
-                            *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
+                        <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
                                 {{SubmissionName}}</label>
@@ -65,13 +46,13 @@
                         <!-- caledon-green -->
 
                         <!--inprocess button-->
-                        <div class="d-flex"
+                        <!-- <div class="d-flex"
                             *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
                                              && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' 
                                              && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
                                              && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
 
-                            <!-- <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> && Status!='Project Complete Rejected'-->
+                            <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> && Status!='Project Complete Rejected'
                             <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
                                 data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-success':Status=='Completed',
                                 'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' ||  Status =='ToDo Achieved',
@@ -83,7 +64,7 @@
                             <div class="task-status__divider"></div>
                             <button data-toggle="tooltip" title="Project Submission!" class="task-status__controls" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                 (click)="OnClickCheckboxProjectUpdate()"></button>
-                        </div>
+                        </div> -->
                         <!--inprocess button-->
                         <!--progress bar start-->
                         <div class="d-flex flex-column ml-3"
@@ -185,70 +166,7 @@
                     <div>
                         <!--Transfer-->
                         <div class="ml-2 pro-act">
-                            <!-- <div class="dropdown">
-                                <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                    (click)="onTransferClick()">
-                                    <i class="fa fa-forward"></i>
-                                    <span class="ml-1">Project Transfer</span>
-                                </button>
-                                <div id="TransferArea"
-                                    class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3 z-1k">
-                                    <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
-                                        <li class="kt-nav__head py-0">
-                                            <div>Project Transfer</div>
-                                        </li>
-                                        <li class="kt-nav__separator"></li>
-                                        <div class=" height-scroll h-scr">
-                                            <div class="px-4 py-3">
-                                                <div class="form-group">
-                                                    <label> Transfer To <span
-                                                            class="text-danger">*</span> :
-                                                        <strong></strong></label>
-                                                    <ng-select placeholder="Select Employee">
-                                                        <ng-option>
-                                                            DisplayName
-                                                        </ng-option>
-                                                    </ng-select>
-                                                </div>
-                                                <div class="form-group input-group">
-                                                    <label>Select New Deadline<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="input-group">
-                                                        <input placeholder="Select Date"
-                                                            class="form-control" name="date">
-                                                        <div class="input-group-append">
-                                                            <mat-datepicker-toggle
-                                                                class="btn-secondary">
-                                                            </mat-datepicker-toggle>
-                                                            <mat-datepicker
-                                                                class="form-group"></mat-datepicker>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Remarks<span
-                                                            class="text-danger">*</span></label>
-                                                    <textarea class="form-control" placeholder=""
-                                                        rows="2" cols="20"
-                                                        style="height:70px;"></textarea>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </ul>
-
-                                    <div class="px-4 pb-3">
-                                        <button
-                                            class="btn btn-info btn-sm mr-2 text-white">Submit</button>
-                                        <button class="btn btn-outline-info btn-sm text-dark-75"
-                                            (click)="closetransfer()">Close</button>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                            
                         <!--Transfer end   data-toggle="dropdown"-->
                         <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
                                 && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval'&&
@@ -967,7 +885,8 @@
                         <li class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile">
                                 <span class="nav-text">Actions</span>
-                                <span class="noti" *ngIf="subTaskCount!=0">{{subTaskCount}}</span>
+                                <span data-toggle="kt-tooltip" title="Completed: {{completedCount}}, Inprocess: {{inProcessCount}}" class="noti" *ngIf="subTaskCount!=0 && completedCount==0">{{subTaskCount}}</span>
+                                <span data-toggle="kt-tooltip" title="Completed: {{completedCount}}, Inprocess: {{inProcessCount}}" class="noti" *ngIf="subTaskCount!=0 && completedCount!=0">{{completedCount}}/{{subTaskCount}}</span>
                             </a></li>
 
                         <li class="nav-item"><a class="nav-link" id="Milestones1" data-toggle="tab"
@@ -994,10 +913,12 @@
                                 <span class="noti">{{commentsLength}}</span>
                             </a></li>
                         <li class="nav-item"><a class="nav-link" id="People1" data-toggle="tab" href="#People"
-                                aria-controls="profile"><span class="nav-text">People</span></a></li>
+                                aria-controls="profile"><span class="nav-text">People</span>
+                                <span data-toggle="tooltip" title="{{raciPeople}}" class="noti">{{racislength}}</span>
+                            </a></li>
                         <li class="nav-item" (click)="GetmeetingDetails()"><a class="nav-link" id="Meeting1" data-toggle="tab" href="#Meeting"><span
                                     class="nav-text">Meeting</span>
-                                    <span class="noti">{{meetinglength}}</span></a></li>
+                                    <span class="noti"*ngIf="meetinglength!=0">{{meetinglength}}</span></a></li>
                     </ul>
                 </div>
                 <div class="tab-content p-2 mt-5" id="myTabContent2">

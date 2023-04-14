@@ -2916,7 +2916,9 @@ GetmeetingDetails(){
   selectedEmp: string;
   filteredemp: boolean = false;
   darArr: any;
-
+  RACIS:any= [];
+  racislength:any;
+  raciPeople:any;
 
   GetSubtask_Details() {
     if (this.filteredemp == true) {
@@ -2944,7 +2946,13 @@ GetmeetingDetails(){
           this.ProjectStatus = data[0]['ProjectStatus'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
-          // console.log(this.Subtask_List,"dar");
+          this.RACIS = JSON.parse(data[0]['RACIS_Count']);
+          this.racislength = this.RACIS.length;
+          const values = this.RACIS.map(obj => obj.RACIS);
+
+          // Convert values to comma-separated string
+          this.raciPeople = values.join(", ");
+          console.log(this.raciPeople,"RACIS");
 
           // console.log(this.Subtask_List);
           //SubTasks Multiselect start         
