@@ -1151,7 +1151,6 @@
     z-index: 999;
     border: 1px solid rgb(232 234 237);
     overflow: auto;
-    max-height: 450px;
     opacity: 1;
     width: 400px;
     bottom: 20px;
@@ -1166,17 +1165,21 @@
   } */
   .spacer--body {
     margin-left: 0;
-    padding-left: 10px;
     border-radius: 0;
     box-shadow: none;
     background-color: #fff;
   }
-
+  .spacer--body.form-group {
+    margin-bottom: 1rem;
+  }
   .Replied_border_left_true_primary{
     border-left: 5px solid #95bed9 !important;
   }
  ::ng-deep .input-group-append .mat-icon-button {
     height: 35px !important;
+  }
+  ::ng-deep .spacer--body .ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: 165px;
   }
 .event{
   color: #555;
