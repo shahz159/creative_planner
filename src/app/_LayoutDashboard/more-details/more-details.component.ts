@@ -685,8 +685,8 @@ GetmeetingDetails(){
 
     this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
       .subscribe(data => {
-        debugger
         this.timeList = JSON.parse(data[0]['time_json']);
+        console.log(this.timeList,"time");
         if (this.timeList.length != 0) {
           this.bol = false;
           this.timeList.forEach(element => {
@@ -3326,6 +3326,32 @@ GetmeetingDetails(){
         }
         else if (this._Message == 'Project Deadline Updated') {
           this.notifyService.showSuccess(this._Message, "Success");
+          this.objProjectDto.Emp_No = this.Current_user_ID;
+          this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
+          if (this.currentminutes < 10) {
+            this.currentminutes = "0" + this.currentminutes;
+          }
+          if (this.currenthours < 10) {
+            this.currenthours = "0" + this.currenthours;
+          }
+          this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
+          this.objProjectDto.EndTime = ((this.currenthours+1) + ":" + this.currentminutes);
+          this.objProjectDto.TimeCount = "01:00";
+          this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+          this.objProjectDto.date = this.current_Date;
+          this.objProjectDto.WorkAchieved = "Deadline Extend:" +this.extend_remarks;
+          this.objProjectDto.Emp_Comp_No = this.Comp_No;
+          this.objProjectDto.Project_Name = this.ProjectName;
+          this.objProjectDto.Master_code = this.URL_ProjectCode;
+          this.objProjectDto.Project_Code = this.URL_ProjectCode;
+
+          this.service._InsertDARServie(this.objProjectDto)
+          .subscribe(data => {
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Success");
+          });
+          this.dar_details();
+          this.getDarTime();
           this.GetProjectDetails();
         }
       });
@@ -3350,6 +3376,32 @@ GetmeetingDetails(){
         }
         else if (this._Message == 'Project Deadline Updated') {
           this.notifyService.showSuccess(this._Message, "Success");
+          this.objProjectDto.Emp_No = this.Current_user_ID;
+          this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
+          if (this.currentminutes < 10) {
+            this.currentminutes = "0" + this.currentminutes;
+          }
+          if (this.currenthours < 10) {
+            this.currenthours = "0" + this.currenthours;
+          }
+          this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
+          this.objProjectDto.EndTime = ((this.currenthours+1) + ":" + this.currentminutes);
+          this.objProjectDto.TimeCount = "01:00";
+          this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+          this.objProjectDto.date = this.current_Date;
+          this.objProjectDto.WorkAchieved = "Deadline Extend:" +this.extend_remarks;
+          this.objProjectDto.Emp_Comp_No = this.Comp_No;
+          this.objProjectDto.Project_Name = null;
+          this.objProjectDto.Master_code = this.URL_ProjectCode;
+          this.objProjectDto.Project_Code = this.actCode;
+
+          this.service._InsertDARServie(this.objProjectDto)
+          .subscribe(data => {
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Success");
+          });
+          this.dar_details();
+          this.getDarTime();
           this.GetProjectDetails();
           this.GetSubtask_Details();
         }
