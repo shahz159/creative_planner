@@ -3893,4 +3893,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
+  daterange(){    
+    document.getElementById("range-picker").classList.toggle("d-none");
+    document.getElementById("main-section").classList.toggle("d-none");
+    
+  }
 }
