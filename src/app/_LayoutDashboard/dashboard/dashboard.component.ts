@@ -562,8 +562,10 @@ export class DashboardComponent implements OnInit {
       var y = $(this).scrollTop();
       if (y > 380) {
         $('.create-btm').fadeIn();
+        $('.show .btm-dropdn').fadeIn();
       } else {
         $('.create-btm').fadeOut();
+        $('.show .btm-dropdn').fadeOut();
       }
     });
 
