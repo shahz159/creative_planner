@@ -624,7 +624,6 @@ virtual-scroller {
   top: 0;
   right: 0;
   background-color: #ffffff;
-  border-left: 1px solid #b3bcff;
   overflow-x: hidden;
   transition: 0.5s;
   /* padding-top: 60px; */

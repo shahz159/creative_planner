@@ -558,12 +558,16 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
+    
+
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
       if (y > 380) {
         $('.create-btm').fadeIn();
+        $('.show .btm-dropdn').fadeIn();
       } else {
         $('.create-btm').fadeOut();
+        $('.show .btm-dropdn').fadeOut();
       }
     });
 
@@ -581,7 +585,22 @@ export class DashboardComponent implements OnInit {
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
       this.timelineDuration=(data[0]['TotalTime']);
+
+        
+      const hrstippy = document.getElementById('hrs-tippy');
+      tippy('.tippy', {
+        content: hrstippy.innerHTML,
+        arrow: true,
+        allowHTML: true,
+        animation: 'scale-extreme',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        placement:'top'
+      });
+
     });
+    
   }
 
   racisTimeline(){
@@ -3890,5 +3909,10 @@ export class DashboardComponent implements OnInit {
   menutoggle(){    
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
+  }
+  daterange(){    
+    document.getElementById("range-picker").classList.toggle("d-none");
+    document.getElementById("main-section").classList.toggle("d-none");
+    
   }
 }

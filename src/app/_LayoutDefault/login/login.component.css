@@ -9,3 +9,20 @@
     border-color: #5867dd;
     color: #fff;
 }
+.showOrHide{
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 1;
+    cursor: pointer;
+}
+.close-eye{
+    display: none;
+}
+
+.showp .open-eye{
+    display: none;
+}
+.showp .close-eye{
+    display: block;
+}

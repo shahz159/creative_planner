@@ -1907,7 +1907,8 @@ a.ordr-a {
 .sort-by{
     color: #999999;
     font-size: 12px;
-    padding: 8px;
+    padding: 0px 8px;
+    display: inline-block;
 
 }
 .sort-a{
@@ -1915,11 +1916,12 @@ a.ordr-a {
 }
 .sort-drop{
     padding: 0.8rem 0;
-    min-width: 12rem;
+    min-width: 340px;
     margin-top: 5px;
 }
 .sort-drop .dropdown-item{
     padding: 0.4rem 1rem;
+    cursor: pointer;
 }
 .sort-drop .active{
     background: #f1f6fd;
@@ -1932,8 +1934,37 @@ a.ordr-a {
     display: inline-block;
     color: #3b93fc;
 }
+/* .sort-drop .dropdown-item:hover {
+    color: #2786fb!important;
+} */
+.sort-drop .dropdown-item.d-range:hover {
+    text-decoration: underline !important;
+}
 .btn-sort:hover, .btn-sort:focus, .btn-sort:active  {
     color: #0b0e1f;
     background-color: #f5f7fa;
     border: 1px solid #e1e6ee;
+}
+.sort-drop .dropdown-item:active {
+    background: none;
+}
+.note-txt {
+    color: #91a0b0!important;
+    display: inline-block;
+    padding: 6px 12px 0;
+    font-size: 12px;
+}
+.sort-back{
+    color: #2786fb!important;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.sort-back :hover{
+    text-decoration: underline !important;
+}
+.sort-back svg{
+    width: 12px;
+    height:12px;
 }
