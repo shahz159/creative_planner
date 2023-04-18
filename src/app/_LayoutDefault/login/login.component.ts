@@ -53,6 +53,20 @@ export class LoginComponent implements OnInit {
   //---end---
   ngOnInit() {
     this.authService.logout();
+
+    $('.showOrHide').on('click', function(e){
+      var target = e.currentTarget
+      $(target).hasClass('showp')?hidePassword($(target)):showPassword($(target))
+  })
+  function hidePassword(e){
+      e.removeClass('showp').addClass('hide')
+      e.prev('input').attr('type','password')
+  }
+  function showPassword(e){
+      e.removeClass('hide').addClass('showp')
+      e.prev('input').attr('type','text')
+  }
+
   }
   get f() { return this.loginForm.controls; }
 

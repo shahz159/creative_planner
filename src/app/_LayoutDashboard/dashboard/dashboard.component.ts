@@ -558,6 +558,8 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
+    
+
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
       if (y > 380) {
@@ -583,7 +585,22 @@ export class DashboardComponent implements OnInit {
     (data=>{
       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
       this.timelineDuration=(data[0]['TotalTime']);
+
+        
+      const hrstippy = document.getElementById('hrs-tippy');
+      tippy('.tippy', {
+        content: hrstippy.innerHTML,
+        arrow: true,
+        allowHTML: true,
+        animation: 'scale-extreme',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+        placement:'top'
+      });
+
     });
+    
   }
 
   racisTimeline(){

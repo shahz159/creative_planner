@@ -1684,7 +1684,10 @@
                 </div>
 
             </div>            
-            <span class="timeli-hrs">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
+            <div id="hrs-tippy" class="d-none" >
+                Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 54Hrs
+            </div>
+            <span class="timeli-hrs tippy" id="hrs-tippy">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
         </div>
         <div class="kt-portlet__body kt-portlet__body_scroll p-0">
             <div class="tab-content" id="time-tabbview">
@@ -1706,17 +1709,22 @@
                             </div>
                             <!--end::Timeline icon-->
                             <div class="timeline-content mb-10 mt-n2">
-                                <div class="overflow-auto pt-2 pr-3">
-                                    <div class="timeline-text fs-6">
-                                        {{item1.EmpName}}
-                                        <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
-                                        <span class="ml-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
-                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>  
-                                            {{item1.starttime}} - {{item1.endtime}}                              
-                                        </span> in
+                                <div class="overflow-auto pt-2">
+                                    <div class="d-flex-between">
+                                        
+                                        <div class="timeline-text fs-6">
+                                            {{item1.EmpName}}
+                                            <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
+                                            <span class="ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>  
+                                                {{item1.starttime}} - {{item1.endtime}}                              
+                                            </span> in
+                                        </div>
+                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mb-2"><i class="fa fa-clone mr-2"></i> Core Tasks </label>
+
                                     </div>
                                     <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
                                         <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
@@ -1726,10 +1734,7 @@
                                     </div>
                                     <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
                                         <span class="desp-txt fs-7">Personal</span>
-                                    </div>                                    
-                                    <div class="timeline-text fs-6">
-                                        <span class="desp-txt fs-7">Type</span>Core Tasks
-                                    </div>
+                                    </div> 
                                     <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
                                         <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
                                     </div>
