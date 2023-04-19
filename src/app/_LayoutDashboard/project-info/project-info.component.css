@@ -229,7 +229,7 @@
 .comt-text{
   /* color: #14171a; */
   margin-left: 5px;
-  margin-top: 2px;
+  /* margin-top: 2px; */
   font-size: 14px;
 }
 .blw .dt {
@@ -246,8 +246,20 @@
  max-height: 200px;
  overflow: auto; 
 }
+.s1{
+  display: none;
+}
+.collapsed .c1{
+  display: none;
+}
+.collapsed .s1{
+  display: inline;
+}
 .collapsed .fa-chevron-up:before, .dwn-arw .fa-chevron-up:before {
   content: "\f078";
+}
+.action-content h6{
+  margin-bottom: 0;
 }
 .date-drop1, .date-drop2, .date-drop3 {
   width: 350px;

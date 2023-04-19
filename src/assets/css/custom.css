@@ -1242,3 +1242,12 @@ button[disabled] {
     width: 30px;
     height: 30px;
 }
+.text-underline{
+    text-decoration: underline !important;
+}
+.text-hover-underline:hover{
+    text-decoration: underline !important;
+}
+.text-hover-info:hover {
+    color: #2786fb !important;
+}
