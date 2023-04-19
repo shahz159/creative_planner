@@ -2129,48 +2129,53 @@
                                 <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
                                     (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
                                     [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
-                                <div class="input-group-text p-0">
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
+                                <div class="input-group-append">
+
+                                    <div class="input-group-text p-0">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group flex-1">
+                            <label class="cus-lbl">Start Time </label>
+                            <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label class="cus-lbl">End Time </label>
+                            <ng-select class="kt-input form-control" (open)="onfocus($event)"
+                                placeholder="End Time" [(ngModel)]="Endtms" >
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}</ng-option>
+                            </ng-select>
+                        </div>
                         <div class="form-group flex-1" id="div_endDate">
-                            <label>End Date :<span class="text-danger">*</span></label>
+                            <label>End Date <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
                                     (dateChange)="selectEndDate($event)" [min]="_StartDate" [(ngModel)]="_EndDate"
                                     placeholder="End Date" class="form-control">
-                                <div class="input-group-text p-0">
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </div>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3 gap-1">
+                    
+                    <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
+                        Note:Selected Project is Expired,Please Extend your Project Deadline date
+                    </div>
+
+                    <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
-                            <div class="d-flex gap-15">
-                                <div class="form-group flex-1">
-                                    <label class="cus-lbl">Start Time </label>
-                                    <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
-                                        placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
-                                        <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
-                                            {{item}}</ng-option>
-                                    </ng-select>
-                                </div>
-                                <div class="form-group flex-1">
-                                    <label class="cus-lbl">End Time </label>
-                                    <ng-select class="kt-input form-control" (open)="onfocus($event)"
-                                        placeholder="End Time" [(ngModel)]="Endtms" >
-                                        <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                            {{item1}}</ng-option>
-                                    </ng-select>
-                                </div>
-                            </div>
-                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
-                                Note:Selected Project is Expired,Please Extend your Project Deadline date
-                            </div>
 
                             <div class="form-group flex-1" id="Recurrence_hide">
 
@@ -2198,14 +2203,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- <div class="form-group flex-1">
-                                <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
-                                    (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
-                                    aria-controls="collapse_repeat">Custom recurrence</button>
-                            </div> -->
 
-                            <div>
+                        <div class="d-flex gap-1 flex-1">
+                            <div class="wc-cus">
                                 <div class="form-group flex-1" id="div_recurrence">
                                     <label class="">Repeat on</label>
                                     <mat-select name="Select Type" placeholder="Do not repeat"
@@ -2217,6 +2219,32 @@
                                         <mat-option value="3">Monthly</mat-option>
                                     </mat-select>
                                 </div>
+                            </div>
+
+                            <div class="form-group flex-1">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input matInput [min]="disablePreviousDate"  placeholder="End Date" class="form-control">
+                                    <div class="input-group-append">
+    
+                                        <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="wc-cus">
+                            <!-- <div class="form-group flex-1">
+                                <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                    (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
+                                    aria-controls="collapse_repeat">Custom recurrence</button>
+                            </div> -->
+
+
+                            <div>
                                 
                                 <div class="ml-0 form-group" style="display: none;" id="weekly_121">
                                     <label class="">Days</label>
