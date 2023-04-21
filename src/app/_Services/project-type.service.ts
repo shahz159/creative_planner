@@ -541,6 +541,8 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
     this.ObjSubTaskDTO.sort = obj.sort;
+    this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
+    this.ObjSubTaskDTO.End_Date = obj.End_Date;
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivity", this.ObjSubTaskDTO);
   }
@@ -551,12 +553,19 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.PageNumber = obj.PageNumber;
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
     this.ObjSubTaskDTO.sort = obj.sort;
+    this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
+    this.ObjSubTaskDTO.End_Date = obj.End_Date;
+
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivityforRACIS", this.ObjSubTaskDTO);
   }
 
   _GetTimelineDurationforRACIS(obj: SubTaskDTO) {
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
+    this.ObjSubTaskDTO.sort = obj.sort;
+    this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
+    this.ObjSubTaskDTO.End_Date = obj.End_Date;
+    
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
   }
 

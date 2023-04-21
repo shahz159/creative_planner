@@ -449,6 +449,8 @@ export class DashboardComponent implements OnInit {
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
+    this.timelineType=this.type1;
+    this.selectedSort = 'today';
     // document.getElementById("div_endDate").style.display = "none";
     this.MinLastNameLength = true;
     this.selectedrecuvalue = "0";
@@ -572,49 +574,247 @@ export class DashboardComponent implements OnInit {
     });
 
   }
+
+
   timelineList:any;
-  today:any = new Date();
-  yesterday:any = new Date();
+  timelineType:string;
+  type1:string = 'self';
+  type2:string = 'racis';
+  sortList: any = ['today','yesterday','this week','last week','this month','last month']
+  selectedSort:string;
+  yesterday:any;
   timelineDuration:any;
+  showtimeline:boolean=true;
+  today:any = new Date().toISOString().substring(0, 10);
+  timeFrom: any;
+  timeTo: any;
   
-  timelineLog(){
-    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-    this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
-    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-    (data=>{
-      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-      this.timelineDuration=(data[0]['TotalTime']);
+  timelineLog(type){
+    this.showtimeline=true;
+    if(this.selectedSort == 'custom'){
+      this.customTimeline();
+    }
 
-        
-      const hrstippy = document.getElementById('hrs-tippy');
-      tippy('.tippy', {
-        content: hrstippy.innerHTML,
-        arrow: true,
-        allowHTML: true,
-        animation: 'scale-extreme',
-        theme: 'gradient',
-        animateFill: true,
-        inertia: true,
-        placement:'top'
-      });
-
-    });
-    
+    else{
+      if(type==this.type1){
+        this.timelineType=type;
+        this.timelineList=null;
+        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+        this.ObjSubTaskDTO.PageNumber = 1;
+        this.ObjSubTaskDTO.PageSize = 2;
+        this.ObjSubTaskDTO.sort = this.selectedSort;
+        this.ObjSubTaskDTO.Start_Date = null;
+        this.ObjSubTaskDTO.End_Date = null;
+  
+          this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+          (data=>{
+            this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+            this.timelineDuration=(data[0]['TotalTime']);
+            if(this.timelineList.length == 0){
+              this.showtimeline=false;
+              this.timelineDuration=0;
+            }
+              
+            const hrstippy = document.getElementById('hrs-tippy');
+            tippy('.tippy', {
+              content: hrstippy.innerHTML,
+              arrow: true,
+              allowHTML: true,
+              animation: 'scale-extreme',
+              theme: 'gradient',
+              animateFill: true,
+              inertia: true,
+              placement:'top'
+            });
+  
+          });
+      }    
+  
+      else if(type==this.type2){
+          this.timelineType=type;
+          this.timelineList=null;
+          this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+          this.ObjSubTaskDTO.PageNumber = 1;
+          this.ObjSubTaskDTO.PageSize = 2;
+          this.ObjSubTaskDTO.sort = this.selectedSort;
+              this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+              (data=>{
+                this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+                if(this.timelineList.length == 0){
+                  this.showtimeline=false;
+                  this.timelineDuration=0;
+                }
+                const hrstippy = document.getElementById('hrs-tippy');
+                tippy('.tippy', {
+                  content: hrstippy.innerHTML,
+                  arrow: true,
+                  allowHTML: true,
+                  animation: 'scale-extreme',
+                  theme: 'gradient',
+                  animateFill: true,
+                  inertia: true,
+                  placement:'top'
+                });
+              });
+              this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+              (data=>{
+                this.timelineDuration=(data[0]['TotalTime']);
+              });
+      }
+    }
   }
 
-  racisTimeline(){
-    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-    this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
-    this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-    (data=>{
-      this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-    });
-    this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-    (data=>{
-      this.timelineDuration=(data[0]['TotalTime']);
-    });
+  sortTimeline(sort){
+    this.selectedSort=sort;
+    this.showtimeline=true;
+    this.timeFrom=null;
+    this.timeTo=null;
+
+    if(this.timelineType==this.type1){
+      this.timelineList=null;
+      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+      this.ObjSubTaskDTO.PageNumber = 1;
+      this.ObjSubTaskDTO.PageSize = 2;
+      this.ObjSubTaskDTO.sort = this.selectedSort;
+      this.ObjSubTaskDTO.Start_Date = null;
+      this.ObjSubTaskDTO.End_Date = null;
+        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+        (data=>{
+          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+          this.timelineDuration=(data[0]['TotalTime']);
+          if(this.timelineList.length == 0){
+            this.showtimeline=false;
+            this.timelineDuration=0;
+          }
+            
+          const hrstippy = document.getElementById('hrs-tippy');
+          tippy('.tippy', {
+            content: hrstippy.innerHTML,
+            arrow: true,
+            allowHTML: true,
+            animation: 'scale-extreme',
+            theme: 'gradient',
+            animateFill: true,
+            inertia: true,
+            placement:'top'
+          });
+
+        });
+    }    
+    
+
+    else if(this.timelineType==this.type2){
+        this.timelineList=null;
+        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+        this.ObjSubTaskDTO.PageNumber = 1;
+        this.ObjSubTaskDTO.PageSize = 2;
+        this.ObjSubTaskDTO.sort = this.selectedSort;
+        this.ObjSubTaskDTO.Start_Date = null;
+        this.ObjSubTaskDTO.End_Date = null;
+            this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+            (data=>{
+              this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+              if(this.timelineList.length == 0){
+                this.showtimeline=false;
+                this.timelineDuration=0;
+              }
+              const hrstippy = document.getElementById('hrs-tippy');
+              tippy('.tippy', {
+                content: hrstippy.innerHTML,
+                arrow: true,
+                allowHTML: true,
+                animation: 'scale-extreme',
+                theme: 'gradient',
+                animateFill: true,
+                inertia: true,
+                placement:'top'
+              });
+            });
+            this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+            (data=>{
+              this.timelineDuration=(data[0]['TotalTime']);
+            });
+    }
+  }
+
+  customTimeline(){
+    
+    this.selectedSort='custom';
+    this.showtimeline=true;
+
+    if(this.timelineType==this.type1){
+      this.timelineList=null;
+      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+      this.ObjSubTaskDTO.PageNumber = 1;
+      this.ObjSubTaskDTO.PageSize = 2;
+      this.ObjSubTaskDTO.sort = this.selectedSort;
+      this.ObjSubTaskDTO.Start_Date = this.timeFrom;
+      this.ObjSubTaskDTO.End_Date = this.timeTo;
+
+        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+        (data=>{
+          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+          this.timelineDuration=(data[0]['TotalTime']);
+          if(this.timelineList.length == 0){
+            this.showtimeline=false;
+            this.timelineDuration=0;
+          }
+            
+          const hrstippy = document.getElementById('hrs-tippy');
+          tippy('.tippy', {
+            content: hrstippy.innerHTML,
+            arrow: true,
+            allowHTML: true,
+            animation: 'scale-extreme',
+            theme: 'gradient',
+            animateFill: true,
+            inertia: true,
+            placement:'top'
+          });
+
+        });
+    }    
+    
+
+    else if(this.timelineType==this.type2){
+        this.timelineList=null;
+        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+        this.ObjSubTaskDTO.PageNumber = 1;
+        this.ObjSubTaskDTO.PageSize = 2;
+        this.ObjSubTaskDTO.sort = this.selectedSort;
+        this.ObjSubTaskDTO.Start_Date = this.timeFrom;
+        this.ObjSubTaskDTO.End_Date = this.timeTo;
+
+            this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+            (data=>{
+              this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+              if(this.timelineList.length == 0){
+                this.showtimeline=false;
+                this.timelineDuration=0;
+              }
+              const hrstippy = document.getElementById('hrs-tippy');
+              tippy('.tippy', {
+                content: hrstippy.innerHTML,
+                arrow: true,
+                allowHTML: true,
+                animation: 'scale-extreme',
+                theme: 'gradient',
+                animateFill: true,
+                inertia: true,
+                placement:'top'
+              });
+            });
+            this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+            (data=>{
+              this.timelineDuration=(data[0]['TotalTime']);
+            });
+    }
+  }
+
+
+  cleardates(){
+    this.timeFrom=null;
+    this.timeTo=null;
   }
 
   viewTimeline(){
