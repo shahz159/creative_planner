@@ -245,32 +245,57 @@
                                         'justify-content-between' : item.Status=='Deadline Extend Under Approval'}"  -->
                                 <div class="proctdetls" id="ProjectDetails_Main">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2"><svg
-                                                    width="24" height="24" viewBox="0 0 40 40" aria-hidden="true"
-                                                    focusable="false" fill="currentColor">
-                                                    <path
-                                                        d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
-                                                    </path>
-                                                </svg></span></div>
-                                        <div class="action-content">
+                                        <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"></path>
+                                              </svg>
+                                        </span></div>
+                                        <!-- <div class="action-content">
                                             <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
                                             <h6 class="mt-1 text-blue">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                        </div>
+                                        </div> -->
                                         
-                                        <!-- <div class="action-content d-flex align-items-center">
-                                            <div class="">
-                                              <h6 class="txtm-cus pt-1">Date</h6>
+                                        <div class="action-content d-flex align-items-center gap-1">
+                                            <div class="left-w">
+                                              <h6 class="txtm-cus pt-1">Existing Deadline</h6>
                                               <h6 class="mt-1"> 10-02-2023 </h6>
                                             </div>
                                             <div class="px-1">
-                                              <i class="la la-arrows-h mx-3 fs-4 font-weight-bold"></i>
+                                              <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
                                             <div>
-                                              <h6 class="txtm-cus pt-1">Date</h6>
+                                              <h6 class="txtm-cus pt-1">New Deadline</h6>
                                               <h6 class="mt-1"> 10-02-2023 </h6>
                                             </div>
-                                          </div> -->
+                                          </div>
                                     </div>
+
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="">
+                                            <span class="svg-icon svg-icon-2x text-primary mr-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="action-content d-flex align-items-center gap-1">
+                                            <div class="left-w">
+                                              <h6 class="txtm-cus pt-1">Existing Cost</h6>
+                                              <h6 class="mt-1"> SAR 100.00 </h6>
+                                              <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
+                                            </div>
+                                            <div class="px-1">
+                                              <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                                            </div>
+                                            <div>
+                                              <h6 class="txtm-cus pt-1">New Cost</h6>
+                                              <h6 class="mt-1"> SAR 200.00 </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div class="d-flex align-items-center mb-3">
                                         <div class=""><span class="svg-icon svg-icon-2x text-info mr-2"><svg
                                                     _ngcontent-jrv-c350="" width="24" height="24" viewBox="0 0 40 40"

@@ -343,3 +343,6 @@ display: block;
   transition: all .2s ease-out;
   cursor: pointer;
 }
+.left-w{
+  min-width: 105px;
+}
