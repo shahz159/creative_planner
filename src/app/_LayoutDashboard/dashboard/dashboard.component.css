@@ -859,7 +859,7 @@
 }
 
 .wc-cus {
-    width: 48%;
+    width: 49.5%;
 }
 
 .width-cus {
@@ -1967,4 +1967,9 @@ a.ordr-a {
 .sort-back svg{
     width: 12px;
     height:12px;
+}
+::ng-deep .mat-icon-button{
+    width: 40px !important;
+    height: 35px !important;
+    line-height: 1 !important;
 }
