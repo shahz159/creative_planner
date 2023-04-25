@@ -9,7 +9,7 @@
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
         <div class="kt-header__topbar-item" >
-            <span (click)="actyside();timelineLog()" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
+            <span (click)="actyside();timelineLog(timelineType)" class="kt-header__topbar-icon kt-header__topbar-icon--success mr-3">
                 <i class="flaticon2-calendar-5" id="timelinelog"></i>
             </span>
         </div>
@@ -1602,17 +1602,17 @@
         <div class="tabs-header">
             <ul id="time-tabs" role="tablist" class="nav nav-pills px-3 time-tabs mb-0 pt-2">
                 <li class="nav-item">
-                    <a id="mytime-1" data-toggle="tab" href="#mytime_1" class="nav-link active" (click)="timelineLog()">
+                    <a id="mytime-1" data-toggle="tab" href="#mytime_1" [ngClass]="timelineType==type1 ? 'nav-link active' : 'nav-link'" (click)="timelineLog(type1)">
                         <span class="nav-text">My Timeline</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a id="racis-1" data-toggle="tab" href="#racis_1" class="nav-link" (click)="racisTimeline()">
+                    <a id="racis-1" data-toggle="tab" href="#racis_1" [ngClass]="timelineType==type2 ? 'nav-link active' : 'nav-link'" (click)="timelineLog(type2)">
                         <span class="nav-text">RACIS Timeline</span>
                     </a>
                 </li>
             </ul>
-            <div class="left-filt" (click)="notinAction()">                
+            <div class="left-filt ">                
                 <div class="dropdown">
                     <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
                         id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1623,7 +1623,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
                             <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
                           </svg>
-                          <a class="ordr-a" href="javascritp:void(0)">Date Filter</a>
+                          <a class="ordr-a" href="javascritp:void(0)">{{selectedSort}}</a>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
                         <div>
@@ -1631,50 +1631,54 @@
                             <span class="sort-by pb-2">Sort by</span>
                         
                             <div class="" id="main-section">
-                                <a class="dropdown-item active" >Today
+                                <div *ngFor="let item of sortList" >
+                                    <a [ngClass]="selectedSort==item ? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(item)">{{item}}
+                                        <span *ngIf="selectedSort==item">
+                                            <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </div>
+                                
+                                <!-- <a class="dropdown-item">
+                                    Yesterday
                                     <span>
-                                        <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
                                             <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                                         </svg>
                                     </span>
-                                </a>
-                                <a class="dropdown-item">
-                                    Tomorrow
-                                    <!-- <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
-                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                        </svg>
-                                    </span> -->
-                                </a>
-                                <a class="dropdown-item d-range" (click)="daterange()" (click)="$event.stopPropagation();">Custom Date Range</a>
+                                </a> -->
+                                <a class="dropdown-item d-range" (click)="daterange()" (click)="$event.stopPropagation();">custom date range</a>
                                 
-                                 <span class="note-txt">Click on custom range to view data between dates.</span>
+                                 <span class="note-txt">click on custom range to view data between dates.</span>
                             </div> 
-                            <div class="px-3 pt-3 d-none" id="range-picker" (click)="$event.stopPropagation();">
+                            <div class="px-3 pt-3 d-none" id="range-picker">
+                                <div  (click)="$event.stopPropagation();">
+                                    <a class="sort-back pb-2" (click)="daterange()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                        </svg>Back
+                                    </a>
+                                    <div class="mt-1">
+                                        <label class="cus-lbl">Date range</label>
+                                        <div class="d-flex-cen">
+                                            <div class="">
+                                                <input type="date" class="form-control" max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="timeFrom">
+                                            </div>
+                                            <div class="px-2">to</div>
+                                            
+                                            <div class="">
+                                                <input type="date" class="form-control" max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="timeTo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
-                                <a class="sort-back pb-2" (click)="daterange()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                    </svg>Back
-                                </a>
-                                <div class="mt-1">
-                                    <label class="cus-lbl">Date Range</label>
-                                    <div class="d-flex-cen">
-                                        <div class="">
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="px-2">to</div>
-                                        
-                                        <div class="">
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 mb-2">
-                                        <button class="btn btn-sm btn-info"> Apply </button>
-                                        <button class="btn btn-sm btn-secondary ml-2"> clear </button>
-                                    </div>
-
+                                <div class="mt-3 mb-2">
+                                    <button class="btn btn-sm btn-info" (click)="customTimeline()"> Apply </button>
+                                    <button class="btn btn-sm btn-secondary ml-2" (click)="cleardates()"> clear </button>
                                 </div>
                                     
                             </div>
@@ -1685,14 +1689,17 @@
 
             </div>            
             <div id="hrs-tippy" class="d-none" >
-                Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 54Hrs
+                Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 8Hrs
             </div>
             <span class="timeli-hrs tippy" id="hrs-tippy">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
         </div>
         <div class="kt-portlet__body kt-portlet__body_scroll p-0">
             <div class="tab-content" id="time-tabbview">
                 <div class="tab-pane fade show active" id="mytime_1" role="tabpanel"
-                    aria-labelledby="mytime-1">                    
+                    aria-labelledby="mytime-1">    
+                    <div class="text-center py-4" style="color: lightgrey"  *ngIf="showtimeline==false">
+                        <h5>No timeline found for '{{selectedSort}}' filter.</h5>
+                    </div>                
                     <div class="timeline" *ngFor="let item of timelineList;let i=index">
                         <div class="timeline-header sticky-header">
                             <span class="header-text header-date">
@@ -1723,7 +1730,66 @@
                                                 {{item1.starttime}} - {{item1.endtime}}                              
                                             </span> in
                                         </div>
-                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mb-2"><i class="fa fa-clone mr-2"></i> Core Tasks </label>
+                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mb-2"><i class="fa fa-clone mr-2"></i> {{item1.Tasktype}} </label>
+
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">Project</span><a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item1.project_code)">{{item1.ProjectName | titlecase}}</a>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.Tasktype=='Lunch'">
+                                        <span class="desp-txt fs-7">Lunch</span>
+                                    </div>
+                                    <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
+                                        <span class="desp-txt fs-7">Personal</span>
+                                    </div> 
+                                    <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
+                                        <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
+                                    </div>
+                                    <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
+                                    <!-- <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item1.date | date:'dd-MM-yyyy'}}</div> -->
+                                    <div class="timeline-text fs-6 achv-txt"><span class="desp-txt fs-7 d-none">Achievement</span>{{item1.WorkAchieved}}</div>
+                                </div>
+                            </div>
+                            <!--end::Timeline content-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="racis_1" role="tabpanel" aria-labelledby="racis_1">
+                    <div class="text-center py-4" style="color: lightgrey"  *ngIf="showtimeline==false">
+                        <h5>No timeline found for '{{selectedSort}}' filter.</h5>
+                    </div>                    
+                    <div class="timeline" *ngFor="let item of timelineList;let i=index">
+                        <div class="timeline-header sticky-header">
+                            <span class="header-text header-date">
+                                {{item.SubmissionDate | date: 'fullDate'}}
+                            </span>
+                        </div>
+                        <div class="timeline-item mx-4" *ngFor="let item1 of item.Dardata">
+                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                <div class="symbol-label kt-bg-light-primary">
+                                    <span class="timeline-media">
+                                        {{item1.Initial}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!--end::Timeline icon-->
+                            <div class="timeline-content mb-10 mt-n2">
+                                <div class="overflow-auto pt-2">
+                                    <div class="d-flex-between">
+                                        
+                                        <div class="timeline-text fs-6">
+                                            {{item1.EmpName}}
+                                            <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
+                                            <span class="ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>  
+                                                {{item1.starttime}} - {{item1.endtime}}                              
+                                            </span> in
+                                        </div>
+                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mb-2"><i class="fa fa-clone mr-2"></i> {{item1.Tasktype}} </label>
 
                                     </div>
                                     <div class="timeline-text fs-6" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
