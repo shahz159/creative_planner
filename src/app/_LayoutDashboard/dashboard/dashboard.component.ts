@@ -560,6 +560,8 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
+    
+
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
       if (y > 380) {
@@ -567,6 +569,7 @@ export class DashboardComponent implements OnInit {
         $('.show .btm-dropdn').fadeIn();
       } else {
         $('.create-btm').fadeOut();
+        $('.show .btm-dropdn').fadeOut();
       }
     });
 
@@ -1217,9 +1220,6 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-        this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-        // alert( this.Addressurl);
-        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
 
 
@@ -1402,7 +1402,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        // console.log(this.EventScheduledjson, "test")
+        console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -4110,8 +4110,9 @@ export class DashboardComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
-  daterange(){
+  daterange(){    
     document.getElementById("range-picker").classList.toggle("d-none");
     document.getElementById("main-section").classList.toggle("d-none");
+    
   }
 }
