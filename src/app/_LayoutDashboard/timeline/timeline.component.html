@@ -11,7 +11,7 @@
                                 {{Type}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'" *ngIf="Current_user_ID!='2000'"  (click)="timelineLog(type1)">{{type1}}</a>
+                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1)">{{type1}}</a>
                                 <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2)">{{type2}}</a>
                             </div>
                         </div>

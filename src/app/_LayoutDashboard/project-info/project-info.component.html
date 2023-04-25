@@ -121,15 +121,56 @@
     <div class="card-body" *ngFor="let item of ProjectInfo_List">
 
 
-        <div class="d-flex  align-items-center justify-content-between mt-0">
-            <div class>
-                <div class="mb-2">
-                    <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
-                        <i class="fa fa-clone mr-2"></i> {{item.Exec_BlockName}}
-                    </label>
+        <div class="d-flex  align-items-start justify-content-between mt-0">
+           <div class="flex-1">
+                <div class="d-flex align-items-center">
+                    <h5 class="fs-3 mb-2 d-inline-blck" id="pro_name_{{Pid}}">{{item.Project_Name }}</h5>
+                    <!--edit project name-->
+                    <span class="text-info mb-2" [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
+                        id="EidtBtn_single{{Pid}}"
+                        *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
+                            && (item.Status!='Completed')">
+                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
+                    </span>
+                    <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
+                                [(ngModel)]="_modelProjectName" style="width: 78%;height: 32px;"
+                                (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
+                            <div class="d-inline-block ml-3" id="button-addon4">
+                                <button (click)="OnProject_Rename(Pid,_MasterCode)"
+                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                <button class=" btn btn-secondary btn btn-sm" (click)="onCancel(Pid)">Cancel</button>
+                            </div>
+                        </div>
+                    </span>
                 </div>
+                <!--edit project name end-->
+                
+                <p class="mb-2">
+                    <span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
+                    <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
+                        id="EidtBtn_single{{Pid}}"
+                        *ngIf="(Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
+                            && (item.Status!='Completed')">
+                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
+                    </span>
+                    <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
+                                [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
+                                (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
+                            <div class="d-inline-block ml-3" id="button-addon4">
+                                <button (click)="OnProject_Rename(Pid,_MasterCode)"
+                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                <button class=" btn btn-secondary btn btn-sm" (click)="onCancel(Pid)">Cancel</button>
+                            </div>
+                        </div>
+                    </span>
+                </p>
+           </div>
+            
 
-            </div>
             <div>
                 <button type="button" class="btn btn-info btn-sm py-1" (click)="moreDetails()">
                     <i class="fa fa-chart-bar"></i>More Info
@@ -137,71 +178,47 @@
             </div>
         </div>
 
-        <div class="mt-1">
-            <div class="align-items-center">
-                <h5 class="fs-3 mb-2 d-inline-blck" id="pro_name_{{Pid}}">{{item.Project_Name }}</h5>
-                <!--edit project name-->
-                <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-                    id="EidtBtn_single{{Pid}}"
-                    *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
-                         && (item.Status!='Completed')">
-                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
-                </span>
-                <span class="kt-inbox__subject mb-2 w-100" style="display:none;" id="spanTextbox_single{{Pid}}">
-                    <div class="d-flex">
-                        <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
-                            [(ngModel)]="_modelProjectName" style="width: 78%;height: 32px;"
-                            (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
-                        <div class="d-inline-block ml-3" id="button-addon4">
-                            <button (click)="OnProject_Rename(Pid,_MasterCode)"
-                                class="btn btn-primary btn btn-sm mr-2">Done</button>
-                            <button class=" btn btn-secondary btn btn-sm" (click)="onCancel(Pid)">Cancel</button>
-                        </div>
-                    </div>
-                </span>
+        
+        
+        <div>
+            <div class="mt-1">
+                <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
+                    <i class="fa fa-clone mr-2"></i> {{item.Exec_BlockName}}
+                </label>
+
+                <label class=" kt-badge kt-bg-light-primary kt-badge--inline ml-2">
+                    <span class="mr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="12"><path d="M8 19.9998V21.9323C8 22.2085 7.77614 22.4323 7.5 22.4323C7.38303 22.4323 7.26977 22.3913 7.17991 22.3164L3.06093 18.8839C2.84879 18.7072 2.82013 18.3919 2.99691 18.1797C3.09191 18.0657 3.23264 17.9998 3.38103 17.9998L18 17.9998C19.1046 17.9998 20 17.1044 20 15.9998V7.99985H22V15.9998C22 18.209 20.2091 19.9998 18 19.9998H8ZM16 3.99985V2.06738C16 1.79124 16.2239 1.56738 16.5 1.56738C16.617 1.56738 16.7302 1.60839 16.8201 1.68327L20.9391 5.11575C21.1512 5.29253 21.1799 5.60782 21.0031 5.81995C20.9081 5.93395 20.7674 5.99986 20.619 5.99986L6 5.99985C4.89543 5.99985 4 6.89528 4 7.99985V15.9998H2V7.99985C2 5.79071 3.79086 3.99985 6 3.99985H16Z"></path></svg>
+                    </span> Daily
+                </label>
             </div>
-            <!--edit project name end-->
-            <p><span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
-                <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
-                    id="EidtBtn_single{{Pid}}"
-                    *ngIf="(Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)
-                         && (item.Status!='Completed')">
-                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
-                </span>
-                <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_single{{Pid}}">
-                    <div class="d-flex">
-                        <input type="text" class="form-control" id="textboxfocus_single{{Pid}}"
-                            [(ngModel)]="_modelProjDesc" style="width: 78%;height: 32px;"
-                            (keydown.enter)="OnProject_Rename(Pid,_MasterCode)">
-                        <div class="d-inline-block ml-3" id="button-addon4">
-                            <button (click)="OnProject_Rename(Pid,_MasterCode)"
-                                class="btn btn-primary btn btn-sm mr-2">Done</button>
-                            <button class=" btn btn-secondary btn btn-sm" (click)="onCancel(Pid)">Cancel</button>
-                        </div>
-                    </div>
-                </span>
-            </p>
+
         </div>
 
 
-        <div class="d-flex  align-items-center justify-content-between" *ngIf="(Current_user_ID  == approvalEmpId)  && 
+        <div class="d-flex  align-items-center justify-content-between mt-3" *ngIf="(Current_user_ID  == approvalEmpId)  && 
                 (item.Status!='Completed') ">
             <!--&& item.Status!='InProcess' && item.Status!='Delay' && item.Status!='New Project Rejected'" -->
-            <div class>
-                <div class="my-2">
-                    <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
-                        data-toggle="collapse" href="#pro_actns" role="button" aria-expanded="true"
-                        aria-controls="pro_actns" *ngIf="pro_act==true">
-                        <i class="fas fa-check-circle"></i>
-                        Project Actions<i class="fa fa-chevron-up ml-2 m-0"></i>
-                    </button>
-
-                    <!-- <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
-                        Project Actions
-                    </label> -->
-                </div>
-
+            
+            <div class="">
+                <h5 class="text-hover-underline text-hover-info mb-0"
+                    data-toggle="collapse" href="#pro_actns" role="button" aria-expanded="true"
+                    aria-controls="pro_actns" *ngIf="pro_act==true">
+                    <!-- <i class="fas fa-check-circle"></i> -->
+                    Project Actions
+                    <!-- <i class="fa fa-chevron-up ml-2 m-0"></i> -->
+                </h5>
             </div>
+
+            <div class>                                  
+                <a class="text-info text-hover-underline"
+                    data-toggle="collapse" href="#pro_actns" role="button" aria-expanded="true"
+                    aria-controls="pro_actns" *ngIf="pro_act==true">
+                    <span class="c1">Hide</span>
+                    <span class="s1">View</span>
+                </a>
+            </div>
+
             <!-- <div> *ngIf="requestType!='Project Forward'" 
                 && (requestType!='Project Forward')
                 <button type="button" class="btn btn-info btn-sm py-1" data-toggle="collapse" href="#pro_actns" role="button" aria-expanded="true" aria-controls="pro_actns">
@@ -223,39 +240,63 @@
                                 <h5 class="fs-6" id="">{{requestComments}}</h5>
                             </div> -->
 
-                            <div class="comment-list pb-0" *ngIf="requestComments!=''">
-                                <div class="d-flex">
-                                    <div>
-                                        <span class="name-box text-center">{{initials1}}</span>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1">
-                                        <span class="comt-info">{{Submitted_By}}</span>
-                                        <div class="comment-text">
-                                            <span>{{requestComments}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="py-2">
+                            <div class="pb-2">
                                 <!-- [ngClass]="{ ' ' : item.Status!='Deadline Extend Under Approval',
                                         'justify-content-between' : item.Status=='Deadline Extend Under Approval'}"  -->
-                                <div class="proctdetls flex-column d-flex gap-1" id="ProjectDetails_Main">
-                                    <div class="d-flex align-items-center">
-                                        <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2"><svg
-                                                    width="24" height="24" viewBox="0 0 40 40" aria-hidden="true"
-                                                    focusable="false" fill="currentColor">
-                                                    <path
-                                                        d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z">
-                                                    </path>
-                                                </svg></span></div>
-                                        <div class="action-content">
+                                <div class="proctdetls" id="ProjectDetails_Main">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"></path>
+                                              </svg>
+                                        </span></div>
+                                        <!-- <div class="action-content">
                                             <h6 class="txtm-cus mb-1 pt-1">Request Date</h6>
                                             <h6 class="mt-1 text-blue">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                        </div> -->
+                                        
+                                        <div class="action-content d-flex align-items-center gap-1">
+                                            <div class="left-w">
+                                              <h6 class="txtm-cus pt-1">Existing Deadline</h6>
+                                              <h6 class="mt-1"> 10-02-2023 </h6>
+                                            </div>
+                                            <div class="px-1">
+                                              <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                                            </div>
+                                            <div>
+                                              <h6 class="txtm-cus pt-1">New Deadline</h6>
+                                              <h6 class="mt-1"> 10-02-2023 </h6>
+                                            </div>
+                                          </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="">
+                                            <span class="svg-icon svg-icon-2x text-primary mr-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="action-content d-flex align-items-center gap-1">
+                                            <div class="left-w">
+                                              <h6 class="txtm-cus pt-1">Existing Cost</h6>
+                                              <h6 class="mt-1"> SAR 100.00 </h6>
+                                              <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
+                                            </div>
+                                            <div class="px-1">
+                                              <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                                            </div>
+                                            <div>
+                                              <h6 class="txtm-cus pt-1">New Cost</h6>
+                                              <h6 class="mt-1"> SAR 200.00 </h6>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center">
+
+
+                                    <div class="d-flex align-items-center mb-3">
                                         <div class=""><span class="svg-icon svg-icon-2x text-info mr-2"><svg
                                                     _ngcontent-jrv-c350="" width="24" height="24" viewBox="0 0 40 40"
                                                     aria-hidden="true" focusable="false" fill="currentColor">
@@ -271,7 +312,7 @@
                                             <h6 class="mt-1 text-blue">{{requestType}}</h6>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center"
+                                    <div class="d-flex align-items-center mb-3"
                                         *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
                                         <div class=""><span class="svg-icon svg-icon-2x text-dangr mr-2"><svg width="24"
                                                     height="24" viewBox="0 0 40 40" aria-hidden="true" focusable="false"
@@ -287,6 +328,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="comment-list my-3 pb-0" *ngIf="requestComments!=''">
+                                    <div class="d-flex">
+                                        <div>
+                                            <span class="name-box text-center mt-1">{{initials1}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column flex-grow-1">
+                                            <div class=""><span class="comt-info">{{Submitted_By}}</span> on {{requestDate | date:'dd-MM-yyyy'}}</div>
+                                            <div class="comt-text">
+                                                <span>{{requestComments}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <a class="btn--1 btn-info--1 btn-sm--1 text-info py-2" data-toggle="collapse"
                                     href="#prevco" role="button" aria-expanded="false" aria-controls="prevco">
                                     View Previous Comments
@@ -295,7 +351,7 @@
                                     <div class="comment-list" *ngFor="let item of prviousCommentsList">
                                         <div class="d-flex">
                                             <div>
-                                                <span class="name-box text-center">{{item.Initial}}</span>
+                                                <span class="name-box text-center mt-1">{{item.Initial}}</span>
                                             </div>
                                             <div class="d-flex flex-column flex-grow-1">
                                                 <span class="comt-info">{{item.Submitted_By}}</span>
@@ -441,7 +497,7 @@
 
         <div class=" border-top mt-3">
             <div class="mt-3">
-                <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                <label class="kt-badge kt-bg-light-primary kt-badge--inline">
                     <i class="fa fa-file-alt mr-2"></i>Project Details </label>
             </div>
             <div class="card-body">
@@ -539,7 +595,7 @@
                                 <div class="dropdown" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed' && item.Status!='Forward Under Approval')">
                                     <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        (click)="onHoldClick(Pid)">
+                                        (click)="1(Pid)">
                                         <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
                                     </span>
                                     <!-- <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
@@ -915,10 +971,10 @@
                                 && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
                                 item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
                                 && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
-                            <button class="btn btn-primary btn-sm py-1 dropdown-toggle no-after" data-toggle="dropdown"
+                            <button class="btn btn-primary btn-sm py-1 px-2 dropdown-toggle no-after" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
                                 data-toggle="tooltip" title="click to transfer">
-                                <i class="fa fa-forward"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px;height: 16px;fill: #fff;"><path d="M19.1643 12.0001L12.9572 5.79297L11.543 7.20718L16.3359 12.0001L11.543 16.793L12.9572 18.2072L19.1643 12.0001ZM13.5144 12.0001L7.30728 5.79297L5.89307 7.20718L10.686 12.0001L5.89307 16.793L7.30728 18.2072L13.5144 12.0001Z"></path></svg>
                                 <span class="ml-1">Project Transfer</span>
                             </button>
                             <div  id="TransferArea_{{Pid}}"
@@ -1008,7 +1064,7 @@
             <div class="card border-0 shadow-sm mb-3" [hidden]="_raciDetails" id="raciDetails">
                 <div class="card-body">
                     <div class="my-2"><label
-                            class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">RACIS
+                            class=" kt-badge kt-bg-light-primary kt-badge--inline">RACIS
                             Details</label></div>
                     <div class="row">
                         <div class="col-md-6">
@@ -1067,7 +1123,7 @@
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-0">
-                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i> DMS Link
                         </label>
                     </div>
@@ -1120,7 +1176,7 @@
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
-                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i>Portfolio Link
                         </label>
                     </div>
@@ -1170,7 +1226,7 @@
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
-                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-window-restore mr-2"></i> Action {{i+1}}
                         </label>
                     </div>
@@ -1337,7 +1393,7 @@
             <div class="d-block align-items-center justify-content-between mt-3">
                 <div class>
                     <div class="my-2">
-                        <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-list mr-2"></i> Action's Done List
                         </label>
                     </div>
@@ -1345,7 +1401,7 @@
             </div>
             <div class="" *ngFor="let task of CompletedList;let i=index">
                 <div class="text-left mt-3">
-                    <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                    <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                         <i class="fa fa-window-restore mr-2"></i>Action {{i+1}}
                     </label>
                 </div>
@@ -1427,7 +1483,7 @@
                         data-toggle="collapse" data-target="#assignlapse" aria-expanded="false"><i
                             class="fa fa-chart-bar"></i>Assigned Details <i class="fa fa-chevron-up ml-2 m-0"></i>
                     </button>
-                    <!-- <label class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                    <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                         <i class="fa fa-list mr-2"></i> Assigned Details
                     </label>     -->
 
