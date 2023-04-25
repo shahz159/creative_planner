@@ -888,15 +888,6 @@
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
                 <div class="icons-flex float-right"  >
-                    
-                    <div id="copy_data" class="icons-right" style="display: flex;">
-                        <span class="tool-span">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="toolicns fill">
-                            <path d="M8.00098 8C9.07612 8 11.4983 7.32669 11.4983 3.5V2H12.9982V8H18.001V10H12.9982V12.9091C13.0013 15.3906 13.0013 16.596 13.001 17C12.9992 19.2084 14.6163 20.4 17.7861 20.4V22C17.1509 21.9992 16.4034 21.9992 15.5437 22C13.1417 22.0023 10.9982 19.9649 10.9982 17.4545V10H7.00098V8H8.00098Z"></path>
-                          </svg>
-                        </span>
-                    </div>
-
                     <div id="copy_data" class="icons-right">
                         <span class="tool-span" (click)="DublicateTaskandEvent()">
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
@@ -1635,24 +1626,6 @@
                           <a class="ordr-a" href="javascritp:void(0)">{{selectedSort}}</a>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
-                        <span class="sort-by pb-2">Sort by</span>
-                        <a class="dropdown-item active" >Date
-                            <span>
-                                <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                </svg>
-                            </span>
-                        </a>
-                        <a  class="dropdown-item">
-                            Project
-                            <!-- <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                </svg>
-                            </span> -->
-                        </a>
-                        <a class="dropdown-item">User</a>
                         <div>
                             
                             <span class="sort-by pb-2">Sort by</span>
@@ -1715,7 +1688,6 @@
                 </div>
 
             </div>            
-            <span class="timeli-hrs">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
             <div id="hrs-tippy" class="d-none" >
                 Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 8Hrs
             </div>
@@ -1744,17 +1716,6 @@
                             </div>
                             <!--end::Timeline icon-->
                             <div class="timeline-content mb-10 mt-n2">
-                                <div class="overflow-auto pt-2 pr-3">
-                                    <div class="timeline-text fs-6">
-                                        {{item1.EmpName}}
-                                        <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
-                                        <span class="ml-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
-                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>  
-                                            {{item1.starttime}} - {{item1.endtime}}                              
-                                        </span> in
                                 <div class="overflow-auto pt-2">
                                     <div class="d-flex-between">
                                         
@@ -1839,7 +1800,7 @@
                                     </div>
                                     <div class="timeline-text fs-6"  *ngIf="item1.Tasktype=='Personal'">
                                         <span class="desp-txt fs-7">Personal</span>
-                                    </div>
+                                    </div> 
                                     <div class="timeline-text fs-6" *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
                                         <span class="desp-txt fs-7">{{item1.Tasktype}}</span>
                                     </div>
@@ -2048,7 +2009,7 @@
             <span class="tsk">Create</span>
 
         </button>
-        <div class="dropdown-menu drop-cus">
+        <div class="dropdown-menu drop-cus btm-dropdn">
             <a class="dropdown-item" (click)="Task_type(1)">Task</a>
             <a class="dropdown-item" (click)="Task_type(2)">Event</a>
         </div>
@@ -2234,48 +2195,53 @@
                                 <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
                                     (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
                                     [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
-                                <div class="input-group-text p-0">
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
+                                <div class="input-group-append">
+
+                                    <div class="input-group-text p-0">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group flex-1">
+                            <label class="cus-lbl">Start Time </label>
+                            <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label class="cus-lbl">End Time </label>
+                            <ng-select class="kt-input form-control" (open)="onfocus($event)"
+                                placeholder="End Time" [(ngModel)]="Endtms" >
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}</ng-option>
+                            </ng-select>
+                        </div>
                         <div class="form-group flex-1" id="div_endDate">
-                            <label>End Date :<span class="text-danger">*</span></label>
+                            <label>End Date <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
                                     (dateChange)="selectEndDate($event)" [min]="_StartDate" [(ngModel)]="_EndDate"
                                     placeholder="End Date" class="form-control">
-                                <div class="input-group-text p-0">
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </div>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group align-items-start flex-nowrap dropdown mr-2 mt-3 gap-1">
+                    
+                    <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
+                        Note:Selected Project is Expired,Please Extend your Project Deadline date
+                    </div>
+
+                    <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
-                            <div class="d-flex gap-15">
-                                <div class="form-group flex-1">
-                                    <label class="cus-lbl">Start Time </label>
-                                    <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
-                                        placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
-                                        <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
-                                            {{item}}</ng-option>
-                                    </ng-select>
-                                </div>
-                                <div class="form-group flex-1">
-                                    <label class="cus-lbl">End Time </label>
-                                    <ng-select class="kt-input form-control" (open)="onfocus($event)"
-                                        placeholder="End Time" [(ngModel)]="Endtms" >
-                                        <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                            {{item1}}</ng-option>
-                                    </ng-select>
-                                </div>
-                            </div>
-                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
-                                Note:Selected Project is Expired,Please Extend your Project Deadline date
-                            </div>
 
                             <div class="form-group flex-1" id="Recurrence_hide">
 
@@ -2303,14 +2269,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- <div class="form-group flex-1">
-                                <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
-                                    (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
-                                    aria-controls="collapse_repeat">Custom recurrence</button>
-                            </div> -->
 
-                            <div>
+                        <div class="d-flex gap-1 flex-1">
+                            <div class="wc-cus">
                                 <div class="form-group flex-1" id="div_recurrence">
                                     <label class="">Repeat on</label>
                                     <mat-select name="Select Type" placeholder="Do not repeat"
@@ -2322,6 +2285,32 @@
                                         <mat-option value="3">Monthly</mat-option>
                                     </mat-select>
                                 </div>
+                            </div>
+
+                            <div class="form-group flex-1">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input matInput [min]="disablePreviousDate"  placeholder="End Date" class="form-control">
+                                    <div class="input-group-append">
+    
+                                        <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="wc-cus">
+                            <!-- <div class="form-group flex-1">
+                                <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                    (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
+                                    aria-controls="collapse_repeat">Custom recurrence</button>
+                            </div> -->
+
+
+                            <div>
                                 
                                 <div class="ml-0 form-group" style="display: none;" id="weekly_121">
                                     <label class="">Days</label>
