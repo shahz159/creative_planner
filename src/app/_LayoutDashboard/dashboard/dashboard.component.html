@@ -1635,6 +1635,24 @@
                           <a class="ordr-a" href="javascritp:void(0)">{{selectedSort}}</a>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
+                        <span class="sort-by pb-2">Sort by</span>
+                        <a class="dropdown-item active" >Date
+                            <span>
+                                <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                </svg>
+                            </span>
+                        </a>
+                        <a  class="dropdown-item">
+                            Project
+                            <!-- <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                </svg>
+                            </span> -->
+                        </a>
+                        <a class="dropdown-item">User</a>
                         <div>
                             
                             <span class="sort-by pb-2">Sort by</span>
@@ -1697,6 +1715,7 @@
                 </div>
 
             </div>            
+            <span class="timeli-hrs">Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs</span>
             <div id="hrs-tippy" class="d-none" >
                 Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 8Hrs
             </div>
@@ -1725,6 +1744,17 @@
                             </div>
                             <!--end::Timeline icon-->
                             <div class="timeline-content mb-10 mt-n2">
+                                <div class="overflow-auto pt-2 pr-3">
+                                    <div class="timeline-text fs-6">
+                                        {{item1.EmpName}}
+                                        <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs' 
+                                        <span class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>  
+                                            {{item1.starttime}} - {{item1.endtime}}                              
+                                        </span> in
                                 <div class="overflow-auto pt-2">
                                     <div class="d-flex-between">
                                         
