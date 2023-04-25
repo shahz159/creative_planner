@@ -982,13 +982,13 @@ svg.feather {
     grid-template-columns: repeat(7,minmax(0,1fr)) !important;
 }
 .gap-1 {
-    gap: 1rem;
+    gap: 0.5rem;
 }
 .gap-2 {
-    gap: 2rem;
+    gap: 1rem;
 }
 .gap-3 {
-    gap: 3rem;
+    gap: 1.5rem;
 }
 .grid{
     display: grid;
@@ -1241,4 +1241,13 @@ button[disabled] {
 .symbol.symbol-30px .symbol-label {
     width: 30px;
     height: 30px;
+}
+.text-underline{
+    text-decoration: underline !important;
+}
+.text-hover-underline:hover{
+    text-decoration: underline !important;
+}
+.text-hover-info:hover {
+    color: #2786fb !important;
 }
