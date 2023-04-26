@@ -186,14 +186,14 @@
                     <i class="fa fa-clone mr-2"></i> {{item.Exec_BlockName}}
                 </label>
 
-                <label class=" kt-badge kt-bg-light-primary kt-badge--inline ml-2">
+                <label class=" kt-badge kt-bg-light-primary kt-badge--inline ml-2" *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'">
                     <span class="mr-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="12">
                             <path
                                 d="M8 19.9998V21.9323C8 22.2085 7.77614 22.4323 7.5 22.4323C7.38303 22.4323 7.26977 22.3913 7.17991 22.3164L3.06093 18.8839C2.84879 18.7072 2.82013 18.3919 2.99691 18.1797C3.09191 18.0657 3.23264 17.9998 3.38103 17.9998L18 17.9998C19.1046 17.9998 20 17.1044 20 15.9998V7.99985H22V15.9998C22 18.209 20.2091 19.9998 18 19.9998H8ZM16 3.99985V2.06738C16 1.79124 16.2239 1.56738 16.5 1.56738C16.617 1.56738 16.7302 1.60839 16.8201 1.68327L20.9391 5.11575C21.1512 5.29253 21.1799 5.60782 21.0031 5.81995C20.9081 5.93395 20.7674 5.99986 20.619 5.99986L6 5.99985C4.89543 5.99985 4 6.89528 4 7.99985V15.9998H2V7.99985C2 5.79071 3.79086 3.99985 6 3.99985H16Z">
                             </path>
                         </svg>
-                    </span> Daily
+                    </span> {{item.SubmissionType1}}
                 </label>
             </div>
 
@@ -281,20 +281,20 @@
 
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
-                                                <h6 class="txtm-cus pt-1">Existing Deadline</h6>
-                                                <h6 class="mt-1"> 10-02-2023 </h6>
+                                                <h6 class="txtm-cus pt-1">Project Deadline</h6>
+                                                <h6 class="mt-1"> {{date2 | date: 'dd-MM-yyyy'}} </h6>
                                             </div>
-                                            <div class="px-1">
+                                            <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
                                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
-                                            <div>
+                                            <div *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
                                                 <h6 class="txtm-cus pt-1">New Deadline</h6>
-                                                <h6 class="mt-1"> 10-02-2023 </h6>
+                                                <h6 class="mt-1"> {{new_deadline | date: 'dd-MM-yyyy'}} </h6>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-center mb-3">
+                                    <div class="d-flex align-items-center mb-3" *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
                                         <div class="">
                                             <span class="svg-icon svg-icon-2x text-primary mr-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -309,7 +309,7 @@
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
                                                 <h6 class="txtm-cus pt-1">Existing Cost</h6>
-                                                <h6 class="mt-1"> SAR 100.00 </h6>
+                                                <h6 class="mt-1"> {{Project_Cost |currency:'SAR '}} </h6>
                                                 <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
                                             </div>
                                             <div class="px-1">
@@ -317,13 +317,13 @@
                                             </div>
                                             <div>
                                                 <h6 class="txtm-cus pt-1">New Cost</h6>
-                                                <h6 class="mt-1"> SAR 200.00 </h6>
+                                                <h6 class="mt-1"> {{new_cost |currency:'SAR '}} </h6>
                                             </div>
                                         </div>
                                     </div>
 
 
-                                    <div class="d-flex align-items-center mb-3"
+                                    <!-- <div class="d-flex align-items-center mb-3"
                                         *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
                                         <div class=""><span class="svg-icon svg-icon-2x text-dangr mr-2"><svg width="24"
                                                     height="24" viewBox="0 0 40 40" aria-hidden="true" focusable="false"
@@ -335,9 +335,9 @@
                                         <div class="action-content">
                                             <h6 class="txtm-cus mb-1 pt-1">Request Deadline</h6>
                                             <h6 class="mt-1 text-blue">{{requestDeadline|date:'dd-MM-yyyy'}}</h6>
-                                            <!-- <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5> -->
+                                            <h5 class="mt-1 text-blue" *ngIf="requestDeadline==null">{{requestDate|date:'dd-MM-yyyy'}}</h5>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="comment-list my-3 pb-0" *ngIf="requestComments!=''">
@@ -548,7 +548,7 @@
                                 <div class="dropdown"
                                     *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
                                                         && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
-                                                        item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
+                                                        item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' 
                                                         && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
                                     <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false" (click)="onEditDeadline(Pid)">

@@ -160,6 +160,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   minhold: any = new Date();
   maxhold: any = new Date();
   Project_Owner:string;
+  Project_Cost: any;
 
   fun_LoadProjectDetails() {
     // alert(this.Summarytype);
@@ -188,6 +189,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           //console.log("ProjectDetails-->", this.ProjectInfo_List);
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
+          this.Project_Cost= this.ProjectInfo_List[0]['Project_Cost'];
           this.EndDate1 = this.date2;
           this.Pid = this.ProjectInfo_List[0]['id'];
           this._MasterCode = this.ProjectInfo_List[0]['Project_Code'];
@@ -1231,6 +1233,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   forwardType: string;
   pro_act: boolean = true;
   newResponsible:any;
+  new_deadline:any;
+  new_cost: any;
+  new_duration: any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1252,6 +1257,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.new_deadline = (this.requestDetails[0]['new_deadline']);
+        this.new_cost = (this.requestDetails[0]['new_cost']);
+        this.new_duration = (this.requestDetails[0]['new_duration']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
         const fullName = this.Submitted_By.split(' ');
