@@ -216,8 +216,14 @@
 /* :host(.someClass) {
   background-color: red;
 } */
+.kt-portlet__body_scroll {
+  height: calc(100vh - 100px);
+  overflow: auto;
+  visibility: hidden;
+  
+}
 .dataTables_wrapper .dataTable{
-  margin-top: 0px !important;
+  margin: 0px !important;
 }
 
 .multiselect-dropdown[_ngcontent-unj-c40] .dropdown-btn[_ngcontent-unj-c40]{
