@@ -60929,6 +60929,7 @@ body {
     transition: all 0.3s;
     font-size: 1.4rem;
     color: #b8bac3;
+    color: #64748b;
 }
 
 .kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon img {
@@ -63592,6 +63593,23 @@ th {
 }
 
 .kt-portlet__body_scroll::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+.scroll-y::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-y::-webkit-scrollbar-track {
+    background: #f8f9ff;
+}
+
+.scroll-y::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 40px;
+}
+
+.scroll-y::-webkit-scrollbar-thumb:hover {
     background: #ccc;
 }
 

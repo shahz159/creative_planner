@@ -410,7 +410,7 @@
                                                 </label>
                                             </div>
                                             <div class="form-check-inline"
-                                                *ngIf="requestType=='New Project' || requestType=='Project Complete'"
+                                                *ngIf="requestType=='Project Complete'"
                                                 (click)="typeChange()">
                                                 <label class="form-check-label lbl-war btn-app">
                                                     <input id="rdbButtons_1" type="radio" class="form-check-input"
@@ -428,11 +428,11 @@
                                     </div>
                                     <div class="" id="comts1">
                                         <div class="col-md-12 checked-rad pl-1 pt-3">
-                                            <div class="form-group" *ngIf="selectedType=='3'" (click)="clickonselect()">
+                                            <div class="form-group" *ngIf="selectedType=='3'">
                                                 <label class="mb-2">Reject Type</label><span style="color:red">*</span>
                                                 <ng-select required #action="ngModel" name="rej_type"
                                                     placeholder="Select Reject Type" id="rej_type"
-                                                    [(ngModel)]="rejectType" (click)="rejectApproval()">
+                                                    [(ngModel)]="rejectType" (change)="rejectApproval()">
                                                     <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
                                                         {{item.RejectType}}
                                                     </ng-option>
@@ -443,15 +443,28 @@
                                                     type!!</span>
                                             </div>
 
-                                            <label class="mb-2">Select From Existing Comments</label>                                            
-                                            <div class="appr-comts">
+                                            <label class="mb-2" *ngIf="rejectType && selectedType=='3'">Select From Existing Comments</label>                                            
+                                            <div class="appr-comts" *ngIf="rejectType && selectedType=='3'">
 
                                                 <div class="exs-cmts card">
                                                     <div class="card-header">
                                                         <h6 class="mb-0">Existing Comments</h6>
                                                     </div>
-                                                    <div class="crd-bdy scroll-y">
-                                                        <div class="cmts-items">
+                                                    <div class="crd-bdy scroll-y" >
+                                                        <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
+                                                            <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">{{item.Req_Coments}}</h6>
+                                                            <div class="cmts-actns">
+                                                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1" (click)="clickonselect(item.Req_Coments)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                        <path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1" (click)="clickondeselect(item.Req_Coments,i)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"></path></svg>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="cmts-items">
                                                             <h6>This is a test Comment</h6>
                                                             <div class="cmts-actns">
                                                                 <span class="cmts-svg">
@@ -476,24 +489,11 @@
                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"></path></svg>
                                                                 </span>
                                                             </div>
-                                                        </div>
-                                                        <div class="cmts-items">
-                                                            <h6>This is a test Comment</h6>
-                                                            <div class="cmts-actns">
-                                                                <span class="cmts-svg">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                                        <path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                <span class="cmts-svg">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"></path></svg>
-                                                                </span>
-                                                            </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'"
+                                                <!-- <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'"
                                                     (click)="clickonselect()">
                                                     <label class="mb-2">Select From Existing Comments</label>
                                                     <ng-select required #action="ngModel" name="comment_accept"
@@ -504,9 +504,9 @@
                                                             {{item.Req_Coments}}
                                                         </ng-option>
                                                     </ng-select>
-                                                </div>
+                                                </div> -->
                                                 
-                                                <div class="form-group" *ngIf="selectedType=='3'"
+                                                <!-- <div class="form-group" *ngIf="selectedType=='3'"
                                                     (click)="clickonselect()">
                                                     <label class="mb-2">Select From Existing Comments</label>
                                                     <ng-select required #action="ngModel" name="comment_reject"
@@ -517,22 +517,20 @@
                                                             {{item.Req_Coments | titlecase}}
                                                         </ng-option>
                                                     </ng-select>
-                                                </div>
+                                                </div> -->
                                                 
                                             </div>
 
 
-                                            <div class="form-group" *ngIf="selectedType=='3'">
+                                            <div class="form-group" *ngIf="rejectType && selectedType=='3'">
                                                 <label class="mb-2">Enter Comments</label><span
                                                     style="color:red">*</span>
-                                                <textarea class="form-control h-100px"
-                                                    [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                                <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
                                             </div>
                                             <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'">
                                                 <label class="mb-2">Enter Comments</label>
                                                 <!-- <span style="color:red">*</span> -->
-                                                <textarea class="form-control h-100px"
-                                                    [(ngModel)]="comments">{{commentSelected}}</textarea>
+                                                <textarea class="form-control h-100px"  [(ngModel)]="comments"></textarea>
                                             </div>
 
 

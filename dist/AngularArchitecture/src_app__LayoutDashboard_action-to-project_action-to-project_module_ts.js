@@ -553,7 +553,8 @@ class ActionToProjectComponent {
                     this._inputAttachments = [];
                 }
                 else {
-                    this._MoreDetails.CallOnSubmitAction();
+                    this._MoreDetails.GetProjectDetails();
+                    this._MoreDetails.GetSubtask_Details();
                     this.Clear_Feilds();
                     this.closeInfo();
                     this._inputAttachments = [];
