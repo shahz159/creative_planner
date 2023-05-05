@@ -70,6 +70,7 @@ export class NotificationComponent implements OnInit {
       (data) => {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
@@ -149,7 +150,7 @@ export class NotificationComponent implements OnInit {
 
   }
 
-  moreDetails(pcode,rec_date,req_type) {
+  clearResponse(pcode,rec_date,req_type){
     this.approvalObj.Emp_no=this.Current_user_ID;
     this.approvalObj.Project_Code=pcode;
     this.approvalObj.Request_Date=rec_date;
@@ -158,9 +159,12 @@ export class NotificationComponent implements OnInit {
     this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
       console.log(data,"response-data");
       if(data[0]['message']=='1')
-      this.notifyService.showInfo("Response recorded.",'');
+      this.notifyService.showInfo("Response cleared.",'');
       this.viewAll();
     });
+  }
+
+  moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
