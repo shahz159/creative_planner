@@ -39,6 +39,7 @@ import { empty } from 'rxjs';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
+declare var $: any;
 export const MY_FORMATS = {
 
 
@@ -58,12 +59,13 @@ export const MY_FORMATS = {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  template: `{{ myTime | date: 'h:mm a' }}`
 
 })
 export class DashboardComponent implements OnInit {
 
-
+  myTime = new Date();
   posts = [];
   calendarOptions: CalendarOptions;
   _NotificationActivityList: NotificationActivityDTO[];
@@ -120,6 +122,7 @@ export class DashboardComponent implements OnInit {
   TM_DisplayName: string;
   SubmissionName: string;
   _Exec_BlockName: string = "";
+  _SEndDate: any;
   day: boolean = false;
   ScheduleType: any;
   dayArr: any = [
@@ -446,11 +449,16 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+
+
+    // moment(this.scstartdate, "DD-MM-YYYY")
+
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
-    this.timelineType=this.type1;
+    this.timelineType = this.type1;
     this.selectedSort = 'today';
+
     // document.getElementById("div_endDate").style.display = "none";
     this.MinLastNameLength = true;
     this.selectedrecuvalue = "0";
@@ -493,8 +501,10 @@ export class DashboardComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.typetext = "This Project consists of Core/Secondary Projects";
     this.Current_user_ID = localStorage.getItem('EmpNo');
+
     this.CurrentUser_fullname = localStorage.getItem("UserfullName");
     this._subtaskDiv = true;
+
     this.projectactivity_Div = false;
     this.DARactivity_Div = true;
     this.CurrentUser_fullname = localStorage.getItem('UserfullName');
@@ -539,6 +549,7 @@ export class DashboardComponent implements OnInit {
     this.AllDatesSDandED.push(jsonData);
     this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
+    this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
 
     // for tippys
@@ -570,48 +581,62 @@ export class DashboardComponent implements OnInit {
       }
     });
 
+    $(document).mouseup(function (e) {
+      const myDiv = $('.bg-ovr');
+      const modaldv = $('.eve-modal');
+
+      if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
+        if (myDiv.hasClass('d-block')) {
+          myDiv.removeClass('d-block');
+          // document.getElementById("fltrs-drop").classList.remove("show-flts"); 
+        }
+      }
+    });
+
+
+
   }
 
 
-  timelineList:any;
-  timelineType:string;
-  type1:string = 'self';
-  type2:string = 'racis';
-  sortList: any = ['today','yesterday','this week','last week','this month','last month']
-  selectedSort:string;
-  yesterday:any;
-  timelineDuration:any;
-  showtimeline:boolean=true;
-  today:any = new Date().toISOString().substring(0, 10);
+  timelineList: any;
+  timelineType: string;
+  type1: string = 'self';
+  type2: string = 'racis';
+  sortList: any = ['today', 'yesterday', 'this week', 'last week', 'this month', 'last month']
+  selectedSort: string;
+  yesterday: any;
+  timelineDuration: any;
+  showtimeline: boolean = true;
+  today: any = new Date().toISOString().substring(0, 10);
   timeFrom: any;
   timeTo: any;
-  
-  timelineLog(type){
-    this.showtimeline=true;
-    if(this.selectedSort == 'custom'){
+
+  timelineLog(type) {
+    this.showtimeline = true;
+    if (this.selectedSort == 'custom') {
       this.customTimeline();
     }
 
-    else{
-      if(type==this.type1){
-        this.timelineType=type;
-        this.timelineList=null;
+    else {
+      if (type == this.type1) {
+        this.timelineType = type;
+        this.timelineList = null;
         this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
         this.ObjSubTaskDTO.PageNumber = 1;
         this.ObjSubTaskDTO.PageSize = 2;
         this.ObjSubTaskDTO.sort = this.selectedSort;
         this.ObjSubTaskDTO.Start_Date = null;
         this.ObjSubTaskDTO.End_Date = null;
-  
-          this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-          (data=>{
-            this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-            this.timelineDuration=(data[0]['TotalTime']);
-            if(this.timelineList.length == 0){
-              this.showtimeline=false;
-              this.timelineDuration=0;
+
+        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+          (data => {
+            this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+            this.timelineDuration = (data[0]['TotalTime']);
+            if (this.timelineList.length == 0) {
+              this.showtimeline = false;
+              this.timelineDuration = 0;
             }
-              
+
             const hrstippy = document.getElementById('hrs-tippy');
             tippy('.tippy', {
               content: hrstippy.innerHTML,
@@ -621,69 +646,69 @@ export class DashboardComponent implements OnInit {
               theme: 'gradient',
               animateFill: true,
               inertia: true,
-              placement:'top'
+              placement: 'top'
             });
-  
+
           });
-      }    
-  
-      else if(type==this.type2){
-          this.timelineType=type;
-          this.timelineList=null;
-          this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-          this.ObjSubTaskDTO.PageNumber = 1;
-          this.ObjSubTaskDTO.PageSize = 2;
-          this.ObjSubTaskDTO.sort = this.selectedSort;
-              this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-              (data=>{
-                this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-                if(this.timelineList.length == 0){
-                  this.showtimeline=false;
-                  this.timelineDuration=0;
-                }
-                const hrstippy = document.getElementById('hrs-tippy');
-                tippy('.tippy', {
-                  content: hrstippy.innerHTML,
-                  arrow: true,
-                  allowHTML: true,
-                  animation: 'scale-extreme',
-                  theme: 'gradient',
-                  animateFill: true,
-                  inertia: true,
-                  placement:'top'
-                });
-              });
-              this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-              (data=>{
-                this.timelineDuration=(data[0]['TotalTime']);
-              });
+      }
+
+      else if (type == this.type2) {
+        this.timelineType = type;
+        this.timelineList = null;
+        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+        this.ObjSubTaskDTO.PageNumber = 1;
+        this.ObjSubTaskDTO.PageSize = 2;
+        this.ObjSubTaskDTO.sort = this.selectedSort;
+        this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+          (data => {
+            this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+            if (this.timelineList.length == 0) {
+              this.showtimeline = false;
+              this.timelineDuration = 0;
+            }
+            const hrstippy = document.getElementById('hrs-tippy');
+            tippy('.tippy', {
+              content: hrstippy.innerHTML,
+              arrow: true,
+              allowHTML: true,
+              animation: 'scale-extreme',
+              theme: 'gradient',
+              animateFill: true,
+              inertia: true,
+              placement: 'top'
+            });
+          });
+        this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+          (data => {
+            this.timelineDuration = (data[0]['TotalTime']);
+          });
       }
     }
   }
 
-  sortTimeline(sort){
-    this.selectedSort=sort;
-    this.showtimeline=true;
-    this.timeFrom=null;
-    this.timeTo=null;
+  sortTimeline(sort) {
+    this.selectedSort = sort;
+    this.showtimeline = true;
+    this.timeFrom = null;
+    this.timeTo = null;
 
-    if(this.timelineType==this.type1){
-      this.timelineList=null;
+    if (this.timelineType == this.type1) {
+      this.timelineList = null;
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 2;
       this.ObjSubTaskDTO.sort = this.selectedSort;
       this.ObjSubTaskDTO.Start_Date = null;
       this.ObjSubTaskDTO.End_Date = null;
-        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data=>{
-          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-          this.timelineDuration=(data[0]['TotalTime']);
-          if(this.timelineList.length == 0){
-            this.showtimeline=false;
-            this.timelineDuration=0;
+      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+          this.timelineDuration = (data[0]['TotalTime']);
+          if (this.timelineList.length == 0) {
+            this.showtimeline = false;
+            this.timelineDuration = 0;
           }
-            
+
           const hrstippy = document.getElementById('hrs-tippy');
           tippy('.tippy', {
             content: hrstippy.innerHTML,
@@ -693,54 +718,54 @@ export class DashboardComponent implements OnInit {
             theme: 'gradient',
             animateFill: true,
             inertia: true,
-            placement:'top'
+            placement: 'top'
           });
 
         });
-    }    
-    
+    }
 
-    else if(this.timelineType==this.type2){
-        this.timelineList=null;
-        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-        this.ObjSubTaskDTO.PageNumber = 1;
-        this.ObjSubTaskDTO.PageSize = 2;
-        this.ObjSubTaskDTO.sort = this.selectedSort;
-        this.ObjSubTaskDTO.Start_Date = null;
-        this.ObjSubTaskDTO.End_Date = null;
-            this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-            (data=>{
-              this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-              if(this.timelineList.length == 0){
-                this.showtimeline=false;
-                this.timelineDuration=0;
-              }
-              const hrstippy = document.getElementById('hrs-tippy');
-              tippy('.tippy', {
-                content: hrstippy.innerHTML,
-                arrow: true,
-                allowHTML: true,
-                animation: 'scale-extreme',
-                theme: 'gradient',
-                animateFill: true,
-                inertia: true,
-                placement:'top'
-              });
-            });
-            this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-            (data=>{
-              this.timelineDuration=(data[0]['TotalTime']);
-            });
+
+    else if (this.timelineType == this.type2) {
+      this.timelineList = null;
+      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+      this.ObjSubTaskDTO.PageNumber = 1;
+      this.ObjSubTaskDTO.PageSize = 2;
+      this.ObjSubTaskDTO.sort = this.selectedSort;
+      this.ObjSubTaskDTO.Start_Date = null;
+      this.ObjSubTaskDTO.End_Date = null;
+      this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+          if (this.timelineList.length == 0) {
+            this.showtimeline = false;
+            this.timelineDuration = 0;
+          }
+          const hrstippy = document.getElementById('hrs-tippy');
+          tippy('.tippy', {
+            content: hrstippy.innerHTML,
+            arrow: true,
+            allowHTML: true,
+            animation: 'scale-extreme',
+            theme: 'gradient',
+            animateFill: true,
+            inertia: true,
+            placement: 'top'
+          });
+        });
+      this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineDuration = (data[0]['TotalTime']);
+        });
     }
   }
 
-  customTimeline(){
-    
-    this.selectedSort='custom';
-    this.showtimeline=true;
+  customTimeline() {
 
-    if(this.timelineType==this.type1){
-      this.timelineList=null;
+    this.selectedSort = 'custom';
+    this.showtimeline = true;
+
+    if (this.timelineType == this.type1) {
+      this.timelineList = null;
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 2;
@@ -748,15 +773,15 @@ export class DashboardComponent implements OnInit {
       this.ObjSubTaskDTO.Start_Date = this.timeFrom;
       this.ObjSubTaskDTO.End_Date = this.timeTo;
 
-        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data=>{
-          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-          this.timelineDuration=(data[0]['TotalTime']);
-          if(this.timelineList.length == 0){
-            this.showtimeline=false;
-            this.timelineDuration=0;
+      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+          this.timelineDuration = (data[0]['TotalTime']);
+          if (this.timelineList.length == 0) {
+            this.showtimeline = false;
+            this.timelineDuration = 0;
           }
-            
+
           const hrstippy = document.getElementById('hrs-tippy');
           tippy('.tippy', {
             content: hrstippy.innerHTML,
@@ -766,56 +791,56 @@ export class DashboardComponent implements OnInit {
             theme: 'gradient',
             animateFill: true,
             inertia: true,
-            placement:'top'
+            placement: 'top'
           });
 
         });
-    }    
-    
+    }
 
-    else if(this.timelineType==this.type2){
-        this.timelineList=null;
-        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-        this.ObjSubTaskDTO.PageNumber = 1;
-        this.ObjSubTaskDTO.PageSize = 2;
-        this.ObjSubTaskDTO.sort = this.selectedSort;
-        this.ObjSubTaskDTO.Start_Date = this.timeFrom;
-        this.ObjSubTaskDTO.End_Date = this.timeTo;
 
-            this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-            (data=>{
-              this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-              if(this.timelineList.length == 0){
-                this.showtimeline=false;
-                this.timelineDuration=0;
-              }
-              const hrstippy = document.getElementById('hrs-tippy');
-              tippy('.tippy', {
-                content: hrstippy.innerHTML,
-                arrow: true,
-                allowHTML: true,
-                animation: 'scale-extreme',
-                theme: 'gradient',
-                animateFill: true,
-                inertia: true,
-                placement:'top'
-              });
-            });
-            this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-            (data=>{
-              this.timelineDuration=(data[0]['TotalTime']);
-            });
+    else if (this.timelineType == this.type2) {
+      this.timelineList = null;
+      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+      this.ObjSubTaskDTO.PageNumber = 1;
+      this.ObjSubTaskDTO.PageSize = 2;
+      this.ObjSubTaskDTO.sort = this.selectedSort;
+      this.ObjSubTaskDTO.Start_Date = this.timeFrom;
+      this.ObjSubTaskDTO.End_Date = this.timeTo;
+
+      this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+          if (this.timelineList.length == 0) {
+            this.showtimeline = false;
+            this.timelineDuration = 0;
+          }
+          const hrstippy = document.getElementById('hrs-tippy');
+          tippy('.tippy', {
+            content: hrstippy.innerHTML,
+            arrow: true,
+            allowHTML: true,
+            animation: 'scale-extreme',
+            theme: 'gradient',
+            animateFill: true,
+            inertia: true,
+            placement: 'top'
+          });
+        });
+      this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
+        (data => {
+          this.timelineDuration = (data[0]['TotalTime']);
+        });
     }
   }
 
 
-  cleardates(){
-    this.timeFrom=null;
-    this.timeTo=null;
+  cleardates() {
+    this.timeFrom = null;
+    this.timeTo = null;
   }
 
-  viewTimeline(){
-     this.router.navigate(["../backend/Timeline"]);
+  viewTimeline() {
+    this.router.navigate(["../backend/Timeline"]);
   }
 
   notificationDTO: NotificationActivityDTO;
@@ -871,8 +896,8 @@ export class DashboardComponent implements OnInit {
   }
   RemovedAttach: any = [];
   RemoveExistingFile(_id) {
-    
-  
+
+
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
         this.RemovedAttach.push(element.Cloud_Name)
@@ -941,7 +966,6 @@ export class DashboardComponent implements OnInit {
   }
 
   Event_acceptandReject() {
-
     if (this.EventAction_type == 1) {
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.flagid = this.EventAction_type;
@@ -951,7 +975,6 @@ export class DashboardComponent implements OnInit {
         });
       this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
       this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
-
       this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
         ((data) => {
           this.GetScheduledJson();
@@ -1392,7 +1415,7 @@ export class DashboardComponent implements OnInit {
   Attachment12_ary: any = [];
 
   ReshudingTaskandEvent() {
-    document.getElementById("div_endDate").style.display = "block";
+    document.getElementById("div_endDate").style.display = "none";
 
     this.editTask = true;
     this.copyTask = false;
@@ -1412,6 +1435,8 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+        this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
+        this.scstartdate = this._Oldstart_date;
         // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
         // alert( this.Addressurl);
@@ -1482,6 +1507,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
+          document.getElementById("div_endDate").style.display = "block";
           this.selectedrecuvalue = '1';
           this._labelName = "Schedule Date :";
           // document.getElementById("div_endDate").style.display = "none";
@@ -1490,6 +1516,7 @@ export class DashboardComponent implements OnInit {
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date :";
           // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("div_endDate").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121").style.display = "block";
           this.selectedrecuvalue = '2';
@@ -1507,6 +1534,7 @@ export class DashboardComponent implements OnInit {
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
           document.getElementById("Recurrence_hide").style.display = "block";
+          document.getElementById("div_endDate").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121").style.display = "block";
           this._labelName = "Schedule Date :";
@@ -1687,15 +1715,27 @@ export class DashboardComponent implements OnInit {
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
+
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+        const date1: Date = new Date(this._StartDate);
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        var dd = moment(date3).add(diffInDays, 'days')
+
+
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (dd.format(format2));
 
         var vStartTime = "StartTime";
         element[vStartTime] = this.Startts;
 
         var vEndTime = "EndTime";
         element[vEndTime] = this.Endtms;
-
 
         var vEnd_date = "End_date";
         element[vEnd_date] = this._EndDate;
@@ -1735,6 +1775,7 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = this.Addressurl;
 
+
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -1749,6 +1790,8 @@ export class DashboardComponent implements OnInit {
 
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
+
 
       });
 
@@ -1824,6 +1867,7 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Locationfulladd = null;
           this._status = null;
           this.SelectDms = null;
@@ -1952,8 +1996,22 @@ export class DashboardComponent implements OnInit {
       }
     }
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+        const date1: Date = new Date(this._StartDate);
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        var date3 = moment(date2).format("YYYY-MM-DD").toString();
+        // var dd = moment(date3).add(diffInDays, 'days')
+
+
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (date3);
+        // alert( element[SEndDates])
 
         var vStartTime = "StartTime";
         element[vStartTime] = this.Startts;
@@ -2052,7 +2110,7 @@ export class DashboardComponent implements OnInit {
       console.log(JSON.stringify(finalarray), "finalarray");
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
-          this.RemovedAttach=[];
+          this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
           if (_attachmentValue == 1) {
@@ -2095,7 +2153,7 @@ export class DashboardComponent implements OnInit {
           this.notifyService.showSuccess(this._Message, "Success");
           this.GetScheduledJson();
           this.Title_Name = null;
-          this.RemovedAttach=[];
+          this.RemovedAttach = [];
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.MasterCode = null;
@@ -2106,6 +2164,7 @@ export class DashboardComponent implements OnInit {
           this.Ed_date = null;
           this._status = null;
           this.SelectDms = null;
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Location_Type = null;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -2119,7 +2178,7 @@ export class DashboardComponent implements OnInit {
           this.singleselectarry = [];
           this.daysSelected = [];
           this._lstMultipleFiales = [];
-          this.Attachment12_ary=[];
+          this.Attachment12_ary = [];
           // this.Recurr_arr = [];
           this.selected = null;
           this.TImetable();
@@ -2205,13 +2264,12 @@ export class DashboardComponent implements OnInit {
   }
 
   Task_type(value) {
-
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
-    document.getElementById("div_endDate").style.display = "block";
+    document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
     this.clearallfields();
@@ -2361,10 +2419,11 @@ export class DashboardComponent implements OnInit {
     this.dayArr[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
   }
-
+  scstartdate: any = new Date();
   selectStartDate(event) {
 
     this._StartDate = event.value;
+
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._EndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
@@ -2377,6 +2436,8 @@ export class DashboardComponent implements OnInit {
     const d2 = new Date(moment(end).format(format2));
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
+    this.scstartdate = d1;
+    // alert( this.scstartdate);
 
     this.AllDatesSDandED = [];
     var jsonData = {};
@@ -2397,6 +2458,7 @@ export class DashboardComponent implements OnInit {
   }
 
   selectEndDate(event) {
+
     for (let index = 0; index < this.dayArr.length; index++) {
       this.dayArr[index].checked = false;
     }
@@ -2630,12 +2692,14 @@ export class DashboardComponent implements OnInit {
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
+    this.StartTimearr = [];
 
     this._arrayObj.forEach(element => {
       this.EndTimearr.push(element.TSEnd);
       this.AllEndtime.push(element.TSEnd);
-      // this.StartTimearr.push(element.TSStart);
+      this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
+      // console.log( this.Alltimes,"times")
     });
 
     // alert(this.Startts);
@@ -2655,13 +2719,34 @@ export class DashboardComponent implements OnInit {
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
     let mins = this.timearr1[1].toString();
+
     if (this.timearr1[0] == 23) {
+      this._arrayObj.forEach(element => {
+        this.EndTimearr.push(element.TSStart);
+
+      });
+      vahr = Number(vahr) + 1;
+      if (vahr == 24) {
+        vahr = '00'
+
+      }
+      this.Endtms = vahr.toString() + ':' + mins;
+      if (vahr == '00') {
+        this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        // alert(this.scstartdate)
+      }
+      else {
+        this._SEndDate = this.scstartdate;
+      }
+
     }
     else {
       vahr = Number(vahr) + 1;
+      this.Endtms = vahr.toString() + ':' + mins;
+
     }
 
-    this.Endtms = vahr.toString() + ':' + mins;
+    //  alert(this._SEndDate)
 
 
 
@@ -2675,51 +2760,14 @@ export class DashboardComponent implements OnInit {
     jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
     jsonData[columnNamee] = this.Endtms;
+    var columnNameess = "SEndDate";
+    jsonData[columnNameess] = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+
     if (this.ScheduleType == "Event") {
       var IsActive = "IsActive";
       jsonData[IsActive] = 0;
     }
     this.daysSelectedII.push(jsonData)
-    // this.daysSelected.forEach(element => {
-    //   const found = this.Timechangearry.some(el => el.Date === element);
-    //   if (found) {
-    //     this.Timechangearry.forEach(element2 => {
-    //       if (element2.Date == element) {
-
-    //         var jsonData = {};
-    //         var columnName = "Date";
-    //         jsonData[columnName] = element2.Date;
-    //         var columnNames = "StartTime";
-    //         jsonData[columnNames] = this.Startts;
-    //         var columnNamee = "EndTime";
-    //         jsonData[columnNamee] = this.Endtms;
-    //         if (this.ScheduleType == "Event") {
-    //           var IsActive = "IsActive";
-    //           jsonData[IsActive] = 0;
-    //         }
-    //         this.daysSelectedII.push(jsonData)
-    //       }
-    //     });
-    //   }
-    //   else {
-    //     var jsonData = {};
-    //     var columnName = "Date";
-    //     jsonData[columnName] = element;
-    //     var columnNames = "StartTime";
-    //     jsonData[columnNames] = this.Startts;
-    //     var columnNames = "EndTime";
-    //     jsonData[columnName] = this.Endtms;
-    //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-    //       var IsActive = "IsActive";
-    //       jsonData[IsActive] = 1;
-    //     }
-    //     this.daysSelectedII.push(jsonData);
-    //   }
-    // });
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
-    // }
-    // this.calendar.updateTodaysDate();
   }
 
   purposeEndtime(TSEnd) {
@@ -2737,6 +2785,8 @@ export class DashboardComponent implements OnInit {
     if (this.Startts > this.Endtms) {
       this.Endtms = this.Startts;
     }
+
+
     this.daysSelectedII = [];
     var jsonData = {};
     var columnName = "Date";
@@ -2938,7 +2988,7 @@ export class DashboardComponent implements OnInit {
     if (val.value == 0) {
       this._labelName = "Schedule Date :";
       document.getElementById("Monthly_121").style.display = "none";
-      document.getElementById("div_endDate").style.display = "block";
+      document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];
       this.daysSelected = [];
       this.singleselectarry = [];
@@ -3198,7 +3248,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-
+  pro_enddate: string;
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3221,7 +3271,10 @@ export class DashboardComponent implements OnInit {
         this.pro_date = this.EventScheduledjson[0].Purposedate;
         this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
-        console.log(this.EventScheduledjson, "Testing12");
+        this.pro_enddate = this.EventScheduledjson[0].SEndDate;
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "flex";
@@ -3279,10 +3332,12 @@ export class DashboardComponent implements OnInit {
 
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
+
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        // console.log(this.Scheduledjson, "Testing");
+        console.log(this.Scheduledjson, "Testing");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
 
         this.calendarOptions = {
@@ -3326,12 +3381,26 @@ export class DashboardComponent implements OnInit {
   Addressurl: string = "";
   public handleAddressChange(address: Address) {
 
+    if (this.checkAddressURL(address.name.toString())) {
+      this.Addressurl = address.name;
+    }
+    else {
+      this.Addressurl = address.url;
+    }
     this.Location_Type = address.name;
-    this.Addressurl = address.url;
+
 
     console.log(address, "add11")
     this.Locationfulladd = address.formatted_address;
 
+  }
+
+
+
+  checkAddressURL(str) {
+
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(str);
   }
   addreschange() {
     //24.668213927924413, 46.74734971286595
@@ -3926,9 +3995,9 @@ export class DashboardComponent implements OnInit {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
-    this.Attachment12_ary=[];
-    this.RemovedAttach=[];
-    this._lstMultipleFiales=[];
+    this.Attachment12_ary = [];
+    this.RemovedAttach = [];
+    this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
@@ -3990,9 +4059,9 @@ export class DashboardComponent implements OnInit {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
-    this.Attachment12_ary=[];
-    this.RemovedAttach=[];
-    this._lstMultipleFiales=[];
+    this.Attachment12_ary = [];
+    this.RemovedAttach = [];
+    this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
@@ -4106,11 +4175,11 @@ export class DashboardComponent implements OnInit {
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
-  menutoggle(){    
+  menutoggle() {
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
-  daterange(){
+  daterange() {
     document.getElementById("range-picker").classList.toggle("d-none");
     document.getElementById("main-section").classList.toggle("d-none");
   }
