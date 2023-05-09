@@ -2005,13 +2005,19 @@ export class DashboardComponent implements OnInit {
         const diffInMs: number = date2.getTime() - date1.getTime();
 
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(date2).format("YYYY-MM-DD").toString();
-        // var dd = moment(date3).add(diffInDays, 'days')
+        // var date3 = moment(date2).format("YYYY-MM-DD").toString();
+        // // var dd = moment(date3).add(diffInDays, 'days')
+
+
+        // var SEndDates = "SEndDate";
+        // element[SEndDates] = (date3);
+        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        var dd = moment(date3).add(diffInDays, 'days')
 
 
         var SEndDates = "SEndDate";
-        element[SEndDates] = (date3);
-        // alert( element[SEndDates])
+        element[SEndDates] = (dd.format(format2));
+        //  alert( element[SEndDates])
 
         var vStartTime = "StartTime";
         element[vStartTime] = this.Startts;
@@ -2272,6 +2278,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
+    // document.getElementById("Schenddate").style.display = "none";
     this.clearallfields();
     this.daysSelected = [];
     this.singleselectarry = [];
@@ -2639,7 +2646,8 @@ export class DashboardComponent implements OnInit {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        // console.log(this._EmployeeListForDropdown, "Project List Array");
+        console.log(this.Portfoliolist_1, "Project List Array");
+        
       });
   }
 
@@ -2734,6 +2742,8 @@ export class DashboardComponent implements OnInit {
       if (vahr == '00') {
         this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
         // alert(this.scstartdate)
+        // document.getElementById("Schenddate").style.display = "block";
+        
       }
       else {
         this._SEndDate = this.scstartdate;

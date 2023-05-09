@@ -884,7 +884,7 @@
     </div>
 </div>
 
-<div class="bg-ovr" id=""bg-ovrly>
+<div class="bg-ovr" id="" bg-ovrly>
     <div class="eve-modal open" id="cal-events" tabindex="-1" role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
@@ -982,13 +982,23 @@
                                         {{item.Recurrence}}
                                     </span>
                                 </div>
-
-                                <div class="title-day">{{item.Schedule_date| date:'dd, MMMM YYYY'}}<span
-                                        class="day-dot"></span>
-                                    <span>{{item.NewSt_Time  }} – {{item.NewEd_Time}}<span
-                                            class="day-dot"></span>
-                                        {{item.SEndDate| date:'dd, MMMM YYYY'}}</span>
+                                <div class="d-flex">
+                                    <div class="title-day">{{item.Schedule_date| date:'EEEE, MMMM d'}}
+                                        <span>,</span>
+                                        <span>{{item.NewSt_Time }} –
+    
+                                        </span>
+                                    </div>
+                                    <div class="title-day">
+                                        <span *ngIf="item.Schedule_date!=item.SEndDate">
+                                            {{item.SEndDate| date:'EEEE, MMMM d'}}
+                                        </span>
+                                        <span *ngIf="item.Schedule_date!=item.SEndDate">,</span>
+                                        {{item.NewEd_Time}}
+                                    </div>
                                 </div>
+                              
+
                             </div>
                         </div>
                     </div>
@@ -1293,7 +1303,8 @@
                     <span class="flex-1" aria-hidden="true">Going?</span>
                     <div class="foot-leftsec">
                         <div class="d-flex align-items-center gap-1">
-                            <button  *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
+                            <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"
+                                class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
                                 data-target="#responsemodal">Yes</button>
                             <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns"
@@ -1370,7 +1381,7 @@
 
                                 </div>
                                 <div class="form-group flex-1">
-                                    <label class="cus-lbl">End Time </label>
+                                    <label class="cus-lbl">End Time</label>
                                     <ng-select class="kt-input form-control" placeholder="End Time"
                                         [(ngModel)]="PurposeEnd">
                                         <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
@@ -2271,14 +2282,14 @@
                             </ng-select>
                         </div>
                         <div class="form-group flex-1">
-                            <label class="cus-lbl">End Time </label>
+                            <label class="cus-lbl">End Time</label>
                             <ng-select class="kt-input form-control" (open)="onfocus($event)" placeholder="End Time"
                                 [(ngModel)]="Endtms">
                                 <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                     {{item1}}</ng-option>
                             </ng-select>
                         </div>
-                        <div class="form-group flex-1">
+                        <div class="form-group flex-1" id="Schenddate">
                             <label>End Date <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input matInput [matDatepicker]="picker6" (click)="picker6.open()" [min]="_StartDate"
@@ -2332,7 +2343,7 @@
                         <div class="d-flex gap-1 flex-1">
                             <div class="wc-cus">
                                 <div class="form-group flex-1" id="div_recurrence">
-                                    <label class="">Repeat on</label>
+                                    <label class="">Repeat</label>
                                     <mat-select name="Select Type" placeholder="Do not repeat"
                                         [(value)]="selectedrecuvalue" class="form-control"
                                         (selectionChange)="SelectDropDown($event)">
@@ -2345,7 +2356,7 @@
                             </div>
 
                             <div class="form-group flex-1" id="div_endDate">
-                                <label>End Date <span class="text-danger">*</span></label>
+                                <label>End till <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
                                         [min]="_StartDate" [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)"
