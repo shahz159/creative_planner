@@ -218,12 +218,7 @@
 } */
 .kt-portlet__body_scroll {
   height: calc(100vh - 100px);
-<<<<<<< HEAD
     overflow-x: hidden;
-=======
-  overflow: auto;
-  
->>>>>>> 179f8ec56ad2e823ba0fff97e81d5dae9b15d3e1
   
 }
 .dataTables_wrapper .dataTable{
