@@ -587,6 +587,8 @@ export class DashboardComponent implements OnInit {
     $(document).mouseup(function (e) {
       const myDiv = $('.bg-ovr');
       const modaldv = $('.eve-modal');
+      const searcharea = $('.form-input');
+
 
       if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
         if (myDiv.hasClass('d-block')) {
@@ -594,9 +596,16 @@ export class DashboardComponent implements OnInit {
           // document.getElementById("fltrs-drop").classList.remove("show-flts"); 
         }
       }
+
+      if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
+        if ($('.drop-search.show').hasClass('show')) {
+          $('.drop-search.show').removeClass('show');
+        }
+      }
+      
     });
 
-
+    
 
   }
 
@@ -4193,5 +4202,13 @@ export class DashboardComponent implements OnInit {
     document.getElementById("range-picker").classList.toggle("d-none");
     document.getElementById("main-section").classList.toggle("d-none");
     
+  }
+
+  evesrchopn(){
+    document.getElementById("drp-srch").classList.add("show");
+  }
+  evesrchclose(){
+    document.getElementById("drp-srch").classList.remove("show");
+
   }
 }

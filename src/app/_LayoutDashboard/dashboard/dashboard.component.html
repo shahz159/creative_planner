@@ -422,7 +422,7 @@
 
 
             <div class="col-lg-12">
-                <span class="kt-portlet__head-icon d-flex justify-content-between">
+                <span class="kt-portlet__head-icon d-flex-cen justify-content-between">
                     <!-- <i class="far fa-calendar-alt"></i> -->
                     <h5 class="kt-portlet__head-title mr-3">
                         <i class="far fa-calendar-alt"></i> My Calendar
@@ -483,9 +483,51 @@
                 </span>
 
                 <!--begin::Portlet-->
-                <div class="kt-portlet">
+                <div class="kt-portlet position-relative">
 
                     <div class="kt-portlet__body">
+                        <div class="srch-over">                            
+                            <button class="btn-svgs srh-events_main" (click)="evesrchopn()" id="search-events">
+                                <span class="tool-span">
+                                    <svg focusable="false" height="26px" viewBox="0 0 24 24" width="26px" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path>
+                                        <path d="M0,0h24v24H0V0z" fill="none"></path>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                        
+                        <div class="drop-search" id="drp-srch">
+                            <div class="d-flex-cen">
+                                <div class="search-left">                                    
+                                    <div class="back-btn btn-svgs" (click)="evesrchclose()" aria-label="Go back" title="Go back" role="button" tabindex="0">
+                                        <svg focusable="false" viewBox="0 0 24 24" width="24px" height="24px">
+                                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="srch-txt">Search</span>
+                                    </div>
+                                </div>
+                                <div class="serch-area" id="search-area">
+                                    <form class="form-search open">                                          
+                                        <div class="form-input">
+                                            <input type="text" class="form-control eve-search">
+                                        </div>
+                                        
+                                        <button class="btn-svgs btn-pos" aria-label="Search" role="button">
+                                            <svg focusable="false" viewBox="0 0 24 24" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path>
+                                                <path d="M0,0h24v24H0V0z" fill="none"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="btn-svgs btn-clear" aria-label="Search" role="button">
+                                            <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
                         <full-calendar [options]="calendarOptions"></full-calendar>
