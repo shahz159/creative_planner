@@ -45,4 +45,5 @@ export class UserDetailsDTO {
     IsPolicy:number;
 
     Owner_empno:string;
+    Resp_empno:string;
 }
