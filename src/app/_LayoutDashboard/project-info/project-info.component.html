@@ -260,7 +260,7 @@
                                             .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z"></path>
                                                 </svg></span></div>
                                         <div class="action-content">
-                                            <h6 class="txtm-cus mb-1 pt-1">Request Type</h6>
+                                            <h6 class="txtm-cus mb-1 pt-1">Request type</h6>
                                             <h6 class="mt-1 text-blue">{{requestType}}</h6>
                                         </div>
                                     </div>
@@ -281,20 +281,20 @@
 
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
-                                                <h6 class="txtm-cus pt-1">Project Deadline</h6>
+                                                <h6 class="txtm-cus pt-1">Project deadline</h6>
                                                 <h6 class="mt-1"> {{date2 | date: 'dd-MM-yyyy'}} </h6>
                                             </div>
-                                            <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
+                                            <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval'">
                                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
-                                            <div *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
-                                                <h6 class="txtm-cus pt-1">New Deadline</h6>
+                                            <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                <h6 class="txtm-cus pt-1">New deadline</h6>
                                                 <h6 class="mt-1"> {{new_deadline | date: 'dd-MM-yyyy'}} </h6>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-center mb-3" *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
+                                    <div class="d-flex align-items-center mb-3" *ngIf="item.Status=='Deadline Extend Under Approval'">
                                         <div class="">
                                             <span class="svg-icon svg-icon-2x text-primary mr-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -308,7 +308,7 @@
 
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
-                                                <h6 class="txtm-cus pt-1">Existing Cost</h6>
+                                                <h6 class="txtm-cus pt-1">Existing cost</h6>
                                                 <h6 class="mt-1"> {{Project_Cost |currency:'SAR '}} </h6>
                                                 <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
                                             </div>
@@ -316,7 +316,7 @@
                                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
                                             <div>
-                                                <h6 class="txtm-cus pt-1">New Cost</h6>
+                                                <h6 class="txtm-cus pt-1">New cost</h6>
                                                 <h6 class="mt-1"> {{new_cost |currency:'SAR '}} </h6>
                                             </div>
                                         </div>
@@ -356,7 +356,7 @@
 
                                 <a class="btn--1 btn-info--1 btn-sm--1 text-info py-2" data-toggle="collapse"
                                     href="#prevco" role="button" aria-expanded="false" aria-controls="prevco">
-                                    View Previous Comments
+                                    View previous comments
                                 </a>
                                 <div class="px-cb pt-cb bg-gry collapse kt-portlet__body_scroll prv-cmts" id="prevco">
                                     <div class="comment-list" *ngFor="let item of prviousCommentsList">
@@ -811,7 +811,7 @@
                             <i class="fas fa-star fs-3 text-muted mr-2"></i>
                             <div class="w-100">
                                 <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays>0" data-toggle="tooltip"
-                                    title="{{item.Delaydays}} Days Delay!">{{_MainProjectStatus}}</h5>
+                                    title="{{item.Delaydays}} Days Delay!">{{_MainProjectStatus}} ({{item.Delaydays}} days)</h5>
                                 <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays<=0">{{_MainProjectStatus}}
                                 </h5>
                             </div>
@@ -974,7 +974,7 @@
             <div class="card-body"
                 *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
                 <!-- Percentage Bar -->
-                <div class="progress_bar">
+                <div class="progress_bar" *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
                     <div *ngIf="ProjectStatus=='Not Started'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
@@ -1068,7 +1068,7 @@
                                         d="M19.1643 12.0001L12.9572 5.79297L11.543 7.20718L16.3359 12.0001L11.543 16.793L12.9572 18.2072L19.1643 12.0001ZM13.5144 12.0001L7.30728 5.79297L5.89307 7.20718L10.686 12.0001L5.89307 16.793L7.30728 18.2072L13.5144 12.0001Z">
                                     </path>
                                 </svg>
-                                <span class="ml-1">Project Transfer</span>
+                                <span class="ml-1">Project transfer</span>
                             </button>
                             <div id="TransferArea_{{Pid}}"
                                 class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop3">
