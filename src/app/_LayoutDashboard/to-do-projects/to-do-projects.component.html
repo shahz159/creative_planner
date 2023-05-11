@@ -205,7 +205,7 @@
                                 <p class="mb-2">{{item.Exec_BlockName}}</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p [ngClass]="{'text-danger':item.Status=='Delay',
+                                <p [ngClass]="{'text-danger':item.Status=='Delay' || item.Status=='Project Hold',
                                     'text-Completed':item.Status=='Completed',
                                     'text-warning':item.Status=='InProcess',
                                     'text-underApp':item.Status=='Under Approval',
@@ -245,7 +245,7 @@
                             <i class="fa fa-info-circle mr-0"></i>
                         </button>
                         <!-- *ngIf="Project_Status != 'Completed'" -->
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"   [hidden]="addbutton_hidden"
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" *ngIf="(CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)"  [hidden]="addbutton_hidden"
                             (click)="sweetAlert()" title="Create New Action" >
                             <i class="fas fa-plus mr-0"></i>
                         </button>

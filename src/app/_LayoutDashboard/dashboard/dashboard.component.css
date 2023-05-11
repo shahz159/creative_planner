@@ -1295,7 +1295,7 @@ height: auto !important;
     -webkit-box-orient: vertical;
 }
 .title-day{
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     letter-spacing: .2px;
     line-height: 20px;
@@ -1525,6 +1525,9 @@ height: auto !important;
     max-height: 400px;
     overflow: auto;
 }
+.open_sidebar {
+    width: 55%;
+}
 }
 @media Screen and (max-width: 1400px) {
 
@@ -1532,7 +1535,11 @@ height: auto !important;
     max-height: 350px;
     overflow: auto;
 }
+.open_sidebar {
+    width: 60%;
 }
+}
+
 @media Screen and (max-width: 1220px) {
 
 .wp-100 {
@@ -1972,4 +1979,7 @@ a.ordr-a {
     width: 40px !important;
     height: 35px !important;
     line-height: 1 !important;
+}
+::ng-deep .mat-calendar-next-button, ::ng-deep  .mat-calendar-previous-button {
+    height: 40px !important;
 }

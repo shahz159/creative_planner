@@ -218,8 +218,7 @@
 } */
 .kt-portlet__body_scroll {
   height: calc(100vh - 100px);
-  overflow: auto;
-  visibility: hidden;
+    overflow-x: hidden;
   
 }
 .dataTables_wrapper .dataTable{

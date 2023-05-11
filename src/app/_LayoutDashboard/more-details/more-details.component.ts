@@ -152,8 +152,38 @@ export class MoreDetailsComponent implements OnInit {
   requestComments: any;
   requestDetails: any;
 
-  clickonselect() {
-    this.comments = this.commentSelected;
+  exist_comment:any[]=[];
+
+  clickonselect(com) {
+    if(this.comments==null){
+      this.comments = com;
+      this.exist_comment.push(com);
+    }
+    else{
+      this.comments = this.comments+""+com;
+      this.exist_comment.push(com);
+    }
+    console.log(this.exist_comment,"select");
+  }
+
+  clickondeselect(com,id){
+
+    // let smallerArray: any[] = this.exist_comment.length < this.rejectcommentsList.length ? this.exist_comment : this.rejectcommentsList;
+    // let largerArray: any[] = this.exist_comment.length < this.rejectcommentsList.length ? this.rejectcommentsList : this.exist_comment;
+
+    // for (let i = 0; i < smallerArray.length; i++) {
+    //   let index = largerArray.findIndex((el) => el.Req_Coments == smallerArray[i]);
+    //   if (index !== -1) {
+    //     smallerArray.splice(i, 1);
+    //     i--;
+    //   }
+    // }
+
+    this.exist_comment = this.exist_comment.filter((comment) => comment != com);
+    
+    this.comments=this.comments.replace(com,"");
+    console.log(this.exist_comment,"deselect");
+
   }
 
   typeChange() {
@@ -211,8 +241,8 @@ export class MoreDetailsComponent implements OnInit {
   rejectcommentsList: any;
 
   rejectApproval() {
-    this.commentSelected = null;
-    this.comments = "";
+    // this.commentSelected = null;
+    // this.comments = "";
     this.noRejectType = false;
     this.reject_list.forEach(element => {
       if (this.rejectType == element.TypeID) {
@@ -3656,7 +3686,7 @@ GetmeetingDetails(){
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
-
+    this.comments = "";
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
