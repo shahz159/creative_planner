@@ -113,6 +113,8 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
     this.GetmeetingDetails();
+    this.getholdate();
+
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
     this.minhold.setDate(this.minhold.getDate() + 1);
@@ -204,6 +206,9 @@ export class MoreDetailsComponent implements OnInit {
   forwardType: string;
   pro_act: boolean = true;
   newResponsible: any;
+  new_deadline:any;
+  new_cost: any;
+  hold_upto:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -221,6 +226,8 @@ export class MoreDetailsComponent implements OnInit {
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.new_deadline = (this.requestDetails[0]['new_deadline']);
+        this.new_cost = (this.requestDetails[0]['new_cost']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
@@ -234,6 +241,14 @@ export class MoreDetailsComponent implements OnInit {
           this.newResponsible = (this.transfer_json[0]['newResp']);
         }
       }
+    });
+  }
+
+  getholdate(){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+
+    this.approvalservice.GetHoldDate(this.approvalObj).subscribe((data) => {
+      this.hold_upto=data["hold_date"];
     });
   }
 
@@ -835,7 +850,8 @@ GetmeetingDetails(){
   _portfoliolist: any;
   portslength:any;
   selectedcategory:any;
-
+  Delaydays:any;
+  
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -848,6 +864,7 @@ GetmeetingDetails(){
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Pid = this.ProjectInfo_List[0]['id'];
           this.Status = this.ProjectInfo_List[0]['Status'];
+          this.Delaydays = this.ProjectInfo_List[0]['Delaydays'];
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
@@ -2949,6 +2966,7 @@ GetmeetingDetails(){
   RACIS:any= [];
   racislength:any;
   raciPeople:any;
+  action_count:any;
 
   GetSubtask_Details() {
     if (this.filteredemp == true) {
@@ -2961,6 +2979,10 @@ GetmeetingDetails(){
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
+
+          if(this.subTaskCount!=0 && this.completedCount!=0){
+            this.action_count=this.completedCount+'/'+this.subTaskCount;
+          }
           //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }
@@ -2982,9 +3004,9 @@ GetmeetingDetails(){
 
           // Convert values to comma-separated string
           this.raciPeople = values.join(", ");
-          console.log(this.raciPeople,"RACIS");
+          //console.log(this.raciPeople,"RACIS");
 
-          // console.log(this.Subtask_List);
+          console.log(this.Subtask_List,"tasklist");
           //SubTasks Multiselect start         
 
           this.dropdownSettings_Employee = {
@@ -3003,6 +3025,9 @@ GetmeetingDetails(){
           this.inProcessCount = this.Subtask_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.inProcessCount + this.completedCount;
+          if(this.subTaskCount!=0 && this.completedCount!=0){
+            this.action_count=this.completedCount+'/'+this.subTaskCount;
+          }
           // console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }
@@ -3366,18 +3391,28 @@ GetmeetingDetails(){
           this.notifyService.showSuccess(this._Message, "Success");
           this.objProjectDto.Emp_No = this.Current_user_ID;
           this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-          if (this.currentminutes < 10) {
-            this.currentminutes = "0" + this.currentminutes;
-          }
           if (this.currenthours < 10) {
             this.currenthours = "0" + this.currenthours;
           }
+          if (this.currentminutes >= 0 && this.currentminutes <= 15) {
+            this.currentminutes = "15";
+          }
+          else if(this.currentminutes > 15 && this.currentminutes <= 30){
+            this.currentminutes = "30"
+          }
+          else if(this.currentminutes > 30 && this.currentminutes <= 45){
+            this.currentminutes = "45"
+          }
+          else if(this.currentminutes > 45 && this.currentminutes <= 59){
+            this.currentminutes = "00"
+          }
+          
           this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
           this.objProjectDto.EndTime = ((this.currenthours+1) + ":" + this.currentminutes);
           this.objProjectDto.TimeCount = "01:00";
           this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
           this.objProjectDto.date = this.current_Date;
-          this.objProjectDto.WorkAchieved = "Deadline Extend:" +this.extend_remarks;
+          this.objProjectDto.WorkAchieved = "Deadline Extend:" + this.extend_remarks;
           this.objProjectDto.Emp_Comp_No = this.Comp_No;
           this.objProjectDto.Project_Name = this.ProjectName;
           this.objProjectDto.Master_code = this.URL_ProjectCode;
@@ -3416,18 +3451,28 @@ GetmeetingDetails(){
           this.notifyService.showSuccess(this._Message, "Success");
           this.objProjectDto.Emp_No = this.Current_user_ID;
           this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-          if (this.currentminutes < 10) {
-            this.currentminutes = "0" + this.currentminutes;
-          }
           if (this.currenthours < 10) {
             this.currenthours = "0" + this.currenthours;
           }
+          if (this.currentminutes >= 0 && this.currentminutes <= 15) {
+            this.currentminutes = "15";
+          }
+          else if(this.currentminutes > 15 && this.currentminutes <= 30){
+            this.currentminutes = "30"
+          }
+          else if(this.currentminutes > 30 && this.currentminutes <= 45){
+            this.currentminutes = "45"
+          }
+          else if(this.currentminutes > 45 && this.currentminutes <= 59){
+            this.currentminutes = "00"
+          }
+         
           this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
           this.objProjectDto.EndTime = ((this.currenthours+1) + ":" + this.currentminutes);
           this.objProjectDto.TimeCount = "01:00";
           this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
           this.objProjectDto.date = this.current_Date;
-          this.objProjectDto.WorkAchieved = "Deadline Extend:" +this.extend_remarks;
+          this.objProjectDto.WorkAchieved = "Deadline Extend:" + this.extend_remarks;
           this.objProjectDto.Emp_Comp_No = this.Comp_No;
           this.objProjectDto.Project_Name = null;
           this.objProjectDto.Master_code = this.URL_ProjectCode;

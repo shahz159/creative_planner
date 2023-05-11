@@ -1266,6 +1266,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   new_deadline:any;
   new_cost: any;
   new_duration: any;
+  hold_upto: any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1288,6 +1289,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
+        this.hold_upto = (this.requestDetails[0]['hold_date']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
         this.new_duration = (this.requestDetails[0]['new_duration']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);

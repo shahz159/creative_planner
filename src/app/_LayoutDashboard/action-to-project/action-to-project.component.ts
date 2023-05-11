@@ -123,7 +123,6 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
-
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
   }
