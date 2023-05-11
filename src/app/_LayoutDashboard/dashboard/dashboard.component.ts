@@ -571,7 +571,7 @@ export class DashboardComponent implements OnInit {
       inertia: true,
     });
 
-    
+
 
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
@@ -1310,6 +1310,7 @@ export class DashboardComponent implements OnInit {
         this.maxDate = this.EventScheduledjson[0]['End_date'];
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
+          document.getElementById("div_endDate").style.display = "none";
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
           // document.getElementById("div_endDate").style.display = "none";
@@ -1876,6 +1877,7 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
+          this._SEndDate=null;
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Locationfulladd = null;
           this._status = null;
@@ -2287,7 +2289,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
-    // document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
     this.clearallfields();
     this.daysSelected = [];
     this.singleselectarry = [];
@@ -2442,6 +2444,7 @@ export class DashboardComponent implements OnInit {
 
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._EndDate = event.value.format("YYYY-MM-DD").toString();
+    this._SEndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this.maxDate = event.value.format("YYYY-MM-DD").toString();
     var start = moment(this.minDate);
@@ -2656,7 +2659,7 @@ export class DashboardComponent implements OnInit {
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
-        
+
       });
   }
 
@@ -2719,7 +2722,12 @@ export class DashboardComponent implements OnInit {
       // console.log( this.Alltimes,"times")
     });
 
+
     // alert(this.Startts);
+    
+
+ 
+
     // this.Alltimes = [];
     // this.StartTimearr.forEach(element => {
     //   this.Alltimes.push(element);
@@ -2751,8 +2759,8 @@ export class DashboardComponent implements OnInit {
       if (vahr == '00') {
         this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
         // alert(this.scstartdate)
-        // document.getElementById("Schenddate").style.display = "block";
-        
+        document.getElementById("Schenddate").style.display = "block";
+
       }
       else {
         this._SEndDate = this.scstartdate;
@@ -2765,9 +2773,9 @@ export class DashboardComponent implements OnInit {
 
     }
 
+
+
     //  alert(this._SEndDate)
-
-
 
     // this.Endtms = this.EndTimearr[0];
 
@@ -2787,6 +2795,19 @@ export class DashboardComponent implements OnInit {
       jsonData[IsActive] = 0;
     }
     this.daysSelectedII.push(jsonData)
+
+    const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
+    this.EndTimearr.forEach(element => {
+      // alert(element)
+      const _element=element;
+      const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
+      const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
+      // alert(diffInMinutes)
+      element = _element.toString() + "-" + diffInMinutes.toString();
+      
+    });
+
+    console.log(this.EndTimearr,"End Time Updated")
   }
 
   purposeEndtime(TSEnd) {
@@ -2804,6 +2825,7 @@ export class DashboardComponent implements OnInit {
     if (this.Startts > this.Endtms) {
       this.Endtms = this.Startts;
     }
+
 
 
     this.daysSelectedII = [];
@@ -3703,6 +3725,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
+
   ExpiryInOneMonth_Click() {
     this._ProjectDataList = [];
     let Mode: string = "ExOneMonth";
@@ -4013,6 +4036,8 @@ export class DashboardComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
+    this._SEndDate=null;
+    this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
@@ -4201,7 +4226,7 @@ export class DashboardComponent implements OnInit {
   daterange() {
     document.getElementById("range-picker").classList.toggle("d-none");
     document.getElementById("main-section").classList.toggle("d-none");
-    
+
   }
 
   evesrchopn(){

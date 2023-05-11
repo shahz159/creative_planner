@@ -62,6 +62,7 @@ export class ActionToProjectComponent implements OnInit {
   cat_name: any = "";
   CurrentUser_Name:string;
   owner:string;
+  Resp_empno:string;
 
   constructor(
     public notifyService: NotificationService,
@@ -94,7 +95,8 @@ export class ActionToProjectComponent implements OnInit {
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
           this.ProjectDeadLineDate = data["DeadLine"];
           this.Owner_Empno = data['Owner_empno'];
-          // console.log(data,this.ProjectDeadLineDate,this.Owner_Empno,"back");
+          this.Resp_empno = data['Resp_empno'];
+           console.log(data,this.ProjectDeadLineDate,this.Owner_Empno,"back");
         })
       }
     });
@@ -125,12 +127,14 @@ export class ActionToProjectComponent implements OnInit {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
+    
   }
 
   CurrentUser_ID: string;
   _EmployeeListForDropdown = [];
   selectedProjectCodelist:any;
   ownerName:string;
+  RespName:string;
   ownerArr:any =[];
 
   GetAllEmployeesForAssignDropdown() {
@@ -158,6 +162,10 @@ export class ActionToProjectComponent implements OnInit {
             if(element.Emp_No==this.Owner_Empno){
               this.ownerName=element.DisplayName;
               this.ownerArr.push(this.ownerName);
+            }
+            if(element.Emp_No==this.Resp_empno){
+              this.RespName=element.DisplayName;
+              this.ownerArr.push(this.RespName);
             }
           }
         });
