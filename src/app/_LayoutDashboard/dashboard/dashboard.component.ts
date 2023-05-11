@@ -2434,7 +2434,7 @@ export class DashboardComponent implements OnInit {
     this._StartDate = event.value;
 
     let sd = event.value.format("YYYY-MM-DD").toString();
-    this._EndDate = event.value.format("YYYY-MM-DD").toString();
+    // this._EndDate = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this.maxDate = event.value.format("YYYY-MM-DD").toString();
