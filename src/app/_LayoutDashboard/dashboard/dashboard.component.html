@@ -2355,22 +2355,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group flex-1" id="div_endDate">
-                                <label>End till <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
-                                        [min]="_StartDate" [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)"
-                                        placeholder="End Date" class="form-control">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text p-0">
-                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker2></mat-datepicker>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
 
                         </div>
+                        
                         <div class="wc-cus">
                             <!-- <div class="form-group flex-1">
                                 <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
@@ -2417,6 +2405,20 @@
 
 
 
+                        </div>
+                    </div>
+                    <div class="form-group flex-1" id="div_endDate">
+                        <label>End till <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
+                                [min]="_StartDate" [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)"
+                                placeholder="End Date" class="form-control">
+                            <div class="input-group-append">
+                                <div class="input-group-text p-0">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
