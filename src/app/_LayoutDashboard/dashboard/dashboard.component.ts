@@ -588,7 +588,8 @@ export class DashboardComponent implements OnInit {
     $(document).mouseup(function (e) {
       const myDiv = $('.bg-ovr');
       const modaldv = $('.eve-modal');
-      const searcharea = $('.form-input');
+      // hide search
+      //const searcharea = $('.form-input');
 
 
       if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
@@ -600,11 +601,14 @@ export class DashboardComponent implements OnInit {
         }
       }
 
-      if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
-        if ($('.drop-search.show').hasClass('show')) {
-          $('.drop-search.show').removeClass('show');
-        }
-      }
+      // hide search
+      // if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
+      //   if ($('.drop-search.show').hasClass('show')) {
+      //     $('.drop-search.show').removeClass('show');
+      //     $(".fc-header-toolbar").removeClass("d-none");
+
+      //   }
+      // }
       
     });
 
@@ -2227,6 +2231,8 @@ export class DashboardComponent implements OnInit {
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
         console.log(this.Scheduledjson, "Testing");
       });
+
+      //document.getElementById("showlist").classList.add("show");
 
   }
 
@@ -4335,13 +4341,13 @@ export class DashboardComponent implements OnInit {
 
   evesrchopn(){
     document.getElementById("drp-srch").classList.add("show");
+    $(".fc-header-toolbar").addClass("d-none");
   }
   evesrchclose(){
     this.showsearch=false;
     document.getElementById("drp-srch").classList.remove("show");
-    // document.getElementById("showlist").classList.remove("show");
-    document.getElementById("showlist").style.display = "none";
-
-
+    $(".fc-header-toolbar").removeClass("d-none");
+    //document.getElementById("showlist").classList.remove("show");
+    //document.getElementById("showlist").style.display = "none";
   }
 }
