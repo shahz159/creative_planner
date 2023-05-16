@@ -530,7 +530,7 @@
                                                 <path d="M0,0h24v24H0V0z" fill="none"></path>
                                             </svg>
                                         </button>
-                                        <button class="btn-svgs btn-clear" aria-label="Search" role="button">
+                                        <button class="btn-svgs btn-clear" aria-label="Search" role="button" (click)="clearsearch()">
                                             <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -558,9 +558,9 @@
                                             <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
                                                 tabindex="0">
                                                 <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">{{item.St_Time}}-{{item.Ed_Time}}</div>
+                                                <div class="fc-event-time">{{item.NewSt_Time}}-{{item.NewEd_Time}}</div>
                                                 
-                                                <div class="fc-event-title ml-2">{{item.Task_Name}} </div>
+                                                <div class="fc-event-title ml-5">{{item.Task_Name}} </div>
                                             </a>
                                             <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                         </div>

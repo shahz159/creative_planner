@@ -3479,7 +3479,9 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
-  
+  clearsearch(){
+    this.Searchword=null;
+  }
 
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
