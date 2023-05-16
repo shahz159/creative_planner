@@ -233,7 +233,7 @@
                                                     <th><strong>Employee</strong></th>
                                                     <th><strong>Start Date</strong></th>
                                                     <th><strong>End Date</strong></th>
-                                                    <th>Last Worked</th>
+                                                    <th>Last Update</th>
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
@@ -348,7 +348,7 @@
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
-                                                        Last Worked
+                                                        Last Update
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
@@ -425,7 +425,7 @@
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
-                                                            <span class="text-danger font-weight-400">Delay</span>
+                                                            <span class="text-danger font-weight-400">Delay {{item.Delaydays}} days</span>
                                                             <!-- <span class="font-weight-400">{{item.Status}}</span> -->
                                                         </div>
                                                         <!-- Other Status #ed6b75 -->
@@ -447,7 +447,7 @@
                                                         </div>
 
                                                         <div *ngIf="item.Status=='Project Hold'">
-                                                            <span class="text-danger font-weight-400">Project
+                                                            <span class="text-danger font-weight-400">
                                                                 Hold</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
@@ -498,7 +498,7 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
                                                             <span class="font-weight-400"
-                                                                style="color: #c0b5dc;">Project Holded
+                                                                style="color: #c0b5dc;">Hold
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">

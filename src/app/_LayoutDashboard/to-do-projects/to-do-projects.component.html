@@ -195,7 +195,7 @@
                         item.Team_Res,item.Team_Autho,item.Team_Informer,item.Team_Coor,item.Team_Support,
                         item.EmpNo_Owner,item.EmpNo_Res,item.EmpNo_Autho,item.EmpNo_Coor,item.EmpNo_Informer,
                         item.EmpNo_Support,item.Emp_Comp_No,item.Project_Block,item.Project_Description,
-                        item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Chkboxvalue,item.Project_Cost,item.Duration,item.StandardDuration,
+                        item.DPG,item.Exec_BlockName,item.DeadLine,item.Status,item.Delaydays,item.Chkboxvalue,item.Project_Cost,item.Duration,item.StandardDuration,
                         item.Client_Name,item.Remarks,item.Remarkss,item.CD,item.ReportType,item.Attachments,item.id,item.Sourcefile,item.SubmissionType,item.IsCloud)">
                             <p class="project-title mb-2">
                                 {{item.Project_Name}}
@@ -205,7 +205,7 @@
                                 <p class="mb-2">{{item.Exec_BlockName}}</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p [ngClass]="{'text-danger':item.Status=='Delay' || item.Status=='Project Hold',
+                                <p   *ngIf="item.Status!='Delay' && item.Status!='Project Hold'" [ngClass]="{'text-danger':item.Status=='Project Hold',
                                     'text-Completed':item.Status=='Completed',
                                     'text-warning':item.Status=='InProcess',
                                     'text-underApp':item.Status=='Under Approval',
@@ -218,6 +218,10 @@
                                     'text-CompleteRejected':item.Status=='Project Complete Rejected',
                                     'text-Todo':item.Status=='ToDo Completed'}">
                                     {{item.Status}}</p>
+                                    <p class="text-danger" *ngIf="item.Status=='Delay'">
+                                    {{item.Status}} {{item.Delaydays}} days</p>
+                                    <p class="text-danger" *ngIf="item.Status=='Project Hold'">
+                                        Hold</p>
                                     <!-- 'text-success':item.Status=='Completion Under Approval' -->
                                 <p class="mb-2">Date : {{item.DeadLine | date:'dd-MM-yyyy'}}</p>
                             </div>
@@ -321,8 +325,8 @@
                                 <i class="fas fa-project-diagram text-muted mr-1"></i>
                                 <b>{{Proj_ExecBlck}}</b>
                             </span>
-                            <span data-toggle="tooltip" title="Project Status!"
-                                    class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':(Project_Status=='Delay') || (Project_Status=='Project Hold'),
+                            <span data-toggle="tooltip" title="Project Status!" *ngIf="Project_Status!='Delay' && Project_Status!='Project Hold'"
+                                    class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger': (Project_Status=='Project Hold'),
                                     'text-Completed':Project_Status=='Completed',
                                     'text-warning':Project_Status=='InProcess',
                                     'text-underApp':Project_Status=='Under Approval',
@@ -335,6 +339,14 @@
                                     'text-CompleteRejected':Project_Status=='Project Complete Rejected',
                                     'text-Todo':Project_Status=='ToDo Completed'}">
                                 {{Project_Status}}
+                            </span>
+                            <span data-toggle="tooltip" title="Project Status!"
+                                    class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Delay'">
+                                {{Project_Status}} {{delaydays}} days
+                            </span>
+                            <span data-toggle="tooltip" title="Project Status!"
+                                    class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Project Hold'">
+                                Hold
                             </span>
                             <!-- 'text-success':Project_Status=='Completion Under Approval' -->
                             <span data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap mb-2 d-inline-block">
@@ -511,22 +523,24 @@
                                     </span>
 
                                     <span data-toggle="tooltip" title="Action Status!"
-                                        class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                    'text-Completed':item.SubProject_Status=='Completed',
-                                    'text-warning':item.SubProject_Status=='InProcess',
-                                    'text-underApp':item.SubProject_Status=='Under Approval',
-                                    'text-primary':item.SubProject_Status=='Completion Under Approval',
-                                    'text-Rejected':item.SubProject_Status=='New Project Rejected',
-                                    'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                    'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                    'text-info':item.SubProject_Status=='New Project',
-                                   
-                                    'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
-                                    'text-Todo':item.SubProject_Status=='ToDo Completed'}">
-                                       <!-- <p class="text-Completed "  *ngIf="Project_Status == 'Completed'"> Completed</p> -->
-                                       <!-- <p  *ngIf="Project_Status != 'Completed'"> {{item.SubProject_Status}}</p> -->
+                                        class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-Completed':item.SubProject_Status=='Completed',
+                                                'text-warning':item.SubProject_Status=='InProcess',
+                                                'text-underApp':item.SubProject_Status=='Under Approval',
+                                                'text-primary':item.SubProject_Status=='Completion Under Approval',
+                                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                                'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                                'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                                'text-info':item.SubProject_Status=='New Project',
+                                                'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
+                                                'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                                *ngIf="item.SubProject_Status != 'Delay'">
                                        <p> {{item.SubProject_Status}}</p>
                                     </span>
+
+                                <span data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status == 'Delay'"
+                                    class="mr-2 text-nowrap mb-2 d-inline-block text-danger">
+                                   <p> {{item.SubProject_Status}} {{item.Delaydays}} days</p>
+                                </span>
                                     <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                 </p>
                                 <p class="mb-1">

@@ -280,7 +280,7 @@
                                                         class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
                                                         <span class="kt-inbox__subject"
                                                             id="spnLabel_{{item.Assign_Id}}">
-                                                            {{item.Task_Name | titlecase}}</span>
+                                                            {{item.Task_Name}}</span>
                                                         <span class="kt-inbox__subject" style="display:none;"
                                                             id="spanTextbox_{{item.Assign_Id}}">
                                                             <div class="d-flex">
@@ -388,7 +388,7 @@
                                                     <div
                                                         class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
                                                         <span
-                                                            class="kt-inbox__subject"><s>{{item.Task_Name | titlecase}}</s></span>
+                                                            class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
                                                     </div>
                                                     <div class="mt-2">
                                                         <span
@@ -427,7 +427,7 @@
                                                 <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
                                                     <div
                                                         class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
-                                                        <span class="kt-inbox__subject  h5">{{item.Task_Name | titlecase}}</span>
+                                                        <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
                                                     </div>
                                                     <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                     <div class="my-2">
@@ -447,7 +447,7 @@
                                                             Action Added To
                                                             <mat-icon color='primary' class="ml-2 mr-2">task_alt
                                                             </mat-icon>
-                                                            <b>{{item.Project_Name | titlecase}}</b>
+                                                            <b>{{item.Project_Name}}</b>
                                                         </span>
                                                         <span
                                                             class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
@@ -468,14 +468,22 @@
                                                         class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                         <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label>
 
-                                                        <span  data-toggle="tooltip" title="Action Status!"
-                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                        [ngClass]="{'kt-badge--unified-success':item.Status=='Completed',
-                                                                    'kt-badge--unified-warning1':item.Status=='InProcess',
-                                                                    'kt-badge--unified-danger':item.Status=='Project Hold' || item.Status=='Delay',
-                                                                    'kt-badge--unified-info':item.Status=='Completion Under Approval'}">
-                                                        <div> {{item.Status}}</div>
+                                                        <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                [ngClass]="{'kt-badge--unified-success':item.Status=='Completed',
+                                                                            'kt-badge--unified-warning1':item.Status=='InProcess',
+                                                                            'kt-badge--unified-danger':item.Status=='Project Hold',
+                                                                            'kt-badge--unified-info':item.Status=='Completion Under Approval'}">
+                                                            <div> {{item.Status}}</div>
                                                          </span>
+                                                         <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                            <div> {{item.Status}} {{item.Delaydays}} days</div>
+                                                         </span>
+                                                         <!-- <span  data-toggle="tooltip" title="Action Status!"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline 'kt-badge--unified-danger'">
+                                                            <div> {{item.Status}}</div>
+                                                         </span> -->
                                                         <!-- <span
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
                                                             data-tippy-content="Another Tooltip">
@@ -544,7 +552,7 @@
                                                             </a>
                                                         </div>&nbsp;                                                 
                                                         <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
-                                                            <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name | titlecase}}</span>
+                                                            <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
                                                         </div>
                                                     </div>
                                                     <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
@@ -592,14 +600,22 @@
                                                         class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                             class="fa fa-clone mr-2"></i>
                                                         {{item.Project_type}}</label>
-                                                        <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status"
-                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                        [ngClass]="{
-                                                            'kt-badge--unified-success':item.Project_status=='Completed',
-                                                             'kt-badge--unified-warning':item.Project_status=='InProcess',
-                                                             'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Delay' || item.Project_status=='Project Hold' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
-                                                             'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval'}">
-                                                        <div> {{item.Project_status}}</div>
+                                                        <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                [ngClass]="{
+                                                                    'kt-badge--unified-success':item.Project_status=='Completed',
+                                                                    'kt-badge--unified-warning':item.Project_status=='InProcess',
+                                                                    'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
+                                                                    'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval'}">
+                                                                <div> {{item.Project_status}}</div>
+                                                         </span>
+                                                         <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                <div> {{item.Project_status}} {{item.Delaydays}} days</div>
+                                                         </span>
+                                                         <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                <div> Hold </div>
                                                          </span>
                                                         <!-- <span 
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"

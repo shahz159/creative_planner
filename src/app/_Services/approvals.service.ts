@@ -28,6 +28,15 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetHoldDate", this.obj_approvalDTO);
   }
 
+  UpdateReleaseDate(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.hold_date = obj.hold_date;
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+    
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateReleasedate", this.obj_approvalDTO);
+  }
+
   NewResponseService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
@@ -66,6 +75,17 @@ export class ApprovalsService {
     this.obj_approvalDTO.Remarks = obj.Remarks;
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertTransferApprovalService", this.obj_approvalDTO);
+
+  }
+
+  InsertForwardApprovalService(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Responsible=obj.Responsible;
+    this.obj_approvalDTO.deadline=obj.deadline;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertForwardApprovalService", this.obj_approvalDTO);
 
   }
 

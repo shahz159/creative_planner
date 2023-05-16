@@ -11,4 +11,5 @@ export class ApprovalDTO {
     deadline:string;
     Responsible:string;
     approvaltype:string;
+    hold_date:any;
 }

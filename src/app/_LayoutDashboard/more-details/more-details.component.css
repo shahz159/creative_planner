@@ -1343,11 +1343,11 @@ span.guest-icns, .svg-icn {
 }
 .relse-act{
   color: #2786fb;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 .relse-act:hover{
-  color: #2786fb !important;
-  text-decoration: underline !important;
+  color: #0355b9 !important;
+  /* text-decoration: underline !important; */
   cursor: pointer !important;
 }
 .w-55 {

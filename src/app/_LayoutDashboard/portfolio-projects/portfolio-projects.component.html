@@ -181,23 +181,21 @@
                                             <ng-container
                                             *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
                                             
-                                            <div class="card my-1 shadow-sm brdr success " [ngClass]="{'danger':item1.Status=='Delay',
-                                            'success':item1.Status=='Completed',
-                                            'warning':item1.Status=='InProcess',
-                                            'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
-                                            'ForwardUnderApproval':item1.Status=='Forward Under Approval',
-                                            'newProject':item1.Status=='New Project',
-                                            'completeUnderApproval':item1.Status=='Completion Under Approval',
-                                            'projectComRejected':item1.Status=='Project Complete Rejected',
-                                            'UnderApprovals':item1.Status=='Under Approval',
-                                            'DeadlineExtended':item1.Status=='Deadline Extend Under Approval',
-                                            'HoldunderApp':item1.Status=='Project Hold Under Approval',
-                                            'projectholded':item1.Status=='Project Holded',
-                                            'NewprojectRejected':item1.Status=='New Project Rejected',
-                                            'projecthold':item1.Status=='Project Hold',
-                                            'TodoAchieved':item1.Status=='ToDo Achieved',
-                                            'ToDoCompleted':item1.Status=='ToDo Completed',
-                                            'NewTodo':item1.Status=='New Todo'}">
+                                            <div class="card my-1 shadow-sm brdr success " [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                                    'success':item1.Status=='Completed',
+                                                    'warning':item1.Status=='InProcess',
+                                                    'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
+                                                    'ForwardUnderApproval':item1.Status=='Forward Under Approval',
+                                                    'newProject':item1.Status=='New Project',
+                                                    'completeUnderApproval':item1.Status=='Completion Under Approval',
+                                                    'UnderApprovals':item1.Status=='Under Approval',
+                                                    'DeadlineExtended':item1.Status=='Deadline Extend Under Approval',
+                                                    'HoldunderApp':item1.Status=='Project Hold Under Approval',
+                                                    'projectholded':item1.Status=='Project Holded',
+                                                    'projecthold':item1.Status=='Project Hold',
+                                                    'TodoAchieved':item1.Status=='ToDo Achieved',
+                                                    'ToDoCompleted':item1.Status=='ToDo Completed',
+                                                    'NewTodo':item1.Status=='New Todo'}">
                                                 <div class="card-body d-flex align-items-center justify-content-around">
                                                    
                                                     <div class="icond">
@@ -277,8 +275,8 @@
                                                             </span>
                                                             <span *ngIf="item1.Delaydays>0"
                                                                 class="text-danger delayDays">
-                                                                <strong>({{item1.Delaydays}}
-                                                                    Days)</strong>
+                                                                <strong>{{item1.Delaydays}}
+                                                                    days</strong>
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
@@ -301,11 +299,11 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Project Hold'">
                                                             <span
-                                                                class="text-danger font-weight-400">{{item1.Status}}</span>
+                                                                class="text-danger font-weight-400">Hold</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Project Holded'">
                                                             <span class="font-weight-400"
-                                                                style="color: #646c9a;">{{item1.Status}}</span>
+                                                                style="color: #646c9a;">Hold</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Under Approval'">
                                                             <span
@@ -335,7 +333,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Project Rejected'">
                                                             <span
-                                                                class="text-info font-weight-400">{{item1.Status}}
+                                                                class="text-danger font-weight-400">{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div

@@ -869,6 +869,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.noRejectType = false;
   }
   noRejectType: boolean = false;
+
+
   submitApproval() {
 
     if (this.requestType != 'Project Forward' && this.requestType!='Task Complete') {
@@ -1015,7 +1017,139 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       }
       this.closeInfo();
     }
-    else if (this.requestType == 'Project Forward') {
+    else if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
+      if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.fun_LoadProjectDetails();
+                this.getapprovalStats();
+                if (this._Urlid == '1') {
+                  this.router.navigate(["/backend/ProjectsSummary/"]);
+                  this._projectSummary.GetProjectsByUserName(this.Summarytype);
+                }
+                else if (this._Urlid == '2') {
+                  this._portfolioprojects.GetPortfolioProjectsByPid();
+                }
+                else if (this._Urlid == '3') {
+                  this._viewdashboard.GetCompletedProjects();
+                }
+                else if (this._Urlid == '4') {
+                  this._projectsAdd.GetProjectsByUserName();
+                  this._projectsAdd.getDropdownsDataFromDB();
+                }
+                else if (this._Urlid == '5') {
+                  this._toDo.GetProjectsByUserName();
+                  this._toDo.GetSubtask_Details();
+                }
+                else if (this._Urlid == '6') {
+                  this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
+                }
+              }
+            });
+        }
+
+      }
+      else if (this.selectedType == '1') {
+        this.Employee_List.forEach(element => {
+          if(element.Emp_No==this.newResponsible){
+            this.new_Res=element.DisplayName;    
+          }
+        });  
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Responsible = this.newResponsible;
+        this.approvalObj.deadline = this.requestDeadline;
+        this.approvalObj.Project_Code = this.projectCode;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+
+        this.approvalservice.InsertForwardApprovalService(this.approvalObj).subscribe(data => {
+          this._Message = data['message'];
+
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project will be forwarded to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " from " + this.Project_Responsible +'('+this.EmpNo_Res+')', "Successfully Forwarded");
+            this.fun_LoadProjectDetails();
+            this.getapprovalStats();
+            if (this._Urlid == '1') {
+              this.router.navigate(["/backend/ProjectsSummary/"]);
+              this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            }
+            else if (this._Urlid == '2') {
+              this._portfolioprojects.GetPortfolioProjectsByPid();
+            }
+            else if (this._Urlid == '3') {
+              this._viewdashboard.GetCompletedProjects();
+            }
+            else if (this._Urlid == '4') {
+              this._projectsAdd.GetProjectsByUserName();
+              this._projectsAdd.getDropdownsDataFromDB();
+            }
+            else if (this._Urlid == '5') {
+              this._toDo.GetProjectsByUserName();
+            }
+            else if (this._Urlid == '6') {
+              this.router.navigate(["Notifications"]);
+              this._notification.viewAll();
+            }
+          }
+          else if (this._Message == '2') {
+            this.notifyService.showSuccess("Project Forward request sent to -"+this.new_Res+'('+this.approvalObj.Responsible+')', "Forward under approval!");
+            this.fun_LoadProjectDetails();
+            this.getapprovalStats();
+            if (this._Urlid == '1') {
+              this.router.navigate(["/backend/ProjectsSummary/"]);
+              this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            }
+            else if (this._Urlid == '2') {
+              this._portfolioprojects.GetPortfolioProjectsByPid();
+            }
+            else if (this._Urlid == '3') {
+              this._viewdashboard.GetCompletedProjects();
+            }
+            else if (this._Urlid == '4') {
+              this._projectsAdd.GetProjectsByUserName();
+              this._projectsAdd.getDropdownsDataFromDB();
+            }
+            else if (this._Urlid == '5') {
+              this._toDo.GetProjectsByUserName();
+            }
+            else if (this._Urlid == '6') {
+              this.router.navigate(["Notifications"]);
+              this._notification.viewAll();
+            }
+          }
+          else if (this._Message == '4' || this._Message == null) {
+            this.notifyService.showError("Please contact Support.", "Project not forwarded!");
+          }
+        });
+      
+      }
+      this.closeInfo();
+    }
+    else if (this.requestType == 'Project Forward' && this.forwardType == 'T') {
       if (this.selectedType == '3') {
         if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
           this.noRejectType = true;
@@ -1280,10 +1414,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
-        if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
-          this.pro_act = false;
-        }
-
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
@@ -1303,7 +1433,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         if(this.requestType=='Project Forward'){
           this.newResponsible = (this.transfer_json[0]['newResp']);
         }
-        // console.log(this.transfer_json, 'transfer');
+        console.log(this.requestDetails, 'transfer');
       }
       // console.log(this.comments_list, "req")
       // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");

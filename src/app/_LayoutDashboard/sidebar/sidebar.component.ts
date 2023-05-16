@@ -43,7 +43,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#performance', {
-      content: "Performance Dashboard",
+      content: "Performance dashboard",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
@@ -61,7 +61,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#summary', {
-      content: "Project Summary",
+      content: "Project summary",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#todo', {
-      content: "ToDo Projects",
+      content: "Process details",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
@@ -88,7 +88,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#assign', {
-      content: "Assign Projects",
+      content: "Assign projects",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',

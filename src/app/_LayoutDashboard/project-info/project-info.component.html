@@ -811,7 +811,7 @@
                             <i class="fas fa-star fs-3 text-muted mr-2"></i>
                             <div class="w-100">
                                 <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays>0" data-toggle="tooltip"
-                                    title="{{item.Delaydays}} Days Delay!">{{_MainProjectStatus}} ({{item.Delaydays}} days)</h5>
+                                    title="{{item.Delaydays}} Days Delay!">{{_MainProjectStatus}} {{item.Delaydays}} days</h5>
                                 <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays<=0">{{_MainProjectStatus}}
                                 </h5>
                             </div>
@@ -828,7 +828,7 @@
                                     </div>
                                     <div *ngIf="item.Status=='Delay'">
                                         <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays>0"
-                                            data-toggle="tooltip" title="{{item.Delaydays}} Days Delay!">{{item.Status}}
+                                            data-toggle="tooltip" title="{{item.Delaydays}} days delay!">{{item.Status}}
                                         </h5>
                                         <h5 class="my-1 font-14 text-danger" *ngIf="item.Delayday<=0">{{item.Status}}
                                         </h5>
@@ -854,13 +854,13 @@
                                     </div>
 
                                     <div *ngIf="item.Status=='Project Hold' && !proj_holddate">
-                                        <h5 class="my-1 font-14 text-danger">{{item.Status}}
+                                        <h5 class="my-1 font-14 text-danger">Hold
                                         </h5>
                                     </div>
                                     <div *ngIf="item.Status=='Project Hold' && proj_holddate">
                                         <h5 class="my-1 font-14 text-danger" data-toggle="tooltip"
-                                            title=" Hold till {{proj_holddate}} !!">
-                                            {{item.Status}}
+                                            title=" Hold till {{proj_holddate}}">
+                                            Hold until {{proj_holddate}}
                                         </h5>
                                     </div>
                                     <div *ngIf="item.Status=='ToDo Completed'">
@@ -903,7 +903,7 @@
                                     </div>
                                     <div *ngIf="item.Status=='Project Holded'">
                                         <h5 style="color: #c0b5dc;" class="my-1 font-14 ">
-                                            {{item.Status}}
+                                            Hold
                                         </h5>
                                     </div>
                                     <div *ngIf="item.Status=='Project Hold Under Approval'">
@@ -978,7 +978,7 @@
                     <div *ngIf="ProjectStatus=='Not Started'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                {{ProjectStatus}}
+                                <!-- {{ProjectStatus}} -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -989,7 +989,7 @@
                     <div *ngIf="ProjectStatus=='Just Started'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                {{ProjectStatus}}
+                                <!-- {{ProjectStatus}} -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -1000,7 +1000,7 @@
                     <div *ngIf="ProjectStatus=='InProcess'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                {{ProjectStatus}}
+                                <!-- {{ProjectStatus}} -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -1010,7 +1010,7 @@
                     <div *ngIf="ProjectStatus=='UnderCompletion'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                {{ProjectStatus}}
+                                <!-- {{ProjectStatus}} -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -1020,7 +1020,7 @@
                     <div *ngIf="ProjectStatus=='Completed'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                {{ProjectStatus}}
+                                <!-- {{ProjectStatus}} -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -1030,7 +1030,7 @@
                     <div *ngIf="ProjectStatus=='ProjDuration0'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
-                                Just Started
+                                <!-- Just Started -->
                                 <span class="progress_number">{{ProjectPercentage}}</span>
                             </small>
                             <span class="progress-bar-inner bg-today" [ngStyle]='{ width : ProjectPercentage }'
@@ -1371,8 +1371,8 @@
                                     <h5 class="my-1 font-14 text-danger" *ngIf="task.Delayday==0">
                                         {{task.SubProject_Status}}</h5>
                                     <h5 class="my-1 font-14 text-danger" *ngIf="task.Delaydays>0" data-toggle="tooltip"
-                                        title="{{task.Delaydays}} Days Delay!">
-                                        {{task.SubProject_Status}}</h5>
+                                        title="{{task.Delaydays}} days delay!">
+                                        {{task.SubProject_Status}} {{task.Delaydays}} days</h5>
                                     <!-- <span class="font-weight-400">{{item.Status}}</span> -->
                                 </div>
                                 <!-- Other Status -->
@@ -1397,7 +1397,7 @@
 
                                 <div *ngIf="task.SubProject_Status=='Project Hold'">
                                     <h5 class="my-1 font-14 text-danger">
-                                        {{task.SubProject_Status}}</h5>
+                                        Hold</h5>
 
                                 </div>
                                 <div *ngIf="task.SubProject_Status=='ToDo Completed'">
