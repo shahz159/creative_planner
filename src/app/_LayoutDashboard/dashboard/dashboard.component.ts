@@ -2476,6 +2476,7 @@ export class DashboardComponent implements OnInit {
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
     this.scstartdate = d1;
+    this._EndDate=d1;
     // alert( this.scstartdate);
 
     this.AllDatesSDandED = [];
