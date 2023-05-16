@@ -533,7 +533,7 @@ export class DashboardComponent implements OnInit {
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
-    this.maxDate = moment(moment().add(90, 'days')).format("YYYY-MM-DD").toString();
+    this.maxDate = moment(moment().add(3, 'months')).format("YYYY-MM-DD").toString();
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
@@ -1975,7 +1975,6 @@ export class DashboardComponent implements OnInit {
     var start = moment(this.minDate);
     const _arraytext = [];
     if (this.selectedrecuvalue == "0") {
-      debugger
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
@@ -2482,7 +2481,11 @@ export class DashboardComponent implements OnInit {
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
     this.scstartdate = d1;
-    this._EndDate=d1;
+    if(this.selectedrecuvalue == "0"){
+      this._EndDate=d1;
+    }
+    
+   
     // alert( this.scstartdate);
 
     this.AllDatesSDandED = [];
