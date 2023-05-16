@@ -80,6 +80,7 @@ export class DashboardComponent implements OnInit {
   DARactivity_Div: boolean;
   _subtaskDiv: boolean;
   typetext: string;
+  Searchword:string
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
   Current_user_ID: any;
@@ -593,6 +594,8 @@ export class DashboardComponent implements OnInit {
       if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
         if (myDiv.hasClass('d-block')) {
           myDiv.removeClass('d-block');
+          $('.side_view').removeClass('position-fixed');
+
           // document.getElementById("fltrs-drop").classList.remove("show-flts"); 
         }
       }
@@ -1426,7 +1429,7 @@ export class DashboardComponent implements OnInit {
 
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
-
+    document.getElementById("Schenddate").style.display = "none";
     this.editTask = true;
     this.copyTask = false;
     this.create = false;
@@ -1508,11 +1511,12 @@ export class DashboardComponent implements OnInit {
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber']
-
+        // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
+          this.maxDate=this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
@@ -2212,6 +2216,22 @@ export class DashboardComponent implements OnInit {
       alert('Please Select Valid Date and Time');
     }
   }
+  showsearch:boolean=false;
+  Search_byname(){
+    this.showsearch=true;
+    this._calenderDto.EmpNo = this.Current_user_ID;
+    this._calenderDto.Search_text = this.Searchword;
+    // alert(this.Searchword);
+
+    this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
+      ((data) => {
+        this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
+        console.log(this.Scheduledjson, "Testing");
+      });
+
+  }
+
+
 
   viewconfirm() {
 
@@ -2759,7 +2779,7 @@ export class DashboardComponent implements OnInit {
       if (vahr == '00') {
         this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
         // alert(this.scstartdate)
-        document.getElementById("Schenddate").style.display = "block";
+        document.getElementById("Schenddate").style.display = "none";
 
       }
       else {
@@ -3301,7 +3321,7 @@ export class DashboardComponent implements OnInit {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
-        console.log(this.EventScheduledjson, "Testing");
+        // console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3370,6 +3390,86 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
+  getlistclick(id){
+    this.Schedule_ID = id;
+    $('.bg-ovr').addClass('d-block');
+    $('.side_view').addClass('position-fixed');
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+
+        // console.log(this.EventScheduledjson, "Testing");
+        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+        this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.Status1 = this.EventScheduledjson[0].Status;
+        this.Proposedate = this.EventScheduledjson[0].Schedule_date;
+        this.PropStart = this.EventScheduledjson[0].St_Time;
+        this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
+        this.pro_date = this.EventScheduledjson[0].Purposedate;
+        this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
+        this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
+        this.pro_enddate = this.EventScheduledjson[0].SEndDate;
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        // console.log(this.EventScheduledjson, "Testing12");
+
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
+        }
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
+        }
+        else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
+        }
+        else {
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
+        }
+        this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
+
+        this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+        this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+        this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
+        this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
+
+        this.dmsIdjson = [];
+        if (this.DMS_Scheduledjson.length > 0) {
+          this.DMS_Scheduledjson.forEach(element => {
+            var jsonData = {};
+            var columnName = "MailId";
+            jsonData[columnName] = element;
+            this.dmsIdjson.push(jsonData);
+          });
+          this.dmsIdjson = JSON.stringify(this.dmsIdjson);
+          this._LinkService._GetMemosSubject(this.dmsIdjson).
+            subscribe((data) => {
+              this._MemosSubjectList = JSON.parse(data['JsonData']);
+              console.log("Subject Name ------------>", this._MemosSubjectList);
+            });
+        }
+
+
+
+
+        // console.log(this.dmsIdjson,"ids");
+      });
+  }
+  
 
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -4233,7 +4333,11 @@ export class DashboardComponent implements OnInit {
     document.getElementById("drp-srch").classList.add("show");
   }
   evesrchclose(){
+    this.showsearch=false;
     document.getElementById("drp-srch").classList.remove("show");
+    // document.getElementById("showlist").classList.remove("show");
+    document.getElementById("showlist").style.display = "none";
+
 
   }
 }
