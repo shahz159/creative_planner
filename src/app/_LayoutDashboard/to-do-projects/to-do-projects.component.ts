@@ -162,9 +162,10 @@ export class ToDoProjectsComponent implements OnInit {
   FileName: string = null;
   Pid: number;
   cloud:boolean;
+  delaydays:any;
 
   OnProjectClick(Pcode, Pname, Owner, Res, Autho, Informer, Coor, Supp, EmpNo_Own, EmpNo_Res, EmpNo_Autho,
-    EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, checked,
+    EmpNo_Coor, EmpNo_Info, EmpNo_Supp, Comp_No, proj_Block, PDesc, PStDT, PExecBlck, PendDT, Pstatus, Pdelay,checked,
     PCost, duration, standardduration, Client_Name, Remarks, Remarkss, CD, ReportType, Attachments, pid, SourceFile, SubmissionType,cloud) {
 
     this.BsService.SetNewPojectCode(Pcode);
@@ -194,6 +195,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.PstDT = PStDT;
     this.PEndDT = PendDT;
     this.Project_Status = Pstatus;
+    this.delaydays=Pdelay;
     this.Checkbox_checked = checked;
     this.projectCost = PCost;
     this.Duration = duration;

@@ -88,6 +88,7 @@ export class MoreDetailsComponent implements OnInit {
   selectedType: string;
   date = new Date();
   dateF = new FormControl(new Date());
+  dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
   today: number;
   currenthours: any;
   currentminutes: any;
@@ -103,7 +104,7 @@ export class MoreDetailsComponent implements OnInit {
       this._MasterCode = pcode;
     });
 
-    
+    this.getholdate();
     this.GetProjectDetails();
     this.GetSubtask_Details();
     this.dar_details();
@@ -113,7 +114,6 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
     this.GetmeetingDetails();
-    this.getholdate();
 
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
@@ -136,6 +136,7 @@ export class MoreDetailsComponent implements OnInit {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
+    this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
   }
@@ -144,7 +145,7 @@ export class MoreDetailsComponent implements OnInit {
   
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
-  }
+  } 
 
   approvalObj = new ApprovalDTO();
   requestDate: any;
@@ -219,9 +220,6 @@ export class MoreDetailsComponent implements OnInit {
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
-        if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
-          this.pro_act = false;
-        }
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
@@ -241,15 +239,52 @@ export class MoreDetailsComponent implements OnInit {
           this.newResponsible = (this.transfer_json[0]['newResp']);
         }
       }
+      console.log(this.requestDetails, 'transfer');
     });
   }
 
   getholdate(){
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetHoldDate(this.approvalObj).subscribe((data) => {
-      this.hold_upto=data["hold_date"];
+    this.service.getHoldDatebyProjectcode(this.URL_ProjectCode).subscribe((data) => {
+      this.hold_upto=data["Project_holddate"];
+      // this.hold_upto=moment(this.hold_upto).format("DD-MM-YYYY");
     });
+  }
+
+  updateReleaseDate(){
+
+    if(this.release_date==null || this.release_date=='Invalid date'){
+      this.notifyService.showError("Please enter valid date", "Failed");
+      return false;
+    }
+    else{
+        this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
+        this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
+        this.approvalObj.Project_Code=this.URL_ProjectCode;
+        this.approvalObj.hold_date= this.release_date;
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks= this.hold_remarks;
+
+        this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
+          this.close_space();
+          this._Message = (data['message']);
+          if(this._Message == '1'){
+            this.notifyService.showSuccess("Project release date updated", "Success");
+            this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getholdate();
+          }
+          else if(this._Message == '2' || this._Message == '0'){
+            this.notifyService.showError("Project release date not updated", "Failed");
+          }
+        });
+    }
+    this.Clear_Feilds();
+
+    console.log(this.approvalObj,this.holdDate,"hold")
+
   }
 
   rejDesc: any;
@@ -387,7 +422,85 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
     }
-    else if (this.requestType == 'Project Forward') {
+    else if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
+      if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+              }
+              this.Clear_Feilds();
+            });
+        }
+      }
+      else if (this.selectedType == '1') {
+        this.Employee_List.forEach(element => {
+          if(element.Emp_No==this.newResponsible){
+            this.new_Res=element.DisplayName;    
+          }
+        });  
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Responsible = this.newResponsible;
+        this.approvalObj.deadline = this.requestDeadline;
+        this.approvalObj.Project_Code = this.projectCode;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+
+        this.approvalservice.InsertForwardApprovalService(this.approvalObj).subscribe(data => {
+          this._Message = data['message'];
+
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project will be forwarded to " + this.new_Res+'('+this.approvalObj.Responsible+')' + " from " + this.Responsible +'('+this.Responsible_EmpNo+')', "Successfully Forwarded");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+          }
+          else if (this._Message == '2') {
+            this.notifyService.showSuccess("Project Forward request sent to -"+this.new_Res+'('+this.approvalObj.Responsible+')', "Forward under approval!");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getapprovalStats();
+              this.GetprojectComments();
+          }
+          else if (this._Message == '4' || this._Message == null) {
+            this.notifyService.showError("Please contact Support.", "Project not forwarded!");
+          }
+        });
+        this.closeInfo();
+      }
+      this.closeInfo();
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
+    }
+    else if (this.requestType == 'Project Forward'  && this.forwardType == 'T') {
       if (this.selectedType == '3') {
         if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
           this.noRejectType = true;
@@ -929,12 +1042,11 @@ GetmeetingDetails(){
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
 
-          if (this.Status == 'Project Hold' || this.ProjectBlockName=='To do List' || this.ProjectBlockName=='Standard Tasks' || this.ProjectBlockName=='Routine Tasks') {
+          if (this.ProjectBlockName=='To do List' || this.ProjectBlockName=='Standard Tasks' || this.ProjectBlockName=='Routine Tasks') {
             this.actionButton = true;
           }
           if (this.Status == 'ToDo Completed' || this.Status == 'Completed' 
-            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' 
-            || this.Status == 'Project Hold') {
+            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
             this.darbutton = false;
           }
         }
@@ -3142,7 +3254,7 @@ GetmeetingDetails(){
     this.actendedit=false;
     this.actstartedit=false;
     this.editCategory=false;
-
+    this.editRelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3168,6 +3280,7 @@ GetmeetingDetails(){
     this.actstartedit=false;
     this.editduration=false;
     this.editCategory=false;
+    this.editRelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3186,6 +3299,7 @@ GetmeetingDetails(){
     this.actendedit=false;
     this.actstartedit=false;
     this.editduration=false;
+    this.editRelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3209,6 +3323,7 @@ GetmeetingDetails(){
     this.actendedit=true;
     this.actstartedit=false;
     this.editduration=false;
+    this.editRelease=false;
 
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "block";
@@ -3230,6 +3345,7 @@ GetmeetingDetails(){
     this.actendedit=false;
     this.actstartedit=true;
     this.editduration=false;
+    this.editRelease=false;
 
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "block";
@@ -3283,6 +3399,8 @@ GetmeetingDetails(){
   }
 
   edithold:boolean = false;
+  editRelease:boolean = false;
+
   onHoldClick(id) {
     this.Editbutton=true;
     this.edithold=true;
@@ -3292,6 +3410,7 @@ GetmeetingDetails(){
     this.actendedit=false;
     this.actstartedit=false;
     this.editduration=false;
+    this.editRelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3301,6 +3420,61 @@ GetmeetingDetails(){
     // document.getElementsByClassName("date-drop1")[0].classList.remove("d-block");
     // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
     // (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
+  }
+
+  holdDate:any;
+
+  release_alert() {
+    this.holdDate = moment(this.hold_upto).format("DD-MM-YYYY");
+
+    if (this.Status == 'Project Hold') {
+      Swal.fire({
+        title: 'This project is on hold until '+this.holdDate+'!!',
+        text: 'Are you sure to release this project?',
+        // icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          this.release_project();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Project release cancelled!',
+            'error'
+          )
+        }
+      });
+    }
+    else {
+      this.OnAddTaskClick();
+    }
+  }
+  
+  release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+  orgValueChange1(val) {
+    this.release_date = moment(val.value).format("MM/DD/YYYY");
+  }
+
+  release_project(){
+    
+    // this.holdDate = moment(this.hold_upto).format("DD-MM-YYYY");
+    this.dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
+    this.Editbutton=true;
+    this.edithold=false;
+    this.editCategory=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+    this.editduration=false;
+    this.editRelease=true;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
 
   transferproject:boolean = false;
@@ -3314,6 +3488,7 @@ GetmeetingDetails(){
     this.actstartedit=false;
     this.actendedit=false;
     this.editduration=false;
+    this.editRelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3418,11 +3593,11 @@ GetmeetingDetails(){
           this.objProjectDto.Master_code = this.URL_ProjectCode;
           this.objProjectDto.Project_Code = this.URL_ProjectCode;
 
-          this.service._InsertDARServie(this.objProjectDto)
-          .subscribe(data => {
-            this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message, "Success");
-          });
+          // this.service._InsertDARServie(this.objProjectDto)
+          // .subscribe(data => {
+          //   this._Message = data['message'];
+          //   this.notifyService.showSuccess(this._Message, "Success");
+          // });
           this.dar_details();
           this.getDarTime();
           this.GetProjectDetails();
@@ -3478,11 +3653,11 @@ GetmeetingDetails(){
           this.objProjectDto.Master_code = this.URL_ProjectCode;
           this.objProjectDto.Project_Code = this.actCode;
 
-          this.service._InsertDARServie(this.objProjectDto)
-          .subscribe(data => {
-            this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message, "Success");
-          });
+          // this.service._InsertDARServie(this.objProjectDto)
+          // .subscribe(data => {
+          //   this._Message = data['message'];
+          //   this.notifyService.showSuccess(this._Message, "Success");
+          // });
           this.dar_details();
           this.getDarTime();
           this.GetProjectDetails();
@@ -3739,6 +3914,7 @@ GetmeetingDetails(){
     this.hold_remarks = "";
     this._ProjDeadline = null;
     this.extend_remarks = "";
+    this.dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
   }
 
   //Project Update
@@ -3879,6 +4055,7 @@ GetmeetingDetails(){
   coresecondary: boolean = true;
   darcreate() {
     this.dateF = new FormControl(new Date());
+    
     // this.dateF.setValue(this.datepipe.transform(new Date(), 'dd/MM/yyyy'));
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
