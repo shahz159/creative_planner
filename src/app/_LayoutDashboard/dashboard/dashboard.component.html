@@ -551,15 +551,16 @@
                                         <div class="date-1" (click)="getlistclick(item.Schedule_ID)">
                                             <!-- <h4>12</h4> -->
                                             <div class="" (click)="getlistclick(item.Schedule_ID)">
-                                                {{item.Schedule_date | date:'EEEE, MMMM d YYYY'}}
+                                                {{item.Schedule_date | date:'d  EEE, MMMM YYYY'}}
                                             </div>
                                         </div>
                                         <div class="time-event flex-1" (click)="getlistclick(item.Schedule_ID)">
                                             <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
                                                 tabindex="0">
                                                 <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">{{item.St_Time}}</div>
-                                                <div class="fc-event-title">{{item.Task_Name}} </div>
+                                                <div class="fc-event-time">{{item.St_Time}}-{{item.Ed_Time}}</div>
+                                                
+                                                <div class="fc-event-title ml-2">{{item.Task_Name}} </div>
                                             </a>
                                             <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                         </div>
