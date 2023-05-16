@@ -1,4 +1,5 @@
 export class CalenderDTO {
+    Search_text:string;
     flag_id:number;
     propose_date:string;
     propose_stt:string;
@@ -29,6 +30,7 @@ export class CalenderDTO {
     ClickEventJSON:string;
     Title:String;
     Task_Name:string;
+    Scheduledsearchlist:string;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

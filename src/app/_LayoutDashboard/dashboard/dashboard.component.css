@@ -1993,13 +1993,12 @@ a.ordr-a {
 }
 .drop-search.show{
     display: block;
-    position: absolute;
+    position: relative;
     width: 100%;
-    left: 0;
-    top: 15px;
     background: #fff;
     z-index: 2;
     padding: 0 25px;
+    margin-bottom: 10px;
 }
 .search-left{
     min-width: 238px;
@@ -2116,4 +2115,58 @@ a.ordr-a {
     overflow: hidden;
     display: flex;
     align-items: center;
+}
+.res-section {
+    width: auto;    
+    position: relative;
+    z-index: 11;
+    margin: 0 -25px;
+    width: auto;
+    display:none;
+}
+.res-section.show{
+    display: block;
+}
+
+.result-card{
+    width: 100%;
+    /* background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    border: 1px solid rgba(0,0,0,.2); */
+    height: 300px;
+    border-radius: 3px;
+}
+.item-1, .date-1 {
+    display: flex;
+    align-items: center;
+}
+.item-1{
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+.date-1{
+    padding-left: 25px;
+    width: 170px;
+}
+.time-event{
+    padding-right: 25px
+
+}
+.time-event .fc-event-time{
+    width:70px;
+}
+.date-1 h4{
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+.time-event .fc-daygrid-dot-event{
+    padding-left:10px;
+    cursor: pointer;
+}
+.time-event .fc-daygrid-dot-event:hover{
+    background: rgb(53 54 58 / 10%);    
+    border-radius: 20px;
+}
+ng-deep .fc-daygrid-dot-event:hover {
+    background: rgb(53 54 58 / 10%);
 }

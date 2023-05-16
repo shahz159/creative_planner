@@ -486,51 +486,93 @@
                 <div class="kt-portlet position-relative">
 
                     <div class="kt-portlet__body">
-                        <div class="srch-over">                            
+                        <div class="srch-over">
                             <button class="btn-svgs srh-events_main" (click)="evesrchopn()" id="search-events">
                                 <span class="tool-span">
-                                    <svg focusable="false" height="26px" viewBox="0 0 24 24" width="26px" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path>
+                                    <svg focusable="false" height="26px" viewBox="0 0 24 24" width="26px"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z">
+                                        </path>
                                         <path d="M0,0h24v24H0V0z" fill="none"></path>
                                     </svg>
                                 </span>
                             </button>
                         </div>
-                        
+
                         <div class="drop-search" id="drp-srch">
                             <div class="d-flex-cen">
-                                <div class="search-left">                                    
-                                    <div class="back-btn btn-svgs" (click)="evesrchclose()" aria-label="Go back" title="Go back" role="button" tabindex="0">
+                                <div class="search-left">
+                                    <a class="back-btn btn-svgs" (click)="evesrchclose()" aria-label="Go back"
+                                        title="Go back" role="button" tabindex="0">
                                         <svg focusable="false" viewBox="0 0 24 24" width="24px" height="24px">
-                                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
-                                    </div>
+                                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z">
+                                            </path>
+                                        </svg>
+                                    </a>
                                     <div class="flex-1">
                                         <span class="srch-txt">Search</span>
                                     </div>
                                 </div>
                                 <div class="serch-area" id="search-area">
-                                    <form class="form-search open">                                          
+                                    <form class="form-search open">
                                         <div class="form-input">
-                                            <input type="text" class="form-control eve-search">
+                                            <input type="text" name="search" class="form-control eve-search"
+                                                [(ngModel)]="Searchword" (keydown.enter)="Search_byname()">
                                         </div>
-                                        
+
                                         <button class="btn-svgs btn-pos" aria-label="Search" role="button">
-                                            <svg focusable="false" viewBox="0 0 24 24" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path>
+                                            <svg focusable="false" viewBox="0 0 24 24" width="24px" height="24px"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z">
+                                                </path>
                                                 <path d="M0,0h24v24H0V0z" fill="none"></path>
                                             </svg>
                                         </button>
                                         <button class="btn-svgs btn-clear" aria-label="Search" role="button">
-                                            <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                            <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                                                </path>
+                                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                            </svg>
                                         </button>
                                     </form>
                                 </div>
                             </div>
                         </div>
 
+                        <div *ngIf="showsearch==true" id="showlist" class="res-section show ">
+                            <div class="result-card kt-portlet__body_scroll">
+                                <div class="list-1">
+                                    <div class="item-1" *ngFor="let item of Scheduledjson">
+                                        <div class="date-1" (click)="getlistclick(item.Schedule_ID)">
+                                            <!-- <h4>12</h4> -->
+                                            <div class="" (click)="getlistclick(item.Schedule_ID)">
+                                                {{item.Schedule_date | date:'d  EEE, MMMM YYYY'}}
+                                            </div>
+                                        </div>
+                                        <div class="time-event flex-1" (click)="getlistclick(item.Schedule_ID)">
+                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
+                                                tabindex="0">
+                                                <div class="fc-daygrid-event-dot"></div>
+                                                <div class="fc-event-time">{{item.St_Time}}-{{item.Ed_Time}}</div>
+                                                
+                                                <div class="fc-event-title ml-2">{{item.Task_Name}} </div>
+                                            </a>
+                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
-                        <full-calendar [options]="calendarOptions"></full-calendar>
+                        <ng-container *ngIf="showsearch==false">
+                            <full-calendar [options]="calendarOptions"></full-calendar>
+                        </ng-container>
                     </div>
                 </div>
                 <!--end::Portlet-->
@@ -1028,7 +1070,7 @@
                                     <div class="title-day">{{item.Schedule_date| date:'EEEE, MMMM d'}}
                                         <span>,</span>
                                         <span>{{item.NewSt_Time }} –
-    
+
                                         </span>
                                     </div>
                                     <div class="title-day">
@@ -1039,7 +1081,7 @@
                                         {{item.NewEd_Time}}
                                     </div>
                                 </div>
-                              
+
 
                             </div>
                         </div>
@@ -2332,7 +2374,7 @@
                             </ng-select>
                         </div>
                         <div class="form-group flex-1" id="Schenddate">
-                            <label>End Date <span class="text-danger">*</span></label>
+                            <label>Schedule End Date <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input matInput [matDatepicker]="picker6" (click)="picker6.open()" [min]="_StartDate"
                                     [(ngModel)]="_SEndDate" placeholder="End Date" class="form-control">
@@ -2397,10 +2439,10 @@
                                 </div>
                             </div>
 
-                           
+
 
                         </div>
-                        
+
                         <div class="wc-cus">
                             <!-- <div class="form-group flex-1">
                                 <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
@@ -2452,9 +2494,9 @@
                     <div class="form-group flex-1" id="div_endDate">
                         <label>End till <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input matInput [matDatepicker]="picker2" (click)="picker2.open()"
-                                [min]="_StartDate" [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)"
-                                placeholder="End Date" class="form-control">
+                            <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate"
+                                [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)" placeholder="End Date"
+                                class="form-control">
                             <div class="input-group-append">
                                 <div class="input-group-text p-0">
                                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>

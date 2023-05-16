@@ -42,6 +42,11 @@ export class CalenderService {
   
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
   }
+  NewGetSearchResults(obj:CalenderDTO){
+    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    this.obj_CalenderDTO.Search_text = obj.Search_text;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetSearchResults", this.obj_CalenderDTO);
+  }
   NewGetrequeat_Accpect(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.EventNumber = obj.EventNumber;
