@@ -431,7 +431,7 @@ export class MoreDetailsComponent implements OnInit {
         }
         else {
           this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = this.requestType;
           this.approvalObj.rejectType = this.rejectType;
           this.approvalObj.Remarks = this.comments;
@@ -463,7 +463,7 @@ export class MoreDetailsComponent implements OnInit {
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Responsible = this.newResponsible;
         this.approvalObj.deadline = this.requestDeadline;
-        this.approvalObj.Project_Code = this.projectCode;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
         if (this.comments == '' || this.comments == null) {
           this.approvalObj.Remarks = 'Accepted';
         }
@@ -960,9 +960,11 @@ GetmeetingDetails(){
   Comp_No: string;
   Employee_List: any;
   Category_List: any;
+  Client_List: any;
   _portfoliolist: any;
   portslength:any;
   selectedcategory:any;
+  selectedclient:any;
   Delaydays:any;
   
   GetProjectDetails() {
@@ -972,6 +974,7 @@ GetmeetingDetails(){
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
           this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
+          this.Client_List = JSON.parse(data[0]['ClientDropdown']);
           this._portfoliolist = JSON.parse(data[0]['Portfolio_json']);
           // console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
@@ -981,7 +984,7 @@ GetmeetingDetails(){
           this.Description = this.ProjectInfo_List[0]['Project_Description'];
           this.Comp_No = this.ProjectInfo_List[0]['Emp_Comp_No'];
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
-          this.Client = this.ProjectInfo_List[0]['Client_Name']
+          this.Client = this.ProjectInfo_List[0]['Client_Name'];
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
@@ -1219,6 +1222,7 @@ GetmeetingDetails(){
     this._ProjDeadline = null;
     this.extend_remarks = "";
     this.selectedcategory = null;
+    this.selectedclient = null;
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3253,6 +3257,7 @@ GetmeetingDetails(){
     this.transferproject=false;
     this.actendedit=false;
     this.actstartedit=false;
+    this.editClient = false;
     this.editCategory=false;
     this.editRelease=false;
 
@@ -3269,6 +3274,7 @@ GetmeetingDetails(){
   extend_remarks: string;
   editDeadline: boolean =false;
   editCategory : boolean = false;
+  editClient : boolean = false;
 
   onEditDeadline(id) {
     // this._ProjDeadline = enddate;
@@ -3281,6 +3287,7 @@ GetmeetingDetails(){
     this.editduration=false;
     this.editCategory=false;
     this.editRelease=false;
+    this.editClient = false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3300,6 +3307,24 @@ GetmeetingDetails(){
     this.actstartedit=false;
     this.editduration=false;
     this.editRelease=false;
+    this.editClient=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditClient() {
+    this.Editbutton = true;
+    this.editCategory=false;
+    this.edithold=false;
+    this.editDeadline=false;
+    this.transferproject=false;
+    this.actendedit=false;
+    this.actstartedit=false;
+    this.editduration=false;
+    this.editRelease=false;
+    this.editClient=true;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3318,6 +3343,7 @@ GetmeetingDetails(){
     this.Editbutton = true;
     this.edithold=false;
     this.editCategory=false;
+    this.editClient=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=true;
@@ -3340,6 +3366,7 @@ GetmeetingDetails(){
     this.Editbutton = true;
     this.edithold=false;
     this.editCategory=false;
+    this.editClient=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=false;
@@ -3405,6 +3432,7 @@ GetmeetingDetails(){
     this.Editbutton=true;
     this.edithold=true;
     this.editCategory=false;
+    this.editClient=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=false;
@@ -3465,6 +3493,7 @@ GetmeetingDetails(){
     this.Editbutton=true;
     this.edithold=false;
     this.editCategory=false;
+    this.editClient=false;
     this.editDeadline=false;
     this.transferproject=false;
     this.actendedit=false;
@@ -3483,6 +3512,7 @@ GetmeetingDetails(){
     this.Editbutton=true;
     this.edithold=false;
     this.editCategory=false;
+    this.editClient=false;
     this.editDeadline=false;
     this.transferproject=true;
     this.actstartedit=false;
@@ -3739,6 +3769,29 @@ GetmeetingDetails(){
     }
     else {
       this.notifyService.showInfo("Category cannot be empty", "Please try again with correct value"); 
+    }
+  }
+
+
+  onProject_updateClient(){
+
+    if (this.selectedclient!= null && this.extend_remarks!=null) {
+      this.service._NewProjectClientService(this.URL_ProjectCode,this.Current_user_ID,this.selectedclient,this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Project Client not updated", "Failed");
+          this.GetProjectDetails();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project Client updated successfully", "Success");
+          this.GetProjectDetails();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Client cannot be empty", "Please try again with correct value"); 
     }
   }
 

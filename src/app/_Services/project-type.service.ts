@@ -734,7 +734,7 @@ export class ProjectTypeService {
     this.ObjDto.Emp_No = emp_no;
     this.ObjDto.Remarks = remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectDuration", this.ObjDto);
-  }
+  }NewProjectChangeClient
 
   _NewProjectCategoryService(pcode,Empno,reportid,remarks) {
     this.ObjDto.Project_Code = pcode;
@@ -742,6 +742,14 @@ export class ProjectTypeService {
     this.ObjDto.ReportId = reportid;
     this.ObjDto.Remarks = remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectChangeCategory", this.ObjDto);
+  }
+
+  _NewProjectClientService(pcode,Empno,clientid,remarks) {
+    this.ObjDto.Project_Code = pcode;
+    this.ObjDto.Emp_No = Empno;
+    this.ObjDto.ClientId = clientid;
+    this.ObjDto.Remarks = remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectChangeClient", this.ObjDto);
   }
 
   _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {

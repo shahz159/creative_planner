@@ -181,10 +181,7 @@
                         <div class="ml-2 pro-act">
                             
                         <!--Transfer end   data-toggle="dropdown"-->
-                        <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
-                                && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval'&&
-                                Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
-                                && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
+                        <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status=='InProcess')">
                             <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
                                 data-toggle="tooltip" title="click to transfer">
@@ -591,7 +588,12 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Client</h6>
-                                    <h5 class="mt-1">{{Client}}</h5>
+                                    <h5 class="mt-1">{{Client}}
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
+                                            aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
+                                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
+                                        </span>
+                                    </h5>
                                 </div>
                             </div>
                         </div>
@@ -682,13 +684,13 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
                                     <h5 class="mt-1" *ngIf="Category!=null">{{Category}}
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval' && ProjectBlockName != 'To do List')"
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
                                     </h5>
-                                    <h5 class="mt-1" *ngIf="Category==null">No Category
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval' && ProjectBlockName != 'To do List')"
+                                    <h5 class="mt-1" *ngIf="Category==null">No category
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
@@ -3348,12 +3350,12 @@
         </div>
     </div> -->
 
-    <!-- project Deadline edit -->
+    <!-- project Deadline edit <br>Project: {{ProjectName }}-->
     <div class="spacer--body" *ngIf="editDeadline==true">
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Deadline extend</b><br>Project: {{ProjectName }}</div>
+                <div><b>Deadline extend</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3449,12 +3451,12 @@
 
     <!-- project hold edit end-->
 
-  <!-- project category edit -->
+  <!-- project category edit <br>Project: {{ProjectName}} -->
     <div class="spacer--body" *ngIf="editCategory==true">
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Edit category</b><br>Project: {{ProjectName}}</div>
+                <div><b>Edit category</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3484,6 +3486,42 @@
         </div>
     </div>
     <!-- project category edit end-->
+
+    <!-- project client edit <br>Project: {{ProjectName}}-->
+    <div class="spacer--body" *ngIf="editClient==true">
+        <div class="">
+            <ul class="kt-nav pb-0"> 
+                <li class="kt-nav__head py-0">
+                <div><b>Edit client</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                <div class="px-4 py-3">
+                    <div class="form-group"> 
+                        <label> Set new client <span class="text-danger">*</span> : <strong></strong></label>
+                        <ng-select [(ngModel)]="selectedclient" placeholder="Select client" >
+                            <ng-option [value]="item.Com_No" *ngFor="let item of Client_List" [disabled]="Client==item.Com_Name">
+                                <a>{{item.Com_Name}}</a>
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label>Remarks<span class="text-danger">*</span></label>
+                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                            style="height:70px;"></textarea>
+                    </div>
+                </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedclient || !extend_remarks"
+                    (click)="onProject_updateClient()">Submit</button>
+                    <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- project client edit end-->
     
 
 
@@ -3492,7 +3530,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Project transfer</b><br>Project: {{ProjectName }}</div>
+                <div><b>Project transfer</b><br>Project: {{ProjectName}}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">

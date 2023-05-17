@@ -945,7 +945,7 @@
                                 <h5 class="my-1 font-14">{{item.ReportType}} </h5>
                             </div>
                             <div class="w-100" *ngIf="item.ReportType == null">
-                                <h5 class="my-1 font-14">No Category </h5>
+                                <h5 class="my-1 font-14">No category </h5>
                             </div>
                         </div>
                     </div>
@@ -1055,10 +1055,7 @@
                     <!--Transfer-->
                     <div class="ml-2 mt-3 ">
                         <div class="dropdown"
-                            *ngIf="(Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
-                                && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
-                                item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' && item.Status!='Under Approval'
-                                && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
+                            *ngIf="(Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status=='InProcess')">
                             <button class="btn btn-primary btn-sm py-1 px-2 dropdown-toggle no-after"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 (click)="onTransferClick(Pid)" data-toggle="tooltip" title="click to transfer">
