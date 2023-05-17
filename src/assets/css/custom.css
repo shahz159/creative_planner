@@ -1267,3 +1267,147 @@ button[disabled] {
 .text-hover-info:hover {
     color: #2786fb !important;
 }
+.dropdown-width-600 {
+    width: 600px;
+}
+.ver-fls .col-lg-3{
+    max-width: unset;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.dropdown-width-700 {
+    width: 700px;
+}
+.dropdown-width-4 {
+    width: 400px;
+}
+.kt-checkbox--info {
+    width: 100%;
+}
+.kt-checkbox, .kt-radio {
+    padding-left: 23px;
+    font-size: 0.9rem;
+}
+.h6-v{
+    margin-left: -15px;
+}
+.ver-fls .kt-nav__separator{
+    margin: 0.7rem -30px !important;
+}
+.opts-flx {
+    margin-top: 0px;
+}
+.height-scroll {
+    height: 140px;
+    overflow-y: auto;
+}
+.height-scroll:hover {
+    overflow-y: auto;
+}
+.drop-posn {
+    padding: 20px;
+    top: 20px !important;
+}
+
+/* selected options */
+
+.opts-flx {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  
+  .selectd-opts {
+    align-items: center;
+    background-color: #ffffff;
+    /* border: 1px solid #bcd2d2; */
+    border-radius: 12px;
+    color: #676c76;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.9rem;
+    height: 24px;
+    justify-content: center;
+    padding-left: 8px;
+    position: relative;
+    line-height: 22px;
+    box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px 0px, rgb(27 31 35 / 15%) 0px 0px 0px 1px;
+  }
+  .slt-div {
+    align-items: center;
+    display: inline-flex;
+    overflow: hidden;
+  }
+  
+  .opt-txt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .removeButton {
+    margin: 0 4px;
+  }
+  .removeButton{    
+    z-index: 9;
+    cursor: pointer;
+  }
+  svg.rmv-icn {
+    height: 16px;
+    min-height: 16px;
+    min-width: 16px;
+    width: 16px;
+  }
+  
+  svg.rmv-icn:hover {
+    background: #000;
+    stroke-width: 2;
+    padding: 2px;
+    color: #fff;
+    border-radius: 25px;
+  }
+  .filt-btns .btn {
+    min-width: 80px;
+    padding: 5px;
+}
+.btn.btn-hvr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    border: 0px;
+    margin: 0 1px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-decoration: none;
+    text-align: center;
+    flex: 0 0 auto;
+    font-size: 1.5rem;
+    padding: 8px;
+    border-radius: 50%!important;
+    overflow: visible;
+    color: #4c4e648a;
+    transition: background-color .15s cubic-bezier(.4,0,.2,1) 0ms;
+}
+.btn-hvr .iconify--mdi {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    color: #a0a0a1;
+    color: #858190;
+    fill: #858190;
+}
+.label-hidden {
+    display: none;
+}

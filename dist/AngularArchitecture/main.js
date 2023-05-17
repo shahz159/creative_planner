@@ -464,7 +464,7 @@ class SidebarComponent {
             placement: 'right'
         });
         (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#performance', {
-            content: "Performance Dashboard",
+            content: "Performance dashboard",
             arrow: true,
             animation: 'scale-extreme',
             theme: 'gradient',
@@ -482,7 +482,7 @@ class SidebarComponent {
             placement: 'right'
         });
         (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#summary', {
-            content: "Project Summary",
+            content: "Project summary",
             arrow: true,
             animation: 'scale-extreme',
             theme: 'gradient',
@@ -500,7 +500,7 @@ class SidebarComponent {
             placement: 'right'
         });
         (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#todo', {
-            content: "ToDo Projects",
+            content: "Process details",
             arrow: true,
             animation: 'scale-extreme',
             theme: 'gradient',
@@ -509,7 +509,7 @@ class SidebarComponent {
             placement: 'right'
         });
         (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#assign', {
-            content: "Assign Projects",
+            content: "Assign projects",
             arrow: true,
             animation: 'scale-extreme',
             theme: 'gradient',
@@ -628,7 +628,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](17, "li", 10)(18, "a", 15);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](19, "i", 16);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](20, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](21, "Performance Dashboard");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](21, "Performance dashboard");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](22, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
@@ -642,7 +642,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](29, "li", 10)(30, "a", 19);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](31, "i", 20);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](32, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](33, "Projects Summary ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](33, "Projects summary ");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](34, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
@@ -656,7 +656,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](41, "li", 10)(42, "a", 23);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](43, "i", 24);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](44, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](45, "To Do Prjects");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](45, "Process details");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](46, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
@@ -664,7 +664,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_a_click_48_listener() { return ctx.Btn_AssignTask(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](49, "i", 26);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](50, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](51, "Assigned Task");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](51, "Assigned tasks");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](52, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
@@ -672,7 +672,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_a_click_54_listener() { return ctx.Btn_UnplannedTask(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](55, "i", 27);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](56, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](57, "Runway Task");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](57, "Runway task");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](58, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
@@ -681,7 +681,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](60, "a", 29);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](61, "i", 30);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](62, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](63, "User Details");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](63, "User details");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](64, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
@@ -698,7 +698,7 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](79, "li", 34)(80, "a", 38);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](81, "i", 39);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](82, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](83, "Privacy Policy");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](83, "Privacy policy");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()()();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](84, "li", 34)(85, "a", 35);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](86, "i", 39);

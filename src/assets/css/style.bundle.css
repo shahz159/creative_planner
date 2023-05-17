@@ -13318,7 +13318,7 @@ button.btn {
 }
 
 .btn-outline-info:hover {
-    color: #ffffff;
+    color: #ffffff !important;
     background-color: #2786fb;
     border-color: #2786fb;
 }
@@ -34467,8 +34467,8 @@ strong {
     position: absolute;
     top: 1px;
     left: 0;
-    height: 18px;
-    width: 18px;
+    height: 16px;
+    width: 16px;
 }
 
 .kt-checkbox>span:after {
