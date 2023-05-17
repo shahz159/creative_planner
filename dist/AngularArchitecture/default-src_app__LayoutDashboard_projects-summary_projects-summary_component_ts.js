@@ -328,11 +328,11 @@ function ProjectsSummaryComponent_tr_135_div_49_span_3_Template(rf, ctx) { if (r
 } if (rf & 2) {
     const item_r23 = _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵnextContext"](2).$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtextInterpolate1"]("(", item_r23.Delaydays, " Days)");
+    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtextInterpolate1"]("", item_r23.Delaydays, " days");
 } }
 function ProjectsSummaryComponent_tr_135_div_49_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementStart"](0, "div")(1, "span", 125);
-    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, "Delay");
+    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, "Delay ");
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtemplate"](3, ProjectsSummaryComponent_tr_135_div_49_span_3_Template, 3, 1, "span", 126);
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]();
@@ -363,7 +363,7 @@ function ProjectsSummaryComponent_tr_135_div_53_Template(rf, ctx) { if (rf & 1) 
 } }
 function ProjectsSummaryComponent_tr_135_div_54_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementStart"](0, "div")(1, "span", 125);
-    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, "Project Hold");
+    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, " Hold");
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]()();
 } }
 function ProjectsSummaryComponent_tr_135_div_55_Template(rf, ctx) { if (rf & 1) {
@@ -413,7 +413,7 @@ function ProjectsSummaryComponent_tr_135_div_63_Template(rf, ctx) { if (rf & 1) 
 } }
 function ProjectsSummaryComponent_tr_135_div_64_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementStart"](0, "div")(1, "span", 131);
-    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, "Project Holded ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](2, "Hold ");
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]()();
 } }
 function ProjectsSummaryComponent_tr_135_div_65_Template(rf, ctx) { if (rf & 1) {
@@ -1512,7 +1512,7 @@ ProjectsSummaryComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementStart"](125, "th", 67);
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelement"](126, "i", 64);
-        _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](127, " LastUpdate ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](127, " Last Update ");
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelementStart"](128, "th", 68);
         _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵelement"](129, "i", 64);
