@@ -1385,12 +1385,11 @@
                                                         <!-- data-toggle="dropdown"  -->
                                                         <div class="row">
                                                           <div class="col-md-4">
-                                                            <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                                                            <p class="mt-2 mb-1 text-muted fs-7">Product Duration</p>
                                                             <div class="d-flex align-items-center">
                                                               <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                                               <div class="w-100 d-flex">
-                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Start Date!">{{item.StartDate |date:'dd-MM-yyyy'}}</h5>
-                                                                
+                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Start Date!">{{item.StartDate |date:'dd-MM-yyyy'}}</h5>                                                                
                                                                 <div class="dropdown show" *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                     <span type="button" id="start-icn" 
                                                                         (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
@@ -1443,15 +1442,7 @@
                                                                     </div>
                                                                     </div>
                                                                 </div>
-                                                              </div>
-                                                            </div>
-                                                          </div>
-                                                          <!-- data-toggle="dropdown"  -->
-                                                          <div class="col-md-4">
-                                                            <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                                                            <div class="d-flex align-items-center">
-                                                              <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                                              <div class="w-100 d-flex">
+                                                                /                                                          
                                                                 <h5 class="my-1 font-14" data-toggle="tooltip" title="End Date!">{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</h5>
                                                                 
                                                                 <div class="dropdown show" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">  
@@ -1507,9 +1498,21 @@
                                                                     </div>
                                                                     </div>
                                                                 </div>
-                                                              </div>                                                              
                                                             </div>
-                                                          </div>
+                                                        </div>
+                                                      </div>
+
+
+
+                                                            <!-- <div class="col-md-4">
+                                                                <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
+                                                                    <div class="w-100 d-flex">
+                                                                </div>                                                              
+                                                                </div>
+                                                            </div> -->
+
                                                           <div class="col-md-4">
                                                             <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
                                                             <div class="d-flex align-items-center">
@@ -1519,91 +1522,95 @@
                                                               </div>
                                                             </div>
                                                           </div>
+
+                                                          
+                                                          <div class="col-md-4">
+                                                            <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                                                            <div class="d-flex align-items-center">
+                                                              <i class="fas fa-clock fs-2 text-muted mr-2"></i>
+                                                              <div class="w-100 d-flex">
+                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
+                                                                
+                                                                <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                    <span type="button" id="alloc-icn"
+                                                                        (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
+                                                                    <i data-toggle="tooltip" title="edit duration" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                    </span>
+                                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k" id="AllocArea_{{item.id}}">
+                                                                    <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
+                                                                        <li class="kt-nav__head py-0">
+                                                                        <div style="white-space: break-spaces;">Add Allocated Hours <br>Action: <b>{{item.Project_Name}}</b></div>
+                                                                        </li>
+                                                                        <li class="kt-nav__separator"></li>
+                                                                        <div class="height-scroll h-scr">
+                                                                        <div class="px-4 py-3">
+                                                                            <div class="form-group">
+                                                                                <label>Add Hours <span class="text-danger">*</span></label>
+                                                                                <!-- <div class="input-group date" data-provide="datepicker">
+                                                                                    <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                                    <div class="input-group-addon input-group-append">
+                                                                                        <i class="fa fa-clock input-group-text"></i>
+                                                                                    </div>
+                                                                                </div> -->
+                                                                                <input type="number" class="form-control" id="AllocFocus_{{item.id}}" placeholder="hrs"
+                                                                                    [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" >
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">*Allocation per day limit is 10 hours.</span>
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
+                                                                            </div>
+                                                                            <div class="form-group mb-1">
+                                                                            <label>Remarks <span class="text-danger">*</span>
+                                                                            </label>
+                                                                            <textarea [(ngModel)]="alloc_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                                                                            </div>
+                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                        </div>
+                                                                        </div>
+                                                                        <li class="kt-nav__separator"></li>
+                                                                    </ul>
+                                                                    <div class="px-4 pb-3">
+                                                                        <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!alloc_remarks || !_modelProjAlloc" (click)="onProject_updateDuration(item.id,item.Project_Code)"> Submit </button>
+                                                                        <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closeDuration(item.id)">Close</button>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
+                                                                        {{item.SubtaskAllocated}} Hrs</h6>
+                                                                    <span class="text-info" [hidden]="Editbutton" 
+                                                                        (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
+                                                                        <i class="fas fa-edit" ></i> -->
+                                                                    <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
+                                                                    <!-- </span>
+                                                                    <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">
+                                                                        <div class="d-flex">
+                                                                            <input type="number" class="form-control" id="textareafocus_all{{item.id}}"
+                                                                                [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" style="width: 40%;height: 32px;"
+                                                                                (keydown.enter)="OnProject_Rename(item.id)">
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">*Allocation per day limit is 10 hours.</span>
+                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
+                            
+                                                                            <div class="d-inline-block ml-3" id="button-addon4">
+                                                                                <button (click)="OnProject_Rename(item.id)"
+                                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                                <button class=" btn btn-secondary btn btn-sm"
+                                                                                    (click)="onCancel(item.id)">Cancel</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
+                                                                    <ng-template #allocated>
+                                                                        <h6 class="mt-1"> 
+                                                                            {{item.SubtaskAllocated}}Hrs
+                                                                        </h6>
+                                                                    </ng-template>   -->
+                                                                    
+                                                              </div>
+                                                            </div>
+                                                          </div>
+
+
                                                         </div>
                                                         <!-- data-toggle="dropdown"  -->
                                                         <div class="row">
-                                                            <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
-                                                                <div class="d-flex align-items-center">
-                                                                  <i class="fas fa-clock fs-2 text-muted mr-2"></i>
-                                                                  <div class="w-100 d-flex">
-                                                                    <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
-                                                                    
-                                                                    <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                        <span type="button" id="alloc-icn"
-                                                                            (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
-                                                                        <i data-toggle="tooltip" title="edit duration" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                        </span>
-                                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k" id="AllocArea_{{item.id}}">
-                                                                        <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
-                                                                            <li class="kt-nav__head py-0">
-                                                                            <div style="white-space: break-spaces;">Add Allocated Hours <br>Action: <b>{{item.Project_Name}}</b></div>
-                                                                            </li>
-                                                                            <li class="kt-nav__separator"></li>
-                                                                            <div class="height-scroll h-scr">
-                                                                            <div class="px-4 py-3">
-                                                                                <div class="form-group">
-                                                                                    <label>Add Hours <span class="text-danger">*</span></label>
-                                                                                    <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                        <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                        <div class="input-group-addon input-group-append">
-                                                                                            <i class="fa fa-clock input-group-text"></i>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                    <input type="number" class="form-control" id="AllocFocus_{{item.id}}" placeholder="hrs"
-                                                                                        [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" >
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">*Allocation per day limit is 10 hours.</span>
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" class="text-danger">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
-                                                                                </div>
-                                                                                <div class="form-group mb-1">
-                                                                                <label>Remarks <span class="text-danger">*</span>
-                                                                                </label>
-                                                                                <textarea [(ngModel)]="alloc_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
-                                                                                </div>
-                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                            </div>
-                                                                            </div>
-                                                                            <li class="kt-nav__separator"></li>
-                                                                        </ul>
-                                                                        <div class="px-4 pb-3">
-                                                                            <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!alloc_remarks || !_modelProjAlloc" (click)="onProject_updateDuration(item.id,item.Project_Code)"> Submit </button>
-                                                                            <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closeDuration(item.id)">Close</button>
-                                                                        </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
-                                                                            {{item.SubtaskAllocated}} Hrs</h6>
-                                                                        <span class="text-info" [hidden]="Editbutton" 
-                                                                            (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
-                                                                            <i class="fas fa-edit" ></i> -->
-                                                                        <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
-                                                                        <!-- </span>
-                                                                        <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">
-                                                                            <div class="d-flex">
-                                                                                <input type="number" class="form-control" id="textareafocus_all{{item.id}}"
-                                                                                    [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" style="width: 40%;height: 32px;"
-                                                                                    (keydown.enter)="OnProject_Rename(item.id)">
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">*Allocation per day limit is 10 hours.</span>
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
-                                
-                                                                                <div class="d-inline-block ml-3" id="button-addon4">
-                                                                                    <button (click)="OnProject_Rename(item.id)"
-                                                                                        class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                                                    <button class=" btn btn-secondary btn btn-sm"
-                                                                                        (click)="onCancel(item.id)">Cancel</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </span>
-                                                                        <ng-template #allocated>
-                                                                            <h6 class="mt-1"> 
-                                                                                {{item.SubtaskAllocated}}Hrs
-                                                                            </h6>
-                                                                        </ng-template>   -->
-                                                                        
-                                                                  </div>
-                                                                </div>
-                                                            </div>
 
                                                             <div class="col-md-4">
                                                                 <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
@@ -1721,22 +1728,22 @@
                                                       </div>
                                                       <div class="row">
                                                         <div class="col-md-4">
-                                                          <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                                                          <p class="mt-2 mb-1 text-muted fs-7">Project Duration</p>
                                                           <div class="d-flex align-items-center">
                                                             <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                                             <div class="w-100 d-flex">
-                                                              <h5 class="my-1 font-14" data-toggle="tooltip" title="Start Date!">{{item.StartDate |date:'dd-MM-yyyy'}}</h5>
+                                                              <h5 class="my-1 font-14" data-toggle="tooltip" title="Project Duration">{{item.StartDate |date:'dd-MM-yyyy'}}/{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</h5>
                                                             </div>
                                                           </div>
                                                         </div>
                                                         <div class="col-md-4">
-                                                          <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                                                          <div class="d-flex align-items-center">
-                                                            <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                                            <div class="w-100 d-flex">
-                                                              <h5 class="my-1 font-14" data-toggle="tooltip" title="End Date!">{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</h5>
-                                                            </div>                                                              
-                                                          </div>
+                                                            <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                                                            <div class="d-flex align-items-center">
+                                                              <i class="fas fa-clock fs-2 text-muted mr-2"></i>
+                                                              <div class="w-100 d-flex">
+                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
+                                                              </div>
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                           <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
@@ -1748,16 +1755,7 @@
                                                           </div>
                                                         </div>
                                                       </div>
-                                                      <div class="row">
-                                                        <div class="col-md-4">
-                                                            <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
-                                                            <div class="d-flex align-items-center">
-                                                              <i class="fas fa-clock fs-2 text-muted mr-2"></i>
-                                                              <div class="w-100 d-flex">
-                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
-                                                              </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="row">
 
                                                         <div class="col-md-4">
                                                             <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
@@ -1785,7 +1783,17 @@
                                                               </div>
                                                             </div>
                                                         </div>
-                                                       </div>
+                                                        <div class="col-md-4">
+                                                            <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
+                                                            <div class="d-flex align-items-center">
+                                                              <i class="fas fa-registered fs-2 text-muted mr-2"></i>
+                                                              <div class="w-100">
+                                                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Remarks!">{{item.Remarks}}</h5>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                         <div class="row">
                                                             <div class="col-md-4" *ngIf="item.Sourcefile">
                                                                 <p class="mt-2 mb-1 text-muted fs-7">Attachment</p>
@@ -1796,15 +1804,6 @@
                                                                         title="Click To Open File"
                                                                             (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
                                                                     <b>{{item.Sourcefile}}</b></a>
-                                                                  </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
-                                                                <div class="d-flex align-items-center">
-                                                                  <i class="fas fa-registered fs-2 text-muted mr-2"></i>
-                                                                  <div class="w-100">
-                                                                    <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Remarks!">{{item.Remarks}}</h5>
                                                                   </div>
                                                                 </div>
                                                             </div>
