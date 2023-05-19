@@ -24,7 +24,7 @@
                         
                         <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
-                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval' || Status == 'Project Hold'  || Status=='Deadline Extend Under Approval' 
+                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval' || Status=='Deadline Extend Under Approval' 
                                          || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || Status=='InProcess' || Status == 'New TodoProject'
                                          || Status=='New Project' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold' || Status == 'Project Complete Rejected'"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
@@ -35,10 +35,16 @@
                                 'bg-rejected': Status=='New Project Rejected', 'bg-success-1' : Status=='ToDo Completed',
                                 'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold'  ||  Status == 'Project Complete Rejected'}">
                                 {{Status}}</label>
-                                <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-danger" 
+                                <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-danger"
                                     *ngIf="Status=='Delay' ">
-                                    {{Status}} ({{Delaydays}} days)
+                                    {{Status}} {{Delaydays}} days
                                 </label>
+                                <ng-container *ngIf="Status=='Project Hold'">
+                                    <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn  px-3 py-1 kt-badge--pill hold-sec">
+                                        Hold until {{hold_upto}}
+                                    </label><i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip" title="click here to release project"
+                                                (click)="release_project()" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo"></i>
+                                </ng-container>
                             <!-- 'bg-coral' :  Status== 'New Todo', Status=='Project Hold' ||  -->
                         </ng-container>
                         <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
@@ -46,6 +52,12 @@
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
                                 {{SubmissionName}}</label>
                         </ng-container>
+                        <!-- <ng-container *ngIf="Status == 'Project Complete Rejected' || Status=='New Project Rejected'">
+                            <p>Reject type: {{rejectype}}</p>
+                        </ng-container>
+                        <ng-container *ngIf="Status == 'Project Complete Rejected' || Status=='New Project Rejected' || Status=='Project Hold'">
+                            <p>Reason: {{reason}}</p>
+                        </ng-container> -->
 
                         <!-- caledon-green -->
 
@@ -163,18 +175,21 @@
 
                         </div>
 
-                        <!--progress bar end -->
-
+                        <!--progress bar end 
+                         <a class="text-info relse-act">
+                            <span> <i class="fas fa-play mx-1 curser-pointer"></i></span> Click here to release Project.</a>-->
 
                     </div>
                     <div class="d-flex align-items-center">
-                        
-                        <div class="hold-sec mt-1 d-flex align-items-start"><h6 class="mb-0">Hold until 04-03-2023. <a class="text-info relse-act">
-                            <span> <i class="fas fa-play mx-1 curser-pointer"></i></span> Click here to release Project.</a></h6>
+
+                        <div class="hold-sec mt-1 d-flex align-items-start">
+                            
+                            <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> &nbsp;
+                            <h6 class="mb-0">Reason:</h6>{{reason}}
+                            
                         </div>
                         <!--Transfer-->
                         <div class="ml-2 pro-act">
-                            
                         <!--Transfer end   data-toggle="dropdown"-->
                         <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status=='InProcess')">
                             <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after"
@@ -482,13 +497,6 @@
                                                     <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
                                                 </span>
                                             </div>
-                                            <!-- <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status=='Project Hold' && ProjectBlockName != 'To do List')">
-                                                <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                        >
-                                                    <i class="fas fa-play ml-2 mb-1 curser-pointer"></i>
-                                                </span>
-                                            </div> -->
                                         </div>
                                     </ng-template>
                                     <progress value="50" max="100" class="project-duration-bar d-none"></progress>
@@ -617,10 +625,7 @@
                                     <h6 class="txtm-cus pt-1 mb-0">Responsible
                                         <button class="btn btn-primary btn-sm py-0 px-1 ml-1 dropdown-toggle no-after"
                                             *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) &&
-                                                (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
-                                                && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval'&&
-                                                Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
-                                                && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')"
+                                                (Status=='InProcess')"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="onTransferClick(Pid)" data-toggle="tooltip" title="click to transfer">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -1335,19 +1340,24 @@
                                                               <i class="fas fa-star fs-3 text-muted mr-2"></i>
                                                               <div class="w-100">                                                                
                                                                 <div>                                                                 
-                                                                  <h5 data-toggle="tooltip" class="my-1 font-14 text-danger" title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                                                  'text-success':item.SubProject_Status=='Completed',
-                                                                  'text-warning':item.SubProject_Status=='InProcess',
-                                                                  'text-primary':item.SubProject_Status=='Under Approval',
-                                                                  'text-info':item.SubProject_Status=='Completion Under Approval',
-                                                                  'text-Rejected':item.SubProject_Status=='New Project Rejected',
-                                                                  'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                                  'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                                                  'text-underApp':item.SubProject_Status=='New Project',
-                                                                  'text-completed':item.SubProject_Status=='Completion Under Approval',
-                                                                  'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                                                  'text-Todo':item.SubProject_Status=='ToDo Completed'}"
-                                                                                  data-toggle="tooltip" title="Action Status!"> {{item.SubProject_Status}} </h5>
+                                                                    <h5 data-toggle="tooltip" class="my-1 font-14 "  *ngIf="item.SubProject_Status!='Delay'"
+                                                                    [ngClass]="{
+                                                                        'text-success':item.SubProject_Status=='Completed',
+                                                                        'text-warning':item.SubProject_Status=='InProcess',
+                                                                        'text-primary':item.SubProject_Status=='Under Approval',
+                                                                        'text-info':item.SubProject_Status=='Completion Under Approval',
+                                                                        'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                                                        'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                                                        'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                                                        'text-underApp':item.SubProject_Status=='New Project',
+                                                                        'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                                                        'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
+                                                                        'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                                                    data-toggle="tooltip" title="Action Status!"> {{item.SubProject_Status}} </h5>
+
+                                                                    <h5 data-toggle="tooltip" class="my-1 font-14 text-danger" 
+                                                                        data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status=='Delay'"> 
+                                                                        {{item.SubProject_Status}} {{item.Delaydays}} days</h5>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -3385,12 +3395,12 @@
     </div>
     <!-- project Deadline edit end-->
     
-    <!-- project hold edit -->
+    <!-- project hold edit <br>Project: {{ProjectName }}-->
     <div class="spacer--body" *ngIf="edithold==true">
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Hold project</b><br>Project: {{ProjectName }}</div>
+                <div><b>Hold project</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -3420,8 +3430,8 @@
                         <label>Remarks<span
                                 class="text-danger">*</span></label>
                         <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder=""
-                            rows="2" cols="20"
-                            style="height:70px;"></textarea>
+                            rows="2" cols="20" style="height:90px;" placeholder="Define your exact hold reason here. e.g: Waiting for store license"
+                            ></textarea>
                     </div>
                 </div>
                 </div>
@@ -3617,13 +3627,13 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>New end date</b><br>Action {{actnum}}: {{actionName }}</div>
+                <div><b>New start date</b><br>Action {{actnum}}: {{actionName }}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                 <div class="px-4 py-3">
                     <div class="form-group input-group">
-                        <label>Set new end date <span class="text-danger">*</span></label>
+                        <label>Set new start date <span class="text-danger">*</span></label>
                         <div class="d-flex input-group">
                             <input matInput [matDatepicker]="picker6" 
                                 #actionstart="ngModel"
@@ -3690,4 +3700,60 @@
     </div>
     <!-- action duration edit end -->
 
+    <!-- Project release start-->
+    <div class="spacer--body" *ngIf="editRelease==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                <div><b>Project release</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    
+                <div class="px-4 py-3">
+                    <div class="form-group mb-1 d-flex">
+                        This project is on hold until {{hold_upto}}
+                    </div>
+                    <div class="form-group input-group">
+                        <label>Set new release date:<span
+                            class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input matInput [matDatepicker]="picker7"
+                                id="Holdtext_{{Pid}}"
+                                (click)="picker7.open();" (dateChange)="orgValueChange1($event)" [value]="dateR.value"
+                                [min]="minhold" [max]="maxhold"
+                                placeholder="Select Date"
+                                 class="form-control"
+                                name="date">
+                            <div class="input-group-append">
+                                <mat-datepicker-toggle matSuffix
+                                    [for]="picker7" class="btn-secondary">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker class="form-group"
+                                    #picker7></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label>Remarks<span
+                                class="text-danger">*</span></label>
+                        <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder=""
+                            rows="2" cols="20"
+                            style="height:70px;"></textarea>
+                    </div>
+                </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white"
+                    [disabled]="!hold_remarks" (click)="updateReleaseDate()">
+                    Submit
+                </button>
+                <button class="btn btn-outline-info btn-sm text-dark-75"
+                    (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- Project release end -->
 </div>

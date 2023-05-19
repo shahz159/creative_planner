@@ -49,6 +49,7 @@ export class ActionToProjectComponent implements OnInit {
   public filterText: any;
   _ProjectDataList: any;
   ProjectDeadLineDate: Date;
+  ProjectStartDate: Date;
   maxAllocation: number;
   Current_user_ID: string;
   _projcode: boolean;
@@ -81,7 +82,6 @@ export class ActionToProjectComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO;
     this.ObjUserDetails = new UserDetailsDTO();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
-
     this.BsService.bs_projectCode.subscribe(p => {
       if (p == null) {
         this.ProjectsDropdownBoolean = false;
@@ -94,11 +94,18 @@ export class ActionToProjectComponent implements OnInit {
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
           this.ProjectDeadLineDate = data["DeadLine"];
+          this.ProjectStartDate = data["StartDate"];
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
-           console.log(data,this.ProjectDeadLineDate,this.Owner_Empno,"back");
+          const dateOne = new Date(this.disablePreviousDate);
+          const dateTwo = new Date(this.ProjectStartDate);
+          if(dateTwo > dateOne){
+            this.disablePreviousDate = this.ProjectStartDate;
+          }
+          console.log(dateOne,dateTwo,this.disablePreviousDate,this.ProjectStartDate,"dates")
         })
       }
+
     });
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
@@ -112,6 +119,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
+    
   }
 
   ngOnInit() {
@@ -127,7 +135,11 @@ export class ActionToProjectComponent implements OnInit {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
-    
+    const input = document.getElementById("hour-input");
+      //And disable the wheel default functionality:
+      input.addEventListener("wheel", function(event) {
+        event.preventDefault();
+      });
   }
 
   CurrentUser_ID: string;
@@ -260,10 +272,15 @@ export class ActionToProjectComponent implements OnInit {
     else {
       var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+      if(Difference_In_Days==0){
+        Difference_In_Days=-1;
+      }
       this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     }
   }
   
+  
+
   ownerNo:string;
   
   OnSubmit() {

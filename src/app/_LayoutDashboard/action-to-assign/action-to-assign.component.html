@@ -9,7 +9,7 @@
         <div class="form-group">
             <label>Project Type : </label>
             <!-- <span class="text-danger">*</span> -->
-            <mat-select [(ngModel)]="selectedProjectType" placeholder="Select Project Type" class="form-control">
+            <mat-select [(ngModel)]="selectedProjectType" placeholder="Select project type" class="form-control">
                 <mat-option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
                     {{item.Exec_BlockName}}
                 </mat-option>   
@@ -18,13 +18,13 @@
         <div class="form-group">
             <label> Task/Project Name : </label>
             <!-- <span class="text-danger">*</span> -->
-            <input type="text" class="form-control" placeholder="Enter Task Name" aria-describedby="basic-addon1"
+            <input type="text" class="form-control" placeholder="Enter task name" aria-describedby="basic-addon1"
                 [(ngModel)]="_taskName" >
         </div>
         <div class="form-group">
             <label>Description : </label>
             <!-- <span class="text-danger">*</span> -->
-            <textarea class="form-control" aria-describedby="basic-addon1" [(ngModel)]="_description"
+            <textarea class="form-control" aria-describedby="basic-addon1" placeholder="Enter task description" [(ngModel)]="_description"
                 style="height: 100px"></textarea>
         </div>
         <!-- <div class="form-group">
@@ -37,7 +37,7 @@
 
         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
             <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-            <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select Employee" >
+            <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
                     {{item.DisplayName}}
                 </ng-option>
@@ -46,7 +46,7 @@
         </div>
         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
             <label>Link Portfolio : <strong></strong></label>
-            <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select Portfolio">
+            <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
                 <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
                     {{item.Portfolio_Name}}
                 </ng-option>
@@ -59,7 +59,7 @@
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="startdatechecker()">
                     <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
-                        placeholder="Start Date" class="form-control">
+                        placeholder="Start date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
@@ -73,7 +73,7 @@
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="datesCheck()">
                     <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
-                        placeholder="End Date" class="form-control">
+                        placeholder="End date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
@@ -97,7 +97,7 @@
         </div>
 
         <div class="form-group" [hidden]="selectedProjectType!='003'">
-            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission Type"
+            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission type"
                 class="form-control">
                 <mat-option [value]="0">Select Type</mat-option>
                 <mat-option [value]="1">Daily</mat-option>
@@ -110,7 +110,7 @@
         </div>
         <div class="form-group">
             <label for="exampleFormControlFile1">Remarks</label>
-            <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+            <textarea class="form-control" aria-label="With textarea" placeholder="Enter task rearks if any" [(ngModel)]="_remarks"
                 style="height: 111px;"></textarea>
         </div>
         <div class="form-group">

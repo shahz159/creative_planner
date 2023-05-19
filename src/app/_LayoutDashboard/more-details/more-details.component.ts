@@ -105,6 +105,8 @@ export class MoreDetailsComponent implements OnInit {
     });
 
     this.getholdate();
+    this.getRejectType();
+    this.getReasonforholdandRejected();
     this.GetProjectDetails();
     this.GetSubtask_Details();
     this.dar_details();
@@ -170,18 +172,6 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   clickondeselect(com,id){
-
-    // let smallerArray: any[] = this.exist_comment.length < this.rejectcommentsList.length ? this.exist_comment : this.rejectcommentsList;
-    // let largerArray: any[] = this.exist_comment.length < this.rejectcommentsList.length ? this.rejectcommentsList : this.exist_comment;
-
-    // for (let i = 0; i < smallerArray.length; i++) {
-    //   let index = largerArray.findIndex((el) => el.Req_Coments == smallerArray[i]);
-    //   if (index !== -1) {
-    //     smallerArray.splice(i, 1);
-    //     i--;
-    //   }
-    // }
-
     this.exist_comment = this.exist_comment.filter((comment) => comment != com);
     
     this.comments=this.comments.replace(com,"");
@@ -210,6 +200,8 @@ export class MoreDetailsComponent implements OnInit {
   new_deadline:any;
   new_cost: any;
   hold_upto:any;
+  reason:any;
+  rejectype:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -244,16 +236,28 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   getholdate(){
-    this.approvalObj.Project_Code = this.URL_ProjectCode;
-
     this.service.getHoldDatebyProjectcode(this.URL_ProjectCode).subscribe((data) => {
       this.hold_upto=data["Project_holddate"];
       // this.hold_upto=moment(this.hold_upto).format("DD-MM-YYYY");
     });
   }
+  
+  getReasonforholdandRejected(){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalservice.GetHoldDate(this.approvalObj).subscribe((data)=>{
+          this.reason = data["Reason"];
+      });
+  }
+
+  getRejectType(){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data)=>{
+        this.rejectype = data["rejectType"];
+       });
+  }
+
 
   updateReleaseDate(){
-
     if(this.release_date==null || this.release_date=='Invalid date'){
       this.notifyService.showError("Please enter valid date", "Failed");
       return false;
@@ -3622,12 +3626,6 @@ GetmeetingDetails(){
           this.objProjectDto.Project_Name = this.ProjectName;
           this.objProjectDto.Master_code = this.URL_ProjectCode;
           this.objProjectDto.Project_Code = this.URL_ProjectCode;
-
-          // this.service._InsertDARServie(this.objProjectDto)
-          // .subscribe(data => {
-          //   this._Message = data['message'];
-          //   this.notifyService.showSuccess(this._Message, "Success");
-          // });
           this.dar_details();
           this.getDarTime();
           this.GetProjectDetails();
