@@ -14,6 +14,25 @@
             </div>
         </div>
     </div> -->
+    
+    <ng-container *ngIf="Status=='Project Hold'">
+        <div class="desc-msg hold-msg">
+            <div class="d-flex align-items-center px-3">            
+                <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6>
+                <h6 class="mb-0">Reason: {{reason}} </h6>
+            </div>
+            <button class="btn btn-info btn-sm py-1">Resume Project</button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="Status=='Delay'">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center px-3">            
+                <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6>
+                <h6 class="mb-0">Reason: {{reason}} </h6>
+            </div>
+            <button class="btn btn-info btn-sm py-1">Resume Project</button>
+        </div>
+    </ng-container>
     <div class="px-4 py-2">
         <div class="row">
             <div class="col-lg-12 project-description pt-2">
@@ -182,7 +201,7 @@
                     </div>
                     <div class="d-flex align-items-center">
 
-                        <div class="hold-sec mt-1 d-flex align-items-start">
+                        <div class="hold-sec mt-1 d-flex align-items-center">
                             
                             <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> &nbsp;
                             <h6 class="mb-0">Reason:</h6>{{reason}}
@@ -820,7 +839,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-section shadow-sm mt-5">
+    <div class="tab-section shadow-sm mt-5 desc-show">
         <div class="row d-none">
             <div class="col-md-12">
                 <hr class="mt-1" />

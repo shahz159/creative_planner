@@ -1411,3 +1411,15 @@ button[disabled] {
 .label-hidden {
     display: none;
 }
+.form-control::placeholder {
+    color: #adb0bd;
+}
+.desc-msg{
+    background: #e5e1fc;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+.rejct-msg {
+    background: #ffc63c;
+}
