@@ -1216,7 +1216,8 @@ GetmeetingDetails(){
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");  
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on"); 
+    document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("btm-space").classList.add("d-none");
     // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
     // For page top div removing the fixed
