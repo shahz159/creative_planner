@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
   DARactivity_Div: boolean;
   _subtaskDiv: boolean;
   typetext: string;
-  Searchword:string
+  Searchword: string
   //Portfolio Variables.
   _ListProjStat: StatusDTO[];
   Current_user_ID: any;
@@ -325,6 +325,18 @@ export class DashboardComponent implements OnInit {
   _StartDate: any;
   _EndDate: any;
   display: string;
+  progress: number = 0;
+  pro_enddate: string;
+  Addressurl: string = "";
+  selectedrecuvalue: string;
+  timearr1: any = [];
+  AllEndtime: any = [];
+  timingarryend: any = [];
+  Time_End: any = [];
+  scstartdate: any = new Date();
+  showsearch: boolean = false;
+  Attachment12_ary: any = [];
+  RemovedAttach: any = [];
 
   config: AngularEditorConfig = {
     editable: true,
@@ -415,7 +427,8 @@ export class DashboardComponent implements OnInit {
   Attachments_ary: any = [];
   Locationfulladd: string;
   ObjSubTaskDTO: SubTaskDTO;
-
+  _onlinelink: boolean = false;
+  Link_Details: string;
   // selectedCar: string;
 
   // cars = [
@@ -452,8 +465,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
 
 
-    // moment(this.scstartdate, "DD-MM-YYYY")
 
+    // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
     this._labelName = "Schedule Date :";
@@ -536,7 +549,9 @@ export class DashboardComponent implements OnInit {
     this.maxDate = moment(moment().add(3, 'months')).format("YYYY-MM-DD").toString();
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
-    this._EndDate = moment().format("YYYY-MM-DD").toString();
+    // this._EndDate = moment().format("YYYY-MM-DD").toString();
+    this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+
     this.AllDatesSDandED = [];
     var jsonData = {};
     var columnName = "Date";
@@ -552,6 +567,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
+
 
     // for tippys
     tippy('#notification', {
@@ -609,10 +625,10 @@ export class DashboardComponent implements OnInit {
 
       //   }
       // }
-      
+
     });
 
-    
+
 
   }
 
@@ -913,7 +929,7 @@ export class DashboardComponent implements OnInit {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
   }
-  RemovedAttach: any = [];
+
   RemoveExistingFile(_id) {
 
 
@@ -1242,7 +1258,8 @@ export class DashboardComponent implements OnInit {
   //   }
   // }
   DublicateTaskandEvent() {
-    document.getElementById("div_endDate").style.display = "block";
+    document.getElementById("div_endDate").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
     this.copyTask = true;
     this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
@@ -1259,8 +1276,10 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-
-
+        this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl']
+        // alert( this.Addressurl);
+        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1328,12 +1347,14 @@ export class DashboardComponent implements OnInit {
           this._labelName = "Schedule Date :";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
+          document.getElementById("div_endDate").style.display = "block";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date :";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121").style.display = "block";
+          document.getElementById("div_endDate").style.display = "block";
           this.selectedrecuvalue = '2';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
@@ -1349,6 +1370,7 @@ export class DashboardComponent implements OnInit {
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
           document.getElementById("Recurrence_hide").style.display = "block";
+          document.getElementById("div_endDate").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121").style.display = "block";
           this._labelName = "Schedule Date :";
@@ -1429,11 +1451,12 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
-  Attachment12_ary: any = [];
+
 
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Descrip_Name12").style.display ="none";
     this.editTask = true;
     this.copyTask = false;
     this.create = false;
@@ -1458,8 +1481,9 @@ export class DashboardComponent implements OnInit {
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
-
-
+        this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details']
+      
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1516,11 +1540,13 @@ export class DashboardComponent implements OnInit {
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber']
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-
+        if((this.EventScheduledjson[0]['Onlinelink'])==true){
+          document.getElementById("Descrip_Name12").style.display ="block";
+        }
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
-          this.maxDate=this.EventScheduledjson[0]['Schedule_date'];
+          this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
@@ -1668,7 +1694,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  progress: number = 0;
+
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -1793,6 +1819,11 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = this.Addressurl;
 
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+        var vLink_Details = "Link_Details";
+        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -1885,12 +1916,14 @@ export class DashboardComponent implements OnInit {
           this.Endtms = null;
           this.St_date = null;
           this.Ed_date = null;
-          this._SEndDate=null;
+          this._SEndDate = null;
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Locationfulladd = null;
           this._status = null;
           this.SelectDms = null;
           this.Location_Type = null;
+          this.Link_Details = null;
+          this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
           this.Projectstartdate = "";
@@ -2081,6 +2114,12 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = this.Addressurl;
 
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+        var vLink_Details = "Link_Details";
+        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -2191,6 +2230,8 @@ export class DashboardComponent implements OnInit {
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Location_Type = null;
           this.Allocated_subtask = null;
+          this.Link_Details = null;
+          this._onlinelink = false;
           this.TM_DisplayName = null;
           this.Projectstartdate = "";
           this.projectEnddate = null;
@@ -2219,9 +2260,9 @@ export class DashboardComponent implements OnInit {
       alert('Please Select Valid Date and Time');
     }
   }
-  showsearch:boolean=false;
-  Search_byname(){
-    this.showsearch=true;
+
+  Search_byname() {
+    this.showsearch = true;
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
@@ -2232,10 +2273,24 @@ export class DashboardComponent implements OnInit {
         console.log(this.Scheduledjson, "Testing");
       });
 
-      //document.getElementById("showlist").classList.add("show");
+    //document.getElementById("showlist").classList.add("show");
 
   }
 
+  Online_method(event) {
+
+    if (event.target.checked) {
+      document.getElementById("Descrip_Name12").style.display = "block";
+      this._onlinelink = event.target.checked;
+      alert(this._onlinelink)
+    }
+    else {
+      document.getElementById("Descrip_Name12").style.display = "none";
+      this._onlinelink = false;
+      alert(this._onlinelink)
+    }
+
+  }
 
 
   viewconfirm() {
@@ -2315,6 +2370,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("Monthly_121").style.display = "none";
     document.getElementById("Recurrence_hide").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Descrip_Name12").style.display = "none";
     this.clearallfields();
     this.daysSelected = [];
     this.singleselectarry = [];
@@ -2338,7 +2395,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("core_viw121").style.display = "none";
       document.getElementById("core_viw222").style.display = "none";
       document.getElementById("core_Dms").style.display = "none";
-
+      document.getElementById("online-add").style.display = "none";
 
     }
     else {
@@ -2353,7 +2410,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("core_viw123").style.display = "none";
       document.getElementById("core_viw222").style.display = "block";
       document.getElementById("core_Dms").style.display = "block";
-
+      document.getElementById("online-add").style.display = "block";
 
     }
 
@@ -2462,7 +2519,7 @@ export class DashboardComponent implements OnInit {
     this.dayArr[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
   }
-  scstartdate: any = new Date();
+
   selectStartDate(event) {
 
     this._StartDate = event.value;
@@ -2481,11 +2538,11 @@ export class DashboardComponent implements OnInit {
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
     this.scstartdate = d1;
-    if(this.selectedrecuvalue == "0"){
-      this._EndDate=d1;
+    if (this.selectedrecuvalue == "0") {
+      this._EndDate = d1;
     }
-    
-   
+
+
     // alert( this.scstartdate);
 
     this.AllDatesSDandED = [];
@@ -2734,10 +2791,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  timearr1: any = [];
-  AllEndtime: any = [];
-  timingarryend: any = [];
-  Time_End: any = [];
   addstarttime() {
     this.Alltimes = [];
     this.EndTimearr = [];
@@ -2754,9 +2807,9 @@ export class DashboardComponent implements OnInit {
 
 
     // alert(this.Startts);
-    
 
- 
+
+
 
     // this.Alltimes = [];
     // this.StartTimearr.forEach(element => {
@@ -2829,15 +2882,15 @@ export class DashboardComponent implements OnInit {
     const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
     this.EndTimearr.forEach(element => {
       // alert(element)
-      const _element=element;
+      const _element = element;
       const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
       const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
       // alert(diffInMinutes)
       element = _element.toString() + "-" + diffInMinutes.toString();
-      
+
     });
 
-    console.log(this.EndTimearr,"End Time Updated")
+    console.log(this.EndTimearr, "End Time Updated")
   }
 
   purposeEndtime(TSEnd) {
@@ -3044,7 +3097,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  selectedrecuvalue: string;
   SelectDropDown(val) {
 
     this.selectedrecuvalue = val.value.toString();
@@ -3319,7 +3371,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-  pro_enddate: string;
+
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3400,7 +3452,7 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
-  getlistclick(id){
+  getlistclick(id) {
     this.Schedule_ID = id;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
@@ -3479,8 +3531,8 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
-  clearsearch(){
-    this.Searchword=null;
+  clearsearch() {
+    this.Searchword = null;
   }
 
   GetScheduledJson() {
@@ -3531,7 +3583,7 @@ export class DashboardComponent implements OnInit {
         };
       });
   }
-  Addressurl: string = "";
+
   public handleAddressChange(address: Address) {
 
     if (this.checkAddressURL(address.name.toString())) {
@@ -4148,7 +4200,7 @@ export class DashboardComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
-    this._SEndDate=null;
+    this._SEndDate = null;
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
@@ -4213,7 +4265,9 @@ export class DashboardComponent implements OnInit {
   clearallfields() {
 
     this._StartDate = moment().format("YYYY-MM-DD").toString();
-    this._EndDate = moment().format("YYYY-MM-DD").toString();
+    // this._EndDate = moment().format("YYYY-MM-DD").toString();
+    this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
@@ -4341,12 +4395,12 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  evesrchopn(){
+  evesrchopn() {
     document.getElementById("drp-srch").classList.add("show");
     $(".fc-header-toolbar").addClass("d-none");
   }
-  evesrchclose(){
-    this.showsearch=false;
+  evesrchclose() {
+    this.showsearch = false;
     document.getElementById("drp-srch").classList.remove("show");
     $(".fc-header-toolbar").removeClass("d-none");
     //document.getElementById("showlist").classList.remove("show");
