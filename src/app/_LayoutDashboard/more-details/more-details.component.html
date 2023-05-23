@@ -405,7 +405,7 @@
                                             </span> -->
                                             <!-- Deadline extend data-toggle="dropdown"-->
 
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Deadline Extend Under Approval')">
                                                 <span class="dropdown-toggle no-after text-info" 
                                                         aria-haspopup="true" aria-expanded="false"
                                                         (click)="onEditDeadline(Pid)">
@@ -2922,7 +2922,7 @@
                             <h6 class="mt-1"> {{new_deadline | date: 'dd-MM-yyyy'}} </h6>
                         </div>
                         <div *ngIf="Status=='Project Hold' || Status=='Project Hold Under Approval'">
-                            <h6 class="txtm-cus pt-1">Requested hold date</h6>
+                            <h6 class="txtm-cus pt-1">Hold until</h6>
                             <h6 class="mt-1"> {{hold_upto}} </h6>
                         </div>
                     </div>
