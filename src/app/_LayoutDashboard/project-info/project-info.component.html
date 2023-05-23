@@ -1122,10 +1122,10 @@
             </div>
 
             <div class="card-body"
-                *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
+                *ngIf="item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
                 <!-- Percentage Bar -->
                 <div class="progress_bar"
-                    *ngIf="item.Status!='Completion Under Approval' && item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
+                    *ngIf="item.Status!='Completed' && item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'">
                     <div *ngIf="ProjectStatus=='Not Started'">
                         <div class="pro-bar">
                             <small class="progress_bar_title">
