@@ -28,6 +28,12 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetHoldDate", this.obj_approvalDTO);
   }
 
+  GetRejecttype(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectType", this.obj_approvalDTO);
+  }
+
   UpdateReleaseDate(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.hold_date = obj.hold_date;

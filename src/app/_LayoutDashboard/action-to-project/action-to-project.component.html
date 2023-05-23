@@ -16,7 +16,7 @@
             (onDeSelect)="ProjectOnDeselect($event)" > -->
             <!-- (onFilterChange)="onFilterChange($event)"> -->
         <!-- </ng-multiselect-dropdown> -->
-        <ng-select reuired #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" placeholder="Select Project" >
+        <ng-select reuired #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" placeholder="Select project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
                 {{item.Project_Name }}
             </ng-option>
@@ -25,12 +25,12 @@
     </div>
     <div class="form-group">
         <label> Action Name <span class="text-danger">*</span></label>
-        <input #name="ngModel" required type="text" class="form-control" [(ngModel)]="Sub_ProjectName" required />
+        <input #name="ngModel" required type="text" class="form-control" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName" required />
         <span *ngIf ="_subname == true" style="color:red">Action Name required!</span>
     </div>
     <div class="form-group">
         <label>Description :<span class="text-danger">*</span></label>
-        <textarea #description="ngModel" required class="form-control" [(ngModel)]="_Description" style="height: 100px"></textarea>
+        <textarea #description="ngModel" required class="form-control" placeholder="Enter action description" [(ngModel)]="_Description" style="height: 100px"></textarea>
         <span *ngIf ="_desbool == true" style="color:red">Description required!</span>
     </div>
     <!-- <div class="form-group">
@@ -43,7 +43,7 @@
     </div> -->
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-        <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select Employee" >
+        <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
             <ng-option [value]="item.Emp_No" *ngFor="let item of _EmployeeListForDropdown">
                 {{item.DisplayName}}
             </ng-option>
@@ -52,7 +52,7 @@
     </div>
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label>Action Owner : <strong></strong></label>
-        <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select Owner" >
+        <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
             <ng-option [value]="item" *ngFor="let item of ownerArr">
                 {{item}}
             </ng-option>
@@ -63,7 +63,7 @@
             <label>Start Date : <span class="text-danger">*</span></label>
             <div class="input-group" (click)="startdatechecker()">
                 <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
-                    [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                    [(ngModel)]="_StartDate" placeholder="Start date" class="form-control">
                    
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
@@ -76,7 +76,7 @@
             <label>End Date :<span class="text-danger">*</span></label>
             <div class="input-group">
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End Date" class="form-control">
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control">
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
@@ -101,7 +101,7 @@
     <div class="form-group">
         <label>Allocated Hours<span class="text-danger" *ngIf="selectedEmpNo == Current_user_ID">*</span></label>
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
-        <input #allocated="ngModel" required type="number" class="form-control" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
+        <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
             (click)="alertMaxAllocation()">
         <span *ngIf="selectedEmpNo == Current_user_ID && allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 10 hours.</span>
@@ -111,7 +111,7 @@
     
     <div class="form-group">
         <label for="exampleFormControlFile1">Remarks</label>
-        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+        <textarea class="form-control" aria-label="With textarea" placeholder="Enter action remarks if any" [(ngModel)]="_remarks"
             style="height: 111px;"></textarea>
     </div>
 

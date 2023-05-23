@@ -253,9 +253,9 @@
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a>
                                                     </td>
-                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px">
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px" data-toggle="tooltip" title="{{item.Task_Name}}">
                                                         {{item.Task_Name}}</td>
-                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px">
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px" data-toggle="tooltip" title="{{item.Task_Description}}">
                                                         {{item.Task_Description}}</td>
                                                     <!-- style:width="25%" -->
                                                     <td class="kt-widget__title mb-0">{{item.ProjectType}}</td>

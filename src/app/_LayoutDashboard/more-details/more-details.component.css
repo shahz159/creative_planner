@@ -687,6 +687,9 @@
   .tab-section {
     min-height: calc(100vh - 365px);
   }
+  .tab-section.desc-show {
+    min-height: calc(100vh - 405px);
+  }
   .ribbon-box {
     z-index: 998;
   }

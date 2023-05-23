@@ -97,7 +97,7 @@
                             (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
                             [disabled]="_CurrentpageRecords<30">
                             <i class="fas fa-angle-right mr-0"></i></button>
-                        <div class="mr-2">
+                        <div class="mr-1">
                             <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
                                 data-toggle="kt-tooltip" title="Click to sort Asc">
                                 <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
@@ -202,6 +202,268 @@
                                 </li>
                             </ul>
                         </div>
+
+                        <!-- new filters -->
+
+                        <!-- <button class="btn-act btn btn-hvr" data-toggle="kt-tooltip" data-skin="dark" title="Clear Filters">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                role="img" font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
+                                viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z">
+                                </path>
+                            </svg>
+                            <span class="label-hidden">Reload</span>
+                        </button> -->
+                        <div class="btn-group d-none">
+                            <!-- <button class="btn-act btn btn-hvr filter-dot1" data-toggle="dropdown">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" role="img"
+                                    font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
+                                    viewBox="0 -1 17 17">
+                                    <path
+                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+                                </svg>
+                                <span class="label-hidden">Filters</span>
+                            </button> -->
+
+                            <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v mr-0 "></i>
+                            </a>
+                            
+                            <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
+                                <ul  class="kt-nav">
+                                    <li class="kt-nav__head d-flex justify-content-between">
+                                        <div>User Filters</div>
+                                    </li>
+                                    <li class="kt-nav__separator"></li>
+                                    <li class="kt-nav__item px-3 mb-2">
+                                        <input autoFocus type="search" autocomplete="off" name="Search" class="form-control" placeholder="Search...">
+                                    </li>
+                                    <li (click)="$event.stopPropagation();" class="kt-nav__item px-4 pt-2">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Project Type</h6>
+    
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Core Tasks
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Routine Tasks
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Secondary Tasks
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Standard Tasks
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Core Tasks
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Routine Tasks
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+    
+    
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Status</h6>
+    
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Completed
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Completion Under Approval
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        InProcess
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Hold
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Completed
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                InProcess
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Employees </h6>
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 1
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 2
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 3
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 4
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                User 1
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                User 2
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="kt-nav__separator"></li>
+                                    <li class="px-4 filt-btns">
+                                        <a class="btn btn-info mr-2 text-white btn-xs">Filter</a>
+                                        <a class="btn btn-outline-info btn-xs text-dark-75">Close</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- new filters -->
+
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
@@ -347,7 +609,7 @@
                                                     </td>
                                                     <td>
                                                         <div *ngIf="item.ReportType==null;else ReportType">
-                                                            <span class="kt-widget__other">No Category</span>
+                                                            <span class="kt-widget__other">No category</span>
                                                         </div>
                                                         <ng-template #ReportType>
                                                             <span class="kt-widget__other">{{item.ReportType}}</span>

@@ -463,7 +463,6 @@
                                             </div>
                                         </div>
                                     </span>
-
                                 </p>
 
                                 <p class="mb-1">
@@ -507,15 +506,12 @@
                                                 <b>{{item.SubtaskAllocated}} Hrs</b>      
                                             </span>                                      
                                         </ng-template>
-                                        
                                     </span>
                                     <span data-toggle="tooltip" title="Action Cost!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                         <i class="fas fa-wallet text-muted mr-1"></i>
                                         <b>{{item.Project_Cost|currency:'SAR '}}</b>
                                     </span>
                                 </p>
-
-                        
                                 <p class="mb-2">
                                     <span data-toggle="tooltip" title="Action Responsible!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Subtask_Res">
                                         <i class="fab fa-dev text-muted mr-1"></i>
