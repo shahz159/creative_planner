@@ -621,201 +621,207 @@
                 <div class="row">
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Project Duration</p>
-                        <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
 
-                        <!-- <div class="d-flex align-items-center">
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.DPG|date:'dd-MM-yyyy'}}</h5>
+                        
+                            <ng-container
+                                *ngIf="(item.Exec_BlockName != 'Standard Tasks' && item.Exec_BlockName!='Routine Tasks'); then othertask;">
+                            </ng-container>
+                            <ng-container
+                                *ngIf="(item.Exec_BlockName == 'Standard Tasks' || item.Exec_BlockName=='Routine Tasks'); then standardtask;">
+                            </ng-container>
+                            <ng-template #standardtask>
+                                <h5 class="mt-1">{{item.DPG|date:'dd-MM-yyyy'}} / {{item.SubmissionType1}}
+                                </h5>
+                            </ng-template>
+                            <ng-template #othertask>
                                 <div class="mt-1 d-flex align-items-start">
-                                    <h5>{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5>{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
-                                    <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip">End Date</h5>
-                                    <div class="dropdown">
+                                    <h5>{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                    <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
+                                        title="Extended Deadline for {{deadlineCount}} times!!"
+                                        *ngIf="deadlineCount>0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
+
+                                        <div class="dropdown"
+                                        *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
+                                                            && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
+                                                            item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' 
+                                                            && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
                                         <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
+                                            aria-haspopup="true" aria-expanded="false" (click)="onEditDeadline(Pid)">
+                                            <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
+                                            <!-- [hidden]="Editbutton" -->
+                                            <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
+                                                title="extend deadline"></i>
                                         </span>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
-                                            <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
+                                        <div id="DeadlineArea_{{Pid}}"
+                                            class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1">
+                                            <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
                                                 <li class="kt-nav__head py-0">
                                                     <div>Deadline Extend</div>
                                                 </li>
+    
                                                 <li class="kt-nav__separator"></li>
                                                 <div class=" height-scroll h-scr">
                                                     <div class="px-4 py-3">
                                                         <div class="form-group">
                                                             <label>Select Date<span class="text-danger">*</span></label>
+                                                            <!-- <span class="kt-inbox__subject mt-2" > -->
+                                                            <div class="d-flex input-group">
+                                                                <input matInput [matDatepicker]="picker2"
+                                                                    id="Deadlinetext_{{Pid}}" #Deadlinetext="ngModel"
+                                                                    (click)="picker2.open();"
+                                                                    (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
+                                                                    [min]="EndDate1" placeholder="Select Date"
+                                                                    [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                    name="date">
+                                                                <div class="input-group-append">
+    
+                                                                    <mat-datepicker-toggle matSuffix [for]="picker2"
+                                                                        class="btn-secondary">
+                                                                    </mat-datepicker-toggle>
+                                                                    <mat-datepicker class="form-group"
+                                                                        #picker2></mat-datepicker>
+                                                                    <!-- <div class="d-inline-block ml-3" id="button-addon4">
+                                                                            <button (click)="onProject_ExtendDeadline(Pid,_MasterCode)"
+                                                                                class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                            <button class=" btn btn-secondary btn btn-sm"
+                                                                                (click)="onCancel(Pid)">Cancel</button>
+                                                                        </div> -->
+                                                                </div>
+                                                            </div>
+                                                            <!-- </span> -->
                                                         </div>
                                                         <div class="form-group mb-1">
                                                             <label>Remarks<span class="text-danger">*</span></label>
-                                                            <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                                                placeholder="" rows="2" cols="20"
                                                                 style="height:70px;"></textarea>
                                                         </div>
+                                                        <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                                     </div>
                                                 </div>
                                                 <li class="kt-nav__separator"></li>
                                             </ul>
                                             <div class="px-4 pb-3">
-                                                <button class="btn btn-info btn-sm mr-2 text-white">Submit</button>
-                                                    <button class="btn btn-outline-info btn-sm text-dark-75">Close</button>
+                                                <button class="btn btn-info btn-sm mr-2 text-white"
+                                                    [disabled]="!_ProjDeadline || !extend_remarks"
+                                                    (click)="onProject_ExtendDeadline(Pid,_MasterCode)">Submit</button>
+                                                <button class="btn btn-outline-info btn-sm text-dark-75"
+                                                    (click)="onCancel(Pid)">Close</button>
+    
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="dropdown"
+                            *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed' && item.Status!='Forward Under Approval')">
+                            <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                (click)="1(Pid)">
+                                <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip"
+                                    title="project hold"></i>
+                            </span>
+                            <!-- <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                (click)="onHoldClick(Pid)">
+                                <i class="fas fa-play ml-2 mb-1 curser-pointer"></i>
+                            </span> -->
+                            <div id="HoldArea_{{Pid}}"
+                                class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop2">
+                                <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
+                                    <li class="kt-nav__head py-0">
+                                        <div>Project Hold</div>
+                                    </li>
+
+                                    <li class="kt-nav__separator"></li>
+                                    <div class=" height-scroll h-scr">
+                                        <div class="px-4 py-3">
+                                            <div class="form-group input-group">
+                                                <label>Select Date<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input matInput [matDatepicker]="picker3"
+                                                        id="Holdtext_{{Pid}}" #Holddt="ngModel"
+                                                        (click)="picker3.open();"
+                                                        (keydown.enter)="onProject_Hold(Pid,_MasterCode);"
+                                                        [min]="minhold" [max]="maxhold"
+                                                        placeholder="Select Date" [(ngModel)]="Holddate"
+                                                        class="form-control" name="date">
+                                                    <div class="input-group-append">
+                                                        <mat-datepicker-toggle matSuffix [for]="picker3"
+                                                            class="btn-secondary">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker class="form-group"
+                                                            #picker3></mat-datepicker>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-1">
+                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                <textarea class="form-control" [(ngModel)]="hold_remarks"
+                                                    placeholder="" rows="2" cols="20"
+                                                    style="height:70px;"></textarea>
+                                            </div>
+                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                        </div>
+
+                                    </div>
+                                    <li class="kt-nav__separator"></li>
+                                </ul>
+                                <div class="px-4 pb-3">
+                                    <button class="btn btn-info btn-sm mr-2 text-white"
+                                        [disabled]="!Holddate || !hold_remarks"
+                                        (click)="onProject_Hold(Pid,_MasterCode)">Submit</button>
+                                    <button class="btn btn-outline-info btn-sm text-dark-75"
+                                        (click)="onCancel(Pid)">Close</button>
+
+                                </div>
+                            </div>
+                                        </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                                    <!-- <div class="d-flex align-items-center">
+                                        <div class="w-100">
+                                            <h5 class="my-1 font-14">{{item.DPG|date:'dd-MM-yyyy'}}</h5>
+                                            <div class="mt-1 d-flex align-items-start">
+                                                <h5>{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5>{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                                <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip">End Date</h5>
+                                                <div class="dropdown">
+                                                    <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="extend deadline"></i>
+                                                    </span>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
+                                                        <ul class="kt-nav pb-0" (click)="$event.stopPropagation();" >
+                                                            <li class="kt-nav__head py-0">
+                                                                <div>Deadline Extend</div>
+                                                            </li>
+                                                            <li class="kt-nav__separator"></li>
+                                                            <div class=" height-scroll h-scr">
+                                                                <div class="px-4 py-3">
+                                                                    <div class="form-group">
+                                                                        <label>Select Date<span class="text-danger">*</span></label>
+                                                                    </div>
+                                                                    <div class="form-group mb-1">
+                                                                        <label>Remarks<span class="text-danger">*</span></label>
+                                                                        <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                                            style="height:70px;"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <li class="kt-nav__separator"></li>
+                                                        </ul>
+                                                        <div class="px-4 pb-3">
+                                                            <button class="btn btn-info btn-sm mr-2 text-white">Submit</button>
+                                                                <button class="btn btn-outline-info btn-sm text-dark-75">Close</button>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div> -->
-                                     <ng-container
-                                        *ngIf="(item.Exec_BlockName != 'Standard Tasks' && item.Exec_BlockName!='Routine Tasks'); then othertask;">
-                                    </ng-container>
-                                    <ng-container
-                                        *ngIf="(item.Exec_BlockName == 'Standard Tasks' || item.Exec_BlockName=='Routine Tasks'); then standardtask;">
-                                    </ng-container>
-                                    <ng-template #standardtask>
-                                        <h5 class="mt-1">{{item.DPG|date:'dd-MM-yyyy'}} / {{item.SubmissionType1}}
-                                        </h5>
-                                    </ng-template>
-                                    <ng-template #othertask>
-                                        <div class="mt-1 d-flex align-items-start">
-                                            <h5>{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
-                                            <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
-                                                title="Extended Deadline for {{deadlineCount}} times!!"
-                                                *ngIf="deadlineCount>0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
-
-                                                <div class="dropdown"
-                                                *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed')">
-                                                <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false" (click)="onEditDeadline(Pid)">
-                                                    <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
-                                                    <!-- [hidden]="Editbutton" -->
-                                                    <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                                                        title="extend deadline"></i>
-                                                </span>
-                                                <div id="DeadlineArea_{{Pid}}"
-                                                    class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1">
-                                                    <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
-                                                        <li class="kt-nav__head py-0">
-                                                            <div>Deadline Extend</div>
-                                                        </li>
-            
-                                                        <li class="kt-nav__separator"></li>
-                                                        <div class=" height-scroll h-scr">
-                                                            <div class="px-4 py-3">
-                                                                <div class="form-group">
-                                                                    <label>Select Date<span class="text-danger">*</span></label>
-                                                                    <!-- <span class="kt-inbox__subject mt-2" > -->
-                                                                    <div class="d-flex input-group">
-                                                                        <input matInput [matDatepicker]="picker2"
-                                                                            id="Deadlinetext_{{Pid}}" #Deadlinetext="ngModel"
-                                                                            (click)="picker2.open();"
-                                                                            (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                                            [min]="EndDate1" placeholder="Select Date"
-                                                                            [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                            name="date">
-                                                                        <div class="input-group-append">
-            
-                                                                            <mat-datepicker-toggle matSuffix [for]="picker2"
-                                                                                class="btn-secondary">
-                                                                            </mat-datepicker-toggle>
-                                                                            <mat-datepicker class="form-group"
-                                                                                #picker2></mat-datepicker>
-                                                                            <!-- <div class="d-inline-block ml-3" id="button-addon4">
-                                                                                    <button (click)="onProject_ExtendDeadline(Pid,_MasterCode)"
-                                                                                        class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                                                    <button class=" btn btn-secondary btn btn-sm"
-                                                                                        (click)="onCancel(Pid)">Cancel</button>
-                                                                                </div> -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- </span> -->
-                                                                </div>
-                                                                <div class="form-group mb-1">
-                                                                    <label>Remarks<span class="text-danger">*</span></label>
-                                                                    <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                                                        placeholder="Define your exact reason here." rows="2" cols="20"
-                                                                        style="height:70px;"></textarea>
-                                                                </div>
-                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                            </div>
-                                                        </div>
-                                                        <li class="kt-nav__separator"></li>
-                                                    </ul>
-                                                    <div class="px-4 pb-3">
-                                                        <button class="btn btn-info btn-sm mr-2 text-white"
-                                                            [disabled]="!_ProjDeadline || !extend_remarks"
-                                                            (click)="onProject_ExtendDeadline(Pid,_MasterCode)">Submit</button>
-                                                        <button class="btn btn-outline-info btn-sm text-dark-75"
-                                                            (click)="onCancel(Pid)">Close</button>
-            
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="dropdown"
-                                    *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed')">
-                                    <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        (click)="1(Pid)">
-                                        <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                                            title="project hold"></i>
-                                    </span>
-                                    <!-- <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        (click)="onHoldClick(Pid)">
-                                        <i class="fas fa-play ml-2 mb-1 curser-pointer"></i>
-                                    </span> -->
-                                    <div id="HoldArea_{{Pid}}"
-                                        class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop2">
-                                        <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
-                                            <li class="kt-nav__head py-0">
-                                                <div>Project Hold</div>
-                                            </li>
-
-                                            <li class="kt-nav__separator"></li>
-                                            <div class=" height-scroll h-scr">
-                                                <div class="px-4 py-3">
-                                                    <div class="form-group input-group">
-                                                        <label>Select Date<span class="text-danger">*</span></label>
-                                                        <div class="input-group">
-                                                            <input matInput [matDatepicker]="picker3"
-                                                                id="Holdtext_{{Pid}}" #Holddt="ngModel"
-                                                                (click)="picker3.open();"
-                                                                (keydown.enter)="onProject_Hold(Pid,_MasterCode);"
-                                                                [min]="minhold" [max]="maxhold"
-                                                                placeholder="Select Date" [(ngModel)]="Holddate"
-                                                                class="form-control" name="date">
-                                                            <div class="input-group-append">
-                                                                <mat-datepicker-toggle matSuffix [for]="picker3"
-                                                                    class="btn-secondary">
-                                                                </mat-datepicker-toggle>
-                                                                <mat-datepicker class="form-group"
-                                                                    #picker3></mat-datepicker>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group mb-1">
-                                                        <label>Remarks<span class="text-danger">*</span></label>
-                                                        <textarea class="form-control" [(ngModel)]="hold_remarks"
-                                                            placeholder="" rows="2" cols="20"
-                                                            style="height:70px;"></textarea>
-                                                    </div>
-                                                    <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                </div>
-
-                                            </div>
-                                            <li class="kt-nav__separator"></li>
-                                        </ul>
-                                        <div class="px-4 pb-3">
-                                            <button class="btn btn-info btn-sm mr-2 text-white"
-                                                [disabled]="!Holddate || !hold_remarks"
-                                                (click)="onProject_Hold(Pid,_MasterCode)">Submit</button>
-                                            <button class="btn btn-outline-info btn-sm text-dark-75"
-                                                (click)="onCancel(Pid)">Close</button>
-
-                                        </div>
-                                    </div>
-                                                </div>
-                                        </div>
-                                    </ng-template>
+                                    </div> -->
                     </div>
 
                     <!-- <div *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') else EndDate"
@@ -876,9 +882,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <!-- New Column -->
+
                     <div *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'"
                         class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
@@ -889,6 +893,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'"
                         class="col-md-4 pricevalues text-left py-0">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
@@ -900,6 +905,10 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
+                    <!-- New Column -->
 
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
@@ -1030,9 +1039,7 @@
                             </div>
                         </div>
                     </ng-template>
-                </div>
-
-                <div class="row">
+                    
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Client</p>
                         <div class="d-flex align-items-center">
@@ -1042,6 +1049,10 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+
+                <div class="row">
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Category</p>
                         <div class="d-flex align-items-center">
@@ -1563,20 +1574,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                        <p class="mt-2 mb-1 text-muted fs-7">Action Duration </p>
                         <div class="d-flex align-items-center">
                             <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                             <div class="w-100">
-                                <h5 class="my-1 font-14">{{task.StartDate|date:'dd-MM-yyyy'}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                            <div class="w-100">
-                                <h5 class="my-1 font-14">{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}</h5>
+                                <h5 class="my-1 font-14">{{task.StartDate|date:'dd-MM-yyyy'}}/{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}</h5>
                             </div>
                         </div>
                     </div>
@@ -1589,8 +1591,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                         <div class="d-flex align-items-center">
@@ -1600,7 +1600,10 @@
                           </div>
                         </div>
                     </div>
-
+                </div>
+                
+                   
+                <div class="row">
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
                         <div class="d-flex align-items-center">
@@ -1612,6 +1615,17 @@
                             <h5 *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'"
                                 class="my-1 font-14">
                                 Continuous</h5>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Percentage</p>
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-percentage fs-2 text-muted mr-2"></i>
+                          <div class="w-100">
+                            <h5 class="my-1 font-14">{{(task.SubtaskAllocated /
+                                totalSubtaskHours) | percent:'.1-2'}}</h5>
+                            <h5 class="my-1 font-14" *ngIf="totalSubtaskHours == 0"> 0% </h5>
                           </div>
                         </div>
                     </div>

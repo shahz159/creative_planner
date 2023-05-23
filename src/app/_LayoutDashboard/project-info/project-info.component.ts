@@ -162,6 +162,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Project_Owner:string;
   Project_Cost: any;
 
+
   fun_LoadProjectDetails() {
     // alert(this.Summarytype);
     this.service.SubTaskDetailsService(this.projectCode).subscribe(
