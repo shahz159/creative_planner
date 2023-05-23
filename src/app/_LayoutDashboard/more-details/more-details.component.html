@@ -15,24 +15,7 @@
         </div>
     </div> -->
     
-    <ng-container *ngIf="Status=='Project Hold'">
-        <div class="desc-msg hold-msg">
-            <div class="d-flex align-items-center px-3">            
-                <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6>
-                <h6 class="mb-0">Reason: {{reason}} </h6>
-            </div>
-            <button class="btn btn-info btn-sm py-1">Resume Project</button>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="Status=='Delay'">
-        <div class="desc-msg rejct-msg">
-            <div class="d-flex align-items-center px-3">            
-                <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6>
-                <h6 class="mb-0">Reason: {{reason}} </h6>
-            </div>
-            <button class="btn btn-info btn-sm py-1">Resume Project</button>
-        </div>
-    </ng-container>
+    
     <div class="px-4 py-2">
         <div class="row">
             <div class="col-lg-12 project-description pt-2">
@@ -43,9 +26,7 @@
                         
                         <ng-container *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
-                                *ngIf="Status == 'Completed' || Status == 'Under Approval' || Status == 'Completion Under Approval' || Status=='Deadline Extend Under Approval' 
-                                         || Status=='New Project Rejected' || Status=='ToDo Completed' || Status== 'New Todo' || Status=='Forward Under Approval' || Status=='InProcess' || Status == 'New TodoProject'
-                                         || Status=='New Project' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved' || Status=='Standardtask Enactive Hold' || Status == 'Project Complete Rejected'"
+                                *ngIf="Status != 'Project Hold' && Status != 'Delay'" 
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                 [ngClass]="{'bg-success':Status=='Completed',
                                 'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' || Status == 'New TodoProject',
@@ -55,8 +36,12 @@
                                 'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold'  ||  Status == 'Project Complete Rejected'}">
                                 {{Status}}</label>
                                 <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-danger"
-                                    *ngIf="Status=='Delay' ">
+                                    *ngIf="Status=='Delay' && Delaydays!=0">
                                     {{Status}} {{Delaydays}} days
+                                </label>
+                                <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-danger"
+                                    *ngIf="Status=='Delay' && Delaydays==0">
+                                    {{Status}}
                                 </label>
                                 <ng-container *ngIf="Status=='Project Hold'">
                                     <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn  px-3 py-1 kt-badge--pill hold-sec">
@@ -69,57 +54,13 @@
                         <ng-container *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
-                                {{SubmissionName}}</label>
+                                {{Status}}</label>
                         </ng-container>
-                        <!-- <ng-container *ngIf="Status == 'Project Complete Rejected' || Status=='New Project Rejected'">
-                            <p>Reject type: {{rejectype}}</p>
-                        </ng-container>
-                        <ng-container *ngIf="Status == 'Project Complete Rejected' || Status=='New Project Rejected' || Status=='Project Hold'">
-                            <p>Reason: {{reason}}</p>
-                        </ng-container> -->
-
-                        <!-- caledon-green -->
-
-                        <!--inprocess button-->
-                        <!-- <div class="d-flex"
-                            *ngIf="Status != 'Completed' && Status != 'Under Approval' && Status!='Completion Under Approval' && Status!='Project Hold' && Status!='Deadline Extend Under Approval'
-                                             && Status!='New Project Rejected' && Status!='ToDo Completed' && Status!='New Todo' && Status!='New Project' 
-                                             && Status!='Forward Under Approval' && Status!='Project Hold Under Approval' &&  Status !='ToDo Achieved'
-                                             && Status!='Standardtask Enactive Hold' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
-
-                            <label class="kt-badge kt-badge--inline cus-btn text-white px-3 py-1 kt-badge--pill bg-warning br-cr">{{Status}}</label> && Status!='Project Complete Rejected'
-                            <label class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill br-cr"
-                                data-toggle="tooltip" title="Project Status!" [ngClass]="{'bg-success':Status=='Completed',
-                                'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' ||  Status =='ToDo Achieved',
-                                'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval',
-                                'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
-                                'bg-rejected': Status=='New Project Rejected' || Status=='Project Complete Rejected', 
-                                'bg-success-1' : Status=='ToDo Completed',
-                                'bg-danger':Status=='Project Hold' || Status=='Standardtask Enactive Hold' || Status=='Delay'}" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">{{Status}}</label>
-                            <div class="task-status__divider"></div>
-                            <button data-toggle="tooltip" title="Project Submission!" class="task-status__controls" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
-                                (click)="OnClickCheckboxProjectUpdate()"></button>
-                        </div> -->
-                        <!--inprocess button-->
+                        
                         <!--progress bar start-->
                         <div class="d-flex flex-column ml-3"
                             *ngIf="Status != 'Completed' && Status!='Completion Under Approval' && ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks'">
-                            <!-- <span class="fs-6 font-bold" [ngClass]="{'text-dark':ProjectStatus=='Not Started',
-                                'text-primary':ProjectStatus=='Continuos-InProcess',    
-                                'text-success':ProjectStatus=='Completed',
-                                'text-warning':ProjectStatus=='InProcess',
-                                'text-underApp':ProjectStatus=='UnderCompletion',
-                                'text-info':ProjectStatus=='Just Started'}" data-toggle="tooltip"
-                                title="Progess Status!">
-                                {{ProjectStatus}}
-                            </span> -->
-                            <!-- text-dark - first div -->
-                            <!-- <div class="d-flex align-items-center w-200px">
-                            <div class="progress h-6px w-100 bg-light-warning">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 46%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span class="text-muted fs-7 fw-bold pl-2">46%</span>
-                            </div> -->
+                            
                             <div *ngIf="ProjectStatus=='Not Started'">
                                 <div class="d-flex align-items-center w-200px">
                                     <!-- <small class="progress_bar_title"> -->
@@ -200,17 +141,10 @@
 
                     </div>
                     <div class="d-flex align-items-center">
-
-                        <div class="hold-sec mt-1 d-flex align-items-center">
-                            
-                            <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> &nbsp;
-                            <h6 class="mb-0">Reason:</h6>{{reason}}
-                            
-                        </div>
                         <!--Transfer-->
                         <div class="ml-2 pro-act">
                         <!--Transfer end   data-toggle="dropdown"-->
-                        <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status=='InProcess')">
+                        <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                             <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
                                 data-toggle="tooltip" title="click to transfer">
@@ -276,9 +210,7 @@
                     <!--Transfer end-->
                     </div>
                     <div class=" pro-act ml-2" *ngIf="(Current_user_ID == approvalEmpId) && (pro_act==true)">
-                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status =='Under Approval' || Status =='Completion Under Approval' || Status=='Deadline Extend Under Approval'
-                                    || Status =='Enactive Under Approval' || Status=='Forward Under Approval' || Status=='Project Hold Under Approval'
-                                    ||  Status =='ToDo Achieved' || Status=='InProcess')">
+                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status!='Completed')">
                                     <i class="fas fa-check-circle mr-1"  data-toggle="tooltip" title="action required"></i>
                             Project actions
                         </button>
@@ -294,7 +226,7 @@
                             Project submission
                         </button>
                     </div>
-                    <div *ngIf="(ProjectBlockName == 'Standard Tasks')"
+                    <div *ngIf="(ProjectBlockName == 'Standard Tasks' && Status=='InProcess')"
                         class=" pro-act ml-2">
                         <button class="btn  btn22" (click)="OnStandardTaskSubmit()">
                             <!-- btn-pill btn-pill  mr-2-->
@@ -302,8 +234,30 @@
                             Task submission
                         </button>
                     </div>
+                    
                    
                 </div>
+                <ng-container *ngIf="Status=='Project Hold' && reason!=''">
+                    <div class="desc-msg hold-msg">
+                        <div class="d-flex align-items-center px-3">            
+                            <!-- <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> -->
+                            <h6 class="mb-0">Reason for hold: {{reason}} </h6>
+                        </div>
+                        <!-- <button class="btn btn-info btn-sm py-1"
+                            (click)="release_project()" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo">
+                            Click here to adjust hold date</button> -->
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="Status=='New Project Rejected' || Status=='Project Complete Rejected'">
+                    <div class="desc-msg rejct-msg">
+                        <div class="d-flex align-items-center px-3">            
+                            <h6 class="mb-0">Rejected on basis of '{{rejectype}}'.</h6> &nbsp;
+                            <h6 class="mb-0">Reason for rejection: {{reason}} </h6>
+                        </div>
+                        <!-- <button class="btn btn-info btn-sm py-1">Resume Project</button> -->
+                    </div>
+                </ng-container>
+                
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
                         <h4 class="mb-1 pro-nm d-inline-blck" id="SpanProjName_{{Pid}}" data-toggle="tooltip"
@@ -451,10 +405,7 @@
                                             </span> -->
                                             <!-- Deadline extend data-toggle="dropdown"-->
 
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
-                                                        && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
-                                                        Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
-                                                        && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" 
                                                         aria-haspopup="true" aria-expanded="false"
                                                         (click)="onEditDeadline(Pid)">
@@ -472,21 +423,6 @@
                                                             <div class="px-4 py-3">
                                                                 <div class="form-group">
                                                                     <label>Select Date<span class="text-danger">*</span></label>
-                                                                        <!-- <div class="d-flex input-group">
-                                                                            <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
-                                                                                #Deadlinetext="ngModel"
-                                                                                (click)="picker2.open();"
-                                                                                (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                                                                [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                                name="date">
-                                                                            <div class="input-group-append">
-
-                                                                                <mat-datepicker-toggle matSuffix [for]="picker2" class="btn-secondary">
-                                                                                </mat-datepicker-toggle>
-                                                                                <mat-datepicker class="form-group" #picker2></mat-datepicker>
-                                                                            </div>
-                                                                        </div> -->
                                                                 </div>
                                                                 <div class="form-group mb-1">
                                                                     <label>Remarks<span class="text-danger">*</span></label>
@@ -509,11 +445,18 @@
                                             <!-- Deadline extend end-->
 
                                             <!-- Project Hold  data-toggle="dropdown" (click)="onHoldClick(Pid)"-->
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Forward Under Approval' && ProjectBlockName != 'To do List')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold')">
                                                 <span type="button" id="hold-icn" 
                                                     aria-haspopup="true" aria-expanded="false" (click)="onHoldClick(Pid)" 
                                                     class="dropdown-toggle no-after text-info" >
                                                     <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
+                                                </span>
+                                            </div>
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status=='Project Hold')">
+                                                <span type="button" id="release-icn" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo) && (Status=='Project Hold')"
+                                                        aria-haspopup="true" aria-expanded="false" (click)="release_project()"  
+                                                            class="dropdown-toggle no-after text-info" >
+                                                        <i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip" title="click here to release project"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -611,7 +554,7 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Client</h6>
                                     <h5 class="mt-1">{{Client}}
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
@@ -644,7 +587,7 @@
                                     <h6 class="txtm-cus pt-1 mb-0">Responsible
                                         <button class="btn btn-primary btn-sm py-0 px-1 ml-1 dropdown-toggle no-after"
                                             *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) &&
-                                                (Status=='InProcess')"
+                                                (Status!='Completed')"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="onTransferClick(Pid)" data-toggle="tooltip" title="click to transfer">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -703,13 +646,13 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
                                     <h5 class="mt-1" *ngIf="Category!=null">{{Category}}
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
                                     </h5>
                                     <h5 class="mt-1" *ngIf="Category==null">No category
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')"
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
@@ -1527,7 +1470,7 @@
                                                                 <div class="d-flex align-items-center">
                                                                   <i class="fas fa-clock fs-2 text-muted mr-2"></i>
                                                                   <div class="w-100 d-flex">
-                                                                    <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
+                                                                    <h5 class="my-1 font-14" data-toggle="tooltip" title="Action hours!">{{item.SubtaskAllocated}} Hrs</h5>
                                                                     
                                                                     <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                         <span type="button" id="alloc-icn"
@@ -1571,36 +1514,6 @@
                                                                         </div>
                                                                         </div>
                                                                     </div>
-
-                                                                    <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
-                                                                            {{item.SubtaskAllocated}} Hrs</h6>
-                                                                        <span class="text-info" [hidden]="Editbutton" 
-                                                                            (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
-                                                                            <i class="fas fa-edit" ></i> -->
-                                                                        <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
-                                                                        <!-- </span>
-                                                                        <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">
-                                                                            <div class="d-flex">
-                                                                                <input type="number" class="form-control" id="textareafocus_all{{item.id}}"
-                                                                                    [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" style="width: 40%;height: 32px;"
-                                                                                    (keydown.enter)="OnProject_Rename(item.id)">
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">*Allocation per day limit is 10 hours.</span>
-                                                                                    <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
-                                
-                                                                                <div class="d-inline-block ml-3" id="button-addon4">
-                                                                                    <button (click)="OnProject_Rename(item.id)"
-                                                                                        class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                                                    <button class=" btn btn-secondary btn btn-sm"
-                                                                                        (click)="onCancel(item.id)">Cancel</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </span>
-                                                                        <ng-template #allocated>
-                                                                            <h6 class="mt-1"> 
-                                                                                {{item.SubtaskAllocated}}Hrs
-                                                                            </h6>
-                                                                        </ng-template>   -->
-                                                                        
                                                                   </div>
                                                                 </div>
                                                             </div>
@@ -2115,8 +2028,10 @@
                                                             src="assets/images/pdf.svg" alt="image">
                                                     </div>
                                                     <div>
-                                                        <span class="kt-widget__desc pt-1 curser-pointer"
+                                                        <span class="kt-widget__desc pt-1 curser-pointer" *ngIf="Status!='ToDo Achieved'"
                                                             (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}</span>
+                                                        <span class="kt-widget__desc pt-1 curser-pointer" *ngIf="Status=='ToDo Achieved'"
+                                                            (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
                                                         <div class="kt-widget__desc pt-1">
                                                             <small>{{item.LastUpdate | date:'fullDate'}}</small>
                                                         </div>
@@ -2698,7 +2613,7 @@
         </div> -->
         <div class="form-group">
             <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
-            <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+            <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" placeholder="Define your exact reason here."
                 style="height: 160px; margin: 0px;"></textarea>
                 <span class="text-danger mt-1">Note: (*) are mandatory!</span>
         </div>
@@ -2767,7 +2682,7 @@
 
                     <div class="form-group">
                         <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
-                        <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [(ngModel)]="_remarks"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
                         <span class="text-danger mt-1">Note: (*) are mandatory!</span>
                     </div>
 
@@ -2780,7 +2695,7 @@
                 <div class="mt-3">
                     <div class="form-group">
                         <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
-                        <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [(ngModel)]="_remarks"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
                         <span class="text-danger mt-1">Note: (*) are mandatory!</span>
                     </div>
 
@@ -2845,7 +2760,7 @@
          -->
         <div class="form-group">
             <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-            <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+            <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here." [(ngModel)]="_remarks"
                 style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
         </div>
         <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
@@ -2914,19 +2829,24 @@
                         </span></div>
                     <div class="action-content d-flex align-items-center gap-1">
                         <div class="left-w">
-                            <h6 class="txtm-cus pt-1">Project deadline</h6>
-                            <h6 class="mt-1"> {{EndDate}} </h6>
+                            <h6 class="txtm-cus pt-1">Project duration</h6>
+                            <h6 class="mt-1" *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks')">{{StartDate|date:'dd-MM-yyyy'}}/{{EndDate}} </h6>
+                            <h6 class="mt-1" *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks')">{{StartDate|date:'dd-MM-yyyy'}}/{{SubmissionName}} </h6>
                         </div>
-                        <div class="px-1" *ngIf="Status=='Deadline Extend Under Approval'">
+                        <div class="px-1" *ngIf="Status=='Deadline Extend Under Approval' || Status=='Project Hold' || Status=='Project Hold Under Approval'">
                             <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                         </div>
                         <div *ngIf="Status=='Deadline Extend Under Approval'">
-                            <h6 class="txtm-cus pt-1">New deadline</h6>
+                            <h6 class="txtm-cus pt-1">New end date</h6>
                             <h6 class="mt-1"> {{new_deadline | date: 'dd-MM-yyyy'}} </h6>
+                        </div>
+                        <div *ngIf="Status=='Project Hold' || Status=='Project Hold Under Approval'">
+                            <h6 class="txtm-cus pt-1">Requested hold date</h6>
+                            <h6 class="mt-1"> {{hold_upto}} </h6>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center mb-3" *ngIf="Status=='Deadline Extend Under Approval'">
+                <div class="d-flex align-items-center mb-3">
                     <div class="">
                         <span class="svg-icon svg-icon-2x text-primary mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -2944,12 +2864,61 @@
                             <h6 class="mt-1"> {{Cost |currency:'SAR '}} </h6>
                             <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
                         </div>
-                        <div class="px-1">
+                        <!-- <div class="px-1">
                             <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                         </div>
                         <div>
                             <h6 class="txtm-cus pt-1">New cost</h6>
                             <h6 class="mt-1"> {{new_cost |currency:'SAR '}} </h6>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3" *ngIf="Status=='Forward Under Approval'">
+                    <div class="">
+                        <span class="svg-icon svg-icon-2x text-primary mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="action-content d-flex align-items-center gap-1" *ngIf="Status=='Forward Under Approval'">
+                        <div class="left-w">
+                            <h6 class="txtm-cus pt-1">Forward from</h6>
+                            <h6 class="mt-1">{{forwardfrom}}</h6>
+                        </div>
+                        <div class="px-1">
+                            <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                        </div>
+                        <div>
+                            <h6 class="txtm-cus pt-1">Forward to</h6>
+                            <h6 class="mt-1">{{forwardto}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3" *ngIf="requestType=='Project Complete' || requestType=='ToDo Achieved'">
+                    <div class="">
+                        <span class="svg-icon svg-icon-2x text-primary mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete'">
+                        <div class="left-w">
+                            <h6 class="txtm-cus pt-1">Complete attachment</h6>
+                            <a (click)="openPDF(iscloud,url)"><h6 class="mt-1"><u>{{completedoc}}</u></h6></a>
+                        </div>
+                    </div>
+                    <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved'">
+                        <div class="left-w">
+                            <h6 class="txtm-cus pt-1">Complete attachment</h6>
+                            <a (click)="openPDF(iscloud,url)"><h6 class="mt-1"><u>{{url}}</u></h6></a>
                         </div>
                     </div>
                 </div>
@@ -3254,7 +3223,7 @@
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>
-                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"></textarea>
+                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
             </div>
 
             <div class="form-group">
@@ -3398,7 +3367,7 @@
                         </div>
                     <div class="form-group mb-1">
                         <label>Remarks<span class="text-danger">*</span></label>
-                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2" cols="20"
                             style="height:70px;"></textarea>
                     </div>
                 </div>
@@ -3489,7 +3458,7 @@
                     </div>
                     <div class="form-group mb-1">
                         <label>Remarks<span class="text-danger">*</span></label>
-                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2" cols="20"
                             style="height:70px;"></textarea>
                     </div>
                 </div>
@@ -3525,7 +3494,7 @@
                     </div>
                     <div class="form-group mb-1">
                         <label>Remarks<span class="text-danger">*</span></label>
-                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20"
+                        <textarea class="form-control" [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2" cols="20"
                             style="height:70px;"></textarea>
                     </div>
                 </div>
@@ -3580,7 +3549,7 @@
                     </div>
                     <div class="form-group">
                         <label>Remarks<span class="text-danger">*</span>:</label>
-                        <textarea class="form-control" [(ngModel)]="transfer_remarks" placeholder="" rows="2" cols="20"
+                        <textarea class="form-control" [(ngModel)]="transfer_remarks" placeholder="Define your exact reason here." rows="2" cols="20"
                             style="height:80px;"></textarea>
                     </div>
                 </div>
@@ -3627,7 +3596,7 @@
                     <div class="form-group mb-1">
                     <label>Remarks <span class="text-danger">*</span>
                     </label>
-                    <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                    <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                     </div>
                 </div>
                 </div>
@@ -3671,7 +3640,7 @@
                     <div class="form-group mb-1">
                     <label>Remarks <span class="text-danger">*</span>
                     </label>
-                    <textarea [(ngModel)]="extend_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                    <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                     </div>
                 </div>
                 </div>
@@ -3705,7 +3674,7 @@
                     <div class="form-group mb-1">
                     <label>Remarks <span class="text-danger">*</span>
                     </label>
-                    <textarea [(ngModel)]="alloc_remarks" placeholder="" rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
+                    <textarea [(ngModel)]="alloc_remarks" placeholder="Define your exact reason here." rows="2" cols="20" class="form-control" style="height: 70px;"></textarea>
                     </div>
                 </div>
                 </div>
@@ -3757,7 +3726,7 @@
                         <label>Remarks<span
                                 class="text-danger">*</span></label>
                         <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder=""
-                            rows="2" cols="20"
+                            rows="2" cols="20" placeholder="Define your exact hold reason here."
                             style="height:70px;"></textarea>
                     </div>
                 </div>

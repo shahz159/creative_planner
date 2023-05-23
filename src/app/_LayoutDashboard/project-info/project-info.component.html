@@ -281,20 +281,25 @@
 
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
-                                                <h6 class="txtm-cus pt-1">Project deadline</h6>
-                                                <h6 class="mt-1"> {{date2 | date: 'dd-MM-yyyy'}} </h6>
+                                                <h6 class="txtm-cus pt-1">Project duration</h6>
+                                                <h6 class="mt-1" *ngIf="(item.Exec_BlockName != 'Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">{{item.DPG|date:'dd-MM-yyyy'}}/{{date2 | date: 'dd-MM-yyyy'}}</h6>
+                                                <h6 class="mt-1" *ngIf="(item.Exec_BlockName == 'Standard Tasks' || item.Exec_BlockName=='Routine Tasks')">{{item.DPG|date:'dd-MM-yyyy'}} / {{item.SubmissionType1}}</h6>
                                             </div>
-                                            <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                            <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Project Hold' || item.Status=='Project Hold Under Approval'">
                                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
                                             <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                <h6 class="txtm-cus pt-1">New deadline</h6>
+                                                <h6 class="txtm-cus pt-1">New end date</h6>
                                                 <h6 class="mt-1"> {{new_deadline | date: 'dd-MM-yyyy'}} </h6>
+                                            </div>
+                                            <div *ngIf="item.Status=='Project Hold' || item.Status=='Project Hold Under Approval'">
+                                                <h6 class="txtm-cus pt-1">Requested hold date</h6>
+                                                <h6 class="mt-1"> {{proj_holddate}} </h6>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-center mb-3" *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                    <div class="d-flex align-items-center mb-3" >
                                         <div class="">
                                             <span class="svg-icon svg-icon-2x text-primary mr-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -312,16 +317,64 @@
                                                 <h6 class="mt-1"> {{Project_Cost |currency:'SAR '}} </h6>
                                                 <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
                                             </div>
-                                            <div class="px-1">
+                                            <!-- <div class="px-1" *ngIf="item.Status=='Deadline Extend Under Approval'">
                                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                                             </div>
-                                            <div>
+                                            <div *ngIf="item.Status=='Deadline Extend Under Approval'">
                                                 <h6 class="txtm-cus pt-1">New cost</h6>
                                                 <h6 class="mt-1"> {{new_cost |currency:'SAR '}} </h6>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
-
+                                        <div class="d-flex align-items-center mb-3" *ngIf="item.Status=='Forward Under Approval'">
+                                            <div class="">
+                                                <span class="svg-icon svg-icon-2x text-primary mr-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="action-content d-flex align-items-center gap-1" *ngIf="item.Status=='Forward Under Approval'">
+                                                <div class="left-w">
+                                                    <h6 class="txtm-cus pt-1">Forward from</h6>
+                                                    <h6 class="mt-1">{{forwardfrom}}</h6>
+                                                </div>
+                                                <div class="px-1">
+                                                    <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="txtm-cus pt-1">Forward to</h6>
+                                                    <h6 class="mt-1">{{forwardto}}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3" *ngIf="requestType=='Project Complete' || requestType=='ToDo Achieved'">
+                                            <div class="">
+                                                <span class="svg-icon svg-icon-2x text-primary mr-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor" height="24" width="24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete'">
+                                                <div class="left-w">
+                                                    <h6 class="txtm-cus pt-1">Complete attachment</h6>
+                                                    <a (click)="openPDF(iscloud,url)"><h6 class="mt-1"><u>{{completedoc}}</u></h6></a>
+                                                </div>
+                                            </div>
+                                            <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved'">
+                                                <div class="left-w">
+                                                    <h6 class="txtm-cus pt-1">Complete attachment</h6>
+                                                    <a (click)="openPDF(iscloud,url)"><h6 class="mt-1"><u>{{url}}</u></h6></a>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     <!-- <div class="d-flex align-items-center mb-3"
                                         *ngIf="item.Status=='Deadline Extend Under Approval' || item.Status=='Forward Under Approval'">
@@ -630,10 +683,7 @@
                                                 *ngIf="deadlineCount>0">{{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
 
                                                 <div class="dropdown"
-                                                *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold' && item.Status!='Completion Under Approval'
-                                                                    && item.Status!='Deadline Extend Under Approval' && item.Status!='Enactive Under Approval'&&
-                                                                    item.Status!='Forward Under Approval' && item.Status!='Project Hold Under Approval' 
-                                                                    && item.Status!='New Project Rejected' && item.Status!='Project Complete Rejected' && item.Status!='ToDo Achieved'  && item.Status!='ToDo Completed')">
+                                                *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false" (click)="onEditDeadline(Pid)">
                                                     <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
@@ -682,7 +732,7 @@
                                                                 <div class="form-group mb-1">
                                                                     <label>Remarks<span class="text-danger">*</span></label>
                                                                     <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                                                        placeholder="" rows="2" cols="20"
+                                                                        placeholder="Define your exact reason here." rows="2" cols="20"
                                                                         style="height:70px;"></textarea>
                                                                 </div>
                                                                 <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
@@ -701,7 +751,7 @@
                                                 </div>
                                                 </div>
                                                 <div class="dropdown"
-                                    *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed' && item.Status!='Forward Under Approval')">
+                                    *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Project Hold' && item.Status!='Completed')">
                                     <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         (click)="1(Pid)">
@@ -1179,7 +1229,7 @@
                                             <div class="form-group">
                                                 <label>Remarks<span class="text-danger">*</span>:</label>
                                                 <textarea class="form-control" [(ngModel)]="transfer_remarks"
-                                                    placeholder="" rows="2" cols="20" style="height:70px;"></textarea>
+                                                    placeholder="Define your exact reason here." rows="2" cols="20" style="height:70px;"></textarea>
                                             </div>
                                             <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                         </div>
@@ -1540,6 +1590,32 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-clock fs-2 text-muted mr-2"></i>
+                          <div class="w-100 d-flex">
+                            <h5 class="my-1 font-14" data-toggle="tooltip" title="Action hours!">{{task.SubtaskAllocated}} Hrs</h5>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-hourglass-half fs-2 text-muted mr-2"></i>
+                          <div class="w-100">
+                            <h5 *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'"
+                                class="my-1 font-14">
+                                {{task.SubtaskDuration}} days</h5>
+                            <h5 *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'"
+                                class="my-1 font-14">
+                                Continuous</h5>
+                          </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Completed Task  -->
@@ -1623,7 +1699,32 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
+                            <div class="d-flex align-items-center">
+                            <i class="fas fa-clock fs-2 text-muted mr-2"></i>
+                            <div class="w-100 d-flex">
+                                <h5 class="my-1 font-14" data-toggle="tooltip" title="Action hours!">{{task.SubtaskAllocated}} Hrs</h5>
+                            </div>
+                            </div>
+                        </div>
 
+                        <div class="col-md-4">
+                            <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
+                            <div class="d-flex align-items-center">
+                            <i class="fas fa-hourglass-half fs-2 text-muted mr-2"></i>
+                            <div class="w-100">
+                                <h5 *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'"
+                                    class="my-1 font-14">
+                                    {{task.SubtaskDuration}} days</h5>
+                                <h5 *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'"
+                                    class="my-1 font-14">
+                                    Continuous</h5>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

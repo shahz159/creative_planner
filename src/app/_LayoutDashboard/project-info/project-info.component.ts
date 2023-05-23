@@ -186,7 +186,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];
           this._MainProjectStatus = data[0]['MainProjectStatus'];
-          //console.log("ProjectDetails-->", this.ProjectInfo_List);
+          console.log("ProjectDetails-->", this.ProjectInfo_List);
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
           this.Project_Cost= this.ProjectInfo_List[0]['Project_Cost'];
@@ -1401,6 +1401,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   new_cost: any;
   new_duration: any;
   hold_upto: any;
+  forwardto: any;
+  forwardfrom:any;
+  completedoc:any;
+  complete_List:any;
+  iscloud:any;
+  url:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1432,6 +1438,14 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
         if(this.requestType=='Project Forward'){
           this.newResponsible = (this.transfer_json[0]['newResp']);
+          this.forwardto = (this.transfer_json[0]['Forwardedto']);
+          this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+        }
+        if(this.requestType=='Project Complete' || this.requestType=='ToDo Achieved'){
+            this.complete_List=JSON.parse(this.requestDetails[0]['completeDoc']);
+            this.completedoc=(this.complete_List[0]['Sourcefile']);
+            this.iscloud=(this.complete_List[0]['IsCloud']);
+            this.url=(this.complete_List[0]['CompleteProofDoc']);
         }
         console.log(this.requestDetails, 'transfer');
       }
@@ -1743,6 +1757,61 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     // else {
     //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
     // }
+  }
+
+  _day: any;
+  _month: any;
+
+  openPDF_Standard(cloud, repDate: Date, proofDoc) {
+    repDate = new Date(repDate);
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    let Day = repDate.getDate();
+    let Month = repDate.getMonth() + 1;
+    let Year = repDate.getFullYear();
+    if (Month < 10) {
+      this._month = '0' + Month;
+    }
+    else {
+      this._month = Month;
+    }
+    if (Day < 10) {
+      this._day = '0' + Day;
+    }
+    else {
+      this._day = Day;
+    }
+    var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+    
+    if(cloud==false){
+      if(this.EmpNo_Autho==this.EmpNo_Res){
+           window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + date + "/" + proofDoc);
+      }
+      else if(this.EmpNo_Autho!=this.EmpNo_Res){
+        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + date + "/" + proofDoc);
+      }
+    }
+    else if (cloud == true) {
+      window.open(proofDoc);
+    }
+  }
+
+  openPDF(cloud, docName) {
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    if (cloud == false) {
+      if(this.EmpNo_Autho==this.EmpNo_Res){
+        window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
+      }
+      else if(this.EmpNo_Autho!=this.EmpNo_Res){
+        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
+      }
+    }
+    else if (cloud == true) {
+      window.open(docName);
+    }
   }
 
   btmspace_opn(){

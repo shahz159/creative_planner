@@ -202,6 +202,13 @@ export class MoreDetailsComponent implements OnInit {
   hold_upto:any;
   reason:any;
   rejectype:any;
+  forwardto: any;
+  forwardfrom:any;
+  completedoc:any;
+  complete_List:any;
+  iscloud:any;
+  url:any;
+
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -229,7 +236,15 @@ export class MoreDetailsComponent implements OnInit {
         // this.newResponsible = (this.transfer_json[0]['newResp']);
         if(this.requestType=='Project Forward'){
           this.newResponsible = (this.transfer_json[0]['newResp']);
+          this.forwardto = (this.transfer_json[0]['Forwardedto']);
+          this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
         }
+        if(this.requestType=='Project Complete' || this.requestType=='ToDo Achieved'){
+          this.complete_List=JSON.parse(this.requestDetails[0]['completeDoc']);
+          this.completedoc=(this.complete_List[0]['Sourcefile']);
+          this.iscloud=(this.complete_List[0]['IsCloud']);
+          this.url=(this.complete_List[0]['CompleteProofDoc']);
+      }
       }
       console.log(this.requestDetails, 'transfer');
     });
