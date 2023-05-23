@@ -1067,8 +1067,7 @@ GetmeetingDetails(){
           if (this.ProjectBlockName=='To do List' || this.ProjectBlockName=='Standard Tasks' || this.ProjectBlockName=='Routine Tasks') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' 
-            || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
             this.darbutton = false;
           }
         }

@@ -264,7 +264,7 @@
                             title="Project Name!">{{ProjectName }}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
+                            *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -289,7 +289,7 @@
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}"
-                        *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status != 'Completed')">
+                        *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
@@ -369,7 +369,7 @@
                                         <div class="mt-1 d-flex align-items-start">
                                             <h5>{{StartDate|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">{{EndDate}}</h5>
                                             <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
-                                                title="Extended Deadline for {{deadlineCount}} times!!"
+                                                title="Extended Deadline for {{deadlineCount}} times"
                                                 *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <!-- <span class="text-info fs-8" [hidden]="Editbutton"
                                                 (click)="onEditDeadline(Pid,EndDate)"  id="Span_Deadline_{{Pid}}"
@@ -405,7 +405,7 @@
                                             </span> -->
                                             <!-- Deadline extend data-toggle="dropdown"-->
 
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Deadline Extend Under Approval')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" 
                                                         aria-haspopup="true" aria-expanded="false"
                                                         (click)="onEditDeadline(Pid)">
@@ -445,7 +445,7 @@
                                             <!-- Deadline extend end-->
 
                                             <!-- Project Hold  data-toggle="dropdown" (click)="onHoldClick(Pid)"-->
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                                                 <span type="button" id="hold-icn" 
                                                     aria-haspopup="true" aria-expanded="false" (click)="onHoldClick(Pid)" 
                                                     class="dropdown-toggle no-after text-info" >
@@ -3598,7 +3598,7 @@
         <div class="">
             <ul class="kt-nav pb-0"> 
                 <li class="kt-nav__head py-0">
-                <div><b>Project transfer</b><br>Project: {{ProjectName}}</div>
+                <div><b>Project transfer</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
