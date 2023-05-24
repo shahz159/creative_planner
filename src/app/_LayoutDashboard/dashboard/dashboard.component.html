@@ -972,7 +972,56 @@
     <div class="eve-modal open" id="cal-events" tabindex="-1" role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
+                <div class="">
+                    <div class="" >
+                        <span class="date-info"> Created </span>
+                        <div class="date-val"><span> May 13 2022, 11:49 AM</span></div>
+                    </div>
+                </div>
                 <div class="icons-flex float-right">
+                    
+                    <div id="act-icn" class="icons-right dropdown">
+                        <span  class="tool-span dropdown-toggle no-after" id="act-btn"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <svg width="20" height="20" viewBox="0 0 24 24" focusable="false" class="toolicns" >
+                                <path d="M13.85 22.25h-3.7c-.74 0-1.36-.54-1.45-1.27l-.27-1.89c-.27-.14-.53-.29-.79-.46l-1.8.72c-.7.26-1.47-.03-1.81-.65L2.2 15.53c-.35-.66-.2-1.44.36-1.88l1.53-1.19c-.01-.15-.02-.3-.02-.46 0-.15.01-.31.02-.46l-1.52-1.19c-.59-.45-.74-1.26-.37-1.88l1.85-3.19c.34-.62 1.11-.9 1.79-.63l1.81.73c.26-.17.52-.32.78-.46l.27-1.91c.09-.7.71-1.25 1.44-1.25h3.7c.74 0 1.36.54 1.45 1.27l.27 1.89c.27.14.53.29.79.46l1.8-.72c.71-.26 1.48.03 1.82.65l1.84 3.18c.36.66.2 1.44-.36 1.88l-1.52 1.19c.01.15.02.3.02.46s-.01.31-.02.46l1.52 1.19c.56.45.72 1.23.37 1.86l-1.86 3.22c-.34.62-1.11.9-1.8.63l-1.8-.72c-.26.17-.52.32-.78.46l-.27 1.91c-.1.68-.72 1.22-1.46 1.22zm-3.23-2h2.76l.37-2.55.53-.22c.44-.18.88-.44 1.34-.78l.45-.34 2.38.96 1.38-2.4-2.03-1.58.07-.56c.03-.26.06-.51.06-.78s-.03-.53-.06-.78l-.07-.56 2.03-1.58-1.39-2.4-2.39.96-.45-.35c-.42-.32-.87-.58-1.33-.77l-.52-.22-.37-2.55h-2.76l-.37 2.55-.53.21c-.44.19-.88.44-1.34.79l-.45.33-2.38-.95-1.39 2.39 2.03 1.58-.07.56a7 7 0 0 0-.06.79c0 .26.02.53.06.78l.07.56-2.03 1.58 1.38 2.4 2.39-.96.45.35c.43.33.86.58 1.33.77l.53.22.38 2.55z"></path>
+                                <circle cx="12" cy="12" r="3.5"></circle>
+                            </svg>
+                        </span>
+                        
+                        <div class="dropdown-menu dropdown-menu-right sort-drop act-drop" aria-labelledby="act-btn">
+                            <div>
+
+                                <span class="sort-by pb-2">Event Action</span>
+
+                                <div class="" id="main-section">
+                                    <div>
+                                        <a class="dropdown-item active">
+                                            Done
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                </svg>
+                                            </span>
+                                        </a>
+                                    </div>
+
+                                    <a class="dropdown-item">
+                                        Postpone
+                                    </a>
+                                    <a class="dropdown-item">
+                                        Completed
+                                    </a>
+
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div id="copy_data" class="icons-right">
                         <span class="tool-span" (click)="DublicateTaskandEvent()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -1106,6 +1155,40 @@
                                 <div class="main-s">{{item.FullAddress_loc}}</div>
                                 <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
                                     Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="" class="eve-area">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
+                                    <path d="M0 0h24v24H0z" fill="none"/><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">Online</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="" class="eve-area">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                    <path d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">
+                                    <a href="" target=”_blank”>www.google.com</a>
+                                </div>
+                                <!-- <div class="main-s">Meeting ID: 822 6715 1716</div>
+                                <div class="main-s">Passcode: 603071</div> -->
                             </div>
                         </div>
                     </div>

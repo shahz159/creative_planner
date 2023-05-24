@@ -1161,6 +1161,9 @@ height: auto !important;
 }
 .head-c{
     padding: .75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .eve-modal.open, .eve-modal1.open{
     opacity: 1;
@@ -1199,8 +1202,8 @@ height: auto !important;
 }
 .boxcl-div{
     color: #5f6368;
-    padding-left: 8px;
-    width: 50px;
+    padding-left: 3px;
+    width: 45px;
     -webkit-box-flex: 0;
     box-flex: 0;
     -webkit-flex-grow: 0;
@@ -1253,9 +1256,9 @@ height: auto !important;
 }
 .left-icon{
     color: #5f6368;
-    padding-left: 8px;
+    padding-left: 3px;
     padding-right: 17px;
-    width: 50px;
+    width: 45px;
     max-height: 52px;
     display: flex;
     align-items: center;
@@ -1955,6 +1958,12 @@ a.ordr-a {
 .sort-drop .dropdown-item:active {
     background: none;
 }
+.act-drop{
+    min-width: 250px;
+}
+.act-drop .dropdown-item{
+    cursor: pointer;
+}
 .note-txt {
     color: #91a0b0!important;
     display: inline-block;
@@ -2173,4 +2182,19 @@ a.ordr-a {
 .form-check-input {
     border-radius: 4px;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 11' width='13' height='11' fill='none'%3e%3cpath d='M11.0426 1.02893C11.3258 0.695792 11.8254 0.655283 12.1585 0.938451C12.4917 1.22162 12.5322 1.72124 12.249 2.05437L5.51985 9.97104C5.23224 10.3094 4.72261 10.3451 4.3907 10.05L0.828197 6.88335C0.50141 6.59288 0.471975 6.09249 0.762452 5.7657C1.05293 5.43891 1.55332 5.40948 1.88011 5.69995L4.83765 8.32889L11.0426 1.02893Z' fill='%23FFFFFF'/%3e%3c/svg%3e");
+}
+.date-info {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .2px;
+    margin: 0 0 3px;
+    color: #77777780;
+    text-transform: uppercase;
+}
+.date-val{
+    font-size: 11px;
+    color: #3c4043;
+}
+.main-s p {
+    margin-bottom: 0;
 }

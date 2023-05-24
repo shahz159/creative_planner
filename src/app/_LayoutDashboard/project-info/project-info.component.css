@@ -373,3 +373,13 @@ display: block;
   transform: scale(1.1);
   fill: #2786fb;
 }
+.cmts-svg {
+  cursor: pointer;
+}
+.card-car{
+  color: #595d6e;
+}
+.card-car h5{
+  font-size: 14px;
+  line-height: 1;
+}
