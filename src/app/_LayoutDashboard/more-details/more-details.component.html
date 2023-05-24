@@ -14,7 +14,26 @@
             </div>
         </div>
     </div> -->
-    
+    <ng-container *ngIf="Status=='Project Hold' && reason!=''">
+        <div class="desc-msg hold-msg">
+            <div class="d-flex align-items-center px-3">            
+                <!-- <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> -->
+                <h6 class="mb-0">Reason for hold: {{reason}} </h6>
+            </div>
+            <!-- <button class="btn btn-info btn-sm py-1"
+                (click)="release_project()" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo">
+                Click here to adjust hold date</button> -->
+        </div>
+    </ng-container>
+    <ng-container *ngIf="Status=='New Project Rejected' || Status=='Project Complete Rejected'">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center px-3">            
+                <h6 class="mb-0">Rejected on basis of '{{rejectype}}'.</h6> &nbsp;
+                <h6 class="mb-0">Reason for rejection: {{reason}} </h6>
+            </div>
+            <!-- <button class="btn btn-info btn-sm py-1">Resume Project</button> -->
+        </div>
+    </ng-container>
     
     <div class="px-4 py-2">
         <div class="row">
@@ -47,7 +66,7 @@
                                     <label data-toggle="tooltip" title="Project Status!" class="kt-badge kt-badge--inline  cus-btn  px-3 py-1 kt-badge--pill hold-sec">
                                         Hold until {{hold_upto}}
                                     </label><i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip" title="click here to release project"
-                                                (click)="release_project()" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo"></i>
+                                                (click)="release_project()" *ngIf="Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo"></i>
                                 </ng-container>
                             <!-- 'bg-coral' :  Status== 'New Todo', Status=='Project Hold' ||  -->
                         </ng-container>
@@ -144,7 +163,7 @@
                         <!--Transfer-->
                         <div class="ml-2 pro-act">
                         <!--Transfer end   data-toggle="dropdown"-->
-                        <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                        <div class="dropdown" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                             <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after"
                                 aria-haspopup="true" aria-expanded="false" (click)="onTransferClick(Pid)"
                                 data-toggle="tooltip" title="click to transfer">
@@ -216,7 +235,7 @@
                         </button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
-                            && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                            && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                         class=" pro-act ml-2">
                         <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()"
                                 data-toggle="tooltip" title="submit project">
@@ -237,26 +256,7 @@
                     
                    
                 </div>
-                <ng-container *ngIf="Status=='Project Hold' && reason!=''">
-                    <div class="desc-msg hold-msg">
-                        <div class="d-flex align-items-center px-3">            
-                            <!-- <h6 class="mb-0">Rejected on basis of '{{rejectype}}'</h6> -->
-                            <h6 class="mb-0">Reason for hold: {{reason}} </h6>
-                        </div>
-                        <!-- <button class="btn btn-info btn-sm py-1"
-                            (click)="release_project()" *ngIf="Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo">
-                            Click here to adjust hold date</button> -->
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="Status=='New Project Rejected' || Status=='Project Complete Rejected'">
-                    <div class="desc-msg rejct-msg">
-                        <div class="d-flex align-items-center px-3">            
-                            <h6 class="mb-0">Rejected on basis of '{{rejectype}}'.</h6> &nbsp;
-                            <h6 class="mb-0">Reason for rejection: {{reason}} </h6>
-                        </div>
-                        <!-- <button class="btn btn-info btn-sm py-1">Resume Project</button> -->
-                    </div>
-                </ng-container>
+                
                 
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="align-items-center flex-grow-1">
@@ -264,7 +264,7 @@
                             title="Project Name!">{{ProjectName }}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
+                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit project name"></i>
                         </span>
                         <span class="kt-inbox__subject mb-2" style="display:none;" id="spanTextbox_{{Pid}}">
@@ -289,7 +289,7 @@
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}"
-                        *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
+                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="edit description"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
@@ -405,7 +405,7 @@
                                             </span> -->
                                             <!-- Deadline extend data-toggle="dropdown"-->
 
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" 
                                                         aria-haspopup="true" aria-expanded="false"
                                                         (click)="onEditDeadline(Pid)">
@@ -445,15 +445,15 @@
                                             <!-- Deadline extend end-->
 
                                             <!-- Project Hold  data-toggle="dropdown" (click)="onHoldClick(Pid)"-->
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                            <div class="dropdown" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
                                                 <span type="button" id="hold-icn" 
                                                     aria-haspopup="true" aria-expanded="false" (click)="onHoldClick(Pid)" 
                                                     class="dropdown-toggle no-after text-info" >
                                                     <i class="fas fa-pause ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="project hold"></i>
                                                 </span>
                                             </div>
-                                            <div class="dropdown" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status=='Project Hold')">
-                                                <span type="button" id="release-icn" *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo) && (Status=='Project Hold')"
+                                            <div class="dropdown" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status=='Project Hold')">
+                                                <span type="button" id="release-icn" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo) && (Status=='Project Hold')"
                                                         aria-haspopup="true" aria-expanded="false" (click)="release_project()"  
                                                             class="dropdown-toggle no-after text-info" >
                                                         <i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip" title="click here to release project"></i>
@@ -554,7 +554,7 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Client</h6>
                                     <h5 class="mt-1">{{Client}}
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
@@ -586,7 +586,7 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1 mb-0">Responsible
                                         <button class="btn btn-primary btn-sm py-0 px-1 ml-1 dropdown-toggle no-after"
-                                            *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) &&
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) &&
                                                 (Status!='Completed')"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="onTransferClick(Pid)" data-toggle="tooltip" title="click to transfer">
@@ -645,14 +645,14 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Category</h6>
-                                    <h5 class="mt-1" *ngIf="Category!=null">{{Category}}
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                    <h5 class="mt-1" *ngIf="Category">{{Category}}
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
                                     </h5>
-                                    <h5 class="mt-1" *ngIf="Category==null">No category
-                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                    <h5 class="mt-1" *ngIf="!Category">No category
+                                        <span class="dropdown-toggle no-after text-info"  *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip" title="category change"></i>
                                         </span>
@@ -782,7 +782,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-section shadow-sm mt-5 desc-show">
+    <div [ngClass]="reason!='0' ? 'tab-section shadow-sm mt-5 desc-show' : 'tab-section shadow-sm mt-5'">
         <div class="row d-none">
             <div class="col-md-12">
                 <hr class="mt-1" />
@@ -1194,13 +1194,13 @@
                                     <div class="text-right action-btn">
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo))" (click)="sweetAlert()"
+                                        <button *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo))" (click)="sweetAlert()"
                                             [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
 
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo))" (click)="sweetAlert()"
+                                        <button *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo))" (click)="sweetAlert()"
                                             [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
@@ -1333,7 +1333,7 @@
                                                               <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                                               <div class="w-100 d-flex">
                                                                 <h5 class="my-1 font-14" data-toggle="tooltip" title="Start Date!">{{item.StartDate |date:'dd-MM-yyyy'}}</h5>                                                                
-                                                                <div class="dropdown show" *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                <div class="dropdown show" *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                     <span type="button" id="start-icn" 
                                                                         (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
                                                                     <i data-toggle="tooltip" title="edit start date" class="fas fa-edit ml-1 mb-1 curser-pointer" ></i>
@@ -1385,10 +1385,9 @@
                                                                     </div>
                                                                     </div>
                                                                 </div>
-                                                                /                                                          
                                                                 <h5 class="my-1 font-14" data-toggle="tooltip" title="End Date!">{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</h5>
                                                                 
-                                                                <div class="dropdown show" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">  
+                                                                <div class="dropdown show" *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">  
                                                                     <span type="button" id="end-icn" aria-haspopup="true"
                                                                         (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code)" aria-expanded="true" class="dropdown-toggle no-after text-info">
                                                                     <i data-toggle="tooltip" title="edit end date" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -1474,7 +1473,7 @@
                                                               <div class="w-100 d-flex">
                                                                 <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Cost!">{{item.SubtaskAllocated}} Hrs</h5>
                                                                 
-                                                                <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                     <span type="button" id="alloc-icn"
                                                                         (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
                                                                     <i data-toggle="tooltip" title="edit duration" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -1561,7 +1560,7 @@
                                                                   <div class="w-100 d-flex">
                                                                     <h5 class="my-1 font-14" data-toggle="tooltip" title="Action hours!">{{item.SubtaskAllocated}} Hrs</h5>
                                                                     
-                                                                    <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                    <div class="dropdown show"  *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                         <span type="button" id="alloc-icn"
                                                                             (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle no-after text-info">
                                                                         <i data-toggle="tooltip" title="edit duration" class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -1634,22 +1633,30 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4" *ngIf="item.Sourcefile">
+                                                                <p class="mt-2 mb-1 text-muted fs-7">Attachment</p>
+                                                                <div class="d-flex align-items-center">
+                                                                  <i class="fas fa-file-pdf fs-2 text-muted mr-2"></i>
+                                                                  <div class="w-100 d-flex">
+                                                                    <a class="text-info curser-pointer"
+                                                                        title="Click To Open File"
+                                                                            (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
+                                                                    <b>{{item.Sourcefile}}</b></a>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4" *ngIf="item.Remarks">
+                                                                <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
+                                                                <div class="d-flex align-items-center">
+                                                                  <i class="fas fa-registered fs-2 text-muted mr-2"></i>
+                                                                  <div class="w-100">
+                                                                    <h5 class="my-1 font-14" data-toggle="tooltip" title="Action Remarks!">{{item.Remarks}}</h5>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-                                                    <p class="mb-1" *ngIf="item.Sourcefile">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
-                                                            <i class="fas fa-paperclip text-muted mr-1"></i>
-                                                            <a class="text-info curser-pointer"
-                                                                title="Click To Open File"
-                                                                (click)="LoadDocument(item.IsCloud,item.Project_Code, item.Team_Res,item.CompleteProofDoc)">
-                                                                <b>{{item.Sourcefile}}</b></a>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            *ngIf="item.Remarks" data-toggle="tooltip" title="Remarks!">
-                                                            <i class="fas fa-registered text-muted mr-1"></i>
-                                                            <b>{{item.Remarks}}</b>
-                                                        </span>
-                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2803,8 +2810,8 @@
     <div class="px-4 pt-2">
         <div class="">
             <div class="d-flex flex-column">
-                <h5 class="fs-3 mb-2">{{this._Subtaskname}}</h5>
-                <span class="text-muted fs-5">{{this.Sub_Desc}}</span>
+                <h5 class="fs-3 mb-2">{{_Subtaskname}}</h5>
+                <span class="text-muted fs-5">{{Sub_Desc}}</span>
             </div>
         </div>
         <div class="form-group mt-3">

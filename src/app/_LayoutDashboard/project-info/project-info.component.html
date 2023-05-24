@@ -127,7 +127,7 @@
                     <h5 class="fs-3 mb-2 d-inline-blck" id="pro_name_{{Pid}}">{{item.Project_Name }}</h5>
                     <!--edit project name-->
                     <span class="text-info mb-2" [hidden]="Editbutton" (click)="OnEditProject(Pid,_ProjectName)"
-                        id="EidtBtn_single{{Pid}}" *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
+                        id="EidtBtn_single{{Pid}}" *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                             title="edit project name"></i>
                     </span>
@@ -149,7 +149,7 @@
                 <p class="mb-2">
                     <span class="text-muted fs-5" id="Span_Desc_{{Pid}}">{{item.Project_Description}}</span>
                     <span class="text-info fs-5" [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Proj_Desc)"
-                        id="EidtBtn_single{{Pid}}" *ngIf="(Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
+                        id="EidtBtn_single{{Pid}}" *ngIf="(Current_user_ID=='2000' || Current_user_ID  == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                             title="edit description"></i>
                     </span>
@@ -681,7 +681,7 @@
                                         {{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
 
                                     <div class="dropdown"
-                                        *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed')">
+                                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible || Current_user_ID == item.Authority) && (item.Status!='Completed')">
                                         <span class="dropdown-toggle no-after text-info" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditDeadline(Pid)">
                                             <!-- onclick="document.getElementById('date_edt').style.display='block';document.getElementById('fade').style.display='block'"> -->
@@ -750,7 +750,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown"
-                                        *ngIf="(Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed')">
+                                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed')">
                                         <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="onHoldClick(Pid)">
@@ -1251,7 +1251,7 @@
                     <!--Transfer-->
                     <div class="ml-2 mt-3 ">
                         <div class="dropdown"
-                            *ngIf="(Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status!='Completed')">
+                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status!='Completed')">
                             <button class="btn btn-primary btn-sm py-1 px-2 dropdown-toggle no-after"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 (click)="onTransferClick(Pid)" data-toggle="tooltip" title="click to transfer">
