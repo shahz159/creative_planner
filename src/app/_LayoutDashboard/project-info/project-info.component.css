@@ -383,3 +383,12 @@ display: block;
   font-size: 14px;
   line-height: 1;
 }
+.detail-icn svg.dater{
+  width: 18px;
+  height: 18px;
+}
+.offcanvas-header {
+  min-height: 50px;
+  padding: 0 25px;
+  border-bottom: 1px solid #ebedf2;
+}

@@ -441,7 +441,7 @@ h3.popover-header {
 	text-decoration: none;
 	color: #333;
   position: absolute;
-  top: 10px;
+  top: 13px;
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
@@ -1428,6 +1428,8 @@ button[disabled] {
 }
 .detail-icn svg {
     margin-right: 5px;
+    height: 18px;
+    width: 18px;    
 }
 .h-16 {
     height: 16px;
@@ -1438,4 +1440,12 @@ button[disabled] {
 }
 .card-itm1 {
     color: #48465b;
+}
+.btn.btn-icon i {
+    transition: all .3s;
+    font-size: .8rem;
+    color: #74788d;
+}
+.btn-icon:hover i{
+    color: #fff;
 }
