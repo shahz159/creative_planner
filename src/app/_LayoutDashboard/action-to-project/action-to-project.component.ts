@@ -82,31 +82,7 @@ export class ActionToProjectComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO;
     this.ObjUserDetails = new UserDetailsDTO();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
-    this.BsService.bs_projectCode.subscribe(p => {
-      if (p == null) {
-        this.ProjectsDropdownBoolean = false;
-        this.GetProjectsByUserName();
-        this._MasterCode = null;
-      }
-      else {
-        this._MasterCode = p;
-        this.ProjectsDropdownBoolean = true;
-        this.selectedProjectCode = p;
-        this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
-          this.ProjectDeadLineDate = data["DeadLine"];
-          this.ProjectStartDate = data["StartDate"];
-          this.Owner_Empno = data['Owner_empno'];
-          this.Resp_empno = data['Resp_empno'];
-          const dateOne = new Date(this.disablePreviousDate);
-          const dateTwo = new Date(this.ProjectStartDate);
-          if(dateTwo > dateOne){
-            this.disablePreviousDate = this.ProjectStartDate;
-          }
-          console.log(dateOne,dateTwo,this.disablePreviousDate,this.ProjectStartDate,"dates")
-        })
-      }
-
-    });
+    
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
     this.BsService.bs_TaskName.subscribe(t => {
@@ -136,6 +112,8 @@ export class ActionToProjectComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
     const input = document.getElementById("hour-input");
+
+    
       //And disable the wheel default functionality:
       input.addEventListener("wheel", function(event) {
         event.preventDefault();
@@ -156,6 +134,33 @@ export class ActionToProjectComponent implements OnInit {
       Emp_No: this.CurrentUser_ID,
       Mode: 'AssignedTask'
     }
+
+    this.BsService.bs_projectCode.subscribe(p => {
+      if (p == null) {
+        this.ProjectsDropdownBoolean = false;
+        this.GetProjectsByUserName();
+        this._MasterCode = null;
+      }
+      else {
+        this._MasterCode = p;
+        this.ProjectsDropdownBoolean = true;
+        this.selectedProjectCode = p;
+        this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+          this.ProjectDeadLineDate = data["DeadLine"];
+          this.ProjectStartDate = data["StartDate"];
+          this.Owner_Empno = data['Owner_empno'];
+          this.Resp_empno = data['Resp_empno'];
+          const dateOne = new Date(this.disablePreviousDate);
+          const dateTwo = new Date(this.ProjectStartDate);
+          if(dateTwo > dateOne){
+            this.disablePreviousDate = this.ProjectStartDate;
+          }
+          console.log(dateOne,dateTwo,this.disablePreviousDate,this.ProjectStartDate,"dates")
+        })
+      }
+
+    });
+
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
@@ -181,6 +186,7 @@ export class ActionToProjectComponent implements OnInit {
             }
           }
         });
+        console.log(this.ownerArr,this.Resp_empno,this.Owner_Empno,"owners")
 
         //console.log(this.EmployeeList);
         this.dropdownSettings_EMP = {
@@ -195,6 +201,8 @@ export class ActionToProjectComponent implements OnInit {
       });
   }
 
+  
+
   onFilterChange(event) {
     this.filterText = event;
     this.GetProjectsByUserName();
@@ -203,11 +211,70 @@ export class ActionToProjectComponent implements OnInit {
   selectedProjectCode: any;
 
   ProjectOnSelect() {
+    this.ownerArr=[];
+
+    let obj: any = {
+      pagenumber: 1,
+      Emp_No: this.CurrentUser_ID,
+      Mode: 'AssignedTask'
+    }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
     this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
       this.ProjectDeadLineDate = data["DeadLine"];
-    })
+      this.ProjectStartDate = data["StartDate"];
+      this.Owner_Empno = data['Owner_empno'];
+      this.Resp_empno = data['Resp_empno'];
+      const dateOne = new Date(this.disablePreviousDate);
+      const dateTwo = new Date(this.ProjectStartDate);
+      if(dateTwo > dateOne){
+        this.disablePreviousDate = this.ProjectStartDate;
+      }
+    });
+
+
+    this.service._GetCompletedProjects(obj).subscribe(
+      (data) => {
+        this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
+        this._EmployeeListForDropdown.forEach(element => {
+          if(this.Current_user_ID!=this.Owner_Empno){
+            if(element.Emp_No==this.Current_user_ID){
+              this.CurrentUser_Name=element.DisplayName;
+              this.ownerArr.push(this.CurrentUser_Name);
+            }
+            if(element.Emp_No==this.Owner_Empno){
+              this.ownerName=element.DisplayName;
+              this.ownerArr.push(this.ownerName);
+            }
+            if(element.Emp_No==this.Resp_empno){
+              this.RespName=element.DisplayName;
+              this.ownerArr.push(this.RespName);
+            }
+          }
+          else if(this.Current_user_ID==this.Owner_Empno){
+            if(element.Emp_No==this.Owner_Empno){
+              this.ownerName=element.DisplayName;
+              this.ownerArr.push(this.ownerName);
+            }
+            if(element.Emp_No==this.Resp_empno){
+              this.RespName=element.DisplayName;
+              this.ownerArr.push(this.RespName);
+            }
+          }
+        });
+        console.log(this.ownerArr,this.Resp_empno,this.Owner_Empno,"owners")
+
+        //console.log(this.EmployeeList);
+        this.dropdownSettings_EMP = {
+          searchAutofocus: true,
+          singleSelection: true,
+          idField: 'Emp_No',
+          textField: 'DisplayName',
+          itemsShowLimit: 2,
+          closeDropDownOnSelection: true,
+          allowSearchFilter: true,
+        };
+      });
   }
 
   ProjectOnDeselect(obj) {
@@ -320,6 +387,9 @@ export class ActionToProjectComponent implements OnInit {
       else if(this.owner==this.ownerName){
         this.ownerNo=this.Owner_Empno;
       }
+      else if(this.owner==this.RespName){
+        this.ownerNo=this.Resp_empno ;
+      }
     }
 
     if (this._MasterCode == null) {
@@ -393,7 +463,6 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("EmployeeName", localStorage.getItem('UserfullName'));
       fd.append("AssignId", this.task_id.toString());
       fd.append("Owner", this.ownerNo);
-
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
       }

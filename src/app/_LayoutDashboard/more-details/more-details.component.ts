@@ -261,6 +261,7 @@ export class MoreDetailsComponent implements OnInit {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalservice.GetHoldDate(this.approvalObj).subscribe((data)=>{
           this.reason = data["Reason"];
+          alert(this.reason)
       });
   }
 
@@ -3047,8 +3048,18 @@ GetmeetingDetails(){
         window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
       }
     }
+
     else if (cloud == true) {
-      window.open(proofDoc);
+      let FileUrl: string;
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+      var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+      if(this.Authority_EmpNo==this.Responsible_EmpNo){
+            window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc+".application/pdf");
+      }
+      else if(this.Authority_EmpNo!=this.Responsible_EmpNo){
+        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc+".application/pdf");
+      }
     }
   }
 
@@ -3205,6 +3216,7 @@ GetmeetingDetails(){
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("Remarks", this._remarks);
       fd.append('file', this.selectedFile);
+      fd.append("Project_Name", this._Subtaskname);
       // this._MasterCode = this.URL_ProjectCode;
       // this.ObjSubTaskDTO.MasterCode = this._MasterCode;
       // this.ObjSubTaskDTO.SubTask_ProjectCode = this.Sub_ProjectCode;
@@ -3994,6 +4006,7 @@ GetmeetingDetails(){
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Project_Name", this.ProjectName);
     this.service._fileuploadService(fd).
       subscribe(event => {
         // console.log(event, "PC");
@@ -4031,6 +4044,7 @@ GetmeetingDetails(){
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Project_Name", this.ProjectName);
     // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
     this.service._UpdateStandardTaskSubmission(fd).
       subscribe(event => {
@@ -4060,6 +4074,7 @@ GetmeetingDetails(){
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Project_Name", this.ProjectName);
     // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
     this.service._UpdateStandardTaskSubmission(fd).
       subscribe(event => {
@@ -4119,6 +4134,7 @@ GetmeetingDetails(){
     // this.getDropdownsDataFromDB();
   }
   coresecondary: boolean = true;
+
   darcreate() {
     this.dateF = new FormControl(new Date());
     

@@ -685,10 +685,10 @@
     margin-bottom: 0;
   }
   .tab-section {
-    min-height: calc(100vh - 365px);
+    min-height: calc(100vh - 348px);
   }
   .tab-section.desc-show {
-    min-height: calc(100vh - 405px);
+    min-height: calc(100vh - 392px);
   }
   .ribbon-box {
     z-index: 998;
@@ -1378,4 +1378,10 @@ span.guest-icns, .svg-icn {
 }
 .action-content h6 {
   margin-bottom: 0;
+}
+.desc-msg h6 {
+  font-size: 11px;
+}
+.desc-msg{
+  padding: 6px 10px;
 }

@@ -604,6 +604,7 @@ export class ToDoProjectsComponent implements OnInit {
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
+    fd.append("Project_Name", this._ProjectName);
     this.service._fileuploadService(fd).
       subscribe(event => {
         //console.log(event);
@@ -641,6 +642,7 @@ export class ToDoProjectsComponent implements OnInit {
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("Remarks", this._remarks);
       fd.append('file', this.selectedFile);
+      fd.append("Project_Name", this._Subtaskname);
       // this.ObjSubTaskDTO.Formdata = fd;
       // this.ObjSubTaskDTO.MasterCode = this._MasterCode;
       // this.ObjSubTaskDTO.SubTask_ProjectCode = this.Sub_ProjectCode;
