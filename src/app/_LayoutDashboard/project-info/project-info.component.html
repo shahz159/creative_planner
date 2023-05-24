@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <div class="card-body" *ngFor="let item of ProjectInfo_List">
+    <div class="card-body card-car" *ngFor="let item of ProjectInfo_List">
 
 
         <div class="d-flex  align-items-start justify-content-between mt-0">
@@ -655,8 +655,12 @@
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Project Duration</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i>
-
+                            <!-- <i class="fas fa-calendar-alt fs-3 text-muted mr-2"></i> -->
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"></path>
+                                  </svg>                             
+                            </span>
 
                             <ng-container
                                 *ngIf="(item.Exec_BlockName != 'Standard Tasks' && item.Exec_BlockName!='Routine Tasks'); then othertask;">
@@ -665,14 +669,14 @@
                                 *ngIf="(item.Exec_BlockName == 'Standard Tasks' || item.Exec_BlockName=='Routine Tasks'); then standardtask;">
                             </ng-container>
                             <ng-template #standardtask>
-                                <h5 class="mt-1">{{item.DPG|date:'dd-MM-yyyy'}} / {{item.SubmissionType1}}
+                                <h5 class="mb-0">{{item.DPG|date:'dd-MM-yyyy'}} / {{item.SubmissionType1}}
                                 </h5>
                             </ng-template>
                             <ng-template #othertask>
-                                <div class="mt-1 d-flex align-items-start">
-                                    <h5>{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5 *ngIf="deadlineCount==0">
+                                <div class="mb-0 d-flex align-items-start">
+                                    <h5 class="mb-0">{{item.DPG|date:'dd-MM-yyyy'}}</h5> / <h5 class="mb-0" *ngIf="deadlineCount==0">
                                         {{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
-                                    <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
+                                    <h5 class="mb-0" style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
                                         title="Extended Deadline for {{deadlineCount}} times" *ngIf="deadlineCount>0">
                                         {{item.DeadLine|date:'dd-MM-yyyy'}}</h5>
 
@@ -891,9 +895,14 @@
                         class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
                         <div class="d-flex align-items-center">
-                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                </svg>                           
+                            </span>
                             <div class="w-100">
-                                <h5 class="my-1 font-14">{{Difference_In_Days}} days</h5>
+                                <h5 class="mb-0 font-14">{{Difference_In_Days}} days</h5>
                                 <!-- <p>{{item.Duration/8| number: '1.0-0'}} days <p>-->
                             </div>
                         </div>
@@ -909,9 +918,14 @@
                         <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
                         <!-- <h5>{{item.StandardDuration}}</h5> -->
                         <div class="d-flex align-items-center">
-                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                </svg>                           
+                            </span>
                             <div class="w-100">
-                                <h5 class="my-1 font-14">Continuous</h5>
+                                <h5 class="mb-0 font-14">Continuous</h5>
                             </div>
                         </div>
                     </div>
@@ -920,9 +934,14 @@
                         class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                         <div class="d-flex align-items-center">
-                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                </svg>                           
+                            </span>
                             <div class="w-100">
-                                <h5 class="my-1 font-14">{{item.Duration}} Hrs </h5>
+                                <h5 class="mb-0 font-14">{{item.Duration}} Hrs </h5>
                             </div>
                         </div>
                     </div>
@@ -931,10 +950,15 @@
                         class="col-md-4 pricevalues text-left py-0">
                         <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                         <div class="d-flex align-items-center">
-                            <i class="fa fa-clock fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                </svg>                           
+                            </span>
                             <div class="w-100">
                                 <!-- <h5>{{item.StandardDuration}}</h5> -->
-                                <h5 class="my-1 font-14">{{item.StandardDuration}} </h5>
+                                <h5 class="mb-0 font-14">{{item.StandardDuration}} </h5>
                             </div>
                         </div>
                     </div>
@@ -946,7 +970,11 @@
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-wallet  fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                    <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                                </svg>                             
+                            </span>
                             <div class="w-100">
                                 <h5 class="my-1 font-14">{{item.Project_Cost |currency:'SAR '}}</h5>
                             </div>
@@ -955,7 +983,11 @@
                     <div *ngIf="_MainProjectStatus=='Delay';else other" class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Status</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                </svg>                          
+                            </span>
                             <div class="w-100">
                                 <h5 class="my-1 font-14 text-danger" *ngIf="item.Delaydays>0" data-toggle="tooltip"
                                     title="{{item.Delaydays}} Days Delay!">{{_MainProjectStatus}} {{item.Delaydays}}
@@ -969,7 +1001,11 @@
                         <div class="col-md-4">
                             <p class="mt-2 mb-1 text-muted fs-7">Status</p>
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                                <span class="detail-icn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>                          
+                                </span>
                                 <div class="w-100">
                                     <div *ngIf="item.Status=='Under Approval'">
                                         <h5 class="my-1 font-14 text-info">{{item.Status}}</h5>
@@ -1077,7 +1113,11 @@
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Client</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-briefcase  fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
+                                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                                  </svg>                         
+                            </span>
                             <div class="w-100">
                                 <h5 class="my-1 font-14">{{item.Client_Name}}</h5>
                             </div>
@@ -1090,7 +1130,12 @@
                     <div class="col-md-4">
                         <p class="mt-2 mb-1 text-muted fs-7">Category</p>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-bars  fs-3 text-muted mr-2"></i>
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-bookmarks" viewBox="0 0 16 16">
+                                  <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
+                                  <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
+                                </svg>                       
+                            </span>
                             <div class="w-100" *ngIf="item.ReportType">
                                 <h5 class="my-1 font-14">{{item.ReportType}} </h5>
                             </div>
@@ -1723,26 +1768,19 @@
                         </div>
                     </div>
                     <div class="row">
+
                         <div class="col-md-4">
-                            <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                            <p class="mt-2 mb-1 text-muted fs-7">Action Duration </p>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                 <div class="w-100">
-                                    <h5 class="my-1 font-14">{{task.StartDate|date:'dd-MM-yyyy'}}</h5>
+                                    <h5 class="my-1 font-14">
+                                        {{task.StartDate|date:'dd-MM-yyyy'}}/{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}
+                                    </h5>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="col-md-4">
-                            <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                <div class="w-100">
-                                    <h5 class="my-1 font-14">{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}</h5>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-md-4">
                             <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
                             <div class="d-flex align-items-center">
@@ -1752,8 +1790,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
                             <div class="d-flex align-items-center">
@@ -1764,6 +1800,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
 
                         <div class="col-md-4">
                             <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
@@ -1853,24 +1891,19 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
-                                    <p class="mt-2 mb-1 text-muted fs-7">Start Date</p>
+                                    <p class="mt-2 mb-1 text-muted fs-7"> Duration </p>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                         <div class="w-100">
-                                            <h5 class="my-1 font-14">{{item.Start_Date | date:'dd-MM-yyyy'}}</h5>
+                                            <h5 class="my-1 font-14">
+                                                {{item.Start_Date | date:'dd-MM-yyyy'}}/{{item.End_Date | date:'dd-MM-yyyy'}}
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                        <div class="w-100">
-                                            <h5 class="my-1 font-14">{{item.End_Date | date:'dd-MM-yyyy'}}</h5>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-md-4" *ngIf="item.FileName">
                                     <p class="mt-2 mb-1 text-muted fs-7" *ngIf="item.FileName">Attachments</p>
                                     <div class="d-flex align-items-center">
