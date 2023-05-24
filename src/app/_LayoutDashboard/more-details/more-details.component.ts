@@ -261,7 +261,6 @@ export class MoreDetailsComponent implements OnInit {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalservice.GetHoldDate(this.approvalObj).subscribe((data)=>{
           this.reason = data["Reason"];
-          alert(this.reason)
       });
   }
 
