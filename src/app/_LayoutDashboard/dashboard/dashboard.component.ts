@@ -2282,12 +2282,12 @@ export class DashboardComponent implements OnInit {
     if (event.target.checked) {
       document.getElementById("Descrip_Name12").style.display = "block";
       this._onlinelink = event.target.checked;
-      alert(this._onlinelink)
+      // alert(this._onlinelink)
     }
     else {
       document.getElementById("Descrip_Name12").style.display = "none";
       this._onlinelink = false;
-      alert(this._onlinelink)
+      // alert(this._onlinelink)
     }
 
   }
