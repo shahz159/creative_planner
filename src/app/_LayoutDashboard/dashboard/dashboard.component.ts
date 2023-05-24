@@ -3371,7 +3371,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-
+  creation_date:string;
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3383,7 +3383,7 @@ export class DashboardComponent implements OnInit {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
-        // console.log(this.EventScheduledjson, "Testing");
+        console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3395,8 +3395,10 @@ export class DashboardComponent implements OnInit {
         this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
+        this.creation_date=this.EventScheduledjson[0].Created_date;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {

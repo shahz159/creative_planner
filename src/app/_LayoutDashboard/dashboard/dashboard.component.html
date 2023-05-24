@@ -974,8 +974,8 @@
             <div class="head-c bg-white">
                 <div class="">
                     <div class="" >
-                        <span class="date-info"> Created </span>
-                        <div class="date-val"><span> May 13 2022, 11:49 AM</span></div>
+                        <span class="date-info"> Created On</span>
+                        <div class="date-val"><span> {{creation_date|date:'EEE, MMMM d'}}</span></div>
                     </div>
                 </div>
                 <div class="icons-flex float-right">
@@ -1159,7 +1159,7 @@
                         </div>
                     </div>
 
-                    <div id="" class="eve-area">
+                    <div id=""  class="eve-area" *ngIf="item.Onlinelink== true">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
@@ -1168,13 +1168,15 @@
                             </span>
                         </div>
                         <div class="rgt-des">
-                            <div class="">
-                                <div class="main-s">Online</div>
+                            <div class="" >
+                                <div class="main-s" >Online</div>
+                                
                             </div>
                         </div>
                     </div>
+                  
 
-                    <div id="" class="eve-area">
+                    <div id="" class="eve-area" *ngIf="item.Link_Details!=''">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
@@ -1182,13 +1184,16 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="rgt-des">
+                        <!-- <div class="rgt-des">
                             <div class="">
                                 <div class="main-s">
-                                    <a href="" target=”_blank”>www.google.com</a>
+                                    <a href="" target=”_blank”>{{item.Link_Details}}</a>
                                 </div>
-                                <!-- <div class="main-s">Meeting ID: 822 6715 1716</div>
-                                <div class="main-s">Passcode: 603071</div> -->
+                            </div>
+                        </div> -->
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s" [innerHTML]="item.Link_Details"></div>
                             </div>
                         </div>
                     </div>
@@ -2381,7 +2386,8 @@
                 </div>
                 <div class="form-group"  id="Descrip_Name12"   style="display:none">
                     <label class="cus-lbl">Link Description </label>
-                    <textarea class="form-control" [(ngModel)]="Link_Details" height="40px"></textarea>
+                    <!-- <textarea class="form-control" [(ngModel)]="Link_Details" height="40px"></textarea> -->
+                    <angular-editor [(ngModel)]="Link_Details" [config]="config"></angular-editor>
                 </div>
             </div>
                 <div class="form-group section-1" id="Location_Name" style="display:none">
