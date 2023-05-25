@@ -101,8 +101,8 @@
     background: hsl(0, 0%, 97%);
     box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1) inset;
     height: 4px;
-    margin-bottom: 12px;
-    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     position: relative;
     text-align: left;
   }
@@ -240,6 +240,7 @@
   font-size: 12px;
   font-weight: 500;
   color: #494f54;
+  color: #595d6e;
 
 }
 .prv-cmts{
@@ -382,10 +383,11 @@ display: block;
 .card-car h5{
   font-size: 14px;
   line-height: 1;
+  margin-bottom: 0;
 }
 .detail-icn svg.dater{
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 .offcanvas-header {
   min-height: 50px;
