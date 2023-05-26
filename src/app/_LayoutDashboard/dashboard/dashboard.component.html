@@ -568,6 +568,62 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="fc pend-fc pend-bg">
+                            <button type="button" (click)="penshow()" class="pend-btn">Pending List</button>
+                        </div>
+
+                        <div id="pendlist" class="pend-section">
+                            <div class="px-4">
+                                <div class="d-flex-between">
+                                    <h4 class="text-dark">Pending List</h4>   
+                                    <div class="pend-bg">
+                                        <button type="button" (click)="penhide()" class="pend-btn">View Calendar</button>
+                                    </div>                                 
+                                </div>
+                            </div>
+                            <div class="result-card kt-portlet__body_scroll">
+                                <div class="list-1">
+                                    <div class="item-1">
+                                        <div class="date-1">
+                                            <!-- <h4>12</h4> -->
+                                            <div class="">
+                                                8 Thu, May 2025 
+                                            </div>
+                                        </div>
+                                        <div class="time-event flex-1">
+                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
+                                                tabindex="0">
+                                                <div class="fc-daygrid-event-dot"></div>
+                                                <div class="fc-event-time">4:30PM-5:00PM</div>
+                                                
+                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
+                                            </a>
+                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                        </div>
+                                    </div>
+                                    <div class="item-1">
+                                        <div class="date-1">
+                                            <!-- <h4>12</h4> -->
+                                            <div class="">
+                                                8 Thu, May 2025 
+                                            </div>
+                                        </div>
+                                        <div class="time-event flex-1">
+                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
+                                                tabindex="0">
+                                                <div class="fc-daygrid-event-dot"></div>
+                                                <div class="fc-event-time">4:30PM-5:00PM</div>
+                                                
+                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
+                                            </a>
+                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
                         <ng-container *ngIf="showsearch==false">
