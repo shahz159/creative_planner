@@ -1390,3 +1390,11 @@ span.guest-icns, .svg-icn {
   line-height: 1;
   margin-bottom: 0;
 }
+.btn22 svg {
+  fill: #fff;
+  width: 16px;
+  height: 16px;
+}
+.btn22 span {
+  line-height: 1;
+}
