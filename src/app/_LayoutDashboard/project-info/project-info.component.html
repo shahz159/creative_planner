@@ -318,7 +318,7 @@
 
                                         <div class="action-content d-flex align-items-center gap-1">
                                             <div class="left-w">
-                                                <h6 class="txtm-cus pt-1">Existing cost</h6>
+                                                <h6 class="txtm-cus pt-1">Cost</h6>
                                                 <h6 class="mt-1"> {{Project_Cost |currency:'SAR '}} </h6>
                                                 <!-- <h6 class="mt-1"> SAR 100.00 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i> SAR 200.00 </h6> -->
                                             </div>
@@ -423,7 +423,7 @@
                                 </div>
 
                                 <a class="btn--1 btn-info--1 btn-sm--1 text-info py-2" data-toggle="collapse"
-                                    href="#prevco" role="button" aria-expanded="false" aria-controls="prevco">
+                                    href="#prevco" role="button" aria-expanded="false" aria-controls="prevco" *ngIf="previouscoments==true">
                                     View previous comments
                                 </a>
                                 <div class="px-cb pt-cb bg-gry collapse kt-portlet__body_scroll prv-cmts" id="prevco">

@@ -1423,3 +1423,19 @@ button[disabled] {
 .rejct-msg {
     background: #ffc63c;
 }
+.detail-icn{
+    line-height: 1;
+}
+.detail-icn svg {
+    margin-right: 5px;
+}
+.h-16 {
+    height: 16px;
+}
+
+.w-16 {
+    width: 16px;
+}
+.card-itm1 {
+    color: #48465b;
+}
