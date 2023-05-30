@@ -4408,4 +4408,10 @@ export class DashboardComponent implements OnInit {
     //document.getElementById("showlist").classList.remove("show");
     //document.getElementById("showlist").style.display = "none";
   }
+  penshow() {
+    document.getElementById("pendlist").classList.add("show");
+  }
+  penhide() {
+    document.getElementById("pendlist").classList.remove("show");
+  }
 }

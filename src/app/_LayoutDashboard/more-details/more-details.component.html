@@ -171,13 +171,13 @@
                             <!--Transfer end   data-toggle="dropdown"-->
                             <div class="dropdown"
                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
-                                <button class="btn btn22 btn-sm py-2 dropdown-toggle no-after" aria-haspopup="true"
+                                <button class="btn22 dropdown-toggle no-after" aria-haspopup="true"
                                     aria-expanded="false" (click)="onTransferClick(Pid)" data-toggle="tooltip"
                                     title="click to transfer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path
-                                            d="M19.1643 12.0001L12.9572 5.79297L11.543 7.20718L16.3359 12.0001L11.543 16.793L12.9572 18.2072L19.1643 12.0001ZM13.5144 12.0001L7.30728 5.79297L5.89307 7.20718L10.686 12.0001L5.89307 16.793L7.30728 18.2072L13.5144 12.0001Z"
-                                            fill="rgba(255,255,255,1)"></path>
+                                            d="M19.1643 12.0001L12.9572 5.79297L11.543 7.20718L16.3359 12.0001L11.543 16.793L12.9572 18.2072L19.1643 12.0001ZM13.5144 12.0001L7.30728 5.79297L5.89307 7.20718L10.686 12.0001L5.89307 16.793L7.30728 18.2072L13.5144 12.0001Z">
+                                        </path>
                                     </svg>
                                     <span class="ml-1">Project transfer</span>
                                 </button>
@@ -251,7 +251,11 @@
                     </div>
                     <div class=" pro-act ml-2" *ngIf="(Current_user_ID == approvalEmpId) && (pro_act==true)">
                         <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status!='Completed')">
-                            <i class="fas fa-check-circle mr-1" data-toggle="tooltip" title="action required"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                <path
+                                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11.0026 16L6.75999 11.7574L8.17421 10.3431L11.0026 13.1716L16.6595 7.51472L18.0737 8.92893L11.0026 16Z">
+                                </path>
+                            </svg>
                             Project actions
                         </button>
                     </div>
@@ -260,10 +264,10 @@
                         class=" pro-act ml-2">
                         <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()" data-toggle="tooltip"
                             title="submit project">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
-                                style="fill: #fff;" stroke="1.5">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                                 <path
-                                    d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11.0026 16L6.75999 11.7574L8.17421 10.3431L11.0026 13.1716L16.6595 7.51472L18.0737 8.92893L11.0026 16Z">
                                 </path>
                             </svg>
                             Project submission
@@ -272,7 +276,12 @@
                     <div *ngIf="(ProjectBlockName == 'Standard Tasks' && Status=='InProcess')" class=" pro-act ml-2">
                         <button class="btn  btn22" (click)="OnStandardTaskSubmit()">
                             <!-- btn-pill btn-pill  mr-2-->
-                            <i class="fas fa-check"></i>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                <path
+                                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11.0026 16L6.75999 11.7574L8.17421 10.3431L11.0026 13.1716L16.6595 7.51472L18.0737 8.92893L11.0026 16Z">
+                                </path>
+                            </svg>
                             Task submission
                         </button>
                     </div>
@@ -1334,35 +1343,57 @@
                                                     <div class="card-body pt-0">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Owner</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
                                                                         </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Responsible</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Responsible</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Status</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14" fill="currentColor"
+                                                                            class="bi bi-star" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
+                                                                        <h6 class="txtm-cus">Status</h6>
                                                                         <div>
-                                                                            <h5 data-toggle="tooltip"
-                                                                                class="my-1 font-14 "
+                                                                            <h5 data-toggle="tooltip" class=" "
                                                                                 *ngIf="item.SubProject_Status!='Delay'"
                                                                                 [ngClass]="{
                                                                         'text-success':item.SubProject_Status=='Completed',
@@ -1381,7 +1412,7 @@
                                                                                 {{item.SubProject_Status}} </h5>
 
                                                                             <h5 data-toggle="tooltip"
-                                                                                class="my-1 font-14 text-danger"
+                                                                                class=" text-danger"
                                                                                 data-toggle="tooltip"
                                                                                 title="Action Status!"
                                                                                 *ngIf="item.SubProject_Status=='Delay'">
@@ -1395,172 +1426,192 @@
                                                         <!-- data-toggle="dropdown"  -->
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Action Duration</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
-                                                                            title="Start Date!">{{item.StartDate
-                                                                            |date:'dd-MM-yyyy'}}</h5>
-                                                                        <div class="dropdown show"
-                                                                            *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                            <span type="button" id="start-icn"
-                                                                                (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code)"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="true"
-                                                                                class="dropdown-toggle no-after text-info">
-                                                                                <i data-toggle="tooltip"
-                                                                                    title="edit start date"
-                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                            </span>
-                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-start z-1k"
-                                                                                id="StartDateArea_{{item.id}}">
-                                                                                <ul class="kt-nav pb-0"
-                                                                                    (click)="$event.stopPropagation();">
-                                                                                    <li class="kt-nav__head py-0">
-                                                                                        <div>New Start Date<br>Action:
-                                                                                            <b>{{item.Project_Name
-                                                                                                }}</b></div>
-                                                                                    </li>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                    <div class="height-scroll h-scr">
-                                                                                        <div class="px-4 py-3">
-                                                                                            <div
-                                                                                                class="form-group input-group">
-                                                                                                <label>Set new Start
-                                                                                                    Date <span
-                                                                                                        class="text-danger">*</span></label>
-                                                                                                <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                    <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                    <div class="input-group-addon input-group-append">
-                                                                                        <i class="fa fa-calendar input-group-text"></i>
-                                                                                    </div>
-                                                                                </div> -->
-                                                                                                <!-- <div class="d-flex input-group">
-                                                                                    <input matInput [matDatepicker]="picker6" id="StartDatetext_{{item.id}}"
-                                                                                        #actionend="ngModel"
-                                                                                        (click)="picker6.open();"
-                                                                                        (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
-                                                                                        [min]="minDate" [max]="maxhold" placeholder="Select Date"
-                                                                                        [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                                        name="date">
-                                                                                    <div class="input-group-append">
-                                                                                        <mat-datepicker-toggle matSuffix [for]="picker6" class="btn-secondary">
-                                                                                        </mat-datepicker-toggle>
-                                                                                        <mat-datepicker class="form-group" #picker6></mat-datepicker>
-                                                                                    </div>
-                                                                                </div> -->
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="form-group mb-1">
-                                                                                                <label>Remarks <span
-                                                                                                        class="text-danger">*</span>
-                                                                                                </label>
-                                                                                                <textarea
-                                                                                                    [(ngModel)]="extend_remarks"
-                                                                                                    placeholder=""
-                                                                                                    rows="2" cols="20"
-                                                                                                    class="form-control"
-                                                                                                    style="height: 70px;"></textarea>
-                                                                                            </div>
-                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-calendar4-week"
+                                                                            viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                                                            <path
+                                                                                d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Action Duration</h6>
+                                                                        <div class="mb-0 d-flex align-items-center">
+                                                                            <h5 class="" data-toggle="tooltip"
+                                                                                title="Start Date!">{{item.StartDate
+                                                                                |date:'dd-MM-yyyy'}}</h5>
+                                                                            <div class="dropdown show"
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                <span type="button" id="start-icn"
+                                                                                    (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code)"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="true"
+                                                                                    class="dropdown-toggle no-after text-info">
+                                                                                    <i data-toggle="tooltip"
+                                                                                        title="edit start date"
+                                                                                        class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                                </span>
+                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-start z-1k"
+                                                                                    id="StartDateArea_{{item.id}}">
+                                                                                    <ul class="kt-nav pb-0"
+                                                                                        (click)="$event.stopPropagation();">
+                                                                                        <li class="kt-nav__head py-0">
+                                                                                            <div>New Start
+                                                                                                Date<br>Action:
+                                                                                                <b>{{item.Project_Name
+                                                                                                    }}</b></div>
+                                                                                        </li>
+                                                                                        <li class="kt-nav__separator">
+                                                                                        </li>
+                                                                                        <div
+                                                                                            class="height-scroll h-scr">
+                                                                                            <div class="px-4 py-3">
+                                                                                                <div
+                                                                                                    class="form-group input-group">
+                                                                                                    <label>Set new Start
+                                                                                                        Date <span
+                                                                                                            class="text-danger">*</span></label>
+                                                                                                    <!-- <div class="input-group date" data-provide="datepicker">
+                                                                                        <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                                        <div class="input-group-addon input-group-append">
+                                                                                            <i class="fa fa-calendar input-group-text"></i>
                                                                                         </div>
+                                                                                    </div> -->
+                                                                                                    <!-- <div class="d-flex input-group">
+                                                                                        <input matInput [matDatepicker]="picker6" id="StartDatetext_{{item.id}}"
+                                                                                            #actionend="ngModel"
+                                                                                            (click)="picker6.open();"
+                                                                                            (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
+                                                                                            [min]="minDate" [max]="maxhold" placeholder="Select Date"
+                                                                                            [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                                            name="date">
+                                                                                        <div class="input-group-append">
+                                                                                            <mat-datepicker-toggle matSuffix [for]="picker6" class="btn-secondary">
+                                                                                            </mat-datepicker-toggle>
+                                                                                            <mat-datepicker class="form-group" #picker6></mat-datepicker>
+                                                                                        </div>
+                                                                                    </div> -->
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="form-group mb-1">
+                                                                                                    <label>Remarks <span
+                                                                                                            class="text-danger">*</span>
+                                                                                                    </label>
+                                                                                                    <textarea
+                                                                                                        [(ngModel)]="extend_remarks"
+                                                                                                        placeholder=""
+                                                                                                        rows="2"
+                                                                                                        cols="20"
+                                                                                                        class="form-control"
+                                                                                                        style="height: 70px;"></textarea>
+                                                                                                </div>
+                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <li class="kt-nav__separator">
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    <div class="px-4 pb-3">
+                                                                                        <button
+                                                                                            class="btn btn-info btn-sm mr-2 text-white"
+                                                                                            [disabled]="!extend_remarks || !_ProjDeadline"
+                                                                                            (click)="onAction_ExtendDPG(item.id,item.Project_Code)">
+                                                                                            Submit </button>
+                                                                                        <button
+                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
+                                                                                            (click)="closeAction(item.id)">Close</button>
                                                                                     </div>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                </ul>
-                                                                                <div class="px-4 pb-3">
-                                                                                    <button
-                                                                                        class="btn btn-info btn-sm mr-2 text-white"
-                                                                                        [disabled]="!extend_remarks || !_ProjDeadline"
-                                                                                        (click)="onAction_ExtendDPG(item.id,item.Project_Code)">
-                                                                                        Submit </button>
-                                                                                    <button
-                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                        (click)="closeAction(item.id)">Close</button>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        /
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
-                                                                            title="End Date!">{{item.SubProject_DeadLine
-                                                                            |date:'dd-MM-yyyy'}}</h5>
+                                                                            <h5 class="" data-toggle="tooltip"
+                                                                                title="End Date!">
+                                                                                {{item.SubProject_DeadLine
+                                                                                |date:'dd-MM-yyyy'}}</h5>
 
-                                                                        <div class="dropdown show"
-                                                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                            <span type="button" id="end-icn"
-                                                                                aria-haspopup="true"
-                                                                                (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code)"
-                                                                                aria-expanded="true"
-                                                                                class="dropdown-toggle no-after text-info">
-                                                                                <i data-toggle="tooltip"
-                                                                                    title="edit end date"
-                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                            </span>
-                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-end z-1k"
-                                                                                id="EndDateArea_{{item.id}}">
-                                                                                <ul class="kt-nav pb-0">
-                                                                                    <li class="kt-nav__head py-0">
-                                                                                        <div>New End Date<br>Action:
-                                                                                            <b>{{item.Project_Name}}</b>
-                                                                                        </div>
-                                                                                    </li>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                    <div class="height-scroll h-scr">
-                                                                                        <div class="px-4 py-3">
-                                                                                            <div
-                                                                                                class="form-group input-group">
-                                                                                                <label>Set new End Date
-                                                                                                    <span
-                                                                                                        class="text-danger">*</span></label>
-                                                                                                <!-- <div class="d-flex input-group">
-                                                                                    <input matInput [matDatepicker]="picker5" id="EndDatetext_{{item.id}}"
-                                                                                        #actionend="ngModel"
-                                                                                        (click)="picker5.open();"
-                                                                                        (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
-                                                                                        [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                                                                        [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                                        name="date">
-                                                                                    <div class="input-group-append">
-                                                                                        <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
-                                                                                        </mat-datepicker-toggle>
-                                                                                        <mat-datepicker class="form-group" #picker5></mat-datepicker>
-                                                                                    </div>
-                                                                                </div> -->
-                                                                                                <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                    <input class="form-control" id="wodate1" name="date" 
-                                                                                    [min]="minhold" [max]="maxhold" placeholder="MM/DD/YYYY" value="{{current_Date}}" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                    <div class="input-group-addon input-group-append">
-                                                                                        <i class="fa fa-calendar input-group-text"></i>
-                                                                                    </div>
-                                                                                </div> -->
+                                                                            <div class="dropdown show"
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                <span type="button" id="end-icn"
+                                                                                    aria-haspopup="true"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code)"
+                                                                                    aria-expanded="true"
+                                                                                    class="dropdown-toggle no-after text-info">
+                                                                                    <i data-toggle="tooltip"
+                                                                                        title="edit end date"
+                                                                                        class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                                </span>
+                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-end z-1k"
+                                                                                    id="EndDateArea_{{item.id}}">
+                                                                                    <ul class="kt-nav pb-0">
+                                                                                        <li class="kt-nav__head py-0">
+                                                                                            <div>New End Date<br>Action:
+                                                                                                <b>{{item.Project_Name}}</b>
                                                                                             </div>
-                                                                                            <div
-                                                                                                class="form-group mb-1">
-                                                                                                <label>Remarks <span
-                                                                                                        class="text-danger">*</span>
-                                                                                                </label>
-                                                                                                <textarea
-                                                                                                    [(ngModel)]="extend_remarks"
-                                                                                                    placeholder=""
-                                                                                                    rows="2" cols="20"
-                                                                                                    class="form-control"
-                                                                                                    style="height: 70px;"></textarea>
-                                                                                            </div>
-                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                        </li>
+                                                                                        <li class="kt-nav__separator">
+                                                                                        </li>
+                                                                                        <div
+                                                                                            class="height-scroll h-scr">
+                                                                                            <div class="px-4 py-3">
+                                                                                                <div
+                                                                                                    class="form-group input-group">
+                                                                                                    <label>Set new End
+                                                                                                        Date <span
+                                                                                                            class="text-danger">*</span></label>
+                                                                                                    <!-- <div class="d-flex input-group">
+                                                                                        <input matInput [matDatepicker]="picker5" id="EndDatetext_{{item.id}}"
+                                                                                            #actionend="ngModel"
+                                                                                            (click)="picker5.open();"
+                                                                                            (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
+                                                                                            [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                                                                            [(ngModel)]="_ProjDeadline" class="form-control"
+                                                                                            name="date">
+                                                                                        <div class="input-group-append">
+                                                                                            <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                                                                            </mat-datepicker-toggle>
+                                                                                            <mat-datepicker class="form-group" #picker5></mat-datepicker>
                                                                                         </div>
+                                                                                    </div> -->
+                                                                                                    <!-- <div class="input-group date" data-provide="datepicker">
+                                                                                        <input class="form-control" id="wodate1" name="date" 
+                                                                                        [min]="minhold" [max]="maxhold" placeholder="MM/DD/YYYY" value="{{current_Date}}" bootstrap-datepicker="" data-date-end-date="0d">
+                                                                                        <div class="input-group-addon input-group-append">
+                                                                                            <i class="fa fa-calendar input-group-text"></i>
+                                                                                        </div>
+                                                                                    </div> -->
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="form-group mb-1">
+                                                                                                    <label>Remarks <span
+                                                                                                            class="text-danger">*</span>
+                                                                                                    </label>
+                                                                                                    <textarea
+                                                                                                        [(ngModel)]="extend_remarks"
+                                                                                                        placeholder=""
+                                                                                                        rows="2"
+                                                                                                        cols="20"
+                                                                                                        class="form-control"
+                                                                                                        style="height: 70px;"></textarea>
+                                                                                                </div>
+                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <li class="kt-nav__separator">
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    <div class="px-4 pb-3">
+                                                                                        <button
+                                                                                            class="btn btn-info btn-sm mr-2 text-white"
+                                                                                            [disabled]="!extend_remarks || !_ProjDeadline"
+                                                                                            (click)="onAction_ExtendDeadline(item.id,item.Project_Code)">
+                                                                                            Submit </button>
+                                                                                        <button
+                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
+                                                                                            (click)="closeAction(item.id)">Close</button>
                                                                                     </div>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                </ul>
-                                                                                <div class="px-4 pb-3">
-                                                                                    <button
-                                                                                        class="btn btn-info btn-sm mr-2 text-white"
-                                                                                        [disabled]="!extend_remarks || !_ProjDeadline"
-                                                                                        (click)="onAction_ExtendDeadline(item.id,item.Project_Code)">
-                                                                                        Submit </button>
-                                                                                    <button
-                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                        (click)="closeAction(item.id)">Close</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1572,7 +1623,7 @@
 
                                                             <!-- <div class="col-md-4">
                                                                 <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                                                                <div class="d-flex align-items-center">
+                                                                <div class="d-flex align-items-center detial-item">
                                                                     <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
                                                                     <div class="w-100 d-flex">
                                                                 </div>                                                              
@@ -1580,299 +1631,205 @@
                                                             </div> -->
 
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-wallet fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="18" height="18" fill="currentColor"
+                                                                            class="bi bi-clock" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                                            <path
+                                                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Allocated</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
+                                                                            title="Action Cost!">
+                                                                            {{item.SubtaskAllocated}} Hrs</h5>
+
+                                                                        <div class="dropdown show"
+                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                            <span type="button" id="alloc-icn"
+                                                                                (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
+                                                                                aria-haspopup="true"
+                                                                                aria-expanded="true"
+                                                                                class="dropdown-toggle no-after text-info">
+                                                                                <i data-toggle="tooltip"
+                                                                                    title="edit duration"
+                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                            </span>
+                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
+                                                                                id="AllocArea_{{item.id}}">
+                                                                                <ul class="kt-nav pb-0"
+                                                                                    (click)="$event.stopPropagation();">
+                                                                                    <li class="kt-nav__head py-0">
+                                                                                        <div
+                                                                                            style="white-space: break-spaces;">
+                                                                                            Add Allocated Hours
+                                                                                            <br>Action:
+                                                                                            <b>{{item.Project_Name}}</b>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                    <li class="kt-nav__separator"></li>
+                                                                                    <div class="height-scroll h-scr">
+                                                                                        <div class="px-4 py-3">
+                                                                                            <div class="form-group">
+                                                                                                <label>Add Hours <span
+                                                                                                        class="text-danger">*</span></label>
+                                                                                                <input type="number"
+                                                                                                    class="form-control"
+                                                                                                    id="AllocFocus_{{item.id}}"
+                                                                                                    placeholder="hrs"
+                                                                                                    [(ngModel)]="_modelProjAlloc"
+                                                                                                    min="0"
+                                                                                                    oninput="validity.valid||(value='');">
+                                                                                                <span
+                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
+                                                                                                    class="text-danger">*Allocation
+                                                                                                    per day limit is 10
+                                                                                                    hours.</span>
+                                                                                                <span
+                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
+                                                                                                    class="text-danger">Please
+                                                                                                    enter the hours less
+                                                                                                    than or equal to
+                                                                                                    <b>{{(item.SubtaskDuration
+                                                                                                        * 10)}}</b>
+                                                                                                    hours!</span>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="form-group mb-1">
+                                                                                                <label>Remarks <span
+                                                                                                        class="text-danger">*</span>
+                                                                                                </label>
+                                                                                                <textarea
+                                                                                                    [(ngModel)]="alloc_remarks"
+                                                                                                    placeholder=""
+                                                                                                    rows="2" cols="20"
+                                                                                                    class="form-control"
+                                                                                                    style="height: 70px;"></textarea>
+                                                                                            </div>
+                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <li class="kt-nav__separator"></li>
+                                                                                </ul>
+                                                                                <div class="px-4 pb-3">
+                                                                                    <button
+                                                                                        class="btn btn-info btn-sm mr-2 text-white"
+                                                                                        [disabled]="!alloc_remarks || !_modelProjAlloc"
+                                                                                        (click)="onProject_updateDuration(item.id,item.Project_Code)">
+                                                                                        Submit </button>
+                                                                                    <button
+                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
+                                                                                        (click)="closeDuration(item.id)">Close</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14" fill="currentColor"
+                                                                            class="bi bi-wallet" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Cost</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Cost!">
                                                                             {{item.Project_Cost|currency:'SAR '}}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-
-                                                            <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-clock fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
-                                                                            title="Action Cost!">
-                                                                            {{item.SubtaskAllocated}} Hrs</h5>
-
-                                                                        <div class="dropdown show"
-                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                            <span type="button" id="alloc-icn"
-                                                                                (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="true"
-                                                                                class="dropdown-toggle no-after text-info">
-                                                                                <i data-toggle="tooltip"
-                                                                                    title="edit duration"
-                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                            </span>
-                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
-                                                                                id="AllocArea_{{item.id}}">
-                                                                                <ul class="kt-nav pb-0"
-                                                                                    (click)="$event.stopPropagation();">
-                                                                                    <li class="kt-nav__head py-0">
-                                                                                        <div
-                                                                                            style="white-space: break-spaces;">
-                                                                                            Add Allocated Hours
-                                                                                            <br>Action:
-                                                                                            <b>{{item.Project_Name}}</b>
-                                                                                        </div>
-                                                                                    </li>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                    <div class="height-scroll h-scr">
-                                                                                        <div class="px-4 py-3">
-                                                                                            <div class="form-group">
-                                                                                                <label>Add Hours <span
-                                                                                                        class="text-danger">*</span></label>
-                                                                                                <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                    <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                    <div class="input-group-addon input-group-append">
-                                                                                        <i class="fa fa-clock input-group-text"></i>
-                                                                                    </div>
-                                                                                </div> -->
-                                                                                                <input type="number"
-                                                                                                    class="form-control"
-                                                                                                    id="AllocFocus_{{item.id}}"
-                                                                                                    placeholder="hrs"
-                                                                                                    [(ngModel)]="_modelProjAlloc"
-                                                                                                    min="0"
-                                                                                                    oninput="validity.valid||(value='');">
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">*Allocation
-                                                                                                    per day limit is 10
-                                                                                                    hours.</span>
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">Please
-                                                                                                    enter the hours less
-                                                                                                    than or equal to
-                                                                                                    <b>{{(item.SubtaskDuration
-                                                                                                        * 10)}}</b>
-                                                                                                    hours!</span>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="form-group mb-1">
-                                                                                                <label>Remarks <span
-                                                                                                        class="text-danger">*</span>
-                                                                                                </label>
-                                                                                                <textarea
-                                                                                                    [(ngModel)]="alloc_remarks"
-                                                                                                    placeholder=""
-                                                                                                    rows="2" cols="20"
-                                                                                                    class="form-control"
-                                                                                                    style="height: 70px;"></textarea>
-                                                                                            </div>
-                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                </ul>
-                                                                                <div class="px-4 pb-3">
-                                                                                    <button
-                                                                                        class="btn btn-info btn-sm mr-2 text-white"
-                                                                                        [disabled]="!alloc_remarks || !_modelProjAlloc"
-                                                                                        (click)="onProject_updateDuration(item.id,item.Project_Code)">
-                                                                                        Submit </button>
-                                                                                    <button
-                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                        (click)="closeDuration(item.id)">Close</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <!-- <h6 class="mr-2" id="Span_DescName_all{{item.id}}" *ngIf="item.SubtaskAllocated == 0; else allocated">
-                                                                        {{item.SubtaskAllocated}} Hrs</h6>
-                                                                    <span class="text-info" [hidden]="Editbutton" 
-                                                                        (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
-                                                                        <i class="fas fa-edit" ></i> -->
-                                                                        <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
-                                                                        <!-- </span>
-                                                                    <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">
-                                                                        <div class="d-flex">
-                                                                            <input type="number" class="form-control" id="textareafocus_all{{item.id}}"
-                                                                                [(ngModel)]="_modelProjAlloc" min="0" oninput="validity.valid||(value='');" style="width: 40%;height: 32px;"
-                                                                                (keydown.enter)="OnProject_Rename(item.id)">
-                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">*Allocation per day limit is 10 hours.</span>
-                                                                                <span *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)" style="color:red">Please enter the hours less than or equal to <b>{{(item.SubtaskDuration * 10)}}</b> hours!</span>
-                            
-                                                                            <div class="d-inline-block ml-3" id="button-addon4">
-                                                                                <button (click)="OnProject_Rename(item.id)"
-                                                                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                                                <button class=" btn btn-secondary btn btn-sm"
-                                                                                    (click)="onCancel(item.id)">Cancel</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </span>
-                                                                    <ng-template #allocated>
-                                                                        <h6 class="mt-1"> 
-                                                                            {{item.SubtaskAllocated}}Hrs
-                                                                        </h6>
-                                                                    </ng-template>   -->
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
                                                         </div>
                                                         <!-- data-toggle="dropdown"  -->
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-clock fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
-                                                                            title="Action hours!">
-                                                                            {{item.SubtaskAllocated}} Hrs</h5>
-
-                                                                        <div class="dropdown show"
-                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                            <span type="button" id="alloc-icn"
-                                                                                (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="true"
-                                                                                class="dropdown-toggle no-after text-info">
-                                                                                <i data-toggle="tooltip"
-                                                                                    title="edit duration"
-                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                            </span>
-                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
-                                                                                id="AllocArea_{{item.id}}">
-                                                                                <ul class="kt-nav pb-0"
-                                                                                    (click)="$event.stopPropagation();">
-                                                                                    <li class="kt-nav__head py-0">
-                                                                                        <div
-                                                                                            style="white-space: break-spaces;">
-                                                                                            Add Allocated Hours
-                                                                                            <br>Action:
-                                                                                            <b>{{item.Project_Name}}</b>
-                                                                                        </div>
-                                                                                    </li>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                    <div class="height-scroll h-scr">
-                                                                                        <div class="px-4 py-3">
-                                                                                            <div class="form-group">
-                                                                                                <label>Add Hours <span
-                                                                                                        class="text-danger">*</span></label>
-                                                                                                <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                        <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                        <div class="input-group-addon input-group-append">
-                                                                                            <i class="fa fa-clock input-group-text"></i>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                                <input type="number"
-                                                                                                    class="form-control"
-                                                                                                    id="AllocFocus_{{item.id}}"
-                                                                                                    placeholder="hrs"
-                                                                                                    [(ngModel)]="_modelProjAlloc"
-                                                                                                    min="0"
-                                                                                                    oninput="validity.valid||(value='');">
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">*Allocation
-                                                                                                    per day limit is 10
-                                                                                                    hours.</span>
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">Please
-                                                                                                    enter the hours less
-                                                                                                    than or equal to
-                                                                                                    <b>{{(item.SubtaskDuration
-                                                                                                        * 10)}}</b>
-                                                                                                    hours!</span>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="form-group mb-1">
-                                                                                                <label>Remarks <span
-                                                                                                        class="text-danger">*</span>
-                                                                                                </label>
-                                                                                                <textarea
-                                                                                                    [(ngModel)]="alloc_remarks"
-                                                                                                    placeholder=""
-                                                                                                    rows="2" cols="20"
-                                                                                                    class="form-control"
-                                                                                                    style="height: 70px;"></textarea>
-                                                                                            </div>
-                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                </ul>
-                                                                                <div class="px-4 pb-3">
-                                                                                    <button
-                                                                                        class="btn btn-info btn-sm mr-2 text-white"
-                                                                                        [disabled]="!alloc_remarks || !_modelProjAlloc"
-                                                                                        (click)="onProject_updateDuration(item.id,item.Project_Code)">
-                                                                                        Submit </button>
-                                                                                    <button
-                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                        (click)="closeDuration(item.id)">Close</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-hourglass-half fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-hourglass" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
+                                                                        <h6 class="txtm-cus">Duration</h6>
                                                                         <h5 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'"
-                                                                            class="my-1 font-14">
+                                                                            class="">
                                                                             {{item.SubtaskDuration}} days</h5>
                                                                         <h5 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'"
-                                                                            class="my-1 font-14">
+                                                                            class="">
                                                                             Continuous</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Percentage</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-percentage fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-percent" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14">
-                                                                            {{(item.SubtaskAllocated /
+                                                                        <h6 class="txtm-cus">Percentage</h6>
+                                                                        <h5 class="">{{(item.SubtaskAllocated /
                                                                             totalSubtaskHours) | percent:'.1-2'}}</h5>
-                                                                        <h5 class="my-1 font-14"
-                                                                            *ngIf="totalSubtaskHours == 0"> 0% </h5>
+                                                                        <h5 class="" *ngIf="totalSubtaskHours == 0"> 0%
+                                                                        </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-4" *ngIf="item.Sourcefile">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Reference attachment</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-file-pdf fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <a class="text-info curser-pointer"
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Reference attachment</h6>
+                                                                        <a class="word-break text-info curser-pointer"
                                                                             title="Click To Open File"
                                                                             (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
                                                                             <b>{{item.Sourcefile}}</b></a>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4" *ngIf="item.Remarks">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-registered fs-2 text-muted mr-2"></i>
+                                                            <div class="col-md-4" *ngIf="item.Remarks && item.Remarks!='undefined'">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-card-text" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                                                            <path
+                                                                                d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Remarks</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Remarks!">{{item.Remarks}}
                                                                         </h5>
                                                                     </div>
@@ -1912,35 +1869,58 @@
                                                     <div class="card-body pt-0">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Owner</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Owner</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
                                                                         </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Responsible</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-user-tie fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Responsible</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Status</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-star fs-3 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14" fill="currentColor"
+                                                                            class="bi bi-star" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
+                                                                        <h6 class="txtm-cus">Status</h6>
                                                                         <div>
                                                                             <h5 data-toggle="tooltip"
-                                                                                class="my-1 font-14 text-danger"
+                                                                                class=" text-danger"
                                                                                 title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
                                                                 'text-success':item.SubProject_Status=='Completed',
                                                                 'text-warning':item.SubProject_Status=='InProcess',
@@ -1963,13 +1943,20 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Project Duration
-                                                                </p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="18" height="18" fill="currentColor"
+                                                                            class="bi bi-clock" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                                            <path
+                                                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Action Duration</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Project Duration">{{item.StartDate
                                                                             |date:'dd-MM-yyyy'}}/{{item.SubProject_DeadLine
                                                                             |date:'dd-MM-yyyy'}}</h5>
@@ -1977,22 +1964,38 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Allocated</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-clock fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="18" height="18" fill="currentColor"
+                                                                            class="bi bi-clock" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                                            <path
+                                                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Allocated</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Cost!">
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Cost</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-wallet fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14" fill="currentColor"
+                                                                            class="bi bi-wallet" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Cost</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Cost!">
                                                                             {{item.Project_Cost|currency:'SAR '}}</h5>
                                                                     </div>
@@ -2002,42 +2005,61 @@
                                                         <div class="row">
 
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Duration</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-hourglass-half fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-hourglass" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
+                                                                        <h6 class="txtm-cus">Duration</h6>
                                                                         <h5 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'"
-                                                                            class="my-1 font-14">
+                                                                            class="">
                                                                             {{item.SubtaskDuration}} days</h5>
                                                                         <h5 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'"
-                                                                            class="my-1 font-14">
+                                                                            class="">
                                                                             Continuous</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Percentage</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-percentage fs-2 text-muted mr-2"></i>
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-percent" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14">
-                                                                            {{(item.SubtaskAllocated /
+                                                                        <h6 class="txtm-cus">Percentage</h6>
+                                                                        <h5 class="">{{(item.SubtaskAllocated /
                                                                             totalSubtaskHours) | percent:'.1-2'}}</h5>
-                                                                        <h5 class="my-1 font-14"
-                                                                            *ngIf="totalSubtaskHours == 0"> 0% </h5>
+                                                                        <h5 class="" *ngIf="totalSubtaskHours == 0"> 0%
+                                                                        </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Remarks</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i
-                                                                        class="fas fa-registered fs-2 text-muted mr-2"></i>
+                                                            <div class="col-md-4"  *ngIf="item.Remarks && item.Remarks!='undefined'">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-card-text" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                                                            <path
+                                                                                d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
+                                                                        </svg>
+                                                                    </span>
                                                                     <div class="w-100">
-                                                                        <h5 class="my-1 font-14" data-toggle="tooltip"
+                                                                        <h6 class="txtm-cus">Remarks</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
                                                                             title="Action Remarks!">{{item.Remarks}}
                                                                         </h5>
                                                                     </div>
@@ -2047,11 +2069,18 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-4" *ngIf="item.Sourcefile">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">Complete attachment</p>
-                                                                <div class="d-flex align-items-center">
-                                                                    <i class="fas fa-file-pdf fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                        <a class="text-info curser-pointer"
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Complete attachment</h6>
+                                                                        <a class="word-break text-info curser-pointer"
                                                                             title="Click To Open File"
                                                                             (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
                                                                             <b>{{item.Sourcefile}}</b></a>
@@ -2059,88 +2088,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
-
-                                                    <!-- <p class="mb-1">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            data-toggle="tooltip" title="Start Date!">
-                                                            <i class="fas fa-calendar-alt text-muted mr-1"></i>
-                                                            <b>{{item.StartDate |date:'dd-MM-yyyy'}}</b>
-                                                        </span>
-                                                        <span class="mr-3  text-nowrap mb-2 d-inline-block"
-                                                            data-toggle="tooltip" title="End Date!">
-                                                            <i class="fas fa-calendar-alt text-muted mr-1"></i>
-                                                            <b>{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            data-toggle="tooltip" title="Action Cost!">
-                                                            <i class="fas fa-wallet text-muted mr-1"></i>
-                                                            <b>{{item.Project_Cost|currency:'SAR '}}</b>
-                                                        </span>
-                                                    </p>
-                                                    <p class="mb-2">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            data-toggle="tooltip" title="Action Owner!">
-                                                            <i class="fab fa-dev text-muted mr-1"></i>
-                                                            <b> {{item.Subtask_Owner}}</b>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            data-toggle="tooltip" title="Action Responsible!">
-                                                            <i class="fab fa-dev text-muted mr-1"></i>
-                                                            <b> {{item.Subtask_Res}}</b>
-                                                        </span>
-
-                                                        <span class="mr-2 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                                                'text-success':item.SubProject_Status=='Completed',
-                                                                'text-warning':item.SubProject_Status=='InProcess',
-                                                                'text-underApp':item.SubProject_Status=='Under Approval',
-                                                                'text-info':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
-                                                                'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                                'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                                                'text-primary':item.SubProject_Status=='New Project',
-                                                                'text-completed':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                                                'text-Todo':item.SubProject_Status=='ToDo Completed'}"
-                                                            data-toggle="tooltip" title="Action Status!">
-                                                            {{item.SubProject_Status}}
-                                                        </span>
-                                                    </p>
-                                                    <p class="mb-1">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Sourcefile">
-                                                            <i class="fas fa-paperclip text-muted mr-1"></i>
-                                                            <a class="text-info curser-pointer"
-                                                                title="Click To Open File"
-                                                                (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
-                                                                <b>{{item.Sourcefile}}</b></a>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block"
-                                                            *ngIf="item.Remarks" data-toggle="tooltip" title="Remarks!">
-                                                            <i class="fas fa-registered text-muted mr-1"></i>
-                                                            <b>{{item.Remarks}}</b>
-                                                        </span>
-                                                    </p>
-                                                    <p class="mb-2">
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
-                                                            <h6 class=" pt-1">Allocated</h6>
-                                                            <h6 class="mt-1">{{item.SubtaskAllocated}}Hrs</h6>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
-                                                            <h6 class=" pt-1">Duration</h6>
-                                                            <h6 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'"
-                                                                class="mt-1">
-                                                                {{item.SubtaskDuration}} days</h6>
-                                                            <h6 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'"
-                                                                class="mt-1">
-                                                                Continuous</h6>
-                                                        </span>
-                                                        <span class="mr-3 text-nowrap mb-2 d-inline-block">
-                                                            <h6 class=" pt-1">Percentage</h6>
-                                                            <h6 class="mt-1">{{(item.SubtaskAllocated /
-                                                                totalSubtaskHours) | percent:'.1-2'}}</h6>
-                                                        </span>
-                                                    </p> -->
-                                                    <!-- </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -3152,18 +3101,22 @@
             <div class="proctdetls" [ngClass]="{ ' ' : Status!='Deadline Extend Under Approval',
                     'justify-content-between' : Status=='Deadline Extend Under Approval'}" id="ProjectDetails_Main">
                 <div class="d-flex align-items-center mb-3">
-                    <div class=""><span class="svg-icon svg-icon-2x text-info mr-2"><svg _ngcontent-jrv-c350=""
-                                width="24" height="24" viewBox="0 0 40 40" aria-hidden="true" focusable="false"
+                    <div class="">
+                        <span class="detail-icn">
+                            <svg width="24" height="24" viewBox="3 2 34 34" aria-hidden="true" focusable="false"
                                 fill="currentColor">
-                                <path _ngcontent-jrv-c350="" d="M30.5,9h-7.8l-3.6-3.6C18.2,4.5,16.9,4,15.6,4h-5.1C6.9,4,4,6.9,4,10.5v19c0,3.6,2.9,6.5,6.5,6.5h19c3.6,0,6.5-2.9,6.5-6.5v-15C36,11.5,33.5,9,
-                            30.5,9z M33,29.5c0,1.9-1.6,3.5-3.5,3.5h-19C8.6,33,7,31.4,7,29.5v-19C7,8.6,8.6,7,10.5,7h5.1c0.5,0,1,0.2,1.4,0.6l4.1,4c0.3,0.3,0.7,0.4,1.1,0.4h8.4c1.4,
-                            0,2.5,1.1,2.5,2.5L33,29.5L33,29.5z M13.5,13L13.5,13c0.8,0,1.5,0.7,1.5,1.5v13c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-13C12,13.7,12.7,13,13.5,13z
-                            M25.5,18L25.5,18c0.8,0,1.5,0.7,1.5,1.5v8c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-8C24,18.7,24.7,18,25.5,18z M19.5,22L19.5,22c0.8,0,1.5,0.7,1.5,1
-                            .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z"></path>
-                            </svg></span></div>
+                                <path d="M30.5,9h-7.8l-3.6-3.6C18.2,4.5,16.9,4,15.6,4h-5.1C6.9,4,4,6.9,4,10.5v19c0,3.6,2.9,6.5,6.5,6.5h19c3.6,0,6.5-2.9,6.5-6.5v-15C36,11.5,33.5,9,
+                                30.5,9z M33,29.5c0,1.9-1.6,3.5-3.5,3.5h-19C8.6,33,7,31.4,7,29.5v-19C7,8.6,8.6,7,10.5,7h5.1c0.5,0,1,0.2,1.4,0.6l4.1,4c0.3,0.3,0.7,0.4,1.1,0.4h8.4c1.4,
+                                0,2.5,1.1,2.5,2.5L33,29.5L33,29.5z M13.5,13L13.5,13c0.8,0,1.5,0.7,1.5,1.5v13c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-13C12,13.7,12.7,13,13.5,13z
+                                M25.5,18L25.5,18c0.8,0,1.5,0.7,1.5,1.5v8c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-8C24,18.7,24.7,18,25.5,18z M19.5,22L19.5,22c0.8,0,1.5,0.7,1.5,1
+                                .5v4c0,0.8-0.7,1.5-1.5,1.5l0,0c-0.8,0-1.5-0.7-1.5-1.5v-4C18,22.7,18.7,22,19.5,22z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
                     <div class="action-content">
-                        <h6 class="txtm-cus mb-1 pt-1">Request type</h6>
-                        <h5 class="mt-1 text-blue">{{requestType}}</h5>
+                        <h6 class="txtm-cus mb-1">Request type</h6>
+                        <h6 class="mt-1">{{requestType}}</h6>
                     </div>
                 </div>
                 <!-- <div class="d-flex align-items-center">
@@ -3184,14 +3137,17 @@
                 </div> -->
 
                 <div class="d-flex align-items-center mb-3">
-                    <div class=""><span class="svg-icon svg-icon-2x text-primary mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" width="24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5">
-                                </path>
+                    <div class="">
+                        <span class="detail-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-calendar4-week" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                <path
+                                    d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                             </svg>
-                        </span></div>
+                        </span>
+                    </div>
                     <div class="action-content d-flex align-items-center gap-1">
                         <div class="left-w">
                             <h6 class="txtm-cus pt-1">Project duration</h6>
@@ -3218,12 +3174,11 @@
                 </div>
                 <div class="d-flex align-items-center mb-3">
                     <div class="">
-                        <span class="svg-icon svg-icon-2x text-primary mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" height="24" width="24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
-                                </path>
+                        <span class="detail-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
                             </svg>
                         </span>
                     </div>
@@ -3245,12 +3200,13 @@
                 </div>
                 <div class="d-flex align-items-center mb-3" *ngIf="Status=='Forward Under Approval'">
                     <div class="">
-                        <span class="svg-icon svg-icon-2x text-primary mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" height="24" width="24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
-                                </path>
+                        <span class="detail-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-fast-forward-btn" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.79 5.093A.5.5 0 0 0 8 5.5v1.886L4.79 5.093A.5.5 0 0 0 4 5.5v5a.5.5 0 0 0 .79.407L8 8.614V10.5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5Z" />
+                                <path
+                                    d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4Z" />
                             </svg>
                         </span>
                     </div>
@@ -3272,7 +3228,7 @@
                 <div class="d-flex align-items-center mb-3"
                     *ngIf="requestType=='Project Complete' || requestType=='ToDo Achieved'">
                     <div class="">
-                        <span class="svg-icon svg-icon-2x text-primary mr-2">
+                        <span class="detail-icn">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" height="24" width="24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -3318,7 +3274,7 @@
                 <h5 class="mb-1 kt-portlet__head-title text-blue"></h5>
 
                 <a class="btn--1 btn-info--1 btn-sm--1 text-info py-2" data-toggle="collapse" href="#prevco"
-                    role="button" aria-expanded="false" aria-controls="prevco" *ngIf="previouscoments==true">
+                    role="button" aria-expanded="false" aria-controls="prevco">
                     View previous comments
                 </a>
                 <div class="px-cb pt-cb bg-gry collapse kt-portlet__body_scroll prv-cmts" id="prevco">

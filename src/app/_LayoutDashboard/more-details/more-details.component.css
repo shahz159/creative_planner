@@ -989,7 +989,7 @@
   }
   .prv-cmts {
     max-height: 200px;
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 350px);
     overflow: auto;
   }
   .date-drop1,
@@ -1384,4 +1384,17 @@ span.guest-icns, .svg-icn {
 }
 .desc-msg{
   padding: 6px 10px;
+}
+.scrollbar1 h5{
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 0;
+}
+.btn22 svg {
+  fill: #fff;
+  width: 16px;
+  height: 16px;
+}
+.btn22 span {
+  line-height: 1;
 }
