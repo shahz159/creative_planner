@@ -63998,7 +63998,7 @@ h3.popover-header {
 	text-decoration: none;
 	color: #333;
   position: absolute;
-  top: 10px;
+  top: 13px;
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
@@ -64056,7 +64056,6 @@ h3.popover-header {
     background-color: #666A86;
     color: #fff;
     font-weight: 500;
-    letter-spacing: 2px;
     border-radius: 50%;
     line-height: 30px;
     margin-right: 5px;
@@ -65119,10 +65118,13 @@ svg.rmv-icn:hover {
 
 .detail-icn{
     line-height: 1;
+    margin-right: 8px;
 }
 
 .detail-icn svg {
-    margin-right: 5px;
+    height: 18px;
+    width: 18px;    
+    color: #595d6e;
 }
 
 .h-16 {
@@ -65135,6 +65137,29 @@ svg.rmv-icn:hover {
 
 .card-itm1 {
     color: #48465b;
+    color: #595d6e;
+}
+
+.btn.btn-icon i {
+    transition: all .3s;
+    font-size: .8rem;
+    color: #74788d;
+}
+
+.btn-icon:hover i{
+    color: #fff;
+}
+
+.detial-item {
+    margin-bottom: 0.9em !important;
+}
+
+.detial-item h6 {
+    margin-bottom: 4px;
+}
+
+.word-break {
+    word-break: break-all;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[2]!./src/assets/plugins/datatables/datatables.bundle.css ***!
