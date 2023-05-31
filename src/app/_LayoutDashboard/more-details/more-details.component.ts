@@ -80,6 +80,8 @@ export class MoreDetailsComponent implements OnInit {
   darbutton: boolean = true;
   darList: any;
   disablePreviousDate = new Date();
+  disablePreviousDate1 = new Date();
+
   todayDate = new Date();
   timedata: any = [];
   EndDate1: any = new Date();
@@ -97,6 +99,7 @@ export class MoreDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate1.setDate(this.disablePreviousDate1.getDate());
     //Fetching URL ProjectCode
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -761,6 +764,8 @@ export class MoreDetailsComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
+  actionStartdate: any =new Date();
+  actionenddate: any =new Date();
 
   diff_minutes(dt2, dt1) {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -3391,10 +3396,11 @@ export class MoreDetailsComponent implements OnInit {
   actCode: string;
   actstartedit: boolean = false;
 
-  onEditEndDate(id, aname, i, acode) {
+  onEditEndDate(id, aname, i, acode,edate) {
     this.actionName = aname;
     this.actCode = acode;
     this.actnum = i;
+    this.actionenddate=edate;
     this.Editbutton = true;
     this.edithold = false;
     this.editCategory = false;
@@ -3414,10 +3420,11 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  onEditStartDate(id, aname, i, acode) {
+  onEditStartDate(id, aname, i, acode, sdate) {
     this.actionName = aname;
     this.actCode = acode;
     this.actnum = i;
+    this.actionStartdate = sdate;
     this.Editbutton = true;
     this.edithold = false;
     this.editCategory = false;
@@ -3648,7 +3655,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetProjectDetails();
         }
         else if (this._Message == 'Project Deadline Updated') {
-          this.notifyService.showSuccess(this._Message, "Success");
+          this.notifyService.showSuccess("Project end date updated", "Success");
           this.objProjectDto.Emp_No = this.Current_user_ID;
           this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
           if (this.currenthours < 10) {
@@ -3702,7 +3709,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
         }
         else if (this._Message == 'Project Deadline Updated') {
-          this.notifyService.showSuccess(this._Message, "Success");
+          this.notifyService.showSuccess("Action end date updated.", "Success");
           this.objProjectDto.Emp_No = this.Current_user_ID;
           this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
           if (this.currenthours < 10) {
@@ -3763,7 +3770,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetSubtask_Details();
         }
         else if (this._Message == 'Project Start-Date Updated') {
-          this.notifyService.showSuccess(this._Message, "Success");
+          this.notifyService.showSuccess("Action start date updated", "Success");
           this.GetProjectDetails();
           this.GetSubtask_Details();
         }
