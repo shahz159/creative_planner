@@ -1408,6 +1408,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   complete_List:any;
   iscloud:any;
   url:any;
+  previouscoments:boolean =false;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1436,6 +1437,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.initials1 = this.initials1.toUpperCase();
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+        if(this.prviousCommentsList.length>1){
+          this.previouscoments=true;
+        }
+        else{
+          this.previouscoments=false;
+        }
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
         if(this.requestType=='Project Forward'){
           this.newResponsible = (this.transfer_json[0]['newResp']);
@@ -1544,7 +1551,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.fun_LoadProjectDetails();
         }
         else if (this._Message == 'Project Deadline Updated') {
-          this.notifyService.showSuccess(this._Message + " by " + this.Current_user_ID, "Success");
+          this.notifyService.showSuccess("Project end date updated", "Success");
           this.fun_LoadProjectDetails();
         }
       });
@@ -1815,6 +1822,33 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  src: any;
+
+  LoadDocument(cloud, Pcode, Resp, url: string) {
+    // (<HTMLInputElement>document.getElementById("documentPreview")).style.display="block";
+    // url = "http://208.109.13.37/dmsapi/DataOutPut/react-handbook.pdf";
+    // contenttype=".pdf";
+    // if (contenttype == ".PDF" || contenttype == ".pdf" || contenttype == "application/pdf") {
+    //   this._IsPdf = true;
+    // }
+    // else if (contenttype == ".jpg" || contenttype == ".png" || contenttype == ".PNG" || contenttype == ".jpeg") {
+    //   this._IsPdf = false;
+    // }
+    this.src = url;
+
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
+
+    if (cloud == false) {
+      var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/" + url);
+      myWindow.focus();
+    }
+    else if (cloud == true) {
+      var myWindow = window.open(url);
+      myWindow.focus();
+    }
+  }
+  
   btmspace_opn(){
     document.getElementById("btm-space").classList.remove("d-none");
   }

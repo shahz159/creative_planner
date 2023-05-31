@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import * as moment from 'moment';
+import { event } from 'jquery';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -155,7 +157,7 @@ export class ActionToProjectComponent implements OnInit {
           if(dateTwo > dateOne){
             this.disablePreviousDate = this.ProjectStartDate;
           }
-          console.log(dateOne,dateTwo,this.disablePreviousDate,this.ProjectStartDate,"dates")
+          // console.log(dateOne,dateTwo,this.disablePreviousDate,this.ProjectStartDate,"dates")
         })
       }
 
@@ -173,6 +175,10 @@ export class ActionToProjectComponent implements OnInit {
             if(element.Emp_No==this.Owner_Empno){
               this.ownerName=element.DisplayName;
               this.ownerArr.push(this.ownerName);
+            }
+            if(element.Emp_No==this.Resp_empno && element.Emp_No!=this.Current_user_ID){
+              this.RespName=element.DisplayName;
+              this.ownerArr.push(this.RespName);
             }
           }
           else if(this.Current_user_ID==this.Owner_Empno){
@@ -246,7 +252,7 @@ export class ActionToProjectComponent implements OnInit {
               this.ownerName=element.DisplayName;
               this.ownerArr.push(this.ownerName);
             }
-            if(element.Emp_No==this.Resp_empno){
+            if(element.Emp_No==this.Resp_empno  && element.Emp_No!=this.Current_user_ID){
               this.RespName=element.DisplayName;
               this.ownerArr.push(this.RespName);
             }
@@ -331,6 +337,7 @@ export class ActionToProjectComponent implements OnInit {
 
   maxlimit: boolean = true;
   _message: string;
+  _Message: string;
 
   alertMaxAllocation() {
     if (this._StartDate == null || this._EndDate == null) {
@@ -432,8 +439,8 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
       }
     
-      var datestrStart = moment(this._StartDate).format();
-      var datestrEnd = moment(this._EndDate).format();
+      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
+      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
       // alert(datestrStart)
       // alert(datestrEnd)
       console.log(datestrStart,this._StartDate,"startdate")
@@ -470,8 +477,22 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.Duration = 0;
       }
 
-      this.service._InsertNewSubtask(fd).subscribe(data => {
-        console.log(data,"action data");
+      this.service._InsertNewSubtask(fd).subscribe(event => {
+
+        if (event.type === HttpEventType.Response){
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).Message;
+          // console.log(event,myJSON,this._Message,"action data");
+          if(this._Message=='1'){
+            this.notifyService.showSuccess("Action created successfully", "Success");
+          }
+          else if(this._Message=='2'){
+            this.notifyService.showError("Something went wrong", "Action not created");
+          }
+          else{
+            this.notifyService.showError("Something went wrong", "Action not created");
+          }
+        }
         
         if (this._Urlid == 1) {
           this._Todoproject.CallOnSubmitAction();
@@ -492,18 +513,9 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
+
       });
-      // setTimeout(this._projectunplanned.CallOnSubmitCategory, 3000);
-      // this._projectunplanned.CallOnSubmitCategory();
-      // setTimeout(this._Todoproject.CallOnSubmitAction, 3000);
-      // setTimeout(function () {
-      //   this.loadsubcateg();
-      // }, 3000);
-      // this._Todoproject.CallOnSubmitAction();
-      // setTimeout(this._MoreDetails.CallOnSubmitAction, 3000);
-      // this._MoreDetails.CallOnSubmitAction();
     });
-    this.notifyService.showInfo("Created Successfully", "Action");
   }
    
   convert(str) {

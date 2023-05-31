@@ -2227,3 +2227,14 @@ a.ordr-a {
 .pend-btn:focus {
     box-shadow: none !important;
 }
+.time-event .fc-event-selected, .fc-event:focus{
+   box-shadow: none;
+}
+.time-event .fc-event-selected:after, .fc-event:focus:after {
+    border-radius: 20px;
+    background: none;
+    box-shadow: 0 6px 10px 0 rgb(0 0 0 / 10%), 0 1px 18px 0 rgb(0 0 0 / 9%), 0 3px 5px -1px rgb(0 0 0 / 10%);
+}
+.time-event .fc-daygrid-dot-event:focus:hover {
+    background: rgb(173 175 186 / 10%);
+}
