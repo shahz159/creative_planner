@@ -1447,7 +1447,7 @@
                                                                             <div class="dropdown show"
                                                                                 *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="start-icn"
-                                                                                    (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code)"
+                                                                                    (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
@@ -1536,7 +1536,7 @@
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
-                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code)"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
@@ -3689,18 +3689,21 @@
         <div class="">
             <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
-                    <div><b>Deadline extend</b></div>
+                    <div><b>New project end date</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
+                        <div class="form-group mb-1 d-flex">
+                            Existing project end date is {{EndDate}}
+                        </div>
                         <div class="form-group">
-                            <label>Set new project deadline<span class="text-danger">*</span></label>
+                            <label>Set new project end date <span class="text-danger">*</span></label>
                             <div class="d-flex input-group">
                                 <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
                                     #Deadlinetext="ngModel" (click)="picker2.open();"
-                                    (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);" [min]="minhold"
-                                    [max]="maxhold" placeholder="Select Date" [(ngModel)]="_ProjDeadline"
+                                    (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);" [min]="disablePreviousDate1"
+                                     placeholder="Select Date" [(ngModel)]="_ProjDeadline"
                                     class="form-control" name="date">
                                 <div class="input-group-append">
                                     <mat-datepicker-toggle matSuffix [for]="picker2" class="btn-secondary">
@@ -3875,7 +3878,7 @@
                             <label>Set new deadline (optional):</label>
                             <div class="input-group">
                                 <input matInput [matDatepicker]="picker4" #Transdt="ngModel" (click)="picker4.open();"
-                                    [min]="minhold" [max]="maxhold" placeholder="Select Date" [(ngModel)]="TransDate"
+                                    [min]="disablePreviousDate1" placeholder="Select Date" [(ngModel)]="TransDate"
                                     class="form-control" name="date">
                                 <div class="input-group-append">
                                     <mat-datepicker-toggle matSuffix [for]="picker4" class="btn-secondary">
@@ -3910,16 +3913,19 @@
         <div class="">
             <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
-                    <div><b>New end date</b><br>Action {{actnum}}: {{actionName }}</div>
+                    <div><b>New end date</b><br>Action {{actnum}}: {{actionName}}</div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
+                        <div class="form-group mb-1 d-flex">
+                            Existing action end date is {{actionenddate | date: 'dd-MM-YYYY'}}
+                        </div>
                         <div class="form-group input-group">
                             <label>Set new end date <span class="text-danger">*</span></label>
                             <div class="d-flex input-group">
                                 <input matInput [matDatepicker]="picker5" #actionend="ngModel" (click)="picker5.open();"
-                                    (keydown.enter)="onAction_ExtendDeadline();" [min]="minhold" [max]="maxhold"
+                                    (keydown.enter)="onAction_ExtendDeadline();" [min]="disablePreviousDate1"
                                     placeholder="Select Date" [(ngModel)]="_ProjDeadline" class="form-control"
                                     name="date">
                                 <div class="input-group-append">
@@ -3958,12 +3964,15 @@
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
+                        <div class="form-group mb-1 d-flex">
+                            Existing action start date is {{actionStartdate | date: 'dd-MM-YYYY'}}
+                        </div>
                         <div class="form-group input-group">
                             <label>Set new start date <span class="text-danger">*</span></label>
                             <div class="d-flex input-group">
                                 <input matInput [matDatepicker]="picker6" #actionstart="ngModel"
                                     (click)="picker6.open();" (keydown.enter)="onAction_ExtendDeadline();"
-                                    [min]="minDate" [max]="maxhold" placeholder="Select Date"
+                                    [min]="disablePreviousDate1" placeholder="Select Date"
                                     [(ngModel)]="_ProjDeadline" class="form-control" name="date">
                                 <div class="input-group-append">
                                     <mat-datepicker-toggle matSuffix [for]="picker6" class="btn-secondary">
@@ -4006,7 +4015,7 @@
                             <label>Add hours <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" placeholder="hrs" [(ngModel)]="_modelProjAlloc"
                                 min="0" oninput="validity.valid||(value='');">
-                            <span *ngIf="_modelProjAlloc > (subduration * 10)" class="text-danger">*Allocation per day
+                            <span *ngIf="(_modelProjAlloc > (subduration * 10))" class="text-danger">*Allocation per day
                                 limit is 10 hours.</span>
                             <span *ngIf="_modelProjAlloc > (subduration * 10)" class="text-danger">Please enter the
                                 hours less than or equal to <b>{{(subduration * 10)}}</b> hours!</span>

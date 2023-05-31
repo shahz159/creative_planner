@@ -1551,7 +1551,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.fun_LoadProjectDetails();
         }
         else if (this._Message == 'Project Deadline Updated') {
-          this.notifyService.showSuccess(this._Message + " by " + this.Current_user_ID, "Success");
+          this.notifyService.showSuccess("Project end date updated", "Success");
           this.fun_LoadProjectDetails();
         }
       });
