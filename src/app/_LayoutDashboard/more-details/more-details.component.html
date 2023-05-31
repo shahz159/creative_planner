@@ -1445,7 +1445,7 @@
                                                                                 title="Start Date!">{{item.StartDate
                                                                                 |date:'dd-MM-yyyy'}}</h5>
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="start-icn"
                                                                                     (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
