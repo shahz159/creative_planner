@@ -1234,13 +1234,18 @@
                             *ngIf="subTaskCount!=0; else noResultsFound">
                             <li class="nav-item">
                                 <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
-                                    <span class="nav-text">Actions</span>
+                                    <span class="nav-text">Inprocess</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tasks-2" data-toggle="tab" href="#tasks_2">
+                                    <span class="nav-text">Completed</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" id="charts-1" data-toggle="tab" href="#charts_1">
-                                    <span class="nav-text">Charts</span>
+                                    <span class="nav-text">Overview</span>
 
                                 </a>
                             </li>
@@ -1527,6 +1532,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <h5>/</h5>
                                                                             <h5 class="" data-toggle="tooltip"
                                                                                 title="End Date!">
                                                                                 {{item.SubProject_DeadLine
@@ -1644,86 +1650,89 @@
                                                                     </span>
                                                                     <div class="w-100">
                                                                         <h6 class="txtm-cus">Allocated</h6>
-                                                                        <h5 class="" data-toggle="tooltip"
+                                                                        <div class="mb-0 d-flex align-items-center">
+                                                                            
+                                                                            <h5 class="" data-toggle="tooltip"
                                                                             title="Action Cost!">
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
 
-                                                                        <div class="dropdown show"
-                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
-                                                                            <span type="button" id="alloc-icn"
-                                                                                (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="true"
-                                                                                class="dropdown-toggle no-after text-info">
-                                                                                <i data-toggle="tooltip"
-                                                                                    title="edit duration"
-                                                                                    class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                                                            </span>
-                                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
-                                                                                id="AllocArea_{{item.id}}">
-                                                                                <ul class="kt-nav pb-0"
-                                                                                    (click)="$event.stopPropagation();">
-                                                                                    <li class="kt-nav__head py-0">
-                                                                                        <div
-                                                                                            style="white-space: break-spaces;">
-                                                                                            Add Allocated Hours
-                                                                                            <br>Action:
-                                                                                            <b>{{item.Project_Name}}</b>
-                                                                                        </div>
-                                                                                    </li>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                    <div class="height-scroll h-scr">
-                                                                                        <div class="px-4 py-3">
-                                                                                            <div class="form-group">
-                                                                                                <label>Add Hours <span
-                                                                                                        class="text-danger">*</span></label>
-                                                                                                <input type="number"
-                                                                                                    class="form-control"
-                                                                                                    id="AllocFocus_{{item.id}}"
-                                                                                                    placeholder="hrs"
-                                                                                                    [(ngModel)]="_modelProjAlloc"
-                                                                                                    min="0"
-                                                                                                    oninput="validity.valid||(value='');">
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">*Allocation
-                                                                                                    per day limit is 10
-                                                                                                    hours.</span>
-                                                                                                <span
-                                                                                                    *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                    class="text-danger">Please
-                                                                                                    enter the hours less
-                                                                                                    than or equal to
-                                                                                                    <b>{{(item.SubtaskDuration
-                                                                                                        * 10)}}</b>
-                                                                                                    hours!</span>
-                                                                                            </div>
+                                                                            <div class="dropdown show"
+                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                <span type="button" id="alloc-icn"
+                                                                                    (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="true"
+                                                                                    class="dropdown-toggle no-after text-info">
+                                                                                    <i data-toggle="tooltip"
+                                                                                        title="edit duration"
+                                                                                        class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                                </span>
+                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
+                                                                                    id="AllocArea_{{item.id}}">
+                                                                                    <ul class="kt-nav pb-0"
+                                                                                        (click)="$event.stopPropagation();">
+                                                                                        <li class="kt-nav__head py-0">
                                                                                             <div
-                                                                                                class="form-group mb-1">
-                                                                                                <label>Remarks <span
-                                                                                                        class="text-danger">*</span>
-                                                                                                </label>
-                                                                                                <textarea
-                                                                                                    [(ngModel)]="alloc_remarks"
-                                                                                                    placeholder=""
-                                                                                                    rows="2" cols="20"
-                                                                                                    class="form-control"
-                                                                                                    style="height: 70px;"></textarea>
+                                                                                                style="white-space: break-spaces;">
+                                                                                                Add Allocated Hours
+                                                                                                <br>Action:
+                                                                                                <b>{{item.Project_Name}}</b>
                                                                                             </div>
-                                                                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                        </li>
+                                                                                        <li class="kt-nav__separator"></li>
+                                                                                        <div class="height-scroll h-scr">
+                                                                                            <div class="px-4 py-3">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Add Hours <span
+                                                                                                            class="text-danger">*</span></label>
+                                                                                                    <input type="number"
+                                                                                                        class="form-control"
+                                                                                                        id="AllocFocus_{{item.id}}"
+                                                                                                        placeholder="hrs"
+                                                                                                        [(ngModel)]="_modelProjAlloc"
+                                                                                                        min="0"
+                                                                                                        oninput="validity.valid||(value='');">
+                                                                                                    <span
+                                                                                                        *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
+                                                                                                        class="text-danger">*Allocation
+                                                                                                        per day limit is 10
+                                                                                                        hours.</span>
+                                                                                                    <span
+                                                                                                        *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
+                                                                                                        class="text-danger">Please
+                                                                                                        enter the hours less
+                                                                                                        than or equal to
+                                                                                                        <b>{{(item.SubtaskDuration
+                                                                                                            * 10)}}</b>
+                                                                                                        hours!</span>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="form-group mb-1">
+                                                                                                    <label>Remarks <span
+                                                                                                            class="text-danger">*</span>
+                                                                                                    </label>
+                                                                                                    <textarea
+                                                                                                        [(ngModel)]="alloc_remarks"
+                                                                                                        placeholder=""
+                                                                                                        rows="2" cols="20"
+                                                                                                        class="form-control"
+                                                                                                        style="height: 70px;"></textarea>
+                                                                                                </div>
+                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
+                                                                                            </div>
                                                                                         </div>
+                                                                                        <li class="kt-nav__separator"></li>
+                                                                                    </ul>
+                                                                                    <div class="px-4 pb-3">
+                                                                                        <button
+                                                                                            class="btn btn-info btn-sm mr-2 text-white"
+                                                                                            [disabled]="!alloc_remarks || !_modelProjAlloc"
+                                                                                            (click)="onProject_updateDuration(item.id,item.Project_Code)">
+                                                                                            Submit </button>
+                                                                                        <button
+                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
+                                                                                            (click)="closeDuration(item.id)">Close</button>
                                                                                     </div>
-                                                                                    <li class="kt-nav__separator"></li>
-                                                                                </ul>
-                                                                                <div class="px-4 pb-3">
-                                                                                    <button
-                                                                                        class="btn btn-info btn-sm mr-2 text-white"
-                                                                                        [disabled]="!alloc_remarks || !_modelProjAlloc"
-                                                                                        (click)="onProject_updateDuration(item.id,item.Project_Code)">
-                                                                                        Submit </button>
-                                                                                    <button
-                                                                                        class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                        (click)="closeDuration(item.id)">Close</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1841,6 +1850,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tasks_2" role="tabpanel"
+                                aria-labelledby="tasks-1">
+                                <div class="tasks_views rbn-bx">
+                                    <div class="text-right action-btn">
+                                        <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
+                                        <!-- (click)="OnAddTaskClick()" -->
+                                        <button
+                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
+                                            class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                class="fas fa-plus mr-2"></i>New Action</button>
+
+                                        <!-- (click)="OnAddTaskClick()" -->
+                                        <button
+                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
+                                            class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                class="fas fa-plus mr-2"></i>New Action</button>
+                                    </div>
+                                    
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
                                         <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
@@ -3229,12 +3260,11 @@
                     *ngIf="requestType=='Project Complete' || requestType=='ToDo Achieved'">
                     <div class="">
                         <span class="detail-icn">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" height="24" width="24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
-                                </path>
-                            </svg>
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                              </svg>
+                              
                         </span>
                     </div>
                     <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete'">
