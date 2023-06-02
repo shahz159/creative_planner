@@ -584,7 +584,7 @@
                             </div>
                             <div class="result-card kt-portlet__body_scroll">
                                 <div class="list-1">
-                                    <div class="item-1">
+                                    <div class="item-1" *ngFor="let item of Pending_request" >
                                         <div class="date-1">
                                             <!-- <h4>12</h4> -->
                                             <div class="">
@@ -593,33 +593,16 @@
                                         </div>
                                         <div class="time-event flex-1">
                                             <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                                tabindex="0">
+                                                tabindex="0" (click)="GetClickEventPending_Calenders(item.Schedule_ID)">
                                                 <div class="fc-daygrid-event-dot"></div>
                                                 <div class="fc-event-time">4:30PM-5:00PM</div>
                                                 
-                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
+                                                <div class="fc-event-title ml-5"> {{item.Task_Name}}</div>
                                             </a>
                                             <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                         </div>
                                     </div>
-                                    <div class="item-1">
-                                        <div class="date-1">
-                                            <!-- <h4>12</h4> -->
-                                            <div class="">
-                                                8 Thu, May 2025 
-                                            </div>
-                                        </div>
-                                        <div class="time-event flex-1">
-                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                                tabindex="0">
-                                                <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">4:30PM-5:00PM</div>
-                                                
-                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
-                                            </a>
-                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1073,7 +1056,7 @@
                                     <a class="dropdown-item">
                                         Postpone
                                     </a>
-                                    <a class="dropdown-item">
+                                    <a class="dropdown-item" (click)="Pending_meeting()">
                                         Pending
                                     </a>
 
@@ -2558,7 +2541,7 @@
                     <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
 
-                            <div class="form-group flex-1" id="Recurrence_hide">
+                            <div class="form-group d-none" id="Recurrence_hide">
 
                                 <div class="card text-dark shadow-sm">
                                     <div class="card-header bg-white">
@@ -2573,14 +2556,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-none">
-                                            <h5>Monthly</h5>
-                                            <div class="d-flex">
-                                                <div class="repeat-day">5</div>
-                                                <div class="repeat-day">6</div>
-                                                <div class="repeat-day">7</div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2990,20 +2965,33 @@
                     </div>
 
                 </div>
+                
                 <div class="form-group mb-1" *ngIf=" copyTask==true || create==true ">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts || !Title_Name "
                         (click)="OnSubmitSchedule()">Submit</button>
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
                 </div>
+              
 
                 <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false " class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts " data-toggle="modal"
                         data-target="#confirmpopup" (click)="viewconfirm()">Update</button>
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
                 </div>
                 <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true"
                     class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
                         (click)="OnSubmitReSchedule()">Update</button>
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
                 </div>
+                <!-- <div class="form-group mb-1" >
+                    <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
+                </div> -->
+            
                 <!-- <div class="form-group mb-1" *ngIf="editTask==true">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
                         (click)="OnSubmitReSchedule()">Submit</button>
@@ -3017,7 +3005,7 @@
                         (click)="OnSubmitReSchedule()">Submit</button>
                 </div> -->
 
-
+              
 
             </div>
 

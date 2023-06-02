@@ -358,12 +358,9 @@
                                         *ngIf="requestType=='Project Complete' || requestType=='ToDo Achieved'">
                                         <div class="">
                                             <span class="detail-icn">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" height="24" width="24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
-                                                    </path>
-                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                                  </svg>
                                             </span>
                                         </div>
                                         <div class="action-content d-flex align-items-center gap-1"
@@ -1958,7 +1955,7 @@
                                     </svg>
                                 </span>
                                 <div class="w-100">
-                                    <h6 class="txtm-cus">Reference attachment</h6>
+                                    <h6 class="txtm-cus">Complete attachment</h6>
                                     <a class="word-break text-info curser-pointer"
                                         title="Click To Open File"
                                         (click)="LoadDocument(task.IsCloud,task.Project_Code,task.Team_Res,task.CompleteProofDoc)">

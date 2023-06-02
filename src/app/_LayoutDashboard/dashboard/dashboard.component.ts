@@ -41,14 +41,9 @@ import { empty } from 'rxjs';
 // import { string } from '@amcharts/amcharts4/core';
 declare var $: any;
 export const MY_FORMATS = {
-
-
   parse: {
-
     dateInput: "YYYY-MM-DD"
-
   },
-
   display: {
     dateInput: "dddd, MMMM D YYYY",
     monthYearLabel: "MMM YYYY",
@@ -211,8 +206,6 @@ export class DashboardComponent implements OnInit {
   selected: Date | null;
   minDate = moment().format("YYYY-MM-DD").toString();
   maxDate = "";
-
-
   // minDate = "2022-11-01";
   // maxDate = "2022-11-30";
   selecteddays: any[] = [];
@@ -337,7 +330,6 @@ export class DashboardComponent implements OnInit {
   showsearch: boolean = false;
   Attachment12_ary: any = [];
   RemovedAttach: any = [];
-
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -429,17 +421,20 @@ export class DashboardComponent implements OnInit {
   ObjSubTaskDTO: SubTaskDTO;
   _onlinelink: boolean = false;
   Link_Details: string;
-  // selectedCar: string;
-
-  // cars = [
-  //   { id: '1', name: 'Volvo' },
-  //   { id: '2', name: 'Saab' },
-  //   { id: '3', name: 'Opel' },
-  //   { id: '4', name: 'Audi' },
-  // ];
   _labelName: string;
+  timelineList: any;
+  timelineType: string;
+  type1: string = 'self';
+  type2: string = 'racis';
+  sortList: any = ['today', 'yesterday', 'this week', 'last week', 'this month', 'last month']
+  selectedSort: string;
+  yesterday: any;
+  timelineDuration: any;
+  showtimeline: boolean = true;
+  today: any = new Date().toISOString().substring(0, 10);
+  timeFrom: any;
+  timeTo: any;
   constructor(public service: ProjectTypeService,
-    //private loadingBar: LoadingBarService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe, public dialog: MatDialog,
@@ -458,14 +453,9 @@ export class DashboardComponent implements OnInit {
     this._subname1 = false;
     this.notificationDTO = new NotificationActivityDTO();
     this._lstMultipleFiales = [];
-
   }
 
-
   ngOnInit() {
-
-
-
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
@@ -546,11 +536,15 @@ export class DashboardComponent implements OnInit {
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
-    this.maxDate = moment(moment().add(3, 'months')).format("YYYY-MM-DD").toString();
+    //Setting recurance max date
+    //start
+    this.maxDate = moment().format("YYYY-MM-DD").toString();
+    this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+    //end
+
     this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
-    this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
 
     this.AllDatesSDandED = [];
     var jsonData = {};
@@ -567,7 +561,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
-
+    
 
     // for tippys
     tippy('#notification', {
@@ -627,25 +621,7 @@ export class DashboardComponent implements OnInit {
       // }
 
     });
-
-
-
   }
-
-
-  timelineList: any;
-  timelineType: string;
-  type1: string = 'self';
-  type2: string = 'racis';
-  sortList: any = ['today', 'yesterday', 'this week', 'last week', 'this month', 'last month']
-  selectedSort: string;
-  yesterday: any;
-  timelineDuration: any;
-  showtimeline: boolean = true;
-  today: any = new Date().toISOString().substring(0, 10);
-  timeFrom: any;
-  timeTo: any;
-
   timelineLog(type) {
     this.showtimeline = true;
     if (this.selectedSort == 'custom') {
@@ -1241,7 +1217,19 @@ export class DashboardComponent implements OnInit {
 
 
   }
+  Pending_meeting() {
 
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      });
+    this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+    this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Added In Pending Successfully", "Success");
+      this.closeevearea();
+      this.GetScheduledJson();
+    })
+  }
 
   // Customize() {
 
@@ -1456,7 +1444,7 @@ export class DashboardComponent implements OnInit {
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
-    document.getElementById("Descrip_Name12").style.display ="none";
+    document.getElementById("Descrip_Name12").style.display = "none";
     this.editTask = true;
     this.copyTask = false;
     this.create = false;
@@ -1483,7 +1471,7 @@ export class DashboardComponent implements OnInit {
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details']
-      
+
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1540,13 +1528,13 @@ export class DashboardComponent implements OnInit {
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber']
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-        if((this.EventScheduledjson[0]['Onlinelink'])==true){
-          document.getElementById("Descrip_Name12").style.display ="block";
+        if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
+          document.getElementById("Descrip_Name12").style.display = "block";
         }
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
-          this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
+          // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
@@ -1719,9 +1707,9 @@ export class DashboardComponent implements OnInit {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-
     }
     else if (this.selectedrecuvalue == "1") {
+      // debugger
       this.daysSelectedII = this.AllDatesSDandED;
     }
     else if (this.selectedrecuvalue == "2") {
@@ -2450,21 +2438,21 @@ export class DashboardComponent implements OnInit {
         const format2 = "YYYY-MM-DD"
         if (number >= 90) {
 
-          this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+          // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
           this.Note_deadlineexpire = false;
         }
         else {
           if (number < 0) {
             if (this.ScheduleType == "Task") {
-              this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+              // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
               this.Note_deadlineexpire = true;
             }
             else {
-              this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+              // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
             }
           }
           else {
-            this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+            // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
             this.Note_deadlineexpire = false;
           }
         }
@@ -2521,46 +2509,62 @@ export class DashboardComponent implements OnInit {
   }
 
   selectStartDate(event) {
-
     this._StartDate = event.value;
-
     let sd = event.value.format("YYYY-MM-DD").toString();
-    // this._EndDate = event.value.format("YYYY-MM-DD").toString();
+
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
-    this.maxDate = event.value.format("YYYY-MM-DD").toString();
+
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
-
     const format2 = "YYYY-MM-DD";
     const d1 = new Date(moment(start).format(format2));
     const d2 = new Date(moment(end).format(format2));
     const date = new Date(d1.getTime());
     this.daysSelectedII = [];
     this.scstartdate = d1;
-    if (this.selectedrecuvalue == "0") {
-      this._EndDate = d1;
-    }
-
-
-    // alert( this.scstartdate);
-
     this.AllDatesSDandED = [];
     var jsonData = {};
     var columnName = "Date";
-    jsonData[columnName] = (moment(date).format(format2));
     var columnNames = "StartTime";
-    jsonData[columnNames] = this.Startts;
     var columnNamee = "EndTime";
-    jsonData[columnNamee] = this.Endtms;
     var IsActive = "IsActive";
-    jsonData[IsActive] = 1;
     var Day = "Day";
-    jsonData[Day] = event.value.format('dddd').substring(0, 3);
     var DayNum = "DayNum";
-    jsonData[DayNum] = event.value.format('DD').substring(0, 3);
-    this.AllDatesSDandED.push(jsonData);
-    // alert(event.value.format('dddd').substring(0,3));
+
+    if (this.selectedrecuvalue == "0") {
+      // this._EndDate = event.value.format("YYYY-MM-DD").toString();
+      // this.maxDate = event.value.format("YYYY-MM-DD").toString();
+      jsonData[columnName] = (moment(date).format(format2));
+      jsonData[columnNames] = this.Startts;
+      jsonData[columnNamee] = this.Endtms;
+      jsonData[IsActive] = 1;
+      jsonData[Day] = event.value.format('dddd').substring(0, 3);
+      jsonData[DayNum] = event.value.format('DD').substring(0, 3);
+      this.AllDatesSDandED.push(jsonData);
+    }
+    else {
+      const dates = [];
+      while (date <= d2) {
+        dates.push(moment(date).format(format2));
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = (moment(date).format(format2));
+        var columnNames = "StartTime";
+        jsonData[columnNames] = this.Startts;
+        var columnNamee = "EndTime";
+        jsonData[columnNamee] = this.Endtms;
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+        var DayNum = "DayNum";
+        jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+        this.AllDatesSDandED.push(jsonData);
+        date.setDate(date.getDate() + 1);
+      }
+    }
+
   }
 
   selectEndDate(event) {
@@ -3098,7 +3102,6 @@ export class DashboardComponent implements OnInit {
   }
 
   SelectDropDown(val) {
-
     this.selectedrecuvalue = val.value.toString();
     this._labelName = "Start Date :";
     document.getElementById("div_endDate").style.display = "block";
@@ -3108,15 +3111,43 @@ export class DashboardComponent implements OnInit {
     for (let index = 0; index < this.MonthArr.length; index++) {
       this.MonthArr[index].checked = false;
     }
+    this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
+    var start = moment(this.minDate);
+    var end = moment(this.maxDate);
+    const format2 = "YYYY-MM-DD";
+    const d1 = new Date(moment(start).format(format2));
+    const d2 = new Date(moment(end).format(format2));
+    const date = new Date(d1.getTime());
+    this.daysSelectedII = [];
+    this.AllDatesSDandED = [];
+    const dates = [];
+
+    while (date <= d2) {
+      dates.push(moment(date).format(format2));
+      var jsonData = {};
+      var columnName = "Date";
+      jsonData[columnName] = (moment(date).format(format2));
+      var columnNames = "StartTime";
+      jsonData[columnNames] = this.Startts;
+      var columnNamee = "EndTime";
+      jsonData[columnNamee] = this.Endtms;
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 1;
+      var Day = "Day";
+      jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+      var DayNum = "DayNum";
+      jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+      this.AllDatesSDandED.push(jsonData);
+      date.setDate(date.getDate() + 1);
+    }
     if (val.value == 0) {
+      this.maxDate = moment(this.minDate).format("YYYY-MM-DD").toString()
       this._labelName = "Schedule Date :";
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];
       this.daysSelected = [];
       this.singleselectarry = [];
-      // this.Checkdatetimetable(this.daysSelectedII);
-
       const format2 = "YYYY-MM-DD";
       var jsonData = {};
       var columnName = "Date";
@@ -3125,11 +3156,8 @@ export class DashboardComponent implements OnInit {
       jsonData[columnNames] = this.Startts;
       var columnNamee = "EndTime";
       jsonData[columnNamee] = this.Endtms;
-
       var IsActive = "IsActive";
       jsonData[IsActive] = 1;
-
-
 
       this.daysSelectedII.push(jsonData);
       this.calendar.updateTodaysDate();
@@ -3138,208 +3166,50 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Monthly_121").style.display = "none";
     }
     if (val.value == 2) {
-      // this.daysSelectedII = [];
-      // this.daysSelected = [];
-      // this.singleselectarry = [];
-      // this.Checkdatetimetable(this.daysSelectedII);
-
-      // this.calendar.updateTodaysDate();
+     
       document.getElementById("weekly_121").style.display = "block";
       document.getElementById("Monthly_121").style.display = "none";
+      
     }
     else if (val.value == 1) {
-
-
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("Monthly_121").style.display = "none";
-
-      var start = moment(this.minDate);
-      var end = moment(this.maxDate);
-      const format2 = "YYYY-MM-DD";
-
-      const d1 = new Date(moment(start).format(format2));
-      const d2 = new Date(moment(end).format(format2));
-      const date = new Date(d1.getTime());
-      this.daysSelectedII = [];
-      const dates = [];
-
-      while (date <= d2) {
-
-        dates.push(moment(date).format(format2));
-
-        var jsonData = {};
-        var columnName = "Date";
-        jsonData[columnName] = (moment(date).format(format2));
-        var columnNames = "StartTime";
-        jsonData[columnNames] = this.Startts;
-        var columnNamee = "EndTime";
-        jsonData[columnNamee] = this.Endtms;
-        if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-          var IsActive = "IsActive";
-          jsonData[IsActive] = 1;
-        }
-
-
-        this.daysSelectedII.push(jsonData);
-
-        date.setDate(date.getDate() + 1);
-      }
-      this.daysSelected = dates;
-      // if (this.ScheduleType == "Task") {
-      //   this.Checkdatetimetable(this.daysSelectedII);
+      // this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
+      // for (let index = 0; index < this.dayArr.length; index++) {
+      //   this.dayArr[index].checked = false;
       // }
-      this.calendar.updateTodaysDate();
+    
+      // alert(this.AllDatesSDandED.length)
+      // while (date <= d2) {
 
+      //   dates.push(moment(date).format(format2));
+
+      //   var jsonData = {};
+      //   var columnName = "Date";
+      //   jsonData[columnName] = (moment(date).format(format2));
+      //   var columnNames = "StartTime";
+      //   jsonData[columnNames] = this.Startts;
+      //   var columnNamee = "EndTime";
+      //   jsonData[columnNamee] = this.Endtms;
+      //   if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+      //     var IsActive = "IsActive";
+      //     jsonData[IsActive] = 1;
+      //   }
+      //   this.daysSelectedII.push(jsonData);
+      //   date.setDate(date.getDate() + 1);
+      // }
+      // this.daysSelected = dates;
+      // this.calendar.updateTodaysDate();
     }
     else if (val.value == 3) {
-
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("Monthly_121").style.display = "block";
-
-      // const format2 = "YYYY-MM-DD";
-      // var start = moment(this.minDate);
-      // const d1 = new Date(moment(start).format(format2));
-      // var end = moment(this.maxDate);
-
-      // const d2 = new Date(moment(end).format(format2));
-      // const date = new Date(d1.getTime());
-      // if (this.daysSelectedII.length > 0) {
-      //   var date1 = new Date(), y = date1.getFullYear(), m = date1.getMonth();
-      //   var lastDay = new Date(y, m + 1, 0);
-      //   // monthdates
-      //   const enddate = new Date(moment(lastDay).format(format2));
-      //   this.daysSelectedII.forEach(element => {
-      //     var exist = moment(element.Date).isBetween(d1, enddate);
-      //     if (exist) {
-      //       const d22 = new Date(moment(end).format(format2));
-      //       const d12 = new Date(moment(element.Date).format(format2));
-      //       d12.setMonth(d12.getMonth() + 1);
-      //       while (d12 <= d22) {
-      //         var jsonData = {};
-      //         var columnName = "Date";
-      //         jsonData[columnName] = moment(d12).format(format2);
-      //         var columnNames = "StartTime";
-      //         jsonData[columnNames] = this.Startts;
-      //         var columnNamee = "EndTime";
-      //         jsonData[columnNamee] = this.Endtms;
-      //         if (this.ScheduleType == "Event") {
-      //           var IsActive = "IsActive";
-      //           jsonData[IsActive] = 0;
-      //         }
-      //         this.daysSelectedII.push(jsonData);
-      //         this.daysSelected.push(moment(d12).format(format2))
-      //         d12.setMonth(d12.getMonth() + 1);
-      //       }
-      //     }
-      //   });
-      // }
-      // else {
-      //   document.getElementById("weekly_121").style.display = "none";
-
-      //   this.daysSelectedII = [];
-      //   const dates = [];
-      //   while (date <= d2) {
-      //     dates.push(moment(date).format(format2));
-      //     var jsonData = {};
-      //     var columnName = "Date";
-      //     jsonData[columnName] = (moment(date).format(format2));
-      //     var columnNames = "StartTime";
-      //     jsonData[columnNames] = this.Startts;
-      //     var columnNamee = "EndTime";
-      //     jsonData[columnNamee] = this.Endtms;
-      //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-      //       var IsActive = "IsActive";
-      //       jsonData[IsActive] = 1;
-      //     }
-      //     this.daysSelectedII.push(jsonData);
-      //     date.setMonth(date.getMonth() + 1);
-      //   }
-      //   this.daysSelected = dates;
-      // }
-      // this.calendar.updateTodaysDate();
-      // if (this.ScheduleType == "Task") {
-      //   this.Checkdatetimetable(this.daysSelectedII);
-      // }
-
-
     }
 
   }
-
   selectmonthlydays(day) {
-
     let objIndex = this.MonthArr.findIndex((obj => obj.value == day.target.value));
     this.MonthArr[objIndex].checked = day.target.checked;
-    // this.Recurr_arr.push(day.target.value);
-    // alert(day.target.value);
-    // alert(this.Recurr_arr);
-
-
-
-    // const format2 = "YYYY-MM-DD";
-    // var start = moment(this.minDate);
-    // const d1 = new Date(moment(start).format(format2));
-    // var end = moment(this.maxDate);
-
-    // const d2 = new Date(moment(end).format(format2));
-    // const date = new Date(d1.getTime());
-    // if (this.daysSelectedII.length > 0) {
-    //   var date1 = new Date(), y = date1.getFullYear(), m = date1.getMonth();
-    //   var lastDay = new Date(y, m + 1, 0);
-    //   // monthdates
-    //   const enddate = new Date(moment(lastDay).format(format2));
-    //   this.daysSelectedII.forEach(element => {
-    //     var exist = moment(element.Date).isBetween(d1, enddate);
-    //     if (exist) {
-    //       const d22 = new Date(moment(end).format(format2));
-    //       const d12 = new Date(moment(element.Date).format(format2));
-    //       d12.setMonth(d12.getMonth() + 1);
-    //       while (d12 <= d22) {
-    //         var jsonData = {};
-    //         var columnName = "Date";
-    //         jsonData[columnName] = moment(d12).format(format2);
-    //         var columnNames = "StartTime";
-    //         jsonData[columnNames] = this.Startts;
-    //         var columnNamee = "EndTime";
-    //         jsonData[columnNamee] = this.Endtms;
-    //         if (this.ScheduleType == "Event") {
-    //           var IsActive = "IsActive";
-    //           jsonData[IsActive] = 0;
-    //         }
-    //         this.daysSelectedII.push(jsonData);
-    //         this.daysSelected.push(moment(d12).format(format2))
-    //         d12.setMonth(d12.getMonth() + 1);
-    //       }
-    //     }
-    //   });
-    // }
-    // else {
-    //   document.getElementById("weekly_121").style.display = "none";
-
-    //   this.daysSelectedII = [];
-    //   const dates = [];
-    //   while (date <= d2) {
-    //     dates.push(moment(date).format(format2));
-    //     var jsonData = {};
-    //     var columnName = "Date";
-    //     jsonData[columnName] = (moment(date).format(format2));
-    //     var columnNames = "StartTime";
-    //     jsonData[columnNames] = this.Startts;
-    //     var columnNamee = "EndTime";
-    //     jsonData[columnNamee] = this.Endtms;
-    //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-    //       var IsActive = "IsActive";
-    //       jsonData[IsActive] = 1;
-    //     }
-    //     this.daysSelectedII.push(jsonData);
-    //     date.setMonth(date.getMonth() + 1);
-    //   }
-    //   this.daysSelected = dates;
-    // }
-
-    // if (this.ScheduleType == "Task") {
-    //   this.Checkdatetimetable(this.daysSelectedII);
-    // }
     this.calendar.updateTodaysDate();
   }
 
@@ -3371,7 +3241,8 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-  creation_date:string;
+  creation_date: string;
+  pending_status:number;
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3395,35 +3266,129 @@ export class DashboardComponent implements OnInit {
         this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
-        this.creation_date=this.EventScheduledjson[0].Created_date;
+        this.creation_date = this.EventScheduledjson[0].Created_date;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-        
+        this.pending_status=this.EventScheduledjson[0].Pending_meeting;
         // console.log(this.EventScheduledjson, "Testing12");
 
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed') ) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("act-btn").style.display = "flex";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed' )) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("act-btn").style.display = "none";
         }
+        
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("act-btn").style.display = "none";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("act-btn").style.display = "none";
+        }
+        this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
+
+        this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+        this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+        this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
+        this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
+
+        this.dmsIdjson = [];
+        if (this.DMS_Scheduledjson.length > 0) {
+          this.DMS_Scheduledjson.forEach(element => {
+            var jsonData = {};
+            var columnName = "MailId";
+            jsonData[columnName] = element;
+            this.dmsIdjson.push(jsonData);
+          });
+          this.dmsIdjson = JSON.stringify(this.dmsIdjson);
+          this._LinkService._GetMemosSubject(this.dmsIdjson).
+            subscribe((data) => {
+              this._MemosSubjectList = JSON.parse(data['JsonData']);
+              console.log("Subject Name ------------>", this._MemosSubjectList);
+            });
+        }
+
+
+
+
+        // console.log(this.dmsIdjson,"ids");
+      });
+  }
+
+  GetClickEventPending_Calenders(id) {
+
+    this.Schedule_ID = id;
+    document.getElementById("act-btn").style.display = "none";
+    $('.bg-ovr').addClass('d-block');
+    $('.side_view').addClass('position-fixed');
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+
+        console.log(this.EventScheduledjson, "Testing");
+        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+        this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.Status1 = this.EventScheduledjson[0].Status;
+        this.Proposedate = this.EventScheduledjson[0].Schedule_date;
+        this.PropStart = this.EventScheduledjson[0].St_Time;
+        this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
+        this.pro_date = this.EventScheduledjson[0].Purposedate;
+        this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
+        this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
+        this.pro_enddate = this.EventScheduledjson[0].SEndDate;
+        this.creation_date = this.EventScheduledjson[0].Created_date;
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+       
+        // console.log(this.EventScheduledjson, "Testing12");
+        
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("act-btn").style.display = "flex";
+        }
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("act-btn").style.display = "none";
+          
+        }
+        else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
+          document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("act-btn").style.display = "none";
+        }
+        else {
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("copy_data").style.display = "none";
+          document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
@@ -3536,7 +3501,16 @@ export class DashboardComponent implements OnInit {
   clearsearch() {
     this.Searchword = null;
   }
+  Pending_request:any[]=[];
+GetPending_Request(){
+  this._calenderDto.Emp_No = this.Current_user_ID;
 
+  this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
+    ((data) => {
+      this.Pending_request=data as []
+      console.log(this.Pending_request,"123")
+    });
+  }
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
 
@@ -3556,7 +3530,7 @@ export class DashboardComponent implements OnInit {
           // initialDate:new Date(1, 3-9, 2023),
 
           headerToolbar: {
-            left: 'prev,next today',
+            left: 'prev,next',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
@@ -3636,43 +3610,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // start
-  pipe = new DatePipe('en-US');
-  orgValueChange(event) {
-
-    if (this._EndDate != null) {
-      let sd = this._StartDate.format("YYYY-MM-DD").toString();
-      let ed = (this._EndDate).format("YYYY-MM-DD").toString();
-
-      this.minDate = sd;
-      this.maxDate = ed;
-      this.daysSelected = [];
-      this.singleselectarry = [];
-      this.daysSelectedII = [];
-      this.daysSelected.push(sd);
-      this.singleselectarry.push(sd);
-
-      var jsonData = {};
-      var columnName = "Date";
-      jsonData[columnName] = sd;
-      var columnNames = "StartTime";
-      jsonData[columnNames] = this.Startts;
-      var columnNamee = "EndTime";
-      jsonData[columnNamee] = this.Endtms;
-      if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-        var IsActive = "IsActive";
-        jsonData[IsActive] = 1;
-      }
-      this.daysSelectedII.push(jsonData)
-
-      // if (this.ScheduleType == "Task") {
-      //   this.Checkdatetimetable(this.daysSelectedII);
-      // }
-      this.calendar.updateTodaysDate();
-
-    }
-    this.daysSelectedII = [];
-  }
 
   handleEventClick(arg) {
     // console.log(arg, "ttttt")
@@ -4410,8 +4347,12 @@ export class DashboardComponent implements OnInit {
   }
   penshow() {
     document.getElementById("pendlist").classList.add("show");
+
+    this.GetPending_Request();
+    document.getElementById("act-btn").style.display = "none";
   }
   penhide() {
     document.getElementById("pendlist").classList.remove("show");
+    
   }
 }
