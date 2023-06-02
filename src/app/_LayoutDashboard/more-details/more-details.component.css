@@ -1399,3 +1399,19 @@ span.guest-icns, .svg-icn {
 .btn22 span {
   line-height: 1;
 }
+.srch-actns {
+  width: 300px;
+  position: relative;
+}
+.srch-actns input{
+  height: 30px;
+}
+.srch-icon{
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+.srch-icon svg{
+  width: 14px;
+  height: 14px;
+}

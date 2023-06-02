@@ -752,11 +752,11 @@ function ProjectInfoComponent_div_59_ng_template_59_div_8_Template(rf, ctx) { if
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 229)(4, "ul", 230);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function ProjectInfoComponent_div_59_ng_template_59_div_8_Template_ul_click_4_listener($event) { return $event.stopPropagation(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "li", 27)(6, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](7, "Deadline Extend");
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](7, "New project end date");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]()();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](8, "li", 13);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](9, "div", 28)(10, "div", 29)(11, "div", 30)(12, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](13, "Set new project deadline");
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](13, "Set new project end date");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](14, "span", 31);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](15, "*");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]()();
@@ -3973,7 +3973,7 @@ class ProjectInfoComponent {
                     this.fun_LoadProjectDetails();
                 }
                 else if (this._Message == 'Project Deadline Updated') {
-                    this.notifyService.showSuccess(this._Message + " by " + this.Current_user_ID, "Success");
+                    this.notifyService.showSuccess("Project end date updated", "Success");
                     this.fun_LoadProjectDetails();
                 }
             });
