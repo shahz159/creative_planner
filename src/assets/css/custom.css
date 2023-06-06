@@ -1459,3 +1459,6 @@ button[disabled] {
 .word-break {
     word-break: break-all;
 }
+.btn.btn-icon i.fa{
+    font-size: 1.2rem;
+}

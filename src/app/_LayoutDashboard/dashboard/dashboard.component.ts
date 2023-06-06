@@ -3530,7 +3530,7 @@ GetPending_Request(){
           // initialDate:new Date(1, 3-9, 2023),
 
           headerToolbar: {
-            left: 'prev,next',
+            left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
