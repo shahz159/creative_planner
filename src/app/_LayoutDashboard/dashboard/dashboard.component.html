@@ -2977,19 +2977,21 @@
                 </div>
               
 
-                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false " class="form-group mb-1">
+                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false" class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts " data-toggle="modal"
                         data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
                         <button type="cancel" class="btn btn-primary" 
                     (click)="closeschd()"  >Close</button>
                 </div>
-                <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true"
+                <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true || pending_status==true "
                     class="form-group mb-2">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
                         (click)="OnSubmitReSchedule()">Update</button> &nbsp;
                         <button type="cancel" class="btn btn-primary" 
                     (click)="closeschd()"    >Close</button>
                 </div>
+
+                
                 <!-- <div class="form-group mb-1" >
                     <button type="cancel" class="btn btn-primary" 
                     (click)="closeschd()"    >Close</button>

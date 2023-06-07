@@ -434,6 +434,8 @@ export class DashboardComponent implements OnInit {
   today: any = new Date().toISOString().substring(0, 10);
   timeFrom: any;
   timeTo: any;
+  creation_date: string;
+  pending_status: boolean;
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -1439,7 +1441,7 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
-
+  pending:boolean;
 
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
@@ -1471,7 +1473,7 @@ export class DashboardComponent implements OnInit {
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details']
-
+        this.pending_status = this.EventScheduledjson[0].Pending_meeting;
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -3254,8 +3256,7 @@ export class DashboardComponent implements OnInit {
       return select.Emp_No;
     }).join(',');
   }
-  creation_date: string;
-  pending_status: number;
+
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3267,7 +3268,7 @@ export class DashboardComponent implements OnInit {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
-        console.log(this.EventScheduledjson, "Testing");
+        console.log(this.EventScheduledjson, "Testing1");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
