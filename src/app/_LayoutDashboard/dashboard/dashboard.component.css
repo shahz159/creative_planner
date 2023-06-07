@@ -2139,6 +2139,7 @@ a.ordr-a {
 .hedr-title{
     height: 50px;
     align-items: center;
+    justify-content: space-between;
 }
 .result-card{
     width: 100%;
