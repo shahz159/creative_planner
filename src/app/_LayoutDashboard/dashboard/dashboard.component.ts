@@ -561,7 +561,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
-    
+
 
     // for tippys
     tippy('#notification', {
@@ -1317,11 +1317,11 @@ export class DashboardComponent implements OnInit {
         var DayNum = "DayNum";
         jsonData[DayNum] = "NA";
         this.AllDatesSDandED.push(jsonData);
-        this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
+        this._StartDate =  moment().format("YYYY-MM-DD").toString();
         this.minDate = this.EventScheduledjson[0]['Schedule_date'];
-        this._EndDate = this.EventScheduledjson[0]['End_date'];
-        this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
-        this.maxDate = this.EventScheduledjson[0]['End_date'];
+        this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+        // this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
+        // this.maxDate = this.EventScheduledjson[0]['End_date'];
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           document.getElementById("div_endDate").style.display = "none";
@@ -1533,6 +1533,7 @@ export class DashboardComponent implements OnInit {
         }
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
+          this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
           this._labelName = "Schedule Date :";
           // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
@@ -1944,11 +1945,17 @@ export class DashboardComponent implements OnInit {
   OnSubmitReSchedule() {
     this._calenderDto.flagid = this._PopupConfirmedValue;
     var start = moment(this.minDate);
+  
     if (this._PopupConfirmedValue == 3) {
       // start = moment(this._Oldstart_date);
       start = moment(this.minDate);
     }
+    if(this.selectedrecuvalue == "0"){
+      var end=moment(this.minDate);
+    }
+    else{
     var end = moment(this.maxDate);
+    }
     // alert(end);
     const format2 = "YYYY-MM-DD";
     const d1 = new Date(moment(start).format(format2));
@@ -2070,6 +2077,9 @@ export class DashboardComponent implements OnInit {
 
         var vIsDeleted = "IsDeleted";
         element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
 
         var vRecurrence = "Recurrence"
         element[vRecurrence] = this.selectedrecuvalue;
@@ -2203,6 +2213,7 @@ export class DashboardComponent implements OnInit {
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
           this.GetScheduledJson();
+          this.GetPending_Request();
           this.Title_Name = null;
           this.RemovedAttach = [];
           this.ngEmployeeDropdown = null;
@@ -3166,10 +3177,10 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Monthly_121").style.display = "none";
     }
     if (val.value == 2) {
-     
+
       document.getElementById("weekly_121").style.display = "block";
       document.getElementById("Monthly_121").style.display = "none";
-      
+
     }
     else if (val.value == 1) {
       document.getElementById("weekly_121").style.display = "none";
@@ -3178,7 +3189,7 @@ export class DashboardComponent implements OnInit {
       // for (let index = 0; index < this.dayArr.length; index++) {
       //   this.dayArr[index].checked = false;
       // }
-    
+
       // alert(this.AllDatesSDandED.length)
       // while (date <= d2) {
 
@@ -3242,7 +3253,7 @@ export class DashboardComponent implements OnInit {
     }).join(',');
   }
   creation_date: string;
-  pending_status:number;
+  pending_status: number;
   GetClickEventJSON_Calender(arg) {
 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3269,24 +3280,24 @@ export class DashboardComponent implements OnInit {
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-        this.pending_status=this.EventScheduledjson[0].Pending_meeting;
+        this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         // console.log(this.EventScheduledjson, "Testing12");
 
-        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed') ) {
+        if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
           document.getElementById("act-btn").style.display = "flex";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed' )) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
           document.getElementById("act-btn").style.display = "none";
         }
-        
+
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
@@ -3358,9 +3369,9 @@ export class DashboardComponent implements OnInit {
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-       
+
         // console.log(this.EventScheduledjson, "Testing12");
-        
+
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
@@ -3374,7 +3385,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
-          
+
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
@@ -3501,15 +3512,15 @@ export class DashboardComponent implements OnInit {
   clearsearch() {
     this.Searchword = null;
   }
-  Pending_request:any[]=[];
-GetPending_Request(){
-  this._calenderDto.Emp_No = this.Current_user_ID;
+  Pending_request: any[] = [];
+  GetPending_Request() {
+    this._calenderDto.Emp_No = this.Current_user_ID;
 
-  this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
-    ((data) => {
-      this.Pending_request=data as []
-      console.log(this.Pending_request,"123")
-    });
+    this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
+      ((data) => {
+        this.Pending_request = data as []
+        console.log(this.Pending_request, "123")
+      });
   }
   GetScheduledJson() {
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -3530,7 +3541,7 @@ GetPending_Request(){
           // initialDate:new Date(1, 3-9, 2023),
 
           headerToolbar: {
-            left: 'prev,next',
+            left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
@@ -4347,12 +4358,13 @@ GetPending_Request(){
   }
   penshow() {
     document.getElementById("pendlist").classList.add("show");
+    document.getElementById("viw-cal").classList.add("show");
 
     this.GetPending_Request();
     document.getElementById("act-btn").style.display = "none";
   }
   penhide() {
     document.getElementById("pendlist").classList.remove("show");
-    
+    document.getElementById("viw-cal").classList.remove("show");
   }
 }

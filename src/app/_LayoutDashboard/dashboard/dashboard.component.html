@@ -424,9 +424,15 @@
             <div class="col-lg-12">
                 <span class="kt-portlet__head-icon d-flex-cen justify-content-between">
                     <!-- <i class="far fa-calendar-alt"></i> -->
-                    <h5 class="kt-portlet__head-title mr-3">
-                        <i class="far fa-calendar-alt"></i> My Calendar
-                    </h5>
+                    <div class="d-flex-cen">
+                        <h5 class="kt-portlet__head-title mr-3">
+                            <i class="far fa-calendar-alt"></i> My Calendar
+                        </h5>
+                        
+                        <div class="pend-bg mb-2">
+                            <button type="button" (click)="penhide()" class="pend-btn" id="viw-cal">View Calendar</button>
+                        </div>        
+                    </div>
                     <!-- <ng-select [(ngModel)]="selectedCar">
                         <ng-option *ngFor="let car of cars" [value]="car.id">{{car.name}}</ng-option>
                      </ng-select> -->
@@ -570,32 +576,29 @@
                         </div>
 
                         <div class="fc pend-fc pend-bg">
-                            <button type="button" (click)="penshow()" class="pend-btn">Pending List</button>
+                            <button type="button" (click)="penshow()" class="pend-btn">Pending</button>
                         </div>
 
                         <div id="pendlist" class="pend-section">
                             <div class="px-4">
-                                <div class="d-flex-between">
-                                    <h4 class="text-dark">Pending List</h4>   
-                                    <div class="pend-bg">
-                                        <button type="button" (click)="penhide()" class="pend-btn">View Calendar</button>
-                                    </div>                                 
+                                <div class="d-flex-between11">   
+                                    <h4 class="text-dark">Pending</h4>                         
                                 </div>
                             </div>
                             <div class="result-card kt-portlet__body_scroll">
                                 <div class="list-1">
                                     <div class="item-1" *ngFor="let item of Pending_request" >
-                                        <div class="date-1">
-                                            <!-- <h4>12</h4> -->
+                                        <!-- <div class="date-1">
+                                           
                                             <div class="">
                                                 8 Thu, May 2025 
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="time-event flex-1">
                                             <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
                                                 tabindex="0" (click)="GetClickEventPending_Calenders(item.Schedule_ID)">
                                                 <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">4:30PM-5:00PM</div>
+                                                <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
                                                 
                                                 <div class="fc-event-title ml-5"> {{item.Task_Name}}</div>
                                             </a>
@@ -1053,8 +1056,8 @@
                                         </a>
                                     </div>
 
-                                    <a class="dropdown-item">
-                                        Postpone
+                                    <a class="dropdown-item" (click)="ReshudingTaskandEvent()">
+                                        Reschedule
                                     </a>
                                     <a class="dropdown-item" (click)="Pending_meeting()">
                                         Pending
@@ -2968,22 +2971,22 @@
                 
                 <div class="form-group mb-1" *ngIf=" copyTask==true || create==true ">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts || !Title_Name "
-                        (click)="OnSubmitSchedule()">Submit</button>
+                        (click)="OnSubmitSchedule()">Submit</button> &nbsp;
                         <button type="cancel" class="btn btn-primary" 
-                    (click)="closeschd()"    >Close</button>
+                    (click)="closeschd()"   >Close</button>
                 </div>
               
 
                 <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false " class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts " data-toggle="modal"
-                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button>
+                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
                         <button type="cancel" class="btn btn-primary" 
-                    (click)="closeschd()"    >Close</button>
+                    (click)="closeschd()"  >Close</button>
                 </div>
                 <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true"
-                    class="form-group mb-1">
+                    class="form-group mb-2">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
-                        (click)="OnSubmitReSchedule()">Update</button>
+                        (click)="OnSubmitReSchedule()">Update</button> &nbsp;
                         <button type="cancel" class="btn btn-primary" 
                     (click)="closeschd()"    >Close</button>
                 </div>

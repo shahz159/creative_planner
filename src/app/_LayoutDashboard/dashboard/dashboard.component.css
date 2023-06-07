@@ -2227,6 +2227,12 @@ a.ordr-a {
 .pend-btn:focus {
     box-shadow: none !important;
 }
+#viw-cal{
+    display: none;
+}
+#viw-cal.show{
+    display: inline-block;
+}
 .time-event .fc-event-selected, .fc-event:focus{
    box-shadow: none;
 }
