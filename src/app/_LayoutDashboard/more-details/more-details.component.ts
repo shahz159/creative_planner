@@ -710,6 +710,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data => {
 
         this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+        console.log(this.meetingList,"ww")
         this.meeting_arry = this.meetingList
         this.meetinglength = this.meeting_arry.length;
         this.meeting_arry.forEach(element => {
@@ -1008,6 +1009,7 @@ export class MoreDetailsComponent implements OnInit {
   selectedclient: any;
   Delaydays: any;
   supp: boolean =false;
+  sdate:any;
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1029,6 +1031,8 @@ export class MoreDetailsComponent implements OnInit {
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
+          this.sdate = this.datepipe.transform(this.StartDate, 'yyyy-MM-dd');
+
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];
