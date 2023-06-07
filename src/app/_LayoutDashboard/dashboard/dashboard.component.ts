@@ -1648,6 +1648,8 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
+
+  
   hasWhiteSpace(s: string) {
     return /\s/.test(s);
   }

@@ -1271,9 +1271,17 @@
                                                 class="fas fa-plus mr-2"></i>New Action</button>
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
-                                        <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
+                                        <!-- <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
-                                            Inprocess</div>
+                                            Inprocess</div> -->
+                                            <div class="srch-actns mb-3">
+                                                <input class="form-control" placeholder="search..." />
+                                                <span class="srch-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="inProcessCount!=0">
                                             <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
@@ -1362,6 +1370,10 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
+                                                                            <span type="button" id="-icn" class="text-info">
+                                                                                <i data-toggle="tooltip" title="edit owner"
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                            </span>
                                                                         </h5>
                                                                     </div>
                                                                 </div>
@@ -1381,7 +1393,12 @@
                                                                         <h6 class="txtm-cus">Responsible</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
-                                                                            {{item.Subtask_Res}}</h5>
+                                                                            {{item.Subtask_Res}}
+                                                                            <span type="button" id="-icn" class="text-info">
+                                                                                <i data-toggle="tooltip" title="edit owner"
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                            </span>
+                                                                        </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1873,9 +1890,18 @@
                                     </div>
                                     
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
-                                        <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
+                                        <!-- <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
-                                            Completed</div>
+                                            Completed</div> -->
+                                            <div class="srch-actns mb-3">
+                                                <input class="form-control" placeholder="search..." />
+                                                <span class="srch-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+
                                         <div class="ribbon-content scrollbar1" *ngIf="completedCount !=0">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
                                             <div class="subtask-list" *ngFor="let item of CompletedList; let i=index">
@@ -2563,7 +2589,19 @@
 
                     <!-- People Section -->
                     <div class="tab-pane fade" id="People" role="tabpanel" aria-labelledby="People1">
-                        <h4>People on the project (RACIS)</h4>
+                        <div class="px-3 d-flex align-items-center">
+    
+                            <h4 class="flex-1">People on the project (RACIS)</h4>
+
+                            <div class="">
+                                <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
+                                <!-- (click)="OnAddTaskClick()" -->
+                                <button title="Create New Action"
+                                    class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold">
+                                    <i class="fas fa-plus mr-2"></i>Add Support</button>
+                            </div>
+
+                        </div>
                         <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                             <div class="kt-portlet__body px-3 project-people">
                                 <div class="d-flex align-items-center justify-content-between mb-3">

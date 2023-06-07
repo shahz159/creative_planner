@@ -1345,6 +1345,7 @@ export class HomeComponent implements OnInit {
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
         this._ListProjStat = JSON.parse(data[0]['Portfolio_FavouritesList']);
+        console.log(this._ListProjStat,"favorite")
         let favCount = this._ListProjStat.length;
         if (favCount < 30) {
           this.NoOfPages = 1;
