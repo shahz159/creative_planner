@@ -1229,10 +1229,10 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
       this.notifyService.showSuccess("Added In Pending Successfully", "Success");
      
-      
-    })
-    this.closeevearea();
+      this.closeevearea();
     this.GetScheduledJson();
+    })
+    
   }
 
   // Customize() {
@@ -1457,7 +1457,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "test")
+        console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1475,7 +1475,7 @@ export class DashboardComponent implements OnInit {
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details']
-        this.pending_status = this.EventScheduledjson[0].Pending_meeting;
+        this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1781,6 +1781,9 @@ export class DashboardComponent implements OnInit {
 
         var vIsDeleted = "IsDeleted";
         element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
 
         var vRecurrence = "Recurrence";
         element[vRecurrence] = this.selectedrecuvalue;
