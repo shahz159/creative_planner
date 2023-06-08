@@ -71,7 +71,7 @@
                                     Hold until {{hold_upto}}
                                 </label><i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip"
                                     title="click here to release project" (click)="release_project()"
-                                    *ngIf="Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo"></i>
+                                    *ngIf="Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true"></i>
                             </ng-container>
                             <!-- 'bg-coral' :  Status== 'New Todo', Status=='Project Hold' ||  -->
                         </ng-container>
@@ -170,7 +170,7 @@
                         <div class="ml-2 pro-act">
                             <!--Transfer end   data-toggle="dropdown"-->
                             <div class="dropdown"
-                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed')">
                                 <button class="btn22 dropdown-toggle no-after" aria-haspopup="true"
                                     aria-expanded="false" (click)="onTransferClick(Pid)" data-toggle="tooltip"
                                     title="click to transfer">
@@ -260,7 +260,7 @@
                         </button>
                     </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
-                            && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                            && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                         class=" pro-act ml-2">
                         <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()" data-toggle="tooltip"
                             title="submit project">
@@ -296,7 +296,7 @@
                             title="Project Name!">{{ProjectName }}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
+                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)">
                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                 title="edit project name"></i>
                         </span>
@@ -322,7 +322,7 @@
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}"
-                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)">
+                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                             title="edit description"></i>
                     </span>
@@ -441,7 +441,7 @@
                                             <!-- Deadline extend data-toggle="dropdown"-->
 
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" aria-haspopup="true"
                                                     aria-expanded="false" (click)="onEditDeadline(Pid)">
                                                     <i class="fas fa-edit ml-2 mb-1 curser-pointer"
@@ -488,7 +488,7 @@
 
                                             <!-- Project Hold  data-toggle="dropdown" (click)="onHoldClick(Pid)"-->
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed')">
                                                 <span type="button" id="hold-icn" aria-haspopup="true"
                                                     aria-expanded="false" (click)="onHoldClick(Pid)"
                                                     class="dropdown-toggle no-after text-info">
@@ -497,9 +497,9 @@
                                                 </span>
                                             </div>
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status=='Project Hold')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed' && Status=='Project Hold')">
                                                 <span type="button" id="release-icn"
-                                                    *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo) && (Status=='Project Hold')"
+                                                    *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true) && (Status=='Project Hold')"
                                                     aria-haspopup="true" aria-expanded="false"
                                                     (click)="release_project()"
                                                     class="dropdown-toggle no-after text-info">
@@ -603,7 +603,7 @@
                                     <h6 class="txtm-cus pt-1">Client</h6>
                                     <h5 class="mt-1">{{Client}}
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="category change"></i>
@@ -636,7 +636,7 @@
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1 mb-0">Responsible
                                         <button class="btn btn-primary btn-sm py-0 px-1 ml-1 dropdown-toggle no-after"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) &&
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) &&
                                                 (Status!='Completed')" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false" (click)="onTransferClick(Pid)" data-toggle="tooltip"
                                             title="click to transfer">
@@ -697,7 +697,7 @@
                                     <h6 class="txtm-cus pt-1">Category</h6>
                                     <h5 class="mt-1" *ngIf="Category">{{Category}}
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="category change"></i>
@@ -705,7 +705,7 @@
                                     </h5>
                                     <h5 class="mt-1" *ngIf="!Category">No category
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="category change"></i>
@@ -1258,14 +1258,14 @@
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
 
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
@@ -1274,7 +1274,7 @@
                                         <!-- <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div> -->
-                                            <div class="srch-actns mb-3">
+                                            <div class="srch-actns mb-3" (click)="notinAction()">
                                                 <input class="form-control" placeholder="search..." />
                                                 <span class="srch-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -1372,7 +1372,7 @@
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
                                                                             <span type="button" id="-icn" class="text-info">
                                                                                 <i data-toggle="tooltip" title="edit owner"
-                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer d-none"></i>
                                                                             </span>
                                                                         </h5>
                                                                     </div>
@@ -1395,8 +1395,8 @@
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
                                                                             <span type="button" id="-icn" class="text-info">
-                                                                                <i data-toggle="tooltip" title="edit owner"
-                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                                                                <i data-toggle="tooltip" title="edit responsible"
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer d-none"></i>
                                                                             </span>
                                                                         </h5>
                                                                     </div>
@@ -1876,14 +1876,14 @@
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
 
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
@@ -1893,7 +1893,7 @@
                                         <!-- <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div> -->
-                                            <div class="srch-actns mb-3">
+                                            <div class="srch-actns mb-3" (click)="notinAction()">
                                                 <input class="form-control" placeholder="search..." />
                                                 <span class="srch-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -2414,7 +2414,7 @@
 
                             <div class="">
                                 <button [hidden]="darbutton==false" type="button" class="btn btn-info btn-sm"
-                                    *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true))"
+                                    *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                     (click)="darcreate()">
                                     Create Timeline
                                 </button>
@@ -2596,9 +2596,9 @@
                             <div class="">
                                 <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                 <!-- (click)="OnAddTaskClick()" -->
-                                <button title="Create New Action"
-                                    class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold">
-                                    <i class="fas fa-plus mr-2"></i>Add Support</button>
+                                <button title="Create New Action" *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                    class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="onEditSupport()">
+                                    <i class="fas fa-plus mr-2"></i>Add support</button>
                             </div>
 
                         </div>
@@ -3935,6 +3935,40 @@
     </div>
     <!-- project client edit end-->
 
+    <div class="spacer--body" *ngIf="editSupport==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                    <div><b>Edit support</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    <div class="px-4 py-3">
+                        <div class="form-group">
+                            <label> Add new support <span class="text-danger">*</span> : <strong></strong></label>
+                            <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of nonRacisList">
+                                    <a>{{item.NonRACIS}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group mb-1">
+                            <label>Remarks<span class="text-danger">*</span></label>
+                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                placeholder="Define your exact reason here." rows="2" cols="20"
+                                style="height:70px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedsupport || !extend_remarks"
+                    (click)="onProject_updateSupport()">Submit</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
 
 
     <!-- project transfer (keydown.enter)="onProject_Transfer(Pid,_MasterCode);"-->
