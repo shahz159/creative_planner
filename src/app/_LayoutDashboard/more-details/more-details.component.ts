@@ -30,6 +30,7 @@ import { data } from 'jquery';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
+import { Hierarchy } from '@amcharts/amcharts5/.internal/charts/hierarchy/Hierarchy';
 
 
 @Component({
@@ -106,12 +107,13 @@ export class MoreDetailsComponent implements OnInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
-
+    this.gethierarchy();
     this.getholdate();
     this.getRejectType();
     this.getReasonforholdandRejected();
     this.GetProjectDetails();
     this.GetSubtask_Details();
+    this.getRACISandNonRACIS();    
     this.dar_details();
     this.getResponsibleActions();
     this.getapprovalStats();
@@ -263,6 +265,18 @@ export class MoreDetailsComponent implements OnInit {
     this.service.getHoldDatebyProjectcode(this.URL_ProjectCode).subscribe((data) => {
       this.hold_upto = data["Project_holddate"];
       // this.hold_upto=moment(this.hold_upto).format("DD-MM-YYYY");
+    });
+  }
+
+  isHierarchy:boolean=false;
+  gethierarchy() {
+    this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID,this.URL_ProjectCode).subscribe((data) => {
+      if(data['message']=='1'){
+        this.isHierarchy=true;
+      }
+      else{
+        this.isHierarchy=false;
+      }
     });
   }
 
@@ -704,21 +718,28 @@ export class MoreDetailsComponent implements OnInit {
   meetingList: any = [];
   meeting_arry: any = [];
   meetinglength: any;
+
   GetmeetingDetails() {
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
-
-        this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
-        this.meeting_arry = this.meetingList
+        if(data!=null || data!=undefined){
+          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+        this.meeting_arry = this.meetingList;
+        if(this.meeting_arry.length > 0)
         this.meetinglength = this.meeting_arry.length;
         this.meeting_arry.forEach(element => {
           element.usersjson = JSON.parse(element.Addguest);
 
         });
+        }
+        else{
+          this.meetinglength = 0;
+        }
       });
-
   }
+
+
   dar_details() {
     this.noTimeline = false;
     this.ObjSubTaskDTO.MasterCode = this.URL_ProjectCode;
@@ -728,6 +749,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
+        console.log(this.darArray,"DAR");
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -1006,8 +1028,21 @@ export class MoreDetailsComponent implements OnInit {
   portslength: any;
   selectedcategory: any;
   selectedclient: any;
+  selectedsupport:any;
   Delaydays: any;
   supp: boolean =false;
+  nonRacisList:any;
+  RACISList:any;
+
+  getRACISandNonRACIS(){
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+        console.log(JSON.parse(data[0]['OtherList']),"RACIS");
+        this.nonRacisList=(JSON.parse(data[0]['OtherList']));
+        this.RACISList=(JSON.parse(data[0]['RacisList']));
+      });
+  }
+
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1263,6 +1298,7 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
   close_space() {
+    this.Editbutton=false;
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
@@ -1272,6 +1308,7 @@ export class MoreDetailsComponent implements OnInit {
     this.extend_remarks = "";
     this.selectedcategory = null;
     this.selectedclient = null;
+    this.selectedsupport = null;
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3320,6 +3357,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editClient = false;
     this.editCategory = false;
     this.editRelease = false;
+    this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3335,6 +3373,10 @@ export class MoreDetailsComponent implements OnInit {
   editDeadline: boolean = false;
   editCategory: boolean = false;
   editClient: boolean = false;
+  editSupport: boolean = false;
+  editActionOwner: boolean = false;
+  editActionResp: boolean = false;
+
 
   onEditDeadline(id) {
     // this._ProjDeadline = enddate;
@@ -3348,6 +3390,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editCategory = false;
     this.editRelease = false;
     this.editClient = false;
+    this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3368,6 +3411,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
+    this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3385,6 +3429,25 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = true;
+    this.editSupport =false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditSupport() {
+    this.Editbutton = true;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editSupport =true;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3405,6 +3468,7 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = true;
@@ -3429,6 +3493,7 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
@@ -3495,6 +3560,7 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = true;
     this.editCategory = false;
     this.editClient = false;
+    this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
@@ -3556,6 +3622,7 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
@@ -3575,6 +3642,7 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = true;
     this.actstartedit = false;
@@ -3851,6 +3919,31 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
+  onProject_updateSupport() {
+
+    if (this.selectedsupport != null  && this.extend_remarks != null) {
+      this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Project Support not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project Support updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Client cannot be empty", "Please try again with correct value");
+    }
+  }
+
+
   Holddate: string;
   hold_remarks: string;
   minhold: any = new Date();
@@ -3987,6 +4080,7 @@ export class MoreDetailsComponent implements OnInit {
   selectedEmpNo: string = null;
 
   Clear_Feilds() {
+    this.Editbutton=false;
     this.Sub_ProjectName = "";
     this._Description = "";
     this._StartDate = null;

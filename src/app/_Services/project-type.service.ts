@@ -77,6 +77,7 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this.ObjCategoryDTO = new CategoryDTO();
     this.ObjDto = new ProjectDetailsDTO();
+    this._ObjProjectDTO= new ProjectDetailsDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
 
@@ -333,6 +334,12 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardNotifications", this.ObjNotificationDto)
   }
+  
+  GetHierarchyofOwnerforMoredetails(empno,projcode) {
+    this._ObjProjectDTO.Emp_No =empno;
+    this._ObjProjectDTO.Project_Code =projcode;
+    return this.http.post(this.rootUrl + "Notification/NewGetHierarchyofOwnerforMoredetails", this._ObjProjectDTO)
+  }
 
   GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
@@ -383,6 +390,12 @@ export class ProjectTypeService {
   }
   // Project Info 
   ObjSubTaskDTO: SubTaskDTO;
+
+  GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
+    this.ObjSubTaskDTO.Project_Code = prjCode;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
+  }
+
   SubTaskDetailsService(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     let EmpNo = localStorage.getItem('EmpNo');
@@ -750,6 +763,14 @@ export class ProjectTypeService {
     this.ObjDto.ClientId = clientid;
     this.ObjDto.Remarks = remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectChangeClient", this.ObjDto);
+  }
+
+  _NewProjectSupportService(pcode,Empno,support,remarks) {
+    this.ObjDto.Project_Code = pcode;
+    this.ObjDto.Emp_No = Empno;
+    this.ObjDto.Team_Support = support;
+    this.ObjDto.Remarks = remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectUpdateSupport", this.ObjDto);
   }
 
   _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {

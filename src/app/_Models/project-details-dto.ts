@@ -21,6 +21,7 @@ export class ProjectDetailsDTO {
     Project_StartDate:string;
     Project_EndDate: string;
     Project_holddate: string;
+    message: string;
 
     Team_Autho: string;
 
