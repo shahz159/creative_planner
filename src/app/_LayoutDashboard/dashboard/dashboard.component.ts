@@ -4369,13 +4369,15 @@ export class DashboardComponent implements OnInit {
   }
   penshow() {
     document.getElementById("pendlist").classList.add("show");
-    document.getElementById("viw-cal").classList.add("show");
+    document.getElementById("cal-main").classList.add("col-lg-9");
+    document.getElementById("cal-main").classList.remove("col-lg-12");
 
     this.GetPending_Request();
     document.getElementById("act-btn").style.display = "none";
   }
   penhide() {
     document.getElementById("pendlist").classList.remove("show");
-    document.getElementById("viw-cal").classList.remove("show");
+    document.getElementById("cal-main").classList.remove("col-lg-9");
+    document.getElementById("cal-main").classList.add("col-lg-12");
   }
 }

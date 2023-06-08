@@ -4439,6 +4439,7 @@ class DashboardComponent {
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
       this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
       this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+      this.pending_status = this.EventScheduledjson[0].Pending_meeting;
 
       if (this._FutureEventTasksCount > 0) {// var radio1 = document.getElementById('r1') as HTMLInputElement | null;
         // radio1.disabled = false;
@@ -6039,7 +6040,7 @@ class DashboardComponent {
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe(data => {
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log(this.EventScheduledjson, "Testing");
+      console.log(this.EventScheduledjson, "Testing1");
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
       this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -8432,9 +8433,9 @@ DashboardComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1
       _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](1);
       _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵproperty"]("ngIf", ctx.copyTask == true || ctx.create == true);
       _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵproperty"]("ngIf", ctx._AllEventTasksCount > 1 && ctx.editTask == true && ctx.copyTask == false);
+      _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵproperty"]("ngIf", ctx._AllEventTasksCount > 1 && ctx.editTask == true && ctx.copyTask == false && ctx.pending_status == false);
       _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵadvance"](1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵproperty"]("ngIf", ctx._AllEventTasksCount == 1 && ctx._FutureEventTasksCount == 0 && ctx.editTask == true);
+      _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵproperty"]("ngIf", ctx._AllEventTasksCount == 1 && ctx._FutureEventTasksCount == 0 && ctx.editTask == true || ctx.pending_status == true);
     }
   },
   dependencies: [_kolkov_angular_editor__WEBPACK_IMPORTED_MODULE_20__.AngularEditorComponent, _angular_common__WEBPACK_IMPORTED_MODULE_17__.NgClass, _angular_common__WEBPACK_IMPORTED_MODULE_17__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_17__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_21__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_21__.NgSelectOption, _angular_forms__WEBPACK_IMPORTED_MODULE_21__["ɵNgSelectMultipleOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_21__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.CheckboxControlValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.MinLengthValidator, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.MaxLengthValidator, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.NgModel, _angular_forms__WEBPACK_IMPORTED_MODULE_21__.NgForm, _angular_router__WEBPACK_IMPORTED_MODULE_15__.RouterOutlet, _fullcalendar_angular__WEBPACK_IMPORTED_MODULE_22__.FullCalendarComponent, ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_23__.MultiSelectComponent, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_19__.MatCalendar, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_19__.MatDatepicker, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_19__.MatDatepickerInput, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_19__.MatDatepickerToggle, _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_24__.NgSelectComponent, _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_24__["ɵr"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_25__.MatSuffix, _angular_material_card__WEBPACK_IMPORTED_MODULE_26__.MatCard, _angular_material_core__WEBPACK_IMPORTED_MODULE_16__.MatOption, _angular_material_input__WEBPACK_IMPORTED_MODULE_27__.MatInput, _angular_material_select__WEBPACK_IMPORTED_MODULE_28__.MatSelect, ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_11__.GooglePlaceDirective, _angular_common__WEBPACK_IMPORTED_MODULE_17__.DecimalPipe, _angular_common__WEBPACK_IMPORTED_MODULE_17__.TitleCasePipe, _angular_common__WEBPACK_IMPORTED_MODULE_17__.DatePipe],
