@@ -1064,6 +1064,8 @@ export class MoreDetailsComponent implements OnInit {
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
+          this.sdate = this.datepipe.transform(this.StartDate, 'yyyy-MM-dd');
+
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];

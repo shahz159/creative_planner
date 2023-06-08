@@ -923,7 +923,7 @@
                                 aria-controls="profile"><span class="nav-text">People</span>
                                 <span data-toggle="tooltip" title="{{raciPeople}}" class="noti">{{racislength}}</span>
                             </a></li>
-                        <li class="nav-item" (click)="GetmeetingDetails()"><a class="nav-link" id="Meeting1"
+                        <li class="nav-item"  (click)="GetmeetingDetails()"><a class="nav-link" id="Meeting1"
                                 data-toggle="tab" href="#Meeting"><span class="nav-text">Meeting</span>
                                 <span class="noti" *ngIf="meetinglength!=0">{{meetinglength}}</span></a></li>
                     </ul>
@@ -2728,11 +2728,13 @@
                     <!-- People Section end-->
 
                     <!-- Meetings section -->
-                    <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1">
+                    <div class="tab-pane fade" id="Meeting" role="tabpanel" aria-labelledby="Meeting1" >
 
                         <div class="">
                             <div class="scrollbar1">
                                 <div class="event" *ngFor="let item of meeting_arry">
+                                    <!-- {{StartDate}} --- {{item.Schedule_date}} -->
+                                    <ng-container *ngIf="item.Schedule_date >= sdate">
                                     <div class="event-header sticky-header">
                                         <span class="header-text header-date">
                                             {{item.Schedule_date | date: 'fullDate'}}
@@ -2835,7 +2837,9 @@
 
 
                                     </div>
+                                </ng-container>
                                 </div>
+                            
                             </div>
                         </div>
 
