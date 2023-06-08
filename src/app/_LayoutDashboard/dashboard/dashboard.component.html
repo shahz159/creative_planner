@@ -2166,9 +2166,11 @@
     <div class="px-4 pt-4 pb-1 border-bottom">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
             <h4 class="m-0">Request List</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeevearea1()">
-                <i class="fa fa-times"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>
@@ -2327,21 +2329,27 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2"
             *ngIf="editTask==false && copyTask==false">
             <h4 class="m-0">Schedule {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2"
             *ngIf="editTask==true &&  copyTask==false">
             <h4 class="m-0">Edit {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2" *ngIf="copyTask==true ">
             <h4 class="m-0">Copy {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>

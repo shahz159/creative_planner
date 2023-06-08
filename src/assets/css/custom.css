@@ -439,14 +439,15 @@ h3.popover-header {
 
 .sideInfobar .closebtn {
 	text-decoration: none;
-	color: #333;
   position: absolute;
   top: 13px;
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
 }
-
+.closebtn {
+    color: #333;
+}
 .info-icon-cir{
   font-size: 20px;
   color: #5867dd;

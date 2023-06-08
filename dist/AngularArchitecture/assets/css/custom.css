@@ -1462,3 +1462,6 @@ button[disabled] {
 .btn.btn-icon i.fa{
     font-size: 1.2rem;
 }
+.line-1 {
+    line-height: 1 !important;
+}
