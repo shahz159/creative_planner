@@ -1043,6 +1043,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
+  sdate:any;
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
