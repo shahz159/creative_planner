@@ -1228,9 +1228,11 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
     this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
       this.notifyService.showSuccess("Added In Pending Successfully", "Success");
-      this.closeevearea();
-      this.GetScheduledJson();
+     
+      
     })
+    this.closeevearea();
+    this.GetScheduledJson();
   }
 
   // Customize() {
@@ -1954,7 +1956,11 @@ export class DashboardComponent implements OnInit {
       // start = moment(this._Oldstart_date);
       start = moment(this.minDate);
     }
+   
     if(this.selectedrecuvalue == "0"){
+      var end=moment(this.minDate);
+    }
+  else if(this.pending_status==true || this._PopupConfirmedValue==1){
       var end=moment(this.minDate);
     }
     else{
@@ -2218,6 +2224,7 @@ export class DashboardComponent implements OnInit {
           this.notifyService.showSuccess(this._Message, "Success");
           this.GetScheduledJson();
           this.GetPending_Request();
+          this.penhide();
           this.Title_Name = null;
           this.RemovedAttach = [];
           this.ngEmployeeDropdown = null;
@@ -3558,6 +3565,7 @@ export class DashboardComponent implements OnInit {
             hour: 'numeric',
             minute: '2-digit',
             meridiem: 'short'
+           
           },
           nowIndicator: true,
           allDaySlot: false,
