@@ -2190,6 +2190,18 @@
                                 </div>
                             </div>
                         </div>
+                        <!--new no records-->
+                        <div class="">
+                            <div class="text-right">
+                                <button *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                            (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
+                                            class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
+                                                class="fas fa-plus mr-2"></i>New Action</button>
+                            </div>
+                            <!-- <div *ngIf="subTaskCount!=0; else noResultsFound">
+                            </div> -->
+                        </div>
+
                     </div>
                     <!-- SubTasks Section end-->
 
@@ -2204,11 +2216,11 @@
 
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
                         <div class="bg-white p-3 mb-2 scrollbar1">
-                            <div>
-                                <button type="button" class="btn btn-info btn-sm py-1" (click)="AddDms()">
-                                    <i class="fa fa-chart-bar"></i>Link DMS
-                                </button>
+                            <div class="text-right">
+                                <button class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="AddDms()">
+                                    <i class="fa fa-chart-bar"></i>Link DMS</button>
                             </div>
+
                             <p style="color:gray">{{_MemosNotFound}}</p>
                             <table class="table" *ngIf="_MemosNotFound=='';else noResultsFound">
                                 <tbody>
@@ -2231,11 +2243,13 @@
 
                     <div class="tab-pane fade" id="Portfolio" role="tabpanel" aria-labelledby="Portfolio1">
                         <div class="bg-white p-3 mb-2">
-                            <div>
-                                <button type="button" class="btn btn-info btn-sm py-1" (click)="AddPortfolio()">
+
+                            <div class="text-right">
+                                <button type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="AddPortfolio()">
                                     <i class="fa fa-chart-bar"></i>Link Portfolio
                                 </button>
                             </div>
+
                             <!-- <table class="table">
                                 <tbody>
                                     <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
@@ -2410,21 +2424,22 @@
                     <!-- TimeLine Section -->
                     <div class="tab-pane fade" id="Timeline" role="tabpanel" aria-labelledby="Timeline1">
                         <!-- <h3 class="kt-subheader__title text-left" *ngIf="noTimeline == false">Timeline</h3>  -->
-                        <div class="d-flex-center mb-3">
-
-                            <div class="">
-                                <button [hidden]="darbutton==false" type="button" class="btn btn-info btn-sm"
-                                    *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
-                                    (click)="darcreate()">
-                                    Create Timeline
-                                </button>
-                            </div>
-                            <div class=" mb-0">
+                        
+                        <div class="text-right d-flex-cen justify-content-end mb-3">
+                            <div class="mr-2">
                                 <h6 class="mb-0">
                                     <strong>Total Achievement Hours - {{totalHours}}</strong>
                                 </h6>
-                            </div>
+                            </div> 
+
+                            <button [hidden]="darbutton==false" type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold"
+                                *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                (click)="darcreate()">
+                                Create Timeline
+                            </button>
                         </div>
+
+
                         <div *ngIf="noTimeline == false; else noResultsFound">
                             <div class="item-b  ribbon-content scrollbar1">
                                 <div class="mb-3" *ngFor="let item of darArray">
