@@ -421,12 +421,18 @@
             </div>
 
 
-            <div class="col-lg-12">
+            <div class="col-lg-12" id="cal-main">
                 <span class="kt-portlet__head-icon d-flex-cen justify-content-between">
                     <!-- <i class="far fa-calendar-alt"></i> -->
-                    <h5 class="kt-portlet__head-title mr-3">
-                        <i class="far fa-calendar-alt"></i> My Calendar
-                    </h5>
+                    <div class="d-flex-cen">
+                        <h5 class="kt-portlet__head-title mr-3">
+                            <i class="far fa-calendar-alt"></i> My Calendar
+                        </h5>
+                        
+                        <!-- <div class="pend-bg mb-2">
+                            <button type="button" (click)="penhide()" class="pend-btn" id="viw-cal">View Calendar</button>
+                        </div>         -->
+                    </div>
                     <!-- <ng-select [(ngModel)]="selectedCar">
                         <ng-option *ngFor="let car of cars" [value]="car.id">{{car.name}}</ng-option>
                      </ng-select> -->
@@ -570,59 +576,9 @@
                         </div>
 
                         <div class="fc pend-fc pend-bg">
-                            <button type="button" (click)="penshow()" class="pend-btn">Pending List</button>
+                            <button type="button" (click)="penshow()" class="pend-btn">Pending</button>
                         </div>
 
-                        <div id="pendlist" class="pend-section">
-                            <div class="px-4">
-                                <div class="d-flex-between">
-                                    <h4 class="text-dark">Pending List</h4>   
-                                    <div class="pend-bg">
-                                        <button type="button" (click)="penhide()" class="pend-btn">View Calendar</button>
-                                    </div>                                 
-                                </div>
-                            </div>
-                            <div class="result-card kt-portlet__body_scroll">
-                                <div class="list-1">
-                                    <div class="item-1">
-                                        <div class="date-1">
-                                            <!-- <h4>12</h4> -->
-                                            <div class="">
-                                                8 Thu, May 2025 
-                                            </div>
-                                        </div>
-                                        <div class="time-event flex-1">
-                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                                tabindex="0">
-                                                <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">4:30PM-5:00PM</div>
-                                                
-                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
-                                            </a>
-                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
-                                        </div>
-                                    </div>
-                                    <div class="item-1">
-                                        <div class="date-1">
-                                            <!-- <h4>12</h4> -->
-                                            <div class="">
-                                                8 Thu, May 2025 
-                                            </div>
-                                        </div>
-                                        <div class="time-event flex-1">
-                                            <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                                tabindex="0">
-                                                <div class="fc-daygrid-event-dot"></div>
-                                                <div class="fc-event-time">4:30PM-5:00PM</div>
-                                                
-                                                <div class="fc-event-title ml-5"> Test Recurance Weekly 2025 </div>
-                                            </a>
-                                            <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
@@ -633,6 +589,48 @@
                 </div>
                 <!--end::Portlet-->
             </div>
+
+
+            
+            <div id="pendlist" class="pend-section col-lg-3">
+                <div class="d-flex hedr-title">
+                    <div class="">   
+                        <h5 class="kt-portlet__head-title mr-3"><i class="far fa-list-alt"></i> Pending List </h5>                     
+                    </div>
+                    <div class="">
+                        <span class="hide-btn pend-btn line-1" (click)="penhide()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
+                                <path d="M12.1714 10.9998L7.51451 6.34292L8.92872 4.92871L15.9998 11.9998L8.92872 19.0708L7.51451 17.6566L12.1713 12.9998L2.99953 12.9999L2.99951 10.9999L12.1714 10.9998ZM17.9996 18.9997L17.9996 4.99972H19.9996L19.9996 18.9997H17.9996Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="result-card kt-portlet__body_scroll">
+                    <div class="list-1">
+                        <div class="item-1" *ngFor="let item of Pending_request" >
+                            <!-- <div class="date-1">
+                               
+                                <div class="">
+                                    8 Thu, May 2025 
+                                </div>
+                            </div> -->
+                            <div class="time-event flex-1">
+                                <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
+                                    tabindex="0" (click)="GetClickEventPending_Calenders(item.Schedule_ID)">
+                                    <div class="fc-daygrid-event-dot"></div>
+                                    <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
+                                    
+                                    <div class="fc-event-title ml-5"> {{item.Task_Name}}</div>
+                                </a>
+                                <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Calendar Ends -->
             <!-- Activities -->
             <div class="col-lg-7">
@@ -1070,10 +1068,10 @@
                                         </a>
                                     </div>
 
-                                    <a class="dropdown-item">
-                                        Postpone
+                                    <a class="dropdown-item" (click)="ReshudingTaskandEvent()">
+                                        Reschedule
                                     </a>
-                                    <a class="dropdown-item">
+                                    <a class="dropdown-item" (click)="Pending_meeting()">
                                         Pending
                                     </a>
 
@@ -2168,9 +2166,11 @@
     <div class="px-4 pt-4 pb-1 border-bottom">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
             <h4 class="m-0">Request List</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary"
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeevearea1()">
-                <i class="fa fa-times"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>
@@ -2329,21 +2329,27 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2"
             *ngIf="editTask==false && copyTask==false">
             <h4 class="m-0">Schedule {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2"
             *ngIf="editTask==true &&  copyTask==false">
             <h4 class="m-0">Edit {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2" *ngIf="copyTask==true ">
             <h4 class="m-0">Copy {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-primary" (click)="closeschd()">
-                <i class="fa fa-times"></i>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>
@@ -2558,7 +2564,7 @@
                     <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                         <div class="wc-cus">
 
-                            <div class="form-group flex-1" id="Recurrence_hide">
+                            <div class="form-group d-none" id="Recurrence_hide">
 
                                 <div class="card text-dark shadow-sm">
                                     <div class="card-header bg-white">
@@ -2573,14 +2579,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-none">
-                                            <h5>Monthly</h5>
-                                            <div class="d-flex">
-                                                <div class="repeat-day">5</div>
-                                                <div class="repeat-day">6</div>
-                                                <div class="repeat-day">7</div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2990,20 +2988,41 @@
                     </div>
 
                 </div>
+                
                 <div class="form-group mb-1" *ngIf=" copyTask==true || create==true ">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts || !Title_Name "
-                        (click)="OnSubmitSchedule()">Submit</button>
+                        (click)="OnSubmitSchedule()">Submit</button> &nbsp;
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"   >Close</button>
                 </div>
+              
 
-                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false " class="form-group mb-1">
+                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false" class="form-group mb-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts " data-toggle="modal"
-                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button>
+                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"  >Close</button>
                 </div>
-                <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true"
-                    class="form-group mb-1">
+                <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"  
+                    class="form-group mb-2">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
-                        (click)="OnSubmitReSchedule()">Update</button>
+                        (click)="OnSubmitReSchedule()">Update</button> &nbsp;
+                        <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
                 </div>
+                <div *ngIf="  pending_status==true && editTask==true "  
+                class="form-group mb-2">
+                <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
+                    (click)="OnSubmitReSchedule()">Update</button> &nbsp;
+                    <button type="cancel" class="btn btn-primary" 
+                (click)="closeschd()"    >Close</button>
+            </div>
+                
+                <!-- <div class="form-group mb-1" >
+                    <button type="cancel" class="btn btn-primary" 
+                    (click)="closeschd()"    >Close</button>
+                </div> -->
+            
                 <!-- <div class="form-group mb-1" *ngIf="editTask==true">
                     <button type="submit" class="btn btn-primary" [disabled]="!Endtms ||!Startts "
                         (click)="OnSubmitReSchedule()">Submit</button>
@@ -3017,7 +3036,7 @@
                         (click)="OnSubmitReSchedule()">Submit</button>
                 </div> -->
 
-
+              
 
             </div>
 

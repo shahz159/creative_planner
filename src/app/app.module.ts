@@ -24,6 +24,7 @@ import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.componen
 
 
 
+
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
 //  import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
@@ -41,6 +42,7 @@ import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.componen
     SidebarComponent,
     ConfirmDialogComponent,
     TimelineComponent
+   
     // NotificationComponent    
     
 

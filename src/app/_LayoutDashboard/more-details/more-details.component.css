@@ -282,8 +282,9 @@
   
   #myTab1.nav-pills .nav-item .nav-link.active {
     background-color: transparent;
-    color: #595d6e;
-    border-bottom: 2px solid #f9ce6f;
+    color: #7b68ee;
+    font-weight: 600;
+    border-bottom: 2px solid #7b68ee;
     border-radius: 0px !important;
   }
   
@@ -542,9 +543,9 @@
   #sideTab1.nav-pills .nav-item .nav-link.active,
   #tasks-tabs.nav-pills .nav-item .nav-link.active {
     background-color: transparent;
-    color: #00aef3;
+    color: #7b68ee;
     font-weight: 600;
-    border-bottom: 2px solid #11bafd;
+    border-bottom: 2px solid #7b68ee;
     border-radius: 0px !important;
   }
   
@@ -695,7 +696,6 @@
   }
   .sideInfobar .closebtn {
     text-decoration: none;
-    color: #333;
     position: absolute;
     top: 10px;
     right: 25px;
@@ -1389,4 +1389,28 @@ span.guest-icns, .svg-icn {
   font-size: 14px;
   line-height: 1;
   margin-bottom: 0;
+}
+.btn22 svg {
+  fill: #fff;
+  width: 16px;
+  height: 16px;
+}
+.btn22 span {
+  line-height: 1;
+}
+.srch-actns {
+  width: 300px;
+  position: relative;
+}
+.srch-actns input{
+  height: 30px;
+}
+.srch-icon{
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+.srch-icon svg{
+  width: 14px;
+  height: 14px;
 }

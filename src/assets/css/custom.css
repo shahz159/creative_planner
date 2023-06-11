@@ -439,14 +439,15 @@ h3.popover-header {
 
 .sideInfobar .closebtn {
 	text-decoration: none;
-	color: #333;
   position: absolute;
   top: 13px;
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
 }
-
+.closebtn {
+    color: #333;
+}
 .info-icon-cir{
   font-size: 20px;
   color: #5867dd;
@@ -496,7 +497,6 @@ h3.popover-header {
     background-color: #666A86;
     color: #fff;
     font-weight: 500;
-    letter-spacing: 2px;
     border-radius: 50%;
     line-height: 30px;
     margin-right: 5px;
@@ -1428,8 +1428,9 @@ button[disabled] {
     margin-right: 8px;
 }
 .detail-icn svg {
-    height: 20px;
-    width: 20px;    
+    height: 18px;
+    width: 18px;    
+    color: #595d6e;
 }
 .h-16 {
     height: 16px;
@@ -1455,4 +1456,13 @@ button[disabled] {
 }
 .detial-item h6 {
     margin-bottom: 4px;
+}
+.word-break {
+    word-break: break-all;
+}
+.btn.btn-icon i.fa{
+    font-size: 1.2rem;
+}
+.line-1 {
+    line-height: 1 !important;
 }
