@@ -395,3 +395,12 @@ display: block;
   padding: 0 25px;
   border-bottom: 1px solid #ebedf2;
 }
+.subtask-list {
+  padding: 10px;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #ebedf2;
+  box-shadow: 0 0.75rem 6rem rgb(56 65 74 / 3%);
+  border-radius: 0.25rem;
+  margin-bottom: 12px;
+}

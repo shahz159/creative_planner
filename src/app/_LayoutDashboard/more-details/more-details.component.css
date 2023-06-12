@@ -696,7 +696,6 @@
   }
   .sideInfobar .closebtn {
     text-decoration: none;
-    color: #333;
     position: absolute;
     top: 10px;
     right: 25px;
@@ -1414,4 +1413,10 @@ span.guest-icns, .svg-icn {
 .srch-icon svg{
   width: 14px;
   height: 14px;
+}
+.spacer--body .height-scroll   {
+  overflow-y: auto;
+}
+.spacer--body .height-scroll {
+  min-height: 245px;
 }

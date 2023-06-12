@@ -1342,6 +1342,7 @@ export class HomeComponent implements OnInit {
     this.activeClassOwners = false;
     this.activeClassShare = false;
     this.activeClass_NewPortfolio = false;
+    this._objStatusDTO.Emp_No = this.Current_user_ID;
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
         this._ListProjStat = JSON.parse(data[0]['Portfolio_FavouritesList']);
