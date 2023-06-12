@@ -436,6 +436,7 @@ export class DashboardComponent implements OnInit {
   timeTo: any;
   creation_date: string;
   pending_status: boolean;
+  pending:boolean;
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -1268,7 +1269,7 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-        this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
+        this._SEndDate = moment().format("YYYY-MM-DD").toString();
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
@@ -1443,7 +1444,7 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
-  pending:boolean;
+  
 
   ReshudingTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
