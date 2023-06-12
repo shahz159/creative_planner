@@ -6,7 +6,9 @@
             <h4 class="m-0"><i class="fa fa-link mr-1"></i> Link DMS</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeLinkSideBar()">
-                <i class="flaticon2-delete"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>
@@ -58,7 +60,9 @@
             <h4 class="m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeLinkSideBar()">
-                <i class="flaticon2-delete"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
             </a>
         </div>
     </div>
@@ -108,14 +112,15 @@
 
 <!-- <h4>{{projectCode}}</h4> -->
 <div id="mysideInfobar" class="sideInfobar animate-right offcanvas" [hidden]="_openInfoSideBar">
-    <div class="">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between">
-            <h4 class="m-0">
-                Project Details
-            </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()"><i
-                    class="flaticon2-delete"></i></a>
-        </div>
+    <div class="kt-portlet">
+   
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+        <h4 class="m-0">Project Details</h4>
+        <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+            </svg>
+        </a>
     </div>
 
     <div class="card-body card-car" *ngFor="let item of ProjectInfo_List">
@@ -1523,8 +1528,8 @@
                 </div>
             </div>
         </div>
-        <div class="" *ngFor="let task of Subtask_List;let i=index">
-            <div class="d-flex  align-items-center justify-content-between mt-3">
+        <div class="subtask-list" *ngFor="let task of Subtask_List;let i=index">
+            <div class="d-flex  align-items-center justify-content-between">
                 <div class>
                     <div class="my-2">
                         <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
@@ -1807,8 +1812,8 @@
                     </div>
                 </div>
             </div>
-            <div class="" *ngFor="let task of CompletedList;let i=index">
-                <div class="text-left mt-3">
+            <div class="subtask-list" *ngFor="let task of CompletedList;let i=index">
+                <div class="text-left">
                     <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                         <i class="fa fa-window-restore mr-2"></i>Action {{i+1}}
                     </label>
@@ -2185,6 +2190,8 @@
 
             </div>
         </div>
+    </div>
+
     </div>
 
 
