@@ -197,7 +197,7 @@
                                                         placeholder="Select Employee">
                                                         <ng-option [value]="item.Emp_No"
                                                             *ngFor="let item of Employee_List">
-                                                            <a
+                                                            <a 
                                                                 *ngIf="(Responsible_EmpNo!=item.Emp_No && Owner_EmpNo!=item.Emp_No)">{{item.DisplayName}}</a>
                                                         </ng-option>
                                                     </ng-select>
@@ -1053,7 +1053,7 @@
                                                     </div>
                                                     <div class="col-lg-4"
                                                         *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
-                                                        <h4>People on the project (RACIS)</h4>
+                                                        <h4>People on the project</h4>
                                                         <div
                                                             class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                             <div class="kt-portlet__body px-3">
@@ -2591,14 +2591,14 @@
                     <div class="tab-pane fade" id="People" role="tabpanel" aria-labelledby="People1">
                         <div class="px-3 d-flex align-items-center">
     
-                            <h4 class="flex-1">People on the project (RACIS)</h4>
+                            <h4 class="flex-1">People on the project</h4>
 
                             <div class="">
                                 <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                 <!-- (click)="OnAddTaskClick()" -->
                                 <button title="Create New Action" *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                     class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="onEditSupport()">
-                                    <i class="fas fa-plus mr-2"></i>Add support</button>
+                                    <i class="fas fa-plus mr-2"></i>Add support team</button>
                             </div>
 
                         </div>
@@ -3929,31 +3929,31 @@
         <div class="">
             <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
-                    <div><b>Edit support</b></div>
+                    <div><b>Add support team</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
                         <div class="form-group">
                             <label> Add new support <span class="text-danger">*</span> : <strong></strong></label>
-                            <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support">
+                            <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support" multiple="true">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of nonRacisList">
-                                    <a>{{item.NonRACIS}}</a>
+                                    <a data-toggle="tooltip" title="{{item.NonRACIS}}">{{item.NonRACIS}}</a>
                                 </ng-option>
                             </ng-select>
                         </div>
-                        <div class="form-group mb-1">
-                            <label>Remarks<span class="text-danger">*</span></label>
+                        <div class="form-group">
+                            <label>Remarks</label>
                             <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                placeholder="Define your exact reason here." rows="2" cols="20"
-                                style="height:70px;"></textarea>
+                                placeholder="Define your exact reason to add support team member." rows="2" cols="20"
+                                style="height:100px;"></textarea>
                         </div>
                     </div>
                 </div>
                 <li class="kt-nav__separator"></li>
             </ul>
             <div class="px-4 pb-3">
-                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedsupport || !extend_remarks"
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedsupport"
                     (click)="onProject_updateSupport()">Submit</button>
                 <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
             </div>
@@ -3975,7 +3975,7 @@
                             <label> Transfer to <span class="text-danger">*</span> : <strong></strong></label>
                             <ng-select #transfer="ngModel" [(ngModel)]="selectedEmp_No" placeholder="Select Employee">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of Employee_List">
-                                    <a
+                                    <a data-toggle="tooltip" title="{{item.DisplayName}}"
                                         *ngIf="(Responsible_EmpNo!=item.Emp_No && Owner_EmpNo!=item.Emp_No)">{{item.DisplayName}}</a>
                                 </ng-option>
                             </ng-select>

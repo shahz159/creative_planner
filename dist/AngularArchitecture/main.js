@@ -404,7 +404,7 @@ HeaderComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_0__
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](168, "div", 60)(169, "a", 61);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](170, "Sign Out");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]()()()()()()();
-    } }, dependencies: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_1__.NgForm], styles: ["header[_ngcontent-%COMP%]{\r\n    padding: 14px;\r\n    background: #3f51b5;\r\n    \r\n}\r\n.text[_ngcontent-%COMP%]{\r\n    color: white;\r\n    font-size: large;\r\n    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\r\n}\r\n.logout[_ngcontent-%COMP%]{\r\n    padding-top: 0.8%;\r\n}\r\n\r\n.filler[_ngcontent-%COMP%] {\r\n    flex: 1 1 auto;\r\n }\r\n.gap[_ngcontent-%COMP%] {\r\n    margin-right: 10px;\r\n }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImhlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTtJQUNJLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsNkRBQTZEO0FBQ2pFO0FBQ0E7SUFDSSxZQUFZO0lBQ1osZ0JBQWdCO0lBQ2hCLDZFQUE2RTtBQUNqRjtBQUNBO0lBQ0ksaUJBQWlCO0FBQ3JCO0FBRUEsaUJBQWlCO0FBQ2pCO0lBQ0ksY0FBYztDQUNqQjtBQUNBO0lBQ0csa0JBQWtCO0NBQ3JCIiwiZmlsZSI6ImhlYWRlci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbmhlYWRlcntcclxuICAgIHBhZGRpbmc6IDE0cHg7XHJcbiAgICBiYWNrZ3JvdW5kOiAjM2Y1MWI1O1xyXG4gICAgLyogYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjMDA2MkU2LCAjMzNBRUZGKTsgKi9cclxufVxyXG4udGV4dHtcclxuICAgIGNvbG9yOiB3aGl0ZTtcclxuICAgIGZvbnQtc2l6ZTogbGFyZ2U7XHJcbiAgICBmb250LWZhbWlseTogJ0dpbGwgU2FucycsICdHaWxsIFNhbnMgTVQnLCBDYWxpYnJpLCAnVHJlYnVjaGV0IE1TJywgc2Fucy1zZXJpZjtcclxufVxyXG4ubG9nb3V0e1xyXG4gICAgcGFkZGluZy10b3A6IDAuOCU7XHJcbn1cclxuXHJcbi8qIG1hdCB0b29sIGJhciAqL1xyXG4uZmlsbGVyIHtcclxuICAgIGZsZXg6IDEgMSBhdXRvO1xyXG4gfVxyXG4gLmdhcCB7XHJcbiAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XHJcbiB9XHJcbiJdfQ== */"] });
+    } }, dependencies: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_1__.NgForm], styles: ["header[_ngcontent-%COMP%]{\n    padding: 14px;\n    background: #3f51b5;\n    \n}\n.text[_ngcontent-%COMP%]{\n    color: white;\n    font-size: large;\n    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n}\n.logout[_ngcontent-%COMP%]{\n    padding-top: 0.8%;\n}\n\n.filler[_ngcontent-%COMP%] {\n    flex: 1 1 auto;\n }\n.gap[_ngcontent-%COMP%] {\n    margin-right: 10px;\n }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImhlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTtJQUNJLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsNkRBQTZEO0FBQ2pFO0FBQ0E7SUFDSSxZQUFZO0lBQ1osZ0JBQWdCO0lBQ2hCLDZFQUE2RTtBQUNqRjtBQUNBO0lBQ0ksaUJBQWlCO0FBQ3JCO0FBRUEsaUJBQWlCO0FBQ2pCO0lBQ0ksY0FBYztDQUNqQjtBQUNBO0lBQ0csa0JBQWtCO0NBQ3JCIiwiZmlsZSI6ImhlYWRlci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXG5oZWFkZXJ7XG4gICAgcGFkZGluZzogMTRweDtcbiAgICBiYWNrZ3JvdW5kOiAjM2Y1MWI1O1xuICAgIC8qIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgIzAwNjJFNiwgIzMzQUVGRik7ICovXG59XG4udGV4dHtcbiAgICBjb2xvcjogd2hpdGU7XG4gICAgZm9udC1zaXplOiBsYXJnZTtcbiAgICBmb250LWZhbWlseTogJ0dpbGwgU2FucycsICdHaWxsIFNhbnMgTVQnLCBDYWxpYnJpLCAnVHJlYnVjaGV0IE1TJywgc2Fucy1zZXJpZjtcbn1cbi5sb2dvdXR7XG4gICAgcGFkZGluZy10b3A6IDAuOCU7XG59XG5cbi8qIG1hdCB0b29sIGJhciAqL1xuLmZpbGxlciB7XG4gICAgZmxleDogMSAxIGF1dG87XG4gfVxuIC5nYXAge1xuICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiB9XG4iXX0= */"] });
 
 
 /***/ }),
@@ -2477,6 +2477,7 @@ class ProjectTypeService {
         this._ObjAssigntaskDTO = new _Models_assigntask_dto__WEBPACK_IMPORTED_MODULE_16__.AssigntaskDTO();
         this.ObjCategoryDTO = new _Models_category_dto__WEBPACK_IMPORTED_MODULE_17__.CategoryDTO();
         this.ObjDto = new _Models_project_details_dto__WEBPACK_IMPORTED_MODULE_1__.ProjectDetailsDTO();
+        this._ObjProjectDTO = new _Models_project_details_dto__WEBPACK_IMPORTED_MODULE_1__.ProjectDetailsDTO();
     }
     GetProjectTypeList() {
         let EmpNo = localStorage.getItem('EmpNo');
@@ -2707,6 +2708,11 @@ class ProjectTypeService {
         this.ObjNotificationDto.Emp_No = obj.Emp_No;
         return this.http.post(this.rootUrl + "Notification/NewGetDashboardNotifications", this.ObjNotificationDto);
     }
+    GetHierarchyofOwnerforMoredetails(empno, projcode) {
+        this._ObjProjectDTO.Emp_No = empno;
+        this._ObjProjectDTO.Project_Code = projcode;
+        return this.http.post(this.rootUrl + "Notification/NewGetHierarchyofOwnerforMoredetails", this._ObjProjectDTO);
+    }
     GetViewAllDashboardnotifications(obj) {
         this.ObjNotificationDto.Emp_No = obj.Emp_No;
         this.ObjNotificationDto.PageNumber = obj.PageNumber;
@@ -2746,6 +2752,10 @@ class ProjectTypeService {
         // this._ObjChartDTO.Employee=empId;
         return this.http.post(this.rootUrl + "TestAPI/NewGetBarChart", this.ObjBarChartDTO);
         //this.clearSession();
+    }
+    GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
+        this.ObjSubTaskDTO.Project_Code = prjCode;
+        return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
     }
     SubTaskDetailsService(prjCode) {
         this.ObjSubTaskDTO.Project_Code = prjCode;
@@ -3055,6 +3065,13 @@ class ProjectTypeService {
         this.ObjDto.ClientId = clientid;
         this.ObjDto.Remarks = remarks;
         return this.http.post(this.rootUrl + "Category/NewProjectChangeClient", this.ObjDto);
+    }
+    _NewProjectSupportService(pcode, Empno, support, remarks) {
+        this.ObjDto.Project_Code = pcode;
+        this.ObjDto.Emp_No = Empno;
+        this.ObjDto.Team_Support = support;
+        this.ObjDto.Remarks = remarks;
+        return this.http.post(this.rootUrl + "Category/NewProjectUpdateSupport", this.ObjDto);
     }
     _ProjectDeadlineExtendService(pcode, enddate, startdate, remarks) {
         let EmpNo = localStorage.getItem('EmpNo');

@@ -1415,3 +1415,9 @@ span.guest-icns, .svg-icn {
   width: 14px;
   height: 14px;
 }
+.spacer--body .height-scroll   {
+  overflow-y: auto;
+}
+.spacer--body .height-scroll {
+  min-height: 245px;
+}

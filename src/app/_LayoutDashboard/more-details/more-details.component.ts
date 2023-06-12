@@ -3923,27 +3923,29 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onProject_updateSupport() {
+    this.selectedsupport=JSON.stringify(this.selectedsupport);
+    // alert(this.selectedsupport)
 
-    if (this.selectedsupport != null  && this.extend_remarks != null) {
-      this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
-        this._Message = data['message'];
+    // if (this.selectedsupport != null) {
+    //   this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
+    //     this._Message = data['message'];
 
-        if (this._Message == '2') {
-          this.notifyService.showError("Project Support not updated", "Failed");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-        else if (this._Message == '1') {
-          this.notifyService.showSuccess("Project Support updated successfully", "Success");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-      });
-      this.close_space();
-    }
-    else {
-      this.notifyService.showInfo("Client cannot be empty", "Please try again with correct value");
-    }
+    //     if (this._Message == '2') {
+    //       this.notifyService.showError("Project Support not updated", "Failed");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //     else if (this._Message == '1') {
+    //       this.notifyService.showSuccess("Project Support updated successfully", "Success");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //   });
+    //   this.close_space();
+    // }
+    // else {
+    //   this.notifyService.showInfo("Client cannot be empty", "Please try again with correct value");
+    // }
   }
 
 
@@ -4510,7 +4512,7 @@ export class MoreDetailsComponent implements OnInit {
           // console.log(data);
 
           if (this._Message == 'Updated Successfully')
-            this.notifyService.showSuccess("Project Successfully added to selected Portfolio(s)", this._Message);
+            this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
           else
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
 
