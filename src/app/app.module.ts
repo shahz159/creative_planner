@@ -20,6 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NotificationComponent } from './_LayoutDashboard/notification/notification.component';
 import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.component';
+import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meeting-report.component';
 
 
 
@@ -41,7 +42,8 @@ import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.componen
     HeaderComponent,
     SidebarComponent,
     ConfirmDialogComponent,
-    TimelineComponent
+    TimelineComponent,
+    MeetingReportComponent
    
     // NotificationComponent    
     
