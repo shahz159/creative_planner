@@ -3022,7 +3022,7 @@
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
                     (click)="OnSubmitSchedule()">Submit</button> &nbsp;
-                    <button type="cancel" class="btn btn-info btn-sm" 
+                    <button type="cancel" class="btn btn-secondary btn-sm" 
                 (click)="closeschd()"   >Close</button>
             </div>
         
@@ -3030,21 +3030,21 @@
             <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false" class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts " data-toggle="modal"
                     data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
-                    <button type="cancel" class="btn btn-info btn-sm" 
+                    <button type="cancel" class="btn btn-secondary btn-sm" 
                 (click)="closeschd()"  >Close</button>
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"  
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule()">Update</button> &nbsp;
-                    <button type="cancel" class="btn btn-info btn-sm" 
+                    <button type="cancel" class="btn btn-secondary btn-sm" 
                 (click)="closeschd()"    >Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true "  
             class="form-group mb-0">
             <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
                 (click)="OnSubmitReSchedule()">Update</button> &nbsp;
-                <button type="cancel" class="btn btn-info btn-sm" 
+                <button type="cancel" class="btn btn-secondary btn-sm" 
             (click)="closeschd()"    >Close</button>
             </div>
 

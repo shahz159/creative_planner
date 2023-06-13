@@ -1471,6 +1471,12 @@ button[disabled] {
     overflow: auto;
 }
 .sidehf_scroll {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 110px);
     overflow: auto;
+}
+.kt-portlet .kt-portlet__head{
+    min-height: 50px;
+}
+.sideInfobar .kt-portlet{
+margin-bottom: 0;
 }
