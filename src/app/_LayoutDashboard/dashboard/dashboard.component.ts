@@ -3955,6 +3955,14 @@ export class DashboardComponent implements OnInit {
     myWindow.focus();
   }
 
+  meetingReport() {
+    let name: string = 'Meeting-Report';
+    var url = document.baseURI + name;
+    var myurl = `${url}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
