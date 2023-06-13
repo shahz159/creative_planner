@@ -112,7 +112,7 @@
 
 <!-- <h4>{{projectCode}}</h4> -->
 <div id="mysideInfobar" class="sideInfobar animate-right offcanvas" [hidden]="_openInfoSideBar">
-    <div class="kt-portlet">
+    <div class="kt-portlet mb-0">
    
     <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
         <h4 class="m-0">Project Details</h4>
@@ -123,7 +123,7 @@
         </a>
     </div>
 
-    <div class="card-body card-car" *ngFor="let item of ProjectInfo_List">
+    <div class="card-body card-car side_scroll scroll-y" *ngFor="let item of ProjectInfo_List">
 
 
         <div class="d-flex  align-items-start justify-content-between mt-0">
