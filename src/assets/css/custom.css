@@ -1470,3 +1470,7 @@ button[disabled] {
     height: calc(100vh - 50px);
     overflow: auto;
 }
+.sidehf_scroll {
+    height: calc(100vh - 120px);
+    overflow: auto;
+}
