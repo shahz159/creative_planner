@@ -1250,6 +1250,7 @@ export class DashboardComponent implements OnInit {
   //     document.getElementById("Monthly_121").style.display = "block";
   //   }
   // }
+ 
   DublicateTaskandEvent() {
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
@@ -1269,9 +1270,10 @@ export class DashboardComponent implements OnInit {
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-        this._SEndDate = moment().format("YYYY-MM-DD").toString();
+        // this._SEndDate = moment().format("YYYY-MM-DD").toString();
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-        // alert( this.Addressurl);
+        
+
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
         if (this._FutureEventTasksCount > 0) {
@@ -1314,7 +1316,7 @@ export class DashboardComponent implements OnInit {
         this.AllDatesSDandED = [];
         var jsonData = {};
         var columnName = "Date";
-        jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
+        jsonData[columnName] = (moment(this.minDate).format("YYYY-MM-DD"));//this.EventScheduledjson[0]['Schedule_date'];
         var IsActive = "IsActive";
         jsonData[IsActive] = 1;
         var Day = "Day";
@@ -1324,14 +1326,21 @@ export class DashboardComponent implements OnInit {
         this.AllDatesSDandED.push(jsonData);
         this._StartDate =  moment().format("YYYY-MM-DD").toString();
         this.minDate = this.EventScheduledjson[0]['Schedule_date'];
+        if(this.minDate>this._StartDate){
+          this.minDate=this._StartDate;
+        }
+        
         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+      
         // this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         // this.maxDate = this.EventScheduledjson[0]['End_date'];
 
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           document.getElementById("div_endDate").style.display = "none";
+          
           this.selectedrecuvalue = '0';
           this._labelName = "Schedule Date :";
+
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
@@ -1443,6 +1452,7 @@ export class DashboardComponent implements OnInit {
         }
       });
     this.closeevearea();
+
   }
   
 
@@ -3954,10 +3964,10 @@ export class DashboardComponent implements OnInit {
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
-
+ 
   meetingReport() {
-    let name: string = 'Meeting-Report';
-    var url = document.baseURI + name;
+    let name: string = 'Meeting-Report';   
+    var url = document.baseURI + name  ;
     var myurl = `${url}`;
     var myWindow = window.open(myurl);
     myWindow.focus();
