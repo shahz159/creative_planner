@@ -1470,3 +1470,13 @@ button[disabled] {
     height: calc(100vh - 50px);
     overflow: auto;
 }
+.sidehf_scroll {
+    height: calc(100vh - 110px);
+    overflow: auto;
+}
+.kt-portlet .kt-portlet__head{
+    min-height: 50px;
+}
+.sideInfobar .kt-portlet{
+margin-bottom: 0;
+}

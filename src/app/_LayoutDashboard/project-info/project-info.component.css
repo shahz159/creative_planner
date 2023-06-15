@@ -386,6 +386,12 @@ display: block;
   line-height: 1;
   margin-bottom: 0;
 }
+.card-car .h5 {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 0;
+  color: #595d6e !important;
+}
 .detail-icn svg.dater{
   width: 22px;
   height: 22px;

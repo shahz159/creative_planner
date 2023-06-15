@@ -723,7 +723,8 @@ export class MoreDetailsComponent implements OnInit {
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
-        if(data!=null || data!=undefined){
+        console.log(data,"meet")
+        if((data[0]['MeetingFor_projects'].length > 0) && data!=null){
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
         this.meeting_arry = this.meetingList;
         if(this.meeting_arry.length > 0)
@@ -1029,10 +1030,13 @@ export class MoreDetailsComponent implements OnInit {
   selectedcategory: any;
   selectedclient: any;
   selectedsupport:any;
+  selectedOwnResp :any;
   Delaydays: any;
   supp: boolean =false;
   nonRacisList:any;
+  hierarchydropdown:any;
   RACISList:any;
+  Projectdeadline:any;
 
   getRACISandNonRACIS(){
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
@@ -1041,6 +1045,12 @@ export class MoreDetailsComponent implements OnInit {
         this.nonRacisList=(JSON.parse(data[0]['OtherList']));
         this.RACISList=(JSON.parse(data[0]['RacisList']));
       });
+
+      this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
+        (data) => {
+          console.log(JSON.parse(data[0]['hierarchy_dropdown']),"hierarchy_dropdown");
+          this.hierarchydropdown=(JSON.parse(data[0]['hierarchy_dropdown']));
+        });
   }
 
   sdate:any;
@@ -1063,6 +1073,7 @@ export class MoreDetailsComponent implements OnInit {
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name'];
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
+          this.Projectdeadline=this.EndDate;
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
           this.sdate = this.datepipe.transform(this.StartDate, 'yyyy-MM-dd');
@@ -1312,6 +1323,7 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedcategory = null;
     this.selectedclient = null;
     this.selectedsupport = null;
+    this.selectedOwnResp = null;
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3358,6 +3370,10 @@ export class MoreDetailsComponent implements OnInit {
     this.actendedit = false;
     this.actstartedit = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editCategory = false;
     this.editRelease = false;
     this.editSupport =false;
@@ -3377,6 +3393,8 @@ export class MoreDetailsComponent implements OnInit {
   editCategory: boolean = false;
   editClient: boolean = false;
   editSupport: boolean = false;
+  editprojectOwner:boolean = false;
+  editprojectResponsible:boolean = false;
   editActionOwner: boolean = false;
   editActionResp: boolean = false;
 
@@ -3393,6 +3411,10 @@ export class MoreDetailsComponent implements OnInit {
     this.editCategory = false;
     this.editRelease = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -3414,6 +3436,10 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -3432,6 +3458,104 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = true;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
+    this.editSupport =false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditProjectResponsible() {
+    this.Editbutton = true;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=true;
+    this.editActionOwner=false;
+    this.editActionResp=false;
+    this.editSupport =false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditProjectOwner() {
+    this.Editbutton = true;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editprojectOwner=true;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
+    this.editSupport =false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditActionResponsible(id, aname, i, acode) {
+    this.actionName = aname;
+    this.actCode = acode;
+    this.actnum = i;
+    this.Editbutton = true;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=true;
+    this.editSupport =false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  onEditActionOwner(id, aname, i, acode) {
+    this.actionName = aname;
+    this.actCode = acode;
+    this.actnum = i;
+    this.Editbutton = true;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=true;
+    this.editActionResp=false;
     this.editSupport =false;
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -3450,6 +3574,10 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =true;
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -3471,6 +3599,10 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
@@ -3496,6 +3628,10 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
@@ -3563,6 +3699,10 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = true;
     this.editCategory = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
@@ -3625,6 +3765,10 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = false;
@@ -3645,6 +3789,10 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
+    this.editprojectOwner=false;
+    this.editprojectResponsible=false;
+    this.editActionOwner=false;
+    this.editActionResp=false;
     this.editSupport =false;
     this.editDeadline = false;
     this.transferproject = true;
@@ -3767,10 +3915,44 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
+actiondeadline_alert(){
+ 
+    const dateOne = moment(this.Projectdeadline).format("YYYY/MM/DD");
+    const dateTwo =moment(this._ProjDeadline).format("YYYY/MM/DD");
+    // console.log(dateOne)
+    //  console.log(dateTwo)
+    //  const dateOn = this.datepipe.transform(this.Projectdeadline, 'yyyy/MM/dd');
+    // const dateTw =this.datepipe.transform(this._ProjDeadline, 'yyyy/MM/dd');
+    // console.log(dateOn)
+    // console.log(dateTw)
+    if (dateOne < dateTwo) {
+      Swal.fire({
+        title: 'Action deadLine is greater than main project deadLine ?',
+        text: 'Do you want to continue for selection of date after main project deadLine!!',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          this.onAction_ExtendDeadline();
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+          this.close_space();
+          Swal.fire(
+            'Cancelled',
+            'Action end date not updated',
+            'error'
+          )
+        }
+      });
+    }
+    else {  
+      this.onAction_ExtendDeadline();
+  }
+}
+
   onAction_ExtendDeadline() {
-    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    // console.log(this._ProjDeadline,id,Pcode,"act");
-    if (this._ProjDeadline != null) {
+      this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+      if (this._ProjDeadline != null) {
       this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
@@ -3820,12 +4002,20 @@ export class MoreDetailsComponent implements OnInit {
           this.GetProjectDetails();
           this.GetSubtask_Details();
         }
+        else if (this._Message == 'Project and action Deadline Updated') {
+          this.notifyService.showSuccess("Project and Action end date updated.", "Success");
+          
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
       });
       this.close_space();
     }
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
+    
+
   }
 
   onAction_ExtendDPG() {
@@ -3923,31 +4113,140 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onProject_updateSupport() {
-    this.selectedsupport=JSON.stringify(this.selectedsupport);
-    // alert(this.selectedsupport)
+       if (this.selectedsupport != null) {
+      this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
+        this._Message = data['message'];
 
-    // if (this.selectedsupport != null) {
-    //   this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
-    //     this._Message = data['message'];
-
-    //     if (this._Message == '2') {
-    //       this.notifyService.showError("Project Support not updated", "Failed");
-    //       this.GetProjectDetails();
-    //       this.GetSubtask_Details();
-    //     }
-    //     else if (this._Message == '1') {
-    //       this.notifyService.showSuccess("Project Support updated successfully", "Success");
-    //       this.GetProjectDetails();
-    //       this.GetSubtask_Details();
-    //     }
-    //   });
-    //   this.close_space();
-    // }
-    // else {
-    //   this.notifyService.showInfo("Client cannot be empty", "Please try again with correct value");
-    // }
+        if (this._Message == '2') {
+          this.notifyService.showError("Project Support team not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project Support team updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("support team member cannot be empty", "Please try again with correct value");
+    }
   }
 
+
+  onProject_updateOwner(){
+    this.objProjectDto.Project_Code=this.URL_ProjectCode;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.Project_Owner=this.selectedOwnResp;
+    this.objProjectDto.Team_Res=null;
+    this.objProjectDto.Remarks=this.extend_remarks;
+    if (this.selectedOwnResp != null) {
+      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Project owner not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project owner updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Project owner cannot be empty", "Please try again with correct value");
+    }
+  }
+
+  onAction_updateOwner(){
+    this.objProjectDto.Project_Code=this.actCode;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.Project_Owner=this.selectedOwnResp;
+    this.objProjectDto.Team_Res=null;
+    this.objProjectDto.Remarks=this.extend_remarks;
+    if (this.selectedOwnResp != null) {
+      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Action owner not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Action owner updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Action owner cannot be empty", "Please try again with correct value");
+    }
+  }
+
+  onProject_updateResp(){
+    this.objProjectDto.Project_Code=this.URL_ProjectCode;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.Project_Owner=null;
+    this.objProjectDto.Team_Res=this.selectedOwnResp;
+    this.objProjectDto.Remarks=this.extend_remarks;
+    if (this.selectedOwnResp != null) {
+      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Project responsible not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Project responsible updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Project responsible cannot be empty", "Please try again with correct value");
+    }
+  }
+
+  onAction_updateResp(){
+    this.objProjectDto.Project_Code=this.actCode;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.Project_Owner=null;
+    this.objProjectDto.Team_Res=this.selectedOwnResp;
+    this.objProjectDto.Remarks=this.extend_remarks;
+    if (this.selectedOwnResp != null) {
+      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+        this._Message = data['message'];
+
+        if (this._Message == '2') {
+          this.notifyService.showError("Action responsible not updated", "Failed");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+        else if (this._Message == '1') {
+          this.notifyService.showSuccess("Action responsible updated successfully", "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+        }
+      });
+      this.close_space();
+    }
+    else {
+      this.notifyService.showInfo("Action responsible cannot be empty", "Please try again with correct value");
+    }
+  }
 
   Holddate: string;
   hold_remarks: string;

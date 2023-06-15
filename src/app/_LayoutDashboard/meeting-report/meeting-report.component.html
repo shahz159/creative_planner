@@ -1,1 +1,342 @@
-<p>meeting-report works!</p>
+<div class="grey-bg">
+<div class="col-md-12 p-3">
+    <div class="card meet-card">
+        <div class="card-header">
+            <div class="">
+                <h5 class="mb-0 card-title">Meeting Report</h5>
+            </div>
+        </div>
+
+        <div class="header2">
+            
+            <div id="NameDate" class="main-title">
+                <!-- <div class="boxcl-div">
+                    <div class="box-cl" style="background-color: #3788d8;">
+                    </div>
+
+                </div> -->
+                <div class="title-right" id="">
+                    <div class="title-area">
+                        <div class="title-main">
+                            <span id="title1"> Weekly meeting with EP Team </span>
+                        </div>
+                        <div class="d-flex">
+                            <div class="title-day">Friday, June 9
+                                <span>,</span>
+                                <span>4:00PM –
+
+                                </span>
+                            </div>
+                            <div class="title-day">
+                                <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
+                                    {{item.SEndDate| date:'EEEE, MMMM d'}}
+                                </span> -->
+                                <span>,</span>
+                                4:30PM
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body scrolly card-body2">
+            <div class="px-3" id="cardmain">
+
+                <div class="card card-mid flex-1">
+                    <div class="card-header d-flex-cen justify-content-between">
+                        <h5 clas="card-title">
+                            Meeting Details
+                        </h5>
+                        <div class="side-acns">
+                            <a class="mr-3" (click)="open_side()">
+                                <img class="hed-icn dms-icn" src="assets/images/dms-logo.png"/>
+                            </a>
+                            <a class="text-info mr-3" (click)="open_side()">
+                                <img class="hed-icn" src="assets/images/action.png"/>
+                            </a>
+                            <a class="text-info" (click)="open_side()">
+                                <img class="hed-icn" src="assets/images/note.png"/>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+
+                        <div id="location" class="eve-area">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                        <path
+                                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z">
+                                        </path>
+                                        <circle cx="12" cy="9" r="2.5"></circle>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s">
+                                        <a href="#" target=”_blank”>Devbox Software Pvt Ltd</a>
+                                    </div>
+                                    <div class="main-s">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
+                                        Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div>
+                                    <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
+                                        Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id=""  class="eve-area">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
+                                        <path d="M0 0h24v24H0z" fill="none"/><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="" >
+                                    <div class="main-s" >Online</div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+
+                        <div id="userlength" class="eve-area">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                        <path
+                                            d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s">3 guests</div>
+                                    <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="userlist" class="avar-div">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    </div>
+                                <div class="px-2 position-relative">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"
+                                            enable-background="new 0 0 192 192" style="width: 20px;" width="24px"
+                                            height="24px">
+                                            <path fill="#E0E0E0"
+                                                d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z">
+                                            </path>
+                                            <path fill="#BDBDBD"
+                                                d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z">
+                                            </path>
+                                            <path fill="#BDBDBD"
+                                                d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z">
+                                            </path>
+                                            <rect fill="none" width="192" height="192"></rect>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="rgt-des ml-2">
+                                    <div class="">
+                                        <div class="main-s">Abdul Naveed</div>
+                                        <div class="sub-s text-ellp">Sr. Dot Net Developer/Devbox Software Pvt Ltd</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="project" class="eve-area">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <i class="fab-icn fab fa-wpforms"></i>
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn" style="width: 20px;">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path
+                                            d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zm-9-2h16V8H4v11zm9-9h5v2h-5v-2zm0 4h5v2h-5v-2zm-4-4v3h3a3 3 0 1 1-3-3zM2 3h20v2H2V3z">
+                                        </path>
+                                    </svg> -->
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s pro-nm">Projects</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side-div">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check form-check-custom form-check-solid mr-2">
+                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    </div>
+                                <div class="rgt-des">
+                                    <div>
+                                        <div class="main-s"><a href="javascript:void(0)"> Meeting with EP Team</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="portfolio" class="eve-area">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <i class="fas-icn fas fa-list"></i>
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn" style="width: 20px;">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zM19 4H5v16h14V4zm-7.707 9.121l4.243-4.242 1.414 1.414-5.657 5.657-3.89-3.89 1.415-1.414 2.475 2.475z" />
+                                    </svg> -->
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s pro-nm">Portfolios</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side-div">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check form-check-custom form-check-solid mr-2">
+                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                </div>
+                                <div class="rgt-des">
+                                    <div>
+                                        <div class="main-s"><a href="javascript:void(0)">
+                                                New Portfolio for Project actions test</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dms" class="eve-area py-2">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z" />
+                                    </svg>
+                                    <!-- <img alt="Logo" src="../../../assets/images/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s pro-nm">DMS</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side-div">
+                            <div class="d-flex align-items-center">                                    
+                                <div class="form-check form-check-custom form-check-solid mr-2">
+                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                </div>
+                                <div class="rgt-des">
+                                    <div>
+                                        <div class="main-s">
+                                            <a href="javascript:void(0)">
+                                                AHC HelpDesk Issue report</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="d-flex align-items-center">
+                                
+                                <div class="form-check form-check-custom form-check-solid mr-2">
+                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                </div>
+                                <div class="rgt-des">
+                                    <div>
+                                        <div class="main-s">
+                                            <a href="javascript:void(0)">
+                                                Azure File Upload</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="desc" class="eve-area py-2">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s">Description</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="" class="eve-area py-2">
+                            <div class="left-icon">
+                                <span class="side-icns" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="20" height="20"
+                                        class="svg-icn">
+                                        <path
+                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div class="">
+                                    <div class="main-s">
+                                        <a target=”_blank”>Attachment</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-info btn-sm mr-2">Submit</button>
+                        <button class="btn btn-secondary btn-sm mr-2">cancel</button>
+                    </div>
+                    
+                </div>
+
+                <div class="card card-side">
+                    <div class="card-header d-flex-cen justify-content-between">
+                        <h5 clas="card-title">
+                            Add Action
+                        </h5>
+                        <div class="">
+                            <a class="hide-btn pend-btn line-1" (click)="close_side()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"><path _ngcontent-shy-c394="" d="M12.1714 10.9998L7.51451 6.34292L8.92872 4.92871L15.9998 11.9998L8.92872 19.0708L7.51451 17.6566L12.1713 12.9998L2.99953 12.9999L2.99951 10.9999L12.1714 10.9998ZM17.9996 18.9997L17.9996 4.99972H19.9996L19.9996 18.9997H17.9996Z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
