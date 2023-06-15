@@ -65179,8 +65179,16 @@ svg.rmv-icn:hover {
 }
 
 .sidehf_scroll {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 110px);
     overflow: auto;
+}
+
+.kt-portlet .kt-portlet__head{
+    min-height: 50px;
+}
+
+.sideInfobar .kt-portlet{
+margin-bottom: 0;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[2]!./src/assets/plugins/datatables/datatables.bundle.css ***!

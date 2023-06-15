@@ -12,4 +12,11 @@ export class MeetingReportComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  open_side(){
+    document.getElementById("cardmain").classList.add("cards-main");
+  }
+  close_side(){
+    document.getElementById("cardmain").classList.remove("cards-main");
+  }
+
 }
