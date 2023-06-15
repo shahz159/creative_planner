@@ -49,7 +49,7 @@
                                 _CurrentpageRecords}}
                             </ng-container>
                             of
-                            <span> {{_totalProjectsCount}}</span>
+                            <span> {{_totalProjectsCount.toLocaleString()}}</span>
                         </div>
                         <!-- Pagination ends -->
 
@@ -300,10 +300,9 @@
                                                 </td> -->
                                                 <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
                                                     *ngIf="item.Req_Coments">{{item.Req_Coments}}</td>
-                                                <td
-                                                    *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
+                                                <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
                                                     Not Provided</td>
-                                                <div class="hvr-item" *ngIf="item.Send_From=='WR'">
+                                                <div class="hvr-item" *ngIf="item.Send_From=='WR'" data-toggle="tooltip" title="{{item.Req_Coments}}">
                                                     <div class="chck-div" (click)="clearResponse(item.Project_Code,item.Rec_Date,item.Req_Type)">
                                                         <span class="chk-icn">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icn">

@@ -324,7 +324,7 @@
                         id="EidtBtn_{{Pid}}"
                         *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)">
                         <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                            title="edit description"></i>
+                            title="edit project description"></i>
                     </span>
                     <span class="kt-inbox__subject mt-2" style="display:none;" id="spanTextarea_{{Pid}}">
                         <div class="d-flex">
@@ -445,7 +445,7 @@
                                                 <span class="dropdown-toggle no-after text-info" aria-haspopup="true"
                                                     aria-expanded="false" (click)="onEditDeadline(Pid)">
                                                     <i class="fas fa-edit ml-2 mb-1 curser-pointer"
-                                                        data-toggle="tooltip" title="extend deadline"></i>
+                                                        data-toggle="tooltip" title="edit project end date"></i>
                                                 </span>
                                                 <div id="DeadlineArea_{{Pid}}"
                                                     class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
@@ -606,7 +606,7 @@
                                             *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                                                title="category change"></i>
+                                                title="edit project client"></i>
                                         </span>
                                     </h5>
                                 </div>
@@ -651,7 +651,11 @@
                                     </h6>
                                     <div class="d-flex align-items-center">
                                         <h5 class="mt-1">{{Responsible}}</h5>
-
+                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                aria-haspopup="true" aria-expanded="false" (click)="onEditProjectResponsible()">
+                                            <i data-toggle="tooltip" title="edit project responsible"
+                                            class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -671,7 +675,14 @@
                                 </div>
                                 <div class="action-content">
                                     <h6 class="txtm-cus pt-1">Owner</h6>
-                                    <h5 class="mt-1">{{Owner}}</h5>
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="mt-1">{{Owner}}</h5>
+                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                aria-haspopup="true" aria-expanded="false" (click)="onEditProjectOwner()">
+                                            <i data-toggle="tooltip" title="edit project owner"
+                                            class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -700,7 +711,7 @@
                                             *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                                                title="category change"></i>
+                                                title="edit project category"></i>
                                         </span>
                                     </h5>
                                     <h5 class="mt-1" *ngIf="!Category">No category
@@ -708,7 +719,7 @@
                                             *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
-                                                title="category change"></i>
+                                                title="edit project category"></i>
                                         </span>
                                     </h5>
 
@@ -1231,13 +1242,13 @@
                             </ng-multiselect-dropdown>
                         </div>
                         <ul class="nav nav-pills px-3" id="tasks-tabs" role="tablist"
-                            *ngIf="subTaskCount!=0; else noResultsFound">
-                            <li class="nav-item">
+                            *ngIf="subTaskCount!=0;">
+                            <li class="nav-item" *ngIf="inProcessCount!=0 ">
                                 <a class="nav-link active" id="tasks-1" data-toggle="tab" href="#tasks_1">
-                                    <span class="nav-text">Inprocess</span>
+                                    <span class="nav-text">In process</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" *ngIf="completedCount!=0">
                                 <a class="nav-link" id="tasks-2" data-toggle="tab" href="#tasks_2">
                                     <span class="nav-text">Completed</span>
                                 </a>
@@ -1258,23 +1269,23 @@
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                            *ngIf="(inProcessCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
 
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button
-                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                        <!-- <button
+                                            *ngIf="(inProcessCount==0 && completedCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                class="fas fa-plus mr-2"></i>New Action</button>
+                                                class="fas fa-plus mr-2"></i>New Action</button> -->
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
                                         <!-- <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div> -->
-                                            <div class="srch-actns mb-3" (click)="notinAction()">
+                                            <div class="srch-actns mb-3" *ngIf="subTaskCount!=0" (click)="notinAction()">
                                                 <input class="form-control" placeholder="search..." />
                                                 <span class="srch-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -1307,7 +1318,7 @@
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             id="EidtBtn_{{item.id}}"
                                                             (click)="OnEditProject(item.id,item.Project_Name)">
-                                                            <i class="fas fa-edit"
+                                                            <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
                                                                 [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID"></i>
                                                         </span>
                                                         <span class="kt-inbox__subject" style="display:none;"
@@ -1333,7 +1344,7 @@
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
-                                                            <i class="fas fa-edit"
+                                                            <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
                                                                 [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID"></i>
                                                         </span>
                                                         <span class="kt-inbox__subject" style="display:none;"
@@ -1370,9 +1381,10 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
-                                                                            <span type="button" id="-icn" class="text-info">
-                                                                                <i data-toggle="tooltip" title="edit owner"
-                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer d-none"></i>
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                                aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
+                                                                                <i data-toggle="tooltip" title="edit action owner"
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                             </span>
                                                                         </h5>
                                                                     </div>
@@ -1394,9 +1406,10 @@
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
-                                                                            <span type="button" id="-icn" class="text-info">
-                                                                                <i data-toggle="tooltip" title="edit responsible"
-                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer d-none"></i>
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                                aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
+                                                                                <i data-toggle="tooltip" title="edit action responsible"
+                                                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                             </span>
                                                                         </h5>
                                                                     </div>
@@ -1474,7 +1487,7 @@
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
-                                                                                        title="edit start date"
+                                                                                        title="edit action start date"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
                                                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-start z-1k"
@@ -1563,7 +1576,7 @@
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
-                                                                                        title="edit end date"
+                                                                                        title="edit action end date"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
                                                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-end z-1k"
@@ -1681,7 +1694,7 @@
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
-                                                                                        title="edit duration"
+                                                                                        title="edit action duration"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
                                                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
@@ -1876,17 +1889,17 @@
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
                                         <button
-                                            *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                            *ngIf="(completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
 
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button
-                                            *ngIf="(inProcessCount==0 && completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                        <!-- <button
+                                            *ngIf="(inProcessCount==0 && completedCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                class="fas fa-plus mr-2"></i>New Action</button>
+                                                class="fas fa-plus mr-2"></i>New Action</button> -->
                                     </div>
                                     
                                     <div class=" ribbon-box my-3" *ngIf="CompletedList">
@@ -2193,13 +2206,13 @@
                         <!--new no records-->
                         <div class="">
                             <div class="text-right">
-                                <button *ngIf="(inProcessCount!=0 || subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                <button *ngIf="(subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                             class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
                                                 class="fas fa-plus mr-2"></i>New Action</button>
                             </div>
-                            <!-- <div *ngIf="subTaskCount!=0; else noResultsFound">
-                            </div> -->
+                            <div *ngIf="subTaskCount!=0; else noResultsFound">
+                            </div>
                         </div>
 
                     </div>
@@ -2222,7 +2235,7 @@
                             </div>
 
                             <p style="color:gray">{{_MemosNotFound}}</p>
-                            <table class="table" *ngIf="_MemosNotFound=='';else noResultsFound">
+                            <table class="table w-end" *ngIf="_MemosNotFound=='';else noResultsFound">
                                 <tbody>
                                     <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
                                         <td>
@@ -3820,7 +3833,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                placeholder="Define your exact reason here." rows="2" cols="20"
+                                placeholder="Define your exact reason to edit project end date." rows="2" cols="20"
                                 style="height:70px;"></textarea>
                         </div>
                     </div>
@@ -3904,7 +3917,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                placeholder="Define your exact reason here." rows="2" cols="20"
+                                placeholder="Define your exact reason to change project category." rows="2" cols="20"
                                 style="height:70px;"></textarea>
                         </div>
                     </div>
@@ -3942,7 +3955,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="extend_remarks"
-                                placeholder="Define your exact reason here." rows="2" cols="20"
+                                placeholder="Define your exact reason to change project client." rows="2" cols="20"
                                 style="height:70px;"></textarea>
                         </div>
                     </div>
@@ -3958,6 +3971,81 @@
     </div>
     <!-- project client edit end-->
 
+    <!-- project responsible edit -->
+    <div class="spacer--body" *ngIf="editprojectResponsible==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                    <div><b>Change project responsible</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    <div class="px-4 py-3">
+                        <div class="form-group">
+                            <label> Select new responsible <span class="text-danger">*</span> : <strong></strong></label>
+                            <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of hierarchydropdown">
+                                    <a data-toggle="tooltip" title="{{item.Emp_Name}}">{{item.Emp_Name}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                placeholder="Define your exact reason to change project responsible." rows="2" cols="20"
+                                style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedOwnResp"
+                    (click)="onProject_updateResp()">Submit</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- project responsible edit end-->
+
+    <!-- project owner edit -->
+    <div class="spacer--body" *ngIf="editprojectOwner==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                    <div><b>Change project owner</b></div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    <div class="px-4 py-3">
+                        <div class="form-group">
+                            <label> Select new owner <span class="text-danger">*</span> : <strong></strong></label>
+                            <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new owner">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of hierarchydropdown">
+                                    <a data-toggle="tooltip" title="{{item.Emp_Name}}">{{item.Emp_Name}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                placeholder="Define your exact reason to change project owner." rows="2" cols="20"
+                                style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedOwnResp"
+                    (click)="onProject_updateOwner()">Submit</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- project owner edit end-->
+
+    <!-- project support edit -->
     <div class="spacer--body" *ngIf="editSupport==true">
         <div class="">
             <ul class="kt-nav pb-0">
@@ -3969,7 +4057,7 @@
                     <div class="px-4 py-3">
                         <div class="form-group">
                             <label> Add new support <span class="text-danger">*</span> : <strong></strong></label>
-                            <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support" multiple="true">
+                            <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of nonRacisList">
                                     <a data-toggle="tooltip" title="{{item.NonRACIS}}">{{item.NonRACIS}}</a>
                                 </ng-option>
@@ -3992,6 +4080,7 @@
             </div>
         </div>
     </div>
+    <!-- project support edit end-->
 
 
     <!-- project transfer (keydown.enter)="onProject_Transfer(Pid,_MasterCode);"-->
@@ -4030,7 +4119,7 @@
                         <div class="form-group">
                             <label>Remarks<span class="text-danger">*</span>:</label>
                             <textarea class="form-control" [(ngModel)]="transfer_remarks"
-                                placeholder="Define your exact reason here." rows="2" cols="20"
+                                placeholder="Define your exact reason to transfer the project." rows="2" cols="20"
                                 style="height:80px;"></textarea>
                         </div>
                     </div>
@@ -4044,8 +4133,81 @@
             </div>
         </div>
     </div>
-
     <!-- project transfer end-->
+
+      <!-- action owner edit -->
+      <div class="spacer--body" *ngIf="editActionOwner==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                    <div><b>Change action owner</b><br>Action {{actnum}}: {{actionName }}</div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    <div class="px-4 py-3">
+                        <div class="form-group">
+                            <label> Select new owner <span class="text-danger">*</span> : <strong></strong></label>
+                            <ng-select [(ngModel)]="selectedOwnResp" placeholder=" Select new owner ">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of hierarchydropdown">
+                                    <a data-toggle="tooltip" title="{{item.Emp_Name}}">{{item.Emp_Name}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                placeholder="Define your exact reason to change action owner." rows="2" cols="20"
+                                style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedOwnResp"
+                    (click)="onAction_updateOwner()">Submit</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- action owner edit end-->
+
+      <!-- action responsible edit -->
+      <div class="spacer--body" *ngIf="editActionResp==true">
+        <div class="">
+            <ul class="kt-nav pb-0">
+                <li class="kt-nav__head py-0">
+                    <div><b>Change action responsible</b><br>Action {{actnum}}: {{actionName }}</div>
+                </li>
+                <li class="kt-nav__separator"></li>
+                <div class="height-scroll h-scr">
+                    <div class="px-4 py-3">
+                        <div class="form-group">
+                            <label> Select new responsible <span class="text-danger">*</span> : <strong></strong></label>
+                            <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of hierarchydropdown">
+                                    <a data-toggle="tooltip" title="{{item.Emp_Name}}">{{item.Emp_Name}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" [(ngModel)]="extend_remarks"
+                                placeholder="Define your exact reason to change action responsible." rows="2" cols="20"
+                                style="height:100px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <li class="kt-nav__separator"></li>
+            </ul>
+            <div class="px-4 pb-3">
+                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!selectedOwnResp"
+                    (click)="onAction_updateResp()">Submit</button>
+                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- action responsible edit end-->
 
     <!-- action end date edit -->
     <div class="spacer--body" *ngIf="actendedit==true">
@@ -4064,7 +4226,7 @@
                             <label>Set new end date <span class="text-danger">*</span></label>
                             <div class="d-flex input-group">
                                 <input matInput [matDatepicker]="picker5" #actionend="ngModel" (click)="picker5.open();"
-                                    (keydown.enter)="onAction_ExtendDeadline();" [min]="disablePreviousDate1"
+                                    (keydown.enter)="actiondeadline_alert();" [min]="disablePreviousDate1"
                                     placeholder="Select Date" [(ngModel)]="_ProjDeadline" class="form-control"
                                     name="date">
                                 <div class="input-group-append">
@@ -4077,7 +4239,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks <span class="text-danger">*</span>
                             </label>
-                            <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2"
+                            <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason to edit action end date." rows="2"
                                 cols="20" class="form-control" style="height: 70px;"></textarea>
                         </div>
                     </div>
@@ -4086,7 +4248,7 @@
             </ul>
             <div class="px-4 pb-3">
                 <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!extend_remarks || !_ProjDeadline"
-                    (click)="onAction_ExtendDeadline()"> Submit </button>
+                    (click)="actiondeadline_alert()"> Submit </button>
                 <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
             </div>
         </div>
@@ -4123,7 +4285,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks <span class="text-danger">*</span>
                             </label>
-                            <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason here." rows="2"
+                            <textarea [(ngModel)]="extend_remarks" placeholder="Define your exact reason to edit action start date." rows="2"
                                 cols="20" class="form-control" style="height: 70px;"></textarea>
                         </div>
                     </div>
@@ -4162,7 +4324,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks <span class="text-danger">*</span>
                             </label>
-                            <textarea [(ngModel)]="alloc_remarks" placeholder="Define your exact reason here." rows="2"
+                            <textarea [(ngModel)]="alloc_remarks" placeholder="Define your exact reason to edit action duration." rows="2"
                                 cols="20" class="form-control" style="height: 70px;"></textarea>
                         </div>
                     </div>
@@ -4209,7 +4371,7 @@
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
-                                placeholder="Define your exact hold reason here." style="height:70px;"></textarea>
+                                placeholder="Define your exact reason to edit hold date." style="height:70px;"></textarea>
                         </div>
                     </div>
                 </div>

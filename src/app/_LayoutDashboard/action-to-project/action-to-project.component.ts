@@ -532,7 +532,7 @@ export class ActionToProjectComponent implements OnInit {
     const dateTwo = new Date(this.ProjectDeadLineDate);
     // console.log(dateOne)
     // console.log(dateTwo)
-    if (dateTwo <= dateOne) {
+    if (dateTwo < dateOne) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
