@@ -112,7 +112,7 @@
 
 <!-- <h4>{{projectCode}}</h4> -->
 <div id="mysideInfobar" class="sideInfobar animate-right offcanvas" [hidden]="_openInfoSideBar">
-    <div class="kt-portlet">
+    <div class="kt-portlet mb-0">
    
     <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
         <h4 class="m-0">Project Details</h4>
@@ -123,7 +123,7 @@
         </a>
     </div>
 
-    <div class="card-body card-car" *ngFor="let item of ProjectInfo_List">
+    <div class="card-body card-car side_scroll scroll-y" *ngFor="let item of ProjectInfo_List">
 
 
         <div class="d-flex  align-items-start justify-content-between mt-0">
@@ -1529,8 +1529,8 @@
             </div>
         </div>
         <div class="subtask-list" *ngFor="let task of Subtask_List;let i=index">
-            <div class="d-flex  align-items-center justify-content-between">
-                <div class>
+            <div class="d-flex  align-items-center justify-content-between" >
+                <div>
                     <div class="my-2">
                         <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-window-restore mr-2"></i> Action {{i+1}}
@@ -1539,9 +1539,9 @@
                 </div>
             </div>
             <div class="d-flex mt-3 flex-column">
-                <h5 class="fs-4 mb-1">{{task.SubProject_Name }}</h5>
+                <a data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="" class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
             </div>
-            <div class="card-body">
+            <div class="card-body collapse" id="colp_{{i+1}}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="d-flex align-items-center detial-item">
@@ -1820,9 +1820,9 @@
                 </div>
                 <div class="text-left mt-3">
                     <!-- <p class="mb-2">CLIENT</p> -->
-                    <h5 class="fs-4 mb-1">{{task.SubProject_Name }}</h5>
+                    <a data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls=""  class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
                 </div>
-                <div class="card-body">
+                <div class="card-body collapse" id="colcc_{{i+1}}">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="d-flex align-items-center detial-item">

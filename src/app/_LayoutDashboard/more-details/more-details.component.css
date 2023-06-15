@@ -1423,3 +1423,6 @@ span.guest-icns, .svg-icn {
 .w-end tr td:last-child {
   width: 80px;
 }
+.subtask-list-title {
+  color: #595d6e;
+}
