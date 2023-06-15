@@ -42,8 +42,8 @@ import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meetin
     HeaderComponent,
     SidebarComponent,
     ConfirmDialogComponent,
-    TimelineComponent,
-    MeetingReportComponent
+    TimelineComponent
+    // MeetingReportComponent
    
     // NotificationComponent    
     
