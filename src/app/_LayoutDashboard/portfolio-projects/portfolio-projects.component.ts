@@ -172,7 +172,7 @@ export class PortfolioProjectsComponent implements OnInit {
         
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject=this._ProjectsListBy_Pid.length;
-        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid,this.lastProject);
+        console.log("Portfolio Projects---->", data);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         //console.log('JsonStatusCount------->', this._StatusCountDB);

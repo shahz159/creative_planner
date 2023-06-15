@@ -1420,6 +1420,9 @@ span.guest-icns, .svg-icn {
 .spacer--body .height-scroll {
   min-height: 245px;
 }
+.w-end tr td:last-child {
+  width: 80px;
+}
 .subtask-list-title {
   color: #595d6e;
 }

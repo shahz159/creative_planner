@@ -389,11 +389,16 @@ export class ProjectTypeService {
     //this.clearSession();
   }
   // Project Info 
-  ObjSubTaskDTO: SubTaskDTO;
+  ObjSubTaskDTO: SubTaskDTO; 
 
   GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
+  }
+
+  GetHierarchydropdownforMoredetails(empno) {
+    this.ObjSubTaskDTO.Emp_No = empno;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetHierarchydropdownformoredetails", this.ObjSubTaskDTO);
   }
 
   SubTaskDetailsService(prjCode) {
@@ -771,6 +776,15 @@ export class ProjectTypeService {
     this.ObjDto.Team_Support = support;
     this.ObjDto.Remarks = remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectUpdateSupport", this.ObjDto);
+  }
+
+  _NewProjectOwnerRespService(obj: ProjectDetailsDTO) {
+    this.ObjDto.Project_Code = obj.Project_Code;
+    this.ObjDto.Emp_No = obj.Emp_No;
+    this.ObjDto.Project_Owner = obj.Project_Owner;
+    this.ObjDto.Team_Res = obj.Team_Res;
+    this.ObjDto.Remarks = obj.Remarks;
+    return this.http.post(this.rootUrl + "Category/NewProjectUpdateOwnerResponsible", this.ObjDto);
   }
 
   _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {

@@ -80,7 +80,7 @@
                                 {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
                             </ng-container>
                             of
-                            <span> {{_totalProjectsCount}}</span>
+                            <span> {{_totalProjectsCount.toLocaleString()}}</span>
                         </div>
 
                         <!-- <div class="mr-3">
