@@ -18,5 +18,6 @@ export class MeetingReportComponent implements OnInit {
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");
   }
+  
 
 }
