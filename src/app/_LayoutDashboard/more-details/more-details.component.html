@@ -1268,10 +1268,15 @@
                                     <div class="text-right action-btn">
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button title="Collapse all" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-3"
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="hidepro()" id="hidepro"
                                             data-toggle="collapse" href=".show.p1" role="button" aria-expanded="false" aria-controls="">
                                             <i class="far fa-minus-square mr-2"></i>Collapse All
-                                        </button>
+                                        </a>
+                                        
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3 d-none" (click)="showpro()" id="showpro"
+                                            data-toggle="collapse" href=".collapsed .p1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-plus-square mr-2"></i>show All
+                                        </a>
 
                                         <button
                                             *ngIf="(inProcessCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
@@ -1894,10 +1899,15 @@
                                     <div class="text-right action-btn">
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
-                                        <button title="Collapse all" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-3"
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="hidecc()" id="hidecc"
                                             data-toggle="collapse" href=".show.c1" role="button" aria-expanded="false" aria-controls="">
                                             <i class="far fa-minus-square mr-2"></i>Collapse All
-                                        </button>
+                                        </a>
+
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="showcc()" id="showcc"
+                                            data-toggle="collapse" href=".collapsed .c1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-minus-square mr-2"></i>show All
+                                        </a>
 
                                         <button
                                             *ngIf="(completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
