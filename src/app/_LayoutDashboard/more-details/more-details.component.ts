@@ -82,7 +82,6 @@ export class MoreDetailsComponent implements OnInit {
   darList: any;
   disablePreviousDate = new Date();
   disablePreviousDate1 = new Date();
-
   todayDate = new Date();
   timedata: any = [];
   EndDate1: any = new Date();
@@ -96,6 +95,258 @@ export class MoreDetailsComponent implements OnInit {
   currenthours: any;
   currentminutes: any;
   Summarytype: string;
+  
+  approvalObj = new ApprovalDTO();
+  requestDate: any;
+  requestDeadline: any;
+  requestType: any;
+  approvalEmpId: any;
+  requestComments: any;
+  requestDetails: any;
+  exist_comment: any[] = [];
+  date11: any;
+
+  comments_list: any;
+  reject_list: any;
+  rejectType: any;
+  initials1: any;
+  Submitted_By: string;
+  prviousCommentsList: any;
+  noRejectType: boolean = false;
+  transfer_json: any;
+  forwardType: string;
+  pro_act: boolean = true;
+  newResponsible: any;
+  new_deadline: any;
+  new_cost: any;
+  hold_upto: any;
+  reason: any;
+  rejectype: any;
+  forwardto: any;
+  forwardfrom: any;
+  completedoc: any;
+  complete_List: any;
+  iscloud: any;
+  url: any;
+  previouscoments:boolean =false;
+  isHierarchy:boolean=false;
+  rejDesc: any;
+  rejectcommentsList: any;
+  totalHours: any;
+  totalRecords: any;
+  _CurrentpageRecords: any;
+  CurrentPageNo: number = 1;
+  darArray: any = [];
+  meetingList: any = [];
+  meeting_arry: any = [];
+  meetinglength: any;
+  workdes: string;
+  starttime: any;
+  endtime: any;
+  timecount: any;
+  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
+  releaseDate: any;
+  objProjectDto: ProjectDetailsDTO;
+  actionCode: string;
+  actionName: string;
+  actionStartdate: any =new Date();
+  actionenddate: any =new Date();
+  minutes: any;
+  hours: any;
+  temp: any;
+
+  timeList: any;
+  starttimearr: any = [];
+  endtimearr: any = [];
+  bol: boolean = true;
+  lastEndtime: any;
+  s_ind: number;
+  e_ind: number;
+  timedata1: any;
+  stdata: any;
+  etdata: any;
+  _Subtaskname: string;
+  Sub_ProjectCode: string;
+  Sub_StartDT: Date;
+  Sub_EndDT: Date;
+  Sub_Autho: string;
+  Sub_Status: string;
+  _remarks: string = "";
+  Sub_Desc: string;
+  _inputAttachments: string;
+  _inputAttachments2: string;
+
+  ObjSubTaskDTO: SubTaskDTO;
+  _MasterCode: string;
+  List: any;
+  ProjectName: string;
+  Description: string;
+  StartDate: string;
+  EndDate: string;
+  Cost: string;
+  Owner: string;
+  Client: string;
+  Responsible: string;
+  Subtask_Res_List: any;
+  Authority: string;
+  Coordinator: string;
+  Informer: string;
+  Support: string;
+  ProjectBlock: string;
+  dateResut: any;
+  Difference_In_Days: number;
+  date1: any;
+  date2: any;
+  Category: any;
+  Project_Responsible;
+  InitR: string;
+  InitOwn: string;
+  InitAut: string;
+  InitCoor: string;
+  InitInformer: string;
+  InitSupp: string;
+  Responsible_EmpNo: string;
+  Authority_EmpNo: string;
+  Owner_EmpNo: string;
+  Coor_EmpNo: string;
+  Inform_EmpNo: string;
+  Support_EmpNo: string;
+  ProjectInfo_List: any;
+  StandardDuration: any;
+  ProjectBlockName: any;
+  Status: any;
+  Pid: number;
+  Comp_No: string;
+  Employee_List: any;
+  Category_List: any;
+  Client_List: any;
+  _portfoliolist: any;
+  portslength: any;
+  selectedcategory: any;
+  selectedclient: any;
+  selectedsupport:any;
+  selectedOwnResp :any;
+  Delaydays: any;
+  supp: boolean =false;
+  nonRacisList:any;
+  hierarchydropdown:any;
+  RACISList:any;
+  Projectdeadline:any;
+  sdate:any;
+  _dbMemoIdList: any;
+  _SelectedIdsfromDb: any;
+  _JsonString: string;
+  Selected_Projectcode: string;
+  Memos_List: any;
+  _ActualMemoslist: any;
+  _totalMemos: number;
+  _mappedMemos: number;
+  dropdownSettings_Memo: IDropdownSettings = {};
+  ngDropdwonMemo: any;
+  Empty_MemoDropdown: any;
+  _SelectedMemos: any;
+  Mail_Id: number;
+  DarGraphDataList: any;
+  _displayProjName: string;
+  _MemosSubjectList: any;
+  _MemosNotFound: string;
+  _DBMemosIDList: any;
+  _CommentsList: any;
+  _EvenRecordsList: any
+  commentsLength: number;
+  dmslist: number;
+  Current_user_ID: string;
+  memoId: any;
+  AttachmentList: any;
+  attachmentlength: any;
+  TotalDocs: number;
+
+  _day: any;
+  _month: any;
+  Subtask_List: any;
+  CompletedList: any;
+  inProcessCount: number;
+  completedCount: number;
+  subTaskCount: number;
+  empDropdown: any = [];
+  dropdownSettings_Employee = {};
+  selectedEmp: string;
+  filteredemp: boolean = false;
+  darArr: any;
+  RACIS: any = [];
+  racislength: any;
+  raciPeople: any;
+  action_count: any;
+  selectedEmployee: string;
+  selectedAction: any;
+  Editbutton: boolean;
+  _modelProjectName: string;
+  _modelProjDesc: string;
+  _ProjDeadline: string;
+  action_enddate: string;
+  action_startdate: string;
+  action_remarks: string;
+  alloc_remarks: string;
+  _modelProjAlloc: number = 0;
+  editduration: boolean = false;
+  subduration: any;
+  extend_remarks: string;
+  editDeadline: boolean = false;
+  editCategory: boolean = false;
+  editClient: boolean = false;
+  editSupport: boolean = false;
+  editprojectOwner:boolean = false;
+  editprojectResponsible:boolean = false;
+  editActionOwner: boolean = false;
+  editActionResp: boolean = false;
+
+  actendedit: boolean = false;
+  actnum: any;
+  actCode: string;
+  actstartedit: boolean = false;
+  edithold: boolean = false;
+  editRelease: boolean = false;
+  holdDate: any;
+  release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+  transferproject: boolean = false;
+  _Message: any;
+
+  Holddate: string;
+  hold_remarks: string;
+  minhold: any = new Date();
+  minDate: any = new Date();
+  maxhold: any = new Date();
+  selectedFile: any = null;
+  Sub_ProjectName: string = "";
+  _Description: string;
+  _EndDate: Date = null;
+  _StartDate: Date = null;
+  selected_Employee = [];
+  selectedEmpNo: string = null;
+  progress: any;
+  coresecondary: boolean = true;
+  deadlineCount: any;
+  selectedEmp_No: string = null;
+  transfer_remarks: string;
+  TransDate: string;
+  new_Res: string;
+
+  _LinkSideBar1: boolean = true;
+  objPortfolioDto: PortfolioDTO;
+  _portfolioLength: any;
+  dropdownSettings_Portfolio: IDropdownSettings = {};
+  Empty_portDropdown: any;
+  _SelectedPorts: any;
+  Port_Id: number;
+  selectedportID: any;
+  noPort: string;
+  ngDropdwonPort: any;
+  deletedBy: string;
+  portfolioName: string;
+  totalPortfolios: number;
+  portfolioId: any;
+  _portfoliosList: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -148,21 +399,9 @@ export class MoreDetailsComponent implements OnInit {
     this.currentminutes = this.date.getMinutes();
   }
 
-  date11: any;
-
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
   }
-
-  approvalObj = new ApprovalDTO();
-  requestDate: any;
-  requestDeadline: any;
-  requestType: any;
-  approvalEmpId: any;
-  requestComments: any;
-  requestDetails: any;
-
-  exist_comment: any[] = [];
 
   clickonselect(com) {
     if (this.comments == null) {
@@ -178,7 +417,6 @@ export class MoreDetailsComponent implements OnInit {
 
   clickondeselect(com, id) {
     this.exist_comment = this.exist_comment.filter((comment) => comment != com);
-
     this.comments = this.comments.replace(com, "");
     console.log(this.exist_comment, "deselect");
 
@@ -191,29 +429,6 @@ export class MoreDetailsComponent implements OnInit {
     this.noRejectType = false;
   }
 
-  comments_list: any;
-  reject_list: any;
-  rejectType: any;
-  initials1: any;
-  Submitted_By: string;
-  prviousCommentsList: any;
-  noRejectType: boolean = false;
-  transfer_json: any;
-  forwardType: string;
-  pro_act: boolean = true;
-  newResponsible: any;
-  new_deadline: any;
-  new_cost: any;
-  hold_upto: any;
-  reason: any;
-  rejectype: any;
-  forwardto: any;
-  forwardfrom: any;
-  completedoc: any;
-  complete_List: any;
-  iscloud: any;
-  url: any;
-  previouscoments:boolean =false;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -268,7 +483,7 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
-  isHierarchy:boolean=false;
+  
   gethierarchy() {
     this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID,this.URL_ProjectCode).subscribe((data) => {
       if(data['message']=='1'){
@@ -329,12 +544,8 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  rejDesc: any;
-  rejectcommentsList: any;
-
+ 
   rejectApproval() {
-    // this.commentSelected = null;
-    // this.comments = "";
     this.noRejectType = false;
     this.reject_list.forEach(element => {
       if (this.rejectType == element.TypeID) {
@@ -373,8 +584,8 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
-  submitApproval() {
 
+  submitApproval() {
     if (this.requestType != 'Project Forward') {
       if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
@@ -710,14 +921,6 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  totalHours: any;
-  totalRecords: any;
-  _CurrentpageRecords: any;
-  CurrentPageNo: number = 1;
-  darArray: any = [];
-  meetingList: any = [];
-  meeting_arry: any = [];
-  meetinglength: any;
 
   GetmeetingDetails() {
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
@@ -739,7 +942,6 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
   }
-
 
   dar_details() {
     this.noTimeline = false;
@@ -778,27 +980,11 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  workdes: string;
-  starttime: any;
-  endtime: any;
-  timecount: any;
-  current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-  releaseDate: any;
-  objProjectDto: ProjectDetailsDTO;
-  actionCode: string;
-  actionName: string;
-  actionStartdate: any =new Date();
-  actionenddate: any =new Date();
-
   diff_minutes(dt2, dt1) {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
   }
-
-  minutes: any;
-  hours: any;
-  temp: any;
 
   submitDar() {
     if (this.starttime != null && this.endtime != null) {
@@ -856,17 +1042,6 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
-
-  timeList: any;
-  starttimearr: any = [];
-  endtimearr: any = [];
-  bol: boolean = true;
-  lastEndtime: any;
-  s_ind: number;
-  e_ind: number;
-  timedata1: any;
-  stdata: any;
-  etdata: any;
 
   getDarTime() {
     this.timedata = [];
@@ -947,15 +1122,6 @@ export class MoreDetailsComponent implements OnInit {
     this.StandardTask();
   }
 
-  _Subtaskname: string;
-  Sub_ProjectCode: string;
-  Sub_StartDT: Date;
-  Sub_EndDT: Date;
-  Sub_Autho: string;
-  Sub_Status: string;
-  _remarks: string = "";
-  Sub_Desc: string;
-
   OnSubtaskClick(item) {
     this.Sub_ProjectCode = item.Project_Code;
     this.Sub_Desc = item.Project_Description;
@@ -973,70 +1139,11 @@ export class MoreDetailsComponent implements OnInit {
     // this.Block3 = false;
   }
 
-  _inputAttachments: string;
-  _inputAttachments2: string;
 
   onFileChangeUST(e) {
     this._inputAttachments = e.target.files[0].name;
   }
-
-  //Subtask Update 
-  ObjSubTaskDTO: SubTaskDTO;
-  _MasterCode: string;
-  List: any;
-  ProjectName: string;
-  Description: string;
-  StartDate: string;
-  EndDate: string;
-  Cost: string;
-  Owner: string;
-  Client: string;
-  Responsible: string;
-  Subtask_Res_List: any;
-  Authority: string;
-  Coordinator: string;
-  Informer: string;
-  Support: string;
-  ProjectBlock: string;
-  dateResut: any;
-  Difference_In_Days: number;
-  date1: any;
-  date2: any;
-  Category: any;
-  Project_Responsible;
-  InitR: string;
-  InitOwn: string;
-  InitAut: string;
-  InitCoor: string;
-  InitInformer: string;
-  InitSupp: string;
-  Responsible_EmpNo: string;
-  Authority_EmpNo: string;
-  Owner_EmpNo: string;
-  Coor_EmpNo: string;
-  Inform_EmpNo: string;
-  Support_EmpNo: string;
-  ProjectInfo_List: any;
-  StandardDuration: any;
-  ProjectBlockName: any;
-  Status: any;
-  Pid: number;
-  Comp_No: string;
-  Employee_List: any;
-  Category_List: any;
-  Client_List: any;
-  _portfoliolist: any;
-  portslength: any;
-  selectedcategory: any;
-  selectedclient: any;
-  selectedsupport:any;
-  selectedOwnResp :any;
-  Delaydays: any;
-  supp: boolean =false;
-  nonRacisList:any;
-  hierarchydropdown:any;
-  RACISList:any;
-  Projectdeadline:any;
+ 
 
   getRACISandNonRACIS(){
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
@@ -1053,7 +1160,6 @@ export class MoreDetailsComponent implements OnInit {
         });
   }
 
-  sdate:any;
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1106,8 +1212,14 @@ export class MoreDetailsComponent implements OnInit {
               this.TotalDocs = (data[0]['TotalDocs']);
             });
           var fullname_R = this.Responsible.split(' ');
-          this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
+          // this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
+          if (fullname_R.length === 1) {
+            this.InitR = fullname_R[0].charAt(0);
+          } else {
+            this.InitR = fullname_R.shift().charAt(0) + fullname_R.pop().charAt(0);
+          }
           this.InitR.toUpperCase();
+          // console.log(this.InitR,"initial")
           this.date1 = this.ProjectInfo_List[0]['DPG'];
           this.date2 = this.ProjectInfo_List[0]['DeadLine'];
           //add data to service
@@ -1121,15 +1233,30 @@ export class MoreDetailsComponent implements OnInit {
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
 
           var fullname_Own = this.Owner.split(' ');
-          this.InitOwn = fullname_Own.shift().charAt(0) + fullname_Own.pop().charAt(0);
+          // this.InitOwn = fullname_Own.shift().charAt(0) + fullname_Own.pop().charAt(0);
+          if (fullname_Own.length === 1) {
+            this.InitOwn = fullname_Own[0].charAt(0);
+          } else {
+            this.InitOwn = fullname_Own.shift().charAt(0) + fullname_Own.pop().charAt(0);
+          }
           this.InitOwn.toUpperCase();
 
           var fullname_Auth = this.Authority.split(' ');
-          this.InitAut = fullname_Auth.shift().charAt(0) + fullname_Auth.pop().charAt(0);
+          if (fullname_Auth.length === 1) {
+            this.InitAut = fullname_Auth[0].charAt(0);
+          } else {
+            this.InitAut = fullname_Auth.shift().charAt(0) + fullname_Auth.pop().charAt(0);
+          }
+          // this.InitAut = fullname_Auth.shift().charAt(0) + fullname_Auth.pop().charAt(0);
           this.InitAut.toUpperCase();
 
           var fullname_Coor = this.Coordinator.split(' ');
-          this.InitCoor = fullname_Coor.shift().charAt(0) + fullname_Coor.pop().charAt(0);
+          if (fullname_Coor.length === 1) {
+            this.InitCoor = fullname_Coor[0].charAt(0);
+          } else {
+            this.InitCoor = fullname_Coor.shift().charAt(0) + fullname_Coor.pop().charAt(0);
+          }
+          // this.InitCoor = fullname_Coor.shift().charAt(0) + fullname_Coor.pop().charAt(0);
           this.InitCoor.toUpperCase();
           // var fullname_Inf = this.Informer.split(' ');
           // this.InitInformer = fullname_Inf.shift().charAt(0) + fullname_Inf.pop().charAt(0);
@@ -1199,20 +1326,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  _dbMemoIdList: any;
-  _SelectedIdsfromDb: any;
-  _JsonString: string;
-  Selected_Projectcode: string;
-  Memos_List: any;
-  _ActualMemoslist: any;
-  _totalMemos: number;
-  _mappedMemos: number;
-  dropdownSettings_Memo: IDropdownSettings = {};
-  ngDropdwonMemo: any;
-  Empty_MemoDropdown: any;
-  _SelectedMemos: any;
-  Mail_Id: number;
-
+ 
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
@@ -1306,11 +1420,13 @@ export class MoreDetailsComponent implements OnInit {
     this.GetSubtask_Details();
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
   }
+
   btmspace_opn() {
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
+
   close_space() {
     this.Editbutton=false;
     this.selectedEmp_No = null;
@@ -1349,8 +1465,6 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
-
-  DarGraphDataList: any;
 
   TaskChart() {
     let data1: any;
@@ -2449,65 +2563,6 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   HybridDrillChart() {
-    // let data22 = [{
-    //   category: "Critical",
-    //   value: 89,
-    //   sliceSettings: {
-    //     fill: '#D4897F'
-    //   },
-    //   breakdown: [{
-    //     category: "Sales inquiries",
-    //     value: 29
-    //   }, {
-    //     category: "Support requests",
-    //     value: 40
-    //   }, {
-    //     category: "Bug reports",
-    //     value: 11
-    //   }, {
-    //     category: "Other",
-    //     value: 9
-    //   }]
-    // }, {
-    //   category: "Acceptable",
-    //   value: 71,
-    //   sliceSettings: {
-    //     fill: '#9898DE'
-    //   },
-    //   breakdown: [{
-    //     category: "Sales inquiries",
-    //     value: 22
-    //   }, {
-    //     category: "Support requests",
-    //     value: 30
-    //   }, {
-    //     category: "Bug reports",
-    //     value: 11
-    //   }, {
-    //     category: "Other",
-    //     value: 10
-    //   }]
-    // }, {
-    //   category: "Good",
-    //   value: 120,
-    //   sliceSettings: {
-    //     fill: '#FC798A',
-    //   },
-    //   breakdown: [{
-    //     category: "Sales inquiries",
-    //     value: 60
-    //   }, {
-    //     category: "Support requests",
-    //     value: 35
-    //   }, {
-    //     category: "Bug reports",
-    //     value: 15
-    //   }, {
-    //     category: "Other",
-    //     value: 10
-    //   }]
-    // }]
-
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
         // console.log("data1---->",data);
@@ -2922,13 +2977,6 @@ export class MoreDetailsComponent implements OnInit {
     chart.appear(100, 30);
   }
 
-  _displayProjName: string;
-  _MemosSubjectList: any;
-  _MemosNotFound: string;
-  _DBMemosIDList: any;
-  _CommentsList: any;
-  _EvenRecordsList: any
-  commentsLength: number;
 
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
@@ -2941,7 +2989,6 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  dmslist: number;
 
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
@@ -2966,9 +3013,6 @@ export class MoreDetailsComponent implements OnInit {
         }
       });
   }
-
-  Current_user_ID: string;
-  memoId: any;
 
   deleteMemos(memoId) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -3078,10 +3122,6 @@ export class MoreDetailsComponent implements OnInit {
     window.open(Url);
   }
 
-  AttachmentList: any;
-  attachmentlength: any;
-  TotalDocs: number;
-
   getAttachments() {
     this.noFiles = false;
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
@@ -3096,8 +3136,8 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  _day: any;
-  _month: any;
+  
+
 
   openPDF_Standard(cloud, repDate: Date, proofDoc) {
     repDate = new Date(repDate);
@@ -3180,20 +3220,7 @@ export class MoreDetailsComponent implements OnInit {
     // var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
   }
 
-  Subtask_List: any;
-  CompletedList: any;
-  inProcessCount: number;
-  completedCount: number;
-  subTaskCount: number;
-  empDropdown: any = [];
-  dropdownSettings_Employee = {};
-  selectedEmp: string;
-  filteredemp: boolean = false;
-  darArr: any;
-  RACIS: any = [];
-  racislength: any;
-  raciPeople: any;
-  action_count: any;
+  
 
   GetSubtask_Details() {
     if (this.filteredemp == true) {
@@ -3260,8 +3287,6 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  selectedEmployee: string;
-
   EmpOnselect(obj) {
     this.filteredemp = true;
     this.selectedEmployee = obj['Team_Res'];
@@ -3274,11 +3299,6 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedEmployee = null;
     this.GetSubtask_Details();
   }
-
-
-
-
-  selectedAction: any;
 
   ActionOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
@@ -3323,18 +3343,10 @@ export class MoreDetailsComponent implements OnInit {
   OnTabTask_Click() {
     this.GetSubtask_Details();
   }
+
   OnOverview_Click() {
     this.GetSubtask_Details();
   }
-
-  Editbutton: boolean;
-  _modelProjectName: string;
-  _modelProjDesc: string;
-  _ProjDeadline: string;
-  action_enddate: string;
-  action_startdate: string;
-  action_remarks: string;
-  alloc_remarks: string;
 
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
@@ -3352,10 +3364,6 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
-
-  _modelProjAlloc: number = 0;
-  editduration: boolean = false;
-  subduration: any;
 
   OnEditProject_Alloc(id, aname, i, acode, duration) {
     this.actionName = aname;
@@ -3388,16 +3396,6 @@ export class MoreDetailsComponent implements OnInit {
     // (<HTMLInputElement>document.getElementById("AllocFocus_" + id)).focus();
 
   }
-  extend_remarks: string;
-  editDeadline: boolean = false;
-  editCategory: boolean = false;
-  editClient: boolean = false;
-  editSupport: boolean = false;
-  editprojectOwner:boolean = false;
-  editprojectResponsible:boolean = false;
-  editActionOwner: boolean = false;
-  editActionResp: boolean = false;
-
 
   onEditDeadline(id) {
     // this._ProjDeadline = enddate;
@@ -3585,11 +3583,6 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  actendedit: boolean = false;
-  actnum: any;
-  actCode: string;
-  actstartedit: boolean = false;
-
   onEditEndDate(id, aname, i, acode,edate) {
     this.actionName = aname;
     this.actCode = acode;
@@ -3648,7 +3641,6 @@ export class MoreDetailsComponent implements OnInit {
     // (<HTMLInputElement>document.getElementById("StartDatetext_" + id)).focus(); 
   }
 
-
   onCancel(id) {
 
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
@@ -3691,9 +3683,6 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("AllocArea_" + id)).style.display = "none";
   }
 
-  edithold: boolean = false;
-  editRelease: boolean = false;
-
   onHoldClick(id) {
     this.Editbutton = true;
     this.edithold = true;
@@ -3720,8 +3709,6 @@ export class MoreDetailsComponent implements OnInit {
     // document.getElementsByClassName("date-drop3")[0].classList.remove("d-block");
     // (<HTMLInputElement>document.getElementById("Holdtext_" + id)).focus();
   }
-
-  holdDate: any;
 
   release_alert() {
     this.holdDate = moment(this.hold_upto).format("DD-MM-YYYY");
@@ -3750,9 +3737,7 @@ export class MoreDetailsComponent implements OnInit {
       this.OnAddTaskClick();
     }
   }
-
-  release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-
+  
   orgValueChange1(val) {
     this.release_date = moment(val.value).format("MM/DD/YYYY");
   }
@@ -3782,8 +3767,6 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  transferproject: boolean = false;
-
   onTransferClick(id) {
     this.Editbutton = true;
     this.edithold = false;
@@ -3810,12 +3793,14 @@ export class MoreDetailsComponent implements OnInit {
     // this.Editbutton = true;
     // (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
   }
+
   closehold(id) {
     // (<HTMLInputElement>document.getElementById("HoldArea")).classList.remove("d-block");
     (<HTMLInputElement>document.getElementById("HoldArea_" + id)).classList.remove("d-block");
     this.Holddate = null;
     this.hold_remarks = "";
   }
+
   closetransfer(id) {
     // (<HTMLInputElement>document.getElementById("TransferArea")).classList.remove("d-block");
     (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
@@ -3823,22 +3808,6 @@ export class MoreDetailsComponent implements OnInit {
     this.TransDate = null;
     this.transfer_remarks = "";
   }
-
-  _Message: any;
-
-  // OnProject_Rename(id, Pcode) {
-  //   if (this._modelProjectName != "" && this._modelProjDesc != "") {
-  //     this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
-  //       this._Message = data['message'];
-  //       this.notifyService.showSuccess(this._Message, "");
-  //       this.GetSubtask_Details();
-  //     });
-  //     this.onCancel(id);
-  //   }
-  //   else {
-  //     this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
-  //   }
-  // }
 
   OnProject_Rename(id, Pcode) {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
@@ -3919,12 +3888,7 @@ actiondeadline_alert(){
  
     const dateOne = moment(this.Projectdeadline).format("YYYY/MM/DD");
     const dateTwo =moment(this._ProjDeadline).format("YYYY/MM/DD");
-    // console.log(dateOne)
-    //  console.log(dateTwo)
-    //  const dateOn = this.datepipe.transform(this.Projectdeadline, 'yyyy/MM/dd');
-    // const dateTw =this.datepipe.transform(this._ProjDeadline, 'yyyy/MM/dd');
-    // console.log(dateOn)
-    // console.log(dateTw)
+    
     if (dateOne < dateTwo) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
@@ -4247,13 +4211,7 @@ actiondeadline_alert(){
       this.notifyService.showInfo("Action responsible cannot be empty", "Please try again with correct value");
     }
   }
-
-  Holddate: string;
-  hold_remarks: string;
-  minhold: any = new Date();
-  minDate: any = new Date();
-  maxhold: any = new Date();
-
+  
   onProject_Hold(id, Pcode) {
     this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
     // alert(Pcode);
@@ -4296,8 +4254,6 @@ actiondeadline_alert(){
     // this.GetAllEmployeesForAssignDropdown();
     $("#mysideInfobar1").scrollTop(0);
   }
-
-  selectedFile: any = null;
 
   onFileChange(e) {
     this.selectedFile = <File>e.target.files[0];
@@ -4376,13 +4332,6 @@ actiondeadline_alert(){
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
   }
 
-  Sub_ProjectName: string = "";
-  _Description: string;
-  _EndDate: Date = null;
-  _StartDate: Date = null;
-  selected_Employee = [];
-  selectedEmpNo: string = null;
-
   Clear_Feilds() {
     this.Editbutton=false;
     this.Sub_ProjectName = "";
@@ -4424,8 +4373,6 @@ actiondeadline_alert(){
     this.dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
   }
 
-  //Project Update
-  progress: any;
 
   updateMainProject() {
     const fd = new FormData();
@@ -4562,7 +4509,6 @@ actiondeadline_alert(){
     // this. GetProjectsByUserName();
     // this.getDropdownsDataFromDB();
   }
-  coresecondary: boolean = true;
 
   darcreate() {
     this.dateF = new FormControl(new Date());
@@ -4592,7 +4538,6 @@ actiondeadline_alert(){
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
-  deadlineCount: any;
   getdeadlinecount() {
     this.service.getDeadlineCountbyProjectcode(this.URL_ProjectCode).subscribe(data => {
       this.deadlineCount = data['deadlineCount'];
@@ -4624,10 +4569,6 @@ actiondeadline_alert(){
     });
   }
 
-  selectedEmp_No: string = null;
-  transfer_remarks: string;
-  TransDate: string;
-  new_Res: string;
 
   onProject_Transfer(id, Pcode) {
     if (this.TransDate != null || this.TransDate != undefined) {
@@ -4693,11 +4634,6 @@ actiondeadline_alert(){
 
   //Portfolio region
 
-  _LinkSideBar1: boolean = true;
-  objPortfolioDto: PortfolioDTO;
-  _portfolioLength: any;
-  dropdownSettings_Portfolio: IDropdownSettings = {};
-
   AddPortfolio() {
     this._LinkSideBar = true;
     this._LinkSideBar1 = false;
@@ -4739,10 +4675,6 @@ actiondeadline_alert(){
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
-
-  Empty_portDropdown: any;
-  _SelectedPorts: any;
-  Port_Id: number;
 
   Portfolio_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
@@ -4793,10 +4725,6 @@ actiondeadline_alert(){
     // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
   }
 
-  selectedportID: any;
-  noPort: string;
-  ngDropdwonPort: any;
-
   addProjectToPortfolio() {
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
@@ -4838,13 +4766,7 @@ actiondeadline_alert(){
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
-
-  deletedBy: string;
-  portfolioName: string;
-  totalPortfolios: number;
-  portfolioId: any;
-  _portfoliosList: any;
-
+  
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
 
