@@ -1528,7 +1528,8 @@
                 </div>
             </div>
         </div>
-        <div class="subtask-list" *ngFor="let task of Subtask_List;let i=index">
+        <a class="subtask-list" *ngFor="let task of Subtask_List;let i=index"
+            data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
             <div class="d-flex  align-items-center justify-content-between" >
                 <div>
                     <div class="my-2">
@@ -1539,7 +1540,7 @@
                 </div>
             </div>
             <div class="d-flex mt-3 flex-column">
-                <a data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="" class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
+                <a class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
             </div>
             <div class="card-body collapse" id="colp_{{i+1}}">
                 <div class="row">
@@ -1800,7 +1801,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
         <!-- Completed Task  -->
         <div class="border-top" *ngIf="CompletedList != ''">
             <div class="d-block align-items-center justify-content-between mt-3">
@@ -1812,7 +1813,8 @@
                     </div>
                 </div>
             </div>
-            <div class="subtask-list" *ngFor="let task of CompletedList;let i=index">
+            <a class="subtask-list" *ngFor="let task of CompletedList;let i=index"
+                data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                 <div class="text-left">
                     <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                         <i class="fa fa-window-restore mr-2"></i>Action {{i+1}}
@@ -1820,7 +1822,7 @@
                 </div>
                 <div class="text-left mt-3">
                     <!-- <p class="mb-2">CLIENT</p> -->
-                    <a data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls=""  class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
+                    <a  class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
                 </div>
                 <div class="card-body collapse" id="colcc_{{i+1}}">
                     <div class="row">
@@ -1990,7 +1992,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="border-top" *ngIf="AssigntaskList != ''">
             <div class="d-block align-items-center justify-content-between mt-3">

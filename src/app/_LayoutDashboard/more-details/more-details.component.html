@@ -1268,6 +1268,16 @@
                                     <div class="text-right action-btn">
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="hidepro()" id="hidepro"
+                                            data-toggle="collapse" href=".show.p1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-minus-square mr-2"></i>Collapse All
+                                        </a>
+                                        
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3 d-none" (click)="showpro()" id="showpro"
+                                            data-toggle="collapse" href=".collapsed .p1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-plus-square mr-2"></i>show All
+                                        </a>
+
                                         <button
                                             *ngIf="(inProcessCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
@@ -1295,8 +1305,9 @@
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="inProcessCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
-                                                [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID)}">
+                                            <a class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+                                                [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID)}"
+                                                data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                 <div class="lbl-act ml-2">
                                                     <label
                                                         class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
@@ -1309,7 +1320,7 @@
                                                     [hidden]="item.Team_Res!=Current_user_ID" />
 
                                                 <div class="col-lg-11">
-                                                    <a data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls=""
+                                                    <a
                                                         class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
                                                         <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Name!">
@@ -1364,7 +1375,7 @@
                                                             </div>
                                                         </span>
                                                     </p>
-                                                    <div class="card-body pt-0 collapse" id="colp_{{i+1}}">
+                                                    <div class="card-body pt-0 collapse show p1" id="colp_{{i+1}}">
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="d-flex align-items-center detial-item">
@@ -1877,7 +1888,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -1888,6 +1899,16 @@
                                     <div class="text-right action-btn">
                                         <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                         <!-- (click)="OnAddTaskClick()" -->
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="hidecc()" id="hidecc"
+                                            data-toggle="collapse" href=".show.c1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-minus-square mr-2"></i>Collapse All
+                                        </a>
+
+                                        <a title="Collapse all" class="text-muted text-hover-info mr-3" (click)="showcc()" id="showcc"
+                                            data-toggle="collapse" href=".collapsed .c1" role="button" aria-expanded="false" aria-controls="">
+                                            <i class="far fa-minus-square mr-2"></i>show All
+                                        </a>
+
                                         <button
                                             *ngIf="(completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                             (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
@@ -1917,7 +1938,8 @@
 
                                         <div class="ribbon-content scrollbar1" *ngIf="completedCount !=0">
                                             <!-- bg-custom   --- For grey background use (bg-custom) class -->
-                                            <div class="subtask-list" *ngFor="let item of CompletedList; let i=index">
+                                            <a class="subtask-list" *ngFor="let item of CompletedList; let i=index"
+                                                data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                 <div class="lbl-act ml-2">
                                                     <label
                                                         class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
@@ -1925,7 +1947,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-lg-11">
-                                                    <a data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls=""
+                                                    <a
                                                         class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
                                                         <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Name!">
@@ -1936,7 +1958,7 @@
                                                             data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                     </p>
-                                                    <div class="card-body pt-0 collapse" id="colcc_{{i+1}}">
+                                                    <div class="card-body pt-0 collapse show c1" id="colcc_{{i+1}}">
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="d-flex align-items-center detial-item">
@@ -2161,7 +2183,7 @@
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -3206,7 +3228,7 @@
         </div>
 
 
-        <div class="kt-portlet__body d-flex">
+        <div class="kt-portlet__body flex-row">
             <div class="w-45">
                 <div class="proctdetls" [ngClass]="{ ' ' : Status!='Deadline Extend Under Approval',
                         'justify-content-between' : Status=='Deadline Extend Under Approval'}" id="ProjectDetails_Main">
