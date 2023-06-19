@@ -1427,3 +1427,25 @@ span.guest-icns, .svg-icn {
 .subtask-list-title {
   color: #595d6e;
 }
+.collapsed .hidev{
+  display: none;
+}
+.collapsed  span.showv{
+  display: inline-flex;
+  align-items: center;
+}
+.collapsed .showv{
+  display: flex;
+}
+.showv{
+  display: none;
+}
+.collapsed .flex-hdv{
+  flex: unset;
+}
+.flex-hdv{
+  flex:1;
+}
+.ml--2 {
+  margin-left: -15px;
+}
