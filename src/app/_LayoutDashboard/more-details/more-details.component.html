@@ -1317,7 +1317,7 @@
                                                         (click)="OnSubtaskClick(item)"
                                                         *ngIf="item.SubProject_Status!='Under Approval'"
                                                         [hidden]="item.Team_Res!=Current_user_ID" />
-                                                    <a class="d-flex justify-content-between collapsed" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                    <a class="d-flex justify-content-between collapsed lapse" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
                                                             <div
                                                                 class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-0 flex-hdv">
@@ -1398,8 +1398,24 @@
                                                             </div>
                                                         </div>
                                                         
-                                                        <div class="d-flex-cen showv">
-                                                            <div class="d-flex-cen mr-2">
+                                                        <div class="d-flex-cen">
+
+                                                            <div class="d-flex-cen mr-2 showv">                                                                
+                                                                <div class="initial-box color-7 b-50 mr-2">
+                                                                    <span class="line-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                                <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
+                                                            </div>
+
+                                                            <!-- <div class="d-flex-cen mr-2 showv">
                                                                 
                                                                 <span class="detail-icn mr-1">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -1412,12 +1428,12 @@
                                                                 </span>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>
                                                                 
-                                                            </div>
-                                                            <a class="text-info"> View Details </a>
-                                                            
+                                                            </div> -->
+                                                            <a class="text-info swap-view"> View details </a>
+                                                            <a class="text-info swap-less"> Less details </a>                                                            
                                                         </div>
                                                     </a>
-                                                    <div class="card-body pt-0 collapse p1" id="colp_{{i+1}}">
+                                                    <div class="card-body pt-0 collapse p1 " id="colp_{{i+1}}">
                                                         
                                                         <p class="mb-3 ml--2">
                                                             <span class="mr-2" id="Span_DescName_{{item.id}}"
@@ -2031,7 +2047,8 @@
                                                                                 d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
                                                                             </path>
                                                                     </svg>
-                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})</span>
+                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})
+                                                                </span>
 
                                                                 <div class="d-flex-cen showv ml-2">
                                                                     <span class="detail-icn mr-1 d-none">
@@ -2065,21 +2082,23 @@
                                                         </div>
 
                                                         <div class="d-flex-cen showv">
-                                                            <div class="d-flex-cen mr-2">
-                                                                
-                                                                <span class="detail-icn mr-1">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        width="16" height="16" fill="currentColor"
-                                                                        class="bi bi-person" viewBox="1 0 14 14">
-                                                                        <path
-                                                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>
-                                                                
+                                                            <div class="d-flex-cen mr-2">                                                                
+                                                                <div class="initial-box color-7 b-50 mr-2">
+                                                                    <span class="line-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                                <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
-                                                            <a class="text-info"> View Details </a>
+                                                            
+                                                            <a class="text-info swap-view"> View details </a>
+                                                            <a class="text-info swap-less"> Less details </a> 
                                                             
                                                         </div>
 
