@@ -4724,17 +4724,17 @@ actiondeadline_alert(){
     document.getElementById("showpro").classList.add("d-none");
     document.getElementById("hidepro").classList.remove("d-none");
   }
-  hidepro(){
-    document.getElementById("hidepro").classList.add("d-none");
-    document.getElementById("showpro").classList.remove("d-none");
-  }
+  // hidepro(){
+  //   document.getElementById("hidepro").classList.add("d-none");
+  //   document.getElementById("showpro").classList.remove("d-none");
+  // }
+  // hidecc(){
+  //   document.getElementById("hidecc").classList.add("d-none");
+  //   document.getElementById("showcc").classList.remove("d-none");
+  // }
   showcc(){
     document.getElementById("showcc").classList.add("d-none");
     document.getElementById("hidecc").classList.remove("d-none");
-  }
-  hidecc(){
-    document.getElementById("hidecc").classList.add("d-none");
-    document.getElementById("showcc").classList.remove("d-none");
   }
   onTransferCancel(id) {
     (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");

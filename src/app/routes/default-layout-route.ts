@@ -28,7 +28,7 @@ export const DEFAULT_ROUTES: Routes = [
 
      },
      {
-          path: 'Meeting-Report', canActivate: [AuthGuard],
+          path: 'Meeting-Report/:scheduleid', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/meeting-report/meeting-report.module').then(m => m.MeetingReportModule),
 
      },

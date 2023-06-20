@@ -33,6 +33,7 @@ import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { validationLatitudeLongitude } from "validation-latitude-longitude";
 import { empty } from 'rxjs';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -443,7 +444,8 @@ export class DashboardComponent implements OnInit {
     public datepipe: DatePipe, public dialog: MatDialog,
     private notifyService: NotificationService,
     public _LinkService: LinkService, private CalenderService: CalenderService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public BsService: BsServiceService
   ) {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
@@ -3966,9 +3968,10 @@ export class DashboardComponent implements OnInit {
   }
  
   meetingReport() {
+    
     let name: string = 'Meeting-Report';   
     var url = document.baseURI + name  ;
-    var myurl = `${url}`;
+    var myurl = `${url}/${this.Schedule_ID}`;
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
