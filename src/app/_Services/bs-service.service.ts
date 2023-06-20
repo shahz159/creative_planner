@@ -12,7 +12,7 @@ export class BsServiceService {
 
   private _Pcode = new BehaviorSubject<any>(null);
   private _PName = new BehaviorSubject<any>(null);
-
+  
   private _catId = new BehaviorSubject<any>(null);
   private _catName = new BehaviorSubject<any>(null);
 
@@ -28,7 +28,7 @@ export class BsServiceService {
   private _portId = new BehaviorSubject<any>(null);
 
 
-
+  
   bs_projectCode = this._Pcode.asObservable();
   bs_ProjectName = this._PName.asObservable();
 
@@ -51,6 +51,8 @@ export class BsServiceService {
   SetNewPojectCode(NewPCode) {
     this._Pcode.next(NewPCode);
   }
+
+
   SetNewPojectName(ProjName) {
     this._PName.next(ProjName);
   }
