@@ -66,6 +66,7 @@ export class ActionToProjectComponent implements OnInit {
   CurrentUser_Name:string;
   owner:string;
   Resp_empno:string;
+  Autho_empno:string;
 
   constructor(
     public notifyService: NotificationService,
@@ -138,6 +139,7 @@ export class ActionToProjectComponent implements OnInit {
     }
 
     this.BsService.bs_projectCode.subscribe(p => {
+      
       if (p == null) {
         this.ProjectsDropdownBoolean = false;
         this.GetProjectsByUserName();
@@ -152,6 +154,7 @@ export class ActionToProjectComponent implements OnInit {
           this.ProjectStartDate = data["StartDate"];
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
+          this.Autho_empno = data['Autho_empno'];
           const dateOne = new Date(this.disablePreviousDate);
           const dateTwo = new Date(this.ProjectStartDate);
           if(dateTwo > dateOne){
@@ -231,6 +234,7 @@ export class ActionToProjectComponent implements OnInit {
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
       this.Resp_empno = data['Resp_empno'];
+      this.Autho_empno = data['Autho_empno'];
       const dateOne = new Date(this.disablePreviousDate);
       const dateTwo = new Date(this.ProjectStartDate);
       if(dateTwo > dateOne){
@@ -476,7 +480,7 @@ export class ActionToProjectComponent implements OnInit {
       else {
         this.ObjSubTaskDTO.Duration = 0;
       }
-
+      
       this.service._InsertNewSubtask(fd).subscribe(event => {
 
         if (event.type === HttpEventType.Response){
@@ -532,7 +536,7 @@ export class ActionToProjectComponent implements OnInit {
     const dateTwo = new Date(this.ProjectDeadLineDate);
     // console.log(dateOne)
     // console.log(dateTwo)
-    if (dateTwo < dateOne) {
+    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.CurrentUser_Name==this.Autho_empno)) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -552,6 +556,14 @@ export class ActionToProjectComponent implements OnInit {
           )
         }
       });
+    }
+    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.CurrentUser_Name!=this.Autho_empno)) {
+      Swal.fire({
+        title: 'Unable to create this action.',
+        text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+        // showCancelButton: true
+      });
+    
     }
     else {
       this.OnSubmit();

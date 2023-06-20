@@ -46,4 +46,5 @@ export class UserDetailsDTO {
 
     Owner_empno:string;
     Resp_empno:string;
+    Autho_empno:string;
 }
