@@ -1319,8 +1319,8 @@
                                                         [hidden]="item.Team_Res!=Current_user_ID" />
                                                     <a class="d-flex justify-content-between collapsed lapse" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
-                                                            <div
-                                                                class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-0 flex-hdv">
+                                                            <div class="subtask-list-title text-hover-primary 
+                                                                font-size-h5 font-weight-bold mb-0 flex-hdv">
                                                                 <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                                     data-toggle="tooltip" title="Action Name!">
                                                                     {{item.Project_Name }}</span>
@@ -1347,19 +1347,18 @@
                                                                         </div>
                                                                     </div>
                                                                 </span>
-                                                                
-                                                                <span class="showv">(
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                    </svg>
-                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})</span>
                                                             </div>
-                                                        
-                                                            <div class="d-flex-cen showv ml-2">
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="">
+                                                                <span class="showv mr-2 text-muted">
+                                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="d-flex-cen showv">
                                                                 <span class="detail-icn mr-1  d-none">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         width="14" height="14" fill="currentColor"
@@ -1396,13 +1395,15 @@
                                                                         {{item.Delaydays}} days</h5>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                         
                                                         <div class="d-flex-cen">
 
                                                             <div class="d-flex-cen mr-2 showv">                                                                
                                                                 <div class="initial-box color-7 b-50 mr-2">
-                                                                    <span class="line-1">
+                                                                    <i class="far fa-user"></i>
+                                                                    <!-- <span class="line-1">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="16" height="16" fill="currentColor"
                                                                             class="bi bi-person" viewBox="1 0 14 14">
@@ -1410,7 +1411,7 @@
                                                                                 d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
                                                                             </path>
                                                                         </svg>
-                                                                    </span>
+                                                                    </span> -->
                                                                 </div>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
@@ -2031,68 +2032,66 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-lg-12">
-                                                    <a class="d-flex justify-content-between collapsed" data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                    <a class="d-flex justify-content-between lapse collapsed" data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                                                    
+                                                        
                                                         <div class="d-flex-cen">
-                                                            <div
-                                                                class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
-                                                                <span class="mr-2" id="SpanProjName_{{item.id}}"
-                                                                    data-toggle="tooltip" title="Action Name!">
-                                                                    {{item.Project_Name }}</span>
-                                                            </div>
-                                                            <span class="showv">(
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                    </svg>
-                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})
-                                                                </span>
+                                                            <div class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mt-1">
 
-                                                                <div class="d-flex-cen showv ml-2">
-                                                                    <span class="detail-icn mr-1 d-none">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-star" viewBox="0 0 16 16">
-                                                                            <path
-                                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                                        </svg>
-                                                                    </span>
-                                                                    <div>
-                                                                        <h5 data-toggle="tooltip"
-                                                                                class=" text-danger"
-                                                                                title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                                                'text-success':item.SubProject_Status=='Completed',
-                                                                'text-warning':item.SubProject_Status=='InProcess',
-                                                                'text-primary':item.SubProject_Status=='Under Approval',
-                                                                'text-info':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
-                                                                'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                                'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                                                'text-underApp':item.SubProject_Status=='New Project',
-                                                                'text-completed':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                                                'text-Todo':item.SubProject_Status=='ToDo Completed'}"
-                                                                                data-toggle="tooltip"
-                                                                                title="Action Status!">
-                                                                                {{item.SubProject_Status}} </h5>
-                                                                    </div>
+                                                                <span class="mr-2" id="SpanProjName_{{item.id}}"
+
+                                                                data-toggle="tooltip" title="Action Name!">
+
+                                                                {{item.Project_Name }}</span>
+
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="">
+                                                                <span class="showv mr-2 text-muted">
+                                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+
+
+                                                            <div class="d-flex-cen showv">
+                                                                <span class="detail-icn mr-1 d-none">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        width="14" height="14" fill="currentColor"
+                                                                        class="bi bi-star" viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                                                    </svg>
+                                                                </span>
+                                                                <div>
+                                                                    <h5 data-toggle="tooltip"
+                                                                            class=" text-danger"
+                                                                            title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
+                                                            'text-success':item.SubProject_Status=='Completed',
+                                                            'text-warning':item.SubProject_Status=='InProcess',
+                                                            'text-primary':item.SubProject_Status=='Under Approval',
+                                                            'text-info':item.SubProject_Status=='Completion Under Approval',
+                                                            'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                                            'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                                            'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                                            'text-underApp':item.SubProject_Status=='New Project',
+                                                            'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                                            'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
+                                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                                                            data-toggle="tooltip"
+                                                                            title="Action Status!">
+                                                                            {{item.SubProject_Status}} </h5>
                                                                 </div>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="d-flex-cen showv">
-                                                            <div class="d-flex-cen mr-2">                                                                
+                                                        <div class="d-flex-cen ">
+                                                            <div class="d-flex-cen mr-2 showv">                                                                
                                                                 <div class="initial-box color-7 b-50 mr-2">
-                                                                    <span class="line-1">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="16" height="16" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </span>
+                                                                    <i class="far fa-user"></i>
                                                                 </div>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
