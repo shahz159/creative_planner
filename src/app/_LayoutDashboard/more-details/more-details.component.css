@@ -55,8 +55,9 @@
   .subtask-radio {
     width: 16px;
     height: 16px;
-    margin-right: 10px;
-    margin-top: 5px;
+    margin-right: 15px;
+    margin-left: 3px;
+    margin-top: 0;
     vertical-align: middle;
   }
   .subtask-list p {
@@ -1435,7 +1436,7 @@ span.guest-icns, .svg-icn {
   align-items: center;
 }
 .collapsed .showv{
-  display: flex;
+  display: inline-flex;
 }
 .showv{
   display: none;
@@ -1448,4 +1449,43 @@ span.guest-icns, .svg-icn {
 }
 .ml--2 {
   margin-left: -15px;
+}
+.collapsed .swap-view{
+  display: inline-block;
+
+}
+.swap-view{
+  display: none;
+}
+.collapsed .swap-less{
+  display: none;
+}
+.initial-box {
+  background-color: #f9ce6f;
+  color: #fff;
+  padding: 0;
+  border-radius: 5px;
+  font-weight: 600;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.color-7 {
+  background-color: #9b59b6;
+}
+
+.b-50 {
+  border-radius: 50%;
+}
+.pro-rsec {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.subtask-list .lbl-act{
+  color: #595d6e;
 }

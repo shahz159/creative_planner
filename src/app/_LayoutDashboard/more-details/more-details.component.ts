@@ -231,6 +231,8 @@ export class MoreDetailsComponent implements OnInit {
   nonRacisList:any;
   hierarchydropdown:any;
   RACISList:any;
+  responsible_dropdown:any;
+  owner_dropdown:any;
   Projectdeadline:any;
   sdate:any;
   _dbMemoIdList: any;
@@ -258,6 +260,7 @@ export class MoreDetailsComponent implements OnInit {
   Current_user_ID: string;
   memoId: any;
   AttachmentList: any;
+  action_attachment: any;
   attachmentlength: any;
   TotalDocs: number;
 
@@ -412,7 +415,6 @@ export class MoreDetailsComponent implements OnInit {
       this.comments = this.comments + "" + com;
       this.exist_comment.push(com);
     }
-    console.log(this.exist_comment, "select");
   }
 
   clickondeselect(com, id) {
@@ -586,7 +588,7 @@ export class MoreDetailsComponent implements OnInit {
 
 
   submitApproval() {
-    if (this.requestType != 'Project Forward') {
+    if (this.requestType != 'Project Forward' && this.requestType!='Task Complete') {
       if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -1148,16 +1150,18 @@ export class MoreDetailsComponent implements OnInit {
   getRACISandNonRACIS(){
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        console.log(JSON.parse(data[0]['OtherList']),"RACIS");
+        // console.log(data,"RACIS");
         this.nonRacisList=(JSON.parse(data[0]['OtherList']));
         this.RACISList=(JSON.parse(data[0]['RacisList']));
+        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
       });
 
-      this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
-        (data) => {
-          console.log(JSON.parse(data[0]['hierarchy_dropdown']),"hierarchy_dropdown");
-          this.hierarchydropdown=(JSON.parse(data[0]['hierarchy_dropdown']));
-        });
+      // this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
+      //   (data) => {
+      //     console.log(JSON.parse(data[0]['hierarchy_dropdown']),"hierarchy_dropdown");
+      //     this.hierarchydropdown=(JSON.parse(data[0]['hierarchy_dropdown']));
+      //   });
   }
 
   GetProjectDetails() {
@@ -1183,7 +1187,6 @@ export class MoreDetailsComponent implements OnInit {
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
           this.sdate = this.datepipe.transform(this.StartDate, 'yyyy-MM-dd');
-
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
           this.Responsible = this.ProjectInfo_List[0]['Team_Res'];
@@ -1200,7 +1203,6 @@ export class MoreDetailsComponent implements OnInit {
           this.Coor_EmpNo = this.ProjectInfo_List[0]['Coor'];
           this.Inform_EmpNo = this.ProjectInfo_List[0]['Informer'];
           this.Support_EmpNo = this.ProjectInfo_List[0]['Support'];
-          
           // console.log(this.Coor_EmpNo,this.Inform_EmpNo,this.Support_EmpNo,"RACIS");
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
@@ -1208,7 +1210,11 @@ export class MoreDetailsComponent implements OnInit {
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-              this.attachmentlength = this.AttachmentList.length;
+              this.action_attachment = JSON.parse(data[0]['action_attachments']);
+              if(this.action_attachment==null)
+                this.attachmentlength = this.AttachmentList.length;
+              else
+                this.attachmentlength = this.AttachmentList.length + this.action_attachment.length;
               this.TotalDocs = (data[0]['TotalDocs']);
             });
           var fullname_R = this.Responsible.split(' ');
@@ -1325,7 +1331,6 @@ export class MoreDetailsComponent implements OnInit {
         };
       });
   }
-
  
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
@@ -2977,7 +2982,6 @@ export class MoreDetailsComponent implements OnInit {
     chart.appear(100, 30);
   }
 
-
   GetprojectComments() {
     this.service._GetDARAchievements(this.URL_ProjectCode).
       subscribe((data) => {
@@ -2988,7 +2992,6 @@ export class MoreDetailsComponent implements OnInit {
         // console.log("Comments-List--------->",this._CommentsList)
       });
   }
-
 
   GetDMS_Memos() {
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
@@ -3127,7 +3130,11 @@ export class MoreDetailsComponent implements OnInit {
     this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
       .subscribe((data) => {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-        this.attachmentlength = this.AttachmentList.length;
+        this.action_attachment = JSON.parse(data[0]['action_attachments']);
+        if(this.action_attachment==null)
+                this.attachmentlength = this.AttachmentList.length;
+              else
+                this.attachmentlength = this.AttachmentList.length + this.action_attachment.length;
         this.TotalDocs = (data[0]['TotalDocs']);
         if (this.TotalDocs == 0)
           this.noFiles = true;
@@ -3309,6 +3316,89 @@ export class MoreDetailsComponent implements OnInit {
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
+    else if(this.inProcessCount==1 && (this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Owner_EmpNo || this.Current_user_ID==this.Authority_EmpNo || this.isHierarchy==true)){
+      Swal.fire({
+        title: 'This is the last action to be completed.',
+        text: 'Do you want to proceed with main project submission?',
+        // icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          if(this.selectedFile==null){
+            this.notifyService.showInfo("Please attach the completion file to complete the main project","Note");
+          }
+          else{
+              debugger
+              const fd = new FormData();
+              fd.append("Project_Code", this.Sub_ProjectCode);
+              fd.append("Master_Code", this._MasterCode);
+              fd.append("Team_Autho", this.Authority_EmpNo);
+              fd.append("Projectblock", this.ProjectBlock);
+              fd.append("Remarks", this._remarks);
+              fd.append('file', this.selectedFile);
+              fd.append("Project_Name", this._Subtaskname);
+              this.service._UpdateSubtaskByProjectCode(fd)
+                .subscribe(data => {
+                  // this.GetProjectDetails();
+                  // this.GetSubtask_Details();
+                  // Rebinding    
+                });
+                this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+                const fd1 = new FormData();
+                fd1.append("Project_Code", this.URL_ProjectCode);
+                fd1.append("Team_Autho", this.Authority_EmpNo);
+                fd1.append("Remarks", this._remarks);
+                fd1.append("Projectblock", this.ProjectBlock);
+                fd1.append('file', this.selectedFile);
+                fd1.append("Emp_No", this.Current_user_ID);
+                fd1.append("Project_Name", this.ProjectName);
+                console.log(fd1,"complete");
+                this.service._fileuploadService(fd1).
+                  subscribe(event => {
+                    // console.log(event, "PC");
+                    if (event.type == HttpEventType.UploadProgress) {
+                      this.progress = Math.round(event.loaded / event.total * 100);
+                      this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                    }
+                    else if (event.type === HttpEventType.Response) {
+                      // console.log(event);
+                      var myJSON = JSON.stringify(event);
+                      this._Message = (JSON.parse(myJSON).body).Message;
+                      this.notifyService.showSuccess(this._Message, 'Success');
+                      // console.log(this._Message,this.progress,"json");
+                    }
+                    this.closeInfo();
+                    this.GetSubtask_Details();
+                    this.GetProjectDetails();
+                    this.getapprovalStats();
+                    this._projectSummary.GetProjectsByUserName('RACIS Projects');
+                  });
+          }
+        } 
+        else if (response.dismiss === Swal.DismissReason.cancel) {
+          const fd = new FormData();
+          fd.append("Project_Code", this.Sub_ProjectCode);
+          fd.append("Master_Code", this._MasterCode);
+          fd.append("Team_Autho", this.Authority);
+          fd.append("Projectblock", this.ProjectBlock);
+          fd.append("Remarks", this._remarks);
+          fd.append('file', this.selectedFile);
+          fd.append("Project_Name", this._Subtaskname);
+          this.service._UpdateSubtaskByProjectCode(fd)
+            .subscribe(data => {
+              this._remarks = "";
+              this._inputAttachments = "";
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              // Rebinding    
+              this.closeInfo();
+            });
+            this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+        }
+      });
+    }
     else {
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
@@ -3336,7 +3426,7 @@ export class MoreDetailsComponent implements OnInit {
           this.closeInfo();
 
         });
-      this.notifyService.showInfo("Successfully Updated", '');
+      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
     }
   }
 
@@ -3715,7 +3805,7 @@ export class MoreDetailsComponent implements OnInit {
 
     if (this.Status == 'Project Hold') {
       Swal.fire({
-        title: 'This project is on hold until ' + this.holdDate + '!!',
+        title: 'This project is on hold until ' + this.holdDate,
         text: 'Are you sure to release this project?',
         // icon: 'warning',
         showCancelButton: true,
@@ -3888,8 +3978,8 @@ actiondeadline_alert(){
  
     const dateOne = moment(this.Projectdeadline).format("YYYY/MM/DD");
     const dateTwo =moment(this._ProjDeadline).format("YYYY/MM/DD");
-    
-    if (dateOne < dateTwo) {
+    console.log(dateOne,dateTwo,"dates")
+    if ((dateOne < dateTwo) && ((this.Current_user_ID==this.Owner_EmpNo || this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Authority_EmpNo || this.isHierarchy==true)) ) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -3907,8 +3997,14 @@ actiondeadline_alert(){
             'error'
           )
         }
-      });
+      }); 
     }
+    else if ((dateOne < dateTwo) && (this.Current_user_ID!=this.Owner_EmpNo && this.Current_user_ID!=this.Responsible_EmpNo && this.Current_user_ID!=this.Authority_EmpNo && this.isHierarchy==false)) {
+      Swal.fire({
+        title: 'Unable to extend end date for this action.',
+        text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+      });
+    }  
     else {  
       this.onAction_ExtendDeadline();
   }
