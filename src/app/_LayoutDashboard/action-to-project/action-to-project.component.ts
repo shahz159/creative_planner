@@ -536,7 +536,7 @@ export class ActionToProjectComponent implements OnInit {
     const dateTwo = new Date(this.ProjectDeadLineDate);
     // console.log(dateOne)
     // console.log(dateTwo)
-    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.CurrentUser_Name==this.Autho_empno)) {
+    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno)) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -557,7 +557,7 @@ export class ActionToProjectComponent implements OnInit {
         }
       });
     }
-    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.CurrentUser_Name!=this.Autho_empno)) {
+    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno)) {
       Swal.fire({
         title: 'Unable to create this action.',
         text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
