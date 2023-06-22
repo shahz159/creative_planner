@@ -17,7 +17,7 @@
                 </div> -->
                 <div class="title-right" id="">
                     <div class="title-area">
-                        <div class="title-main">
+                        <div class="title-main" >
                             <span id="title1"> {{item.Task_Name}} </span>
                         </div>
                         <div class="d-flex">
@@ -59,13 +59,14 @@
                             </a>
                             <a class="text-info" (click)="open_side()">
                                 <img class="hed-icn" src="assets/images/note.png"/>
+                             
                             </a>
                         </div>
                     </div>
                     
                     <div class="card-body p-0">
 
-                        <div id="location" class="eve-area">
+                        <div id="location" class="eve-area" *ngIf="item.Location">
                             <div class="left-icon">
                                 <span class="side-icns" aria-hidden="true">
                                     <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
@@ -79,7 +80,8 @@
                             <div class="rgt-des">
                                 <div class="">
                                     <div class="main-s">
-                                        <a href="#" target=”_blank”>{{item.Location}}</a>
+                                        <a href="{{item.Addressurl}}"  target=”_blank”>{{item.Location}}</a>
+                                        <div class="main-s">{{item.FullAddress_loc}}</div>
                                     </div>
                                     <!-- <div class="main-s">{{}}</div> -->
                                     <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
@@ -88,7 +90,7 @@
                             </div>
                         </div>
 
-                        <div id=""  class="eve-area" *ngIf="item.Onlinelink== true">
+                        <div id=""  class="eve-area" *ngIf="item.Onlinelink.length > 0">
                             <div class="left-icon">
                                 <span class="side-icns" aria-hidden="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
@@ -140,7 +142,7 @@
                         <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
                             <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
                                 <div class="form-check form-check-custom form-check-solid">
-                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    <input type="checkbox"  id="flexCheckChecked5" [value]="_user.stringval" [checked]="userchecked"   [(ngModel)]="_user.checked" (click)="Online_methoduser($event) " class="form-check-input ps-1">
                                     </div>
                                 <div class="px-2 position-relative" >
                                     <span>
@@ -162,7 +164,7 @@
                                 </div>
                                 <div class="rgt-des ml-2"  >
                                     <div class="">
-                                        <div class="main-s">{{_user.TM_DisplayName}}</div>
+                                        <div class="main-s" name="user" >{{_user.TM_DisplayName}}</div>
                                         <div class="sub-s text-ellp">{{_user.Designation_Name}}/{{_user.Com_Name}}</div>
                                     </div>
                                 </div>
@@ -192,11 +194,11 @@
                         <div class="side-div">
                             <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="_pro.stringval" id="flexCheckChecked1"   [checked]="projectchecked"  [(ngModel)]="_pro.checked" (click)="Online_methodproject($event) " class="form-check-input ps-1">
                                     </div>
                                 <div class="rgt-des">
                                     <div>
-                                        <div class="main-s"><a href="javascript:void(0)"> {{_pro.Project_Name}}</a>
+                                        <div class="main-s"><a href="javascript:void(0)"  (click)="moreDetails(_pro.stringval)"> {{_pro.Project_Name}}</a>
                                         </div>
 
                                     </div>
@@ -225,11 +227,11 @@
                         <div class="side-div">
                             <div class="d-flex align-items-center"  *ngFor="let _prot of portfolio_Scheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="_prot.numberval" id="flexCheckChecked2"  [checked]="portfolioschecked"  [(ngModel)]="_prot.checked" (click)="Online_methodportfolio($event) " class="form-check-input ps-1">
                                 </div>
                                 <div class="rgt-des">
                                     <div>
-                                        <div class="main-s"><a href="javascript:void(0)">
+                                        <div class="main-s"><a href="javascript:void(0)" (click)="OnCardClick(_prot.numberval)">
                                             {{_prot.Portfolio_Name}}</a></div>
                                     </div>
                                 </div>
@@ -257,12 +259,12 @@
                         <div class="side-div">
                             <div class="d-flex align-items-center" *ngFor="let itemMemos of _MemosSubjectList; let i=index">                                    
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" value="" id="flexCheckChecked" class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="itemMemos.MailId" id="flexCheckChecked3"  [checked]="dmschecked"  [(ngModel)]="itemMemos.checked" (click)="Online_methoddms($event) " class="form-check-input ps-1">
                                 </div>
                                 <div class="rgt-des">
                                     <div>
                                         <div class="main-s">
-                                            <a href="javascript:void(0)">
+                                            <a href="javascript:void(0)"  (click)="openUrl(itemMemos.Url)">
                                                 {{itemMemos.Subject}}</a>
                                         </div>
                                     </div>
@@ -310,7 +312,7 @@
 
                     </div>
                     <div class="card-footer text-right">
-                        <button class="btn btn-info btn-sm mr-2">Submit</button>
+                        <button class="btn btn-info btn-sm mr-2"  (click)="Insert_meetingreport()" >Submit</button>
                         <button class="btn btn-secondary btn-sm mr-2">cancel</button>
                     </div>
                     
@@ -325,11 +327,15 @@
                             <a class="hide-btn pend-btn line-1" (click)="close_side()">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"><path _ngcontent-shy-c394="" d="M12.1714 10.9998L7.51451 6.34292L8.92872 4.92871L15.9998 11.9998L8.92872 19.0708L7.51451 17.6566L12.1713 12.9998L2.99953 12.9999L2.99951 10.9999L12.1714 10.9998ZM17.9996 18.9997L17.9996 4.99972H19.9996L19.9996 18.9997H17.9996Z"></path>
                                 </svg>
+                                
                             </a>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <div class="form-group" id="Descrip_Name">
+                            <label class="cus-lbl">Notes </label>
+                            <angular-editor [(ngModel)]="Notes_Type" [config]="config"></angular-editor>
+                        </div>
                     </div>
                 </div>
 
