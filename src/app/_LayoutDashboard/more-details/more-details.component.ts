@@ -114,6 +114,7 @@ export class MoreDetailsComponent implements OnInit {
   prviousCommentsList: any;
   noRejectType: boolean = false;
   transfer_json: any;
+  revert_json: any;
   forwardType: string;
   pro_act: boolean = true;
   newResponsible: any;
@@ -455,6 +456,7 @@ export class MoreDetailsComponent implements OnInit {
         this.initials1 = this.initials1.toUpperCase();
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+        this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
         if(this.prviousCommentsList.length>1){
           this.previouscoments=true;
         }
@@ -466,6 +468,11 @@ export class MoreDetailsComponent implements OnInit {
           this.newResponsible = (this.transfer_json[0]['newResp']);
           this.forwardto = (this.transfer_json[0]['Forwardedto']);
           this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+        }
+        if(this.requestType=='Revert Back'){
+          this.newResponsible = (this.revert_json[0]['newResp']);
+          this.forwardto = (this.revert_json[0]['Forwardedto']);
+          this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
         }
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
@@ -908,6 +915,40 @@ export class MoreDetailsComponent implements OnInit {
       document.getElementById("moredet").classList.remove("position-fixed");
       document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
       document.getElementById("rightbar-overlay").style.display = "none";
+    }
+    else if (this.requestType == 'Revert Back'){
+      if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.GetProjectDetails();
+                this.GetSubtask_Details();
+                this.getapprovalStats();
+                this.GetprojectComments();
+                this.getRejectType();
+                this.getReasonforholdandRejected();
+              }
+              this.Clear_Feilds();
+            });
+        }
+      }
     }
 
   }
@@ -3574,6 +3615,12 @@ export class MoreDetailsComponent implements OnInit {
     this.editActionResp=false;
     this.editSupport =false;
 
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+      });
+
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3595,6 +3642,12 @@ export class MoreDetailsComponent implements OnInit {
     this.editActionOwner=false;
     this.editActionResp=false;
     this.editSupport =false;
+
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+      });
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3621,6 +3674,12 @@ export class MoreDetailsComponent implements OnInit {
     this.editActionResp=true;
     this.editSupport =false;
 
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
+      (data) => {
+        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+      });
+
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3646,6 +3705,12 @@ export class MoreDetailsComponent implements OnInit {
     this.editActionResp=false;
     this.editSupport =false;
 
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
+      (data) => {
+        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+      });
+      
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";

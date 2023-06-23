@@ -691,7 +691,7 @@
                                                     <td>
                                                         <p class="kt-widget__title mb-0">
                                                             {{item.Project_Name }}
-                                                            <span class="count2">12</span>
+                                                            <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
                                                         </p>
                                                     </td>
                                                     <td>

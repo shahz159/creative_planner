@@ -1388,6 +1388,59 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       }
       this.closeInfo();
     }
+    else if(this.requestType == 'Revert Back'){
+      if (this.selectedType == '3') {
+        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+          this.noRejectType = true;
+          this.notifyService.showError("Please select Reject Type", "Failed");
+          return false;
+        }
+        else {
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.rejectType = this.rejectType;
+          this.approvalObj.Remarks = this.comments;
+
+          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized') {
+                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+              }
+              else {
+                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+                this.fun_LoadProjectDetails();
+                this.getapprovalStats();
+                if (this._Urlid == '1') {
+                  this.router.navigate(["/backend/ProjectsSummary/"]);
+                  this._projectSummary.GetProjectsByUserName(this.Summarytype);
+                }
+                else if (this._Urlid == '2') {
+                  this._portfolioprojects.GetPortfolioProjectsByPid();
+                }
+                else if (this._Urlid == '3') {
+                  this._viewdashboard.GetCompletedProjects();
+                }
+                else if (this._Urlid == '4') {
+                  this._projectsAdd.GetProjectsByUserName();
+                  this._projectsAdd.getDropdownsDataFromDB();
+                }
+                else if (this._Urlid == '5') {
+                  this._toDo.GetProjectsByUserName();
+                  this._toDo.GetSubtask_Details();
+                }
+                else if (this._Urlid == '6') {
+                  this.router.navigate(["Notifications"]);
+                  this._notification.viewAll();
+                }
+              }
+            });
+        }
+
+      }
+    }
   }
 
   comments_list: any;
@@ -1395,6 +1448,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Submitted_By: string;
   prviousCommentsList: any;
   transfer_json: any;
+  revert_json: any;
   forwardType: string;
   pro_act: boolean = true;
   newResponsible:any;
@@ -1448,6 +1502,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.newResponsible = (this.transfer_json[0]['newResp']);
           this.forwardto = (this.transfer_json[0]['Forwardedto']);
           this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+        }
+        this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+        if(this.requestType=='Revert Back'){
+          this.newResponsible = (this.revert_json[0]['newResp']);
+          this.forwardto = (this.revert_json[0]['Forwardedto']);
+          this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
         }
         if(this.requestType=='Project Complete' || this.requestType=='ToDo Achieved'){
             this.complete_List=JSON.parse(this.requestDetails[0]['completeDoc']);
