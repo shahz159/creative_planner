@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MeetingReportComponent} from './meeting-report.component'
 
 import { MeetingReportRoutingModule } from './meeting-report-routing.module';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { MeetingReportRoutingModule } from './meeting-report-routing.module';
   declarations: [MeetingReportComponent],
   imports: [
     CommonModule,
-    MeetingReportRoutingModule
+    MeetingReportRoutingModule,
+    AngularEditorModule
   ]
 })
 export class MeetingReportModule { }

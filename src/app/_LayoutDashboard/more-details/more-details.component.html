@@ -1313,19 +1313,20 @@
                                                 </div>
 
                                                 <div class="col-lg-12">
+                                                    <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
-                                                        (click)="OnSubtaskClick(item)"
-                                                        *ngIf="item.SubProject_Status!='Under Approval'"
-                                                        [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
-                                                    <a class="d-flex justify-content-between collapsed lapse" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                    (click)="OnSubtaskClick(item)"
+                                                    *ngIf="item.SubProject_Status!='Under Approval'"
+                                                    [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
+                                                    <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
-                                                            <div
-                                                                class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-0 flex-hdv">
+                                                            <div class="subtask-list-title text-hover-primary 
+                                                                fs-4 mb-0 flex-hdv">
                                                                 <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                                     data-toggle="tooltip" title="Action Name!">
                                                                     {{item.Project_Name }}</span>
                                                                 <!-- [hidden]="item.Project_Owner!=CurrentUser_ID" -->
-                                                                <span class="text-info hidev" [hidden]="Editbutton"
+                                                                <span class="text-info hidev edtv" [hidden]="Editbutton"
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
@@ -1339,7 +1340,7 @@
                                                                             [(ngModel)]="_modelProjectName"
                                                                             style="width: 78%;height: 32px;"
                                                                             (keydown.enter)="OnProject_Rename(item.id)">
-                                                                        <div class="d-inline-block ml-3" id="button-addon4">
+                                                                        <div class="d-inline-block ml-3" id="button-addon4" style="min-width: 140px;">
                                                                             <button (click)="OnProject_Rename(item.id)"
                                                                                 class="btn btn-primary btn btn-sm mr-2">Done</button>
                                                                             <button class=" btn btn-secondary btn btn-sm"
@@ -1347,19 +1348,18 @@
                                                                         </div>
                                                                     </div>
                                                                 </span>
-                                                                
-                                                                <span class="showv">(
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                    </svg>
-                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})</span>
                                                             </div>
-                                                        
-                                                            <div class="d-flex-cen showv ml-2">
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="">
+                                                                <span class="showv mr-2 text-muted">
+                                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="d-flex-cen showv">
                                                                 <span class="detail-icn mr-1  d-none">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         width="14" height="14" fill="currentColor"
@@ -1396,13 +1396,15 @@
                                                                         {{item.Delaydays}} days</h5>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                         
                                                         <div class="d-flex-cen">
 
                                                             <div class="d-flex-cen mr-2 showv">                                                                
                                                                 <div class="initial-box color-7 b-50 mr-2">
-                                                                    <span class="line-1">
+                                                                    <i class="far fa-user"></i>
+                                                                    <!-- <span class="line-1">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="16" height="16" fill="currentColor"
                                                                             class="bi bi-person" viewBox="1 0 14 14">
@@ -1410,7 +1412,7 @@
                                                                                 d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
                                                                             </path>
                                                                         </svg>
-                                                                    </span>
+                                                                    </span> -->
                                                                 </div>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
@@ -1433,6 +1435,7 @@
                                                             <a class="text-info swap-less"> Less details </a>                                                            
                                                         </div>
                                                     </a>
+                                                </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{i+1}}">
                                                         
                                                         <p class="mb-3 ml--2">
@@ -1452,7 +1455,7 @@
                                                                         [(ngModel)]="_modelProjDesc"
                                                                         style="width: 78%;height: 32px;"
                                                                         (keydown.enter)="OnProject_Rename(item.id)">
-                                                                    <div class="d-inline-block ml-3" id="button-addon4">
+                                                                    <div class="d-inline-block ml-3" id="button-addon4" style="min-width: 140px;">
                                                                         <button (click)="OnProject_Rename(item.id)"
                                                                             class="btn btn-primary btn btn-sm mr-2">Done</button>
                                                                         <button class=" btn btn-secondary btn btn-sm"
@@ -2032,68 +2035,66 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-lg-12">
-                                                    <a class="d-flex justify-content-between collapsed" data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                    <a class="d-flex justify-content-between lapse collapsed" data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                                                    
+                                                        
                                                         <div class="d-flex-cen">
-                                                            <div
-                                                                class="subtask-list-title text-hover-primary font-size-h5 font-weight-bold mb-1">
-                                                                <span class="mr-2" id="SpanProjName_{{item.id}}"
-                                                                    data-toggle="tooltip" title="Action Name!">
-                                                                    {{item.Project_Name }}</span>
-                                                            </div>
-                                                            <span class="showv">(
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                    </svg>
-                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}})
-                                                                </span>
+                                                            <div class="subtask-list-title text-hover-primary fs-4 mt-1">
 
-                                                                <div class="d-flex-cen showv ml-2">
-                                                                    <span class="detail-icn mr-1 d-none">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14" fill="currentColor"
-                                                                            class="bi bi-star" viewBox="0 0 16 16">
-                                                                            <path
-                                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                                        </svg>
-                                                                    </span>
-                                                                    <div>
-                                                                        <h5 data-toggle="tooltip"
-                                                                                class=" text-danger"
-                                                                                title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
-                                                                'text-success':item.SubProject_Status=='Completed',
-                                                                'text-warning':item.SubProject_Status=='InProcess',
-                                                                'text-primary':item.SubProject_Status=='Under Approval',
-                                                                'text-info':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
-                                                                'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                                'text-underApproval':item.SubProject_Status=='Forward Under Approval',
-                                                                'text-underApp':item.SubProject_Status=='New Project',
-                                                                'text-completed':item.SubProject_Status=='Completion Under Approval',
-                                                                'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
-                                                                'text-Todo':item.SubProject_Status=='ToDo Completed'}"
-                                                                                data-toggle="tooltip"
-                                                                                title="Action Status!">
-                                                                                {{item.SubProject_Status}} </h5>
-                                                                    </div>
+                                                                <span class="mr-2" id="SpanProjName_{{item.id}}"
+
+                                                                data-toggle="tooltip" title="Action Name!">
+
+                                                                {{item.Project_Name }}</span>
+
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+                                                            <div class="">
+                                                                <span class="showv mr-2 text-muted">
+                                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                                    {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </div>
+
+                                                            <span class="mr-2 showv">|</span>
+
+
+                                                            <div class="d-flex-cen showv">
+                                                                <span class="detail-icn mr-1 d-none">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        width="14" height="14" fill="currentColor"
+                                                                        class="bi bi-star" viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                                                    </svg>
+                                                                </span>
+                                                                <div>
+                                                                    <h5 data-toggle="tooltip"
+                                                                            class=" text-danger"
+                                                                            title="11 Days Delay!" [ngClass]="{'text-danger':item.SubProject_Status=='Delay',
+                                                            'text-success':item.SubProject_Status=='Completed',
+                                                            'text-warning':item.SubProject_Status=='InProcess',
+                                                            'text-primary':item.SubProject_Status=='Under Approval',
+                                                            'text-info':item.SubProject_Status=='Completion Under Approval',
+                                                            'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                                            'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                                            'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                                            'text-underApp':item.SubProject_Status=='New Project',
+                                                            'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                                            'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
+                                                            'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                                                            data-toggle="tooltip"
+                                                                            title="Action Status!">
+                                                                            {{item.SubProject_Status}} </h5>
                                                                 </div>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="d-flex-cen showv">
-                                                            <div class="d-flex-cen mr-2">                                                                
+                                                        <div class="d-flex-cen ">
+                                                            <div class="d-flex-cen mr-2 showv">                                                                
                                                                 <div class="initial-box color-7 b-50 mr-2">
-                                                                    <span class="line-1">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="16" height="16" fill="currentColor"
-                                                                            class="bi bi-person" viewBox="1 0 14 14">
-                                                                            <path
-                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </span>
+                                                                    <i class="far fa-user"></i>
                                                                 </div>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
@@ -2527,113 +2528,139 @@
                     <!-- Files Section -->
                     <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
                     <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
+                        <div class="d-flex-cen justify-content-between px-2 mb-2">                                        
+                            <h4 class="kt-subheader__title mb-0" *ngIf="attachmentlength!=0; else noResultsFound">Files</h4> 
+                            <div class="">
+                                <ul class="legend">
+                                    <li class="legend-item mr-2">
+                                      <span class="legend-box">
+                                      </span>
+                                      <span class="legend-label">
+                                        Projects
+                                      </span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-box two">
+                                        </span>
+                                        <span class="legend-label">
+                                          Action
+                                        </span>
+                                      </li>
+                                  </ul>
+                            </div>
+                        </div>
                         <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
                             <div class="kt-container w-100 px-0">
                                 <div class="kt-subheader__main"> -->
-                        <h3 class="kt-subheader__title" *ngIf="attachmentlength!=0; else noResultsFound">Files</h3>
+                                    
                         <!-- <h4 class="kt-subheader__title" *ngIf="noFiles == true">No Records Found.</h4> -->
                         <!-- </div>
                             </div>
                         </div> -->
-                        <div class="row scrollbar1" *ngIf="ProjectBlock=='003' else others">
-                            <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
-                                <div class="kt-portlet mb-2">
-                                    <div class="kt-portlet__body">
-                                        <div class="kt-widget__files">
-                                            <a class="d-flex">
-                                                <div class="kt-widget__media mr-3">
-                                                    <img class="kt-widget__img kt-hidden-" src="assets/images/pdf.svg"
-                                                        alt="image">
-                                                </div>
-                                                <div>
-                                                    <span class="kt-widget__desc pt-1 curser-pointer"
-                                                        (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</span>
+                        <div class="scrollbar1 col-md-12" *ngIf="ProjectBlock=='003' else others">
+                            <div class="card mb-3" *ngFor="let item of AttachmentList; let i=index">
+                                <div class=" card-body">
+                                
+                                    <div class="kt-widget__files">
+                                        <a class="d-flex-cen">
+                                            <div class="kt-widget__media mr-3">
+                                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                    <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h6 class="kt-widget__desc p-0 curser-pointer"
+                                                    (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</h6>
 
-                                                    <div class="kt-widget__desc pt-1" style="color:  #FFA500;" *ngIf="item.Remarks!='undefined'">
-                                                        <small>{{item.Remarks}}</small>
-                                                    </div>
-                                                    <div class="kt-widget__desc pt-1">
-                                                        <small>Submitted By : {{item.SubmittedBy}}</small>
-                                                    </div>
-                                                    <div class="kt-widget__desc pt-1">
-                                                        <small>Submitted Date :
-                                                            {{item.Reportdate|date:'fullDate'}}</small>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
+                                                <h6 class="mb-0" *ngIf="item.Remarks!='undefined'">
+                                                    <span class="sqre"></span><span>{{item.Remarks}}</span>
+                                                </h6>
+                                            </div>
+                                            <div class="flex-column-end">
+                                                
+                                                <h6 class="" title="Submitted By {{item.SubmittedBy}}">
+                                                    <span><i class="far fa-user"></i> {{item.SubmittedBy}}</span>
+                                                </h6>
+                                                <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                    <span> <i class="far fa-calendar-alt mr-1"></i> {{item.Reportdate|date:'fullDate'}}</span>
+                                                </h6>
+
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <ng-template #others>
-                            <div class="row scrollbar1">
-                                <div class="col-lg-12" *ngFor="let item of AttachmentList; let i=index">
-                                    <div class="kt-portlet mb-2">
-                                        <div class="kt-portlet__body">
-                                            <div class="kt-widget__files">
-                                                <a class="d-flex">
-                                                    <div class="kt-widget__media mr-3">
-                                                        <img class="kt-widget__img kt-hidden-"
-                                                            src="assets/images/pdf.svg" alt="image">
-                                                    </div>
-                                                    <div>
-                                                        <span class="kt-widget__desc pt-1 curser-pointer"
-                                                            *ngIf="Status!='ToDo Achieved'"
-                                                            (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}</span>
-                                                        <span class="kt-widget__desc pt-1 curser-pointer"
-                                                            *ngIf="Status=='ToDo Achieved'"
-                                                            (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</span>
-                                                        <div class="kt-widget__desc pt-1">
-                                                            <small>{{item.LastUpdate | date:'fullDate'}}</small>
-                                                        </div>
-                                                        <div class="kt-widget__desc pt-1" style="color:  #FFA500;" *ngIf="item.Remarks!='undefined'">
-                                                            <small>{{item.Remarks}}</small>
-                                                        </div>
-                                                        <div class="kt-widget__desc pt-1">
-                                                            <small>Submitted By : {{item.SubmittedBy}}</small>
-                                                        </div>
-                                                        <div class="kt-widget__desc pt-1">
-                                                            <small>Submitted Date :
-                                                                {{item.Rec_Date|date:'fullDate'}}</small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
+                            <div class="scrollbar1 col-md-12">
+                                <div class="card mb-3" *ngFor="let item of AttachmentList; let i=index">
+                                    <div class=" card-body">
+                                    
+                                        <div class="kt-widget__files">
+                                            <a class="d-flex-cen">
+                                                <div class="kt-widget__media mr-3">
+                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                        <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h6 class="kt-widget__desc p-0 curser-pointer"
+                                                        *ngIf="Status!='ToDo Achieved'"
+                                                        (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}</h6>
+                                                    <h6 class="kt-widget__desc p-0 curser-pointer"
+                                                        *ngIf="Status=='ToDo Achieved'"
+                                                        (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</h6>
+                                                    <h6 class="kt-widget__desc p-0">
+                                                        <span>{{item.LastUpdate | date:'fullDate'}}</span>
+                                                    </h6>
+                                                    <h6 class="" *ngIf="item.Remarks!='undefined'">
+                                                       <span class="sqre"></span> <span>{{item.Remarks}}</span>
+                                                    </h6>
+                                                </div>
+                                                <div class="flex-column-end">                                                
+                                                    <h6 class="" title="Submitted By {{item.SubmittedBy}}">
+                                                        <span><i class="far fa-user"></i> {{item.SubmittedBy}}</span>
+                                                    </h6>
+                                                    <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                        <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
+                                                    </h6>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="" *ngIf="action_attachment">
-                                    <div class="col-lg-12" *ngFor="let item of action_attachment; let i=index">
-                                        <div class="kt-portlet mb-2">
-                                            <div class="kt-portlet__body">
-                                                <div class="kt-widget__files">
-                                                    <a class="d-flex">
-                                                        <div class="kt-widget__media mr-3">
-                                                            <img class="kt-widget__img kt-hidden-"
-                                                                src="assets/images/pdf.svg" alt="image">
-                                                        </div>
-                                                        <div>
-                                                            <span class="kt-widget__desc pt-1 curser-pointer"
-                                                                (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}
-                                                            </span>
-                                                            <div class="kt-widget__desc pt-1">
-                                                                <small>Action: {{item.Project_Name}}</small>
-                                                            </div>
-                                                            <div class="kt-widget__desc pt-1" style="color:  #FFA500;" *ngIf="item.Remarks!='undefined'">
-                                                                <small>{{item.Remarks}}</small>
-                                                            </div>
-                                                            <div class="kt-widget__desc pt-1">
-                                                                <small>Submitted By : {{item.Team_Autho}}</small>
-                                                            </div>
-                                                            <div class="kt-widget__desc pt-1">
-                                                                <small>Submitted Date :
-                                                                    {{item.CreatedOn|date:'fullDate'}}</small>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                    <div class="card mb-3" *ngFor="let item of action_attachment; let i=index">
+                                        <div class=" card-body">
+                                            <div class="kt-widget__files">
+                                                <a class="d-flex-cen">
+                                                    <div class="kt-widget__media mr-3">
+                                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                            <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <h6 class="kt-widget__desc p-0 curser-pointer"
+                                                            (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}
+                                                        </h6>
+                                                        <h6 class="kt-widget__desc pt-1">
+                                                            <span>Action: {{item.Project_Name}}</span>
+                                                        </h6>
+                                                        <h6 class="kt-widget__desc pt-1" *ngIf="item.Remarks!='undefined'">
+                                                            <span>{{item.Remarks}}</span>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-column-end" title="Submitted By {{item.SubmittedBy}}">                                                    
+                                                        <h6 class="">
+                                                            <span><i class="far fa-user"></i> {{item.Team_Autho}}</span>
+                                                        </h6>
+                                                        <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                            <span><i class="far fa-calendar-alt mr-1"></i> {{item.CreatedOn|date:'fullDate'}}</span>
+                                                        </h6>
+                                                    </div>
+                                                </a>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

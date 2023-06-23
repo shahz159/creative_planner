@@ -1331,10 +1331,10 @@ span.count1 {
   height: 20px;
 }
 span.count2 {
-  margin-right: 6px;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
+  margin-left: 2px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
   background: #deecf8;
   color: #2786fb;
   border-radius: 50%;
