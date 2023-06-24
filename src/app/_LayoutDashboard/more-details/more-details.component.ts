@@ -595,7 +595,7 @@ export class MoreDetailsComponent implements OnInit {
 
 
   submitApproval() {
-    if (this.requestType != 'Project Forward' && this.requestType!='Task Complete') {
+    if (this.requestType != 'Project Forward' && this.requestType!='Task Complete' && this.requestType!='Revert Back') {
       if (this.selectedType == '1') {
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -949,6 +949,51 @@ export class MoreDetailsComponent implements OnInit {
             });
         }
       }
+      else if (this.selectedType == '1') {
+        this.Employee_List.forEach(element => {
+          if (element.Emp_No == this.newResponsible) {
+            this.new_Res = element.DisplayName;
+          }
+        });
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Responsible = this.newResponsible;
+        this.approvalObj.deadline = this.requestDeadline;
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        if (this.comments == '' || this.comments == null) {
+          this.approvalObj.Remarks = 'Accepted';
+        }
+        else {
+          this.approvalObj.Remarks = this.comments;
+        }
+
+        this.approvalservice.InsertRevertApprovalService(this.approvalObj).subscribe(data => {
+          this._Message = data['message'];
+
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project Reverted back to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Reverted back");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
+            this.GetprojectComments();
+          }
+          else if (this._Message == '2') {
+            this.notifyService.showSuccess("Project Revert back request sent to -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Success!");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
+            this.GetprojectComments();
+          }
+          else if (this._Message == '4' || this._Message == null) {
+            this.notifyService.showError("Please contact Support.", "Project not Reverted!");
+          }
+        });
+        this.closeInfo();
+      }
+      this.closeInfo();
+      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      document.getElementById("moredet").classList.remove("position-fixed");
+      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+      document.getElementById("rightbar-overlay").style.display = "none";
     }
 
   }
