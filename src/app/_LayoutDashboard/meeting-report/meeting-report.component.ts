@@ -296,27 +296,27 @@ export class MeetingReportComponent implements OnInit {
   Insert_meetingreport(){
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
-      this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-        ((data) => {
-          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-         this.Taskname=this.EventScheduledjson[0].Task_Name;
-         this.Date=this.EventScheduledjson[0].Schedule_date;
-         this.EDate=this.EventScheduledjson[0].End_date;
-         this.SEDate=this.EventScheduledjson[0].SEndDate;
-         this.EmpNo=this.EventScheduledjson[0].Emp_No;
-         this.locbuild=this.EventScheduledjson[0].Location;
-         this.fulllocbuild=this.EventScheduledjson[0].FullAddress_loc;
-         this.Status =this.EventScheduledjson[0].Status;
-         this.Schedule_Type=this.EventScheduledjson[0].Schedule_Type;
-         this.Description=this.EventScheduledjson[0].Description;
-         this.Created_by=this.EventScheduledjson[0].Created_by;
-         this.EventNumber=this.EventScheduledjson[0].EventNumber;
-         this.Onlinelink=this.EventScheduledjson[0].Onlinelink;
-         this.St_Time=this.EventScheduledjson[0].St_Time;
-         this.Ed_Time=this.EventScheduledjson[0].Ed_Time;
-         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+      // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      //   ((data) => {
+      //     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      //    this.Taskname=this.EventScheduledjson[0].Task_Name;
+      //    this.Date=this.EventScheduledjson[0].Schedule_date;
+      //    this.EDate=this.EventScheduledjson[0].End_date;
+      //    this.SEDate=this.EventScheduledjson[0].SEndDate;
+      //    this.EmpNo=this.EventScheduledjson[0].Emp_No;
+      //    this.locbuild=this.EventScheduledjson[0].Location;
+      //    this.fulllocbuild=this.EventScheduledjson[0].FullAddress_loc;
+      //    this.Status =this.EventScheduledjson[0].Status;
+      //    this.Schedule_Type=this.EventScheduledjson[0].Schedule_Type;
+      //    this.Description=this.EventScheduledjson[0].Description;
+      //    this.Created_by=this.EventScheduledjson[0].Created_by;
+      //    this.EventNumber=this.EventScheduledjson[0].EventNumber;
+      //    this.Onlinelink=this.EventScheduledjson[0].Onlinelink;
+      //    this.St_Time=this.EventScheduledjson[0].St_Time;
+      //    this.Ed_Time=this.EventScheduledjson[0].Ed_Time;
+      //    this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
          
-        });
+      //   });
 
 
 
