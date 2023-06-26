@@ -4,6 +4,7 @@ import { MeetingReportComponent} from './meeting-report.component'
 
 import { MeetingReportRoutingModule } from './meeting-report-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CommonModule,
     MeetingReportRoutingModule,
     AngularEditorModule,
+    FormsModule,ReactiveFormsModule
   ]
 })
 export class MeetingReportModule { }

@@ -4,7 +4,9 @@ import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { LinkService } from 'src/app/_Services/link.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-
+import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { NotificationService } from 'src/app/_Services/notification.service';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -12,6 +14,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 
 export class MeetingReportComponent implements OnInit {
+  _ObjAssigntaskDTO: AssigntaskDTO;
+  CurrentUser_ID: string;
   Scheduleid:any;
   _calenderDto: CalenderDTO;
   EventScheduledjson:any=[];
@@ -40,6 +44,7 @@ checkeddms:any=[];
 checkedportfolio:any=[];
 Meeting_Detailsdata:any=[];
 Taskname:string;
+Action_task:string;
   // config: AngularEditorConfig = {
   //   editable: true,
   //   spellcheck: true,
@@ -167,12 +172,16 @@ Taskname:string;
     ],
   };
   constructor(private route: ActivatedRoute,
+    public notifyService: NotificationService,
     private CalenderService: CalenderService,
-    public _LinkService: LinkService
+    public _LinkService: LinkService,
+    public ProjectTypeService: ProjectTypeService
   ) {
     this._calenderDto = new CalenderDTO;
+    this._ObjAssigntaskDTO = new AssigntaskDTO();
   }
   ngOnInit(): void {
+    this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
@@ -238,7 +247,7 @@ Taskname:string;
           
           });
           console.log(this.checkedproject,"chec1")
-          alert(this.Project_NameScheduledjson) 
+          // alert(this.Project_NameScheduledjson) 
           this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.portfolio_Scheduledjson.forEach(element => {
@@ -280,12 +289,41 @@ Taskname:string;
     });
   }
 
+  _TodoList = [];
+  _Demotext:any;
+  text:any=[];
+  EnterSubmit(_Demotext) {
+    if (_Demotext != "") {
+     
+      this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+      this._ObjAssigntaskDTO.TaskName = this._Demotext;
+
+      this.text.push(this._Demotext);
+      this._Demotext="";
+    //   this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    //     (data) => {
+    //       //console.log("Data---->", data);
+    //       this._TodoList = JSON.parse(data['TodoList']);
+    //       let message: string = data['Message'];
+    //       this._Demotext = "";
+    //       //this.GetAssignTask();
+    //       this.notifyService.showSuccess("Successfully", "Added");
+    //       // this.closeInfo();
+    //     });
+    // }
+    // else {
+    //   this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
+    // }
+    }
+    
+  }
+
 
   Online_methodproject(event) {
   
     if(event.target.checked==true){
       this.checkedproject.push(event.target.value);
-      alert(this.checkedproject);
+      // alert(this.checkedproject);
     }
     else if(event.target.checked==false){
       let index = this.checkedproject.indexOf(event.target.value);
@@ -303,14 +341,14 @@ Taskname:string;
  
     if(event.target.checked==true){
       this.checkedportfolio.push(event.target.value);
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
     else if(event.target.checked==false){
       let index = this.checkedportfolio.indexOf(event.target.value);
       if(index > -1){
         this.checkedportfolio.splice(index,1);
       }
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
   console.log(this.checkedportfolio);
    
@@ -320,14 +358,14 @@ Taskname:string;
  
     if(event.target.checked==true){
       this.checkeddms.push(event.target.value);
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
     else if(event.target.checked==false){
       let index = this.checkeddms.indexOf(event.target.value);
       if(index > -1){
         this.checkeddms.splice(index,1);
       }
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
   console.log(this.checkeddms);
   }
@@ -345,14 +383,14 @@ Taskname:string;
 
       if(event.target.checked==true){
         this.checkedusers.push(event.target.value);
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
       else if(event.target.checked==false){
         let index = this.checkedusers.indexOf(event.target.value);
         if(index > -1){
           this.checkedusers.splice(index,1);
         }
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
     console.log(this.checkedusers);
   }
@@ -384,7 +422,7 @@ Taskname:string;
    this._calenderDto.Notes=this.Notes_Type;
    this._calenderDto.Action_item=this.Action_item;
    
-   alert(this.Notes_Type);
+  
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
 
