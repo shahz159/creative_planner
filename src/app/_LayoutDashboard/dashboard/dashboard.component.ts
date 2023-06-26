@@ -3334,7 +3334,7 @@ export class DashboardComponent implements OnInit {
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
-          document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "none";
           document.getElementById("act-btn").style.display = "none";
         }
