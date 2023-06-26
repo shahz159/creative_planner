@@ -432,6 +432,7 @@ Action_task:string;
     document.getElementById("cardmain").classList.add("cards-main");
 
   }
+ 
 
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");

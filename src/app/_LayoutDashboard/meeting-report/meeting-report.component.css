@@ -10,7 +10,8 @@ h5.card-ttle{
     color: #3c4043;
 }
 .header2 {
-    padding: 40px 40px;
+    padding: 40px;
+    padding-bottom: 20px;
     background-color: #f7f8fa;
     border-bottom: 1px solid #ebedf2;
     /* background-image: linear-gradient(to left, #f9a8d4,#d8b4fe ,#818cf6); */
@@ -172,7 +173,7 @@ h5.card-ttle{
 }
 .grey-bg{
     background: #d8dadc;
-    height: 100vh;
+    height: 100%;
 }
 .form-check-input {
     vertical-align: text-top;
@@ -263,7 +264,7 @@ img.dms-icn {
     font-size: 15px;
     overflow: hidden;
     color: #455963;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
   
   .todo-list {
@@ -429,7 +430,7 @@ img.dms-icn {
     display: none;
     align-items: center;
 }
-  .task-item:hover > .task-actions {
+  .task-item:hover > .task-actions, .task-item:focus > .task-actions {
     display: flex;
   }
   
@@ -462,3 +463,38 @@ img.dms-icn {
       display: block;
     }
   }
+::ng-deep .angular-editor-textarea {
+    min-height: 8rem !important;
+}
+.drops{
+    z-index: 95;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    position: absolute;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    border-radius: 4px;
+}
+.drops.show{
+    display: block;
+}
+.drops-item{
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #74788d;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
