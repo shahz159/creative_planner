@@ -554,6 +554,7 @@ export class ProjectsSummaryComponent implements OnInit {
 
   isTypeChecked(item) {
     let arr = [];
+    console.log(this.TypeContInFilter,"type")
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Block_No: element.Block_No });

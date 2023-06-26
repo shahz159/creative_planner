@@ -335,7 +335,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center mb-3"
-                                        *ngIf="item.Status=='Forward Under Approval'">
+                                        *ngIf="item.Status=='Forward Under Approval' || requestType=='Revert Back'">
                                         <div class="">
                                             <span class="detail-icn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-btn" viewBox="0 0 16 16">
@@ -355,6 +355,20 @@
                                             </div>
                                             <div>
                                                 <h6 class="txtm-cus">Forward to</h6>
+                                                <h6 class="mt-1">{{forwardto}}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="action-content d-flex align-items-center gap-1"
+                                            *ngIf="requestType=='Revert Back'">
+                                            <div class="left-w">
+                                                <h6 class="txtm-cus">Revert from</h6>
+                                                <h6 class="mt-1">{{forwardfrom}}</h6>
+                                            </div>
+                                            <div class="px-1">
+                                                <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="txtm-cus">Revert to</h6>
                                                 <h6 class="mt-1">{{forwardto}}</h6>
                                             </div>
                                         </div>

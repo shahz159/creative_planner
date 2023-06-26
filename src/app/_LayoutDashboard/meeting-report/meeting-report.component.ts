@@ -177,8 +177,42 @@ Taskname:string;
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
- this.meeting_details()
+ this.meeting_details();
+  // document.addEventListener('DOMContentLoaded', function () {
+  //     const addButton = document.querySelector('#btn1') as HTMLButtonElement;
+  //       const input = document.querySelector('#todo-input') as HTMLInputElement;
+  //       const ul = document.querySelector('#todo-list') as HTMLUListElement;
 
+  //       addButton.addEventListener('click', (event: Event) => {
+  //         event.preventDefault();
+  //         alert('dfgdf');
+  //         const todoText: string = input.value.trim();
+  //         if (todoText !== '') {
+  //           const li: HTMLLIElement = document.createElement('li');
+  //           li.textContent = todoText;
+  //           ul.appendChild(li);
+  //           input.value = '';
+  //         }
+  //       });
+
+  //       ul.addEventListener('click', (event: Event) => {
+  //         const target = event.target as HTMLElement;
+  //         if (target.tagName === 'LI') {
+  //           const li = target as HTMLLIElement;
+  //           li.contentEditable = 'true';
+  //           li.focus();
+  //         }
+  //       });
+
+  //       ul.addEventListener('blur', (event: Event) => {
+  //         const target = event.target as HTMLElement;
+  //         if (target.tagName === 'LI') {
+  //           const li = target as HTMLLIElement;
+  //           li.contentEditable = 'false';
+  //         }
+  //       });
+  //     }); 
+ 
   }
  
   meeting_details(){
