@@ -185,7 +185,7 @@
 
                         </div>
 
-                        <div id="project" class="eve-area">
+                        <div id="project" class="eve-area"  *ngIf="Project_NameScheduledjson.length > 0 ||Project_NameScheduledjson !='' ">
                             <div class="left-icon">
                                 <span class="side-icns" aria-hidden="true">
                                     <i class="fab-icn fab fa-wpforms"></i>
@@ -198,13 +198,13 @@
                                     </svg> -->
                                 </span>
                             </div>
-                            <div class="rgt-des"  *ngIf="Project_NameScheduledjson.length > 0">
-                                <div class="" >
+                            <div class="rgt-des">
+                                <div class=""  >
                                     <div class="main-s pro-nm">Projects</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="side-div">
+                        <div class="side-div" >
                             <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
                                     <input type="checkbox" [value]="_pro.stringval" id="flexCheckChecked1"   [checked]="projectchecked"  [(ngModel)]="_pro.checked" (click)="Online_methodproject($event) " class="form-check-input ps-1">
@@ -368,15 +368,15 @@
                                         <div class="task-count">5 tasks</div>
                                       </div>
                                       <form class="task-form">
-                                        <input class="task-input" id="todo-input" placeholder="Add a new task..." autofocus="true">
-                                        <button class="task-button" id="btn1">Add Task</button>
+                                        <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
+                                        <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
                                       </form>
                                     </div>
 
-                                    <div class="todo-list">
-                                      <div class="task-item is-completed">
-                                        <input class="task-status" type="checkbox" checked="true">
-                                        <label class="task-name">Meeting Report Design</label>
+                                    <div class="todo-list"  *ngFor="let item of text; let i=index;">
+                                      <div class="task-item">
+                                        <input class="task-status" type="checkbox">
+                                        <label class="task-name">{{item}}</label>
                                         <div class="task-actions">
                                             <button class="btn-white btn btn-sm">Today</button>
                                             <button class="btn-white btn btn-sm">Tomorrow</button>
@@ -410,7 +410,7 @@
                                             </button>
 
                                         </div>
-                                      </div>
+                                      <!-- </div>
                                       <div class="task-item is-completed">
                                         <input class="task-status" type="checkbox" checked="true">
                                         <label class="task-name">Project summary List</label>
@@ -422,13 +422,13 @@
                                       <div class="task-item">
                                         <input class="task-status" type="checkbox">
                                         <label class="task-name">Book flight to Hyderabad</label>
-                                      </div>
+                                      </div>j
                                       <div class="task-item">
                                         <input class="task-status" type="checkbox">
                                         <label class="task-name">New Task</label>
-                                      </div>
+                                      </div> -->
                                     </div>
-                                    <div class="task-list"><div class="task-empty">Not found a task</div></div>
+                                    <div class="task-list"><div class="task-empty" *ngIf="!text">Not found a task</div></div>
                                   </div>
                             </div>
 
@@ -462,7 +462,7 @@
 
         
         <div class="card-footer text-right">
-            <button class="btn btn-info btn-sm mr-2"  (click)="Insert_meetingreport()" >Submit</button>
+            <button class="btn btn-info btn-sm mr-2"   >Submit</button>
             <button class="btn btn-secondary btn-sm mr-2">cancel</button>
         </div>
 

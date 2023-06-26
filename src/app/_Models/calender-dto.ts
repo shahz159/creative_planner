@@ -1,4 +1,6 @@
 export class CalenderDTO {
+    Notes:string;
+    Action_item:any;
     Search_text:string;
     flag_id:number;
     propose_date:string;

@@ -4,7 +4,9 @@ import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { LinkService } from 'src/app/_Services/link.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-
+import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { NotificationService } from 'src/app/_Services/notification.service';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -12,12 +14,14 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 
 export class MeetingReportComponent implements OnInit {
+  _ObjAssigntaskDTO: AssigntaskDTO;
+  CurrentUser_ID: string;
   Scheduleid:any;
   _calenderDto: CalenderDTO;
   EventScheduledjson:any=[];
   Schedule_ID:any;
   User_Scheduledjson:any=[];
-  Project_NameScheduledjson:any=[];
+  Project_NameScheduledjson:any;
   portfolio_Scheduledjson:any=[];
   DMS_Scheduledjson:any=[];
   dmsIdjson:any=[];
@@ -32,7 +36,85 @@ export class MeetingReportComponent implements OnInit {
   projectchecked1:boolean=true;
   dmschecked1:boolean=true;
   portfoliochecked1:boolean=true;
-  config: AngularEditorConfig = {
+  Notes_Type:any;
+Action_item:any;
+checkedusers:any=[];
+checkedproject:any=[];
+checkeddms:any=[];
+checkedportfolio:any=[];
+Meeting_Detailsdata:any=[];
+Taskname:string;
+Action_task:string;
+  // config: AngularEditorConfig = {
+  //   editable: true,
+  //   spellcheck: true,
+  //   height: 'auto',
+  //   minHeight: '5rem',
+  //   maxHeight: 'auto',
+  //   width: 'auto',
+  //   minWidth: '0',
+  //   placeholder: 'Enter text here...',
+  //   translate: 'no',
+  //   defaultParagraphSeparator: 'p',
+  //   defaultFontName: 'Arial',
+  //   toolbarHiddenButtons: [
+  //     [
+  //       // 'bold',
+  //       // 'italic',
+  //       // 'underline',
+  //       'strikeThrough',
+  //       'subscript',
+  //       'superscript',
+  //       'indent',
+  //       'outdent',
+  //       // 'insertUnorderedList',
+  //       // 'insertOrderedList',
+  //       'heading'
+  //       // 'fontName'
+  //     ],
+  //     [
+  //       // 'fontSize',
+  //       // 'textColor',
+  //       // 'backgroundColor',
+  //       'customClasses',
+
+  //       'unlink',
+  //       'insertImage',
+  //       'insertVideo',
+  //       'insertHorizontalRule',
+  //       'removeFormat',
+  //       'toggleEditorMode',
+  //    'fontSelector',
+  //    'justifyLeft',
+  //    'justifyCenter',
+  //    'justifyRight',
+  //    'justifyFull',
+  //    'bold',
+  //    'italic',
+  //    'underline',
+  //    'heading',
+     
+    
+  //     ]
+  //   ],
+  //   customClasses: [
+  //     {
+  //       name: 'quote',
+  //       class: 'quote',
+  //     },
+  //     {
+  //       name: 'redText',
+  //       class: 'redText',
+  //     },
+  //     {
+  //       name: 'titleText',
+  //       class: 'titleText',
+  //       tag: 'h1',
+  //     },
+  //   ],
+  // };
+
+    config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: 'auto',
@@ -56,7 +138,7 @@ export class MeetingReportComponent implements OnInit {
         'outdent',
         // 'insertUnorderedList',
         // 'insertOrderedList',
-        'heading'
+        'heading',
         // 'fontName'
       ],
       [
@@ -70,18 +152,7 @@ export class MeetingReportComponent implements OnInit {
         'insertVideo',
         'insertHorizontalRule',
         'removeFormat',
-        'toggleEditorMode',
-     'fontSelector',
-     'justifyLeft',
-     'justifyCenter',
-     'justifyRight',
-     'justifyFull',
-     'bold',
-     'italic',
-     'underline',
-     'heading',
-     
-     'ae-picker'
+        'toggleEditorMode'
       ]
     ],
     customClasses: [
@@ -100,14 +171,17 @@ export class MeetingReportComponent implements OnInit {
       },
     ],
   };
-
   constructor(private route: ActivatedRoute,
+    public notifyService: NotificationService,
     private CalenderService: CalenderService,
-    public _LinkService: LinkService
+    public _LinkService: LinkService,
+    public ProjectTypeService: ProjectTypeService
   ) {
     this._calenderDto = new CalenderDTO;
+    this._ObjAssigntaskDTO = new AssigntaskDTO();
   }
   ngOnInit(): void {
+    this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
@@ -149,12 +223,7 @@ export class MeetingReportComponent implements OnInit {
   //     }); 
  
   }
-  checkedusers:any=[];
-  checkedproject:any=[];
-  checkeddms:any=[];
-  checkedportfolio:any=[];
-  Meeting_Detailsdata:any=[];
-  Taskname:string;
+ 
   meeting_details(){
     
     this.Schedule_ID = this.Scheduleid;
@@ -164,6 +233,7 @@ export class MeetingReportComponent implements OnInit {
           this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
          
           console.log(this.EventScheduledjson, "111111")
+          debugger
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
@@ -174,9 +244,10 @@ export class MeetingReportComponent implements OnInit {
           this.Project_NameScheduledjson.forEach(element => {
             this.checkedproject.push(element.stringval);
           
-            
+          
           });
           console.log(this.checkedproject,"chec1")
+          // alert(this.Project_NameScheduledjson) 
           this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.portfolio_Scheduledjson.forEach(element => {
@@ -218,12 +289,41 @@ export class MeetingReportComponent implements OnInit {
     });
   }
 
+  _TodoList = [];
+  _Demotext:any;
+  text:any=[];
+  EnterSubmit(_Demotext) {
+    if (_Demotext != "") {
+     
+      this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+      this._ObjAssigntaskDTO.TaskName = this._Demotext;
+
+      this.text.push(this._Demotext);
+      this._Demotext="";
+    //   this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    //     (data) => {
+    //       //console.log("Data---->", data);
+    //       this._TodoList = JSON.parse(data['TodoList']);
+    //       let message: string = data['Message'];
+    //       this._Demotext = "";
+    //       //this.GetAssignTask();
+    //       this.notifyService.showSuccess("Successfully", "Added");
+    //       // this.closeInfo();
+    //     });
+    // }
+    // else {
+    //   this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
+    // }
+    }
+    
+  }
+
 
   Online_methodproject(event) {
   
     if(event.target.checked==true){
       this.checkedproject.push(event.target.value);
-      alert(this.checkedproject);
+      // alert(this.checkedproject);
     }
     else if(event.target.checked==false){
       let index = this.checkedproject.indexOf(event.target.value);
@@ -241,14 +341,14 @@ export class MeetingReportComponent implements OnInit {
  
     if(event.target.checked==true){
       this.checkedportfolio.push(event.target.value);
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
     else if(event.target.checked==false){
       let index = this.checkedportfolio.indexOf(event.target.value);
       if(index > -1){
         this.checkedportfolio.splice(index,1);
       }
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
   console.log(this.checkedportfolio);
    
@@ -258,14 +358,14 @@ export class MeetingReportComponent implements OnInit {
  
     if(event.target.checked==true){
       this.checkeddms.push(event.target.value);
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
     else if(event.target.checked==false){
       let index = this.checkeddms.indexOf(event.target.value);
       if(index > -1){
         this.checkeddms.splice(index,1);
       }
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
   console.log(this.checkeddms);
   }
@@ -283,14 +383,14 @@ export class MeetingReportComponent implements OnInit {
 
       if(event.target.checked==true){
         this.checkedusers.push(event.target.value);
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
       else if(event.target.checked==false){
         let index = this.checkedusers.indexOf(event.target.value);
         if(index > -1){
           this.checkedusers.splice(index,1);
         }
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
     console.log(this.checkedusers);
   }
@@ -313,48 +413,20 @@ export class MeetingReportComponent implements OnInit {
     const Url = memo_Url;
     window.open(Url);
   }
- Date:any;
- EDate:any;
- SEDate:any;
- EmpNo:any;
- locbuild:any;
- fulllocbuild:any;
- Status:any;
- Schedule_Type:any;
- Description:any;
- Created_by:any;
- EventNumber:any;
- Onlinelink:any;
- St_Time:any;
- Ed_Time:any;
- 
+
+
   Insert_meetingreport(){
+   debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
-      // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      //   ((data) => {
-      //     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      //    this.Taskname=this.EventScheduledjson[0].Task_Name;
-      //    this.Date=this.EventScheduledjson[0].Schedule_date;
-      //    this.EDate=this.EventScheduledjson[0].End_date;
-      //    this.SEDate=this.EventScheduledjson[0].SEndDate;
-      //    this.EmpNo=this.EventScheduledjson[0].Emp_No;
-      //    this.locbuild=this.EventScheduledjson[0].Location;
-      //    this.fulllocbuild=this.EventScheduledjson[0].FullAddress_loc;
-      //    this.Status =this.EventScheduledjson[0].Status;
-      //    this.Schedule_Type=this.EventScheduledjson[0].Schedule_Type;
-      //    this.Description=this.EventScheduledjson[0].Description;
-      //    this.Created_by=this.EventScheduledjson[0].Created_by;
-      //    this.EventNumber=this.EventScheduledjson[0].EventNumber;
-      //    this.Onlinelink=this.EventScheduledjson[0].Onlinelink;
-      //    this.St_Time=this.EventScheduledjson[0].St_Time;
-      //    this.Ed_Time=this.EventScheduledjson[0].Ed_Time;
-      //    this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
-         
-      //   });
+   this._calenderDto.Notes=this.Notes_Type;
+   this._calenderDto.Action_item=this.Action_item;
+   
+  
+    this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+    (data => {
 
-
-
+    });
   }
   open_side(){
     document.getElementById("cardmain").classList.add("cards-main");
