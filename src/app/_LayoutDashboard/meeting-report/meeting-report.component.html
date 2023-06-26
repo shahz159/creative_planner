@@ -172,7 +172,7 @@
 
                         </div>
 
-                        <div id="project" class="eve-area">
+                        <div id="project" class="eve-area"  *ngIf="Project_NameScheduledjson.length > 0 ||Project_NameScheduledjson !='' ">
                             <div class="left-icon">
                                 <span class="side-icns" aria-hidden="true">
                                     <i class="fab-icn fab fa-wpforms"></i>
@@ -185,13 +185,13 @@
                                     </svg> -->
                                 </span>
                             </div>
-                            <div class="rgt-des"  *ngIf="Project_NameScheduledjson.length > 0">
-                                <div class="" >
+                            <div class="rgt-des">
+                                <div class=""  >
                                     <div class="main-s pro-nm">Projects</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="side-div">
+                        <div class="side-div" >
                             <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
                                     <input type="checkbox" [value]="_pro.stringval" id="flexCheckChecked1"   [checked]="projectchecked"  [(ngModel)]="_pro.checked" (click)="Online_methodproject($event) " class="form-check-input ps-1">
@@ -332,9 +332,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="form-group" id="Descrip_Name">
+                        <div class="form-group" id="Descrip_Name" >
                             <label class="cus-lbl">Notes </label>
-                            <angular-editor [(ngModel)]="Notes_Type" [config]="config"></angular-editor>
+                            <angular-editor [(ngModel)]="Notes" [config]="config"></angular-editor>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
   imports: [
     CommonModule,
     MeetingReportRoutingModule,
-    AngularEditorModule
+    AngularEditorModule,
   ]
 })
 export class MeetingReportModule { }
