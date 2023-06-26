@@ -95,6 +95,17 @@ export class ApprovalsService {
 
   }
 
+  InsertRevertApprovalService(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Responsible=obj.Responsible;
+    this.obj_approvalDTO.deadline=obj.deadline;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertRevertApprovalService", this.obj_approvalDTO);
+
+  }
+
   
   InsertConditionalAcceptApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;

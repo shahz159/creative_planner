@@ -404,40 +404,6 @@
                                             <h5 style="color:rgb(112, 45, 45)" data-toggle="kt-tooltip"
                                                 title="Extended Deadline for {{deadlineCount}} times"
                                                 *ngIf="deadlineCount>0">{{EndDate}}</h5>
-                                            <!-- <span class="text-info fs-8" [hidden]="Editbutton"
-                                                (click)="onEditDeadline(Pid,EndDate)"  id="Span_Deadline_{{Pid}}"
-                                                *ngIf="(Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo) && (Status!='Completed' && Status!='Project Hold' && Status!='Completion Under Approval'
-                                                && Status!='Deadline Extend Under Approval' && Status!='Enactive Under Approval' &&
-                                                Status!='Forward Under Approval' && Status!='Project Hold Under Approval' && Status!='Under Approval'
-                                                && Status!='New Project Rejected' && Status!='Project Complete Rejected' && Status!='ToDo Achieved'  && Status!='ToDo Completed')">
-                                                <i class="fas fa-edit ml-2 mt-1 curser-pointer"></i>
-                                            </span> -->
-                                            <!-- <span class="kt-inbox__subject mt-2" style="display:none;"
-                                                id="DeadlineArea_{{Pid}}">
-                                                <div class="d-flex input-group"> -->
-                                            <!-- <input type="text" class="form-control" id="Deadlinetext_{{Pid}}"
-                                                        [(ngModel)]="_ProjDeeadline" style="width: 78%;height: 32px;"
-                                                        (keydown.enter)="OnProject_Rename(Pid,_MasterCode)"> [value]="getnextDeadline()" required [max]="todayDate"-->
-                                            <!-- <input matInput [matDatepicker]="picker2" id="Deadlinetext_{{Pid}}"
-                                                        #Deadlinetext="ngModel" (click)="picker2.open();"
-                                                        (keydown.enter)="onProject_ExtendDeadline(Pid,_MasterCode);"
-                                                        [min]="EndDate1" placeholder="Select Date"
-                                                        [(ngModel)]="_ProjDeadline" class="form-control" name="date"> -->
-                                            <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-                                            <!-- <div class="input-group-text p-0"> -->
-                                            <!-- <mat-datepicker-toggle matSuffix [for]="picker2">
-                                                    </mat-datepicker-toggle>
-                                                    <mat-datepicker #picker2></mat-datepicker>
-                                                    <div class="d-inline-block ml-3" id="button-addon4">
-                                                        <button (click)="onProject_ExtendDeadline(Pid,_MasterCode)"
-                                                            class="btn btn-primary btn btn-sm mr-2">Done</button>
-                                                        <button class=" btn btn-secondary btn btn-sm"
-                                                            (click)="onCancel(Pid)">Cancel</button>
-                                                    </div>
-                                                </div>
-                                            </span> -->
-                                            <!-- Deadline extend data-toggle="dropdown"-->
-
                                             <div class="dropdown"
                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed')">
                                                 <span class="dropdown-toggle no-after text-info" aria-haspopup="true"
@@ -611,8 +577,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="col-lg-3 col-md-6">
                         <!-- <div class="action-count" role="button"> -->
@@ -1246,7 +1210,7 @@
                                     <span class="nav-text">In process</span>
                                 </a>
                             </li>
-                            <li class="nav-item" *ngIf="completedCount!=0">
+                            <li [ngClass]="inProcessCount!=0 ? 'nav-item' : 'nav-item active'" *ngIf="completedCount!=0">
                                 <a class="nav-link" id="tasks-2" data-toggle="tab" href="#tasks_2">
                                     <span class="nav-text">Completed</span>
                                 </a>
@@ -1255,7 +1219,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="charts-1" data-toggle="tab" href="#charts_1">
                                     <span class="nav-text">Overview</span>
-
                                 </a>
                             </li>
                         </ul>
@@ -1293,7 +1256,7 @@
                                         <!-- <div class="ribbon-info ribbon float-start" *ngIf="inProcessCount!=0"
                                             data-toggle="tooltip" title="InProcess Actions!">
                                             Inprocess</div> -->
-                                            <div class="srch-actns mb-3" *ngIf="subTaskCount!=0" (click)="notinAction()">
+                                            <div class="srch-actns mb-3" *ngIf="inProcessCount!=0" (click)="notinAction()">
                                                 <input class="form-control" placeholder="search..." />
                                                 <span class="srch-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -1330,7 +1293,7 @@
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID"></i>
+                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
                                                                 </span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
                                                                     id="spanTextbox_{{item.id}}">
@@ -1416,21 +1379,6 @@
                                                                 </div>
                                                                 <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
                                                             </div>
-
-                                                            <!-- <div class="d-flex-cen mr-2 showv">
-                                                                
-                                                                <span class="detail-icn mr-1">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        width="16" height="16" fill="currentColor"
-                                                                        class="bi bi-person" viewBox="1 0 14 14">
-                                                                        <path
-                                                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>
-                                                                
-                                                            </div> -->
                                                             <a class="text-info swap-view"> View details </a>
                                                             <a class="text-info swap-less"> Less details </a>                                                            
                                                         </div>
@@ -1438,7 +1386,7 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{i+1}}">
                                                         
-                                                        <p class="mb-3 ml--2">
+                                                        <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="Span_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
@@ -1589,77 +1537,6 @@
                                                                                         title="edit action start date"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
-                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-start z-1k"
-                                                                                    id="StartDateArea_{{item.id}}">
-                                                                                    <ul class="kt-nav pb-0"
-                                                                                        (click)="$event.stopPropagation();">
-                                                                                        <li class="kt-nav__head py-0">
-                                                                                            <div>New Start
-                                                                                                Date<br>Action:
-                                                                                                <b>{{item.Project_Name
-                                                                                                    }}</b></div>
-                                                                                        </li>
-                                                                                        <li class="kt-nav__separator">
-                                                                                        </li>
-                                                                                        <div
-                                                                                            class="height-scroll h-scr">
-                                                                                            <div class="px-4 py-3">
-                                                                                                <div
-                                                                                                    class="form-group input-group">
-                                                                                                    <label>Set new Start
-                                                                                                        Date <span
-                                                                                                            class="text-danger">*</span></label>
-                                                                                                    <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                        <input class="form-control" id="wodate1" name="date" placeholder="MM/DD/YYYY" value="" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                        <div class="input-group-addon input-group-append">
-                                                                                            <i class="fa fa-calendar input-group-text"></i>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                                    <!-- <div class="d-flex input-group">
-                                                                                        <input matInput [matDatepicker]="picker6" id="StartDatetext_{{item.id}}"
-                                                                                            #actionend="ngModel"
-                                                                                            (click)="picker6.open();"
-                                                                                            (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
-                                                                                            [min]="minDate" [max]="maxhold" placeholder="Select Date"
-                                                                                            [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                                            name="date">
-                                                                                        <div class="input-group-append">
-                                                                                            <mat-datepicker-toggle matSuffix [for]="picker6" class="btn-secondary">
-                                                                                            </mat-datepicker-toggle>
-                                                                                            <mat-datepicker class="form-group" #picker6></mat-datepicker>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                                </div>
-                                                                                                <div
-                                                                                                    class="form-group mb-1">
-                                                                                                    <label>Remarks <span
-                                                                                                            class="text-danger">*</span>
-                                                                                                    </label>
-                                                                                                    <textarea
-                                                                                                        [(ngModel)]="extend_remarks"
-                                                                                                        placeholder=""
-                                                                                                        rows="2"
-                                                                                                        cols="20"
-                                                                                                        class="form-control"
-                                                                                                        style="height: 70px;"></textarea>
-                                                                                                </div>
-                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <li class="kt-nav__separator">
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                    <div class="px-4 pb-3">
-                                                                                        <button
-                                                                                            class="btn btn-info btn-sm mr-2 text-white"
-                                                                                            [disabled]="!extend_remarks || !_ProjDeadline"
-                                                                                            (click)="onAction_ExtendDPG(item.id,item.Project_Code)">
-                                                                                            Submit </button>
-                                                                                        <button
-                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                            (click)="closeAction(item.id)">Close</button>
-                                                                                    </div>
-                                                                                </div>
                                                                             </div>
                                                                             <h5>/</h5>
                                                                             <h5 class="" data-toggle="tooltip"
@@ -1678,92 +1555,11 @@
                                                                                         title="edit action end date"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
-                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-end z-1k"
-                                                                                    id="EndDateArea_{{item.id}}">
-                                                                                    <ul class="kt-nav pb-0">
-                                                                                        <li class="kt-nav__head py-0">
-                                                                                            <div>New End Date<br>Action:
-                                                                                                <b>{{item.Project_Name}}</b>
-                                                                                            </div>
-                                                                                        </li>
-                                                                                        <li class="kt-nav__separator">
-                                                                                        </li>
-                                                                                        <div
-                                                                                            class="height-scroll h-scr">
-                                                                                            <div class="px-4 py-3">
-                                                                                                <div
-                                                                                                    class="form-group input-group">
-                                                                                                    <label>Set new End
-                                                                                                        Date <span
-                                                                                                            class="text-danger">*</span></label>
-                                                                                                    <!-- <div class="d-flex input-group">
-                                                                                        <input matInput [matDatepicker]="picker5" id="EndDatetext_{{item.id}}"
-                                                                                            #actionend="ngModel"
-                                                                                            (click)="picker5.open();"
-                                                                                            (keydown.enter)="onAction_ExtendDeadline(item.id,item.Project_Code);"
-                                                                                            [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                                                                            [(ngModel)]="_ProjDeadline" class="form-control"
-                                                                                            name="date">
-                                                                                        <div class="input-group-append">
-                                                                                            <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
-                                                                                            </mat-datepicker-toggle>
-                                                                                            <mat-datepicker class="form-group" #picker5></mat-datepicker>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                                    <!-- <div class="input-group date" data-provide="datepicker">
-                                                                                        <input class="form-control" id="wodate1" name="date" 
-                                                                                        [min]="minhold" [max]="maxhold" placeholder="MM/DD/YYYY" value="{{current_Date}}" bootstrap-datepicker="" data-date-end-date="0d">
-                                                                                        <div class="input-group-addon input-group-append">
-                                                                                            <i class="fa fa-calendar input-group-text"></i>
-                                                                                        </div>
-                                                                                    </div> -->
-                                                                                                </div>
-                                                                                                <div
-                                                                                                    class="form-group mb-1">
-                                                                                                    <label>Remarks <span
-                                                                                                            class="text-danger">*</span>
-                                                                                                    </label>
-                                                                                                    <textarea
-                                                                                                        [(ngModel)]="extend_remarks"
-                                                                                                        placeholder=""
-                                                                                                        rows="2"
-                                                                                                        cols="20"
-                                                                                                        class="form-control"
-                                                                                                        style="height: 70px;"></textarea>
-                                                                                                </div>
-                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <li class="kt-nav__separator">
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                    <div class="px-4 pb-3">
-                                                                                        <button
-                                                                                            class="btn btn-info btn-sm mr-2 text-white"
-                                                                                            [disabled]="!extend_remarks || !_ProjDeadline"
-                                                                                            (click)="onAction_ExtendDeadline(item.id,item.Project_Code)">
-                                                                                            Submit </button>
-                                                                                        <button
-                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                            (click)="closeAction(item.id)">Close</button>
-                                                                                    </div>
-                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
-
-
-                                                            <!-- <div class="col-md-4">
-                                                                <p class="mt-2 mb-1 text-muted fs-7">End Date</p>
-                                                                <div class="d-flex align-items-center detial-item">
-                                                                    <i class="fas fa-calendar-alt fs-2 text-muted mr-2"></i>
-                                                                    <div class="w-100 d-flex">
-                                                                </div>                                                              
-                                                                </div>
-                                                            </div> -->
 
                                                             <div class="col-md-4">
                                                                 <div class="d-flex align-items-center detial-item">
@@ -1796,73 +1592,6 @@
                                                                                         title="edit action duration"
                                                                                         class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                                                                                 </span>
-                                                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit act-alloc z-1k"
-                                                                                    id="AllocArea_{{item.id}}">
-                                                                                    <ul class="kt-nav pb-0"
-                                                                                        (click)="$event.stopPropagation();">
-                                                                                        <li class="kt-nav__head py-0">
-                                                                                            <div
-                                                                                                style="white-space: break-spaces;">
-                                                                                                Add Allocated Hours
-                                                                                                <br>Action:
-                                                                                                <b>{{item.Project_Name}}</b>
-                                                                                            </div>
-                                                                                        </li>
-                                                                                        <li class="kt-nav__separator"></li>
-                                                                                        <div class="height-scroll h-scr">
-                                                                                            <div class="px-4 py-3">
-                                                                                                <div class="form-group">
-                                                                                                    <label>Add Hours <span
-                                                                                                            class="text-danger">*</span></label>
-                                                                                                    <input type="number"
-                                                                                                        class="form-control"
-                                                                                                        id="AllocFocus_{{item.id}}"
-                                                                                                        placeholder="hrs"
-                                                                                                        [(ngModel)]="_modelProjAlloc"
-                                                                                                        min="0"
-                                                                                                        oninput="validity.valid||(value='');">
-                                                                                                    <span
-                                                                                                        *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                        class="text-danger">*Allocation
-                                                                                                        per day limit is 10
-                                                                                                        hours.</span>
-                                                                                                    <span
-                                                                                                        *ngIf="_modelProjAlloc > (item.SubtaskDuration * 10)"
-                                                                                                        class="text-danger">Please
-                                                                                                        enter the hours less
-                                                                                                        than or equal to
-                                                                                                        <b>{{(item.SubtaskDuration
-                                                                                                            * 10)}}</b>
-                                                                                                        hours!</span>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                    class="form-group mb-1">
-                                                                                                    <label>Remarks <span
-                                                                                                            class="text-danger">*</span>
-                                                                                                    </label>
-                                                                                                    <textarea
-                                                                                                        [(ngModel)]="alloc_remarks"
-                                                                                                        placeholder=""
-                                                                                                        rows="2" cols="20"
-                                                                                                        class="form-control"
-                                                                                                        style="height: 70px;"></textarea>
-                                                                                                </div>
-                                                                                                <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <li class="kt-nav__separator"></li>
-                                                                                    </ul>
-                                                                                    <div class="px-4 pb-3">
-                                                                                        <button
-                                                                                            class="btn btn-info btn-sm mr-2 text-white"
-                                                                                            [disabled]="!alloc_remarks || !_modelProjAlloc"
-                                                                                            (click)="onProject_updateDuration(item.id,item.Project_Code)">
-                                                                                            Submit </button>
-                                                                                        <button
-                                                                                            class="btn btn-outline-info btn-sm text-dark-75"
-                                                                                            (click)="closeDuration(item.id)">Close</button>
-                                                                                    </div>
-                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1982,7 +1711,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="tasks_2" role="tabpanel"
+                            <div [ngClass]="inProcessCount!=0 ? 'tab-pane fade' : 'tab-pane fade show active'" id="tasks_2" role="tabpanel"
                                 aria-labelledby="tasks-1">
                                 <div class="tasks_views rbn-bx">
                                     <div class="text-right action-btn">
@@ -2016,7 +1745,7 @@
                                         <!-- <div class="ribbon-success  ribbon float-start" *ngIf="completedCount!=0"
                                             data-toggle="tooltip" title="Completed Actions!">
                                             Completed</div> -->
-                                            <div class="srch-actns mb-3" (click)="notinAction()">
+                                            <div class="srch-actns mb-3"  *ngIf="completedCount!=0" (click)="notinAction()">
                                                 <input class="form-control" placeholder="search..." />
                                                 <span class="srch-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -2539,11 +2268,11 @@
                                         Projects
                                       </span>
                                     </li>
-                                    <li class="legend-item">
+                                    <li class="legend-item" *ngIf="ProjectBlock!='003'">
                                         <span class="legend-box two">
                                         </span>
                                         <span class="legend-label">
-                                          Action
+                                          Actions
                                         </span>
                                       </li>
                                   </ul>
@@ -2564,7 +2293,7 @@
                                     <div class="kt-widget__files">
                                         <a class="d-flex-cen">
                                             <div class="kt-widget__media mr-3">
-                                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf">
                                                     <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
                                                 </svg>
                                             </div>
@@ -2599,7 +2328,7 @@
                                         <div class="kt-widget__files">
                                             <a class="d-flex-cen">
                                                 <div class="kt-widget__media mr-3">
-                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf">
                                                         <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
                                                     </svg>
                                                 </div>
@@ -2635,7 +2364,7 @@
                                             <div class="kt-widget__files">
                                                 <a class="d-flex-cen">
                                                     <div class="kt-widget__media mr-3">
-                                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf action-pdf">
+                                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg action-pdf">
                                                             <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
                                                         </svg>
                                                     </div>
@@ -3543,7 +3272,7 @@
                             </div> -->
                         </div>
                     </div>
-                    <div class="d-flex align-items-center mb-3" *ngIf="Status=='Forward Under Approval'">
+                    <div class="d-flex align-items-center mb-3" *ngIf="Status=='Forward Under Approval' || requestType=='Revert Back'">
                         <div class="">
                             <span class="detail-icn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -3566,6 +3295,20 @@
                             </div>
                             <div>
                                 <h6 class="txtm-cus pt-1">Forward to</h6>
+                                <h6 class="mt-1">{{forwardto}}</h6>
+                            </div>
+                        </div>
+                        <div class="action-content d-flex align-items-center gap-1"
+                            *ngIf="requestType=='Revert Back'">
+                            <div class="left-w">
+                                <h6 class="txtm-cus pt-1">Revert from</h6>
+                                <h6 class="mt-1">{{forwardfrom}}</h6>
+                            </div>
+                            <div class="px-1">
+                                <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
+                            </div>
+                            <div>
+                                <h6 class="txtm-cus pt-1">Revert to</h6>
                                 <h6 class="mt-1">{{forwardto}}</h6>
                             </div>
                         </div>
