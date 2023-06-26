@@ -188,7 +188,7 @@ export class MeetingReportComponent implements OnInit {
   
     if(event.target.checked==true){
       this.checkedproject.push(event.target.value);
-      alert(this.checkedproject);
+      // alert(this.checkedproject);
     }
     else if(event.target.checked==false){
       let index = this.checkedproject.indexOf(event.target.value);
@@ -206,14 +206,14 @@ export class MeetingReportComponent implements OnInit {
  
     if(event.target.checked==true){
       this.checkedportfolio.push(event.target.value);
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
     else if(event.target.checked==false){
       let index = this.checkedportfolio.indexOf(event.target.value);
       if(index > -1){
         this.checkedportfolio.splice(index,1);
       }
-      alert(this.checkedportfolio);
+      // alert(this.checkedportfolio);
     }
   console.log(this.checkedportfolio);
    
@@ -223,14 +223,14 @@ export class MeetingReportComponent implements OnInit {
  
     if(event.target.checked==true){
       this.checkeddms.push(event.target.value);
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
     else if(event.target.checked==false){
       let index = this.checkeddms.indexOf(event.target.value);
       if(index > -1){
         this.checkeddms.splice(index,1);
       }
-      alert(this.checkeddms);
+      // alert(this.checkeddms);
     }
   console.log(this.checkeddms);
   }
@@ -248,14 +248,14 @@ export class MeetingReportComponent implements OnInit {
 
       if(event.target.checked==true){
         this.checkedusers.push(event.target.value);
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
       else if(event.target.checked==false){
         let index = this.checkedusers.indexOf(event.target.value);
         if(index > -1){
           this.checkedusers.splice(index,1);
         }
-        alert(this.checkedusers);
+        // alert(this.checkedusers);
       }
     console.log(this.checkedusers);
   }
