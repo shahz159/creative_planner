@@ -432,7 +432,13 @@ Action_task:string;
     document.getElementById("cardmain").classList.add("cards-main");
 
   }
- 
+  dropsw(){
+    var offbtn = $("#dropusers").offset();    
+    var offnewtop = offbtn.top + 20;
+    var offnewleft = offbtn.left - 340;
+    $(".drope").offset({ top: offnewtop, left: offnewleft});
+    $(".drope").addClass('show');
+  }
 
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");
