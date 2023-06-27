@@ -427,7 +427,7 @@ img.dms-icn {
     color: #dc4771;
 }
 .task-actions{
-    display: none;
+    display: flex;
     align-items: center;
 }
   .task-item:hover > .task-actions, .task-item:focus > .task-actions {
@@ -485,6 +485,7 @@ img.dms-icn {
 }
 .drops.show{
     display: block;
+    min-width: 350px;
 }
 .drops-item{
     display: block;
@@ -497,4 +498,31 @@ img.dms-icn {
     white-space: nowrap;
     background-color: transparent;
     border: 0;
+}
+
+.sort-drop{
+  padding: 0.8rem 0;
+  min-width: 270px;
+  margin-top: 5px;
+}
+.sort-drop .dropdown-item{
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+.sort-drop .active{
+  background: #f1f6fd;
+  color: #0b0e1f;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+.sort-drop .active .ckc-icn{
+  display: inline-block;
+  color: #3b93fc;
+}
+.sort-drop .dropdown-item.d-range:hover {
+  text-decoration: underline !important;
+}
+.sort-drop .dropdown-item:active {
+  background: none;
 }

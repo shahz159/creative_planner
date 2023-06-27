@@ -389,6 +389,16 @@ text:any=[];
     document.getElementById("cardmain").classList.add("cards-main");
 
   }
+<<<<<<< HEAD
+=======
+  dropsw(){
+    var offbtn = $("#dropusers").offset();    
+    var offnewtop = offbtn.top + 20;
+    var offnewleft = offbtn.left - 340;
+    $(".drope").offset({ top: offnewtop, left: offnewleft});
+    $(".drope").addClass('show');
+  }
+>>>>>>> c8c961211380264cb72e8659a1026c7a1f6cbda3
 
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");
