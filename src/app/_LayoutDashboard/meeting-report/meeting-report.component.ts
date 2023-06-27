@@ -45,6 +45,9 @@ checkedportfolio:any=[];
 Meeting_Detailsdata:any=[];
 Taskname:string;
 Action_task:string;
+_TodoList = [];
+_Demotext:any;
+text:any=[];
   // config: AngularEditorConfig = {
   //   editable: true,
   //   spellcheck: true,
@@ -187,41 +190,6 @@ Action_task:string;
       this.Scheduleid = scode;
     });
  this.meeting_details();
-  // document.addEventListener('DOMContentLoaded', function () {
-  //     const addButton = document.querySelector('#btn1') as HTMLButtonElement;
-  //       const input = document.querySelector('#todo-input') as HTMLInputElement;
-  //       const ul = document.querySelector('#todo-list') as HTMLUListElement;
-
-  //       addButton.addEventListener('click', (event: Event) => {
-  //         event.preventDefault();
-  //         alert('dfgdf');
-  //         const todoText: string = input.value.trim();
-  //         if (todoText !== '') {
-  //           const li: HTMLLIElement = document.createElement('li');
-  //           li.textContent = todoText;
-  //           ul.appendChild(li);
-  //           input.value = '';
-  //         }
-  //       });
-
-  //       ul.addEventListener('click', (event: Event) => {
-  //         const target = event.target as HTMLElement;
-  //         if (target.tagName === 'LI') {
-  //           const li = target as HTMLLIElement;
-  //           li.contentEditable = 'true';
-  //           li.focus();
-  //         }
-  //       });
-
-  //       ul.addEventListener('blur', (event: Event) => {
-  //         const target = event.target as HTMLElement;
-  //         if (target.tagName === 'LI') {
-  //           const li = target as HTMLLIElement;
-  //           li.contentEditable = 'false';
-  //         }
-  //       });
-  //     }); 
- 
   }
  
   meeting_details(){
@@ -233,7 +201,7 @@ Action_task:string;
           this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
          
           console.log(this.EventScheduledjson, "111111")
-          debugger
+          
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
@@ -247,7 +215,7 @@ Action_task:string;
           
           });
           console.log(this.checkedproject,"chec1")
-          // alert(this.Project_NameScheduledjson) 
+         
           this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.portfolio_Scheduledjson.forEach(element => {
@@ -289,9 +257,6 @@ Action_task:string;
     });
   }
 
-  _TodoList = [];
-  _Demotext:any;
-  text:any=[];
   EnterSubmit(_Demotext) {
     if (_Demotext != "") {
      
@@ -318,12 +283,11 @@ Action_task:string;
     
   }
 
-
   Online_methodproject(event) {
   
     if(event.target.checked==true){
       this.checkedproject.push(event.target.value);
-      // alert(this.checkedproject);
+  
     }
     else if(event.target.checked==false){
       let index = this.checkedproject.indexOf(event.target.value);
@@ -341,14 +305,14 @@ Action_task:string;
  
     if(event.target.checked==true){
       this.checkedportfolio.push(event.target.value);
-      // alert(this.checkedportfolio);
+     
     }
     else if(event.target.checked==false){
       let index = this.checkedportfolio.indexOf(event.target.value);
       if(index > -1){
         this.checkedportfolio.splice(index,1);
       }
-      // alert(this.checkedportfolio);
+     
     }
   console.log(this.checkedportfolio);
    
@@ -358,42 +322,33 @@ Action_task:string;
  
     if(event.target.checked==true){
       this.checkeddms.push(event.target.value);
-      // alert(this.checkeddms);
+      
     }
     else if(event.target.checked==false){
       let index = this.checkeddms.indexOf(event.target.value);
       if(index > -1){
         this.checkeddms.splice(index,1);
       }
-      // alert(this.checkeddms);
+     
     }
   console.log(this.checkeddms);
   }
-  
-
 
   Online_methoduser(event) {
-    // if(event.target.checked==true){
-    //   this.userchecked1=true;
-    
-    // }
-    // else{
-    //   this.userchecked1=false;
-    // }
-
       if(event.target.checked==true){
         this.checkedusers.push(event.target.value);
-        // alert(this.checkedusers);
+       
       }
       else if(event.target.checked==false){
         let index = this.checkedusers.indexOf(event.target.value);
         if(index > -1){
           this.checkedusers.splice(index,1);
         }
-        // alert(this.checkedusers);
+       
       }
-    console.log(this.checkedusers);
+    
   }
+
   OnCardClick(P_id: any) {
     sessionStorage.setItem('portfolioId', P_id);
     let name: string = 'portfolioprojects';
@@ -402,6 +357,7 @@ Action_task:string;
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
   moreDetails(ProjectCode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -409,6 +365,7 @@ Action_task:string;
     var myWindow = window.open(myurl, ProjectCode);
     myWindow.focus();
   }
+
   openUrl(memo_Url) {
     const Url = memo_Url;
     window.open(Url);
@@ -432,7 +389,6 @@ Action_task:string;
     document.getElementById("cardmain").classList.add("cards-main");
 
   }
- 
 
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");
