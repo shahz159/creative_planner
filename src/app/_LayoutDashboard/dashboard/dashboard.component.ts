@@ -3545,7 +3545,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
       ((data) => {
         this.Pending_request = data as []
-        console.log(this.Pending_request, "123")
+        
       });
   }
   GetScheduledJson() {

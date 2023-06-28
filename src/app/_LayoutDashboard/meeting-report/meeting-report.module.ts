@@ -4,6 +4,7 @@ import { MeetingReportComponent} from './meeting-report.component'
 
 import { MeetingReportRoutingModule } from './meeting-report-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 
@@ -11,7 +12,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [MeetingReportComponent],
   imports: [
-    CommonModule,
+    CommonModule,NgSelectModule,
     MeetingReportRoutingModule,
     AngularEditorModule,
     FormsModule,ReactiveFormsModule
