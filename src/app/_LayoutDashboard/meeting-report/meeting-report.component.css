@@ -173,6 +173,7 @@ h5.card-ttle{
 }
 .grey-bg{
     background: #d8dadc;
+    min-height: 100vh;
     height: 100%;
 }
 .form-check-input {
