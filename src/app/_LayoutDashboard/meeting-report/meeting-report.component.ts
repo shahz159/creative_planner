@@ -184,6 +184,7 @@ text:any=[];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
   }
   ngOnInit(): void {
+    this.GetProjectAndsubtashDrpforCalender()
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
@@ -370,8 +371,20 @@ text:any=[];
     const Url = memo_Url;
     window.open(Url);
   }
+  _EmployeeListForDropdown:any=[];
 
+  GetProjectAndsubtashDrpforCalender() {
 
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+      ((data) => {
+       
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        // this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+         // this.ProjectListArray = JSON.parse(data['Projectlist']);
+        // console.log(this._EmployeeListForDropdown, "Project List Array");
+
+      });
+  }
   Insert_meetingreport(){
    debugger
     this.Schedule_ID = this.Scheduleid;
@@ -389,8 +402,6 @@ text:any=[];
     document.getElementById("cardmain").classList.add("cards-main");
 
   }
-<<<<<<< HEAD
-=======
   dropsw(){
     var offbtn = $("#dropusers").offset();    
     var offnewtop = offbtn.top + 20;
@@ -398,7 +409,6 @@ text:any=[];
     $(".drope").offset({ top: offnewtop, left: offnewleft});
     $(".drope").addClass('show');
   }
->>>>>>> c8c961211380264cb72e8659a1026c7a1f6cbda3
 
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");

@@ -526,3 +526,22 @@ img.dms-icn {
 .sort-drop .dropdown-item:active {
   background: none;
 }
+
+.kt-input {
+  height: 36px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 400;
+  /* height: 24px; */
+  line-height: 24px;
+  background-color: rgba(255, 255, 255, 0);
+  color: #3c4043;
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid #dadce0;
+  padding: 0.65rem 1rem;
+}
+
+.kt-input:focus {
+  border-bottom: 2px solid #1a73e8;
+}
