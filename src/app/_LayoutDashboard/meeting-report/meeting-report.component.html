@@ -384,12 +384,12 @@
                                         <div class="task-actions">
                                             <button class="btn-white btn btn-sm">Today</button>
                                             <button class="btn-white btn btn-sm">Tomorrow</button>
-                                            <button class="task-btns">
+                                            <button class="task-btns" data-toggle="modal" data-target="#recurcal">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                                   </svg>                                                  
                                             </button>
-                                            <button class="task-btns">
+                                            <button class="task-btns reload-icn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                                                     <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
@@ -537,3 +537,135 @@
     </div>
 </div>
 </div>
+
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="recurcal" tabindex="-1" role="dialog" aria-labelledby="recurcalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg w-max" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Set due date and recurrence</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="">
+                
+                <div class="d-flex-cen gap-3">
+                    <div class="">
+                        
+                        <div class="rec-btns gap-3">
+                            <button class="btn btn-sm btn-white btn-min">Today</button>
+                            <button class="btn btn-sm btn-white btn-min">Tomorrow</button>
+                            <button class="btn btn-sm btn-white btn-min">Next Monday</button>
+                            <button class="btn btn-sm btn-white btn-min">In a week</button>
+                        </div>
+                        <div class="mt-3 pl-2">
+                            <div class="dropdown show">
+                                <a class="text-info dropdown-toggle" href="#" role="button" id="repeatdrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-redo"></i> Does not repeat
+                                </a>
+                            
+                                <div class="dropdown-menu" aria-labelledby="repeatdrop">
+                                <a class="dropdown-item" href="#"> Does not repeat</a>
+                                <a class="dropdown-item" href="#"> Repeat</a>
+                                <a class="dropdown-item" href="#"> Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="">
+
+                        <div class="cal">
+                            <div class="calendar-wrap">
+                                <h2 class="month-year">January 2020</h2>
+                            
+                                <table class="calendar">
+                                <thead>
+                                    <tr>
+                                    <th class="day-title" scope="col">Sun</th>
+                                    <th class="day-title" scope="col">Mon</th>
+                                    <th class="day-title" scope="col">Tue</th>
+                                    <th class="day-title" scope="col">Wed</th>
+                                    <th class="day-title" scope="col">Thu</th>
+                                    <th class="day-title" scope="col">Fri</th>
+                                    <th class="day-title" scope="col">Sat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="week">
+                                    <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
+                                    <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
+                                    <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                    <td class="day today" tabindex="0"><span class="day-number">2</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                    <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">6</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                    <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                    <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                    </tr>
+                                    <tr class="week">
+                                    <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                    <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                    <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                
+                                <a class="button reset">Clear date-range</a>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-right">
+                            <a class="text-info">
+                                <i class="fas fa-clock"></i> Add time
+                            </a>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
