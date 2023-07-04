@@ -1515,3 +1515,36 @@ span.legend-box {
 .action-pdf{
   fill: #2f8de4;
 }
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+.crm-recent-activity li {
+  -webkit-padding-after: 1.3rem;
+  padding-block-end: 1.3rem;
+}
+.crm-recent-activity .crm-recent-activity-content {
+  position: relative;
+}
+.crm-recent-activity .crm-recent-activity-content::before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  background-color: transparent;
+  inset-block-start: 1.4375rem;
+  inset-inline-start: 0.5625rem;
+}
+.crm-recent-activity .crm-recent-activity-content:nth-child(1)::before {
+  border-inline-end: 1px dashed rgb(132 90 223 / 20%);
+  height: 60%;
+}
+.me-3 {
+  margin-right: 1rem!important;
+}
+.avatar.avatar-xs {
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1.25rem;
+  font-size: .65rem;
+}
