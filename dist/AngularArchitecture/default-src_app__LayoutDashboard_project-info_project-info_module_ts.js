@@ -3428,7 +3428,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                 });
@@ -3472,7 +3472,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                 });
@@ -3519,7 +3519,7 @@ class ProjectInfoComponent {
                             }
                             else if (this._Urlid == '6') {
                                 this.router.navigate(["Notifications"]);
-                                this._notification.viewAll();
+                                this._notification.viewAll('Req');
                             }
                         }
                     });
@@ -3574,7 +3574,7 @@ class ProjectInfoComponent {
                             }
                             else if (this._Urlid == '6') {
                                 this.router.navigate(["Notifications"]);
-                                this._notification.viewAll();
+                                this._notification.viewAll('Req');
                             }
                         }
                     });
@@ -3621,7 +3621,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '2') {
@@ -3647,7 +3647,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '4' || this._Message == null) {
@@ -3701,7 +3701,7 @@ class ProjectInfoComponent {
                             }
                             else if (this._Urlid == '6') {
                                 this.router.navigate(["Notifications"]);
-                                this._notification.viewAll();
+                                this._notification.viewAll('Req');
                             }
                         }
                     });
@@ -3748,7 +3748,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '2') {
@@ -3774,7 +3774,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '4' || this._Message == null) {
@@ -3827,7 +3827,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                 });
@@ -3877,7 +3877,7 @@ class ProjectInfoComponent {
                             }
                             else if (this._Urlid == '6') {
                                 this.router.navigate(["Notifications"]);
-                                this._notification.viewAll();
+                                this._notification.viewAll('Req');
                             }
                         }
                     });
@@ -3933,7 +3933,7 @@ class ProjectInfoComponent {
                             }
                             else if (this._Urlid == '6') {
                                 this.router.navigate(["Notifications"]);
-                                this._notification.viewAll();
+                                this._notification.viewAll('Req');
                             }
                         }
                     });
@@ -3980,7 +3980,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '2') {
@@ -4006,7 +4006,7 @@ class ProjectInfoComponent {
                         }
                         else if (this._Urlid == '6') {
                             this.router.navigate(["Notifications"]);
-                            this._notification.viewAll();
+                            this._notification.viewAll('Req');
                         }
                     }
                     else if (this._Message == '4' || this._Message == null) {
@@ -4285,7 +4285,7 @@ class ProjectInfoComponent {
                 }
                 else if (this._Urlid == '6') {
                     this.router.navigate(["Notifications"]);
-                    this._notification.viewAll();
+                    this._notification.viewAll('Req');
                 }
             }
             else if (this._Message == '3') {

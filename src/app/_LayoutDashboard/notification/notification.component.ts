@@ -17,7 +17,7 @@ export class NotificationComponent implements OnInit {
   _NotificationActivityList: NotificationActivityDTO[];
   _RequestActivity: [];
   _DarActivityList: [];
-  _NotificationActivity: [];
+  _NotificationActivity:any= [];
   _AlertActivity:[];
   notilength:number;
   _totalProjectsCount:number;
@@ -28,6 +28,9 @@ export class NotificationComponent implements OnInit {
   LastPage:number;
   lastPagerecords:number;
   emptyspace:boolean = true;
+  sendtype:any='Req';
+  type1:any='Req';
+  type2:any='Res';
 
   ////////////////------------------------------- Filters ------------------------------///////////////
   EmpCountInFilter = [];
@@ -52,12 +55,13 @@ export class NotificationComponent implements OnInit {
   ngOnInit(){
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.viewAll();
+    this.viewAll(this.sendtype);
   }
 
 
-  viewAll(){
-
+  viewAll(type){
+    this.sendtype=type;
+    if(type=='Req'){
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -65,6 +69,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedEmp_No = null;
     this.notificationDTO.SelectedType = null;
     this.notificationDTO.SearchText = null;
+    this.notificationDTO.sendtype = type;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
@@ -127,6 +132,81 @@ export class NotificationComponent implements OnInit {
         if(this.CurrentPageNo == this.LastPage){
           this.lastPagerecords=20;
         }
+    }
+    else if(type=='Res'){
+    this.notificationDTO.Emp_No=this.Current_user_ID;
+    this.notificationDTO.PageNumber=1;
+    this.notificationDTO.PageSize=20;
+    this.notificationDTO.SelectedStatus = null;
+    this.notificationDTO.SelectedEmp_No = null;
+    this.notificationDTO.SelectedType = null;
+    this.notificationDTO.SearchText = null;
+    this.notificationDTO.sendtype = type;
+
+    this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
+      (data) => {
+        // this._NotificationActivityList = data as NotificationActivityDTO[];
+        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        console.log(this._NotificationActivity,"ws");
+        this._totalProjectsCount = (data[0]['notificationcount']);
+        if(this._NotificationActivity){
+            this.notilength = this._NotificationActivity.length;
+            this._CurrentpageRecords = this._NotificationActivity.length;
+        }
+        //Emp
+        if (this.selectedItem_Emp.length == 0) {
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+        }
+        else {
+          this.EmpCountInFilter = this.selectedItem_Emp[0];
+        }
+         //Request
+         if (this.selectedItem_Request.length == 0) {
+          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
+        }
+        else {
+          this.RequestCountFilter = this.selectedItem_Request[0];
+        }
+        //Type
+        if (this.selectedItem_Type.length == 0) {
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+        }
+        else {
+          this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Status
+        if (this.selectedItem_Status.length == 0) {
+          this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
+        }
+        else {
+          this.StatusCountFilter = this.selectedItem_Status[0];
+        }
+        this._totalProjectsCount = JSON.parse(data[0]['notificationcount']);
+        if (this._NotificationActivity.length == 0) {
+          this._filtersMessage = "No more projects matched your search";
+          this._filtersMessage2 = " Clear the filters & try again";
+          this.emptyspace=false;
+        }
+        else {
+          this._filtersMessage = "";
+          this._filtersMessage2 = "";
+          this.emptyspace=true;
+        }
+      });
+        let _vl = this._totalProjectsCount / 20;
+        let _vl1 = _vl % 1;
+        if (_vl1 > 0.000) {
+          this.LastPage = Math.trunc(_vl) + 1;
+        }
+        else {
+          this.LastPage = Math.trunc(_vl);
+        }
+        if(this.CurrentPageNo == this.LastPage){
+          this.lastPagerecords=20;
+        }
+    }
+
+    
   }
 
   loadMore() {
@@ -160,7 +240,7 @@ export class NotificationComponent implements OnInit {
       console.log(data,"response-data");
       if(data[0]['message']=='1')
       this.notifyService.showInfo("Response cleared.",'');
-      this.viewAll();
+      this.viewAll(this.sendtype);
     });
   }
 
@@ -482,7 +562,176 @@ export class NotificationComponent implements OnInit {
   //   }
   // }
 
+  sno_arr:any=[];
+  selectedItems: any[] = [];
+  selectAllCheckbox: boolean = false;
+
+  selectall(ev){
+    if (this.selectAllCheckbox) {
+      this.selectedItems = [...this._NotificationActivity];
+    } else {
+      this.selectedItems = this.selectedItems.filter(item => !this._NotificationActivity.includes(item));
+    }
+    console.log(this.selectedItems,"all");
+  }
+
+  
+
+  select(ev,item){
+
+    if(ev.target.checked==false){
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+
+      checkbox.checked = false;
+    }
+    
+    else if(ev.target.checked==true){
+      // Assuming you have checkboxes with a common class name 'checkbox'
+      const checkboxes = document.querySelectorAll('.form-check-input');
+      const selectAllCheckbox = document.getElementById('snocheck') as HTMLInputElement;
+
+      // Add event listeners to each checkbox
+      checkboxes.forEach((checkbox: HTMLInputElement) => {
+        checkbox.addEventListener('change', updateSelectAllCheckbox);
+      });
+
+      // Function to update the "Select All" checkbox state
+      function updateSelectAllCheckbox() {
+        const allChecked = Array.from(checkboxes).every((checkbox: HTMLInputElement) => checkbox.checked);
+        selectAllCheckbox.checked = allChecked;
+      }
+
+      // Add event listener to the "Select All" checkbox
+      selectAllCheckbox.addEventListener('change', toggleAllCheckboxes);
+
+      // Function to toggle the state of all checkboxes based on the "Select All" checkbox
+      function toggleAllCheckboxes() {
+        const isChecked = selectAllCheckbox.checked;
+        checkboxes.forEach((checkbox: HTMLInputElement) => {
+          checkbox.checked = isChecked;
+        });
+    }
+  }
+
+  const checkbox = ev.target as HTMLInputElement;
+  
+  if (checkbox.checked) {
+    this.selectedItems.push(item);
+  } else {
+    const index = this.selectedItems.findIndex((selectedItem) => selectedItem === item);
+    if (index > -1) {
+      this.selectedItems.splice(index, 1);
+    }
+  }
+  console.log(this.selectedItems,"single");
+}
+
+isSelected(item: any): boolean {
+  return this.selectedItems.includes(item);
+}
+
+acceptSelectedValues() {
+    
+    console.log(this.selectedItems,"accept");
+  
+
+    // this.selectedItems.forEach(element => {
+    //   this.approvalObj.Project_Code=element.Project_Code;
+    //   this.approvalObj.SNo=element.Sno;
+    //   this.approvalObj.Duration=0;
+    //   this.approvalObj.Remarks='Accepted';
+    //   this.approvalObj.RejectType=element.Reject_Type;
+    //   this.approvalObj.OtherType=0;
+    //   this.approvalObj.sendFrom="WR";
+     
+    //   switch(element.Req_Type){
+    //                        case "New Project":
+    //                             this.approvalObj.Type = "Approved Project";
+    //                             break;
+    //                         case "New Project Reject Release":
+    //                             this.approvalObj.Type = "Approved Project";
+    //                             break;
+    //                         case "New Project Hold":
+    //                             this.approvalObj.Type = "Approved Hold Project";
+    //                             break;
+    //                         case "Project Complete":
+    //                             this.approvalObj.Type = "Project Complete";
+    //                             break;
+    //                         case "Project Complete Reject Release":
+    //                             this.approvalObj.Type = "Project Complete";
+    //                             break;
+    //                         case "Project Complete Hold":
+    //                             this.approvalObj.Type = "Approved Project Complete Hold";
+    //                             break;
+    //                         case "Deadline Extend":
+    //                             this.approvalObj.Type = "Deadline Extend";
+    //                             break;
+    //                         case "Deadline Extend Hold":
+    //                             this.approvalObj.Type = "Approved Deadline Hold";
+    //                             break;
+    //                         case "KPI Achieved":
+    //                             this.approvalObj.Type = "KPI Completed";
+    //                             break;
+    //                         case "KPI Enactive":
+    //                             this.approvalObj.Type = "KPI Enactive";
+    //                             break;
+    //                         case "KPI Enactive Hold":
+    //                             this.approvalObj.Type = "KPI Enactive Hold";
+    //                             break;
+    //                         case "KPI Achieved Hold":
+    //                             this.approvalObj.Type = "KPI Completed";
+    //                             break;
+    //                         case "New Todo":
+    //                             this.approvalObj.Type = "ToDo InProcess";
+    //                             break;
+    //                         case "ToDo Achieved":
+    //                             this.approvalObj.Type = "ToDo Completed";
+    //                             break;
+    //                         case "Enactive":
+    //                             this.approvalObj.Type = "Standardtask Enactive";
+    //                             break;
+    //                         case "Task Complete":
+    //                             this.approvalObj.Type = "StandardTask Completed";
+    //                             break;
+    //                         case "Task Complete Hold":
+    //                             this.approvalObj.Type = "StandardTask Completed";
+    //                             break;
+    //                         case "Standardtask Enactive":
+    //                             this.approvalObj.Type = "Standardtask Enactive";
+    //                             break;
+    //                         case "Standardtask Enactive Hold":
+    //                             this.approvalObj.Type = "Standardtask Enactive";
+    //                             break;
+    //                         case "Project Forward":
+    //                             this.approvalObj.Type = "Project Forward";
+    //                             break;
+    //                         case "Revert Back":
+    //                             this.approvalObj.Type = "Revert Back";
+    //                             break;
+    //                         case "Project Hold":
+    //                             this.approvalObj.Type = "Project Hold";
+    //                             break;
+    //                         case "Not Achieved":
+    //                             this.approvalObj.Type = "StandardTask Completed";
+    //                             break;
+    //                         default:
+    //                             break;
+    //   }
+
+        
+    // });
+    console.log(this.approvalObj,"accept-data");
+    this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
+      console.log(data,"accept-data");
+      
+      this.viewAll(this.sendtype);
+    });
+
+    
+  }
+  
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
+
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { NotificationRoutingModule } from './notification-routing.module';
 import { NotificationComponent } from './notification.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
@@ -12,7 +12,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
   declarations: [NotificationComponent],
   imports: [
     CommonModule,
-    FormsModule,
+    FormsModule,ReactiveFormsModule,
     NotificationRoutingModule,
     Ng2SearchPipeModule
   ],

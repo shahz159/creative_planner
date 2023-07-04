@@ -12,4 +12,15 @@ export class ApprovalDTO {
     Responsible:string;
     approvaltype:string;
     hold_date:any;
+    Type:string;
+    SNo:any;
+    Duration:any;
+    RejectType:any;
+    ReportType:any;
+    OtherType:any;
+    sendFrom:any;
+
+
+
+
 }
