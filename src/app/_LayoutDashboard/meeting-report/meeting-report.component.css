@@ -773,7 +773,6 @@ img.dms-icn {
   padding: 0.65rem 0;
 }
 .arrws {
-  margin: 5px 0;
   width: 50px;
   text-align: center;
 }
@@ -792,4 +791,9 @@ img.dms-icn {
   width: 50px;
   text-align: center;
   padding: 0.65rem 0;
+}
+.form-check-input[type=radio], .form-check-input:checked[type=radio] {
+  -webkit-appearance: radio;
+  appearance: radio;
+  background-image: none;
 }
