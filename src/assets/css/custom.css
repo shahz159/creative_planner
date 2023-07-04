@@ -1480,3 +1480,6 @@ button[disabled] {
 .sideInfobar .kt-portlet{
 margin-bottom: 0;
 }
+.w-max{
+    width: max-content !important;
+}
