@@ -19,8 +19,6 @@ export class ApprovalDTO {
     ReportType:any;
     OtherType:any;
     sendFrom:any;
-
-
-
+    responselist:any;
 
 }

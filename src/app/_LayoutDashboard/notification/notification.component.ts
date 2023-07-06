@@ -62,6 +62,7 @@ export class NotificationComponent implements OnInit {
   viewAll(type){
     this.sendtype=type;
     if(type=='Req'){
+      this.selectedItems=[];
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -134,6 +135,7 @@ export class NotificationComponent implements OnInit {
         }
     }
     else if(type=='Res'){
+      this.selectedItems=[];
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -239,7 +241,7 @@ export class NotificationComponent implements OnInit {
     this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
       console.log(data,"response-data");
       if(data[0]['message']=='1')
-      this.notifyService.showInfo("Response cleared.",'');
+      this.notifyService.showSuccess("Response cleared.",'');
       this.viewAll(this.sendtype);
     });
   }
@@ -578,7 +580,7 @@ export class NotificationComponent implements OnInit {
   
 
   select(ev,item){
-
+    
     if(ev.target.checked==false){
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
 
@@ -720,16 +722,35 @@ acceptSelectedValues() {
 
         
     // });
-    console.log(this.approvalObj,"accept-data");
+    console.log(this.selectedItems,"accept-data");
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
       
       this.viewAll(this.sendtype);
     });
-
+    this.notifyService.showSuccess("Project(s) approved successfully",'Success');
     
   }
   
+  responselist:any=[];
+
+  clearResponses(){
+    this.selectedItems.forEach(element => {
+      this.responselist.push(element.SNo);
+    });
+    this.responselist=this.responselist.join(',');
+    this.approvalObj.responselist=this.responselist;
+
+    this.approvalservice.NewMultiResponseService(this.approvalObj).subscribe(data =>{
+      console.log(data,"response-data");
+      if(data['message']=='1')
+      this.notifyService.showSuccess("Response(s) cleared.",'');
+      this.viewAll(this.sendtype);
+      this.responselist=[];
+    });
+  }
+
+
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }

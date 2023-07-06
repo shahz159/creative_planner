@@ -16,9 +16,12 @@
                             <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Requests</a>
                             <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Responses</a>
                         </div>
-                        <div>
+                        <div *ngIf="sendtype=='Req'">
                             <button class="btn btn-info btn-sm mr-2 text-white" (click)="acceptSelectedValues()">Accept</button>
                             <button class="btn btn-outline-info btn-sm text-dark-75">Reject</button>
+                        </div>
+                        <div *ngIf="sendtype=='Res'">
+                            <button class="btn btn-info btn-sm mr-2 text-white" (click)="clearResponses()">Clear Responses</button>
                         </div>
                     </div>
                    

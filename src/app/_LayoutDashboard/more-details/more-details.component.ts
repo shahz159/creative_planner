@@ -3416,7 +3416,6 @@ export class MoreDetailsComponent implements OnInit {
             this.notifyService.showInfo("Please attach the completion file to complete the main project","Note");
           }
           else{
-              debugger
               const fd = new FormData();
               fd.append("Project_Code", this.Sub_ProjectCode);
               fd.append("Master_Code", this._MasterCode);
