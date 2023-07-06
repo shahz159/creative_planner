@@ -17,8 +17,8 @@
                             <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Responses</a>
                         </div>
                         <div>
-                            <button class="btn btn-info btn-sm mr-2 text-white" (click)="acceptSelectedValues()">Accept</button>
-                            <button class="btn btn-outline-info btn-sm text-dark-75">Reject</button>
+                            <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
+                            <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
                         </div>
                     </div>
                    
@@ -210,10 +210,10 @@
                                         style="width: 0px;">
                                         <thead>
                                             <tr role="row">
-                                                <th style="width: 50px;" tabindex="0" aria-controls="project-4"
+                                                <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
                                                          rowspan="1" colspan="1" >
-                                                    <input type="checkbox"  id="snocheck"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input1 ps-1">
-                                                    &nbsp;<span class="mb-0"><label>Select all</label></span>
+                                                    <input type="checkbox"  id="snocheck"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
+                                                   
                                                 </th>
                                                 <th style="width: 100px;" tabindex="0" aria-controls="project-4"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
@@ -431,7 +431,7 @@
 <div id="rejectbar" class="sideInfobar animate-right">
    <div class="kt-portlet mb-0">
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
-            <h4 class="m-0">Project Details</h4>
+            <h4 class="m-0">Reject Projects</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                 <path fill="none" d="M0 0h24v24H0z"></path>
@@ -439,70 +439,165 @@
             </svg>
             </a>
         </div>
-        <div class="card-body card-car side_scroll scroll-y">
+        <div class="kt-portlet--body mb-0">
+            
+            <div class="brb-1 pb-1">
 
-            <div class="">
+                <div class="card-body card-car">
 
-                <div class="table-responsive word-break-table">
-                    <table align="center" class="table table-bordered table-hover">
-                      <tbody>
-                        <tr style="height:20px">
-                          <td align="left" style="width:40px;   background-color:#eee !important ;font-weight:bold !important;">Sno</td>
-                          <td align="left" class="col-md-3" style=" background-color:#eee !important ;font-weight: bold !important;">Project Name</td>
-                          <td align="left" style="width:760px; background-color:#eee !important ;font-weight: bold  !important;">Project Description</td>
-                          <td align="left" style="width:50px; background-color:#eee !important ;font-weight: bold  !important;">Start Date</td>
-                          <td align="left" style="width:50px; background-color:#eee !important ;font-weight: bold  !important;">End Date</td>
-                          <td align="left" style="width:450px; background-color:#eee !important ;font-weight: bold  !important;">Employee</td>
-                          <td align="left" style="font-size:14px; width:200px;  background-color:#eee !important ;font-weight: bold  !important;">Status</td>
-                        </tr>
-                        <tr>
-                          <td align="left" height="20px" style="width:50px;font-size:12px;color:#000000;">
-                            <span id="sno0">1</span>
-                          </td>
-                          <td align="left" height="20px" style="width:100px;font-size:12px;color:#000000;">
-                            <span id="projectname0">test type 2</span>
-                          </td>
-                          <td align="left" height="20px" style="width:750px;font-size:12px;color:#000000;">
-                            <span id="description0">test type 2 test type 2</span>
-                          </td>
-                          <td align="left" height="20px" style="width:150px;font-size:12px;color:#000000;">
-                            <span id="startdate0">10/08/2022</span>
-                          </td>
-                          <td align="left" height="20px" style="width:150px;font-size:12px;color:#000000;">
-                            <span id="enddate0">21/06/2023</span>
-                          </td>
-                          <td align="left" height="20px" style="width:450px;font-size:12px;color:#000000;">
-                            <span id="employee0">Md Waseem Akram</span>
-                          </td>
-                          <td align="left" height="20px" style="width:200px;font-size:12px;color:#000000;">
-                            <span id="status0">Project Complete</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                    <div class="card card-mid flex-1">
+                        <div class="card-header">
+                        <h5 clas="card-title"> Projects List  </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class=" cus-scroll scroll-y">                            
+                                <div class="meetdt">
 
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
 
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="">
+            
 
-                
-                <div class="" id="comts1">
+            <div class="">     
+                <div class="card-body" id="comts1">
+                    <div class="crd-hdr">
+                        <div class="crd-title"><h5>Reject Comments</h5></div>
+                    </div>           
                     <div class="col-md-12 checked-rad pl-1 pt-3">
                         <div class="form-group">
                             <label class="mb-2">Reject Type</label><span style="color:red">*</span>
-                            <ng-select required  name="rej_type"
-                                placeholder="Select Reject Type" id="rej_type"
-                                >
-                                <ng-option >
-                                    item
-                                </ng-option>
-                            </ng-select>
+                            <select class="form-control" required  name="rej_type"
+                                placeholder="Select Reject Type" id="rej_type">
+                                <option >item</option>
+                            </select>
                             <span 
                                 style="color:grey">Description</span>
-                            <span style="color:red">Please select Reject
-                                type!!</span>
+                            <!--<span style="color:red">Please select Reject
+                                type!!</span> -->
                         </div>
 
                         <label class="mb-2">Select From
@@ -516,7 +611,7 @@
                                 <div class="crd-bdy scroll-y">
                                     <div class="cmts-items" >
                                         <h6>
-                                           comments</h6>
+                                        comments</h6>
                                         <div class="cmts-actns">
                                             <span class="cmts-svg" >
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -550,15 +645,13 @@
 
 
                         <div class="d-flex justify-content-end mb-2">
-                            <button type="submit" class="btn btn-sm py-1 btn-info mr-2"
-                                >Submit</button>
-                            <button class="btn btn-sm py-1 btn-secondary"
+                            <button class="btn btn-sm btn-secondary mr-2"
                                 >Reset</button>
+                            <button type="submit" class="btn btn-sm btn-info "
+                                >Submit</button>
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
         </div>
@@ -567,7 +660,57 @@
 
 
 
-<!-- <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+<!--
+    
+                <div class="mb-3">
+                    <a class="d-flex justify-content-between" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                                                    
+                                                        
+                        <div class="d-flex-cen">
+                            <div class="subtask-list-title text-hover-primary fs-5 mt-1">
+                                <span class="mr-2" id="" title="Project Name">
+                                    Stream Application(Creative Planner) development</span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="">
+                                <span class="showv mr-2 text-muted">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    28-01-23 
+                                </span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="d-flex-cen showv">
+                                <span class="detail-icn mr-1 d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" fill="currentColor"
+                                        class="bi bi-star" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h5 data-toggle="tooltip"
+                                            class=" text-warning mb-0"
+                                            title="11 Days Delay!">
+                                            Inprocess </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="d-flex-cen mr-2 showv">                                                                
+                                <div class="initial-box color-7 b-50 mr-2">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                            </div>                            
+                        </div>
+
+                    </a>
+                </div>
+                
+                
+    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
     <div class="card-body row">
         <div class="col">
             <div>

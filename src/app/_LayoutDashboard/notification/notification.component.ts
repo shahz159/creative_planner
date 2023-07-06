@@ -256,6 +256,13 @@ export class NotificationComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
+
+  }
+  rejectpros() {
+    document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
   checkedItems_Status: any = [];
