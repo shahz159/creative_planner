@@ -7,11 +7,24 @@
             <div class="kt-portlet kt-portlet--bordered-semi">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title mr-4">
+                        <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong>Notifications</strong>
+                            <strong *ngIf="sendtype=='Req'">Requests</strong>
+                            <strong *ngIf="sendtype=='Res'">Responses</strong>
                         </h3>
+                        <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Requests</a>
+                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Responses</a>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
+                            <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
+                        </div>
+                        <div *ngIf="sendtype=='Res'">
+                            <button class="btn btn-info btn-sm mr-2 text-white" (click)="clearResponses()">Clear Responses</button>
+                        </div>
                     </div>
+                   
 
                     <div class="kt-portlet__head-label mr-2">
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
@@ -49,7 +62,8 @@
                                 _CurrentpageRecords}}
                             </ng-container>
                             of
-                            <span> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
                         </div>
                         <!-- Pagination ends -->
 
@@ -199,6 +213,11 @@
                                         style="width: 0px;">
                                         <thead>
                                             <tr role="row">
+                                                <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
+                                                         rowspan="1" colspan="1" >
+                                                    <input type="checkbox"  id="snocheck"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
+                                                   
+                                                </th>
                                                 <th style="width: 100px;" tabindex="0" aria-controls="project-4"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
                                                     aria-label=": activate to sort column descending">
@@ -256,8 +275,12 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let item of _NotificationActivity">
+                                                <td  align="center">
+                                                    <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"  (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
+            
+                                                </td>
                                                 <td align="center">
-                                                    <a tabindex="0" class="btn px-0 mr-2" role="button"
+                                                    <a tabindex="0" class="btn px-0 mb-0" role="button"
                                                         placement="right" data-trigger="focus" data-toggle="tooltip"
                                                         title="Project Info!" (click)="openInfo(item.Project_Code)">
                                                         <i class="fa fa-info-circle info-icon-cir"></i>
@@ -279,7 +302,7 @@
                                                                || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
                                                     <span class="text-danger font-weight-400" 
                                                         *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject'
-                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected'">{{item.Req_Type}}</span>
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'">{{item.Req_Type}}</span>
                                                     <span class="text-success font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project'">{{item.Req_Type}}</span> 
@@ -408,9 +431,289 @@
     <router-outlet></router-outlet>
 </div>
 
+<div id="rejectbar" class="sideInfobar animate-right">
+   <div class="kt-portlet mb-0">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+            <h4 class="m-0">Reject Projects</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+            </svg>
+            </a>
+        </div>
+        <div class="kt-portlet--body mb-0">
+            
+            <div class="brb-1 pb-1">
+
+                <div class="card-body card-car">
+
+                    <div class="card card-mid flex-1">
+                        <div class="card-header">
+                        <h5 clas="card-title"> Projects List  </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class=" cus-scroll scroll-y">                            
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            
+
+            <div class="">     
+                <div class="card-body" id="comts1">
+                    <div class="crd-hdr">
+                        <div class="crd-title"><h5>Reject Comments</h5></div>
+                    </div>           
+                    <div class="col-md-12 checked-rad pl-1 pt-3">
+                        <div class="form-group">
+                            <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+                            <select class="form-control" required  name="rej_type"
+                                placeholder="Select Reject Type" id="rej_type">
+                                <option >item</option>
+                            </select>
+                            <span 
+                                style="color:grey">Description</span>
+                            <!--<span style="color:red">Please select Reject
+                                type!!</span> -->
+                        </div>
+
+                        <label class="mb-2">Select From
+                            Existing Comments</label>
+                        <div class="appr-comts">
+
+                            <div class="exs-cmts card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Existing Comments</h6>
+                                </div>
+                                <div class="crd-bdy scroll-y">
+                                    <div class="cmts-items" >
+                                        <h6>
+                                        comments</h6>
+                                        <div class="cmts-actns">
+                                            <span class="cmts-svg" >
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span class="cmts-svg">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
 
 
-<!-- <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+                        <div class="form-group">
+                            <label class="mb-2">Enter Comments</label><span
+                                style="color:red">*</span>
+                            <textarea class="form-control h-100px"></textarea>
+                        </div>
+
+
+                        <div class="d-flex justify-content-end mb-2">
+                            <button class="btn btn-sm btn-secondary mr-2"
+                                >Reset</button>
+                            <button type="submit" class="btn btn-sm btn-info "
+                                >Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+   </div>
+</div>
+
+
+
+<!--
+    
+                <div class="mb-3">
+                    <a class="d-flex justify-content-between" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                                                    
+                                                        
+                        <div class="d-flex-cen">
+                            <div class="subtask-list-title text-hover-primary fs-5 mt-1">
+                                <span class="mr-2" id="" title="Project Name">
+                                    Stream Application(Creative Planner) development</span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="">
+                                <span class="showv mr-2 text-muted">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    28-01-23 
+                                </span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="d-flex-cen showv">
+                                <span class="detail-icn mr-1 d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" fill="currentColor"
+                                        class="bi bi-star" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h5 data-toggle="tooltip"
+                                            class=" text-warning mb-0"
+                                            title="11 Days Delay!">
+                                            Inprocess </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="d-flex-cen mr-2 showv">                                                                
+                                <div class="initial-box color-7 b-50 mr-2">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                            </div>                            
+                        </div>
+
+                    </a>
+                </div>
+                
+                
+    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
     <div class="card-body row">
         <div class="col">
             <div>

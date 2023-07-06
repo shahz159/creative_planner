@@ -915,7 +915,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
               }
             }
           });
@@ -959,7 +959,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
               }
             }
           });
@@ -1007,7 +1007,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
                 }
               }
             });
@@ -1063,7 +1063,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
                 }
               }
             });
@@ -1113,7 +1113,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '2') {
@@ -1139,7 +1139,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '4' || this._Message == null) {
@@ -1195,7 +1195,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
                 }
               }
             });
@@ -1245,7 +1245,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '2') {
@@ -1271,7 +1271,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '4' || this._Message == null) {
@@ -1325,7 +1325,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
               }
             }
           });
@@ -1376,7 +1376,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
                 }
               }
             });
@@ -1433,7 +1433,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
                 }
                 else if (this._Urlid == '6') {
                   this.router.navigate(["Notifications"]);
-                  this._notification.viewAll();
+                  this._notification.viewAll('Req');
                 }
               }
             });
@@ -1483,7 +1483,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '2') {
@@ -1509,7 +1509,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);
-              this._notification.viewAll();
+              this._notification.viewAll('Req');
             }
           }
           else if (this._Message == '4' || this._Message == null) {
@@ -1868,7 +1868,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           }
           else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
-                this._notification.viewAll();
+                this._notification.viewAll('Req');
           }
         }
         else if (this._Message == '3') {

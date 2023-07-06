@@ -63,11 +63,11 @@ class NotificationModule {
 NotificationModule.ɵfac = function NotificationModule_Factory(t) { return new (t || NotificationModule)(); };
 NotificationModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: NotificationModule });
 NotificationModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule,
         _notification_routing_module__WEBPACK_IMPORTED_MODULE_0__.NotificationRoutingModule,
         ng2_search_filter__WEBPACK_IMPORTED_MODULE_2__.Ng2SearchPipeModule] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](NotificationModule, { declarations: [_notification_component__WEBPACK_IMPORTED_MODULE_1__.NotificationComponent], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule,
         _notification_routing_module__WEBPACK_IMPORTED_MODULE_0__.NotificationRoutingModule,
         ng2_search_filter__WEBPACK_IMPORTED_MODULE_2__.Ng2SearchPipeModule], exports: [_notification_component__WEBPACK_IMPORTED_MODULE_1__.NotificationComponent] }); })();
 

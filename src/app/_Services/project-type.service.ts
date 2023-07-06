@@ -350,6 +350,7 @@ export class ProjectTypeService {
     this.ObjNotificationDto.SelectedStatus = obj.SelectedStatus;
     this.ObjNotificationDto.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjNotificationDto.SearchText = obj.SearchText;
+    this.ObjNotificationDto.sendtype = obj.sendtype;
 
     return this.http.post(this.rootUrl + "Notification/NewGetViewAllNotifications", this.ObjNotificationDto)
   }
