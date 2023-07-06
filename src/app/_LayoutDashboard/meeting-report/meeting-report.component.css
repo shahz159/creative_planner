@@ -486,7 +486,7 @@ img.dms-icn {
 }
 .drops.show{
     display: block;
-    min-width: 350px;
+    min-width: 400px;
 }
 .drops-item{
     display: block;
@@ -796,4 +796,8 @@ img.dms-icn {
   -webkit-appearance: radio;
   appearance: radio;
   background-image: none;
+}
+::ng-deep ng-select {
+  border-bottom: none !important;
+  padding: 0 !important;
 }
