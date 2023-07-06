@@ -134,7 +134,8 @@
                         <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
                             <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
                                 <div class="form-check form-check-custom form-check-solid">
-                                    <input type="checkbox"  id="flexCheckChecked5" [value]="_user.stringval" [checked]="userchecked"   [(ngModel)]="_user.checked" (click)="Online_methoduser($event) " class="form-check-input ps-1">
+                                    <input type="checkbox"  id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval" [checked]="_user.isChecked"  
+                                      (click)="Online_methoduser($event) " class="form-check-input ps-1 ng-valid ng-dirty ng-touched">
                                     </div>
                                 <div class="px-2 position-relative" >
                                     <span>
@@ -186,7 +187,9 @@
                         <div class="side-div" >
                             <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" [value]="_pro.stringval" id="flexCheckChecked1"   [checked]="projectchecked"  [(ngModel)]="_pro.checked" (click)="Online_methodproject($event) " class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="_pro.stringval" id="flexCheckChecked1"  
+                                     (click)="Online_methodproject($event) " class="form-check-input ps-1"
+                                    [checked]="_pro.isChecked">
                                     </div>
                                 <div class="rgt-des">
                                     <div>
@@ -219,7 +222,7 @@
                         <div class="side-div">
                             <div class="d-flex align-items-center"  *ngFor="let _prot of portfolio_Scheduledjson">
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" [value]="_prot.numberval" id="flexCheckChecked2"  [checked]="portfolioschecked"  [(ngModel)]="_prot.checked" (click)="Online_methodportfolio($event) " class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="_prot.numberval" id="flexCheckChecked2"  [checked]="_prot.isChecked" (click)="Online_methodportfolio($event)" class="form-check-input ps-1">
                                 </div>
                                 <div class="rgt-des">
                                     <div>
@@ -251,7 +254,8 @@
                         <div class="side-div">
                             <div class="d-flex align-items-center" *ngFor="let itemMemos of _MemosSubjectList; let i=index">                                    
                                 <div class="form-check form-check-custom form-check-solid mr-2">
-                                    <input type="checkbox" [value]="itemMemos.MailId" id="flexCheckChecked3"  [checked]="dmschecked"  [(ngModel)]="itemMemos.checked" (click)="Online_methoddms($event) " class="form-check-input ps-1">
+                                    <input type="checkbox" [value]="itemMemos.MailId" id="flexCheckChecked3"  [checked]="itemMemos.isChecked" 
+                                     (click)="Online_methoddms($event) " class="form-check-input ps-1">
                                 </div>
                                 <div class="rgt-des">
                                     <div>
@@ -377,13 +381,13 @@
                                       </form>
                                     </div>
 
-                                    <div class="todo-list"  *ngFor="let item of text; let i=index;">
+                                    <div class="todo-list"  *ngFor="let item of todo; let i=index;">
                                       <div class="task-item">
                                         <input class="task-status" type="checkbox">
-                                        <label class="task-name">{{item}}</label>
+                                        <label class="task-name">{{item.Task_Name}}</label>
                                         <div class="task-actions">
-                                            <button class="btn-white btn btn-sm">Today</button>
-                                            <button class="btn-white btn btn-sm">Tomorrow</button>
+                                            <!-- <button class="btn-white btn btn-sm">Today</button>
+                                            <button class="btn-white btn btn-sm">Tomorrow</button> -->
                                             <button class="task-btns" data-toggle="modal" data-target="#recurcal">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
@@ -530,7 +534,7 @@
 
         
         <div class="card-footer text-right">
-            <button class="btn btn-info btn-sm mr-2"   >Submit</button>
+            <button class="btn btn-info btn-sm mr-2" (click)=" Insert_meetingreport()"   >Submit</button>
             <button class="btn btn-secondary btn-sm mr-2">cancel</button>
         </div>
 
@@ -686,11 +690,28 @@
                 <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                     <div class="d-flex-cen gap-1 form-group">
                         <div class="left-lbls">
+                          <label class="mr-1 mb-0">Project Type</label>
+                        </div>
+                        <div class="w-min-150"  >
+                            <select name="Select Type" placeholder="Do not repeat" class="form-control" >
+                            <option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
+                                {{item.Exec_BlockName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex-cen gap-1 form-group">
+                        <div class="left-lbls">
                           <label class="mr-1 mb-0">Repeat</label>
                         </div>
                         <div class="w-min-150">
                             <select name="Select Type" placeholder="Do not repeat" class="form-control">
-                            <option>Weekly</option>
+                            <option [value]="0">Select Type</option>
+                            <option [value]="1">Daily</option>
+                            <option [value]="2">Weekly</option>
+                            <option  [value]="4">Monthly</option>
+                            <option [value]="8">Quarterly</option>
+                            <option  [value]="10">HalfYearly</option>
+                            <option [value]="16">Annually</option>
                             </select>
                         </div>
                     </div>
@@ -720,7 +741,7 @@
                                 <input type="checkbox" name="DaysChk" class="rep-chk" id="Sun" value="Sun"> S
                               </div>
                               
-                              <div class=" repeat-day active">
+                              <div class=" repeat-day ">
                                 <input type="checkbox" name="DaysChk" class="rep-chk" id="Mon" value="Mon"> M
                               </div>
                               
@@ -752,10 +773,8 @@
                         <div class="left-lbls">
                           <label class="mr-1 mb-0">Starts</label>
                         </div>
-                        <div class="w-min-150">
-                            <select name="Select Type" placeholder="Do not repeat" class="form-control">
-                            <option>Weekly</option>
-                            </select>
+                        <div>
+                            <input type="date" placeholder="Select EndDate" class="form-control">
                         </div>
                         <div class="ml-2">
                             <a class="text-info d-flex-cen">
@@ -782,9 +801,9 @@
                                     </label>
                                 </div>
 
-                                <select name="Select Type" placeholder="Do not repeat" class="form-control">
-                                <option>Weekly</option>
-                                </select>
+                                <div>
+                                    <input type="date" placeholder="Select EndDate" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
