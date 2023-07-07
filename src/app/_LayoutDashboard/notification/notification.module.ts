@@ -5,13 +5,14 @@ import { NotificationRoutingModule } from './notification-routing.module';
 import { NotificationComponent } from './notification.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [NotificationComponent],
   imports: [
-    CommonModule,
+    CommonModule,NgSelectModule,
     FormsModule,ReactiveFormsModule,
     NotificationRoutingModule,
     Ng2SearchPipeModule

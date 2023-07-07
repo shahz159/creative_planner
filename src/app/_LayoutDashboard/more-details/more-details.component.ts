@@ -413,7 +413,7 @@ export class MoreDetailsComponent implements OnInit {
       this.exist_comment.push(com);
     }
     else {
-      this.comments = this.comments + "" + com;
+      this.comments = this.comments + " " + com;
       this.exist_comment.push(com);
     }
   }
@@ -4568,6 +4568,7 @@ actiondeadline_alert(){
     this.commentSelected = null;
     this.noRejectType = false;
     this.comments = "";
+    this.exist_comment =[];
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
