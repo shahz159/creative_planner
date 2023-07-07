@@ -167,7 +167,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _CompletedList = [];
 
   EnterSubmit(_Demotext) {
+    debugger
     if (_Demotext != "") {
+
       this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
       this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;

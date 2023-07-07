@@ -7,6 +7,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -33,10 +34,11 @@ export class MeetingReportComponent implements OnInit {
   dmschecked:boolean=true;
   portfolioschecked:boolean=true;
   userchecked1:boolean=true;
-  projectchecked1:boolean=true;
+  // projectchecked1:boolean=true;
   dmschecked1:boolean=true;
   portfoliochecked1:boolean=true;
   Notes_Type:any;
+  ProjectTypelist: any;
 Action_item:any;
 checkedusers:any=[];
 checkedproject:any=[];
@@ -45,79 +47,10 @@ checkedportfolio:any=[];
 Meeting_Detailsdata:any=[];
 Taskname:string;
 Action_task:string;
-_TodoList = [];
+_TodoList :any= [];
 _Demotext:any;
 text:any=[];
-  // config: AngularEditorConfig = {
-  //   editable: true,
-  //   spellcheck: true,
-  //   height: 'auto',
-  //   minHeight: '5rem',
-  //   maxHeight: 'auto',
-  //   width: 'auto',
-  //   minWidth: '0',
-  //   placeholder: 'Enter text here...',
-  //   translate: 'no',
-  //   defaultParagraphSeparator: 'p',
-  //   defaultFontName: 'Arial',
-  //   toolbarHiddenButtons: [
-  //     [
-  //       // 'bold',
-  //       // 'italic',
-  //       // 'underline',
-  //       'strikeThrough',
-  //       'subscript',
-  //       'superscript',
-  //       'indent',
-  //       'outdent',
-  //       // 'insertUnorderedList',
-  //       // 'insertOrderedList',
-  //       'heading'
-  //       // 'fontName'
-  //     ],
-  //     [
-  //       // 'fontSize',
-  //       // 'textColor',
-  //       // 'backgroundColor',
-  //       'customClasses',
-
-  //       'unlink',
-  //       'insertImage',
-  //       'insertVideo',
-  //       'insertHorizontalRule',
-  //       'removeFormat',
-  //       'toggleEditorMode',
-  //    'fontSelector',
-  //    'justifyLeft',
-  //    'justifyCenter',
-  //    'justifyRight',
-  //    'justifyFull',
-  //    'bold',
-  //    'italic',
-  //    'underline',
-  //    'heading',
-     
-    
-  //     ]
-  //   ],
-  //   customClasses: [
-  //     {
-  //       name: 'quote',
-  //       class: 'quote',
-  //     },
-  //     {
-  //       name: 'redText',
-  //       class: 'redText',
-  //     },
-  //     {
-  //       name: 'titleText',
-  //       class: 'titleText',
-  //       tag: 'h1',
-  //     },
-  //   ],
-  // };
-
-    config: AngularEditorConfig = {
+  config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: 'auto',
@@ -141,7 +74,7 @@ text:any=[];
         'outdent',
         // 'insertUnorderedList',
         // 'insertOrderedList',
-        'heading',
+        'heading'
         // 'fontName'
       ],
       [
@@ -155,7 +88,18 @@ text:any=[];
         'insertVideo',
         'insertHorizontalRule',
         'removeFormat',
-        'toggleEditorMode'
+        'toggleEditorMode',
+     'fontSelector',
+     'justifyLeft',
+     'justifyCenter',
+     'justifyRight',
+     'justifyFull',
+     'bold',
+     'italic',
+     'underline',
+     'heading',
+     
+    
       ]
     ],
     customClasses: [
@@ -174,16 +118,21 @@ text:any=[];
       },
     ],
   };
+
   constructor(private route: ActivatedRoute,
     public notifyService: NotificationService,
     private CalenderService: CalenderService,
     public _LinkService: LinkService,
     public ProjectTypeService: ProjectTypeService
+  
   ) {
     this._calenderDto = new CalenderDTO;
     this._ObjAssigntaskDTO = new AssigntaskDTO();
+    this._ObjCompletedProj = new CompletedProjectsDTO();
   }
   ngOnInit(): void {
+    
+    this.getProjectTypeList();
     this.GetProjectAndsubtashDrpforCalender()
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
@@ -342,11 +291,12 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
-           
+           element.isChecked=true;
           });
           console.log(this.checkedusers,"chec")
           this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
           this.Project_NameScheduledjson.forEach(element => {
+            element.isChecked=true;
             this.checkedproject.push(element.stringval);
           
           
@@ -357,7 +307,7 @@ document.querySelector('.reset').addEventListener('click', e => {
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.portfolio_Scheduledjson.forEach(element => {
           this.checkedportfolio.push(element.numberval);
-          
+          element.isChecked=true;
         });
        
         this.checkedportfolio = this.checkedportfolio.map((num) => num.toString());
@@ -384,6 +334,7 @@ document.querySelector('.reset').addEventListener('click', e => {
              
               this._MemosSubjectList.forEach(element => {
                 this.checkeddms.push(element.MailId);
+                element.isChecked=true;
               });
               this.checkeddms = this.checkeddms.map((num) => num.toString());
              
@@ -392,33 +343,42 @@ document.querySelector('.reset').addEventListener('click', e => {
       }
 
     });
-  }
-
+   
+  
+  
+}
+  todo:any=[];
   EnterSubmit(_Demotext) {
-    if (_Demotext != "") {
-     
+
+    if (_Demotext != "" && _Demotext != undefined && _Demotext !=null) {
+      this._ObjAssigntaskDTO.CategoryId = 2411;
+      this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
       this._ObjAssigntaskDTO.TaskName = this._Demotext;
 
       this.text.push(this._Demotext);
       this._Demotext="";
-    //   this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
-    //     (data) => {
-    //       //console.log("Data---->", data);
-    //       this._TodoList = JSON.parse(data['TodoList']);
-    //       let message: string = data['Message'];
-    //       this._Demotext = "";
-    //       //this.GetAssignTask();
-    //       this.notifyService.showSuccess("Successfully", "Added");
-    //       // this.closeInfo();
-    //     });
-    // }
-    // else {
-    //   this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
-    // }
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          //console.log("Data---->", data);
+          this._TodoList = JSON.parse(data['TodoList']);
+          this.todo=this._TodoList;
+          let message: string = data['Message'];
+          // console.log("Data---->", this._TodoList);
+          this._Demotext = ""
+          //this.GetAssignTask();
+          this.notifyService.showSuccess("Successfully", "Added");
+          // this.closeInfo();
+        });
+    }
+  
+       
+    else {
+      this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
+    }
     }
     
-  }
+  
 
   Online_methodproject(event) {
   
@@ -527,8 +487,11 @@ document.querySelector('.reset').addEventListener('click', e => {
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
    this._calenderDto.Notes=this.Notes_Type;
    this._calenderDto.Action_item=this.Action_item;
-   
-  
+   this._calenderDto.User_list=this.checkedusers.join(',');
+   this._calenderDto.Dms=this.checkeddms.join(',');
+   this._calenderDto.Portfolio=this.checkedportfolio.join(',');
+   this._calenderDto.Project=this.checkedproject.join(',');
+  console.log(this._calenderDto,"dto")
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
 
@@ -544,6 +507,17 @@ document.querySelector('.reset').addEventListener('click', e => {
     var offnewleft = offbtn.left - 340;
     $(".drope").offset({ top: offnewtop, left: offnewleft});
     $(".drope").addClass('show');
+  }
+  _ObjCompletedProj: CompletedProjectsDTO;
+  getProjectTypeList() {
+    this._ObjCompletedProj.PageNumber = 1;
+    this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    this._ObjCompletedProj.Mode = 'AssignedTask';
+    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+      (data) => {
+        this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
+      });
+      // console.log(this.ProjectTypelist,"121")
   }
 
   close_side(){
