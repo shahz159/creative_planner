@@ -370,7 +370,7 @@
 
                             <div class="notes-section">
                                 <div class="form-group" id="Descrip_Name">
-                                    <label class="cus-lbl">Minutes </label>
+                                    <label class="cus-lbl">Meeting notes </label>
                                     <angular-editor [(ngModel)]="Notes_Type" [config]="config"></angular-editor>
                                 </div>
                             </div>
@@ -378,7 +378,7 @@
                             <div class="action-section">
                                 <div class="todo-main">
                                     <div class="task-header">
-                                      <h1 class="task-header-title">Things To do</h1>
+                                      <h1 class="task-header-title">Assign Task</h1>
                                       <div class="task-tools">
                                         <div class="task-count"></div>
                                       </div>
@@ -600,8 +600,8 @@
         </div>
 
         
-        <div class="card-footer text-right">
-            <button class="btn btn-info btn-sm mr-2" (click)=" Insert_meetingreport()"   >Submit</button>
+        <div class="card-footer text-right" *ngIf="item.Meeting_status==false">
+            <button class="btn btn-info btn-sm mr-2"  (click)=" Insert_meetingreport()"   >Submit</button>
             <button class="btn btn-secondary btn-sm mr-2">cancel</button>
         </div>
 
