@@ -246,7 +246,7 @@ export class NotificationComponent implements OnInit {
       console.log(data,"response-data");
       if(data[0]['message']=='1')
       this.notifyService.showSuccess("Response cleared.",'');
-      this.viewAll(this.sendtype);
+      this.applyFilters();
     });
   }
 
@@ -433,6 +433,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.PageNumber = this.CurrentPageNo;
     this.notificationDTO.PageSize = 20;
     this.notificationDTO.SearchText = this.searchText;
+    this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {
@@ -733,8 +734,11 @@ acceptSelectedValues() {
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
       
-      this.viewAll(this.sendtype);
+      this.applyFilters();
     });
+    const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+    this.selectedItems=[];
     this.notifyService.showSuccess("Project(s) approved successfully",'Success');
   }
   else{
@@ -816,8 +820,11 @@ acceptSelectedValues() {
       this.approvalservice.NewUpdateRejectApprovalsService(this.selectedItems).subscribe(data =>{
         console.log(data,"reject-data");
         
-        this.viewAll(this.sendtype);
+        this.applyFilters();
       });
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+      this.selectedItems=[];
       this.notifyService.showSuccess("Project(s) rejected successfully",'Success');
     }
     else{

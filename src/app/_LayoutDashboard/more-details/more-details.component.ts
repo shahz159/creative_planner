@@ -401,6 +401,9 @@ export class MoreDetailsComponent implements OnInit {
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
+
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
+
   }
 
   orgValueChange(val) {
