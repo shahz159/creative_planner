@@ -1105,6 +1105,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
 
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
@@ -1112,6 +1114,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
 
         }
 
@@ -3316,12 +3320,16 @@ export class DashboardComponent implements OnInit {
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
           document.getElementById("act-btn").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
           document.getElementById("act-btn").style.display = "none";
         }
 
@@ -3330,6 +3338,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
           document.getElementById("act-btn").style.display = "none";
         }
         else {
@@ -3337,6 +3347,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
           document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -3404,6 +3416,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
@@ -3411,6 +3425,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
 
         }
@@ -3419,6 +3435,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
           document.getElementById("act-btn").style.display = "none";
         }
         else {
@@ -3426,6 +3444,8 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
           document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -3488,24 +3508,32 @@ export class DashboardComponent implements OnInit {
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           document.getElementById("copy_data").style.display = "flex";
+          document.getElementById("copy_data1").style.display = "flex";
+          document.getElementById("copy_data2").style.display = "flex";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
           document.getElementById("copy_data").style.display = "none";
+          document.getElementById("copy_data1").style.display = "none";
+          document.getElementById("copy_data2").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
