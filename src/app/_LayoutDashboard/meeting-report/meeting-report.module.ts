@@ -6,6 +6,8 @@ import { MeetingReportRoutingModule } from './meeting-report-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
+
 
 
 @NgModule({
@@ -16,6 +18,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
     MeetingReportRoutingModule,
     AngularEditorModule,
     FormsModule,ReactiveFormsModule
-  ]
+  ],
+  providers: [ 
+    ProjectUnplannedTaskComponent
+]
 })
 export class MeetingReportModule { }

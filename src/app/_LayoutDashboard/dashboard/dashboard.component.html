@@ -1055,7 +1055,7 @@
                                 <span class="sort-by pb-2">Event Action</span>
 
                                 <div class="" id="main-section">
-                                    <div>
+                                    <div *ngIf="Meeting_status==false ">
                                         <a class="dropdown-item active" (click)="meetingReport()">
                                             Done
                                             <span>
