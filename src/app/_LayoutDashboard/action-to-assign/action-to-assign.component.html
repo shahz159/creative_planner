@@ -15,6 +15,18 @@
                 </mat-option>   
             </mat-select>
         </div>
+        <div class="form-group" [hidden]="selectedProjectType!='003' && selectedProjectType!='008' ">
+            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission type"
+                class="form-control">
+                <mat-option [value]="0">Select Type</mat-option>
+                <mat-option [value]="1">Daily</mat-option>
+                <mat-option [value]="2">Weekly</mat-option>
+                <mat-option [value]="4">Monthly</mat-option>
+                <mat-option [value]="8">Quarterly</mat-option>
+                <mat-option [value]="10">HalfYearly</mat-option>
+                <mat-option [value]="16">Annually</mat-option>
+            </mat-select>
+        </div>
         <div class="form-group">
             <label> Task/Project Name : </label>
             <!-- <span class="text-danger">*</span> -->
@@ -96,18 +108,7 @@
             </div>
         </div>
 
-        <div class="form-group" [hidden]="selectedProjectType!='003'">
-            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission type"
-                class="form-control">
-                <mat-option [value]="0">Select Type</mat-option>
-                <mat-option [value]="1">Daily</mat-option>
-                <mat-option [value]="2">Weekly</mat-option>
-                <mat-option [value]="4">Monthly</mat-option>
-                <mat-option [value]="8">Quarterly</mat-option>
-                <mat-option [value]="10">HalfYearly</mat-option>
-                <mat-option [value]="16">Annually</mat-option>
-            </mat-select>
-        </div>
+        
         <div class="form-group">
             <label for="exampleFormControlFile1">Remarks</label>
             <textarea class="form-control" aria-label="With textarea" placeholder="Enter task rearks if any" [(ngModel)]="_remarks"

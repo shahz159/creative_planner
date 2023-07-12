@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { LinkService } from 'src/app/_Services/link.service';
@@ -8,6 +8,9 @@ import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -39,7 +42,7 @@ export class MeetingReportComponent implements OnInit {
   portfoliochecked1:boolean=true;
   Notes_Type:any;
   ProjectTypelist: any;
-Action_item:any;
+Action_item:any=[];
 checkedusers:any=[];
 checkedproject:any=[];
 checkeddms:any=[];
@@ -123,7 +126,10 @@ text:any=[];
     public notifyService: NotificationService,
     private CalenderService: CalenderService,
     public _LinkService: LinkService,
-    public ProjectTypeService: ProjectTypeService
+    public ProjectTypeService: ProjectTypeService,
+    public router: Router,
+    public BsService: BsServiceService,
+    public dialog: MatDialog
   
   ) {
     this._calenderDto = new CalenderDTO;
@@ -131,15 +137,18 @@ text:any=[];
     this._ObjCompletedProj = new CompletedProjectsDTO();
   }
   ngOnInit(): void {
-    
-    this.getProjectTypeList();
-    this.GetProjectAndsubtashDrpforCalender()
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
+       
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
+    this. GetAssigned_SubtaskProjects();
+    this.getProjectTypeList();
+    this.GetProjectAndsubtashDrpforCalender()
+ 
  this.meeting_details();
+ this.getScheduleId();
 
 
  // modal caledar start
@@ -277,6 +286,10 @@ document.querySelector('.reset').addEventListener('click', e => {
   // modal caledar end
 
   }
+
+  getScheduleId(){
+    this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
+  }
  
   meeting_details(){
     
@@ -355,27 +368,28 @@ document.querySelector('.reset').addEventListener('click', e => {
       this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
       this._ObjAssigntaskDTO.TaskName = this._Demotext;
-
+      this._ObjAssigntaskDTO.Schedule_ID=this.Schedule_ID;
+    
       this.text.push(this._Demotext);
       this._Demotext="";
       this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
         (data) => {
           //console.log("Data---->", data);
-          this._TodoList = JSON.parse(data['TodoList']);
-          this.todo=this._TodoList;
+          this._TodoList = JSON.parse(data['Todomeeting']);
+         
+         
           let message: string = data['Message'];
-          // console.log("Data---->", this._TodoList);
+          console.log("Data---->", this._TodoList);
           this._Demotext = ""
           //this.GetAssignTask();
           this.notifyService.showSuccess("Successfully", "Added");
           // this.closeInfo();
         });
     }
-  
-       
-    else {
-      this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
-    }
+    
+    // else {
+    //   this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
+    // }
     }
     
   
@@ -483,18 +497,24 @@ document.querySelector('.reset').addEventListener('click', e => {
   }
   Insert_meetingreport(){
    debugger
+   this.Action_item=[]
+ 
+   this._TodoList.forEach(element => {
+    this.Action_item.push(element.Assign_Id)
+    
+   });
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
    this._calenderDto.Notes=this.Notes_Type;
-   this._calenderDto.Action_item=this.Action_item;
+   this._calenderDto.Action_item=this.Action_item.join(',')
    this._calenderDto.User_list=this.checkedusers.join(',');
    this._calenderDto.Dms=this.checkeddms.join(',');
    this._calenderDto.Portfolio=this.checkedportfolio.join(',');
    this._calenderDto.Project=this.checkedproject.join(',');
-  console.log(this._calenderDto,"dto")
+  // console.log(this._calenderDto,"dto")
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
-
+      this.notifyService.showSuccess("Successfully", "Completed");
     });
   }
   open_side(){
@@ -523,6 +543,95 @@ document.querySelector('.reset').addEventListener('click', e => {
   close_side(){
     document.getElementById("cardmain").classList.remove("cards-main");
   }
+  ActionedAssigned_Josn:any=[];
+  GetAssigned_SubtaskProjects() {
+    this._ObjCompletedProj.PageNumber = 1;
+    this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    this._ObjCompletedProj.CategoryId = 2411;
+    this._ObjCompletedProj.Mode = 'Todo';
+    this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
+   
+    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+      (data) => {
+        // console.log("Data---->", data);
+        // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+        this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+      
+        // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        console.log("the sss", this._TodoList)
+        
+      });
+  }
+  _taskName:any;
+  task_id:any;
+
+  GetProjectTypeList(taskName, id) {
+    // debugger
+    this._taskName = taskName;
+    this.task_id = id;
+    this.router.navigate(["Meeting-Report/"+this.Schedule_ID+"/ActionToAssign/2"]);
+    this.BsService.SetNewAssignId(this.task_id);
+    this.BsService.SetNewAssignedName(this._taskName);
+    let typeoftask: any = "IFRT";
+    this.BsService.setNewTypeofTask(typeoftask);
+
+    // this._ObjCompletedProj.PageNumber = 1;
+    // this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    // this._ObjCompletedProj.Mode = 'AssignedTask';
+    // this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    //   (data) => {
+
+    //     this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
+    //   });
+    //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
+
+    
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+    
+  }
+
+  _Deletetask(id, name) {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'Todo_Delete',
+        title1: 'Confirmation ',
+        taskName: name
+        //message1: "proj_Name"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this._ObjAssigntaskDTO.TypeOfTask = "Delete";
+        this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+        this._ObjAssigntaskDTO.AssignId = id;
+        this._ObjAssigntaskDTO.CategoryId = 2411;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => {
+            this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
+            // this._CompletedList = JSON.parse(data['CompletedList']);
+           
+            let message: string = data['Message'];
+            this._Demotext = "";
+            this.notifyService.showInfo("Successfully", message);
+          });
+      }
+      else {
+        //this.notifyService.showInfo("Cancelled", "Delete");
+      }
+      this.GetAssigned_SubtaskProjects();
+    });
+  }
+  closeInfo() {
+      
+    
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   
+  }
 
 }

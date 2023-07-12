@@ -17,6 +17,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { DatePipe } from '@angular/common';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
+import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
     ProjectUnplannedTaskComponent, 
   ],
     providers: [ 
-      NotificationService, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent
+      NotificationService, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent,MeetingReportComponent
   ] 
 })
 export class ProjectUnplannedTaskModule { }

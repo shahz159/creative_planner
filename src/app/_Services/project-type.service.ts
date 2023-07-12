@@ -503,6 +503,7 @@ export class ProjectTypeService {
     this._ObjCompletedProj.SelectedStatus = objDTO.SelectedStatus;
     this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;
     this._ObjCompletedProj.CategoryId = objDTO.CategoryId;
+    this._ObjCompletedProj.Schedule_ID = objDTO.Schedule_ID;
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
@@ -700,7 +701,7 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO.CategoryId = _ObjAssigntaskDTO.CategoryId;
     this._ObjAssigntaskDTO.Remarks = _ObjAssigntaskDTO.Remarks;
     this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
-
+    this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTask", this._ObjAssigntaskDTO);
   }
 
