@@ -262,6 +262,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.selectedType = null;
     this.commentSelected = null;
     this.comments = "";
+    this.exist_comment =[];
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
@@ -837,7 +838,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.exist_comment.push(com);
     }
     else{
-      this.comments = this.comments+""+com;
+      this.comments = this.comments+" "+com;
       this.exist_comment.push(com);
     }
     console.log(this.exist_comment,"select");
@@ -1606,6 +1607,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
+    this.exist_comment =[];
   }
 
   rejDesc: any;
