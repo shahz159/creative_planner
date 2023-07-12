@@ -9,12 +9,12 @@
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong *ngIf="sendtype=='Req'">Requests</strong>
-                            <strong *ngIf="sendtype=='Res'">Responses</strong>
+                            <strong *ngIf="sendtype=='Req'">Approvals</strong>
+                            <strong *ngIf="sendtype=='Res'">Information</strong>
                         </h3>
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Requests</a>
-                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Responses</a>
+                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approvals</a>
+                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information</a>
                         </div>
                         <div *ngIf="sendtype=='Req' && selectedItems.length >0">
                             <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
@@ -687,7 +687,8 @@
                         <div class="form-group" *ngIf="rejectType">
                             <label class="mb-2">Enter Comments</label><span
                                 style="color:red">*</span>
-                            <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
+                                <!-- <div [innerHTML]="comments"></div> -->
+                            <textarea class="form-control h-100px"  [(ngModel)]="comments"></textarea>
                         </div>
 
 

@@ -15,6 +15,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import * as moment from 'moment';
 import { event } from 'jquery';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -67,6 +68,7 @@ export class ActionToProjectComponent implements OnInit {
   owner:string;
   Resp_empno:string;
   Autho_empno:string;
+  pcode:any;
 
   constructor(
     public notifyService: NotificationService,
@@ -85,7 +87,7 @@ export class ActionToProjectComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO;
     this.ObjUserDetails = new UserDetailsDTO();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
-    
+    this.BsService.bs_projectCode.subscribe(p => this.pcode=p);
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
     this.BsService.bs_TaskName.subscribe(t => {
@@ -114,6 +116,8 @@ export class ActionToProjectComponent implements OnInit {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
+    
+    this.gethierarchy();
     const input = document.getElementById("hour-input");
 
     
@@ -529,6 +533,18 @@ export class ActionToProjectComponent implements OnInit {
     return [ day,mnth,date.getFullYear() ].join("-");
   }
 
+  isHierarchy:boolean = false;
+  gethierarchy() {
+    this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID,this.pcode).subscribe((data) => {
+      debugger
+      if(data['message']=='1'){
+        this.isHierarchy=true;
+      }
+      else{
+        this.isHierarchy=false;
+      }
+    });
+  }
   sweetAlert() {
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
@@ -536,7 +552,7 @@ export class ActionToProjectComponent implements OnInit {
     const dateTwo = new Date(this.ProjectDeadLineDate);
     // console.log(dateOne)
     // console.log(dateTwo)
-    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno)) {
+    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -557,7 +573,7 @@ export class ActionToProjectComponent implements OnInit {
         }
       });
     }
-    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno)) {
+    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno && this.isHierarchy==false)) {
       Swal.fire({
         title: 'Unable to create this action.',
         text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
