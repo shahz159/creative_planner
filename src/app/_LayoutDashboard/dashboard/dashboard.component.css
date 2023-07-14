@@ -2258,3 +2258,9 @@ a.ordr-a {
 .time-event .fc-daygrid-dot-event:focus:hover {
     background: rgb(173 175 186 / 10%);
 }
+svg.toolicns.kt-p-ic-top {
+    position: relative;
+    top: 2px;
+    left: 5px;
+    fill: #767a7e;
+}

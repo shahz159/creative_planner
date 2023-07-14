@@ -515,6 +515,7 @@ document.querySelector('.reset').addEventListener('click', e => {
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
       this.notifyService.showSuccess("Successfully", "Completed");
+      // window.close();
     });
   }
   open_side(){
