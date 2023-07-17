@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
   _ListProjStat: StatusDTO[];
   _objStatusDTO: StatusDTO;
   _DistinctList = [];
-  messageForEmpty: boolean;
+  messageForEmpty: boolean=false;
   _ObjChartDTO: ChartDTO;
   _objDropdownDTO: DropdownDTO;
 
@@ -248,7 +248,7 @@ export class HomeComponent implements OnInit {
     //this.HideProjects = false;
     // this.isLoading = false;
     this._btnShareDetails = true;
-    this.messageForEmpty = true;
+    // this.messageForEmpty = true;
     this.btnGetRecords = true;
     this.PortfolioList = false;
     this._PortfolioListTable = true;
@@ -1331,8 +1331,8 @@ export class HomeComponent implements OnInit {
   activeClassAll: boolean
   activeClassShare: boolean
   activeClassFav: boolean
-  NoSharedmsg: boolean;
-  Nofavmsg: boolean;
+  NoSharedmsg: boolean =false;
+  Nofavmsg: boolean=false;
 
   Favourite_Portfolios() {
     this.Portfolio_CurrentPage = 1;

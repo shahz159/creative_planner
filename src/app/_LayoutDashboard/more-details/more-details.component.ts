@@ -401,6 +401,9 @@ export class MoreDetailsComponent implements OnInit {
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
+
+    this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
+
   }
 
   orgValueChange(val) {
@@ -413,7 +416,7 @@ export class MoreDetailsComponent implements OnInit {
       this.exist_comment.push(com);
     }
     else {
-      this.comments = this.comments + "" + com;
+      this.comments = this.comments + " " + com;
       this.exist_comment.push(com);
     }
   }
@@ -3416,7 +3419,6 @@ export class MoreDetailsComponent implements OnInit {
             this.notifyService.showInfo("Please attach the completion file to complete the main project","Note");
           }
           else{
-              debugger
               const fd = new FormData();
               fd.append("Project_Code", this.Sub_ProjectCode);
               fd.append("Master_Code", this._MasterCode);
@@ -4569,6 +4571,7 @@ actiondeadline_alert(){
     this.commentSelected = null;
     this.noRejectType = false;
     this.comments = "";
+    this.exist_comment =[];
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";

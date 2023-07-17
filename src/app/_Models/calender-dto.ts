@@ -1,4 +1,8 @@
 export class CalenderDTO {
+    Portfolio:string;
+    Dms:string;
+    User_list:string;
+    Project:string;
     Notes:string;
     Action_item:any;
     Search_text:string;

@@ -293,7 +293,7 @@
 
             <div class="accordion accordion-solid" id="accordionExample6">
                 <!-- Messages for Empty List -->
-                <div>
+                <div *ngIf="messageForEmpty==true">
                     <h4 [hidden]="messageForEmpty" style="color: lightgrey;text-align: center;">No Portfolio's
                         has created</h4>
                     <h4 [hidden]="NoSharedmsg" style="color: lightgrey;text-align: center;">No Shared

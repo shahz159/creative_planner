@@ -1090,6 +1090,11 @@ background-color: #f1f3f4;
     width: 10px;
     height: 4px;
 }
+::ng-deep .fc-req .fc-list-event-graphic .fc-list-event-dot{
+    border: 3px solid #3788d8 !important;
+    width: 4px;
+    height: 4px;
+}
 ::ng-deep .ng-select-multiple {
 min-height: 36px;
 height: auto !important;
@@ -2252,4 +2257,10 @@ a.ordr-a {
 }
 .time-event .fc-daygrid-dot-event:focus:hover {
     background: rgb(173 175 186 / 10%);
+}
+svg.toolicns.kt-p-ic-top {
+    position: relative;
+    top: 2px;
+    left: 5px;
+    fill: #767a7e;
 }

@@ -9,9 +9,10 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ProjectUnplannedTaskComponent } from 'src/app/_LayoutDashboard/project-unplanned-task/project-unplanned-task.component'
 import { rgbToHsl } from '@amcharts/amcharts4/.internal/core/utils/Colors';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
+import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 
 @Component({
   selector: 'app-action-to-assign',
@@ -48,14 +49,16 @@ export class ActionToAssignComponent implements OnInit {
   typeoftask: any = "";
   Difference_In_Time: any;
   Difference_In_Days: any;
+  _Urlid:any;
 
-  constructor(private notifyService: NotificationService,
+  constructor(private notifyService: NotificationService,private route: ActivatedRoute,
     public ProjectTypeService: ProjectTypeService,
     private dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe,
     public router: Router,
     public BsService: BsServiceService,
-    public _projectunplanned: ProjectUnplannedTaskComponent) {
+    public _projectunplanned: ProjectUnplannedTaskComponent,
+    public _meetingreport: MeetingReportComponent) {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -75,6 +78,7 @@ export class ActionToAssignComponent implements OnInit {
 
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
+    this._Urlid = this.route.snapshot.params['id'];
     this.getProjectTypeList();
     this.GetAssignFormEmployeeDropdownList();
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
@@ -232,15 +236,28 @@ export class ActionToAssignComponent implements OnInit {
      
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
-          this._projectunplanned.getCatid();
-          this.router.navigate(["UnplannedTask/"]);
+          if (this._Urlid == 1) {
+            this._projectunplanned.getCatid();
+            this.router.navigate(["UnplannedTask/"]);
+            
+            let message: string = data['Message'];
+            this.notifyService.showSuccess("Task sent to assign projects", message);
+  
+            this.clearFeilds();
+            this.closeInfo();
+            this._inputAttachments = [];
+          }
+          else if(this._Urlid == 2){
+            this._meetingreport.getScheduleId();
+            this._meetingreport.GetAssigned_SubtaskProjects();
+            let message: string = data['Message'];
+            this.notifyService.showSuccess("Task sent to assign projects", message);
+  
+            this.clearFeilds();
+            this.closeInfo();
+            this._inputAttachments = [];
+          }
           
-          let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects", message);
-
-          this.clearFeilds();
-          this.closeInfo();
-          this._inputAttachments = [];
         });
     }
   }
@@ -250,7 +267,12 @@ export class ActionToAssignComponent implements OnInit {
 
   closeInfo() {
     this.clearFeilds();
-    this.router.navigate(["UnplannedTask/"]); 
+    if(this._Urlid==1){
+      this.router.navigate(["UnplannedTask/"]); 
+    }
+    else if(this._Urlid==2){
+      this._meetingreport.getScheduleId();
+    }
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";

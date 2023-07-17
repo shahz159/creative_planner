@@ -425,7 +425,7 @@
                 <div class="input-group">
                     <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
                         [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
-                        [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
+                        [min]="disablePreviousDate"     [max]="todayDate" placeholder="Select Date" class="form-control"
                         name="date">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>

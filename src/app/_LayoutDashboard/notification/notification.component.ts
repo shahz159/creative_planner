@@ -62,6 +62,9 @@ export class NotificationComponent implements OnInit {
   viewAll(type){
     this.sendtype=type;
     if(type=='Req'){
+      this.selectedItems=[];
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -134,6 +137,9 @@ export class NotificationComponent implements OnInit {
         }
     }
     else if(type=='Res'){
+      this.selectedItems=[];
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -239,8 +245,8 @@ export class NotificationComponent implements OnInit {
     this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
       console.log(data,"response-data");
       if(data[0]['message']=='1')
-      this.notifyService.showInfo("Response cleared.",'');
-      this.viewAll(this.sendtype);
+      this.notifyService.showSuccess("Response cleared.",'');
+      this.applyFilters();
     });
   }
 
@@ -259,11 +265,7 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
 
   }
-  rejectpros() {
-    document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-  }
+ 
 
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
@@ -431,6 +433,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.PageNumber = this.CurrentPageNo;
     this.notificationDTO.PageSize = 20;
     this.notificationDTO.SearchText = this.searchText;
+    this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {
@@ -585,7 +588,7 @@ export class NotificationComponent implements OnInit {
   
 
   select(ev,item){
-
+    
     if(ev.target.checked==false){
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
 
@@ -640,7 +643,6 @@ isSelected(item: any): boolean {
 acceptSelectedValues() {
     
     console.log(this.selectedItems,"accept");
-  
 
     // this.selectedItems.forEach(element => {
     //   this.approvalObj.Project_Code=element.Project_Code;
@@ -727,16 +729,137 @@ acceptSelectedValues() {
 
         
     // });
-    console.log(this.approvalObj,"accept-data");
+    
+  if( this.selectedItems.length > 0){
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
       
-      this.viewAll(this.sendtype);
+      this.applyFilters();
     });
-
+    const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+    this.selectedItems=[];
+    this.notifyService.showSuccess("Project(s) approved successfully",'Success');
+  }
+  else{
+    this.notifyService.showInfo("Please select atleast one project to approve",'');
+  }
     
   }
+
+  reject_list: any;
+  rejectType: any;
+  noRejectType: boolean = false;
+  rejectype: any;
+  rejDesc: any;
+  rejectcommentsList: any;
+  comments: string;
+  exist_comment: any[] = [];
+  rejectcomments:any;
+
+
+  rejectApproval() {
+    this.noRejectType = false;
+    this.reject_list.forEach(element => {
+      if (this.rejectType == element.TypeID) {
+        this.rejDesc = element.Reject_Description;
+      }
+    });
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.rejectType = this.rejectType;
+      this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
+      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+      this.rejectcomments=this.rejectcommentsList.length;
+    });
+  }
+
+  rejectpros() {
+    this.approvalObj.Project_Code = null;
+
+    this.approvalservice.GetGlobalRejectList(this.approvalObj).subscribe((data) => {
+      this.reject_list = JSON.parse(data[0]['reject_list']);
+    });
+    document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+
+  clickonselect(com) {
+    if (this.comments == null) {
+      this.comments = com;
+      this.exist_comment.push(com);
+    }
+    else {
+      this.comments = this.comments + " " + com;
+      this.exist_comment.push(com);
+    }
+  }
+
+  clickondeselect(com, id) {
+    this.exist_comment = this.exist_comment.filter((comment) => comment != com);
+    this.comments = this.comments.replace(com, "");
+    console.log(this.exist_comment, "deselect");
+
+  }
+
+  resetReject(){
+    this.noRejectType = false;
+    this.comments = "";
+    this.exist_comment =[];
+    this.rejectType=null;
+  }
+
+  submitReject(){
+    console.log(this.selectedItems,"reject");
+    this.selectedItems.forEach(element => {
+      element.RejectType=this.rejectType;
+      element.Remarks=this.comments;
+    });
+    console.log(this.selectedItems,"reject1");
+    if( this.selectedItems.length > 0){
+      this.approvalservice.NewUpdateRejectApprovalsService(this.selectedItems).subscribe(data =>{
+        console.log(data,"reject-data");
+        
+        this.applyFilters();
+      });
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+      this.selectedItems=[];
+      this.notifyService.showSuccess("Project(s) rejected successfully",'Success');
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one project to reject",'');
+    }
+    this.resetReject();
+    this.closeInfo();
+  }
   
+  responselist:any=[];
+
+  clearResponses(){
+
+    if( this.selectedItems.length > 0){
+      this.selectedItems.forEach(element => {
+        this.responselist.push(element.SNo);
+      });
+      this.responselist=this.responselist.join(',');
+      this.approvalObj.responselist=this.responselist;
+  
+      this.approvalservice.NewMultiResponseService(this.approvalObj).subscribe(data =>{
+        console.log(data,"response-data");
+        if(data['message']=='1')
+        this.notifyService.showSuccess("Response(s) cleared.",'');
+        this.viewAll(this.sendtype);
+        this.responselist=[];
+      });
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one response to clear",'');
+    }
+    
+  }
+
+
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
