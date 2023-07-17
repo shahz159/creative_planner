@@ -49,9 +49,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 94666);
 /* harmony import */ var _notification_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification-routing.module */ 64065);
 /* harmony import */ var _notification_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./notification.component */ 2352);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var ng2_search_filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ng2-search-filter */ 9991);
+/* harmony import */ var _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-select/ng-select */ 90413);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 22560);
+
 
 
 
@@ -62,12 +64,12 @@ class NotificationModule {
 }
 NotificationModule.ɵfac = function NotificationModule_Factory(t) { return new (t || NotificationModule)(); };
 NotificationModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: NotificationModule });
-NotificationModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule,
+NotificationModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule, _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_5__.NgSelectModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.ReactiveFormsModule,
         _notification_routing_module__WEBPACK_IMPORTED_MODULE_0__.NotificationRoutingModule,
         ng2_search_filter__WEBPACK_IMPORTED_MODULE_2__.Ng2SearchPipeModule] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](NotificationModule, { declarations: [_notification_component__WEBPACK_IMPORTED_MODULE_1__.NotificationComponent], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.ReactiveFormsModule,
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](NotificationModule, { declarations: [_notification_component__WEBPACK_IMPORTED_MODULE_1__.NotificationComponent], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule, _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_5__.NgSelectModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.ReactiveFormsModule,
         _notification_routing_module__WEBPACK_IMPORTED_MODULE_0__.NotificationRoutingModule,
         ng2_search_filter__WEBPACK_IMPORTED_MODULE_2__.Ng2SearchPipeModule], exports: [_notification_component__WEBPACK_IMPORTED_MODULE_1__.NotificationComponent] }); })();
 
@@ -119,6 +121,10 @@ class ApprovalsService {
         this.obj_approvalDTO.Project_Code = obj.Project_Code;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
     }
+    GetGlobalRejectList(pcode) {
+        this.obj_approvalDTO.Project_Code = "";
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectList", this.obj_approvalDTO);
+    }
     GetHoldDate(obj) {
         this.obj_approvalDTO.Project_Code = obj.Project_Code;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetHoldDate", this.obj_approvalDTO);
@@ -141,11 +147,26 @@ class ApprovalsService {
         this.obj_approvalDTO.Request_type = obj.Request_type;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewResponseServiceforApprovals", this.obj_approvalDTO);
     }
+    NewMultiResponseService(obj) {
+        this.obj_approvalDTO.responselist = obj.responselist;
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewMultiResponseforApprovals", this.obj_approvalDTO);
+    }
+    NewUpdateAcceptApprovalsService(obj) {
+        return this.http.post(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals", obj);
+    }
+    NewUpdateRejectApprovalsService(obj) {
+        return this.http.post(this.rootUrl + "ApprovalAPI/UpdateRejectApprovals", obj);
+    }
     GetRejectComments(obj) {
         this.obj_approvalDTO.Emp_no = obj.Emp_no;
         this.obj_approvalDTO.rejectType = obj.rejectType;
         this.obj_approvalDTO.Status = obj.Status;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectCommentsbyRejectType", this.obj_approvalDTO);
+    }
+    GetGlobalRejectComments(obj) {
+        this.obj_approvalDTO.Emp_no = obj.Emp_no;
+        this.obj_approvalDTO.rejectType = obj.rejectType;
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectComments", this.obj_approvalDTO);
     }
     InsertAcceptApprovalService(obj) {
         this.obj_approvalDTO.Emp_no = obj.Emp_no;

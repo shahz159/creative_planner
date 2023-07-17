@@ -28,7 +28,7 @@ const routes = [{
             },
             {
                 path: 'ActionToAssign',
-                loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule),
+                loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-src_app__Services_calender_service_ts-node_modules_kolkov_angular-editor___ivy_ngcc__-f69c55"), __webpack_require__.e("default-src_app__LayoutDashboard_meeting-report_meeting-report_component_ts"), __webpack_require__.e("default-src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts"), __webpack_require__.e("src_app__Services_link_service_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule),
             }
         ]
     }];

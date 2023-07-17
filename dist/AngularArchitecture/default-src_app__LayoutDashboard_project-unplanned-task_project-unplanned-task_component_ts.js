@@ -1152,7 +1152,7 @@ class ProjectUnplannedTaskComponent {
         // debugger
         this._taskName = taskName;
         this.task_id = id;
-        this.router.navigate(["UnplannedTask/ActionToAssign/"]);
+        this.router.navigate(["UnplannedTask/ActionToAssign/1"]);
         this.BsService.SetNewAssignId(this.task_id);
         this.BsService.SetNewAssignedName(this._taskName);
         let typeoftask = "IFRT";

@@ -26,8 +26,8 @@ const routes = [{
                 loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_action-to-project_action-to-project_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-project/action-to-project.module */ 69840)).then(m => m.ActionToProjectModule)
             },
             {
-                path: 'ActionToAssign',
-                loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule)
+                path: 'ActionToAssign/:id',
+                loadChildren: () => __webpack_require__.e(/*! import() */ "default-src_app__LayoutDashboard_action-to-assign_action-to-assign_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-assign/action-to-assign.module */ 36833)).then(m => m.ActionToAssignModule)
             },
             {
                 path: 'projectinfo/:projectcode',
@@ -55,24 +55,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ProjectUnplannedTaskModule": () => (/* binding */ ProjectUnplannedTaskModule)
 /* harmony export */ });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 94666);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common */ 94666);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var _project_unplanned_task_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./project-unplanned-task.component */ 32444);
 /* harmony import */ var _project_unplanned_task_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./project-unplanned-task-routing.module */ 23222);
-/* harmony import */ var _angular_material_menu__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/menu */ 88589);
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/icon */ 57822);
-/* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/expansion */ 17591);
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/button */ 84522);
-/* harmony import */ var _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/datepicker */ 42298);
-/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/tooltip */ 6896);
-/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/select */ 57371);
-/* harmony import */ var ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ng-multiselect-dropdown */ 61664);
+/* harmony import */ var _angular_material_menu__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/menu */ 88589);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/icon */ 57822);
+/* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/expansion */ 17591);
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/button */ 84522);
+/* harmony import */ var _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/datepicker */ 42298);
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/tooltip */ 6896);
+/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/select */ 57371);
+/* harmony import */ var ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ng-multiselect-dropdown */ 61664);
 /* harmony import */ var _task_date_ago_pipe__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./task-date-ago.pipe */ 51420);
 /* harmony import */ var src_app_Services_notification_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/_Services/notification.service */ 32278);
 /* harmony import */ var _to_do_projects_to_do_projects_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../to-do-projects/to-do-projects.component */ 80872);
 /* harmony import */ var _more_details_more_details_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../more-details/more-details.component */ 89753);
 /* harmony import */ var _projects_summary_projects_summary_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../projects-summary/projects-summary.component */ 80880);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 22560);
+/* harmony import */ var _meeting_report_meeting_report_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../meeting-report/meeting-report.component */ 5131);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 22560);
+
 
 
 
@@ -96,32 +98,32 @@ __webpack_require__.r(__webpack_exports__);
 class ProjectUnplannedTaskModule {
 }
 ProjectUnplannedTaskModule.ɵfac = function ProjectUnplannedTaskModule_Factory(t) { return new (t || ProjectUnplannedTaskModule)(); };
-ProjectUnplannedTaskModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineNgModule"]({ type: ProjectUnplannedTaskModule });
-ProjectUnplannedTaskModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjector"]({ providers: [
-        src_app_Services_notification_service__WEBPACK_IMPORTED_MODULE_3__.NotificationService, _to_do_projects_to_do_projects_component__WEBPACK_IMPORTED_MODULE_4__.ToDoProjectsComponent, _more_details_more_details_component__WEBPACK_IMPORTED_MODULE_5__.MoreDetailsComponent, _angular_common__WEBPACK_IMPORTED_MODULE_8__.DatePipe, _projects_summary_projects_summary_component__WEBPACK_IMPORTED_MODULE_6__.ProjectsSummaryComponent
-    ], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule,
+ProjectUnplannedTaskModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineNgModule"]({ type: ProjectUnplannedTaskModule });
+ProjectUnplannedTaskModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjector"]({ providers: [
+        src_app_Services_notification_service__WEBPACK_IMPORTED_MODULE_3__.NotificationService, _to_do_projects_to_do_projects_component__WEBPACK_IMPORTED_MODULE_4__.ToDoProjectsComponent, _more_details_more_details_component__WEBPACK_IMPORTED_MODULE_5__.MoreDetailsComponent, _angular_common__WEBPACK_IMPORTED_MODULE_9__.DatePipe, _projects_summary_projects_summary_component__WEBPACK_IMPORTED_MODULE_6__.ProjectsSummaryComponent, _meeting_report_meeting_report_component__WEBPACK_IMPORTED_MODULE_7__.MeetingReportComponent
+    ], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_9__.CommonModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule,
         _project_unplanned_task_routing_module__WEBPACK_IMPORTED_MODULE_1__.ProjectUnplannedTaskRoutingModule,
-        _angular_material_menu__WEBPACK_IMPORTED_MODULE_10__.MatMenuModule,
-        _angular_material_icon__WEBPACK_IMPORTED_MODULE_11__.MatIconModule,
-        _angular_material_expansion__WEBPACK_IMPORTED_MODULE_12__.MatExpansionModule,
-        _angular_material_button__WEBPACK_IMPORTED_MODULE_13__.MatButtonModule,
-        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_14__.MatDatepickerModule,
-        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_15__.MatTooltipModule,
-        _angular_material_select__WEBPACK_IMPORTED_MODULE_16__.MatSelectModule,
-        ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_17__.NgMultiSelectDropDownModule] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsetNgModuleScope"](ProjectUnplannedTaskModule, { declarations: [_project_unplanned_task_component__WEBPACK_IMPORTED_MODULE_0__.ProjectUnplannedTaskComponent,
-        _task_date_ago_pipe__WEBPACK_IMPORTED_MODULE_2__.TaskDateAgoPipe], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule,
+        _angular_material_menu__WEBPACK_IMPORTED_MODULE_11__.MatMenuModule,
+        _angular_material_icon__WEBPACK_IMPORTED_MODULE_12__.MatIconModule,
+        _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule,
+        _angular_material_button__WEBPACK_IMPORTED_MODULE_14__.MatButtonModule,
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_15__.MatDatepickerModule,
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_16__.MatTooltipModule,
+        _angular_material_select__WEBPACK_IMPORTED_MODULE_17__.MatSelectModule,
+        ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_18__.NgMultiSelectDropDownModule] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsetNgModuleScope"](ProjectUnplannedTaskModule, { declarations: [_project_unplanned_task_component__WEBPACK_IMPORTED_MODULE_0__.ProjectUnplannedTaskComponent,
+        _task_date_ago_pipe__WEBPACK_IMPORTED_MODULE_2__.TaskDateAgoPipe], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_9__.CommonModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule,
         _project_unplanned_task_routing_module__WEBPACK_IMPORTED_MODULE_1__.ProjectUnplannedTaskRoutingModule,
-        _angular_material_menu__WEBPACK_IMPORTED_MODULE_10__.MatMenuModule,
-        _angular_material_icon__WEBPACK_IMPORTED_MODULE_11__.MatIconModule,
-        _angular_material_expansion__WEBPACK_IMPORTED_MODULE_12__.MatExpansionModule,
-        _angular_material_button__WEBPACK_IMPORTED_MODULE_13__.MatButtonModule,
-        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_14__.MatDatepickerModule,
-        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_15__.MatTooltipModule,
-        _angular_material_select__WEBPACK_IMPORTED_MODULE_16__.MatSelectModule,
-        ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_17__.NgMultiSelectDropDownModule], exports: [_project_unplanned_task_component__WEBPACK_IMPORTED_MODULE_0__.ProjectUnplannedTaskComponent] }); })();
+        _angular_material_menu__WEBPACK_IMPORTED_MODULE_11__.MatMenuModule,
+        _angular_material_icon__WEBPACK_IMPORTED_MODULE_12__.MatIconModule,
+        _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule,
+        _angular_material_button__WEBPACK_IMPORTED_MODULE_14__.MatButtonModule,
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_15__.MatDatepickerModule,
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_16__.MatTooltipModule,
+        _angular_material_select__WEBPACK_IMPORTED_MODULE_17__.MatSelectModule,
+        ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_18__.NgMultiSelectDropDownModule], exports: [_project_unplanned_task_component__WEBPACK_IMPORTED_MODULE_0__.ProjectUnplannedTaskComponent] }); })();
 
 
 /***/ }),

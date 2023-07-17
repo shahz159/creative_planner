@@ -199,6 +199,10 @@ class ApprovalsService {
         this.obj_approvalDTO.Project_Code = obj.Project_Code;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
     }
+    GetGlobalRejectList(pcode) {
+        this.obj_approvalDTO.Project_Code = "";
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectList", this.obj_approvalDTO);
+    }
     GetHoldDate(obj) {
         this.obj_approvalDTO.Project_Code = obj.Project_Code;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetHoldDate", this.obj_approvalDTO);
@@ -221,11 +225,26 @@ class ApprovalsService {
         this.obj_approvalDTO.Request_type = obj.Request_type;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewResponseServiceforApprovals", this.obj_approvalDTO);
     }
+    NewMultiResponseService(obj) {
+        this.obj_approvalDTO.responselist = obj.responselist;
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewMultiResponseforApprovals", this.obj_approvalDTO);
+    }
+    NewUpdateAcceptApprovalsService(obj) {
+        return this.http.post(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals", obj);
+    }
+    NewUpdateRejectApprovalsService(obj) {
+        return this.http.post(this.rootUrl + "ApprovalAPI/UpdateRejectApprovals", obj);
+    }
     GetRejectComments(obj) {
         this.obj_approvalDTO.Emp_no = obj.Emp_no;
         this.obj_approvalDTO.rejectType = obj.rejectType;
         this.obj_approvalDTO.Status = obj.Status;
         return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectCommentsbyRejectType", this.obj_approvalDTO);
+    }
+    GetGlobalRejectComments(obj) {
+        this.obj_approvalDTO.Emp_no = obj.Emp_no;
+        this.obj_approvalDTO.rejectType = obj.rejectType;
+        return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectComments", this.obj_approvalDTO);
     }
     InsertAcceptApprovalService(obj) {
         this.obj_approvalDTO.Emp_no = obj.Emp_no;

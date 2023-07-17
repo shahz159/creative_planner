@@ -289,11 +289,13 @@ class ActionToProjectComponent {
         this.ownerArr = [];
         this.selected_Employee = [];
         this.maxlimit = true;
+        this.isHierarchy = false;
         // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
         this.CurrentUser_ID = localStorage.getItem('EmpNo');
         this.ObjSubTaskDTO = new src_app_Models_sub_task_dto__WEBPACK_IMPORTED_MODULE_0__.SubTaskDTO;
         this.ObjUserDetails = new src_app_Models_user_details_dto__WEBPACK_IMPORTED_MODULE_1__.UserDetailsDTO();
         this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+        this.BsService.bs_projectCode.subscribe(p => this.pcode = p);
         this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
         this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
         this.BsService.bs_TaskName.subscribe(t => {
@@ -319,6 +321,7 @@ class ActionToProjectComponent {
         this.BsService.bs_catName.subscribe(d => { this.cat_name = d; });
         this.Current_user_ID = localStorage.getItem('EmpNo');
         this.GetAllEmployeesForAssignDropdown();
+        this.gethierarchy();
         const input = document.getElementById("hour-input");
         //And disable the wheel default functionality:
         input.addEventListener("wheel", function (event) {
@@ -669,6 +672,17 @@ class ActionToProjectComponent {
         var date = new Date(str), mnth = ("0" + (date.getMonth() + 1)).slice(-2), day = ("0" + date.getDate()).slice(-2);
         return [day, mnth, date.getFullYear()].join("-");
     }
+    gethierarchy() {
+        this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID, this.pcode).subscribe((data) => {
+            debugger;
+            if (data['message'] == '1') {
+                this.isHierarchy = true;
+            }
+            else {
+                this.isHierarchy = false;
+            }
+        });
+    }
     sweetAlert() {
         var datestrEnd = (new Date(this._EndDate)).toUTCString();
         var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
@@ -676,7 +690,7 @@ class ActionToProjectComponent {
         const dateTwo = new Date(this.ProjectDeadLineDate);
         // console.log(dateOne)
         // console.log(dateTwo)
-        if ((dateTwo < dateOne) && (this.Current_user_ID == this.Owner_Empno || this.Current_user_ID == this.Resp_empno || this.Current_user_ID == this.Autho_empno)) {
+        if ((dateTwo < dateOne) && (this.Current_user_ID == this.Owner_Empno || this.Current_user_ID == this.Resp_empno || this.Current_user_ID == this.Autho_empno || this.isHierarchy == true)) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
                 title: 'Action deadLine is greater than main project deadLine ?',
                 text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -694,7 +708,7 @@ class ActionToProjectComponent {
                 }
             });
         }
-        else if ((dateTwo < dateOne) && (this.Current_user_ID != this.Owner_Empno && this.Current_user_ID != this.Resp_empno && this.Current_user_ID != this.Autho_empno)) {
+        else if ((dateTwo < dateOne) && (this.Current_user_ID != this.Owner_Empno && this.Current_user_ID != this.Resp_empno && this.Current_user_ID != this.Autho_empno && this.isHierarchy == false)) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
                 title: 'Unable to create this action.',
                 text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
