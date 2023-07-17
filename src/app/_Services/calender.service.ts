@@ -53,7 +53,7 @@ export class CalenderService {
   }
   NewGetMeeting_report(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-    this.obj_CalenderDTO.Notes = obj.Notes;
+    this.obj_CalenderDTO.Note = obj.Note;
     this.obj_CalenderDTO.Action_item = obj.Action_item;
     this.obj_CalenderDTO.User_list=obj.User_list;
    this.obj_CalenderDTO.Dms=obj.Dms;

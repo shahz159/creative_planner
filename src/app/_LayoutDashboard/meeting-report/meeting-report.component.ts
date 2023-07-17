@@ -503,9 +503,10 @@ document.querySelector('.reset').addEventListener('click', e => {
     this.Action_item.push(element.Assign_Id)
     
    });
+   debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
-   this._calenderDto.Notes=this.Notes_Type;
+   this._calenderDto.Note=this.Notes_Type;
    this._calenderDto.Action_item=this.Action_item.join(',')
    this._calenderDto.User_list=this.checkedusers.join(',');
    this._calenderDto.Dms=this.checkeddms.join(',');
