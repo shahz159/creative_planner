@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //localServer
-  baseUrl:'http://localhost:1221/api/'
+  baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
   // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
 //DMS Live Server
 //baseUrl:'http://localhost:1221/api/'
