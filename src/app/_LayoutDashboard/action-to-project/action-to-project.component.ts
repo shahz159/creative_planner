@@ -118,6 +118,7 @@ export class ActionToProjectComponent implements OnInit {
     this.GetAllEmployeesForAssignDropdown();
     
     this.gethierarchy();
+    this.getRACISandNonRACIS();
     const input = document.getElementById("hour-input");
 
     
@@ -134,8 +135,15 @@ export class ActionToProjectComponent implements OnInit {
   RespName:string;
   ownerArr:any =[];
 
+  getRACISandNonRACIS(){
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+      (data) => {
+     
+        this.ownerArr=(JSON.parse(data[0]['RacisList']));
+      });
+  }
+
   GetAllEmployeesForAssignDropdown() {
-    this.ownerArr=[];
     let obj: any = {
       pagenumber: 1,
       Emp_No: this.CurrentUser_ID,
@@ -173,33 +181,7 @@ export class ActionToProjectComponent implements OnInit {
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
-        this._EmployeeListForDropdown.forEach(element => {
-          if(this.Current_user_ID!=this.Owner_Empno){
-            if(element.Emp_No==this.Current_user_ID){
-              this.CurrentUser_Name=element.DisplayName;
-              this.ownerArr.push(this.CurrentUser_Name);
-            }
-            if(element.Emp_No==this.Owner_Empno){
-              this.ownerName=element.DisplayName;
-              this.ownerArr.push(this.ownerName);
-            }
-            if(element.Emp_No==this.Resp_empno && element.Emp_No!=this.Current_user_ID){
-              this.RespName=element.DisplayName;
-              this.ownerArr.push(this.RespName);
-            }
-          }
-          else if(this.Current_user_ID==this.Owner_Empno){
-            if(element.Emp_No==this.Owner_Empno){
-              this.ownerName=element.DisplayName;
-              this.ownerArr.push(this.ownerName);
-            }
-            if(element.Emp_No==this.Resp_empno){
-              this.RespName=element.DisplayName;
-              this.ownerArr.push(this.RespName);
-            }
-          }
-        });
-        console.log(this.ownerArr,this.Resp_empno,this.Owner_Empno,"owners")
+        
 
         //console.log(this.EmployeeList);
         this.dropdownSettings_EMP = {
@@ -224,7 +206,6 @@ export class ActionToProjectComponent implements OnInit {
   selectedProjectCode: any;
 
   ProjectOnSelect() {
-    this.ownerArr=[];
 
     let obj: any = {
       pagenumber: 1,
@@ -250,34 +231,6 @@ export class ActionToProjectComponent implements OnInit {
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
-        this._EmployeeListForDropdown.forEach(element => {
-          if(this.Current_user_ID!=this.Owner_Empno){
-            if(element.Emp_No==this.Current_user_ID){
-              this.CurrentUser_Name=element.DisplayName;
-              this.ownerArr.push(this.CurrentUser_Name);
-            }
-            if(element.Emp_No==this.Owner_Empno){
-              this.ownerName=element.DisplayName;
-              this.ownerArr.push(this.ownerName);
-            }
-            if(element.Emp_No==this.Resp_empno  && element.Emp_No!=this.Current_user_ID){
-              this.RespName=element.DisplayName;
-              this.ownerArr.push(this.RespName);
-            }
-          }
-          else if(this.Current_user_ID==this.Owner_Empno){
-            if(element.Emp_No==this.Owner_Empno){
-              this.ownerName=element.DisplayName;
-              this.ownerArr.push(this.ownerName);
-            }
-            if(element.Emp_No==this.Resp_empno){
-              this.RespName=element.DisplayName;
-              this.ownerArr.push(this.RespName);
-            }
-          }
-        });
-        console.log(this.ownerArr,this.Resp_empno,this.Owner_Empno,"owners")
-
         //console.log(this.EmployeeList);
         this.dropdownSettings_EMP = {
           searchAutofocus: true,
