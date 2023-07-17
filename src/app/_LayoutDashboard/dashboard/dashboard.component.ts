@@ -1259,6 +1259,7 @@ console.log(this.User_Scheduledjson,"test000");
   // }
  
   DublicateTaskandEvent() {
+    debugger
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     this.copyTask = true;
@@ -1346,6 +1347,7 @@ console.log(this.User_Scheduledjson,"test000");
           document.getElementById("div_endDate").style.display = "none";
           
           this.selectedrecuvalue = '0';
+          this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
           this._labelName = "Schedule Date :";
 
           // document.getElementById("div_endDate").style.display = "none";
@@ -1784,7 +1786,7 @@ console.log(this.User_Scheduledjson,"test000");
         var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
 
-
+       
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
