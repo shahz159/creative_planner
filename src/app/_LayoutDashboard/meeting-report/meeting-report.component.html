@@ -139,6 +139,7 @@
                             </div>
                         </div>
                         <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
+                            
                             <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
                                 <div class="form-check form-check-custom form-check-solid">
                                     <input type="checkbox"  id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval" [checked]="_user.isChecked"  
@@ -258,7 +259,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="side-div">
+                        <div class="side-div"  *ngIf="item.DMS_Name != ''">
                             <div class="d-flex align-items-center" *ngFor="let itemMemos of _MemosSubjectList; let i=index">                                    
                                 <div class="form-check form-check-custom form-check-solid mr-2">
                                     <input type="checkbox" [value]="itemMemos.MailId" id="flexCheckChecked3"  [checked]="itemMemos.isChecked" 
@@ -352,10 +353,11 @@
                             role="button" aria-expanded="false" aria-controls="meetdt">
                                 Meeting Actions
                             </h5>
-                            <div class="side-acns">
+                            <!-- <div class="side-acns">
                                 <a class="mr-3" (click)="open_side()">
                                     <img class="hed-icn dms-icn" src="assets/images/dms-logo.png"/>
                                 </a>
+                            </div> -->
                                 <!--<a class="text-info" (click)="open_side()">
                                     <img class="hed-icn" src="assets/images/action.png"/>
                                 </a>
@@ -363,7 +365,7 @@
                                     <img class="hed-icn" src="assets/images/note.png"/>
                                 
                                 </a> -->
-                            </div>
+                           
                         </div>
                         
                         <div class="card-body">
