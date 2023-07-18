@@ -346,18 +346,10 @@ export class ActionToProjectComponent implements OnInit {
       return false;
     }
     if(this.owner==null || this.owner==undefined || this.owner==''){
-      this.ownerNo=null;
+      this.ownerNo=this.Owner_Empno;
     }
     else{
-      if(this.owner==this.CurrentUser_Name){
-        this.ownerNo=this.Current_user_ID;
-      }
-      else if(this.owner==this.ownerName){
-        this.ownerNo=this.Owner_Empno;
-      }
-      else if(this.owner==this.RespName){
-        this.ownerNo=this.Resp_empno ;
-      }
+      this.owner = this.owner;
     }
 
     if (this._MasterCode == null) {
@@ -430,7 +422,7 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("Remarks", this._remarks);
       fd.append("EmployeeName", localStorage.getItem('UserfullName'));
       fd.append("AssignId", this.task_id.toString());
-      fd.append("Owner", this.ownerNo);
+      fd.append("Owner", this.owner);
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
       }
