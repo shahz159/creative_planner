@@ -86,23 +86,23 @@ text:any=[];
         // 'backgroundColor',
 
 
-
-    //     'customClasses',
-    //     'unlink',
-    //     'insertImage',
-    //     'insertVideo',
-    //     'insertHorizontalRule',
-    //     'removeFormat',
-    //     'toggleEditorMode',
-    //  'fontSelector',
-    //  'justifyLeft',
-    //  'justifyCenter',
-    //  'justifyRight',
-    //  'justifyFull',
-    //  'bold',
-    //  'italic',
-    //  'underline',
-    //  'heading',
+        
+        'customClasses',
+        'unlink',
+        'insertImage',
+        'insertVideo',
+        'insertHorizontalRule',
+        'removeFormat',
+        'toggleEditorMode',
+     'fontSelector',
+     'justifyLeft',
+     'justifyCenter',
+     'justifyRight',
+     'justifyFull',
+     'bold',
+     'italic',
+     'underline',
+     'heading',
      
     
       ]
