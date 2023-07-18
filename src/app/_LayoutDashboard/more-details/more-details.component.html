@@ -1290,8 +1290,8 @@
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
                                                     (click)="OnSubtaskClick(item)"
-                                                    *ngIf="item.SubProject_Status!='Under Approval'"
-                                                    [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
+                                                    *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completed'"
+                                                    [hidden]="(item.Team_Res!=Current_user_ID && isHierarchy==false )" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
                                                             <div class="subtask-list-title text-hover-primary 
