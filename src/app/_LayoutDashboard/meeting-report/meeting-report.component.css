@@ -979,3 +979,21 @@ mat-icon {
 .side-bar-box li:last-child {
   border-bottom: none
 }
+
+.custom-textarea {
+  width: 680px;
+  height: 150px;
+  font-size: 16px;
+  padding-left: 25px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  line-height: 1;
+  border: 1px solid #ccc;
+}
+
+.custom-textarea::before {
+  content: "• ";
+  display: inline-block;
+  width: 2em;
+  margin-left: -1em;
+}
