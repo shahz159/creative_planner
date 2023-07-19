@@ -268,8 +268,11 @@ export class MoreDetailsComponent implements OnInit {
   _day: any;
   _month: any;
   Subtask_List: any;
+  Inprocess_List: any;
+  Delay_List: any;
   CompletedList: any;
   inProcessCount: number;
+  delaycount:number;
   completedCount: number;
   subTaskCount: number;
   empDropdown: any = [];
@@ -1257,7 +1260,9 @@ export class MoreDetailsComponent implements OnInit {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
+          
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
+          this.Category = this.ProjectInfo_List[0]['ReportType'];
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
           this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
           this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -1283,7 +1288,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Coordinator = this.ProjectInfo_List[0]['Team_Coor'];
           this.Informer = this.ProjectInfo_List[0]['Team_Informer'];
           this.Support = this.ProjectInfo_List[0]['Team_Support'];
-          this.Category = this.ProjectInfo_List[0]['ReportType'];
+          
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
@@ -3322,13 +3327,16 @@ export class MoreDetailsComponent implements OnInit {
     if (this.filteredemp == true) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
-          this.Subtask_List = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-          this.CompletedList = JSON.parse(data[0]['Json_ResponsibleCompleted']);
+          this.Subtask_List = JSON.parse(data[0]['All_ResponsibleActions']);
+          this.Inprocess_List= JSON.parse(data[0]['Inprocess_Responsibleations']);
+          this.Delay_List= JSON.parse(data[0]['Delay_Responsibleations']);
+          this.CompletedList = JSON.parse(data[0]['Completed_Responsibleations']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
 
-          this.inProcessCount = this.Subtask_List.length;
+          this.inProcessCount = this.Inprocess_List.length;
+          this.delaycount = this.Delay_List.length;
           this.completedCount = this.CompletedList.length;
-          this.subTaskCount = this.inProcessCount + this.completedCount;
+          this.subTaskCount = this.Subtask_List.length;
 
           if (this.subTaskCount != 0 && this.completedCount != 0) {
             this.action_count = this.completedCount + '/' + this.subTaskCount;
@@ -3341,9 +3349,12 @@ export class MoreDetailsComponent implements OnInit {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
           // console.log(this.Subtask_List, "status");
-          this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
+          this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
+          this.Inprocess_List= JSON.parse(data[0]['Inprocess_SubtaskDetails']);
+          this.Delay_List= JSON.parse(data[0]['Delay_SubtaskDetails']);
+          this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
@@ -3372,9 +3383,11 @@ export class MoreDetailsComponent implements OnInit {
           // console.log(this.empDropdown);
           //SubTasks Multiselect End
 
-          this.inProcessCount = this.Subtask_List.length;
+          this.inProcessCount = this.Inprocess_List.length;
+          this.delaycount = this.Delay_List.length;
           this.completedCount = this.CompletedList.length;
-          this.subTaskCount = this.inProcessCount + this.completedCount;
+          this.subTaskCount = this.Subtask_List.length;
+
           if (this.subTaskCount != 0 && this.completedCount != 0) {
             this.action_count = this.completedCount + '/' + this.subTaskCount;
           }

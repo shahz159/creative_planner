@@ -61,8 +61,8 @@
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label>Action Owner : <strong></strong></label>
         <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
-            <ng-option [value]="item" *ngFor="let item of ownerArr">
-                {{item}}
+            <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
+                {{item.RACIS}} 
             </ng-option>
         </ng-select>
     </div>

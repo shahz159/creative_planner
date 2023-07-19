@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
@@ -18,6 +18,8 @@ import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog
 })
 
 export class MeetingReportComponent implements OnInit {
+  @ViewChild('myTextarea') myTextarea!: ElementRef<HTMLTextAreaElement>;
+
   _ObjAssigntaskDTO: AssigntaskDTO;
   CurrentUser_ID: string;
   Scheduleid:any;
@@ -84,8 +86,10 @@ text:any=[];
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
 
+
+        
+        'customClasses',
         'unlink',
         'insertImage',
         'insertVideo',
@@ -135,8 +139,11 @@ text:any=[];
     this._calenderDto = new CalenderDTO;
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    
   }
+  
   ngOnInit(): void {
+    
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
        
     this.route.paramMap.subscribe(params => {
@@ -149,7 +156,6 @@ text:any=[];
  
  this.meeting_details();
  this.getScheduleId();
-
 
  // modal caledar start
  var dragging = false;
@@ -286,6 +292,29 @@ document.querySelector('.reset').addEventListener('click', e => {
   // modal caledar end
 
   }
+
+  // addBulletPointsOnFocus() {
+  //   const textarea = this.myTextarea.nativeElement;
+
+  //   if (textarea.value === '') {
+     
+  //     textarea.value = '• ';
+  //   }
+  // }
+
+  // addBulletPointsOnEnter(event: any) {
+  //   if (event.key === 'Enter') {
+  //     const textarea = this.myTextarea.nativeElement;
+  //     const textareaValue = textarea.value;
+
+    
+  //     textarea.value = textareaValue + '\n• ';
+
+     
+  //     event.preventDefault();
+  //   }
+  // }
+  
 
   getScheduleId(){
     this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
@@ -635,5 +664,5 @@ document.querySelector('.reset').addEventListener('click', e => {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   
   }
-
+  
 }

@@ -373,8 +373,10 @@
                             <div class="notes-section">
                                 <div class="form-group" id="Descrip_Name">
                                     <label class="cus-lbl">Meeting notes </label>
-                                    <angular-editor [(ngModel)]="Notes_Type" [config]="config"></angular-editor>
+                                    <angular-editor [(ngModel)]="Notes_Type" (keyup)="addBulletPoints($event)" [config]="config"></angular-editor>
                                 </div>
+                                <!-- <textarea   [(ngModel)]="Notes_Type" #myTextarea (focus)="addBulletPointsOnFocus()" (keyup)="addBulletPointsOnEnter($event)"
+                                        class="custom-textarea"></textarea> -->
                             </div>
 
                             <div class="action-section">

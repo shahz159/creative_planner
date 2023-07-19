@@ -1259,6 +1259,7 @@ console.log(this.User_Scheduledjson,"test000");
   // }
  
   DublicateTaskandEvent() {
+    debugger
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     this.copyTask = true;
@@ -1332,7 +1333,7 @@ console.log(this.User_Scheduledjson,"test000");
         jsonData[DayNum] = "NA";
         this.AllDatesSDandED.push(jsonData);
         this._StartDate =  moment().format("YYYY-MM-DD").toString();
-        this.minDate = this.EventScheduledjson[0]['Schedule_date'];
+        this.minDate =  moment().format("YYYY-MM-DD").toString();
         if(this.minDate>this._StartDate){
           this.minDate=this._StartDate;
         }
@@ -1342,59 +1343,60 @@ console.log(this.User_Scheduledjson,"test000");
         // this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         // this.maxDate = this.EventScheduledjson[0]['End_date'];
 
-        if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
-          document.getElementById("div_endDate").style.display = "none";
+        // if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
+        //   document.getElementById("div_endDate").style.display = "none";
           
-          this.selectedrecuvalue = '0';
-          this._labelName = "Schedule Date :";
+        //   this.selectedrecuvalue = '0';
+        //   this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+        //   this._labelName = "Schedule Date :";
 
-          // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Recurrence_hide").style.display = "none";
-        }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
-          this.selectedrecuvalue = '1';
-          this._labelName = "Schedule Date :";
-          // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Recurrence_hide").style.display = "none";
-          document.getElementById("div_endDate").style.display = "block";
-        }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-          this._labelName = "Schedule Date :";
-          // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Recurrence_hide").style.display = "block";
-          document.getElementById("weekly_121").style.display = "block";
-          document.getElementById("div_endDate").style.display = "block";
-          this.selectedrecuvalue = '2';
-          let Recc = [];
-          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
-          Recc = ret1.split(",");
+          
+        //   document.getElementById("Recurrence_hide").style.display = "none";
+        // }
+        // else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
+        //   this.selectedrecuvalue = '1';
+        //   this._labelName = "Schedule Date :";
+          
+        //   document.getElementById("Recurrence_hide").style.display = "none";
+        //   document.getElementById("div_endDate").style.display = "block";
+        // }
+        // else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+        //   this._labelName = "Schedule Date :";
+        
+        //   document.getElementById("Recurrence_hide").style.display = "block";
+        //   document.getElementById("weekly_121").style.display = "block";
+        //   document.getElementById("div_endDate").style.display = "block";
+        //   this.selectedrecuvalue = '2';
+        //   let Recc = [];
+        //   var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+        //   Recc = ret1.split(",");
 
-          for (var i = 0; i < Recc.length; i++) {
-            this.dayArr.forEach(element => {
-              if (element.value == Recc[i]) {
-                element.checked = true;
-              }
-            });
-          }
-        }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
-          document.getElementById("Recurrence_hide").style.display = "block";
-          document.getElementById("div_endDate").style.display = "block";
-          // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Monthly_121").style.display = "block";
-          this._labelName = "Schedule Date :";
-          this.selectedrecuvalue = '3';
-          let Recc = [];
-          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
-          Recc = ret1.split(",");
-          for (var i = 0; i < Recc.length; i++) {
-            this.MonthArr.forEach(element => {
-              if (element.value == Recc[i]) {
-                element.checked = true;
-              }
-            });
-          }
-        }
+        //   for (var i = 0; i < Recc.length; i++) {
+        //     this.dayArr.forEach(element => {
+        //       if (element.value == Recc[i]) {
+        //         element.checked = true;
+        //       }
+        //     });
+        //   }
+        // }
+        // else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+        //   document.getElementById("Recurrence_hide").style.display = "block";
+        //   document.getElementById("div_endDate").style.display = "block";
+         
+        //   document.getElementById("Monthly_121").style.display = "block";
+        //   this._labelName = "Schedule Date :";
+        //   this.selectedrecuvalue = '3';
+        //   let Recc = [];
+        //   var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+        //   Recc = ret1.split(",");
+        //   for (var i = 0; i < Recc.length; i++) {
+        //     this.MonthArr.forEach(element => {
+        //       if (element.value == Recc[i]) {
+        //         element.checked = true;
+        //       }
+        //     });
+        //   }
+        // }
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -1457,6 +1459,7 @@ console.log(this.User_Scheduledjson,"test000");
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
         }
+      
       });
     this.closeevearea();
 
@@ -1784,7 +1787,7 @@ console.log(this.User_Scheduledjson,"test000");
         var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
 
-
+       
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
