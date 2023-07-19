@@ -7,7 +7,7 @@
             </div>
         </div>
 
-        <div class="header2">
+        <div class="header2 pt-3">
             
             <div id="NameDate" class="main-title">
                 <!-- <div class="boxcl-div">
@@ -28,18 +28,45 @@
                                 </span>
 
                             </div>
-                            <div class="title-day">
+                            <div class="title-day ropdown">
                                 <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
                                     {{item.SEndDate| date:'EEEE, MMMM d'}}
                                 </span> -->
                                 
                                 {{item.NewEd_Time}}
                                 
-                                <span type="button" id="-icn" class="text-info" 
-                                aria-haspopup="true" aria-expanded="false" >
+                                <span type="button" id="-icn" class="text-info dropdown-toggle" 
+                                aria-haspopup="true" aria-expanded="false"   type="button" id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i data-toggle="tooltip" title="edit time "
                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                         </span>
+                        <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick">
+                           
+                            <div class="form-group flex-1 mb-2">
+                                <label class="cus-lbl">Start Time </label>
+                                <ng-select class="kt-input form-control" placeholder="Start Time"
+                                    [(ngModel)]="PropStart" (change)=" purposeaddtime()">
+                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                        {{item}}</ng-option>
+                                </ng-select>
+
+                            </div>
+                            <div class="form-group flex-1 mb-1">
+                                <label class="cus-lbl">End Time</label>
+                                <ng-select class="kt-input form-control" placeholder="End Time"
+                                    [(ngModel)]="PurposeEnd">
+                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                        {{item1}}</ng-option>
+                                </ng-select>
+                            </div>
+
+                            <div class="form-group mb-0 ng-star-inserted text-right mt-3">
+                                <button _ngcontent-gec-c394="" type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                <button type="submit" class="btn btn-info btn-sm">Submit</button> 
+                            </div>
+                               
+                                
+                            </div>
                             </div>
                         </div>
 
@@ -375,8 +402,9 @@
                                     <label class="cus-lbl">Meeting notes </label>
                                     <angular-editor [(ngModel)]="Notes_Type" (keyup)="addBulletPoints($event)" [config]="config"></angular-editor>
                                 </div> -->
+                                <label class="cus-lbl">Meeting notes </label>
                                 <textarea   [(ngModel)]="Notes_Type" #myTextarea (focus)="addBulletPointsOnFocus()" (keyup)="addBulletPointsOnEnter($event)"
-                                        class="custom-textarea"></textarea>
+                                        class="custom-textarea form-control mb-2" placeholder="Add events"></textarea>
                             </div>
 
                             <div class="action-section">
@@ -603,9 +631,9 @@
             </div>
         </div>
 
-        
-        <div class="card-footer text-right" *ngIf="item.Meeting_status==false">
-            <button class="btn btn-info btn-sm mr-2"  (click)=" Insert_meetingreport()"   >Submit</button>
+        <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
+        <div class="card-footer text-right">
+            <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal" (click)=" Insert_meetingreport()" >Submit</button>
             <button class="btn btn-secondary btn-sm mr-2">cancel</button>
         </div>
 
@@ -613,6 +641,381 @@
 </div>
 </div>
 
+
+<!-- Button trigger modal-->
+
+
+<!-- Modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Meeting Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                <div id="NameDate" class="main-title">
+                    <div class="boxcl-div">
+                        <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
+                    </div>
+                    <div id="" class="title-right">
+                        <div class="title-area">
+                            <div class="title-main">
+                                <span id="title1">Daily creative planner meeting with team</span>
+                            </div>
+                           
+                            <div class="d-flex">
+                                <div class="title-day">Wednesday, July 19 <span _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">9:00AM – </span>
+                                </div>
+                                <div _ngcontent-gnj-c394="" class="title-day"> 10:00AM </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /*------location----*/ -->
+                <div  id="location" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                            <svg  focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn"><path _ngcontent-tgi-c394="" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"></path><circle _ngcontent-tgi-c394="" cx="12" cy="9" r="2.5"></circle></svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s">
+                                <a target="”_blank”" href="">Kub Towers</a>
+                            </div>
+                            <div class="main-s"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /*------guests----*/ -->
+                <div class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                            <svg _ngcontent-gpx-c394="" focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn"><path _ngcontent-gpx-c394="" d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path></svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s">2 guests</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /*-----guests list ----------*/ -->
+
+                <div class="avar-div">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2 position-relative">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px" style="width: 20px;"><path _ngcontent-nyr-c394="" fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path><rect _ngcontent-nyr-c394="" fill="none" width="192" height="192"></rect></svg>
+                            </span>
+                            <span aria-hidden="true" class="statusicn">
+                                <svg  xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted"><path _ngcontent-nyr-c394="" fill="#CEEAD6" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-nyr-c394="" fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+                            </span>
+                        </div>
+                        <div  class="rgt-des ml-2">
+                            <div>
+                                <div class="main-s">Md Waseem Akram</div>
+                                <div class="sub-s text-ellp">Dot Net Developer/Devbox Software Pvt Ltd</div>
+                    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2 position-relative">
+                            <span ><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px" style="width: 20px;"><path _ngcontent-nyr-c394="" fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path><rect _ngcontent-nyr-c394="" fill="none" width="192" height="192"></rect></svg>
+                            </span>
+                            <span aria-hidden="true" class="statusicn">
+                                <svg  xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted"><path _ngcontent-nyr-c394="" fill="#CEEAD6" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-nyr-c394="" fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+                    
+                            </span>
+                        </div>
+                        <div class="rgt-des ml-2">
+                            <div>
+                                <div class="main-s">Mohammed Mateen</div>
+                                <div class="sub-s text-ellp">Jr. Dot Net Developer/Devbox Software Pvt Ltd</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- /*-----Projects ----------*/ -->
+                <div id="project" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                            <i  class="fab-icn fab fa-wpforms"></i>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s pro-nm">Projects</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- /*-----Projects list----------*/ -->
+                <div class="side-div ng-star-inserted">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                 <!-- /*-----Portfolios ----------*/ -->
+                 <div id="project" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                            <i  class="fas-icn fas fa-list"></i>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s pro-nm">Portfolios</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- /*-----Portfolios list----------*/ -->
+                <div class="side-div ng-star-inserted">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> New Portfolio for event</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Tracking Development of Creative Planner</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                 <!-- /*-----DMS ----------*/ -->
+                 <div id="project" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="svg-icn"><path _ngcontent-owa-c389="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-owa-c389="" d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z"></path></svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s pro-nm">DMS</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- /*-----DMS list----------*/ -->
+                <div class="side-div ng-star-inserted">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Designation issue in EP and DMS</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> 
+                                        DMS APIs</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                  <!-- /*-----Meeting notes ----------*/ -->
+                  <div id="project" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                             <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect height="1" transform="translate(32 5) rotate(-180)" width="12" x="10" y="2"></rect><rect height="1" transform="translate(32 9) rotate(-180)" width="12" x="10" y="4"></rect><path d="M9,3V4H8A1,1,0,0,0,7,5V7H6V5A2,2,0,0,1,8,3Z"></path><path d="M23,3V4h1a1,1,0,0,1,1,1V7h1V5a2,2,0,0,0-2-2Z"></path><rect height="1" transform="translate(-10 23) rotate(-90)" width="19" x="-3" y="16"></rect><rect height="1" transform="translate(11 40) rotate(-90)" width="15" x="18" y="14"></rect><path d="M8,30V29H8a1,1,0,0,1-1-1V26H6v2a2,2,0,0,0,2,2Z"></path><path d="M21.91,21.15c-.57-.32-.91-.72-.91-1.15a6.09,6.09,0,0,1-.21,1.59c-1,4.07-6,7.18-12.12,7.4H8v1h.72c8.86-.15,16.07-3.15,17.14-7A3.77,3.77,0,0,0,26,22,8.72,8.72,0,0,1,21.91,21.15Zm-5.78,7a10.5,10.5,0,0,0,5.54-6,8.94,8.94,0,0,0,3.15.79C24.07,25,20.91,27,16.13,28.13Z"></path><path d="M11,4V5H10A1,1,0,0,1,9,4V3h1V4Z"></path><path d="M11,3V2H10A1,1,0,0,0,9,3V4h1V3Z"></path><path d="M21,4V5h1a1,1,0,0,0,1-1V3H22V4Z"></path><path d="M21,3V2h1a1,1,0,0,1,1,1V4H22V3Z"></path></g></svg>
+                        </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s pro-nm">Meeting notes</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- /*-----Meeting notes list----------*/ -->
+                <div class="side-div ng-star-inserted">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12.5" cy="12.5" r="1.5" fill="#121923" stroke="#121923" stroke-width="1.2"></circle> </g></svg>
+                                 </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <span> Lorem ipsum dolor sit amet . The graphic and typographic operators</span>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12.5" cy="12.5" r="1.5" fill="#121923" stroke="#121923" stroke-width="1.2"></circle> </g></svg>
+                                 </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <span> are different versions distinguishable from the order in whi</span>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12.5" cy="12.5" r="1.5" fill="#121923" stroke="#121923" stroke-width="1.2"></circle> </g></svg>
+                                 </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <span> typefaces more in use, an aspect that allows you to have an overview of the rendering of the text in terms of font choice and font size .</span>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12.5" cy="12.5" r="1.5" fill="#121923" stroke="#121923" stroke-width="1.2"></circle> </g></svg>
+                                 </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <span> Designation issue in EP and DMS</span>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+
+                   <!-- /*-----Meeting notes ----------*/ -->
+                   <div id="project" class="eve-area ng-star-inserted">
+                    <div class="left-icon">
+                        <span aria-hidden="true" class="side-icns">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z" fill="#292D32"></path> <path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" fill="#292D32"></path> <path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" fill="#292D32"></path> <path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" fill="#292D32"></path> <path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" fill="#292D32"></path> <path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" fill="#292D32"></path> </g></svg>
+                            </span>
+                    </div>
+                    <div class="rgt-des">
+                        <div>
+                            <div class="main-s pro-nm">Assign Task</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- /*-----Meeting notes list----------*/ -->
+                <div class="side-div ng-star-inserted">
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    
+                   
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info btn-sm mr-2">conform</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Button trigger modal -->
 
