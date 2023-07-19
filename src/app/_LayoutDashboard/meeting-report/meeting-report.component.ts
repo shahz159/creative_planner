@@ -293,27 +293,27 @@ document.querySelector('.reset').addEventListener('click', e => {
 
   }
 
-  // addBulletPointsOnFocus() {
-  //   const textarea = this.myTextarea.nativeElement;
+  addBulletPointsOnFocus() {
+    const textarea = this.myTextarea.nativeElement;
 
-  //   if (textarea.value === '') {
+    if (textarea.value === '') {
      
-  //     textarea.value = '• ';
-  //   }
-  // }
+      textarea.value = '• ';
+    }
+  }
 
-  // addBulletPointsOnEnter(event: any) {
-  //   if (event.key === 'Enter') {
-  //     const textarea = this.myTextarea.nativeElement;
-  //     const textareaValue = textarea.value;
+  addBulletPointsOnEnter(event: any) {
+    if (event.key === 'Enter') {
+      const textarea = this.myTextarea.nativeElement;
+      const textareaValue = textarea.value;
 
     
-  //     textarea.value = textareaValue + '\n• ';
+      textarea.value = textareaValue + '\n• ';
 
      
-  //     event.preventDefault();
-  //   }
-  // }
+      event.preventDefault();
+    }
+  }
   
 
   getScheduleId(){
