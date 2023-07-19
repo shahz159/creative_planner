@@ -979,3 +979,10 @@ mat-icon {
 .side-bar-box li:last-child {
   border-bottom: none
 }
+
+textarea:focus, input:focus{
+  outline: none;
+}
+*:focus {
+  outline: none;
+}
