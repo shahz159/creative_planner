@@ -11,6 +11,7 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
+import * as moment from 'moment';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -55,6 +56,22 @@ Action_task:string;
 _TodoList :any= [];
 _Demotext:any;
 text:any=[];
+Alltimes: any = [];
+EndTimearr: any = [];
+_arrayObj: any;
+AllEndtime: any = [];
+StartTimearr: any = [];
+timingarryend: any = [];
+Time_End: any = [];
+Startts: any;
+timearr1: any = [];
+Endtms:any;
+_SEndDate:any;
+scstartdate:any;
+_StartDate:any;
+daysSelectedII: any = [];
+minDate = moment().format("YYYY-MM-DD").toString();
+ScheduleType: any;
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -153,9 +170,10 @@ text:any=[];
     this. GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
     this.GetProjectAndsubtashDrpforCalender()
- 
+    this.GetTimeslabfordate();
  this.meeting_details();
  this.getScheduleId();
+ 
 
  // modal caledar start
  var dragging = false;
@@ -314,7 +332,203 @@ document.querySelector('.reset').addEventListener('click', e => {
       event.preventDefault();
     }
   }
-  
+  onfocus(val) {
+    console.log(val, "ttt");
+  }
+ 
+
+  GetTimeslabfordate() {
+    this._calenderDto.minutes = 5;
+    // this._hrtime = parseInt(moment(new Date()).format("HH"));
+    // this.Startts = this._hrtime.toString() + ':00';
+    this._calenderDto.StartTime = "00:00";
+    this._calenderDto.EndTime = "23:55";
+
+    this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
+      ((data) => {
+
+        this._arrayObj = data as [];
+        this._arrayObj.forEach(element => {
+          this.EndTimearr.push(element.TSEnd);
+          this.AllEndtime.push(element.TSEnd);
+          this.StartTimearr.push(element.TSStart);
+          this.Alltimes.push(element.TSStart);
+        });
+
+        // console.log(this.EndTimearr[0]);
+        // console.log("Array" + this.EndTimearr);
+      });
+  }
+  addstarttime() {
+    this.Alltimes = [];
+    this.EndTimearr = [];
+    this.AllEndtime = [];
+    this.StartTimearr = [];
+
+    this._arrayObj.forEach(element => {
+      this.EndTimearr.push(element.TSEnd);
+      this.AllEndtime.push(element.TSEnd);
+      this.StartTimearr.push(element.TSStart);
+      this.Alltimes.push(element.TSStart);
+       console.log( this.Alltimes,"times")
+    });
+
+
+    // alert(this.Startts);
+
+
+
+
+    // this.Alltimes = [];
+    // this.StartTimearr.forEach(element => {
+    //   this.Alltimes.push(element);
+    // });
+    // this.Startts = this.Startts;
+
+    this.timingarryend = [];
+    this.Time_End = [];
+    this.Time_End = this.AllEndtime;
+    // this.Startts = TSStart;
+    let _index = this.Time_End.indexOf(this.Startts);
+    this.timingarryend = this.Time_End.splice(_index + 1);
+    this.EndTimearr = this.timingarryend;
+    this.timearr1 = this.Startts.split(":");
+    let vahr = this.timearr1[0];
+    let mins = this.timearr1[1].toString();
+
+    if (this.timearr1[0] == 23) {
+      this._arrayObj.forEach(element => {
+        this.EndTimearr.push(element.TSStart);
+
+      });
+      vahr = Number(vahr) + 1;
+      if (vahr == 24) {
+        vahr = '00'
+
+      }
+      this.Endtms = vahr.toString() + ':' + mins;
+      if (vahr == '00') {
+        this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        // alert(this.scstartdate)
+        document.getElementById("Schenddate").style.display = "none";
+
+      }
+      else {
+        this._SEndDate = this.scstartdate;
+      }
+
+    }
+    else {
+      vahr = Number(vahr) + 1;
+      this.Endtms = vahr.toString() + ':' + mins;
+
+    }
+
+
+
+    //  alert(this._SEndDate)
+
+    // this.Endtms = this.EndTimearr[0];
+
+    this.daysSelectedII = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = this.minDate;
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    var columnNameess = "SEndDate";
+    jsonData[columnNameess] = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+
+    if (this.ScheduleType == "Event") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 0;
+    }
+    this.daysSelectedII.push(jsonData)
+
+    const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
+    this.EndTimearr.forEach(element => {
+      // alert(element)
+      const _element = element;
+      const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
+      const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
+      // alert(diffInMinutes)
+      element = _element.toString() + "-" + diffInMinutes.toString();
+
+    });
+
+    console.log(this.EndTimearr, "End Time Updated")
+  }
+
+  addendtime(TSEnd) {
+
+    this.Endtms = TSEnd;
+
+    if (this.Startts > this.Endtms) {
+      this.Endtms = this.Startts;
+    }
+
+
+
+    this.daysSelectedII = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = this.minDate;
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    if (this.ScheduleType == "Event") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 0;
+    }
+    this.daysSelectedII.push(jsonData)
+    // this.daysSelectedII = [];
+    // this.daysSelected.forEach(element => {
+    //   const found = this.Timechangearry.some(el => el.Date === element);
+    //   if (found) {
+    //     this.Timechangearry.forEach(element2 => {
+    //       if (element2.Date == element) {
+
+    //         var jsonData = {};
+    //         var columnName = "Date";
+    //         jsonData[columnName] = element2.Date;
+    //         var columnNames = "StartTime";
+    //         jsonData[columnNames] = this.Startts;
+    //         var columnNamee = "EndTime";
+    //         jsonData[columnNamee] = this.Endtms;
+    //         if (this.ScheduleType == "Event") {
+    //           var IsActive = "IsActive";
+    //           jsonData[IsActive] = 0;
+    //         }
+
+    //         this.daysSelectedII.push(jsonData)
+    //       }
+    //     });
+    //   }
+    //   else {
+    //     var jsonData = {};
+    //     var columnName = "Date";
+    //     jsonData[columnName] = element;
+    //     var columnNames = "StartTime";
+    //     jsonData[columnNames] = this.Startts;
+    //     var columnNamee = "EndTime";
+    //     jsonData[columnNamee] = this.Endtms;
+    //     if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+    //       var IsActive = "IsActive";
+    //       jsonData[IsActive] = 1;
+    //     }
+
+    //     this.daysSelectedII.push(jsonData);
+    //   }
+    // });
+    // if (this.ScheduleType == "Task") {
+    //   this.Checkdatetimetable(this.daysSelectedII);
+    // }
+    // this.calendar.updateTodaysDate();
+
+  }
 
   getScheduleId(){
     this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
@@ -329,7 +543,9 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
          
           console.log(this.EventScheduledjson, "111111")
-          
+          this.Startts=this.EventScheduledjson[0]['St_Time']
+          this.Endtms=this.EventScheduledjson[0]['Ed_Time']
+          this._StartDate=this.EventScheduledjson[0]['Schedule_date']
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);

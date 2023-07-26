@@ -495,7 +495,8 @@ export class DashboardComponent implements OnInit {
       eventTimeFormat: {
         hour: 'numeric',
         minute: '2-digit',
-        meridiem: 'short'
+        meridiem: 'short',
+        hour12:true
       },
       nowIndicator: true,
       allDaySlot: false
@@ -1688,28 +1689,53 @@ console.log(this.User_Scheduledjson,"test000");
     }
   }
 
-  TImetable() {
-    let _shr = moment(new Date()).format("HH");
-    let _s = parseInt(moment(new Date()).format("mm"));
+  // TImetable() {
+  //   let _shr = moment(new Date()).format("HH");
+  //   let _s = parseInt(moment(new Date()).format("mm"));
 
+  //   if (_s >= 0 && _s < 15) {
+  //     this.Startts = _shr.toString() + ':30';
+  //     this.Endtms = _shr.toString() + ':45';
+  //   }
+  //   else if (_s >= 15 && _s < 30) {
+  //     this.Startts = _shr.toString() + ':45';
+  //     this.Endtms = (parseInt(_shr) + 1).toString() + ':00';
+  //   }
+  //   else if (_s >= 30 && _s < 45) {
+  //     this.Startts = (parseInt(_shr) + 1).toString() + ':00';
+  //     this.Endtms = (parseInt(_shr) + 1).toString() + ':15';
+  //   }
+  //   else if (_s >= 45 && _s < 59) {
+  //     this.Startts = (parseInt(_shr) + 1).toString() + ':15';
+  //     this.Endtms = (parseInt(_shr) + 1).toString() + ':30';
+  //   }
+  // }
+
+  TImetable() {
+    let now = moment(new Date());
+    let _shr = now.hour();
+    let _s = now.minute();
+  
     if (_s >= 0 && _s < 15) {
-      this.Startts = _shr.toString() + ':30';
-      this.Endtms = _shr.toString() + ':45';
-    }
-    else if (_s >= 15 && _s < 30) {
-      this.Startts = _shr.toString() + ':45';
-      this.Endtms = (parseInt(_shr) + 1).toString() + ':00';
-    }
-    else if (_s >= 30 && _s < 45) {
-      this.Startts = (parseInt(_shr) + 1).toString() + ':00';
-      this.Endtms = (parseInt(_shr) + 1).toString() + ':15';
-    }
-    else if (_s >= 45 && _s < 59) {
-      this.Startts = (parseInt(_shr) + 1).toString() + ':15';
-      this.Endtms = (parseInt(_shr) + 1).toString() + ':30';
+      this.Startts = this.formatTime(_shr, 30);
+      this.Endtms = this.formatTime(_shr, 45);
+    } else if (_s >= 15 && _s < 30) {
+      this.Startts = this.formatTime(_shr, 45);
+      this.Endtms = this.formatTime(_shr + 1, 0);
+    } else if (_s >= 30 && _s < 45) {
+      this.Startts = this.formatTime(_shr + 1, 0);
+      this.Endtms = this.formatTime(_shr + 1, 15);
+    } else if (_s >= 45 && _s < 59) {
+      this.Startts = this.formatTime(_shr + 1, 15);
+      this.Endtms = this.formatTime(_shr + 1, 30);
     }
   }
-
+  
+ formatTime(hour, minute) {
+    return moment({ hour, minute }).format("hh:mm A");
+  }
+  
+  
 
   OnSubmitSchedule() {
 
@@ -3583,29 +3609,30 @@ console.log(this.User_Scheduledjson,"12")
       });
   }
   GetScheduledJson() {
+  
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        console.log(this.Scheduledjson, "Testing");
+        console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
+       
 
         this.calendarOptions = {
-
+          
           initialView: 'listWeek',
           firstDay: moment().weekday(),
 
           // timeZone: 'local',
           // initialDate:new Date(1, 3-9, 2023),
-
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
-
+         
           themeSystem: "solar",
           weekNumbers: true,
           eventClick: this.GetClickEventJSON_Calender.bind(this),
@@ -3614,8 +3641,8 @@ console.log(this.User_Scheduledjson,"12")
           eventTimeFormat: {
             hour: 'numeric',
             minute: '2-digit',
-            meridiem: 'short'
-           
+            meridiem: 'short',
+            hour12:true
           },
           nowIndicator: true,
           allDaySlot: false,

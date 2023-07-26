@@ -36,32 +36,45 @@
                                 {{item.NewEd_Time}}
                                 
                                 <span type="button" id="-icn" class="text-info dropdown-toggle" 
-                                aria-haspopup="true" aria-expanded="false"   type="button" id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   type="button" id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i data-toggle="tooltip" title="edit time "
                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                         </span>
                         <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick">
+
+                            <div class="input-group">
+                                <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                    (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                    [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                <div class="input-group-append">
+
+                                    <div class="input-group-text p-0">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
                            
-                            <div class="form-group flex-1 mb-2">
+                            <div class="form-group flex-1 mb-2" (click)="$event.stopPropagation()">
                                 <label class="cus-lbl">Start Time </label>
-                                <ng-select class="kt-input form-control" placeholder="Start Time"
-                                    [(ngModel)]="PropStart" (change)=" purposeaddtime()">
+                                <ng-select class="kt-input form-control" id="startid" placeholder="Start Time"
+                                    [(ngModel)]="Startts" (open)="onfocus($event)" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>
                                 </ng-select>
 
                             </div>
-                            <div class="form-group flex-1 mb-1">
+                            <div class="form-group flex-1 mb-1" (click)="$event.stopPropagation()">
                                 <label class="cus-lbl">End Time</label>
                                 <ng-select class="kt-input form-control" placeholder="End Time"
-                                    [(ngModel)]="PurposeEnd">
+                                (open)="onfocus($event)"  [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                         {{item1}}</ng-option>
                                 </ng-select>
                             </div>
 
                             <div class="form-group mb-0 ng-star-inserted text-right mt-3">
-                                <button _ngcontent-gec-c394="" type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
                                 <button type="submit" class="btn btn-info btn-sm">Submit</button> 
                             </div>
                                
@@ -189,6 +202,31 @@
                                             <rect fill="none" width="192" height="192"></rect>
                                         </svg>
                                     </span>
+                                    <span class="statusicn" aria-hidden="true">
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='Accepted'">
+                                            <path fill="#CEEAD6"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
+                                            </path>
+                                        </svg>
+    
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='Rejected'">
+                                            <path fill="#FAD2CF"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#B31412" stroke-width="1.5" d="M4 10l6-6M10 10L4 4">
+                                            </path>
+                                        </svg>
+    
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='May be'||_user.Status=='Proposed'">
+                                            <path fill="#E8EAED"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#3C4043" stroke-width="1.5"
+                                                d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path>
+                                        </svg>
+                                    </span> 
                                 </div>
                                 <div class="rgt-des ml-2"  >
                                     <div class="">
