@@ -311,27 +311,38 @@ document.querySelector('.reset').addEventListener('click', e => {
 
   }
 
-  addBulletPointsOnFocus() {
-    const textarea = this.myTextarea.nativeElement;
+  // addBulletPointsOnFocus() {
+  //   const textarea = this.myTextarea.nativeElement;
 
-    if (textarea.value === '') {
+  //   if (textarea.value === '') {
      
-      textarea.value = '• ';
-    }
-  }
+  //     textarea.value = '• ';
+  //   }
+  // }
 
   addBulletPointsOnEnter(event: any) {
-    if (event.key === 'Enter') {
-      const textarea = this.myTextarea.nativeElement;
-      const textareaValue = textarea.value;
-
     
-      textarea.value = textareaValue + '\n• ';
-
-     
-      event.preventDefault();
+   
+    if (event.keyCode === 32 || event.keyCode === 13 ) {
+    
+   
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID=this.Schedule_ID ;
+      this._calenderDto.Emp_No=this.CurrentUser_ID;
+      this._calenderDto.Meeting_notes=this.Notes_Type;
+      // alert(this.Notes_Type)
+      // console.log(this._calenderDto);
+      this.CalenderService.NewGetMeeting_notes(this._calenderDto).subscribe
+      (data => {
+        
+        // window.close();
+      });
     }
+   
   }
+
+
+  
   onfocus(val) {
     console.log(val, "ttt");
   }
@@ -741,14 +752,14 @@ document.querySelector('.reset').addEventListener('click', e => {
       });
   }
   Insert_meetingreport(){
-   debugger
+   
    this.Action_item=[]
  
    this._TodoList.forEach(element => {
     this.Action_item.push(element.Assign_Id)
     
    });
-   debugger
+   
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
    this._calenderDto.Note=this.Notes_Type;
@@ -880,5 +891,6 @@ document.querySelector('.reset').addEventListener('click', e => {
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   
   }
+  
   
 }
