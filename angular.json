@@ -21,7 +21,13 @@
                         "aot": true,
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "src",
+                                "output": "/",
+                                "ignore": ["**/*.worker.ts"]
+                              }
                         ],
                         "styles": [
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -45,7 +51,8 @@
                         ],
                         "scripts": [
                             "src/assets/plugins/global/plugins.bundle.js"
-                        ]
+                        ],
+                        "webWorkerTsConfig": "tsconfig.worker.json"
 
                     },
                     "configurations": {
@@ -121,7 +128,8 @@
                         ],
                         "scripts": [
                             "src/assets/js/test.js"
-                        ]
+                        ],
+                        "webWorkerTsConfig": "tsconfig.worker.json"
                     }
                 },
                 "lint": {

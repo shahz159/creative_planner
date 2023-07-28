@@ -61,6 +61,12 @@ export class CalenderService {
    this.obj_CalenderDTO.Project=obj.Project;
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_reports1", this.obj_CalenderDTO);
   }
+  NewGetMeeting_notes(obj:CalenderDTO){
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_notes1", this.obj_CalenderDTO);
+  }
   NewGetrequeat_Accpect(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.EventNumber = obj.EventNumber;

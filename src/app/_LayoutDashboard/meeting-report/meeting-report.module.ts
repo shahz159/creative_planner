@@ -7,6 +7,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 
@@ -17,7 +18,8 @@ import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project
     CommonModule,NgSelectModule,
     MeetingReportRoutingModule,
     AngularEditorModule,
-    FormsModule,ReactiveFormsModule
+    FormsModule,ReactiveFormsModule,
+    MatDatepickerModule
   ],
   providers: [ 
     ProjectUnplannedTaskComponent

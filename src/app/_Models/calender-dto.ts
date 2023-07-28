@@ -1,4 +1,5 @@
 export class CalenderDTO {
+    Meeting_notes:any;
     Portfolio:string;
     Dms:string;
     User_list:string;
