@@ -852,6 +852,12 @@ transform: rotate(45deg);
     text-overflow: ellipsis;
     max-width: 200px;
 }
+.text-ellipsis1{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
 .w-100px{
   width: 100px;
 }

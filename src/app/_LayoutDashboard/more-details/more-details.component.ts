@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
@@ -40,7 +40,7 @@ import { Hierarchy } from '@amcharts/amcharts5/.internal/charts/hierarchy/Hierar
 })
 
 export class MoreDetailsComponent implements OnInit {
-
+  @ViewChild('colp') colpRef!: ElementRef; // Reference to the collapsible content
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     // private _adapter: DateAdapter<any>,
@@ -268,10 +268,12 @@ export class MoreDetailsComponent implements OnInit {
   _day: any;
   _month: any;
   Subtask_List: any;
+  underapproval_list:any;
   Inprocess_List: any;
   Delay_List: any;
   CompletedList: any;
   inProcessCount: number;
+  underapprovalcount:number;
   delaycount:number;
   completedCount: number;
   subTaskCount: number;
@@ -354,6 +356,8 @@ export class MoreDetailsComponent implements OnInit {
   totalPortfolios: number;
   portfolioId: any;
   _portfoliosList: any;
+  action_details: any;
+  approve_details: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -371,6 +375,7 @@ export class MoreDetailsComponent implements OnInit {
     this.getReasonforholdandRejected();
     this.GetProjectDetails();
     this.GetSubtask_Details();
+    this.getapproval_actiondetails();
     this.getRACISandNonRACIS();    
     this.dar_details();
     this.getResponsibleActions();
@@ -408,6 +413,31 @@ export class MoreDetailsComponent implements OnInit {
     this.router.navigate(["./MoreDetails", this.URL_ProjectCode]);
 
   }
+
+  getapproval_actiondetails(){
+    this.approvalObj.Project_Code=this.URL_ProjectCode;
+
+    this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data=>{
+      console.log(data,"appact");
+      if(data[0]['actiondetails']!='[]' && data[0]['approvaldetails']!='[]' ){
+        if(data[0]['actiondetails']!='[]')
+        this.action_details=JSON.parse(data[0]['actiondetails']);
+        if(data[0]['approvaldetails']!='[]')
+        this.approve_details=JSON.parse(data[0]['approvaldetails']);
+
+        console.log(this.action_details,this.approve_details,"details")
+      }
+    })
+  }
+
+  moreDetails(pcode) {
+    let name: string = 'MoreDetails';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
 
   orgValueChange(val) {
     this.current_Date = moment(val.value).format("MM/DD/YYYY");
@@ -1267,7 +1297,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
           this.Client_List = JSON.parse(data[0]['ClientDropdown']);
           this._portfoliolist = JSON.parse(data[0]['Portfolio_json']);
-          // console.log("Test---->", this.ProjectInfo_List);
+           console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Pid = this.ProjectInfo_List[0]['id'];
           this.Status = this.ProjectInfo_List[0]['Status'];
@@ -1393,11 +1423,17 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.DarGraphDataList = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         //  console.log(data[0]['RemainingHours']);
-        //console.log("MaxDu....", MaxDuration);
+        console.log("MaxDu....", data1);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         this.standardDuration = (data2[0]['DurationTime']);
       });
+  }
+
+  isExpanded:boolean = false;
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
   }
 
   AddDms() {
@@ -3328,12 +3364,14 @@ export class MoreDetailsComponent implements OnInit {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['All_ResponsibleActions']);
+          this.underapproval_list = JSON.parse(data[0]['Underapproval_Responsibleations']);
           this.Inprocess_List= JSON.parse(data[0]['Inprocess_Responsibleations']);
           this.Delay_List= JSON.parse(data[0]['Delay_Responsibleations']);
           this.CompletedList = JSON.parse(data[0]['Completed_Responsibleations']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
 
           this.inProcessCount = this.Inprocess_List.length;
+          this.underapprovalcount = this.underapproval_list.length;
           this.delaycount = this.Delay_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
@@ -3348,8 +3386,9 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          // console.log(this.Subtask_List, "status");
+          console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
+          this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
           this.Inprocess_List= JSON.parse(data[0]['Inprocess_SubtaskDetails']);
           this.Delay_List= JSON.parse(data[0]['Delay_SubtaskDetails']);
           this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
@@ -3382,7 +3421,7 @@ export class MoreDetailsComponent implements OnInit {
           this.empDropdown = Array.from(this.Subtask_Res_List.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());
           // console.log(this.empDropdown);
           //SubTasks Multiselect End
-
+          this.underapprovalcount = this.underapproval_list.length;
           this.inProcessCount = this.Inprocess_List.length;
           this.delaycount = this.Delay_List.length;
           this.completedCount = this.CompletedList.length;
@@ -3461,7 +3500,6 @@ export class MoreDetailsComponent implements OnInit {
                     // console.log(event, "PC");
                     if (event.type == HttpEventType.UploadProgress) {
                       this.progress = Math.round(event.loaded / event.total * 100);
-                      this.notifyService.showInfo("File uploaded successfully", "Project Updated");
                     }
                     else if (event.type === HttpEventType.Response) {
                       // console.log(event);
@@ -3539,6 +3577,8 @@ export class MoreDetailsComponent implements OnInit {
     this.GetSubtask_Details();
   }
 
+
+
   OnEditProject(id, Pname) {
     this._modelProjectName = Pname;
     this.Editbutton = true;
@@ -3555,6 +3595,59 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_" + id)).focus();
   }
+
+  OnEditProject_underapproval(id, Pname) {
+    this._modelProjectName = Pname;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("underapprovalName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("underapprovalTextbox_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("underapprovalfocus_" + id)).focus();
+    //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
+  }
+
+  OnEditProject_Desc_underapproval(id, Desc) {
+    this._modelProjDesc = Desc;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("underapproval_DescName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("underapprovalTextarea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("underapprovalareafocus_" + id)).focus();
+  }
+
+  OnEditProject_inprocess(id, Pname) {
+    this._modelProjectName = Pname;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("InprocessProjName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("InprocessTextbox_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("Inprocessfocus_" + id)).focus();
+    //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
+  }
+
+  OnEditProject_Desc_inprocess(id, Desc) {
+    this._modelProjDesc = Desc;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Inprocess_DescName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("InprocessTextarea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("Inprocessareafocus_" + id)).focus();
+  }
+
+  OnEditProject_delay(id, Pname) {
+    this._modelProjectName = Pname;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("DelayProjName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("DelayTextbox_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("Delayboxfocus_" + id)).focus();
+    //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "none";
+  }
+
+  OnEditProject_Desc_delay(id, Desc) {
+    this._modelProjDesc = Desc;
+    this.Editbutton = true;
+    (<HTMLInputElement>document.getElementById("Delay_DescName_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("DelayTextarea_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("Delayareafocus_" + id)).focus();
+  }
+
+  
 
   OnEditProject_Alloc(id, aname, i, acode, duration) {
     this.actionName = aname;
@@ -3860,18 +3953,19 @@ export class MoreDetailsComponent implements OnInit {
 
     (<HTMLInputElement>document.getElementById("SpanProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
+
     //(<HTMLInputElement>document.getElementById("EidtBtn_" + id)).style.display = "inline-block";
     this.Editbutton = false;
     // For Description
     (<HTMLInputElement>document.getElementById("Span_DescName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("spanTextarea_" + id)).style.display = "none";
+
     this._modelProjDesc = null;
     this._modelProjectName = null;
 
     // (<HTMLInputElement>document.getElementById("Span_Deadline_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("DeadlineArea_" + id)).classList.remove("d-block");
-
 
     //(<HTMLInputElement>document.getElementById("Editbutton")).style.display = "inline-block";
 
@@ -3880,6 +3974,44 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.remove("d-block");
 
 
+  }
+
+  onCancel_underapproval(id){
+    this.Editbutton = false;
+    this._modelProjDesc = null;
+    this._modelProjectName = null;
+
+    (<HTMLInputElement>document.getElementById("underapprovalName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("underapprovalTextbox_" + id)).style.display = "none";
+
+    (<HTMLInputElement>document.getElementById("underapproval_DescName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("underapprovalTextarea_" + id)).style.display = "none";
+  }
+
+  onCancel_inprocess(id){
+    this.Editbutton = false;
+    this._modelProjDesc = null;
+    this._modelProjectName = null;
+
+    
+    (<HTMLInputElement>document.getElementById("InprocessProjName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("InprocessTextbox_" + id)).style.display = "none";
+
+    (<HTMLInputElement>document.getElementById("Inprocess_DescName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("InprocessTextarea_" + id)).style.display = "none";
+  }
+
+  onCancel_delay(id){
+    this.Editbutton = false;
+    this._modelProjDesc = null;
+    this._modelProjectName = null;
+
+    
+    (<HTMLInputElement>document.getElementById("DelayProjName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("DelayTextbox_" + id)).style.display = "none";
+
+    (<HTMLInputElement>document.getElementById("Delay_DescName_" + id)).style.display = "inline-block";
+    (<HTMLInputElement>document.getElementById("DelayTextarea_" + id)).style.display = "none";
   }
 
   closeAction(id) {
@@ -4378,59 +4510,132 @@ actiondeadline_alert(){
   }
 
   onProject_updateResp(){
-    this.objProjectDto.Project_Code=this.URL_ProjectCode;
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Project_Owner=null;
-    this.objProjectDto.Team_Res=this.selectedOwnResp;
-    this.objProjectDto.Remarks=this.extend_remarks;
-    if (this.selectedOwnResp != null) {
-      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
-        this._Message = data['message'];
+    // this.objProjectDto.Project_Code=this.URL_ProjectCode;
+    // this.objProjectDto.Emp_No=this.Current_user_ID;
+    // this.objProjectDto.Project_Owner=null;
+    // this.objProjectDto.Team_Res=this.selectedOwnResp;
+    // this.objProjectDto.Remarks=this.extend_remarks;
+    // if (this.selectedOwnResp != null) {
+    //   this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+    //     this._Message = data['message'];
 
-        if (this._Message == '2') {
-          this.notifyService.showError("Project responsible not updated", "Failed");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-        else if (this._Message == '1') {
-          this.notifyService.showSuccess("Project responsible updated successfully", "Success");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-      });
-      this.close_space();
-    }
-    else {
-      this.notifyService.showInfo("Project responsible cannot be empty", "Please try again with correct value");
-    }
+    //     if (this._Message == '2') {
+    //       this.notifyService.showError("Project responsible not updated", "Failed");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //     else if (this._Message == '1') {
+    //       this.notifyService.showSuccess("Project responsible updated successfully", "Success");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //   });
+    //   this.close_space();
+    // }
+    // else {
+    //   this.notifyService.showInfo("Project responsible cannot be empty", "Please try again with correct value");
+    // }
+
+    this.Employee_List.forEach(element => {
+      if (element.Emp_No == this.selectedOwnResp) {
+        this.new_Res = element.DisplayName;
+      }
+    });
+
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Responsible = this.selectedOwnResp;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.Remarks = this.extend_remarks;
+
+    this.approvalservice.InsertProjectTransfer(this.approvalObj).subscribe(data => {
+      this._Message = data['message'];
+
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Transferred");
+        this.GetProjectDetails();
+
+      }
+      else if (this._Message == '2') {
+        this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
+        this.GetProjectDetails();
+      }
+      else if (this._Message == '3') {
+        this.notifyService.showSuccess("Project Transfer request sent to Project Owner -" + this.Owner + '(' + this.Owner_EmpNo + ')', "Transfer under approval!");
+        this.GetProjectDetails();
+      }
+      else if (this._Message == '4') {
+        this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
+      }
+    });
+    this.close_space();
+    this.closeInfo();
+
   }
 
   onAction_updateResp(){
-    this.objProjectDto.Project_Code=this.actCode;
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Project_Owner=null;
-    this.objProjectDto.Team_Res=this.selectedOwnResp;
-    this.objProjectDto.Remarks=this.extend_remarks;
-    if (this.selectedOwnResp != null) {
-      this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
-        this._Message = data['message'];
+    // this.objProjectDto.Project_Code=this.actCode;
+    // this.objProjectDto.Emp_No=this.Current_user_ID;
+    // this.objProjectDto.Project_Owner=null;
+    // this.objProjectDto.Team_Res=this.selectedOwnResp;
+    // this.objProjectDto.Remarks=this.extend_remarks;
+    // if (this.selectedOwnResp != null) {
+    //   this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+    //     this._Message = data['message'];
 
-        if (this._Message == '2') {
-          this.notifyService.showError("Action responsible not updated", "Failed");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-        else if (this._Message == '1') {
-          this.notifyService.showSuccess("Action responsible updated successfully", "Success");
-          this.GetProjectDetails();
-          this.GetSubtask_Details();
-        }
-      });
-      this.close_space();
-    }
-    else {
-      this.notifyService.showInfo("Action responsible cannot be empty", "Please try again with correct value");
-    }
+    //     if (this._Message == '2') {
+    //       this.notifyService.showError("Action responsible not updated", "Failed");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //     else if (this._Message == '1') {
+    //       this.notifyService.showSuccess("Action responsible updated successfully", "Success");
+    //       this.GetProjectDetails();
+    //       this.GetSubtask_Details();
+    //     }
+    //   });
+    //   this.close_space();
+    // }
+    // else {
+    //   this.notifyService.showInfo("Action responsible cannot be empty", "Please try again with correct value");
+    // }
+
+
+    this.Employee_List.forEach(element => {
+      if (element.Emp_No == this.selectedOwnResp) {
+        this.new_Res = element.DisplayName;
+      }
+    });
+
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Responsible = this.selectedOwnResp;
+    this.approvalObj.Project_Code = this.actCode;
+    this.approvalObj.Remarks = this.extend_remarks;
+
+    this.approvalservice.InsertProjectTransfer(this.approvalObj).subscribe(data => {
+      this._Message = data['message'];
+
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Transferred");
+        this.GetProjectDetails();
+        this.GetSubtask_Details();
+
+      }
+      else if (this._Message == '2') {
+        this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
+        this.GetProjectDetails();
+        this.GetSubtask_Details();
+      }
+      else if (this._Message == '3') {
+        this.notifyService.showSuccess("Project Transfer request sent to Project Owner -" + this.Owner + '(' + this.Owner_EmpNo + ')', "Transfer under approval!");
+        this.GetProjectDetails();
+        this.GetSubtask_Details();
+      }
+      else if (this._Message == '4') {
+        this.notifyService.showError("Please contact Project Owner", "Project Not Transferred!");
+      }
+    });
+    this.close_space();
+    this.closeInfo();
   }
   
   onProject_Hold(id, Pcode) {
@@ -4484,7 +4689,7 @@ actiondeadline_alert(){
   sweetAlert() {
     if (this.Status == 'Completed') {
       Swal.fire({
-        title: 'This project is compelted !!',
+        title: 'This project is completed !',
         text: 'Do you want to reopen this project ?',
         // icon: 'warning',
         showCancelButton: true,
@@ -4610,7 +4815,6 @@ actiondeadline_alert(){
         // console.log(event, "PC");
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
         }
         else if (event.type === HttpEventType.Response) {
           // console.log(event);

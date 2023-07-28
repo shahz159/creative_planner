@@ -412,3 +412,76 @@ display: block;
   display: block;
   color: #595d6e;
 }
+
+.collapsed  span.showv{
+  display: inline-flex;
+  align-items: center;
+}
+.collapsed .showv{
+  display: inline-flex;
+}
+.showv{
+  display: none;
+}
+
+.collapsed .flex-hdv{
+  flex: unset;
+}
+.flex-hdv{
+  flex:1;
+}
+.ml--2 {
+  margin-left: -15px;
+}
+.collapsed .swap-view{
+  display: inline-block;
+
+}
+.swap-view{
+  display: none;
+}
+.collapsed .swap-less{
+  display: none;
+}
+.scrollbar1 {
+  max-height: calc(100vh - 178px);
+  overflow: hidden;
+  overflow-y: auto;
+}
+.scrollbar1 {
+  max-height: calc(100vh - 138px);
+  overflow-y: auto;
+}
+
+/* width */
+
+.scrollbar1::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+
+.scrollbar1::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+
+.scrollbar1::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+
+.scrollbar1::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+.sticky-header{
+  margin-top: 0px;
+  z-index: 14;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  font-size: 18px;
+}

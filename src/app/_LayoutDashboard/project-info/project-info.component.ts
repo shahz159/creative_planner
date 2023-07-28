@@ -176,8 +176,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           // console.log(this.ProjectInfo_List,"pt");
           // this.ifcategoryZero = this.ProjectInfo_List['CompleteReportType'];
           // if (Object.keys(data).length > 0) {
-          this.Subtask_List = JSON.parse(data[0]['SubtaskDetails_Json']);
-          this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this.Subtask_List = JSON.parse(data[0]['projectinfo_SubtaskDetails']);
+          this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
           this.AssigntaskList = JSON.parse(data[0]['AssigntaskDetails_Json']);
           // // this.CompletedList.push(this.Subtask_List);
           // console.log("subtask Details--->",this.Subtask_List);
@@ -253,6 +253,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
       });
     this._OpenMemosInfo(this.projectCode);
+  }
+
+  isExpanded:boolean = false;
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
   }
 
   ngOnDestroy() {

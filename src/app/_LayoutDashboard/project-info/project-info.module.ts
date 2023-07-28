@@ -20,6 +20,7 @@ import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-
 import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { NotificationComponent } from '../notification/notification.component';
+import { TruncatePipe } from './truncate.pipe';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -41,10 +42,10 @@ import { NotificationComponent } from '../notification/notification.component';
     MatDatepickerModule, MatFormFieldModule
 
   ],
-  declarations: [ ProjectInfoComponent, FocusOnClickDirective],
+  declarations: [ ProjectInfoComponent, FocusOnClickDirective, TruncatePipe],
   providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
-             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent]
- //exports:[ProjectInfoComponent]
+             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent],
+ exports:[TruncatePipe]
   
 })
 export class ProjectInfoModule { }
