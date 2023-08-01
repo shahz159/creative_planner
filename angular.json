@@ -44,9 +44,7 @@
                         ],
                         "scripts": [
                             "src/assets/plugins/global/plugins.bundle.js"
-                        ],
-                        "webWorkerTsConfig": "tsconfig.worker.json"
-
+                        ]
                     },
                     "configurations": {
                         "production": {

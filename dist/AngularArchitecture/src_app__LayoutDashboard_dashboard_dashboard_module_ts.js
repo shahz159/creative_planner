@@ -36801,9 +36801,9 @@ function __classPrivateFieldIn(state, receiver) {
 /***/ }),
 
 /***/ 11360:
-/*!*************!*\
-  !*** tslib ***!
-  \*************/
+/*!****************************************************************************!*\
+  !*** ./node_modules/@fullcalendar/daygrid/node_modules/tslib/tslib.es6.js ***!
+  \****************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -37662,9 +37662,9 @@ function __classPrivateFieldIn(state, receiver) {
 /***/ }),
 
 /***/ 697:
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@fullcalendar/timegrid/node_modules/tslib/tslib.es6.js ***!
-  \*****************************************************************************/
+/*!*************!*\
+  !*** tslib ***!
+  \*************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
