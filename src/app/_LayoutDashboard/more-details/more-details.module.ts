@@ -15,20 +15,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
 import { NotificationComponent } from '../notification/notification.component';
+import { ProjectInfoModule } from '../project-info/project-info.module';
+import { TruncatePipe } from '../project-info/truncate.pipe';
 
 
 
 @NgModule({
   declarations: [MoreDetailsComponent],
   imports: [
-    CommonModule,
+    CommonModule, 
     FormsModule,ReactiveFormsModule,
     MoreDetailsRoutingModule,
     NgMultiSelectDropDownModule,
     MatDatepickerModule,NgSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,ProjectInfoModule
   ],
-  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent]
+  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe]
     // ,{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })
 export class MoreDetailsModule { }

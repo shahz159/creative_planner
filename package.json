@@ -83,7 +83,11 @@
         "tslint": "~6.1.0",
         "typescript": "~4.6.4"
     },
+<<<<<<< HEAD
  
 
 "aot": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --prod --aot"
+=======
+    "aot": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --prod --aot"
+>>>>>>> 0775eb02a71c42c2313389f7421a19cf237e499e
 }

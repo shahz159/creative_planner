@@ -22,6 +22,12 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
   }
 
+  GetAppovalandActionDetails(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetAppovalandActionDetails", this.obj_approvalDTO);
+  }
+
   GetGlobalRejectList(pcode) {
     this.obj_approvalDTO.Project_Code = "";
     
@@ -98,7 +104,6 @@ export class ApprovalsService {
     this.obj_approvalDTO.Remarks = obj.Remarks;
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService", this.obj_approvalDTO);
-
   }
 
   InsertTransferApprovalService(obj: ApprovalDTO) {
@@ -109,6 +114,16 @@ export class ApprovalsService {
     this.obj_approvalDTO.Remarks = obj.Remarks;
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertTransferApprovalService", this.obj_approvalDTO);
+
+  }
+
+  InsertProjectTransfer(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Responsible=obj.Responsible;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertProjectTransfer", this.obj_approvalDTO);
 
   }
 

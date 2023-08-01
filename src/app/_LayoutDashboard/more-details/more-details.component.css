@@ -1548,3 +1548,8 @@ span.legend-box {
   line-height: 1.25rem;
   font-size: .65rem;
 }
+
+.custom-link {
+  color: navy;
+  text-decoration: underline;
+}
