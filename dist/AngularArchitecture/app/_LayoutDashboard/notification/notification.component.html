@@ -1,0 +1,784 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3"
+    id="notifi">
+    <div class="row">
+
+        <div class="col-lg-12">
+            <!--begin:: Widgets/Authors Profit-->
+            <div class="kt-portlet kt-portlet--bordered-semi">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                            <strong *ngIf="sendtype=='Req'">Approvals</strong>
+                            <strong *ngIf="sendtype=='Res'">Information</strong>
+                        </h3>
+                        <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approvals</a>
+                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information</a>
+                        </div>
+                        <div *ngIf="sendtype=='Req' && selectedItems.length >0">
+                            <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
+                            <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
+                        </div>
+                        <div *ngIf="sendtype=='Res' && selectedItems.length >0">
+                            <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear Responses</button>
+                        </div>
+                    </div>
+                   
+
+                    <div class="kt-portlet__head-label mr-2">
+                        <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
+                            <div class="kt-header__topbar-wrapper">
+                                <div class="kt-quick-search kt-quick-search--inline">
+                                    <div class="kt-quick-search__form">
+                                        <div class="input-group">
+                                            <input type="text" [(ngModel)]="searchText" autofocus
+                                                (keydown.enter)="search($event.target.value)"
+                                                class="form-control project-search kt-quick-search__input pl-3"
+                                                placeholder="Search Projects" style="width: 300px">
+                                            <div class="input-group-prepend">
+                                                <button class="input-group-text" type="submit"
+                                                    (click)="search($event.target.value)">
+                                                    <i class="flaticon2-search-1"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pagination starts -->
+                        <div class="mr-3">
+                            <ng-container *ngIf="CurrentPageNo==1">
+                                {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                CurrentPageNo}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                                {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) +
+                                _CurrentpageRecords}}
+                            </ng-container>
+                            of
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+                        </div>
+                        <!-- Pagination ends -->
+
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+                            <i class="fas fa-angle-left mr-0"></i></button>
+
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
+                            [disabled]="_CurrentpageRecords<20">
+                            <i class="fas fa-angle-right mr-0"></i></button>
+                        <div class="mr-2">
+                            <a class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Asc">
+                                <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+                            </a>
+                            <!-- <a class="btn btn-label-primary btn-sm" [hidden]="Z2A" (click)="_SortProjectList()"
+                                data-toggle="kt-tooltip" title="Click to sort Desc">
+                                <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
+                            </a> -->
+                        </div>
+                        <!-- Filters -->
+                        <div class="stores-sec mr-1">
+                            <ul class="nav navbar-nav filters">
+                                <li class="dropdown mega-dropdown" id="filtermenu">
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"
+                                        data-toggle="dropdown"><i class="fas fa-ellipsis-v mr-0 "></i>
+                                    </a>
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div (click)="$event.stopPropagation();">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <h5><strong>Total Projects - </strong>
+                                                        <h5 class="d-inline-block">
+                                                            <strong>{{_totalProjectsCount}}</strong>
+                                                        </h5>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <!-- Empty Column -->
+                                                </div>
+                                            </div>
+                                            <hr />
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control kt-quick-search__input pl-3"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        style="width: 100%;">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Project Type</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox">
+                                                                <input type="checkbox" (change)="isTypeChecked(item)"
+                                                                    [(ngModel)]="item.checked">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Request Type</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of RequestCountFilter |filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isRequestChecked(item)"
+                                                                    [(ngModel)]="item.checked">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Status</strong></p>
+                                                        <div class="d-flex justify-content-between"  *ngFor="let item of StatusCountFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox"  (change)="isStatusChecked(item)"
+                                                                [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Employees</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isEmpChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <button
+                                                    class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown">Submit</button>
+                                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll()">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+                            <i class="fas fa-sync-alt mr-0"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-portlet">
+                <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+
+                    <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="">
+                            <div class="">
+
+                                <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
+                                <div class="table-responsive">
+                                    <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
+                                        style="width: 0px;">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
+                                                         rowspan="1" colspan="1" >
+                                                    <input type="checkbox"  id="snocheck"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
+                                                   
+                                                </th>
+                                                <th style="width: 100px;" tabindex="0" aria-controls="project-4"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label=": activate to sort column descending">
+                                                </th>
+                                                <th data-order="desc" data-name="Project_Name" tabindex="0"
+                                                    aria-controls="project-4" class="curser-pointer" rowspan="1"
+                                                    colspan="1" style="width: 0px;" (click)="_SortPortfoliolist()"
+                                                    aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                    <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                        <i class="fas fa-sort-alpha-up"></i>
+                                                    </a>
+                                                    <a  [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                        <i class="fa fa-sort-alpha-down-alt"></i>
+                                                    </a>
+                                                    Project Name
+                                                </th>
+                                                <th data-order="desc" data-name="Exec_BlockName" tabindex="0"
+                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Project Type: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Project Type
+                                                </th>
+                                                <th data-order="desc" data-name="ReportType" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer"
+                                                    aria-label="Category: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Request Type
+                                                </th>
+                                                <th data-order="desc" data-name="Submitedby" tabindex="0"
+                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="User Name: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Submitted By
+                                                </th>
+                                                <th data-order="desc" data-name="RequestDate" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer"
+                                                    aria-label="End Date: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Request Date
+                                                </th>
+                                                <!-- <th data-order="desc" data-name="Status" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer"
+                                                    aria-label="Status: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Submission Type
+                                                </th> -->
+                                                <th data-order="desc" data-name="Comments" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer cmmts text-ellipsis"
+                                                    aria-label="End Date: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Comments
+                                                </th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of _NotificationActivity">
+                                                <td  align="center">
+                                                    <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"  (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
+            
+                                                </td>
+                                                <td align="center">
+                                                    <a tabindex="0" class="btn px-0 mb-0" role="button"
+                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                        title="Project Info!" (click)="openInfo(item.Project_Code1)">
+                                                        <i class="fa fa-info-circle info-icon-cir"></i>
+                                                    </a>
+                                                    <a tabindex="0" class="btn px-0 mr-2" role="button"
+                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                        title="More Info!"
+                                                        (click)="moreDetails(item.Project_Code1,item.Rec_Date,item.Req_Type)">
+                                                        <i class="fa fa-chart-bar info-icon-cir"></i>
+                                                    </a>
+                                                </td>
+                                                <td><p class="kt-widget__title mb-0">
+                                                    {{item.Project_Name}}
+                                                    <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
+                                                </p></td>
+                                                <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span></td>
+                                                <td>
+                                                    <span class="text-info font-weight-400" 
+                                                        *ngIf="item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
+                                                               || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
+                                                    <span class="text-danger font-weight-400" 
+                                                        *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'">{{item.Req_Type}}</span>
+                                                    <span class="text-success font-weight-400" 
+                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
+                                                        || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project'">{{item.Req_Type}}</span> 
+                                                    <span class="text-primary font-weight-400" 
+                                                        *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
+                                                </td>
+
+                                                <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
+                                                <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td>
+                                                
+                                                <!-- <td>
+                                                    <div *ngIf="item.Send_From=='WS'">
+                                                        <span class="text-info font-weight-400">Request</span>
+                                                    </div>
+                                                    <div *ngIf="item.Send_From=='WR'">
+                                                        <span class="text-primary font-weight-400">Response</span>
+                                                    </div>
+                                                </td> -->
+                                                <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
+                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}} </td>
+                                                <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
+                                                    Not Provided</td>
+                                                <div class="hvr-item" *ngIf="item.Send_From=='WR'" data-toggle="tooltip" title="{{item.Req_Coments}}">
+                                                    <div class="chck-div" (click)="clearResponse(item.Project_Code,item.Rec_Date,item.Req_Type)">
+                                                        <span class="chk-icn">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icn">
+                                                                <path d="M11.602 13.7599L13.014 15.1719L21.4795 6.7063L22.8938 8.12051L13.014 18.0003L6.65 11.6363L8.06421 10.2221L10.189 12.3469L11.6025 13.7594L11.602 13.7599ZM11.6037 10.9322L16.5563 5.97949L17.9666 7.38977L13.014 12.3424L11.6037 10.9322ZM8.77698 16.5873L7.36396 18.0003L1 11.6363L2.41421 10.2221L3.82723 11.6352L3.82604 11.6363L8.77698 16.5873Z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="mark-txt">
+                                                            Mark as read
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="hvr-item" *ngIf="item.Send_From=='WS'" data-toggle="tooltip" title="{{item.Req_Coments}}">
+                                                   
+                                                        <div>
+                                                            <button  class="btn btn-outline-success btn-sm mr-2 fs-7">Accept</button>
+                                                            <button  class="btn btn-outline-danger btn-sm fd-7">Reject</button>
+                                                        </div>
+                                                       
+                                                </div> -->
+                                               
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
+                    <h4>{{_filtersMessage}}</h4>
+                    <p>{{_filtersMessage2}}</p>
+                </div>
+            </div>
+
+            <!-- notifications cards -->
+            <!-- <div class="">
+                <div class="">
+
+                    <div class="card my-1 shadow-sm brdr notifi-list mb-2 mt-4 d-none" *ngFor="let item of notifArray">
+                        <div class="card-body row">
+                            <div class="col">
+                                <div class="pro-dc">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-info-circle info-icon-cir curser-pointer mr-1"
+                                            (click)="openInfo(item.Project_Code)"></i>
+                                        <i class="fa fa-chart-bar info-icon-cir curser-pointer mb-0 mx-2"
+                                            (click)="moreDetails(item.Project_Code,item.Rec_Date,item.Req_Type)"></i>
+                                        <label
+                                            class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mx-1">
+                                            <i class="fa fa-clone mr-2"></i>{{item.Exec_BlockName}}</label>
+                                        <span class="h6 text-muted mb-0 ml-2"><i
+                                                class="far fa-calendar-alt mr-1"></i>{{item.Rec_Date | date:'dd-MM-yyyy'
+                                            }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="h6 text-muted mb-0 mr-1"><i
+                                                class="far fa-user mr-1"></i>{{item.SubmittedBy}}</span>
+                                    </div>
+                                </div>
+                                <h5 class="card-title text-capitalize mb-0">
+                                    {{item.Project_Name}}</h5>
+                                <span class="h6 tic-abt mb-0"> Request Type: {{item.Req_Type}}</span><br>
+                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments"> Comments:
+                                    {{item.Req_Coments}}</span>
+                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments==null || 
+                                      item.Req_Coments=='' || item.Req_Coments==undefined"> Comments: NA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+                        <div class="card-body row">
+                            <div class="col">
+                                <div class="pro-dc">
+                                    <div class="">
+                                        <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                                            <i class="fa fa-clone mr-2"></i>Standard Tasks </label>
+                                        <span class="h6 text-muted mb-0 ml-2"><i
+                                                class="far fa-calendar-alt mr-1"></i>Req Date: 31-10-2022</span>
+                                    </div>
+                                    <div>
+                                        <span class="h6 text-muted mb-0 mr-1"><i class="far fa-user mr-1"></i>Stevee
+                                            Smith Smith smith</span>
+                                    </div>
+                                </div>
+                                <h5 class="card-title text-capitalize mb-0"> Testing deadline for approvals in old Ep.
+                                </h5>
+                                <span class="h6 tic-abt mb-0"> Comments: Test by author. This project is about deadline
+                                    for approvals in old Execution Planner.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center py-4" style="color: lightgrey" *ngIf="notilength==0">
+                    <h4>{{_filtersMessage}}</h4>
+                </div>
+                <div style="text-align:center"> <button class="btn btn-info loadMore d-none"
+                        (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()" [hidden]="_CurrentpageRecords<20">
+                        Load More!</button>
+                </div>
+            </div> -->
+            
+        </div>
+       
+    </div>
+
+</div>
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+<div id="mysideInfobar" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
+
+<div id="rejectbar" class="sideInfobar animate-right">
+   <div class="kt-portlet mb-0">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+            <h4 class="m-0">Reject Projects</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+            </svg>
+            </a>
+        </div>
+        <div class="kt-portlet--body mb-0">
+            
+            <div class="brb-1 pb-1">
+
+                <div class="card-body card-car">
+
+                    <div class="card card-mid flex-1">
+                        <div class="card-header">
+                        <h5 clas="card-title"> Projects List  </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class=" cus-scroll scroll-y">                            
+                                <div class="meetdt" *ngFor="let item of selectedItems">
+
+                                    <div id="" class="eve-area">
+                                        <div class="">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">{{item.Project_Name}}</a>
+                                                </span>
+                                            </div>
+
+                                            
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <!-- <div class="desc-1">{{item.Project_Description}}</div> -->
+                                            
+                                            <div class="ml-4 mr-2 status-d">
+                                                    <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
+                                                        'text-success mb-0':item.Status=='Completed',
+                                                        'text-warning mb-0':item.Status=='InProcess',
+                                                        'text-primary mb-0':item.Status=='Under Approval',
+                                                        'text-info mb-0':item.Status=='Completion Under Approval',
+                                                        'text-Rejected mb-0':item.Status=='New Project Rejected',
+                                                        'text-underApproval mb-0':item.Status=='Enactive Under Approval',
+                                                        'text-underApproval mb-0':item.Status=='Forward Under Approval',
+                                                        'text-underApp mb-0':item.Status=='New Project',
+                                                        'text-completed mb-0':item.Status=='Completion Under Approval',
+                                                        'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
+                                                        'text-Todo mb-0':item.Status=='ToDo Completed'}"
+                                                                data-toggle="tooltip" title="Project Status!">
+                                                            {{item.Status}} 
+                                                    </h6>
+                                                    <h6 class=" text-danger mb-0"  data-toggle="tooltip"
+                                                        title="Project Status!"
+                                                        *ngIf="item.Status=='Delay'">
+                                                        {{item.Status}}
+                                                        {{item.Delaydays}} days
+                                                    </h6>
+                                                </div>
+                                            <div>
+                                                
+                                            </div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="ml-1 mr-2 status-d">
+                                                <h6 [ngClass]="{
+                                                    'text-success mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
+                                                    || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project',
+                                                    'text-primary mb-0':item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back',
+                                                    'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
+                                                    || item.Req_Type=='ToDo Achieved',
+                                                    'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
+                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
+                                                    }"
+                                                            data-toggle="tooltip" title="Request type">
+                                                    {{item.Req_Type}}
+                                                </h6>
+                                            </div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    {{item.DPG  | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
+                                                </span>
+                                            </div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-user mr-1"></i>
+                                                    <!-- <div class="initial-box color-7 b-50 mr-2">WA</div> -->
+                                                    {{item.Responsible}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <!-- <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="meetdt">
+
+                                    <div id="" class="eve-area">
+                                        <div class="d-flex-cen">                                
+                                            <div class="event-main">
+                                                <span class="event-color event-color--info"></span>
+                                                <span class="event-title mr-2">
+                                                    <a href="javascript:;">Stream Application(Creative Planner) development</a>
+                                                </span>
+                                                <span class="mr-2 showv">|</span>
+                                                <div>
+                                                    <h5 data-toggle="tooltip"
+                                                            class=" text-warning mb-0"
+                                                            title="11 Days Delay!">
+                                                            Inprocess </h5>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                    <div class="initial-box color-7 b-50 mr-2">
+                                                        <i class="far fa-user"></i>
+                                                    </div>
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                                                </div>                            
+                                            </div>
+                                        </div>
+                                        <div class="btm-des">
+                                            
+                                            <div class="desc-1">Description about Project</div>
+                                            <span class="mr-2 showv">|</span>
+                                            <div class="">
+                                                <span class="showv mr-2 text-muted">
+                                                    <i class="far fa-calendar-alt mr-1"></i>
+                                                    28/01/23 - 29/02/23
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            
+
+            <div class="">     
+                <div class="card-body" id="comts1">
+                    <div class="crd-hdr">
+                        <div class="crd-title"><h5>Reject Comments</h5></div>
+                    </div>           
+                    <div class="col-md-12 checked-rad pl-1 pt-3">
+                        <div class="form-group">
+                            <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+                            <ng-select required name="rej_type"
+                            placeholder="Select Reject Type" [(ngModel)]="rejectType"
+                            (change)="rejectApproval()">
+                            <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
+                                {{item.RejectType}}
+                            </ng-option>
+                        </ng-select>
+                        <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
+                        <span *ngIf="noRejectType==true" style="color:red">Please select Reject
+                            type!!</span>
+                        </div>
+
+                        <label class="mb-2"  *ngIf="rejectType && rejectcomments>0">Select From
+                            Existing Comments</label>
+                        <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
+
+                            <div class="exs-cmts card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Existing Comments</h6>
+                                </div>
+                                <div class="crd-bdy scroll-y">
+                                    <div class="cmts-items"
+                                        *ngFor="let item of rejectcommentsList;let i=index">
+                                        <h6
+                                            [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                            {{item.Req_Coments}}</h6>
+                                        <div class="cmts-actns">
+                                            <span class="cmts-svg"
+                                                *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                                (click)="clickonselect(item.Req_Coments)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span class="cmts-svg"
+                                                *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                                (click)="clickondeselect(item.Req_Coments,i)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group" *ngIf="rejectType">
+                            <label class="mb-2">Enter Comments</label><span
+                                style="color:red">*</span>
+                                <!-- <div [innerHTML]="comments"></div> -->
+                            <textarea class="form-control h-100px"  [(ngModel)]="comments"></textarea>
+                        </div>
+
+
+                        <div class="d-flex justify-content-end mb-2">
+                            <button class="btn btn-sm btn-secondary mr-2" (click)="resetReject()">Reset</button>
+                            <button type="submit" class="btn btn-sm btn-info" [disabled]="!comments || !rejectType" (click)="submitReject()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+   </div>
+</div>
+
+
+
+<!--
+    
+                <div class="mb-3">
+                    <a class="d-flex justify-content-between" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                                                    
+                                                        
+                        <div class="d-flex-cen">
+                            <div class="subtask-list-title text-hover-primary fs-5 mt-1">
+                                <span class="mr-2" id="" title="Project Name">
+                                    Stream Application(Creative Planner) development</span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="">
+                                <span class="showv mr-2 text-muted">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    28-01-23 
+                                </span>
+                            </div>
+                            <span class="mr-2 showv">|</span>
+                            <div class="d-flex-cen showv">
+                                <span class="detail-icn mr-1 d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" fill="currentColor"
+                                        class="bi bi-star" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h5 data-toggle="tooltip"
+                                            class=" text-warning mb-0"
+                                            title="11 Days Delay!">
+                                            Inprocess </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="d-flex-cen mr-2 showv">                                                                
+                                <div class="initial-box color-7 b-50 mr-2">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
+                            </div>                            
+                        </div>
+
+                    </a>
+                </div>
+                
+                
+    <div class="card my-1 shadow-sm brdr notifi-list mb-2">
+    <div class="card-body row">
+        <div class="col">
+            <div>
+                <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                    <i class="fa fa-clone mr-2"></i>Standard Tasks </label>
+            </div>
+            <h5 class="card-title text-capitalize mb-0"> Testing deadline for approvals in old Ep. </h5>
+            <span class="h6 tic-abt mb-0"> Comments: Test by author. This project is about deadline for approvals in old Execution Planner.</span>
+        </div>
+        <div class="col-auto mr-3 pro-rsec">
+            <span class="h6 text-muted mb-0 mr-1"><i class="far fa-calendar-alt mr-1"></i>Req Date: 31-10-2022</span>
+            <span class="h6 text-muted mb-0 mr-1"><i class="far fa-user mr-1"></i>Stevee Smith Smith smith</span>
+        </div>
+    </div>
+</div> -->

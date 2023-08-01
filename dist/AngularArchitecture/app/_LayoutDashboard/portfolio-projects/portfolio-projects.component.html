@@ -1,0 +1,716 @@
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
+
+    <div class="row">
+        <!--begin:: Widgets/Best Sellers->
+            <-- begin::Portlet -->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <!-- <span class="kt-portlet__head-title mr-4">
+                        <button type="button" (click)="BackBttn()"
+                            class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2">
+                            <i class="fa fa-arrow-left mr-0" aria-hidden="true"></i>
+                        </button>
+                    </span> -->
+                    <h3 class="kt-portlet__head-title mr-3">
+                        <strong>{{_PortFolio_Namecardheader}}</strong>
+                    </h3>
+                    <button id="groupportfolio" class="btn btn-outline-hover-primary btn-sm btn-icon btn-circle"
+                        data-toggle="dropdown" (click)="btnEdit()" [disabled]="_MessageIfNotOwner!=''">
+                        <strong><i class="fa fa-edit m-2"></i></strong>
+                    </button>
+                    <span class=" ml-4" style="color:red" [hidden]="Max50Char">
+                        <strong>*Only 50 characters allowed</strong>
+                    </span>
+                    <div
+                        class="dropdown-menu dropdown-menu-left dropdown-menu-fit dropdown-menu-md bg-ground-short mr-2">
+                        <!--begin::Nav-->
+                        <ul class="kt-nav">
+                            <li class="kt-nav__head d-block">
+                                <p class="mb-0"><strong>Rename Portfolio</strong></p>
+                                <div class="kt-nav__separator"></div>
+                            </li>
+                            <li class="kt-nav__item px-4">
+                                <input type="text" class="form-control" placeholder="Enter Portfolio Name"
+                                    [(ngModel)]="Rename_PortfolioName"
+                                    [ngStyle]="{'border-color':Rename_PortfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)' }">
+
+                            </li>
+                            <li class="kt-nav__foot">
+                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-3"
+                                    (click)="RenamePortfolio()" [disabled]="Rename_PortfolioName==''">Update
+                                    Portfolio</button>
+                            </li>
+                        </ul>
+                        <!--end:: Nav-->
+                    </div>
+                    <!-- Vali Work's -->
+                    <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
+                        <div class="kt-quick-search__form">
+                            <div class="input-group">
+                                <input type="text" class="form-control kt-quick-search__input pl-3"
+                                    placeholder="Search Projects" [(ngModel)]="_SearchProjects"
+                                    style="width: 170px;height:30px">
+                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                            class="flaticon2-search-1"></i></span></div>
+                            </div>  
+                        </div>
+                    </div>
+                    <!-- <input type="text" name="search" class="form-control kt-quick-search__input pl-3" [(ngModel)]="_SearchProjects">
+                    <div class="input-group-prepend"><span class="input-group-text"><i
+                        class="flaticon2-search-1"></i></span></div> -->
+                </div>
+                <!-- Labels  -->
+                <div class="kt-portlet__head-toolbar">
+                    <!-- All Projects... -->
+                    <!-- <a (click)="labelAll()" [hidden]="HideStatusDropdown"
+                        class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
+                        role="button">
+                        {{TotalProjects}} Projects </a> -->
+                    <!-- <div [hidden]="HideStatusDropdown"> -->
+                    <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
+                        class="badge bdg-new kt-badge--inline mr-2 py-10px btn-sm"> <span class="count">{{TotalProjects}}</span> Total 
+                        Projects</a>
+                    <!-- End -->
+                    <ng-container *ngIf="CountInprocess>0">
+                        <!-- <a (click)="labelInprocess()" [hidden]="HideStatusDropdown"
+                            class="kt-inbox__label kt-badge kt-badge--unified-warning kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
+                            role="button">
+                            {{CountInprocess}} InProcess </a> -->
+                        <a href="javascript:void(0)" (click)="labelInprocess()" [hidden]="HideStatusDropdown"
+                            class="badge badge-warning kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                            InProcess</a>
+
+                    </ng-container>
+                    <ng-container *ngIf="CountDelay>0">
+                        <!-- <a (click)="labelDelay()" [hidden]="HideStatusDropdown"
+                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
+                            role="button">
+                            {{CountDelay}} Delay
+                        </a> -->
+                        <a href="javascript:void(0)" (click)="labelDelay()" [hidden]="HideStatusDropdown"
+                            class="badge badge-danger kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
+                    </ng-container>
+                    <ng-container *ngIf="CountCompleted > 0">
+                        <a href="javascript:void(0)" (click)="labelCompleted()" [hidden]="HideStatusDropdown"
+                            class="badge badge-success kt-badge--inline mr-2 btn-sm py-10px"> {{CountCompleted}}
+                            Completed</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="CountNewProject > 0">
+                        <a href="javascript:void(0)" (click)="labelNewProject()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
+                            style="background-color: #98c7bf;">
+                            {{CountNewProject}} New Project</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="CountAll_UA > 0">
+                        <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
+                            class="badge badge-info kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} Under
+                            Approval's</a>
+                    </ng-container>
+                    <ng-container *ngIf="CountProjectHold > 0">
+                        <a href="javascript:void(0)" (click)="labelProjectHold()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
+                            style="background-color: #646c9a;">
+                            {{CountProjectHold}} Project Hold</a>
+                    </ng-container>
+                    <ng-container *ngIf="CountRejecteds > 0">
+                        <a href="javascript:void(0)" (click)="labelRejecteds()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
+                            style="background-color: #e6c947;">
+                            {{CountRejecteds}} Rejected's</a>
+                    </ng-container>
+                    <ng-container *ngIf="Count_ToDoAchieved > 0">
+                        <a href="javascript:void(0)" (click)="labelToDoAchieved()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm py-10px text-white"
+                            style="background-color: #BB8FCE;"> {{Count_ToDoAchieved}} ToDo
+                            Achieved</a>
+                    </ng-container>
+                    <ng-container *ngIf="Count_ToDoAchieved > 0">
+                        <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
+                            class="badge kt-badge--inline mr-2 btn-sm py-10px text-white"
+                            style="background-color: #BB8FCE;"> {{Count_ToDoCompleted}} ToDo
+                            Completed</a>
+                    </ng-container>
+
+                    <!-- </div> -->
+                    <!-- <div class="kt-portlet__head-toolbar"> -->
+                    <!-- <div [hidden]="HideStatusDropdown" class="mr-3">
+                            <ng-multiselect-dropdown [placeholder]="'All' " class="mutlidropdown-set"
+                                [settings]="dropdownSettings_Status" [data]="_StatusCountDB"
+                                [(ngModel)]="ngStatusDrpDwn" (onSelect)="StatusSelect($event)"
+                                (onDeSelect)="StatusDeselect()">
+                            </ng-multiselect-dropdown>
+                        </div> -->
+                    <!-- <div [hidden]="HideStatusDropdown" class="mr-2">
+                        <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                            data-toggle="kt-tooltip" title="Click to sort Asc">
+                            <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+                        </a>
+                        <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                            data-toggle="kt-tooltip" title="Click to sort Desc">
+                            <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
+                        </a>
+                    </div> -->
+                    <div class="kt-todo__details">
+                        <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                            <li class="nav-item">
+                                <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2" role="button"
+                                    (click)="ProjectsGraphsClick()">
+                                    {{Project_Graph}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- Portfolio Projects -->
+            <div class="kt-portlet__body pt-3">
+                <div class="tab-content">
+                    <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
+
+                        <div class="card projects-list no-border kt-portlet__body_scroll kt-portlet__body_scroll1">
+                            <div class="card-body pt-0">
+                                <!--begin: Datatable -->
+                                <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
+
+                                            <ng-container
+                                            *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
+                                            
+                                            <div class="card my-1 shadow-sm brdr success " [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                                    'success':item1.Status=='Completed',
+                                                    'warning':item1.Status=='InProcess',
+                                                    'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
+                                                    'ForwardUnderApproval':item1.Status=='Forward Under Approval',
+                                                    'newProject':item1.Status=='New Project',
+                                                    'completeUnderApproval':item1.Status=='Completion Under Approval',
+                                                    'UnderApprovals':item1.Status=='Under Approval',
+                                                    'DeadlineExtended':item1.Status=='Deadline Extend Under Approval',
+                                                    'HoldunderApp':item1.Status=='Project Hold Under Approval',
+                                                    'projectholded':item1.Status=='Project Holded',
+                                                    'projecthold':item1.Status=='Project Hold',
+                                                    'TodoAchieved':item1.Status=='ToDo Achieved',
+                                                    'ToDoCompleted':item1.Status=='ToDo Completed',
+                                                    'NewTodo':item1.Status=='New Todo'}">
+                                                <div class="card-body d-flex align-items-center justify-content-around">
+                                                   
+                                                    <div class="icond">
+                                                        <a tabindex="0" class="p-lg-2 p-0 mr-2" role="button"
+                                                            placement="right" data-trigger="focus">
+                                                            <i class="fa fa-info-circle info-icon-cir"
+                                                                (click)="openInfo2(item1.Project_Code)"></i>
+                                                        <!-- <img src="assets/images/Info1.png" width="25px"> InfoContent2 -->
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item1.Project_Code)"></i>
+                                                        </a>
+                                                        <span *ngIf="item1.Link_Status==1;else not_Linked">
+                                                            <a class="curser-pointer"
+                                                                (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
+                                                                    width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
+
+                                                        </span>
+                                                        <ng-template #not_Linked>
+                                                            <a><img width="19px" class="black-white"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
+                                                        </ng-template>
+                                                    </div>
+                                                    <div class="mx-2 p-1" style="flex: 1;">
+                                                        <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}} 
+                                                            <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="mx-2 p-1">
+                                                        <span class="kt-widget__other">{{item1.Exec_BlockName}}</span>
+                                                    </div>
+                                                    <div class="mx-2 p-1">
+                                                        <div *ngIf="item1.ReportType==null;else ReportType">
+                                                            <span class="kt-widget__other">Developemt</span>
+                                                        </div>
+                                                        <ng-template #ReportType>
+                                                            <span
+                                                                class="kt-widget__other">{{item1.ReportType}}</span>
+                                                        </ng-template>
+                                                    </div>
+                                                    <div class="mx-2 p-1" style="flex: 1;">
+                                                        <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
+                                                    </div>
+                                                    <div class="mx-2 p-1">
+                                                        <span class="kt-widget__other text-nowrap ng-star-inserted"> 
+                                                            <div
+                                                                *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
+                                                                <span
+                                                                    class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
+                                                            </div>
+                                                            <ng-template #Projecttype>
+                                                                <span class="kt-widget__other text-nowrap">
+                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                            </ng-template>
+                                                            <!-- <div *ngIf="item1.Project_Block =='003'">
+                                                                <span class="kt-widget__other text-nowrap">
+                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                            </div>
+                                                            <div *ngIf="item1.Project_Block !='003'">
+                                                                <span class="kt-widget__other text-nowrap">
+                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                            </div> -->
+                                                        </span>
+                                                    </div>
+                                                    <div class="mx-2 p-1" data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
+                                                        <span class="kt-widget__other">
+                                                            <!-- |dateAgo -->
+                                                            {{item1.Project_StartDate|dateAgo}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="mx-2 p-1">
+                                                        <div *ngIf="item1.Status=='Delay'">
+                                                            <span
+                                                                class="text-danger font-weight-400">{{item1.Status}}
+                                                            </span>
+                                                            <span *ngIf="item1.Delaydays>0"
+                                                                class="text-danger delayDays">
+                                                                <strong>{{item1.Delaydays}}
+                                                                    days</strong>
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Completed'">
+                                                            <span
+                                                                class="text-success font-weight-400">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='InProcess'">
+                                                            <span
+                                                                class="text-warning font-weight-400">{{item1.Status}}</span>
+                                                            <br>
+                                                            <!-- <span *ngIf="item1.Delaydays<0"
+                                                                class="text-info delayDays">
+                                                                <strong>{{item1.Delaydays}} Days Left </strong>
+                                                            </span> -->
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Project Complete Rejected'">
+                                                            <span
+                                                                class="text-danger font-weight-400">{{item1.Status}}</span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Project Hold'">
+                                                            <span
+                                                                class="text-danger font-weight-400">Hold</span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Project Holded'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #646c9a;">Hold</span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Under Approval'">
+                                                            <span
+                                                                class="text-info font-weight-400">{{item1.Status}}</span>
+                                                            <br>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='New Todo'">
+                                                            <span
+                                                                class="text-warning font-weight-400">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Completion Under Approval'">
+                                                            <!-- <h2>Mubeen</h2> -->
+                                                            <span
+                                                                class="font-weight-400 text-info">{{item1.Status}}
+                                                            </span>
+
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Forward Under Approval'">
+                                                            <span
+                                                                class="font-weight-400 text-warning">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='New Project'">
+                                                            <span class="font-weight-400"
+                                                                style="color:#98c7bf">{{item1.Status}}</span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='New Project Rejected'">
+                                                            <span
+                                                                class="text-danger font-weight-400">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div
+                                                            *ngIf="item1.Status=='Deadline Extend Under Approval'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #E0B1D7;">{{item1.Status}}
+
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Enactive Under Approval'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #BD838C;">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div
+                                                            *ngIf="item1.Status=='Project Hold Under Approval'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #a85098;">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='ToDo Achieved'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #BB8FCE;">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='ToDo Completed'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #BB8FCE;">{{item1.Status}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mx-2 p-1" style="flex: 0;" *ngIf="viewpreference != 'View Only'">
+                                                        <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
+                                                            (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
+                                                            <i class="fas fa-trash-alt mr-0"
+                                                                aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>                                           
+                                                </div>
+                                            </div>
+                                        </ng-container>`
+
+                                            <div class="d-flex justify-content-between mt-1" *ngIf="_MessageIfNotOwner==''">
+                                                <div>
+                                                    <!-- [hidden]="Share_preferences" -->
+                                                    <div class="" [hidden]="Share_preferences">
+                                                        <button type="button" (click)="populateForm()"
+                                                            class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2">Add Project</button>
+
+                                                            <button type="button" (click)="share_Users()"
+                                                            data-trigger="focus" class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2">
+                                                            <i class="fas fa-share-alt"></i>Share</button>
+
+
+                                                        <button type="button" data-toggle="modal"
+                                                            data-target="#exampleModal2" [hidden]="_btnShareDetails"
+                                                            class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2">
+                                                            <i class="fas fa-file-alt"></i>Shared Details</button>
+                                                    </div>
+                                                </div>
+                                                <!-- <div>
+                                                    <div>
+                                                        <p class="mt-3 mb-0">Created On :
+                                                            <span>{{_Portfolio_CreatedDT | date:'dd-MM-yyyy'}}</span>
+                                                        </p>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div style="color: lightgrey; font-size: large; text-align: center;">
+                                        <span>
+                                            <b>{{_MessageIfNotOwner}}</b>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="pieBarCharts">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!--begin::Portlet-->
+                                <div class="kt-portlet">
+                                    <div class="kt-portlet__head">
+                                        <div class="kt-portlet__head-label">
+                                            <span class="kt-portlet__head-icon kt-hidden">
+                                                <i class="la la-gear"></i>
+                                            </span>
+                                            <h3 class="kt-portlet__head-title">
+                                                Projects
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="kt-portlet__body">
+                                        <div id="kt_flotcharts_8" style="height: 368px;">
+                                            <!-- Charts Sunday -->
+                                            <div id="chartdiv2" style="width: 100%; height: 385px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Portlet-->
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="kt-portlet">
+                                    <div class="kt-portlet__head">
+                                        <div class="kt-portlet__head-label">
+                                            <span class="kt-portlet__head-icon kt-hidden">
+                                                <i class="la la-gear"></i>
+                                            </span>
+                                            <h3 class="kt-portlet__head-title">
+                                                Projects Vs Team Member(s)
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <ng-multiselect-dropdown [placeholder]="' All      '"
+                                                class="mutlidropdown-set" [settings]="dropdownSettings_forEmpChart"
+                                                [(ngModel)]="BarChartEmp" [data]="EmpDropdwn"
+                                                (onSelect)="EmpChartOnSelect($event)"
+                                                (onDeSelect)="EmpChartOnDeselect()">
+                                            </ng-multiselect-dropdown>
+                                        </div>
+                                    </div>
+                                    <div class="kt-portlet__body">
+                                        <div id="kt_flotcharts_7" style="height: 368px;">
+                                            <!-- Sunday -->
+                                            <div id="chartdiv1" style="width: 90%; height: 400px"></div>
+                                            <!-- <app-bar-chart></app-bar-chart> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+    <!-- Model-Opens On Share Button  DIV FOUR-->
+    <!--Begin::Row   DIV Four-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Share Portfolio</h5>
+                    <button type="button" class="close" data-dismiss="modal" #closebutton aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" yt>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="exampleModalLabel"><strong>Shared Details</strong></h5>
+                        <h6 class="text-dark">Portfolio Owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
+                        </h6>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body min-scroll">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Shared To</th>
+                            <th>Shared By</th>
+                            <th>Preference Type</th>
+                            <th>Delete</th>
+                        </tr>
+                        <tr *ngFor="let item of _ShareDetailsList">
+                            <td>
+                                {{item.Shared_To}}
+                            </td>
+                            <td>
+                                {{item.Shared_By}}
+                                <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                        {{item.Shared_To}}
+                                    </div> -->
+                            </td>
+                            <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                    <td><span><strong>To : </strong></span>{{item.Shared_To}}</td>
+                                </div>
+                                <div *ngIf="item.SharedbyEmpNo!=Current_user_ID">
+                                    <td><span><strong>By : </strong></span>{{item.Shared_By}}</td>
+                                </div> -->
+                            <td>
+                                <span
+                                    [ngStyle]="{'color':item.Preferences=== 'Full Access' ? '#28a745' : '#dc3545'}">{{item.Preferences}}</span>
+                            </td>
+                            <td align="center">
+                                <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-0 px-2 py-1"
+                                    (click)="deleteSharedUsers(item.Portfolio_ID,item.EmployeeId,item.SharedbyEmpNo)"><i
+                                        class="fas fa-trash-alt mr-0"></i></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="Mdl_closebtn" data-dismiss="modal"
+                        (click)="Close_ShareModel()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- begin::Quick Panel -->
+    <div id="mysideInfobar" class="sideInfobar animate-right">
+        <router-outlet></router-outlet>
+    </div>
+    <!-- end::Quick Panel -->
+    <!-- dms memos sidebar-->
+    <div id="MemosSideBar" class="sideInfobar animate-right">
+        <div class="kt-portlet__head p-3 bg-primary">
+            <div class="kt-portlet__head-label">
+                <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                    (click)="_CloseMemosidebar()">&times;</a>
+                <div class="title-sidebar mb-0 text-white">
+                    <h5 class="curser-pointer">
+                        <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked
+                        Memos
+                    </h5>
+                    <span class="text-small text-white">{{_displayProjName}}</span>
+
+                </div>
+                <!-- <p class="text-small text-white">{{_displayProjName}}</p> -->
+            </div>
+        </div>
+        <div class="kt-portlet__body p-3">
+            <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+                <div class="card-body">
+                    <div class="kt-widget1 kt-widget1--fit">
+                        <div class="kt-widget1__item" *ngFor="let item of _MemosSubjectList; let i=index">
+                            <div class="kt-widget1__info kt-align-left">
+                                <h5 (click)="openUrl(item.Url)" class="curser-pointer">
+                                    <div *ngIf="item.Attachment==true;else Onlysubject">
+                                        <i class="fas fa-paperclip" style="color:#A9A9A9"> </i>
+                                        {{item.Subject}}
+                                    </div>
+                                    <ng-template #Onlysubject>
+                                        <i class="fas fa-circle"></i>
+                                        {{item.Subject}}
+                                    </ng-template>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Link memos Template -->
+<!-- share sidebar-->
+<div id="shareBar" class="sideInfobar offcanvas animate-right">
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-bold m-0"> Share Portfolio </h4>
+            <a href="javascript:void(0)" (click)="_CloseshareBar()" class="closebtn btn btn-xs btn-icon btn-hover-primary mt-2">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body multi">                
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Select Company</label>
+                        <div>
+                            <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
+                                name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
+                                [settings]="dropdownSettings_Cmp" [data]="Company_List"
+                                (onSelect)="OnCompanySelect($event)" (onDeSelect)="OnCmpDeselect()">
+                            </ng-multiselect-dropdown>
+                        </div>
+                        <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Select User</label>
+                        <div>
+                            <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
+                                name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
+                                [settings]="dropdownSettings_Emp" [data]="EmployeeList"
+                                (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
+                            </ng-multiselect-dropdown>
+                             <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
+                             bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
+                            
+                                <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
+                                    {{item.TM_DisplayName}}
+                                </ng-option>
+                            
+                            </ng-select> -->
+
+                        </div>
+                        <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="mb-3">Preferences</label>
+                        <div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                        (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
+                                        name="optradio">View Only
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                        (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
+                                        name="optradio">Full Access
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
+                </form>
+                <div class="pt-3 text-right">                    
+                    <button type="button" class="btn btn-secondary btn-sm mr-3"
+                        (click)="_CloseshareBar()">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm"
+                        (click)="share()">Share</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="rightbar-overlay"  (click)="closeInfo()"></div>
+
+
+<!-- <div class="card my-1 shadow-sm brdr brlight">
+    <div class="card-body d-flex align-items-center justify-content-around">
+        <div class="icond">
+            <a class="p-lg-2 p-0 mr-2"><i class="fa fa-info-circle info-icon-cir"></i></a>
+        </div>
+        <div class="mx-2 p-1" style="flex: 1;">
+            <p class="kt-widget__title mb-0" style="width: 250px;">Project Name</p>
+        </div>
+        <div class="mx-2 p-1">
+            <span class="kt-widget__other">Project Type</span>
+        </div>
+        <div class="mx-2 p-1">
+            <span class="kt-widget__other">Category</span>
+        </div>
+        <div class="mx-2 p-1" style="flex: 1;">
+            <span class="kt-widget__other">Employee Name</span>
+        </div>
+        <div class="mx-2 p-1">
+            <span class="kt-widget__other">Deadline</span>
+        </div>
+        <div class="mx-2 p-1" style="flex: 0.5;">
+            <span class="kt-widget__other">Start Date</span>
+        </div>
+        <div class="mx-2 p-1">
+            <span class="kt-widget__other">Status</span>
+        </div>
+        <div class="mx-2 p-1 flex-0">
+            <span class="kt-widget__other"></span>
+        </div>
+
+    </div>
+</div> -->

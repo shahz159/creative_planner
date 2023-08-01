@@ -1,0 +1,134 @@
+<!-- New Task Assigning Form -->
+    <div class="p-4">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5" kt-hidden-height="40">
+            <h3 class="font-weight-bold m-0">Assign Task/Project</h3>
+            <a href="javascript:void(0)" class="btn btn-xs btn-icon btn-hover-primary" (click)="closeInfo()">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+        <div class="form-group">
+            <label>Project Type : </label>
+            <!-- <span class="text-danger">*</span> -->
+            <mat-select [(ngModel)]="selectedProjectType" placeholder="Select project type" class="form-control">
+                <mat-option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
+                    {{item.Exec_BlockName}}
+                </mat-option>   
+            </mat-select>
+        </div>
+        <div class="form-group" [hidden]="selectedProjectType!='003' && selectedProjectType!='008' ">
+            <mat-select [(ngModel)]="SelectedSubmissionType" name="Select Type" placeholder="Submission type"
+                class="form-control">
+                <mat-option [value]="0">Select Type</mat-option>
+                <mat-option [value]="1">Daily</mat-option>
+                <mat-option [value]="2">Weekly</mat-option>
+                <mat-option [value]="4">Monthly</mat-option>
+                <mat-option [value]="8">Quarterly</mat-option>
+                <mat-option [value]="10">HalfYearly</mat-option>
+                <mat-option [value]="16">Annually</mat-option>
+            </mat-select>
+        </div>
+        <div class="form-group">
+            <label> Task/Project Name : </label>
+            <!-- <span class="text-danger">*</span> -->
+            <input type="text" class="form-control" placeholder="Enter task name" aria-describedby="basic-addon1"
+                [(ngModel)]="_taskName" >
+        </div>
+        <div class="form-group">
+            <label>Description : </label>
+            <!-- <span class="text-danger">*</span> -->
+            <textarea class="form-control" aria-describedby="basic-addon1" placeholder="Enter task description" [(ngModel)]="_description"
+                style="height: 100px"></textarea>
+        </div>
+        <!-- <div class="form-group">
+            <label>Assign To : <strong></strong> <span class="text-danger">*</span> </label>
+            <ng-multiselect-dropdown [placeholder]="'Select Employee'" [settings]="dropdownSettings_Employee"
+                [data]="EmployeeList" [(ngModel)]="SelectedEmplList" (onSelect)="EmployeeOnSelect($event)"
+                (onDeSelect)="EmployeeOnDeselect($event)">
+            </ng-multiselect-dropdown>  - {{item.TM_DisplayName}} portfolio owner name
+        </div> -->
+
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+            <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
+            <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+                    {{item.DisplayName}}
+                </ng-option>
+            </ng-select>
+            <span *ngIf="assign.touched && !SelectedEmplList" style="color:red">Assign To required!</span>
+        </div>
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+            <label>Link Portfolio : <strong></strong></label>
+            <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
+                <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
+                    {{item.Portfolio_Name}}
+                </ng-option>
+            </ng-select>
+        </div>
+
+        <div class="d-flex gap-1">
+            <div class="form-group flex-1">
+                <label>Start Date : </label>
+                <!-- <span class="text-danger">*</span> -->
+                <div class="input-group" (click)="startdatechecker()">
+                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                        placeholder="Start date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+                </div>
+                <span *ngIf ="noStartDate==true" style="color:red">Start Date required!</span>
+            </div>
+
+            <div class="form-group flex-1" *ngIf="_StartDate!=null">
+                <label>End Date :</label>
+                <!-- <span class="text-danger">*</span> -->
+                <div class="input-group" (click)="datesCheck()">
+                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
+                        placeholder="End date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </div>
+                </div>
+                <span *ngIf ="noEndDate == true" style="color:red">End Date required!</span>
+            </div>
+            <div class="form-group flex-1" *ngIf="_StartDate==null">
+                <label>End Date :</label>
+                <!-- <span class="text-danger">*</span> -->
+                <div class="input-group" (click)="enddateChecker()">
+                    <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
+                        (click)="picker2.open()" 
+                        placeholder="End Date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Remarks</label>
+            <textarea class="form-control" aria-label="With textarea" placeholder="Enter task rearks if any" [(ngModel)]="_remarks"
+                style="height: 111px;"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="custom-file pl-1">
+                <label for="exampleFormControlFile1">Reference</label>
+                <!-- <input type="file" class="form-control-file" id="uploadFile" accept="application/pdf"
+                    [(ngModel)]="_inputAttachments"> -->
+                <input type="file" class="form-control-file" id="uploadFile" value="hello" accept="application/pdf"
+                    (change)="onFileChangeATP($event)">
+            </div>
+        </div>
+
+        <div class="form-group mb-1">
+            <button type="submit" class="btn btn-primary"
+            [disabled]="!SelectedEmplList"
+                (click)="OnAssignTask_Submit()" style="width: 150px;">Submit
+            </button>
+        </div>
+    </div>
+    <!--   -->
