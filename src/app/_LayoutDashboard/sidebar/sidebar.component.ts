@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
 
     $(document).ready(function() {  
       // import('../../../assets/js/test.js');
-      $('<script/>',{type:'text/javascript', src:'assets/js/test.js'}).appendTo('head');
+      $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
     });
 
     tippy('#dashboard', {

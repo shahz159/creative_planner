@@ -145,4 +145,11 @@ NewGetScheduledtime(obj: CalenderDTO){
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduleddatetime", this.obj_CalenderDTO);
 
 }
+NewGetMeetingdata_notes(obj: CalenderDTO){
+  
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_datas", this.obj_CalenderDTO);
+
+}
 }

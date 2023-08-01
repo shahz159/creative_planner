@@ -69,6 +69,7 @@ Endtms:any;
 _SEndDate:any;
 scstartdate:any;
 _StartDate:any;
+Guestcount:number;
 daysSelectedII: any = [];
 minDate = moment().format("YYYY-MM-DD").toString();
 ScheduleType: any;
@@ -167,6 +168,7 @@ ScheduleType: any;
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
+    this.GetMeetingnotes_data();
     this. GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
     this.GetProjectAndsubtashDrpforCalender()
@@ -321,8 +323,7 @@ document.querySelector('.reset').addEventListener('click', e => {
   // }
 
   addBulletPointsOnEnter(event: any) {
-    
-   
+
     if (event.keyCode === 32 || event.keyCode === 13 ) {
     
    
@@ -339,6 +340,20 @@ document.querySelector('.reset').addEventListener('click', e => {
       });
     }
    
+  }
+ 
+  Meetingnotes_time:any=[];
+  GetMeetingnotes_data(){
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID ;
+    this._calenderDto.Emp_No=this.CurrentUser_ID;
+    this.CalenderService.NewGetMeetingdata_notes(this._calenderDto).subscribe
+    (data => {
+      this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
+      this.Notes_Type=this.Meetingnotes_time[0]['Meeting_notes']
+      // console.log(this.Meetingnotes_time,'notes111')
+    });
+
   }
 
 
@@ -544,7 +559,7 @@ document.querySelector('.reset').addEventListener('click', e => {
   getScheduleId(){
     this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
   }
- 
+  totalguest:number;
   meeting_details(){
     
     this.Schedule_ID = this.Scheduleid;
@@ -558,10 +573,12 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.Endtms=this.EventScheduledjson[0]['Ed_Time']
           this._StartDate=this.EventScheduledjson[0]['Schedule_date']
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+          this.totalguest=this.User_Scheduledjson.length
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
            element.isChecked=true;
           });
+          this.Guestcount=this.checkedusers.length;
           console.log(this.checkedusers,"chec")
           this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
           this.Project_NameScheduledjson.forEach(element => {
@@ -710,10 +727,12 @@ document.querySelector('.reset').addEventListener('click', e => {
         let index = this.checkedusers.indexOf(event.target.value);
         if(index > -1){
           this.checkedusers.splice(index,1);
+          
         }
        
       }
-    
+      this.Guestcount= this.checkedusers.length
+      
   }
 
   OnCardClick(P_id: any) {
@@ -751,6 +770,7 @@ document.querySelector('.reset').addEventListener('click', e => {
 
       });
   }
+  
   Insert_meetingreport(){
    
    this.Action_item=[]

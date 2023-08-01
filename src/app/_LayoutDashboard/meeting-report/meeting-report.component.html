@@ -1,9 +1,12 @@
 <div class="grey-bg side_view" >
 <div class="col-md-12 p-3"  *ngFor="let item of EventScheduledjson">
     <div class="card meet-card">
-        <div class="card-header">
+        <div class="card-header d-flex align-items-center justify-content-between">
             <div class="">
                 <h5 class="mb-0 card-title">Meeting Report</h5>
+            </div>
+            <div class="kt-timer">
+                <span id="countdown"> 12:43 <small>Sec</small></span>
             </div>
         </div>
 
@@ -173,7 +176,7 @@
                             </div>
                             <div class="rgt-des">
                                 <div class="">
-                                    <div class="main-s">{{User_Scheduledjson.length}} guests</div>
+                                    <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
                                     <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
                                 </div>
                             </div>
@@ -614,7 +617,7 @@
                         </div>
                         <div class="col-md-10 pr-3">
                             <ng-select  class="kt-input form-control" name="ngEmployeeDropdown"
-                                    placeholder="Select Guest " [(ngModel)]="ngEmployeeDropdown">
+                                    placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
                                     <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                                         {{item.DisplayName}} </ng-option>
                             </ng-select>
@@ -695,26 +698,26 @@
             </div>
             <div class="modal-body">
                
-                <div id="NameDate" class="main-title">
-                    <div class="boxcl-div">
+                <div id="NameDate" class="main-title" *ngFor="let item of EventScheduledjson">
+                    <div class="boxcl-div" >
                         <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
                     </div>
                     <div id="" class="title-right">
                         <div class="title-area">
                             <div class="title-main">
-                                <span id="title1">Daily creative planner meeting with team</span>
+                                <span id="title1">{{item.Task_Name}}</span>
                             </div>
                            
                             <div class="d-flex">
-                                <div class="title-day">Wednesday, July 19 <span _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">9:00AM – </span>
+                                <div class="title-day">{{item.Schedule_date | date:'d  EEE, MMMM YYYY'}}<span _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}} – </span>
                                 </div>
-                                <div _ngcontent-gnj-c394="" class="title-day"> 10:00AM </div>
+                                <div _ngcontent-gnj-c394="" class="title-day"> {{item.NewSt_Time}} </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- /*------location----*/ -->
-                <div  id="location" class="eve-area ng-star-inserted">
+                <!-- <div  id="location" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
                             <svg  focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn"><path _ngcontent-tgi-c394="" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"></path><circle _ngcontent-tgi-c394="" cx="12" cy="9" r="2.5"></circle></svg>
@@ -728,7 +731,7 @@
                             <div class="main-s"></div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- /*------guests----*/ -->
                 <div class="eve-area ng-star-inserted">
@@ -739,7 +742,7 @@
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s">2 guests</div>
+                            <div class="main-s"> <span class="kt-dt-cnt-view">{{Guestcount}}/{{totalguest}}</span> Participants</div>
                         </div>
                     </div>
                 </div>
@@ -747,24 +750,8 @@
                 <!-- /*-----guests list ----------*/ -->
 
                 <div class="avar-div">
-                    <div class="d-flex align-items-center ng-star-inserted">
-                        <div class="px-2 position-relative">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px" style="width: 20px;"><path _ngcontent-nyr-c394="" fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path><rect _ngcontent-nyr-c394="" fill="none" width="192" height="192"></rect></svg>
-                            </span>
-                            <span aria-hidden="true" class="statusicn">
-                                <svg  xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted"><path _ngcontent-nyr-c394="" fill="#CEEAD6" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-nyr-c394="" fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
-                            </span>
-                        </div>
-                        <div  class="rgt-des ml-2">
-                            <div>
-                                <div class="main-s">Md Waseem Akram</div>
-                                <div class="sub-s text-ellp">Dot Net Developer/Devbox Software Pvt Ltd</div>
-                    
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center ng-star-inserted">
+                   
+                    <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2 position-relative">
                             <span ><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px" style="width: 20px;"><path _ngcontent-nyr-c394="" fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path><rect _ngcontent-nyr-c394="" fill="none" width="192" height="192"></rect></svg>
                             </span>
@@ -779,7 +766,7 @@
                                 <div class="sub-s text-ellp">Jr. Dot Net Developer/Devbox Software Pvt Ltd</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                  <!-- /*-----Projects ----------*/ -->
@@ -791,13 +778,13 @@
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm">Projects</div>
+                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">2</span> Projects</div>
                         </div>
                     </div>
                 </div>
                  <!-- /*-----Projects list----------*/ -->
                 <div class="side-div ng-star-inserted">
-                    <div class="d-flex align-items-center ng-star-inserted">
+                    <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
@@ -811,7 +798,7 @@
                    
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                    
                 </div>
 
@@ -824,13 +811,13 @@
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm">Portfolios</div>
+                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">2</span> Portfolios</div>
                         </div>
                     </div>
                 </div>
                  <!-- /*-----Portfolios list----------*/ -->
                 <div class="side-div ng-star-inserted">
-                    <div class="d-flex align-items-center ng-star-inserted">
+                    <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
@@ -859,7 +846,7 @@
                    
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                    
                 </div>
 
@@ -872,13 +859,13 @@
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm">DMS</div>
+                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">2</span> DMS</div>
                         </div>
                     </div>
                 </div>
                  <!-- /*-----DMS list----------*/ -->
                 <div class="side-div ng-star-inserted">
-                    <div class="d-flex align-items-center ng-star-inserted">
+                    <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="svg-icn"><path _ngcontent-mja-c394="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-mja-c394="" d="M16 12l-6 6V6z"></path></svg>
@@ -908,12 +895,12 @@
                    
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                    
                 </div>
 
                   <!-- /*-----Meeting notes ----------*/ -->
-                  <div id="project" class="eve-area ng-star-inserted">
+                  <!-- <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
                              <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect height="1" transform="translate(32 5) rotate(-180)" width="12" x="10" y="2"></rect><rect height="1" transform="translate(32 9) rotate(-180)" width="12" x="10" y="4"></rect><path d="M9,3V4H8A1,1,0,0,0,7,5V7H6V5A2,2,0,0,1,8,3Z"></path><path d="M23,3V4h1a1,1,0,0,1,1,1V7h1V5a2,2,0,0,0-2-2Z"></path><rect height="1" transform="translate(-10 23) rotate(-90)" width="19" x="-3" y="16"></rect><rect height="1" transform="translate(11 40) rotate(-90)" width="15" x="18" y="14"></rect><path d="M8,30V29H8a1,1,0,0,1-1-1V26H6v2a2,2,0,0,0,2,2Z"></path><path d="M21.91,21.15c-.57-.32-.91-.72-.91-1.15a6.09,6.09,0,0,1-.21,1.59c-1,4.07-6,7.18-12.12,7.4H8v1h.72c8.86-.15,16.07-3.15,17.14-7A3.77,3.77,0,0,0,26,22,8.72,8.72,0,0,1,21.91,21.15Zm-5.78,7a10.5,10.5,0,0,0,5.54-6,8.94,8.94,0,0,0,3.15.79C24.07,25,20.91,27,16.13,28.13Z"></path><path d="M11,4V5H10A1,1,0,0,1,9,4V3h1V4Z"></path><path d="M11,3V2H10A1,1,0,0,0,9,3V4h1V3Z"></path><path d="M21,4V5h1a1,1,0,0,0,1-1V3H22V4Z"></path><path d="M21,3V2h1a1,1,0,0,1,1,1V4H22V3Z"></path></g></svg>
@@ -924,8 +911,8 @@
                             <div class="main-s pro-nm">Meeting notes</div>
                         </div>
                     </div>
-                </div>
-                 <!-- /*-----Meeting notes list----------*/ -->
+                </div> 
+              
                 <div class="side-div ng-star-inserted">
                     <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
@@ -992,7 +979,7 @@
                     </div>
                     
                    
-                </div>
+                </div>-->
 
                    <!-- /*-----Meeting notes ----------*/ -->
                    <div id="project" class="eve-area ng-star-inserted">
@@ -1003,47 +990,46 @@
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm">Assign Task</div>
+                            <div class="main-s pro-nm"><span class="kt-dt-cnt-view">12</span> Assign Task</div>
                         </div>
                     </div>
                 </div>
                  <!-- /*-----Meeting notes list----------*/ -->
                 <div class="side-div ng-star-inserted">
-                    <div class="d-flex align-items-center ng-star-inserted">
-                        <div class="px-2">
-                            <span>
-                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
-                            </span>
-                        </div>
-                        <div class="rgt-des">
-                            <div>
-                                <div class="main-s">
-                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
-                                </div>
-                   
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="d-flex align-items-center ng-star-inserted">
-                        <div class="px-2">
-                            <span>
-                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
-                            </span>
-                        </div>
-                        <div class="rgt-des">
-                            <div>
-                                <div class="main-s">
-                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
-                                </div>
-                   
-                            </div>
-                        </div>
-                    </div>
-
-                  
                     
+                    <!-- <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
+                                </div>
                    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center ng-star-inserted">
+                        <div class="px-2">
+                            <span>
+                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"></path> </g></svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div>
+                                <div class="main-s">
+                                    <a href="javascript:void(0)"> Stream Application development and Integration</a>
+                                </div>
+                   
+                            </div>
+                        </div>
+                    </div> -->
+
                 </div>
 
             </div>

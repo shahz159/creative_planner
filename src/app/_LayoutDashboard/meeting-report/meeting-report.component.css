@@ -1036,3 +1036,24 @@ span.statusicn {
   position: absolute;
   top: 4px;
 }
+.kt-timer span {
+  font-weight: 600;
+  font-size: 16px;
+  color: #dc3545;
+  text-transform: uppercase;
+  background-color: #ffeaec;
+  border-radius: 5px;
+  padding: 5px;
+}
+.kt-timer small {
+  font-size: 11px;
+  text-transform: capitalize;
+}
+span.kt-dt-cnt-view {
+  color: #2786fb;
+  border-right: 1px solid #ccc;
+  padding-right: 10px;
+  margin-right: 8px;
+  width: 26px;
+  display: inline-block;
+}
