@@ -12,6 +12,9 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import * as moment from 'moment';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',

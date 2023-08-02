@@ -1,14 +1,18 @@
 <div class="grey-bg side_view" >
 <div class="col-md-12 p-3"  *ngFor="let item of EventScheduledjson">
+
     <div class="card meet-card">
-        <div class="card-header d-flex align-items-center justify-content-between">
+        <!-- <div class="card-header d-flex align-items-center justify-content-between">
             <div class="">
                 <h5 class="mb-0 card-title">Meeting Report</h5>
             </div>
             <div class="kt-timer">
                 <span id="countdown"> 12:43 <small>sec</small></span>
+                <span class="time-play-btn"><i data-toggle="tooltip" title="click here to release project" class="fas fa-play mx-1 curser-pointer relse-act"></i></span>
+                <span class="time-play-btn d-none"><i data-toggle="tooltip" title="click here to release project" class="fas fa-pause p-2 mb-1 curser-pointer relse-act"></i></span>
+           
             </div>
-        </div>
+        </div> -->
 
         <div class="header2 pt-3">
             
@@ -175,10 +179,34 @@
                                 </span>
                             </div>
                             <div class="rgt-des">
-                                <div class="">
-                                    <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
-                                    <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
+                                <div class="d-flex justify-content-between">
+                                    <div class="">
+                                        <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
+                                        <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
+                                    </div>
+                                    <!-- <div class="kt-add-user curser-pointer">
+                                       <span type="button" id="add-users-kt" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-user-plus"></i> </span>
+                                       <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="add-users-kt" >
+                                        <div class="add-user-body">
+                                            <lable class="cus-lbl">Add Participants</lable>
+                                            <ng-select class="kt-input form-control" id="startid" placeholder="Start Time" (click)="$event.stopPropagation()"
+                                    [(ngModel)]="Startts" (open)="onfocus($event)" (change)="addstarttime()">
+                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                        {{item}}</ng-option>
+                                </ng-select>
+                                        </div>
+                                        <div class="form-group mb-0 ng-star-inserted text-right mt-3">
+                                            <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                            <button type="submit" class="btn btn-info btn-sm">Submit</button> 
+                                        </div>
+                                           
+                                            
+                                        </div>
+                                    </div> -->
                                 </div>
+                               
+
+                               
                             </div>
                         </div>
                         <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
@@ -232,10 +260,20 @@
                                     </span> 
                                 </div>
                                 <div class="rgt-des ml-2"  >
-                                    <div class="">
-                                        <div class="main-s" name="user" >{{_user.TM_DisplayName}}</div>
-                                        <div class="sub-s text-ellp">{{_user.Designation_Name}}/{{_user.Com_Name}}</div>
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div class="">
+                                            <div class="main-s" name="user" >{{_user.TM_DisplayName}}</div>
+                                            <div class="sub-s text-ellp">{{_user.Designation_Name}}/{{_user.Com_Name}}</div>
+                                        </div>
+                                        <!-- <div class="admin-check">
+                                            <span _ngcontent-hko-c392="" aria-hidden="true" class="admin-check-svg">
+                                                <svg _ngcontent-hko-c392="" xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                    <path _ngcontent-hko-c392="" fill="#5867dd" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-hko-c392="" fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+                                                </span>
+                                                <span>Admin</span>
+                                        </div> -->
                                     </div>
+                                  
                                 </div>
                             </div>
 
@@ -439,7 +477,7 @@
                         <div class="card-body">
 
                             <div class="notes-section">
-                                <div class="form-group" id="Descrip_Name" *ngIf="Meetingstatuscom==Completed">
+                                <div class="form-group mt-notes" id="Descrip_Name" *ngIf="Meetingstatuscom==Completed">
                                     <label class="cus-lbl">Meeting notes </label>
                                     <angular-editor [(ngModel)]="Notes_Type"  #myTextarea (keyup)="addBulletPointsOnEnter($event)" [config]="config"></angular-editor>
                                 </div>
@@ -480,11 +518,32 @@
                                         <label class="task-name">{{item.Task_Name}}</label>
                                         <div class="task-actions">
                                                                                        
-                                            <button class="task-btns" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                            <!-- <button class="task-btns" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                                                   </svg>                                                                                                                                                                                    
-                                            </button>    
+                                            </button>     -->
+
+                                            <span  mat-icon-button [matMenuTriggerFor]="menu"
+                                            aria-label="Example icon-button with a menu" matTooltip="More"
+                                            class="cursor-pointer ast-kt-dw">
+                                            <mat-icon color="primary">more_vert</mat-icon>
+                                        </span>
+                                        <mat-menu #menu="matMenu" xPosition="after">
+
+                                            <button mat-menu-item mat
+                                                (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                <span>Assign Task/Project</span>
+                                            </button>
+
+                                            <button mat-menu-item mat
+                                                (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                <span>Add Action To Project</span>
+                                            </button>
+                                        </mat-menu>
+                                            
                                                               
                                         </div>
                                             
@@ -495,6 +554,7 @@
                                             </button>
 
                                         </div>
+                                        
                                         
                                          
                                       <!-- </div>
@@ -693,6 +753,8 @@
         </div>
 
     </div>
+
+    
 </div>
 </div>
 

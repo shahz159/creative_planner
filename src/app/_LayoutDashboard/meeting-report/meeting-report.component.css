@@ -465,7 +465,7 @@ img.dms-icn {
     }
   }
 ::ng-deep .angular-editor-textarea {
-    min-height: 8rem !important;
+    height: 10rem !important;
 }
 .drops{
     z-index: 95;
@@ -1038,12 +1038,12 @@ span.statusicn {
 }
 .kt-timer span {
   font-weight: 600;
-  font-size: 16px;
-  color: #dc3545;
-  text-transform: uppercase;
-  background-color: #ffeaec;
-  border-radius: 5px;
-  padding: 5px;
+    font-size: 16px;
+    color: #2786fb;
+    text-transform: uppercase;
+    background-color: #e4f0ff;
+    border-radius: 5px;
+    padding: 5px;
 }
 .kt-timer small {
   font-size: 11px;
@@ -1059,4 +1059,36 @@ span.kt-dt-cnt-view {
 }
 .note-text {
   font-family: Arial, sans-serif;
+}
+span.time-play-btn i {
+  font-size: 12px;
+  position: relative;
+  top: -2px;
+}span.time-play-btn {
+  margin-left: 3px;
+  font-size: 12px;
+ 
+}
+.ast-kt-dw {
+  position: relative;
+  top: 4px;
+}
+.admin-check {
+  position: relative;
+}
+.admin-check {
+  margin-right: 20px;
+}
+.admin-check span {
+  text-transform: capitalize;
+  font-style: italic;
+  font-size: 11px;
+}
+span.admin-check-svg {
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
+}
+.angular-editor-textarea {
+  height: 135px !important;
 }
