@@ -1057,3 +1057,6 @@ span.kt-dt-cnt-view {
   width: 26px;
   display: inline-block;
 }
+.note-text {
+  font-family: Arial, sans-serif;
+}
