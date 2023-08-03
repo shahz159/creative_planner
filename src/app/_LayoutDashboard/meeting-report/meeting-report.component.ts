@@ -381,6 +381,7 @@ document.querySelector('.reset').addEventListener('click', e => {
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.Meetingstatuscom= this.CompletedMeeting_notes[0]['meeting_status']
+     
       this.Meetingnotescom= this.CompletedMeeting_notes[0]['Notes']
       if(this.Meetingstatuscom=='Completed'){
         this.isCheckboxDisabled= true;
@@ -834,6 +835,7 @@ document.querySelector('.reset').addEventListener('click', e => {
     (data => {
       this.notifyService.showSuccess("Successfully", "Completed");
       // window.close();
+      this.GetcompletedMeeting_data()
     });
     const modalElement = document.getElementById('exampleModal');
 
@@ -847,6 +849,7 @@ document.querySelector('.reset').addEventListener('click', e => {
         modalBackdrop.parentNode?.removeChild(modalBackdrop);
       }
     }
+    
 
   }
   open_side(){

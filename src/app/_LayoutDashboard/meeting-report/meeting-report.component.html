@@ -481,7 +481,7 @@
                                     <label class="cus-lbl">Meeting notes </label>
                                     <angular-editor [(ngModel)]="Notes_Type"  #myTextarea (keyup)="addBulletPointsOnEnter($event)" [config]="config"></angular-editor>
                                 </div>
-                                <div class="eve-area py-2"  *ngIf="Meetingstatuscom!=Completed">
+                                <div class="eve-area py-2"  *ngIf="Meetingstatuscom!=Completed && Meetingnotescom.length>0">
                                     
                                     <div class="rgt-des">
                                         <label class="cus-lbl">Meeting notes </label>
@@ -501,17 +501,28 @@
 
                             <div class="action-section">
                                 <div class="todo-main">
-                                    <div class="task-header">
+                                    <div class="task-header" *ngIf="todocount>0">
                                       <h1 class="task-header-title">Assign Task</h1>
                                       <div class="task-tools">
                                         <div class="task-count"></div>
                                       </div>
-                                      <form class="task-form"*ngIf="Meetingstatuscom==Completed">
+                                      <form class="task-form"  *ngIf="Meetingstatuscom==Completed">
                                         <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
                                         <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
                                       </form>
                                     </div>
+                                    <div class="task-header"*ngIf="Meetingstatuscom==Completed">
+                                        <h1 class="task-header-title">Assign Task</h1>
+                                        <div class="task-tools">
+                                          <div class="task-count"></div>
+                                        </div>
+                                        <form class="task-form"  *ngIf="Meetingstatuscom==Completed">
+                                          <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
+                                          <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
+                                        </form>
+                                      </div>
 
+                                    
                                     <div class="todo-list">
                                       <div class="task-item"  *ngFor="let item of _TodoList; let i=index;">
                                         <input class="task-status" type="checkbox">
