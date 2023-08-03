@@ -1504,7 +1504,7 @@ span.legend-box {
   height: 1rem;
   display: inline-block;
   border-radius: 2px;
-  background: #a875ff;
+  background: #583c89;
 }
 .legend-box.two{
   background: #2f8de4;
@@ -1552,4 +1552,14 @@ span.legend-box {
 .custom-link {
   color: navy;
   text-decoration: underline;
+}
+h6.kt-action-name-md span {
+  font-size: 16px;
+  font-weight: 500;
+}
+.kt-project-md{
+  border-left: 3px solid #583c89 !important;
+}
+.kt-action-md{
+  border-left: 3px solid #2f8de4 !important;
 }
