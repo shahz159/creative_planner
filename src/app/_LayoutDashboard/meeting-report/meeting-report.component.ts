@@ -12,6 +12,9 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import * as moment from 'moment';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -70,8 +73,18 @@ _SEndDate:any;
 scstartdate:any;
 _StartDate:any;
 Guestcount:number;
+projectcount:number;
+portfoliocount:number;
+totalguest:number;
+totalproject:number;
+totalportfolios:number;
+totaldms:number;
+todo:any=[];
+todocount:number;
+dmscount;number;
 daysSelectedII: any = [];
 minDate = moment().format("YYYY-MM-DD").toString();
+disablePreviousDate = new Date();
 ScheduleType: any;
   config: AngularEditorConfig = {
     editable: true,
@@ -175,8 +188,8 @@ ScheduleType: any;
     this.GetTimeslabfordate();
  this.meeting_details();
  this.getScheduleId();
- 
-
+ this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+this. GetcompletedMeeting_data();
  // modal caledar start
  var dragging = false;
 var days = document.querySelectorAll('.day');
@@ -352,6 +365,28 @@ document.querySelector('.reset').addEventListener('click', e => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
       this.Notes_Type=this.Meetingnotes_time[0]['Meeting_notes']
       // console.log(this.Meetingnotes_time,'notes111')
+    });
+
+  }
+  CompletedMeeting_notes:string;
+  Meetingstatuscom:string;
+  Meetingnotescom:string;
+  isCheckboxDisabled: boolean = false;
+  
+  GetcompletedMeeting_data(){
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID ;
+    this._calenderDto.Emp_No=this.CurrentUser_ID;
+    this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
+    (data => {
+      this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
+      this.Meetingstatuscom= this.CompletedMeeting_notes[0]['meeting_status']
+     
+      this.Meetingnotescom= this.CompletedMeeting_notes[0]['Notes']
+      if(this.Meetingstatuscom=='Completed'){
+        this.isCheckboxDisabled= true;
+      }
+      console.log( this.Meetingnotescom,'notes11122')
     });
 
   }
@@ -559,7 +594,7 @@ document.querySelector('.reset').addEventListener('click', e => {
   getScheduleId(){
     this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
   }
-  totalguest:number;
+
   meeting_details(){
     
     this.Schedule_ID = this.Scheduleid;
@@ -573,7 +608,7 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.Endtms=this.EventScheduledjson[0]['Ed_Time']
           this._StartDate=this.EventScheduledjson[0]['Schedule_date']
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-          this.totalguest=this.User_Scheduledjson.length
+          this.totalguest=this.User_Scheduledjson.length;
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
            element.isChecked=true;
@@ -581,27 +616,29 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.Guestcount=this.checkedusers.length;
           console.log(this.checkedusers,"chec")
           this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
+          this.totalproject=this.Project_NameScheduledjson.length;
           this.Project_NameScheduledjson.forEach(element => {
             element.isChecked=true;
             this.checkedproject.push(element.stringval);
-          
-          
+
           });
+          this.projectcount= this.checkedproject.length;
           console.log(this.checkedproject,"chec1")
          
           this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+        this.totalportfolios=this.portfolio_Scheduledjson.length;
         this.portfolio_Scheduledjson.forEach(element => {
           this.checkedportfolio.push(element.numberval);
           element.isChecked=true;
         });
-       
         this.checkedportfolio = this.checkedportfolio.map((num) => num.toString());
+        this.portfoliocount=this.checkedportfolio.length;
         console.log(this.checkedportfolio,"chec2")
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
        
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
-        
+        this.totaldms=this.DMS_Scheduledjson.length;
         this.dmsIdjson = [];
         if (this.DMS_Scheduledjson.length > 0) {
           
@@ -624,16 +661,17 @@ document.querySelector('.reset').addEventListener('click', e => {
               });
               this.checkeddms = this.checkeddms.map((num) => num.toString());
              
-       
+              this.dmscount=this.checkeddms.length;
+             
         });
       }
-
+     
     });
    
   
   
 }
-  todo:any=[];
+
   EnterSubmit(_Demotext) {
 
     if (_Demotext != "" && _Demotext != undefined && _Demotext !=null) {
@@ -650,6 +688,7 @@ document.querySelector('.reset').addEventListener('click', e => {
           //console.log("Data---->", data);
           this._TodoList = JSON.parse(data['Todomeeting']);
          
+          this.todocount= this._TodoList.length;
          
           let message: string = data['Message'];
           console.log("Data---->", this._TodoList);
@@ -658,6 +697,7 @@ document.querySelector('.reset').addEventListener('click', e => {
           this.notifyService.showSuccess("Successfully", "Added");
           // this.closeInfo();
         });
+      
     }
     
     // else {
@@ -682,7 +722,7 @@ document.querySelector('.reset').addEventListener('click', e => {
       console.log( this.Meeting_Detailsdata,"kkk")
     }
   
-
+    this.projectcount= this.checkedproject.length;
   }
 
   Online_methodportfolio(event) {
@@ -698,6 +738,7 @@ document.querySelector('.reset').addEventListener('click', e => {
       }
      
     }
+    this.portfoliocount=this.checkedportfolio.length;
   console.log(this.checkedportfolio);
    
   }
@@ -715,6 +756,7 @@ document.querySelector('.reset').addEventListener('click', e => {
       }
      
     }
+    this.dmscount=this.checkeddms.length;
   console.log(this.checkeddms);
   }
 
@@ -793,7 +835,22 @@ document.querySelector('.reset').addEventListener('click', e => {
     (data => {
       this.notifyService.showSuccess("Successfully", "Completed");
       // window.close();
+      this.GetcompletedMeeting_data()
     });
+    const modalElement = document.getElementById('exampleModal');
+
+    // Close the modal by removing the "show" class from the modal element
+    if (modalElement) {
+      modalElement.classList.remove('show');
+
+      // Additionally, you might want to reset the modal backdrop (optional)
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop) {
+        modalBackdrop.parentNode?.removeChild(modalBackdrop);
+      }
+    }
+    
+
   }
   open_side(){
     document.getElementById("cardmain").classList.add("cards-main");
@@ -822,6 +879,7 @@ document.querySelector('.reset').addEventListener('click', e => {
     document.getElementById("cardmain").classList.remove("cards-main");
   }
   ActionedAssigned_Josn:any=[];
+  assigncount:number;
   GetAssigned_SubtaskProjects() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -838,9 +896,12 @@ document.querySelector('.reset').addEventListener('click', e => {
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        console.log("the sss", this._TodoList)
         
+        this.assigncount=this.ActionedAssigned_Josn.length;
+        this.todocount= this._TodoList.length+ this.ActionedAssigned_Josn.length;
+       
       });
+      console.log("the sss", this._TodoList)
   }
   _taskName:any;
   task_id:any;

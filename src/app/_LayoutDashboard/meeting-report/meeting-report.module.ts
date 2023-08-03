@@ -8,6 +8,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 
@@ -19,7 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MeetingReportRoutingModule,
     AngularEditorModule,
     FormsModule,ReactiveFormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,MatButtonModule, MatMenuModule, MatIconModule
   ],
   providers: [ 
     ProjectUnplannedTaskComponent

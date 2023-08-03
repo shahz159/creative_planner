@@ -2868,6 +2868,7 @@ console.log(this.User_Scheduledjson,"test000");
   }
 
   addstarttime() {
+    debugger
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -2904,14 +2905,21 @@ console.log(this.User_Scheduledjson,"test000");
     let vahr = this.timearr1[0];
     let mins = this.timearr1[1].toString();
 
+    if(vahr==11 && mins.includes("AM")){
+      mins = mins.replace("AM", "PM")
+    }
+    else if(vahr==11 && mins.includes("PM")){
+      mins = mins.replace("PM", "AM")
+    }
+
     if (this.timearr1[0] == 23) {
       this._arrayObj.forEach(element => {
         this.EndTimearr.push(element.TSStart);
 
       });
       vahr = Number(vahr) + 1;
-      if (vahr == 24) {
-        vahr = '00'
+      if (vahr == 13) {
+        vahr = '01'
 
       }
       this.Endtms = vahr.toString() + ':' + mins;
@@ -2928,7 +2936,18 @@ console.log(this.User_Scheduledjson,"test000");
     }
     else {
       vahr = Number(vahr) + 1;
-      this.Endtms = vahr.toString() + ':' + mins;
+      if (vahr == 13) {
+        vahr = '01'
+
+      }
+
+      if(vahr <= 9){
+        this.Endtms = '0' + vahr.toString() + ':' + mins;
+      }
+      else{
+        this.Endtms = vahr.toString() + ':' + mins;
+      }
+      
 
     }
 
@@ -3343,6 +3362,7 @@ console.log(this.User_Scheduledjson,"test000");
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+       
         console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
