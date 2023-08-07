@@ -21,6 +21,8 @@ export class NotificationComponent implements OnInit {
   _AlertActivity:[];
   notilength:number;
   _totalProjectsCount:number;
+  WScount:number;
+  WRcount:number;
   _filtersMessage:string;
   _filtersMessage2:string;
   CurrentPageNo: number = 1;
@@ -80,6 +82,8 @@ export class NotificationComponent implements OnInit {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -155,6 +159,8 @@ export class NotificationComponent implements OnInit {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;

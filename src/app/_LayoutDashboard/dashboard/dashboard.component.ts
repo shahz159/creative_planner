@@ -2919,7 +2919,7 @@ console.log(this.User_Scheduledjson,"test000");
       });
       vahr = Number(vahr) + 1;
       if (vahr == 13) {
-        vahr = '01'
+        vahr = '1'
 
       }
       this.Endtms = vahr.toString() + ':' + mins;
@@ -2937,18 +2937,14 @@ console.log(this.User_Scheduledjson,"test000");
     else {
       vahr = Number(vahr) + 1;
       if (vahr == 13) {
-        vahr = '01'
-
+        vahr = '1'
       }
-
       if(vahr <= 9){
         this.Endtms = '0' + vahr.toString() + ':' + mins;
       }
       else{
         this.Endtms = vahr.toString() + ':' + mins;
       }
-      
-
     }
 
 
@@ -3334,8 +3330,9 @@ console.log(this.User_Scheduledjson,"test000");
   }
   Meeting_status:boolean;
   GetClickEventJSON_Calender(arg) {
-
+    
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
+    
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
