@@ -883,6 +883,5 @@ span.count2 {
   line-height: 1;
   margin-left: 5px;
   position: absolute;
-  top: -7px;
-  right: -6px;
+  right: 5px;
 }
