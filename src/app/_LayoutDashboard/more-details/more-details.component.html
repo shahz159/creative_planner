@@ -1302,7 +1302,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio" (click)="OnSubtaskClick(item)"
-                                                        *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completed'"
+                                                        *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completed' && item.SubProject_Status!='New Project Rejected' && item.SubProject_Status!='Completion Under Approval'"
                                                         [hidden]="(item.Team_Res!=Current_user_ID && isHierarchy==false )" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
@@ -1793,7 +1793,7 @@
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
                                                     (click)="OnSubtaskClick(item)"
-                                                    *ngIf="item.SubProject_Status!='Under Approval'"
+                                                    *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval'"
                                                     [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
@@ -1900,7 +1900,7 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
                                                         
-                                                        <p [ngClass]="((item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && item.SubProject_Status!='Under Approval') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                        <p [ngClass]="((item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="underapproval_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
