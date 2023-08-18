@@ -86,6 +86,7 @@ daysSelectedII: any = [];
 minDate = moment().format("YYYY-MM-DD").toString();
 disablePreviousDate = new Date();
 ScheduleType: any;
+ngEmployeeDropdown:any;
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -372,7 +373,8 @@ document.querySelector('.reset').addEventListener('click', e => {
   Meetingstatuscom:string;
   Meetingnotescom:string;
   isCheckboxDisabled: boolean = false;
-  
+  Userstatus:string;
+  Isadmin:boolean=false;
   GetcompletedMeeting_data(){
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
@@ -381,8 +383,9 @@ document.querySelector('.reset').addEventListener('click', e => {
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.Meetingstatuscom= this.CompletedMeeting_notes[0]['meeting_status']
-     
+     this.Userstatus= this.CompletedMeeting_notes[0]['Status']
       this.Meetingnotescom= this.CompletedMeeting_notes[0]['Notes']
+      alert( this.Meetingnotescom)
       if(this.Meetingstatuscom=='Completed'){
         this.isCheckboxDisabled= true;
       }
@@ -396,7 +399,47 @@ document.querySelector('.reset').addEventListener('click', e => {
   onfocus(val) {
     console.log(val, "ttt");
   }
+ Adduser_meetingreport(){
+  this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID ;
+    this._calenderDto.Emp_No=this.CurrentUser_ID;
+    this._calenderDto.User_list=this.ngEmployeeDropdown
+    this.CalenderService.Newinsertuser_meetingreport(this._calenderDto).subscribe
+    (data => {
+      this.meeting_details();
+    });
+   
+ }
+ updatedateandtime_meetingreport(){
+  
+  this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID ;
+    this._calenderDto.Scheduled_date=this._StartDate;
+    this._calenderDto.StartTime=this.Startts;
+    this._calenderDto.EndTime=this.Endtms;
+    
+    this.CalenderService.Newdateandtime_meetingreport(this._calenderDto).subscribe
+    (data => {
+      this.meeting_details();
+    });
+   
+ }
+
+ Updating_Adminmeeting(_emp){
+  
+  this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID ;
+    this._calenderDto.Emp_No=_emp;
+    this._calenderDto.IsAdmin=true;
  
+
+    
+    this.CalenderService.NewAdmin_meetingreport(this._calenderDto).subscribe
+    (data => {
+      this.meeting_details();
+    });
+   
+ }
 
   GetTimeslabfordate() {
     this._calenderDto.minutes = 5;
@@ -594,9 +637,9 @@ document.querySelector('.reset').addEventListener('click', e => {
   getScheduleId(){
     this.router.navigate(["Meeting-Report/"+this.Schedule_ID]);
   }
-
+status:string;
   meeting_details(){
-    
+   
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID ;
       this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -606,13 +649,18 @@ document.querySelector('.reset').addEventListener('click', e => {
           console.log(this.EventScheduledjson, "111111")
           this.Startts=this.EventScheduledjson[0]['St_Time']
           this.Endtms=this.EventScheduledjson[0]['Ed_Time']
+          this.Isadmin=this.EventScheduledjson[0]['IsAdmin']
+          this.status=this.EventScheduledjson[0]['Status']
+        
           this._StartDate=this.EventScheduledjson[0]['Schedule_date']
           this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
           this.totalguest=this.User_Scheduledjson.length;
+          
           this.User_Scheduledjson.forEach(element => {
             this.checkedusers.push(element.stringval);
            element.isChecked=true;
           });
+          this.ngEmployeeDropdown=this.checkedusers;
           this.Guestcount=this.checkedusers.length;
           console.log(this.checkedusers,"chec")
           this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -623,7 +671,7 @@ document.querySelector('.reset').addEventListener('click', e => {
 
           });
           this.projectcount= this.checkedproject.length;
-          console.log(this.checkedproject,"chec1")
+          console.log(this.User_Scheduledjson ,"chec1")
          
           this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
@@ -705,6 +753,7 @@ document.querySelector('.reset').addEventListener('click', e => {
     // }
     }
     
+
   
 
   Online_methodproject(event) {
@@ -806,6 +855,7 @@ document.querySelector('.reset').addEventListener('click', e => {
       ((data) => {
        
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+  
         // this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
          // this.ProjectListArray = JSON.parse(data['Projectlist']);
         // console.log(this._EmployeeListForDropdown, "Project List Array");

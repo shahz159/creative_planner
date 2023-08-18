@@ -2941,6 +2941,7 @@ console.log(this.User_Scheduledjson,"test000");
 
       }
 
+      
       if(vahr <= 9){
         this.Endtms = '0' + vahr.toString() + ':' + mins;
       }

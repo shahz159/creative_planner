@@ -2,17 +2,17 @@
 <div class="col-md-12 p-3"  *ngFor="let item of EventScheduledjson">
 
     <div class="card meet-card">
-        <!-- <div class="card-header d-flex align-items-center justify-content-between">
+        <div class="card-header d-flex align-items-center justify-content-between">
             <div class="">
                 <h5 class="mb-0 card-title">Meeting Report</h5>
             </div>
-            <div class="kt-timer">
+            <!-- <div class="kt-timer">
                 <span id="countdown"> 12:43 <small>sec</small></span>
                 <span class="time-play-btn"><i data-toggle="tooltip" title="click here to release project" class="fas fa-play mx-1 curser-pointer relse-act"></i></span>
                 <span class="time-play-btn d-none"><i data-toggle="tooltip" title="click here to release project" class="fas fa-pause p-2 mb-1 curser-pointer relse-act"></i></span>
            
-            </div>
-        </div> -->
+            </div> -->
+        </div>
 
         <div class="header2 pt-3">
             
@@ -42,14 +42,14 @@
                                 
                                 {{item.NewEd_Time}}
                                 
-                                <span type="button" id="-icn" class="text-info dropdown-toggle" *ngIf="Meetingstatuscom==Completed"
+                                <span type="button" id="-icn" class="text-info dropdown-toggle" *ngIf="Meetingstatuscom==Completed && Isadmin==true"
                                    type="button" id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i data-toggle="tooltip" title="edit time "
                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
                         </span>
                         <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick" >
 
-                            <div class="input-group" >
+                            <div class="input-group">
                                 <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
                                     (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
                                     [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
@@ -82,7 +82,7 @@
 
                             <div class="form-group mb-0 ng-star-inserted text-right mt-3">
                                 <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
-                                <button type="submit" class="btn btn-info btn-sm">Submit</button> 
+                                <button type="submit" class="btn btn-info btn-sm" (click)="updatedateandtime_meetingreport()">Submit</button> 
                             </div>
                                
                                 
@@ -184,25 +184,25 @@
                                         <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
                                         <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
                                     </div>
-                                    <!-- <div class="kt-add-user curser-pointer">
+                                    <div class="kt-add-user curser-pointer" *ngIf="Meetingstatuscom==Completed && Isadmin==true" >
                                        <span type="button" id="add-users-kt" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-user-plus"></i> </span>
-                                       <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="add-users-kt" >
+                                       <div class="dropdown-menu p-3 cstm-swd kt-multy-user-dw" aria-labelledby="add-users-kt" >
                                         <div class="add-user-body">
                                             <lable class="cus-lbl">Add Participants</lable>
-                                            <ng-select class="kt-input form-control" id="startid" placeholder="Start Time" (click)="$event.stopPropagation()"
-                                    [(ngModel)]="Startts" (open)="onfocus($event)" (change)="addstarttime()">
-                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
-                                        {{item}}</ng-option>
+                                            <ng-select class="kt-input form-control h-auto" [multiple]="true" id="startid" placeholder="Add Participant" (click)="$event.stopPropagation()"
+                                    [(ngModel)]="ngEmployeeDropdown" >
+                                    <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
+                                        {{item.DisplayName}}</ng-option>
                                 </ng-select>
                                         </div>
                                         <div class="form-group mb-0 ng-star-inserted text-right mt-3">
                                             <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
-                                            <button type="submit" class="btn btn-info btn-sm">Submit</button> 
+                                            <button type="submit" class="btn btn-info btn-sm"  (click)="Adduser_meetingreport()" >Submit</button> 
                                         </div>
                                            
                                             
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                                
 
@@ -265,13 +265,13 @@
                                             <div class="main-s" name="user" >{{_user.TM_DisplayName}}</div>
                                             <div class="sub-s text-ellp">{{_user.Designation_Name}}/{{_user.Com_Name}}</div>
                                         </div>
-                                        <!-- <div class="admin-check">
+                                        <div class="admin-check curser-pointer" *ngIf="Meetingstatuscom==Completed && Isadmin==true" (click)=" Updating_Adminmeeting(_user.stringval)">
                                             <span _ngcontent-hko-c392="" aria-hidden="true" class="admin-check-svg">
                                                 <svg _ngcontent-hko-c392="" xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                     <path _ngcontent-hko-c392="" fill="#5867dd" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-hko-c392="" fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
                                                 </span>
                                                 <span>Admin</span>
-                                        </div> -->
+                                        </div>
                                     </div>
                                   
                                 </div>
@@ -477,11 +477,11 @@
                         <div class="card-body">
 
                             <div class="notes-section">
-                                <div class="form-group mt-notes" id="Descrip_Name" *ngIf="Meetingstatuscom==Completed">
+                                <div class="form-group mt-notes" id="Descrip_Name" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
                                     <label class="cus-lbl">Meeting notes </label>
                                     <angular-editor [(ngModel)]="Notes_Type"  #myTextarea (keyup)="addBulletPointsOnEnter($event)" [config]="config"></angular-editor>
                                 </div>
-                                <div class="eve-area py-2"  *ngIf="Meetingstatuscom!=Completed && Meetingnotescom.length>0">
+                                <div class="eve-area py-2"  >
                                     
                                     <div class="rgt-des">
                                         <label class="cus-lbl">Meeting notes </label>
@@ -499,24 +499,24 @@
                                         class="custom-textarea form-control mb-2" placeholder="Add events"></textarea> -->
                             </div>
 
-                            <div class="action-section">
+                            <div class="action-section"  *ngIf="Meetingstatuscom==Completed && Isadmin==true">
                                 <div class="todo-main">
-                                    <div class="task-header" *ngIf="todocount>0">
+                                    <div class="task-header" *ngIf="Meetingstatuscom!=Completed && todocount>0">
                                       <h1 class="task-header-title">Assign Task</h1>
                                       <div class="task-tools">
                                         <div class="task-count"></div>
                                       </div>
-                                      <form class="task-form"  *ngIf="Meetingstatuscom==Completed">
+                                      <form class="task-form"  *ngIf="Meetingstatuscom==Completed ">
                                         <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
                                         <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
                                       </form>
                                     </div>
-                                    <div class="task-header"*ngIf="Meetingstatuscom==Completed">
+                                    <div class="task-header"*ngIf="Meetingstatuscom==Completed  ">
                                         <h1 class="task-header-title">Assign Task</h1>
                                         <div class="task-tools">
                                           <div class="task-count"></div>
                                         </div>
-                                        <form class="task-form"  *ngIf="Meetingstatuscom==Completed">
+                                        <form class="task-form"  *ngIf="Meetingstatuscom==Completed  ">
                                           <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
                                           <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
                                         </form>
@@ -693,7 +693,7 @@
                 <div class="drops drope py-3" aria-labelledby="dropusers">
                    
                     <div class="d-flex align-items-center">
-                        <div class="col-md-2 text-center">
+                        <div class="col-md-2 text-center" >
                             <span class="">
                                 <svg focusable="false" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
                                     <path d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path>
@@ -758,7 +758,7 @@
         </div>
 
         <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
-        <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed" >
+        <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true" >
             <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal" >Submit</button>
             <button class="btn btn-secondary btn-sm mr-2">cancel</button>
         </div>
@@ -822,7 +822,7 @@
 
                 <!-- /*------guests----*/ -->
                 <div class="eve-area ng-star-inserted">
-                    <div class="left-icon">
+                    <div class="left-icon" >
                         <span aria-hidden="true" class="side-icns">
                             <svg  focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn"><path _ngcontent-gpx-c394="" d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path></svg>
                         </span>
