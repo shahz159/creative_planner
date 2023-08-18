@@ -1096,3 +1096,7 @@ span.admin-check-svg {
   max-height: 200px;
   overflow: auto;
 }
+.kt-multy-user-dw.show {
+  width: 100%;
+  transform: unset !important;
+}

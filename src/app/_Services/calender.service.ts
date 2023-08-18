@@ -33,6 +33,7 @@ export class CalenderService {
     this.obj_CalenderDTO.EndTime=obj.EndTime;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGettimeslabs", this.obj_CalenderDTO);
   }
+
   NewGetScheduledtimejson(obj:CalenderDTO){
     this.obj_CalenderDTO.EmpNo = obj.EmpNo;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
@@ -56,6 +57,31 @@ export class CalenderService {
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
    
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcomplte_meeting", this.obj_CalenderDTO);
+  }
+
+  Newinsertuser_meetingreport(obj:CalenderDTO){
+    debugger
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    this.obj_CalenderDTO.User_list = obj.User_list.toString();
+    return this.http.post(this.rootUrl + "CalenderAPI/Newinsertuser_meetingreportco", this.obj_CalenderDTO);
+  }
+
+  NewAdmin_meetingreport(obj:CalenderDTO){
+    debugger
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    this.obj_CalenderDTO.IsAdmin = obj.IsAdmin;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewAdmin_meetingco", this.obj_CalenderDTO);
+  }
+
+  Newdateandtime_meetingreport(obj:CalenderDTO){
+    debugger
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Scheduled_date = obj.Scheduled_date;
+    this.obj_CalenderDTO.StartTime = obj.StartTime;
+    this.obj_CalenderDTO.EndTime = obj.EndTime;
+    return this.http.post(this.rootUrl + "CalenderAPI/Newupdatetimeanddate_meetingreportco", this.obj_CalenderDTO);
   }
   NewGetMeeting_report(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
