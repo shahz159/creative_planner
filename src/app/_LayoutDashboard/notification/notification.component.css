@@ -873,3 +873,15 @@ span.count2 {
   justify-content: center;
   font-weight: 600;
 }
+
+.noti {
+  background: #153b5669;
+  border-radius: 50%;
+  padding: 0.2em 0.5rem 0.35rem 0.5rem;
+  min-width: 1.429rem;
+  min-height: 1.429rem;
+  line-height: 1;
+  margin-left: 5px;
+  position: absolute;
+  right: 5px;
+}
