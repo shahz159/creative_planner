@@ -661,6 +661,11 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Status = 'Project Hold Reject';
     else if (this.requestType == 'Revert Back')
       this.approvalObj.Status = 'Revert Reject';
+      else if (this.requestType == 'Task Complete')
+      this.approvalObj.Status = 'Task-Reject';
+    else{
+      this.approvalObj.Status = 'Rejected';
+    }
 
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
       this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);

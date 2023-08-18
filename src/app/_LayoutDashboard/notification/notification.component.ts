@@ -799,6 +799,11 @@ acceptSelectedValues() {
         this.approvalObj.Status = 'Project Hold Reject';
       else if ((this.selectedItems[0]['Req_Type']) == 'Revert Back')
         this.approvalObj.Status = 'Revert Reject';
+        else if ((this.selectedItems[0]['Req_Type']) == 'Task Complete')
+        this.approvalObj.Status = 'Task-Reject';
+      else{
+        this.approvalObj.Status = 'Rejected';
+      }
     }
 
 
