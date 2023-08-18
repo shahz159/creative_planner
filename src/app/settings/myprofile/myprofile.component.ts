@@ -86,8 +86,8 @@ export class MyprofileComponent implements OnInit {
   }
   onCancel() {
     this.form1.reset();
-    let Message = "Reset Successfully";
-    this.notifyService.showInfo("", Message);
+    let Message = "Cancelled";
+    this.notifyService.showError("", Message);
   }
   OnSubmit() {
     this.objEmployeeDTO.Emp_No = this._EmpNo;
@@ -102,5 +102,11 @@ export class MyprofileComponent implements OnInit {
         this.form1.reset();
 
       });
+  }
+
+  closeInfo(){
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
 }

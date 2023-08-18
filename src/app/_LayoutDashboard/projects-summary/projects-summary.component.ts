@@ -758,6 +758,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);

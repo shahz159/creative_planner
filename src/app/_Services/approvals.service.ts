@@ -46,8 +46,6 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectType", this.obj_approvalDTO);
   }
 
-  
-
   UpdateReleaseDate(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.hold_date = obj.hold_date;
@@ -83,6 +81,7 @@ export class ApprovalsService {
   GetRejectComments(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no=obj.Emp_no;
     this.obj_approvalDTO.rejectType = obj.rejectType;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Status = obj.Status;
     
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectCommentsbyRejectType", this.obj_approvalDTO);
@@ -92,6 +91,8 @@ export class ApprovalsService {
   GetGlobalRejectComments(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no=obj.Emp_no;
     this.obj_approvalDTO.rejectType = obj.rejectType;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.Status = obj.Status;
     
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectComments", this.obj_approvalDTO);
 

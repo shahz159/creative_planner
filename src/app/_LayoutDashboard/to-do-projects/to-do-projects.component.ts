@@ -512,6 +512,7 @@ export class ToDoProjectsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
      document.getElementById("todo").classList.remove("position-fixed");
      $('#uploadFile').val('');
      $('#_upload').html('Select a file');

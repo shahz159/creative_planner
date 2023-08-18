@@ -1,12 +1,11 @@
-<div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
+<!-- <div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
     <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
         <div class="d-flex align-items-stretch my-2 ml-3">
             <button class="btn-menu btn" (click)="menutoggle()"><i class="fas fa-bars"></i></button>
             <h4 class="my-3">Main Dashboard</h4>
         </div>
     </div>
-    <!-- end: Header Menu -->
-    <!-- begin:: Header Topbar -->
+
     <div class="kt-header__topbar">
         <div class="kt-header__topbar-item">
             <span (click)="actyside();timelineLog(timelineType)"
@@ -21,30 +20,15 @@
                     <span class="noti text-white" *ngIf="notilength!=0 && notilength<=99">{{notilength}}</span>
                     <span class="noti text-white" *ngIf="notilength>99">99+</span>
                 </span>
-                <!-- <span class="kt-badge kt-badge--danger">4</span> -->
             </div>
             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
                 <form>
-                    <!--begin: Head -->
                     <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b pt-3">
                         <h3 class="kt-head__title">
                             Notifications
                             <span class=" noti-cus" *ngIf="notilength!=0">{{notilength}}</span>
                         </h3>
-                        <!-- <ul class="d-none nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand  kt-notification-item-padding-x mt-0"
-                            role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link show active" data-toggle="tab"
-                                    href="#topbar_notifications_notifications" role="tab"
-                                    aria-selected="true">Inbox</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#topbar_notifications_events" role="tab"
-                                    aria-selected="false">Alerts</a>
-                            </li>
-                        </ul> -->
                     </div>
-                    <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
                             <div *ngIf="notilength!=0"
@@ -70,9 +54,6 @@
                                         <div class="kt-notification__item-time">
                                             Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
                                         </div>
-                                        <!-- <div class="kt-notification__item-time">
-                                            Comments: {{noti.Req_Coments}}
-                                        </div> -->
                                         <div class="kt-notification__item-details">
                                             By: {{noti.SubmittedBy}}
                                         </div>
@@ -84,7 +65,6 @@
                                 <h5>No Notifications available</h5>
                             </div>
                             <div class="py-3 text-center border-top">
-                                <!-- *ngIf="notilength>5" -->
                                 <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View
                                     All</a>
                             </div>
@@ -113,7 +93,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0 side_view" id="kt_content">
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">

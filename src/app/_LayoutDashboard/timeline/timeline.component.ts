@@ -1,22 +1,46 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Inject} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css']
+  styleUrls: ['./timeline.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ]
 })
 export class TimelineComponent implements OnInit {
 
   constructor(public service: ProjectTypeService,
     private notifyService: NotificationService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) private _locale: string
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
@@ -84,7 +108,13 @@ export class TimelineComponent implements OnInit {
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
+    this.french();
+  }
 
+
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
   }
 
   timelineLog(type){
@@ -457,6 +487,7 @@ submitDar() {
     document.getElementById("timepage").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     this.clear();
   }
 

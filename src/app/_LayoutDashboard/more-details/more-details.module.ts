@@ -17,7 +17,8 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 import { NotificationComponent } from '../notification/notification.component';
 import { ProjectInfoModule } from '../project-info/project-info.module';
 import { TruncatePipe } from '../project-info/truncate.pipe';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 
 @NgModule({
@@ -28,9 +29,12 @@ import { TruncatePipe } from '../project-info/truncate.pipe';
     MoreDetailsRoutingModule,
     NgMultiSelectDropDownModule,
     MatDatepickerModule,NgSelectModule,
-    MatFormFieldModule,ProjectInfoModule
+    MatFormFieldModule,ProjectInfoModule,
+    PdfViewerModule,
+    NgxDocViewerModule
   ],
-  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe]
+  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
     // ,{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })
 export class MoreDetailsModule { }

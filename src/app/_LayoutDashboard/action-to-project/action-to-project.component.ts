@@ -346,7 +346,7 @@ export class ActionToProjectComponent implements OnInit {
       return false;
     }
     if(this.owner==null || this.owner==undefined || this.owner==''){
-      this.ownerNo=this.Owner_Empno;
+      this.owner=this.Owner_Empno;
     }
     else{
       this.owner = this.owner;
@@ -430,44 +430,44 @@ export class ActionToProjectComponent implements OnInit {
         this.ObjSubTaskDTO.Duration = 0;
       }
       
-      this.service._InsertNewSubtask(fd).subscribe(event => {
+      // this.service._InsertNewSubtask(fd).subscribe(event => {
 
-        if (event.type === HttpEventType.Response){
-          var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
-          // console.log(event,myJSON,this._Message,"action data");
-          if(this._Message=='1'){
-            this.notifyService.showSuccess("Action created successfully", "Success");
-          }
-          else if(this._Message=='2'){
-            this.notifyService.showError("Something went wrong", "Action not created");
-          }
-          else{
-            this.notifyService.showError("Something went wrong", "Action not created");
-          }
-        }
+      //   if (event.type === HttpEventType.Response){
+      //     var myJSON = JSON.stringify(event);
+      //     this._Message = (JSON.parse(myJSON).body).Message;
+      //     // console.log(event,myJSON,this._Message,"action data");
+      //     if(this._Message=='1'){
+      //       this.notifyService.showSuccess("Action created successfully", "Success");
+      //     }
+      //     else if(this._Message=='2'){
+      //       this.notifyService.showError("Something went wrong", "Action not created");
+      //     }
+      //     else{
+      //       this.notifyService.showError("Something went wrong", "Action not created");
+      //     }
+      //   }
         
-        if (this._Urlid == 1) {
-          this._Todoproject.CallOnSubmitAction();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else if(this._Urlid == 2){
-          this._projectunplanned.getCatid();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else {
-          this._MoreDetails.GetProjectDetails();
-          this._MoreDetails.GetSubtask_Details();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
+      //   if (this._Urlid == 1) {
+      //     this._Todoproject.CallOnSubmitAction();
+      //     this.Clear_Feilds();
+      //     this.closeInfo();
+      //     this._inputAttachments = [];
+      //   }
+      //   else if(this._Urlid == 2){
+      //     this._projectunplanned.getCatid();
+      //     this.Clear_Feilds();
+      //     this.closeInfo();
+      //     this._inputAttachments = [];
+      //   }
+      //   else {
+      //     this._MoreDetails.GetProjectDetails();
+      //     this._MoreDetails.GetSubtask_Details();
+      //     this.Clear_Feilds();
+      //     this.closeInfo();
+      //     this._inputAttachments = [];
+      //   }
 
-      });
+      // });
     });
   }
    

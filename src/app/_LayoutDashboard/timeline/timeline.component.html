@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12">
             <!--begin:: Widgets/Authors Profit-->
-            <div class="kt-portlet kt-portlet--bordered-semi">
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head align-items-center">
                     <div class="kt-portlet__head-label">
                         <div class="dropdown">                            
@@ -84,10 +84,10 @@
             </div>
             <!--begin::Portlet 1 class="sticky-header" style="font-size: 13px;"-->
             <div class="kt-portlet portlet-height" *ngIf="sortType=='Date'">
-                <div class="kt-portlet__body kt-portlet__body_scroll p-0">
+                <div class="kt-portlet__body kt-portlet__body_scroll p-0 scrollbar1">
                     <div class="mt-3">
                         <div class="">
-                            <div class="scrollbar1" *ngIf="showtimeline==true">
+                            <div class="" *ngIf="showtimeline==true">
                                 <div class="px-4" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header">
                                         <h4 class="header-date p-0 ">
@@ -291,10 +291,10 @@
             </div>
             <!--begin::Portlet 2-->
             <div class="kt-portlet portlet-height" *ngIf="sortType=='Project'">
-                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 scrollbar1">
                     <div class="mt-3">
                         <div class="">
-                            <div class="item-b  ribbon-content scrollbar1" *ngIf="showtimeline==true">
+                            <div class="item-b  ribbon-content " *ngIf="showtimeline==true">
                                 <div class="mt-3" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header">
                                         <h4 class="header-date p-0 ">
