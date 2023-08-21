@@ -385,7 +385,7 @@ document.querySelector('.reset').addEventListener('click', e => {
       this.Meetingstatuscom= this.CompletedMeeting_notes[0]['meeting_status']
      this.Userstatus= this.CompletedMeeting_notes[0]['Status']
       this.Meetingnotescom= this.CompletedMeeting_notes[0]['Notes']
-      alert( this.Meetingnotescom)
+      // alert( this.Meetingnotescom)
       if(this.Meetingstatuscom=='Completed'){
         this.isCheckboxDisabled= true;
       }

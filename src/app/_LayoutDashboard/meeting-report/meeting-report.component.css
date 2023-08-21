@@ -1100,3 +1100,11 @@ span.admin-check-svg {
   width: 100%;
   transform: unset !important;
 }
+
+.kt-admin-mute span path {
+  fill: #959595;
+}
+
+.kt-admin-mute {
+  color: #959595;
+}
