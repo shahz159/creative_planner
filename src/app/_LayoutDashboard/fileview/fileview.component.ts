@@ -68,6 +68,11 @@ export class FileviewComponent implements OnInit {
       const arruid = uid.split(',').map(element => {
         return Number(element);
       });
+
+        if (decoder.decode(new Uint8Array(arruid)).toString() != this.Current_user_ID.toString()) {
+        alert('Invalid User');
+        return false;
+      }
       let type = params['type'];
             let officetext = ".ppt, .pptx, .doc, .docx, .xls, .xlsx";
             let office = officetext.includes(type.toLowerCase());
@@ -110,10 +115,7 @@ export class FileviewComponent implements OnInit {
             }
 
 
-      if (decoder.decode(new Uint8Array(arruid)).toString() != this.Current_user_ID.toString()) {
-        alert('Invalid User');
-        return false;
-      }
+    
       
       let scontenttype = '';
       this.filename = params['filename'];

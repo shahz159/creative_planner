@@ -41,6 +41,18 @@ import 'moment/locale/ja';
 import 'moment/locale/fr';
 
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
 @Component({
   selector: 'app-more-details',
   templateUrl: './more-details.component.html',
@@ -48,7 +60,7 @@ import 'moment/locale/fr';
   providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
-    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
     // `MatMomentDateModule` in your applications root module. We provide it at the component level
     // here, due to limitations of our example generation script.
@@ -57,7 +69,7 @@ import 'moment/locale/fr';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
   ]
 })
 
@@ -406,7 +418,7 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
     this.GetmeetingDetails();
-    this.french();
+    // this.french();
 
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
