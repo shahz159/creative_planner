@@ -31,20 +31,54 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { Hierarchy } from '@amcharts/amcharts5/.internal/charts/hierarchy/Hierarchy';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS} from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-more-details',
   templateUrl: './more-details.component.html',
-  styleUrls: ['./more-details.component.css']
+  styleUrls: ['./more-details.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  ]
 })
 
 export class MoreDetailsComponent implements OnInit {
   @ViewChild('colp') colpRef!: ElementRef; // Reference to the collapsible content
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
-    // private _adapter: DateAdapter<any>,
-    // @Inject(MAT_DATE_LOCALE) private _locale: string,
+    private _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
     public approvalservice: ApprovalsService,
     private router: Router,
     public service: ProjectTypeService,
@@ -384,6 +418,7 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
     this.GetmeetingDetails();
+    // this.french();
 
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
@@ -414,12 +449,17 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
+  }
+
   getapproval_actiondetails(){
     this.approvalObj.Project_Code=this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data=>{
       console.log(data,"appact");
-      if(data[0]['actiondetails']!='[]' && data[0]['approvaldetails']!='[]' ){
+      if(data[0]['actiondetails']!='[]' || data[0]['approvaldetails']!='[]' ){
         if(data[0]['actiondetails']!='[]')
         this.action_details=JSON.parse(data[0]['actiondetails']);
         if(data[0]['approvaldetails']!='[]')
@@ -547,10 +587,19 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
+  activity: any;
+  lastactivity:any;
+  send_from:any;
+  rejectactivity: any;
+
   getRejectType() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
     this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
-      this.rejectype = data["rejectType"];
+      this.activity = data[0]["activity"];
+      this.send_from= data[0]["sendFrom"];
+      this.rejectactivity= data[0]["rejectactivity"];
+      this.lastactivity = JSON.parse(data[0]["lastactivity"]);
+      console.log(this.activity,this.lastactivity)
     });
   }
 
@@ -599,6 +648,7 @@ export class MoreDetailsComponent implements OnInit {
     });
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.rejectType = this.rejectType;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
     if (this.requestType == 'New Project')
       this.approvalObj.Status = 'New Project Rejected';
     else if (this.requestType == 'New Project Reject Release')
@@ -623,6 +673,11 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Status = 'Project Hold Reject';
     else if (this.requestType == 'Revert Back')
       this.approvalObj.Status = 'Revert Reject';
+      else if (this.requestType == 'Task Complete')
+      this.approvalObj.Status = 'Task-Reject';
+    else{
+      this.approvalObj.Status = 'Rejected';
+    }
 
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
       this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
@@ -3276,7 +3331,8 @@ export class MoreDetailsComponent implements OnInit {
   
 
 
-  openPDF_Standard(cloud, repDate: Date, proofDoc) {
+  openPDF_Standard(cloud, repDate: Date, proofDoc, type) {
+    debugger
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3300,25 +3356,62 @@ export class MoreDetailsComponent implements OnInit {
 
     if (cloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+        FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
       }
       else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+        FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
       }
+
+      let name = "ArchiveView/"+this.URL_ProjectCode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      alert(myurl);
+      myWindow.focus();
+
     }
 
     else if (cloud == true) {
+
       let FileUrl: string;
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
-      var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
-      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+      if(proofDoc.includes(FileUrl)){
+        FileUrl=proofDoc
       }
-      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+      else{
+            var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+          if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+            FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+          }
+          else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+            FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+          }
       }
+
+      
+
+      let name = "ArchiveView/"+this.URL_ProjectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    alert(myurl);
+    myWindow.focus();
     }
+
+    
   }
 
   openPDF(cloud, docName) {
@@ -4472,6 +4565,8 @@ actiondeadline_alert(){
           this.notifyService.showSuccess("Project owner updated successfully", "Success");
           this.GetProjectDetails();
           this.GetSubtask_Details();
+          this.getapproval_actiondetails();
+          this.getRACISandNonRACIS();
         }
       });
       this.close_space();
@@ -5236,6 +5331,22 @@ actiondeadline_alert(){
         this.notifyService.showError("Action Cancelled ", '');
       }
     });
+  }
+
+
+  LoadDocument1(iscloud: string,filename: string ,url1: string, type: string) {
+    
+    let name = "ArchiveView/"+this.URL_ProjectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
   }
 
 

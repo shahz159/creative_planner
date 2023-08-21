@@ -346,7 +346,7 @@ export class ActionToProjectComponent implements OnInit {
       return false;
     }
     if(this.owner==null || this.owner==undefined || this.owner==''){
-      this.ownerNo=this.Owner_Empno;
+      this.owner=this.Owner_Empno;
     }
     else{
       this.owner = this.owner;

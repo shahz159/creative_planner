@@ -1935,7 +1935,7 @@
                                 <h6 class="txtm-cus">Reference attachment</h6>
                                 <a class="word-break text-info curser-pointer"
                                     title="Click To Open File"
-                                    (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
+                                    (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
                                     <b>{{item.Sourcefile}}</b></a>
                             </div>
                         </div>
@@ -2455,7 +2455,7 @@
                                             <h6 class="txtm-cus">Complete attachment</h6>
                                             <a class="word-break text-info curser-pointer"
                                                 title="Click To Open File"
-                                                (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)">
+                                                (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
                                                 <b>{{item.Sourcefile}}</b></a>
                                         </div>
                                     </div>

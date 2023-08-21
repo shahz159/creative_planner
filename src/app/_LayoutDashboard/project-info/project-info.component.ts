@@ -1633,6 +1633,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       });
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.rejectType = this.rejectType;
+      this.approvalObj.Project_Code = this.projectCode;
       if (this.requestType == 'New Project')
         this.approvalObj.Status = 'New Project Rejected';
       else if (this.requestType == 'New Project Reject Release')
@@ -1657,7 +1658,13 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.approvalObj.Status = 'Project Hold Reject';
       else if (this.requestType == 'Revert Back')
         this.approvalObj.Status = 'Revert Reject';
-  
+        else if (this.requestType == 'Task Complete')
+        this.approvalObj.Status = 'Task-Reject';
+      else{
+        this.approvalObj.Status = 'Rejected';
+      }
+
+        
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
         this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
       });
@@ -1996,6 +2003,23 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       myWindow.focus();
     }
   }
+
+
+  LoadDocument1(iscloud: string,filename: string ,url1: string, type: string) {
+    
+    let name = "ArchiveView/"+this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
   
   btmspace_opn(){
     document.getElementById("btm-space").classList.remove("d-none");

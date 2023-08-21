@@ -569,27 +569,6 @@ export class DashboardComponent implements OnInit {
     this.Event_requests();
 
 
-    // for tippys
-    tippy('#notification', {
-      content: "Notifications",
-      arrow: true,
-      animation: 'scale-extreme',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-    });
-
-    tippy('#timelinelog', {
-      content: "Timeline log",
-      arrow: true,
-      animation: 'scale-extreme',
-      theme: 'gradient',
-      animateFill: true,
-      inertia: true,
-    });
-
-
-
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
       if (y > 380) {
@@ -3741,7 +3720,7 @@ console.log(this.User_Scheduledjson,"12")
     document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
-    document.getElementById("actyInfobar").classList.remove("open_sidebar");
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 

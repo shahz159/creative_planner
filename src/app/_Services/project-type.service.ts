@@ -555,6 +555,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
   }
 
+  _GetUserName(empno){
+    this.ObjSubTaskDTO.Emp_No = empno;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetUserName", this.ObjSubTaskDTO);
+  }
+
   _GetTimelineActivity(obj: SubTaskDTO) {
     // let EmpNo = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
@@ -844,6 +849,11 @@ getHoldDatebyProjectcode(pCode){
   }
   _getMessage() {
     return this.Mode;
+  }
+
+  PathExtention(url: string) {
+    this.ObjDto.message= url;
+    return this.http.post(this.rootUrl + 'Notification/NewGetPathFileExtention', this.ObjDto);
   }
 
 }

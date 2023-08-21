@@ -145,9 +145,9 @@ export class SidebarComponent implements OnInit {
    // alert("test");
   // }
   menuopen(){ 
-    // document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open-dropdown");
-    // document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--hover");
-    // document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open-dropdown");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--hover");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open");
   }
 
   logout() {
