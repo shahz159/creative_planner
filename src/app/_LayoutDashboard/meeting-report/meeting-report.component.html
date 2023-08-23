@@ -1,429 +1,569 @@
-<div class="grey-bg side_view" >
-<div class="col-md-12 p-3"  *ngFor="let item of EventScheduledjson">
+<div class="grey-bg side_view">
+    <div class="col-md-12 p-3" *ngFor="let item of EventScheduledjson">
 
-    <div class="card meet-card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <div class="">
-                <h5 class="mb-0 card-title">Meeting Report</h5>
-            </div>
-            <!-- <div class="kt-timer">
+        <div class="card meet-card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <div class="">
+                    <h5 class="mb-0 card-title">Meeting Report</h5>
+                </div>
+                <!-- <div class="kt-timer">
                 <span id="countdown"> 12:43 <small>sec</small></span>
                 <span class="time-play-btn"><i data-toggle="tooltip" title="click here to release project" class="fas fa-play mx-1 curser-pointer relse-act"></i></span>
                 <span class="time-play-btn d-none"><i data-toggle="tooltip" title="click here to release project" class="fas fa-pause p-2 mb-1 curser-pointer relse-act"></i></span>
            
             </div> -->
-        </div>
+            </div>
 
-        <div class="header2 pt-3">
-            
-            <div id="NameDate" class="main-title">
-                <!-- <div class="boxcl-div">
+            <div class="header2 pt-3">
+
+                <div id="NameDate" class="main-title">
+                    <!-- <div class="boxcl-div">
                     <div class="box-cl" style="background-color: #3788d8;">
                     </div>
 
                 </div> -->
-                <div class="title-right" id="">
-                    <div class="title-area">
-                        <div class="title-main" >
-                            <span id="title1"> {{item.Task_Name}} </span>
-                        </div>
-                        <div class="d-flex">
-                            <div class="title-day">{{item.Schedule_date | date:'d  EEE, MMMM YYYY'}}
-                                <span>,</span>
-                                <span>{{item.NewSt_Time}} –
-
-                                </span>
-
+                    <div class="title-right" id="">
+                        <div class="title-area">
+                            <div class="title-main">
+                                <span id="title1"> {{item.Task_Name}} </span>
                             </div>
-                            <div class="title-day ropdown">
-                                <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
+                            <div class="d-flex">
+                                <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}
+                                    <span>,</span>
+                                    <span>{{item.NewSt_Time}} –
+
+                                    </span>
+
+                                </div>
+                                <div class="title-day ropdown">
+                                    <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
                                     {{item.SEndDate| date:'EEEE, MMMM d'}}
                                 </span> -->
-                                
-                                {{item.NewEd_Time}}
-                                
-                                <span type="button" id="-icn" class="text-info dropdown-toggle" *ngIf="Meetingstatuscom==Completed && Isadmin==true"
-                                   type="button" id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i data-toggle="tooltip" title="edit time "
-                            class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                        </span>
-                        <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick" >
 
-                            <div class="input-group">
-                                <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
-                                    (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                    [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
-                                <div class="input-group-append">
+                                    {{item.NewEd_Time}}
 
-                                    <div class="input-group-text p-0">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
+                                    <span type="button" id="-icn" class="text-info dropdown-toggle"
+                                        *ngIf="Meetingstatuscom==Completed && Isadmin==true" type="button"
+                                        id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <i data-toggle="tooltip" title="edit time "
+                                            class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                    </span>
+                                    <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick">
+
+                                        <div class="input-group">
+                                            <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                                (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                                [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                            <div class="input-group-append">
+
+                                                <div class="input-group-text p-0">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker1"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group flex-1 mb-2" (click)="$event.stopPropagation()">
+                                            <label class="cus-lbl">Start Time </label>
+                                            <ng-select class="kt-input form-control" id="startid"
+                                                placeholder="Start Time" [(ngModel)]="Startts" (open)="onfocus($event)"
+                                                (change)="addstarttime()">
+                                                <ng-option *ngFor="let item of  StartTimearr; let i=index"
+                                                    [value]="item">
+                                                    {{item}}</ng-option>
+                                            </ng-select>
+
+                                        </div>
+                                        <div class="form-group flex-1 mb-1" (click)="$event.stopPropagation()">
+                                            <label class="cus-lbl">End Time</label>
+                                            <ng-select class="kt-input form-control" placeholder="End Time"
+                                                (open)="onfocus($event)" [(ngModel)]="Endtms">
+                                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                    {{item1}}</ng-option>
+                                            </ng-select>
+                                        </div>
+
+                                        <div class="form-group mb-0 ng-star-inserted text-right mt-3">
+                                            <button type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                            <button type="submit" class="btn btn-info btn-sm"
+                                                (click)="updatedateandtime_meetingreport()">Submit</button>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
-                           
-                            <div class="form-group flex-1 mb-2" (click)="$event.stopPropagation()">
-                                <label class="cus-lbl">Start Time </label>
-                                <ng-select class="kt-input form-control" id="startid" placeholder="Start Time"
-                                    [(ngModel)]="Startts" (open)="onfocus($event)" (change)="addstarttime()">
-                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
-                                        {{item}}</ng-option>
-                                </ng-select>
 
-                            </div>
-                            <div class="form-group flex-1 mb-1" (click)="$event.stopPropagation()">
-                                <label class="cus-lbl">End Time</label>
-                                <ng-select class="kt-input form-control" placeholder="End Time"
-                                (open)="onfocus($event)"  [(ngModel)]="Endtms">
-                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                        {{item1}}</ng-option>
-                                </ng-select>
-                            </div>
 
-                            <div class="form-group mb-0 ng-star-inserted text-right mt-3">
-                                <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
-                                <button type="submit" class="btn btn-info btn-sm" (click)="updatedateandtime_meetingreport()">Submit</button> 
-                            </div>
-                               
-                                
-                            </div>
-                            </div>
                         </div>
-
-
                     </div>
                 </div>
+
             </div>
+            <div class="card-body scrolly card-body2">
+                <div class="px-3 row mx-0 mb-3">
+                    <div class="col-md-12 col-lg-5">
 
-        </div>
-        <div class="card-body scrolly card-body2">
-            <div class="px-3 row mx-0 mb-3">
-                <div class="col-md-12 col-lg-5">
+                        <div class="card card-mid flex-1 h-100">
+                            <div class="card-header">
 
-                <div class="card card-mid flex-1 h-100">
-                    <div class="card-header">                       
-                            
-                            <h5 clas="card-title">
-                                Meeting Details
-                            </h5>
-                    </div>
-                    
-                    <div class="card-body px-0 pt-0">                        
-                        <div class="meetdt">
-                            
-
-                        <div id="location" class="eve-area" *ngIf="item.Location">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
-                                        <path
-                                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z">
-                                        </path>
-                                        <circle cx="12" cy="9" r="2.5"></circle>
-                                    </svg>
-                                </span>
+                                <h5 clas="card-title">
+                                    Meeting Details
+                                </h5>
                             </div>
-                            <div class="rgt-des">
-                                <div class="">
-                                    <div class="main-s">
-                                        <a href="{{item.Addressurl}}"  target=”_blank”>{{item.Location}}</a>
-                                        <div class="main-s">{{item.FullAddress_loc}}</div>
-                                    </div>
-                                    <!-- <div class="main-s">{{}}</div> -->
-                                    <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
+
+                            <div class="card-body px-0 pt-0">
+                                <div class="meetdt">
+
+
+                                    <div id="location" class="eve-area" *ngIf="item.Location">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg focusable="false" width="24" height="24" viewBox="0 0 24 24"
+                                                    class="svg-icn">
+                                                    <path
+                                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z">
+                                                    </path>
+                                                    <circle cx="12" cy="9" r="2.5"></circle>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s">
+                                                    <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}</a>
+                                                    <div class="main-s">{{item.FullAddress_loc}}</div>
+                                                </div>
+                                                <!-- <div class="main-s">{{}}</div> -->
+                                                <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
                                         Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div> -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id=""  class="eve-area" *ngIf="item.Onlinelink.length > 0">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
-                                        <path d="M0 0h24v24H0z" fill="none"/><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="" >
-                                    <div class="main-s" >Online</div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div id=""  class="eve-area" *ngIf="item.Onlinelink== false">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
-                                        <path d="M0 0h24v24H0z" fill="none"/><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="" >
-                                    <div class="main-s" >Offline</div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    
-
-                        <div id="userlength" class="eve-area">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
-                                        <path
-                                            d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="d-flex justify-content-between">
-                                    <div class="">
-                                        <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
-                                        <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
-                                    </div>
-                                    <div class="kt-add-user curser-pointer" *ngIf="Meetingstatuscom==Completed && Isadmin==true" >
-                                       <span type="button" id="add-users-kt" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-user-plus"></i> </span>
-                                       <div class="dropdown-menu p-3 cstm-swd kt-multy-user-dw" aria-labelledby="add-users-kt" >
-                                        <div class="add-user-body">
-                                            <lable class="cus-lbl">Add Participants</lable>
-                                            <ng-select class="kt-input form-control h-auto" [multiple]="true" id="startid" placeholder="Add Participant" (click)="$event.stopPropagation()"
-                                    [(ngModel)]="ngEmployeeDropdown" >
-                                    <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
-                                        {{item.DisplayName}}</ng-option>
-                                </ng-select>
-                                        </div>
-                                        <div class="form-group mb-0 ng-star-inserted text-right mt-3">
-                                            <button  type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
-                                            <button type="submit" class="btn btn-info btn-sm"  (click)="Adduser_meetingreport()" >Submit</button> 
-                                        </div>
-                                           
-                                            
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                               
 
-                               
-                            </div>
-                        </div>
-                        <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
-                            
-                            <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
-                                <div class="form-check form-check-custom form-check-solid">
-                                    <input type="checkbox" [disabled]="isCheckboxDisabled" id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval" [checked]="_user.isChecked"  
-                                      (click)="Online_methoduser($event) " class="form-check-input ps-1 ng-valid ng-dirty ng-touched">
-                                    </div>
-                                <div class="px-2 position-relative" >
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"
-                                            enable-background="new 0 0 192 192" style="width: 20px;" width="24px"
-                                            height="24px">
-                                            <path fill="#E0E0E0"
-                                                d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z">
-                                            </path>
-                                            <path fill="#BDBDBD"
-                                                d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z">
-                                            </path>
-                                            <path fill="#BDBDBD"
-                                                d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z">
-                                            </path>
-                                            <rect fill="none" width="192" height="192"></rect>
-                                        </svg>
-                                    </span>
-                                    <span class="statusicn" aria-hidden="true">
-                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
-                                            *ngIf="_user.Status=='Accepted'">
-                                            <path fill="#CEEAD6"
-                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
-                                            <path fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
-                                            </path>
-                                        </svg>
-    
-                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
-                                            *ngIf="_user.Status=='Rejected'">
-                                            <path fill="#FAD2CF"
-                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
-                                            <path fill="none" stroke="#B31412" stroke-width="1.5" d="M4 10l6-6M10 10L4 4">
-                                            </path>
-                                        </svg>
-    
-                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
-                                            *ngIf="_user.Status=='May be'||_user.Status=='Proposed'">
-                                            <path fill="#E8EAED"
-                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
-                                            <path fill="none" stroke="#3C4043" stroke-width="1.5"
-                                                d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path>
-                                        </svg>
-                                    </span> 
-                                </div>
-                                <div class="rgt-des ml-2"  >
-                                    <div class="d-flex align-items-start justify-content-between">
-                                        <div class="">
-                                            <div class="main-s" name="user" >{{_user.TM_DisplayName}}</div>
-                                            <div class="sub-s text-ellp">{{_user.Designation_Name}}/{{_user.Com_Name}}</div>
+                                    <div id="" class="eve-area" *ngIf="item.Onlinelink.length > 0">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                    viewBox="0 0 24 24" class="svg-icn">
+                                                    <path d="M0 0h24v24H0z" fill="none" />
+                                                    <path
+                                                        d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
+                                                </svg>
+                                            </span>
                                         </div>
-                                        <div class="admin-check curser-pointer" *ngIf="Meetingstatuscom==Completed && Isadmin==true" (click)=" Updating_Adminmeeting(_user.stringval)">
-                                            <span _ngcontent-hko-c392="" aria-hidden="true" class="admin-check-svg">
-                                                <svg _ngcontent-hko-c392="" xmlns="https://www.w3.org/2000/svg" width="14" height="14">
-                                                    <path _ngcontent-hko-c392="" fill="#5867dd" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path _ngcontent-hko-c392="" fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s">Online</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="" class="eve-area" *ngIf="item.Onlinelink== false">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                    viewBox="0 0 24 24" class="svg-icn">
+                                                    <path d="M0 0h24v24H0z" fill="none" />
+                                                    <path
+                                                        d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5zm8 14c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s">Offline</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-organizer-dt eve-area">
+
+
+                                        <div class="w-100 d-flex align-items-center justify-content-between">
+
+                                            <div class="d-flex align-items-center ">
+                                                <span class="side-icns kt-org-ic" aria-hidden="true">
+                                                    <svg width="20" height="20" class="svg-icn"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                                                        y="0px" viewBox="0 0 128 160"
+                                                        style="enable-background:new 0 0 128 128;" xml:space="preserve">
+                                                        <path
+                                                            d="M0.0106888,117.5239029c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179,5.2382965,3.9990997,5.2382965h31.9960976  c4.4179001,0,3.9863014-2.3457031,3.9804001-5.2388c-0.0057983-2.6191025-0.009697-5.2372971-0.009697-5.2372971  c0-7.2632065-5.9395027-12.9751053-13.0547009-14.858902C29.6972885,100.5653992,31.5,97.2465973,31.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477116,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023C5.9550886,104.5425034,0.0106888,110.2563019,0.0106888,117.5239029z   M12.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989c4.1356888,0,7.5,3.365303,7.5,7.5019989  c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011C15.8642883,100.9990005,12.5,97.6352997,12.5,93.5009995z M18.1034889,106  h3.7735119c6.6688881,0,14.0995884,4.7329025,14.0995884,11.5298004l0.009697,5.2397003  c0.0010033,0.2554016,0.0039024,0.5074005,0.0078011,0.7538986c0.0019989,0.1484985,0.0039139,0.3125,0.0049133,0.4766006H4.0097885  c-0.0029998,0-0.0058999,0-0.0087886,0c0-0.171402,0.0018888-0.3432999,0.0038886-0.4980011  c0.0029001-0.2421951,0.0058002-0.489296,0.0058002-0.7402954v-5.2378006C4.0106888,110.7329025,11.4374886,106,18.1034889,106z" />
+                                                        <path
+                                                            d="M127.9862823,122.7612c-0.0057983-2.6191025-0.009697-5.2372971-0.009697-5.2372971  c0-7.2632065-5.9394989-12.9751053-13.0547028-14.858902C117.6972885,100.5653992,119.5,97.2465973,119.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477173,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023c-7.1191025,1.8804016-13.0634995,7.5942001-13.0634995,14.8618011  c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179001,5.2382965,3.9990997,5.2382965h31.9960938  C128.4237823,128,127.9921875,125.6542969,127.9862823,122.7612z M100.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989  c4.1356888,0,7.5,3.365303,7.5,7.5019989c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011  C103.8642883,100.9990005,100.5,97.6352997,100.5,93.5009995z M92.0097885,124c-0.0029984,0-0.0059052,0-0.0087891,0  c0-0.171402,0.0018845-0.3432999,0.0038834-0.4980011c0.0029068-0.2421951,0.005806-0.489296,0.005806-0.7402954v-5.2378006  c0-6.7910004,7.426796-11.5239029,14.0927963-11.5239029h3.7735138c6.6688843,0,14.0995865,4.7329025,14.0995865,11.5298004  l0.009697,5.2397003c0.0010071,0.2554016,0.0039063,0.5074005,0.0078049,0.7538986  C123.9960861,123.6718979,123.9980011,123.8358994,124,124H92.0097885z" />
+                                                        <path
+                                                            d="M44.0106888,117.5239029c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179001,5.2382965,3.9990997,5.2382965h31.9961014  c4.4179001,0,3.9862976-2.3457031,3.9804001-5.2388c-0.005806-2.6191025-0.0097046-5.2372971-0.0097046-5.2372971  c0-7.2632065-5.9394989-12.9751053-13.0546951-14.858902C73.6972885,100.5653992,75.5,97.2465973,75.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477135,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023C49.9550858,104.5425034,44.0106888,110.2563019,44.0106888,117.5239029z   M56.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989c4.1356888,0,7.5,3.365303,7.5,7.5019989  c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011C59.8642883,100.9990005,56.5,97.6352997,56.5,93.5009995z M62.1034889,106h3.77351  c6.6688843,0,14.0995865,4.7329025,14.0995865,11.5298004l0.0097046,5.2397003  c0.0009995,0.2554016,0.0038986,0.5074005,0.0077972,0.7538986C79.9960861,123.6718979,79.9980011,123.8358994,80,124H48.0097885  c-0.0030022,0-0.0059013,0-0.0087891,0c0-0.171402,0.0018883-0.3432999,0.0038872-0.4980011  c0.0028992-0.2421951,0.0058022-0.489296,0.0058022-0.7402954v-5.2378006C48.0106888,110.7329025,55.4374886,106,62.1034889,106z" />
+                                                        <path
+                                                            d="M36.2597885,42.8852997c-8.5410004,6.1063995-14.9854012,14.9906998-17.9169998,25.4798965l-0.4941998-1.1966934  c-0.4218006-1.0201035-1.5897999-1.5064011-2.6123009-1.0849991c-1.0204992,0.4218979-1.5067997,1.5912933-1.0848999,2.6122971  l3.3320007,8.0679016c0.2714996,0.6576996,0.8729992,1.1215973,1.5781002,1.2176971  C19.1513882,77.9941025,19.2421875,78,19.3320007,78c0.6103878,0,1.1943874-0.2798004,1.5761871-0.7686005l5.3866997-6.8919983  c0.6797009-0.8702011,0.5254002-2.1269989-0.3446999-2.8071976c-0.8690987-0.680603-2.1259995-0.5263062-2.8076,0.3442993  l-0.8114986,1.0380936C24.7606888,60.6348,29.6063881,53.4813995,36,48.142601c0,2.8964996,0,7.8368988,0,8.9540977  C36,58.7001991,37.7938881,60,40.0067863,60H62v7.9462967l-0.2324142-0.4389954  c-0.5155869-0.9756012-1.7275848-1.3476028-2.7030983-0.8320007c-0.9766006,0.5166016-1.3487015,1.7269974-0.8320999,2.7031021  l4,7.5570984C62.5790863,77.5903015,63.2587891,78,64,78c0.741188,0,1.4208908-0.4096985,1.7675858-1.0644989l4-7.5570984  c0.5166016-0.9761047,0.1445007-2.1865005-0.8320999-2.7031021c-0.9754868-0.5170975-2.1864853-0.1436005-2.7031021,0.8320007  L66,67.9462967V60h21.9960861C90.2089996,60,92.0028839,58.7001991,92,57.0971985  c-0.0019989-1.1576996-0.0049133-6.0356979-0.0059128-8.9228973c6.3593979,5.320797,11.1856003,12.4370003,13.6182022,20.6684952  l-0.7549057-0.9662933c-0.6805954-0.8706055-1.9393845-1.0240021-2.8075943-0.3442993  c-0.8701019,0.6801987-1.0244064,1.9369965-0.3447037,2.8071976l5.3867035,6.8919983  C107.4745865,77.7201996,108.0575867,78,108.6679993,78c0.0897903,0,0.1805878-0.0058975,0.2704849-0.0186005  c0.705101-0.0960999,1.3066025-0.5599976,1.5781021-1.2176971l3.3320007-8.0679016  c0.4218979-1.0210037-0.0643997-2.1903992-1.0848999-2.6122971c-1.0243988-0.421402-2.1913986,0.0648956-2.6123047,1.0849991  l-0.5156937,1.2479935c-2.919899-10.490696-9.3603058-19.3827972-17.8973999-25.4994965  c-1.1768036-7.0639992-6.3144989-12.8144989-12.9208984-16.0522995c-0.905304,1.1280003-1.9365005,2.1455994-3.0713043,3.0415993  c6.7539139,2.849102,12.2471008,8.6875,12.2471008,16.099102c0,0,0.0028992,6.982399,0.0058136,9.9945984  c-0.0009995,0-0.001915,0-0.0029144,0H82v-6c0-1.1044998-0.8955154-2-2-2c-1.1045151,0-2,0.8955002-2,2v6H50v-6  c0-1.1044998-0.8955116-2-2-2c-1.1045113,0-2,0.8955002-2,2v6h-5.9932137C40.0048866,56,40.0019989,56,40,56v-9.9961014  C40,38.5898018,45.4950867,32.75,52.25,29.9022999c-1.1348114-0.8964005-2.1660004-1.9139996-3.0703125-3.0419006  C42.5820007,30.0923004,37.4472885,35.8325005,36.2597885,42.8852997z" />
+                                                        <path
+                                                            d="M79,15.0029001C79,6.7188001,72.2763901,0,64.0009995,0C55.7196884,0,49,6.7188001,49,15.0029001  C49,21.8701,53.6298866,27.6508999,59.9335861,29.4263l-2.8280983,12.7128983  c-0.3203011,1.1933022,0.1240005,3.4506035,1.5195122,4.4643021l2.9638863,2.6156998l0.2793007,0.2066002  c0.6230011,0.3812981,1.3876991,0.5718002,2.1512985,0.5718002c0.7637024,0,1.5274048-0.1905022,2.1514053-0.5713005  l3.2519989-2.8282013c1.2910004-0.9554977,1.839798-3.1317978,1.4501114-4.4735985l-3.284111-12.5757008  C74.1317902,27.9370003,79,22.0419998,79,15.0029001z M66.9062881,43.4838982l-2.8535995,2.517601  c-0.0214005,0.0018997-0.0419998,0.0039024-0.0595016,0.0053024l-2.8740997-2.5371017  c-0.0536995-0.1195984-0.1054001-0.3125-0.1170883-0.4350014l2.7490005-12.3495979l3.2470016,12.4330978  C66.9882889,43.2230988,66.9481888,43.3799019,66.9062881,43.4838982z M64.0009995,26C57.9345856,26,53,21.0669003,53,15.0029001  C53,8.9359999,57.9345856,4,64.0009995,4C70.0653839,4,75,8.9359999,75,15.0029001C75,21.0669003,70.0653839,26,64.0009995,26z" />
+                                                    </svg>
+                                                </span>
+                                                <div class="kt-org-v" name="user">
+                                                    <span>organizer</span>
+                                                    <p>{{Createdby}}</p>
+
+                                                </div>
+
+                                            </div>
+                                            <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="Isadmin==true && status=='Owner' ">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                        <path fill="#5867dd"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#fff" stroke-width="1.5"
+                                                            d="M3.5 6.5L6 9l5-5"></path>
+                                                    </svg>
                                                 </span>
                                                 <span>Admin</span>
+                                            </div>
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="Isadmin==true && sched_admin==false "
+                                                (click)=" Updating_Adminmeeting(Emp_No)">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                        <path fill="#5867dd"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#fff" stroke-width="1.5"
+                                                            d="M3.5 6.5L6 9l5-5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>Mark as admin</span>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                    <div id="userlength" class="eve-area">
+
+
+
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg focusable="false" width="20" height="20" viewBox="0 0 24 24"
+                                                    class="svg-icn">
+                                                    <path
+                                                        d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="">
+                                                    <div class="main-s">{{User_Scheduledjson.length}} Participants</div>
+                                                    <!-- <div class="sub-s text-ellp">1 yes, 1 awaiting</div> -->
+                                                </div>
+                                                <div class="kt-add-user curser-pointer"
+                                                    *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                                                    <span type="button" id="add-users-kt" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"
+                                                        class="dropdown-toggle"> <i class="fas fa-user-plus"></i>
+                                                    </span>
+                                                    <div class="dropdown-menu p-3 cstm-swd kt-multy-user-dw"
+                                                        aria-labelledby="add-users-kt">
+                                                        <div class="add-user-body">
+                                                            <lable class="cus-lbl">Add Participants</lable>
+                                                            <ng-select class="kt-input form-control h-auto"
+                                                                [multiple]="true" id="startid"
+                                                                placeholder="Add Participant"
+                                                                (click)="$event.stopPropagation()"
+                                                                [(ngModel)]="ngEmployeeDropdown">
+                                                                <ng-option
+                                                                    *ngFor="let item of  _EmployeeListForDropdown"
+                                                                    [value]="item.Emp_No">
+                                                                    {{item.DisplayName}}</ng-option>
+                                                            </ng-select>
+                                                        </div>
+                                                        <div class="form-group mb-0 ng-star-inserted text-right mt-3">
+                                                            <button type="cancel"
+                                                                class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                                            <button type="submit" class="btn btn-info btn-sm"
+                                                                (click)="Adduser_meetingreport()">Submit</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
                                         </div>
                                     </div>
-                                  
-                                </div>
-                            </div>
+                                    <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
 
-                        </div>
+                                        <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
+                                            <div class="form-check form-check-custom form-check-solid">
+                                                <input type="checkbox" [disabled]="isCheckboxDisabled"
+                                                    id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval"
+                                                    [checked]="_user.isChecked" (click)="Online_methoduser($event) "
+                                                    class="form-check-input ps-1 ng-valid ng-dirty ng-touched">
+                                            </div>
+                                            <div class="px-2 position-relative">
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"
+                                                        enable-background="new 0 0 192 192" style="width: 20px;"
+                                                        width="24px" height="24px">
+                                                        <path fill="#E0E0E0"
+                                                            d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z">
+                                                        </path>
+                                                        <path fill="#BDBDBD"
+                                                            d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z">
+                                                        </path>
+                                                        <path fill="#BDBDBD"
+                                                            d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z">
+                                                        </path>
+                                                        <rect fill="none" width="192" height="192"></rect>
+                                                    </svg>
+                                                </span>
+                                                <span class="statusicn" aria-hidden="true">
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                                        *ngIf="_user.Status=='Accepted'">
+                                                        <path fill="#CEEAD6"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#137333" stroke-width="1.5"
+                                                            d="M3.5 6.5L6 9l5-5">
+                                                        </path>
+                                                    </svg>
 
-                        <div id="project" class="eve-area"  *ngIf="Project_NameScheduledjson.length > 0 ||Project_NameScheduledjson !='' ">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <i class="fab-icn fab fa-wpforms"></i>
-                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                                        *ngIf="_user.Status=='Rejected'">
+                                                        <path fill="#FAD2CF"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#B31412" stroke-width="1.5"
+                                                            d="M4 10l6-6M10 10L4 4">
+                                                        </path>
+                                                    </svg>
+
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                                        *ngIf="_user.Status=='May be'||_user.Status=='Proposed'">
+                                                        <path fill="#E8EAED"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#3C4043" stroke-width="1.5"
+                                                            d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="rgt-des ml-2">
+                                                <div class="d-flex align-items-start justify-content-between">
+                                                    <div class="">
+                                                        <div class="main-s" name="user">{{_user.TM_DisplayName}}</div>
+                                                        <div class="sub-s text-ellp">
+                                                            {{_user.Designation_Name}}/{{_user.Com_Name}}</div>
+                                                    </div>
+                                                    <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
+                                                    <div class="admin-check curser-pointer" *ngIf="_user.IsAdmin">
+                                                        <span _ngcontent-hko-c392="" aria-hidden="true"
+                                                            class="admin-check-svg">
+                                                            <svg _ngcontent-hko-c392=""
+                                                                xmlns="https://www.w3.org/2000/svg" width="14"
+                                                                height="14">
+                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                                </path>
+                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                    stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Admin</span>
+                                                    </div>
+                                                    <div class="admin-check curser-pointer"
+                                                        *ngIf="_user.IsAdmin == false && Isadmin==true"
+                                                        (click)=" Updating_Adminmeeting(_user.stringval)">
+                                                        <span _ngcontent-hko-c392="" aria-hidden="true"
+                                                            class="admin-check-svg">
+                                                            <svg _ngcontent-hko-c392=""
+                                                                xmlns="https://www.w3.org/2000/svg" width="14"
+                                                                height="14">
+                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                                </path>
+                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                    stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Mark as admin</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="project" class="eve-area"
+                                        *ngIf="Project_NameScheduledjson.length > 0 ||Project_NameScheduledjson !='' ">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <i class="fab-icn fab fa-wpforms"></i>
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                                         class="svg-icn" style="width: 20px;">
                                         <path fill="none" d="M0 0h24v24H0z"></path>
                                         <path
                                             d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zm-9-2h16V8H4v11zm9-9h5v2h-5v-2zm0 4h5v2h-5v-2zm-4-4v3h3a3 3 0 1 1-3-3zM2 3h20v2H2V3z">
                                         </path>
                                     </svg> -->
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class=""  >
-                                    <div class="main-s pro-nm">Projects</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="side-div" >
-                            <div class="d-flex align-items-center" *ngFor="let _pro of Project_NameScheduledjson">
-                                <div class="form-check form-check-custom form-check-solid mr-2" >
-                                    <input type="checkbox" [disabled]="isCheckboxDisabled" [value]="_pro.stringval" id="flexCheckChecked1"  
-                                     (click)="Online_methodproject($event) " class="form-check-input ps-1"
-                                    [checked]="_pro.isChecked">
-                                    </div>
-                                <div class="rgt-des">
-                                    <div>
-                                        <div class="main-s"><a href="javascript:void(0)"  (click)="moreDetails(_pro.stringval)"> {{_pro.Project_Name}}</a>
+                                            </span>
                                         </div>
-
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s pro-nm">Projects</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="side-div">
+                                        <div class="d-flex align-items-center"
+                                            *ngFor="let _pro of Project_NameScheduledjson">
+                                            <div class="form-check form-check-custom form-check-solid mr-2">
+                                                <input type="checkbox" [disabled]="isCheckboxDisabled"
+                                                    [value]="_pro.stringval" id="flexCheckChecked1"
+                                                    (click)="Online_methodproject($event) "
+                                                    class="form-check-input ps-1" [checked]="_pro.isChecked">
+                                            </div>
+                                            <div class="rgt-des">
+                                                <div>
+                                                    <div class="main-s"><a href="javascript:void(0)"
+                                                            (click)="moreDetails(_pro.stringval)">
+                                                            {{_pro.Project_Name}}</a>
+                                                    </div>
 
-                        <div id="portfolio" class="eve-area" *ngIf="portfolio_Scheduledjson.length > 0">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <i class="fas-icn fas fa-list"></i>
-                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="portfolio" class="eve-area" *ngIf="portfolio_Scheduledjson.length > 0">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <i class="fas-icn fas fa-list"></i>
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                                         class="svg-icn" style="width: 20px;">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path
                                             d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zM19 4H5v16h14V4zm-7.707 9.121l4.243-4.242 1.414 1.414-5.657 5.657-3.89-3.89 1.415-1.414 2.475 2.475z" />
                                     </svg> -->
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="">
-                                    <div class="main-s pro-nm">Portfolios</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="side-div">
-                            <div class="d-flex align-items-center"  *ngFor="let _prot of portfolio_Scheduledjson">
-                                <div class="form-check form-check-custom form-check-solid mr-2"  >
-                                    <input type="checkbox" [disabled]="isCheckboxDisabled" [value]="_prot.numberval" id="flexCheckChecked2"  [checked]="_prot.isChecked" (click)="Online_methodportfolio($event)" class="form-check-input ps-1">
-                                </div>
-                                <div class="rgt-des">
-                                    <div>
-                                        <div class="main-s"><a href="javascript:void(0)" (click)="OnCardClick(_prot.numberval)">
-                                            {{_prot.Portfolio_Name}}</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="dms" class="eve-area py-2" *ngIf="item.DMS_Name != ''">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
-                                        class="svg-icn">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path
-                                            d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z" />
-                                    </svg>
-                                    <!-- <img alt="Logo" src="../../../assets/images/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="">
-                                    <div class="main-s pro-nm">DMS</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="side-div"  *ngIf="item.DMS_Name != ''">
-                            <div class="d-flex align-items-center" *ngFor="let itemMemos of _MemosSubjectList; let i=index">                                    
-                                <div class="form-check form-check-custom form-check-solid mr-2" >
-                                    <input type="checkbox" [disabled]="isCheckboxDisabled" [value]="itemMemos.MailId" id="flexCheckChecked3"  [checked]="itemMemos.isChecked" 
-                                     (click)="Online_methoddms($event) " class="form-check-input ps-1">
-                                </div>
-                                <div class="rgt-des">
-                                    <div>
-                                        <div class="main-s">
-                                            <a href="javascript:void(0)"  (click)="openUrl(itemMemos.Url)">
-                                                {{itemMemos.Subject}}</a>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s pro-nm">Portfolios</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div id="desc" class="eve-area py-2"  *ngIf="item.Description != ''">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                        class="svg-icn">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M13 6v15h-2V6H5V4h14v2z" />
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="rgt-des">
-                                <div class="">
-                                    <div class="main-s" [innerHTML]="item.Description"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="" class="eve-area py-2" *ngIf="Attachments_ary.length>0">
-                            <div class="left-icon">
-                                <span class="side-icns" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="20" height="20"
-                                        class="svg-icn">
-                                        <path
-                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="rgt-des" *ngFor="let trt of Attachments_ary">
-                                <div class="">
-                                    <div class="main-s">
-                                        <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a>
+                                    <div class="side-div">
+                                        <div class="d-flex align-items-center"
+                                            *ngFor="let _prot of portfolio_Scheduledjson">
+                                            <div class="form-check form-check-custom form-check-solid mr-2">
+                                                <input type="checkbox" [disabled]="isCheckboxDisabled"
+                                                    [value]="_prot.numberval" id="flexCheckChecked2"
+                                                    [checked]="_prot.isChecked" (click)="Online_methodportfolio($event)"
+                                                    class="form-check-input ps-1">
+                                            </div>
+                                            <div class="rgt-des">
+                                                <div>
+                                                    <div class="main-s"><a href="javascript:void(0)"
+                                                            (click)="OnCardClick(_prot.numberval)">
+                                                            {{_prot.Portfolio_Name}}</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <div id="dms" class="eve-area py-2" *ngIf="item.DMS_Name != ''">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                                                    height="20" class="svg-icn">
+                                                    <path fill="none" d="M0 0h24v24H0z" />
+                                                    <path
+                                                        d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z" />
+                                                </svg>
+                                                <!-- <img alt="Logo" src="../../../assets/images/dms-logo.png" style="filter: grayscale(1);width: 20px;"> -->
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s pro-nm">DMS</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="side-div" *ngIf="item.DMS_Name != ''">
+                                        <div class="d-flex align-items-center"
+                                            *ngFor="let itemMemos of _MemosSubjectList; let i=index">
+                                            <div class="form-check form-check-custom form-check-solid mr-2">
+                                                <input type="checkbox" [disabled]="isCheckboxDisabled"
+                                                    [value]="itemMemos.MailId" id="flexCheckChecked3"
+                                                    [checked]="itemMemos.isChecked" (click)="Online_methoddms($event) "
+                                                    class="form-check-input ps-1">
+                                            </div>
+                                            <div class="rgt-des">
+                                                <div>
+                                                    <div class="main-s">
+                                                        <a href="javascript:void(0)" (click)="openUrl(itemMemos.Url)">
+                                                            {{itemMemos.Subject}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                    height="24" class="svg-icn">
+                                                    <path fill="none" d="M0 0h24v24H0z" />
+                                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                <div class="main-s" [innerHTML]="item.Description"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="" class="eve-area py-2" *ngIf="Attachments_ary.length>0">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="20"
+                                                    height="20" class="svg-icn">
+                                                    <path
+                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des" *ngFor="let trt of Attachments_ary">
+                                            <div class="">
+                                                <div class="main-s">
+                                                    <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                             </div>
-                        </div>
 
-                        </div>
-
-                    </div>
-                    
-                    <!-- 
+                            <!-- 
                         
                         <div class="">
                             <a title="Collapse Details" id="minusc" class="text-muted text-hover-info mr-3">
@@ -446,20 +586,20 @@
                           </div>
                         </div>
                     </div> -->
-                    
-                </div>
-                </div>
 
-                <div class="col-md-12 col-lg-7 mt-3 mt-lg-0" id="cardmain">
-                    
-                
-                    <div class="card card-mid flex-1 h-100">
-                        <div class="card-header d-flex-cen justify-content-between">
-                            <h5 clas="card-title" data-toggle="collapse" href=".meetdt"
-                            role="button" aria-expanded="false" aria-controls="meetdt">
-                                Meeting Actions
-                            </h5>
-                            <!-- <div class="side-acns">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-7 mt-3 mt-lg-0" id="cardmain">
+
+
+                        <div class="card card-mid flex-1 h-100">
+                            <div class="card-header d-flex-cen justify-content-between">
+                                <h5 clas="card-title" data-toggle="collapse" href=".meetdt" role="button"
+                                    aria-expanded="false" aria-controls="meetdt">
+                                    Meeting Actions
+                                </h5>
+                                <!-- <div class="side-acns">
                                 <a class="mr-3" (click)="open_side()">
                                     <img class="hed-icn dms-icn" src="assets/images/dms-logo.png"/>
                                 </a>
@@ -471,104 +611,163 @@
                                     <img class="hed-icn" src="assets/images/note.png"/>
                                 
                                 </a> -->
-                           
-                        </div>
-                        
-                        <div class="card-body">
 
-                            <div class="notes-section">
-                                <div class="form-group mt-notes" id="Descrip_Name" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
-                                    <label class="cus-lbl">Meeting notes </label>
-                                    <angular-editor [(ngModel)]="Notes_Type"  #myTextarea (keyup)="addBulletPointsOnEnter($event)" [config]="config"></angular-editor>
-                                </div>
-                                <div class="eve-area py-2"  >
-                                    
-                                    <div class="rgt-des">
-                                        <label class="cus-lbl">Meeting notes </label>
-                                        <div class="note-text">
-                                            <div class="main-s" [innerHTML]="Meetingnotescom"></div>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="notes-section">
+
+                                    <div class="eve-area py-2">
+
+                                        <div class="rgt-des" *ngIf="Meetingstatuscom!='Completed' ">
+                                            <label class="cus-lbl">Meeting notes </label>
+                                            <div class="note-text d-none">
+                                                <div class="main-s" [innerHTML]="Meetingnotescom"></div>
+                                            </div>
+
+                                            <!-------------Meeting Notes with users-------------->
+                                            <div class="kt-mt-dw">
+                                                <div class="kt-card N-user-1">
+                                                    <div class="kt-user-dt">
+                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-name">{{empname}} </div>
+                                                        <!-- <span class="kt-met-time-date">00:34</span> -->
+                                                    </div>
+                                                    <div class="kt-user-note kt-clr-bg-1">
+                                                        <ul>
+                                                            <li [innerHTML]="Notes_Type"></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <ng-container *ngFor="let note of _meetingNotesAry">
+                                                    <div *ngIf="CurrentUser_ID != note.Emp_no" class="kt-card N-user-2">
+                                                        <div class="kt-user-dt">
+                                                            <div class="kt-user-2lt kt-clr-2">GD</div>
+                                                            <div class="kt-user-name">{{note.Emp_Name}}
+                                                                <!-- <span class="kt-met-time-date">05:34</span> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="kt-user-note kt-clr-bg-2">
+                                                            <li [innerHTML]="note.Meeting_notes"></li>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- <div class="kt-card N-user-2">
+                                                    <div class="kt-user-dt">
+                                                        <div class="kt-user-2lt kt-clr-3">LI</div><div class="kt-user-name">Lorem Ipsum <span class="kt-met-time-date">15:34</span></div>
+                                                    </div>
+                                                    <div class="kt-user-note kt-clr-bg-3">
+                                                        <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                                        <p>ages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,</p>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+
+                                            <div class="form-group mt-notes" id="Descrip_Name"
+                                                *ngIf="Meetingstatuscom==Completed ">
+                                                <label class="cus-lbl">Meeting notes </label>
+                                                <angular-editor [(ngModel)]="Notes_Type" #myTextarea
+                                                    (keyup)="addBulletPointsOnEnter($event)"
+                                                    [config]="config"></angular-editor>
+                                            </div>
+
+                                            <!-------------Meeting Notes with users-------------->
+
                                         </div>
                                     </div>
-                                </div>
-                                <!-- <div class="form-group" >
+                                    <!-- <div class="form-group" >
                                     <label class="cus-lbl">Meeting notes </label>
                                     <textarea class="main-s" [(ngModel)]="Notes"></textarea>
                                 </div> -->
-                                <!-- <label class="cus-lbl">Meeting notes </label>
+                                    <!-- <label class="cus-lbl">Meeting notes </label>
                                 <textarea   [(ngModel)]="Notes_Type" #myTextarea (focus)="addBulletPointsOnFocus()" (keyup)="addBulletPointsOnEnter($event)"
                                         class="custom-textarea form-control mb-2" placeholder="Add events"></textarea> -->
-                            </div>
+                                </div>
 
-                            <div class="action-section"  *ngIf="Meetingstatuscom==Completed && Isadmin==true">
-                                <div class="todo-main">
-                                    <div class="task-header" *ngIf="Meetingstatuscom!=Completed && todocount>0">
-                                      <h1 class="task-header-title">Assign Task</h1>
-                                      <div class="task-tools">
-                                        <div class="task-count"></div>
-                                      </div>
-                                      <form class="task-form"  *ngIf="Meetingstatuscom==Completed ">
-                                        <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
-                                        <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
-                                      </form>
-                                    </div>
-                                    <div class="task-header"*ngIf="Meetingstatuscom==Completed  ">
-                                        <h1 class="task-header-title">Assign Task</h1>
-                                        <div class="task-tools">
-                                          <div class="task-count"></div>
+                                <div class="action-section" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                                    <div class="todo-main">
+                                        <div class="task-header" *ngIf="Meetingstatuscom!=Completed && todocount>0">
+                                            <h1 class="task-header-title">Assign Task</h1>
+                                            <div class="task-tools">
+                                                <div class="task-count"></div>
+                                            </div>
+                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed ">
+                                                <input class="task-input" id="todo-input" name="text"
+                                                    [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
+                                                    placeholder="Add a new task..." autofocus="true">
+                                                <button class="task-button" (click)=" EnterSubmit(_Demotext) "
+                                                    id="btn1">Add Task</button>
+                                            </form>
                                         </div>
-                                        <form class="task-form"  *ngIf="Meetingstatuscom==Completed  ">
-                                          <input class="task-input" id="todo-input" name="text" [(ngModel)]="_Demotext"  (keyup.enter)=" EnterSubmit(_Demotext) " placeholder="Add a new task..." autofocus="true">
-                                          <button class="task-button"  (click)=" EnterSubmit(_Demotext) " id="btn1">Add Task</button>
-                                        </form>
-                                      </div>
+                                        <div class="task-header" *ngIf="Meetingstatuscom==Completed  ">
+                                            <h1 class="task-header-title">Assign Task</h1>
+                                            <div class="task-tools">
+                                                <div class="task-count"></div>
+                                            </div>
+                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed  ">
+                                                <input class="task-input" id="todo-input" name="text"
+                                                    [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
+                                                    placeholder="Add a new task..." autofocus="true">
+                                                <button class="task-button" (click)=" EnterSubmit(_Demotext) "
+                                                    id="btn1">Add Task</button>
+                                            </form>
+                                        </div>
 
-                                    
-                                    <div class="todo-list">
-                                      <div class="task-item"  *ngFor="let item of _TodoList; let i=index;">
-                                        <input class="task-status" type="checkbox">
-                                        <label class="task-name">{{item.Task_Name}}</label>
-                                        <div class="task-actions">
-                                                                                       
-                                            <!-- <button class="task-btns" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+
+                                        <div class="todo-list">
+                                            <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
+                                                <input class="task-status" type="checkbox">
+                                                <label class="task-name">{{item.Task_Name}}</label>
+                                                <div class="task-actions">
+
+                                                    <!-- <button class="task-btns" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                                                   </svg>                                                                                                                                                                                    
                                             </button>     -->
 
-                                            <span  mat-icon-button [matMenuTriggerFor]="menu"
-                                            aria-label="Example icon-button with a menu" matTooltip="More"
-                                            class="cursor-pointer ast-kt-dw">
-                                            <mat-icon color="primary">more_vert</mat-icon>
-                                        </span>
-                                        <mat-menu #menu="matMenu" xPosition="after">
+                                                    <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        aria-label="Example icon-button with a menu" matTooltip="More"
+                                                        class="cursor-pointer ast-kt-dw">
+                                                        <mat-icon color="primary">more_vert</mat-icon>
+                                                    </span>
+                                                    <mat-menu #menu="matMenu" xPosition="after">
 
-                                            <button mat-menu-item mat
-                                                (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                <mat-icon class="mr-2" color='primary'>group</mat-icon>
-                                                <span>Assign Task/Project</span>
-                                            </button>
+                                                        <button mat-menu-item mat
+                                                            (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                            <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                            <span>Assign Task/Project</span>
+                                                        </button>
 
-                                            <button mat-menu-item mat
-                                                (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
-                                                <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                <span>Add Action To Project</span>
-                                            </button>
-                                        </mat-menu>
-                                            
-                                                              
-                                        </div>
-                                            
-                                            <button class="task-delete task-btns" (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi">
-                                                    <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z"></path>
-                                                </svg>
-                                            </button>
+                                                        <button mat-menu-item mat
+                                                            (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                            <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                            <span>Add Action To Project</span>
+                                                        </button>
+                                                    </mat-menu>
 
-                                        </div>
-                                        
-                                        
-                                         
-                                      <!-- </div>
+
+                                                </div>
+
+                                                <button class="task-delete task-btns"
+                                                    (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                        role="img" font-size="1.5rem" width="1em" height="1em"
+                                                        viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                        <path fill="currentColor"
+                                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+
+
+                                            <!-- </div>
                                       <div class="task-item is-completed">
                                         <input class="task-status" type="checkbox" checked="true">
                                         <label class="task-name">Project summary List</label>
@@ -585,91 +784,106 @@
                                         <input class="task-status" type="checkbox">
                                         <label class="task-name">New Task</label>
                                       </div> -->
-                                    </div>
-                                    <div class="task-list"><div class="task-empty" *ngIf="!text">Not found a task</div></div>
-                                  </div>
-                            </div>
-                            
-                             <h4></h4>
-                            <div class=" mt-3" *ngIf="ActionedAssigned_Josn.length>0">
-                                <label class="task-name">Assigned Task/Project</label>
-                                <div class="mb-2 card"  *ngFor="let item of ActionedAssigned_Josn">
-                                    <div class="card-body p-2 Replied_border_left_true_warning mr-2">
-                                      <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-                                        <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
-                                          <div class="kt-inbox__actions"></div>
                                         </div>
-                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                          <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                              <!-- <a data-toggle="tooltip" title="Project Details!" class="curser-pointer">
+                                        <div class="task-list">
+                                            <div class="task-empty" *ngIf="!text">Not found a task</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4></h4>
+                                <div class=" mt-3" *ngIf="ActionedAssigned_Josn.length>0">
+                                    <label class="task-name">Assigned Task/Project</label>
+                                    <div class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
+                                        <div class="card-body p-2 Replied_border_left_true_warning mr-2">
+                                            <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                    <div class="kt-inbox__actions"></div>
+                                                </div>
+                                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <!-- <a data-toggle="tooltip" title="Project Details!" class="curser-pointer">
                                                 <i class="fa fa-info-circle info-icon-cir"></i>
                                               </a>
                                               <a tabindex="0" role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
                                                 <i class="fa fa-chart-bar info-icon-cir"></i>
                                               </a> -->
-                                            </div>&nbsp; <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
-                                              <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
-                                            </div>
-                                          </div>
-                                          <!-- <span class="desc ml-2 mb-2">Testing all the functionality after Publishing File on live</span> -->
-                                          <div class="my-2">
-                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                              <div>
-                                                <img src="../creativeplanner/assets/icons/create2.png" class="badge-img">
-                                              </div>
-                                              <div> {{item.Creation_Date|date}}</div>
-                                            </span>
-                                            <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"> Assigned Task/Project <mat-icon role="img" color="success" class="mat-icon notranslate ml-2 mr-2 mat-success material-icons mat-ligature-font mat-icon-no-color" aria-hidden="true" ng-reflect-color="success" data-mat-icon-type="font">task_alt </mat-icon>
-                                              <b>  {{item.AssignedTo}}</b>
-                                            </span>
-                                            <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                              <div>
-                                                <img src="../creativeplanner/assets/icons/create1.png" class="badge-img">
-                                              </div>
-                                              <div>{{item.Modified_DT|date}} </div>
-                                            </span>
-                                            <!-- <span data-toggle="tooltip" title="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
+                                                        </div>&nbsp; <div
+                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                                            <span
+                                                                class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <span class="desc ml-2 mb-2">Testing all the functionality after Publishing File on live</span> -->
+                                                    <div class="my-2">
+                                                        <span data-toggle="tooltip" title="Created Date!"
+                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <div>
+                                                                <img src="../creativeplanner/assets/icons/create2.png"
+                                                                    class="badge-img">
+                                                            </div>
+                                                            <div> {{item.Creation_Date|date}}</div>
+                                                        </span>
+                                                        <span
+                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                            Assigned Task/Project <mat-icon role="img" color="success"
+                                                                class="mat-icon notranslate ml-2 mr-2 mat-success material-icons mat-ligature-font mat-icon-no-color"
+                                                                aria-hidden="true" ng-reflect-color="success"
+                                                                data-mat-icon-type="font">task_alt </mat-icon>
+                                                            <b> {{item.AssignedTo}}</b>
+                                                        </span>
+                                                        <span data-toggle="tooltip" title="Assigned Date!"
+                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                            <div>
+                                                                <img src="../creativeplanner/assets/icons/create1.png"
+                                                                    class="badge-img">
+                                                            </div>
+                                                            <div>{{item.Modified_DT|date}} </div>
+                                                        </span>
+                                                        <!-- <span data-toggle="tooltip" title="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
                                               <div> Accepted</div>
                                             </span> -->
-                                          </div>
-                                          <div class="my-1">
-                                            <!-- <label data-toggle="tooltip" title="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
+                                                    </div>
+                                                    <div class="my-1">
+                                                        <!-- <label data-toggle="tooltip" title="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                               <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label> -->
-                                            
-                                            <span data-toggle="tooltip" title="Project Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning" ng-reflect-ng-class="[object Object]">
-                                              <div> {{item.Status}}</div>
-                                            </span>
-                                            
-                                            <!-- <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+
+                                                        <span data-toggle="tooltip" title="Project Status!"
+                                                            class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
+                                                            ng-reflect-ng-class="[object Object]">
+                                                            <div> {{item.Status}}</div>
+                                                        </span>
+
+                                                        <!-- <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                               <div>
                                                 <img src="../creativeplanner/assets/icons/strat-prim.png" class="badge-img">
                                               </div>
                                               <div> Feb 21, 2023</div>
                                             </span> -->
-                                            
-                                            <!-- <span data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+
+                                                        <!-- <span data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                               <div>
                                                 <img src="../creativeplanner/assets/icons/end-prim.png" class="badge-img">
                                               </div>
                                               <div> {{item.End_Date}}</div>
                                             </span> -->
-                                            
-                                          </div>
-                                          <div class="mt-2">
-                                          
-                                          </div>
-                                        </div>
-                                        <div class="kt-inbox__datetime"></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
 
+                                                    </div>
+                                                    <div class="mt-2">
+
+                                                    </div>
+                                                </div>
+                                                <div class="kt-inbox__datetime"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- <div class="card card-side">
+
+                        <!-- <div class="card card-side">
                         <div class="card-header d-flex-cen justify-content-between">
                             <h5 clas="card-title">
                                 Add Action
@@ -687,27 +901,29 @@
                         </div>
                     </div> -->
 
-                </div>
+                    </div>
 
-                                        
-                <div class="drops drope py-3" aria-labelledby="dropusers">
-                   
-                    <div class="d-flex align-items-center">
-                        <div class="col-md-2 text-center" >
-                            <span class="">
-                                <svg focusable="false" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
-                                    <path d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="col-md-10 pr-3">
-                            <ng-select  class="kt-input form-control" name="ngEmployeeDropdown"
+
+                    <div class="drops drope py-3" aria-labelledby="dropusers">
+
+                        <div class="d-flex align-items-center">
+                            <div class="col-md-2 text-center">
+                                <span class="">
+                                    <svg focusable="false" width="22" height="22" viewBox="0 0 24 24" class="svg-icn">
+                                        <path
+                                            d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col-md-10 pr-3">
+                                <ng-select class="kt-input form-control" name="ngEmployeeDropdown"
                                     placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
                                     <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                                         {{item.DisplayName}} </ng-option>
-                            </ng-select>
-                        </div>
-                        <!-- <div class="col-md-10 pr-3">
+                                </ng-select>
+                            </div>
+                            <!-- <div class="col-md-10 pr-3">
                             <div class="dropdown">
                                 <span class="w-100 btn-sort dropdown-toggle no-after" 
                                     id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                    
@@ -730,43 +946,51 @@
                                 </div>
                             </div>
                         </div> -->
-                    </div>
-
-                    <div class="d-flex align-items-center mt-3">
-                        <div class="col-md-2 text-center">
-                            <span class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"></path>
-                                </svg>
-                            </span>
                         </div>
-                        <div class="col-md-10 pr-3">
 
-                            <div>
-                                <input type="date" class="form-control">
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="col-md-2 text-center">
+                                <span class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
+                                        </path>
+                                    </svg>
+                                </span>
                             </div>
+                            <div class="col-md-10 pr-3">
 
+                                <div>
+                                    <input type="date" class="form-control">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="px-3 pt-3 text-right">
+                            <button class="btn btn-sm btn-info">Assign Task</button>
                         </div>
                     </div>
-                    
-                    <div class="px-3 pt-3 text-right">
-                        <button class="btn btn-sm btn-info">Assign Task</button>
-                    </div>
+
                 </div>
-
             </div>
+
+            <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
+            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal">End
+                    Meeting</button>
+                <button class="btn btn-secondary btn-sm mr-2">cancel</button>
+            </div>
+            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+                <button class="btn btn-info btn-sm mr-2">Leave Meeting</button>
+                <button class="btn btn-secondary btn-sm mr-2">cancel</button>
+            </div>
+
         </div>
 
-        <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
-        <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true" >
-            <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal" >Submit</button>
-            <button class="btn btn-secondary btn-sm mr-2">cancel</button>
-        </div>
 
     </div>
-
-    
-</div>
 </div>
 
 
@@ -774,7 +998,8 @@
 
 
 <!-- Modal-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -784,9 +1009,9 @@
                 </button>
             </div>
             <div class="modal-body">
-               
+
                 <div id="NameDate" class="main-title" *ngFor="let item of EventScheduledjson">
-                    <div class="boxcl-div" >
+                    <div class="boxcl-div">
                         <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
                     </div>
                     <div id="" class="title-right">
@@ -794,11 +1019,13 @@
                             <div class="title-main">
                                 <span id="title1">{{item.Task_Name}}</span>
                             </div>
-                           
+
                             <div class="d-flex">
-                                <div class="title-day">{{item.Schedule_date | date:'d  EEE, MMMM YYYY'}}<span _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}} – </span>
+                                <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}<span
+                                        _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}}
+                                        – </span>
                                 </div>
-                                <div  class="title-day"> {{item.NewSt_Time}} </div>
+                                <div class="title-day"> {{item.NewSt_Time}} </div>
                             </div>
                         </div>
                     </div>
@@ -822,14 +1049,19 @@
 
                 <!-- /*------guests----*/ -->
                 <div class="eve-area ng-star-inserted">
-                    <div class="left-icon" >
+                    <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
-                            <svg  focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn"><path _ngcontent-gpx-c394="" d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z"></path></svg>
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                                <path _ngcontent-gpx-c394=""
+                                    d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                </path>
+                            </svg>
                         </span>
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s"> <span class="kt-dt-cnt-view">{{Guestcount}}/{{totalguest}}</span> Participants</div>
+                            <div class="main-s"> <span class="kt-dt-cnt-view">{{Guestcount}}/{{totalguest}}</span>
+                                Participants</div>
                         </div>
                     </div>
                 </div>
@@ -837,7 +1069,7 @@
                 <!-- /*-----guests list ----------*/ -->
 
                 <div class="avar-div">
-                   
+
                     <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2 position-relative">
                             <span ><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" width="24px" height="24px" style="width: 20px;"><path _ngcontent-nyr-c394="" fill="#E0E0E0" d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z"></path><path _ngcontent-nyr-c394="" fill="#BDBDBD" d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z"></path><rect _ngcontent-nyr-c394="" fill="none" width="192" height="192"></rect></svg>
@@ -856,20 +1088,21 @@
                     </div> -->
                 </div>
 
-                 <!-- /*-----Projects ----------*/ -->
+                <!-- /*-----Projects ----------*/ -->
                 <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
-                            <i  class="fab-icn fab fa-wpforms"></i>
+                            <i class="fab-icn fab fa-wpforms"></i>
                         </span>
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">{{projectcount}}/{{totalproject}}</span> Projects</div>
+                            <div class="main-s pro-nm"> <span
+                                    class="kt-dt-cnt-view">{{projectcount}}/{{totalproject}}</span> Projects</div>
                         </div>
                     </div>
                 </div>
-                 <!-- /*-----Projects list----------*/ -->
+                <!-- /*-----Projects list----------*/ -->
                 <div class="side-div ng-star-inserted">
                     <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
@@ -886,23 +1119,25 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                 </div>
 
-                 <!-- /*-----Portfolios ----------*/ -->
-                 <div id="project" class="eve-area ng-star-inserted">
+                <!-- /*-----Portfolios ----------*/ -->
+                <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
-                            <i  class="fas-icn fas fa-list"></i>
+                            <i class="fas-icn fas fa-list"></i>
                         </span>
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">{{portfoliocount}}/{{totalportfolios}}</span> Portfolios</div>
+                            <div class="main-s pro-nm"> <span
+                                    class="kt-dt-cnt-view">{{portfoliocount}}/{{totalportfolios}}</span> Portfolios
+                            </div>
                         </div>
                     </div>
                 </div>
-                 <!-- /*-----Portfolios list----------*/ -->
+                <!-- /*-----Portfolios list----------*/ -->
                 <div class="side-div ng-star-inserted">
                     <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
@@ -934,23 +1169,30 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                 </div>
 
-                 <!-- /*-----DMS ----------*/ -->
-                 <div id="project" class="eve-area ng-star-inserted">
+                <!-- /*-----DMS ----------*/ -->
+                <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="svg-icn"><path _ngcontent-owa-c389="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-owa-c389="" d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                                class="svg-icn">
+                                <path _ngcontent-owa-c389="" fill="none" d="M0 0h24v24H0z"></path>
+                                <path _ngcontent-owa-c389=""
+                                    d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z">
+                                </path>
+                            </svg>
                         </span>
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">{{dmscount}}/{{totaldms}}</span> DMS</div>
+                            <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">{{dmscount}}/{{totaldms}}</span>
+                                DMS</div>
                         </div>
                     </div>
                 </div>
-                 <!-- /*-----DMS list----------*/ -->
+                <!-- /*-----DMS list----------*/ -->
                 <div class="side-div ng-star-inserted">
                     <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
@@ -983,11 +1225,11 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                 </div>
 
-                  <!-- /*-----Meeting notes ----------*/ -->
-                  <!-- <div id="project" class="eve-area ng-star-inserted">
+                <!-- /*-----Meeting notes ----------*/ -->
+                <!-- <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
                              <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="24" height="24" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect height="1" transform="translate(32 5) rotate(-180)" width="12" x="10" y="2"></rect><rect height="1" transform="translate(32 9) rotate(-180)" width="12" x="10" y="4"></rect><path d="M9,3V4H8A1,1,0,0,0,7,5V7H6V5A2,2,0,0,1,8,3Z"></path><path d="M23,3V4h1a1,1,0,0,1,1,1V7h1V5a2,2,0,0,0-2-2Z"></path><rect height="1" transform="translate(-10 23) rotate(-90)" width="19" x="-3" y="16"></rect><rect height="1" transform="translate(11 40) rotate(-90)" width="15" x="18" y="14"></rect><path d="M8,30V29H8a1,1,0,0,1-1-1V26H6v2a2,2,0,0,0,2,2Z"></path><path d="M21.91,21.15c-.57-.32-.91-.72-.91-1.15a6.09,6.09,0,0,1-.21,1.59c-1,4.07-6,7.18-12.12,7.4H8v1h.72c8.86-.15,16.07-3.15,17.14-7A3.77,3.77,0,0,0,26,22,8.72,8.72,0,0,1,21.91,21.15Zm-5.78,7a10.5,10.5,0,0,0,5.54-6,8.94,8.94,0,0,0,3.15.79C24.07,25,20.91,27,16.13,28.13Z"></path><path d="M11,4V5H10A1,1,0,0,1,9,4V3h1V4Z"></path><path d="M11,3V2H10A1,1,0,0,0,9,3V4h1V3Z"></path><path d="M21,4V5h1a1,1,0,0,0,1-1V3H22V4Z"></path><path d="M21,3V2h1a1,1,0,0,1,1,1V4H22V3Z"></path></g></svg>
@@ -1068,23 +1310,48 @@
                    
                 </div>-->
 
-                   <!-- /*-----Meeting notes ----------*/ -->
-                   <div id="project" class="eve-area ng-star-inserted">
+                <!-- /*-----Meeting notes ----------*/ -->
+                <div id="project" class="eve-area ng-star-inserted">
                     <div class="left-icon">
                         <span aria-hidden="true" class="side-icns">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27" class="svg-icn"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z" fill="#292D32"></path> <path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" fill="#292D32"></path> <path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" fill="#292D32"></path> <path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" fill="#292D32"></path> <path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" fill="#292D32"></path> <path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" fill="#292D32"></path> </g></svg>
-                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27"
+                                class="svg-icn">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"
+                                        fill="#292D32"></path>
+                                    <path
+                                        d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z"
+                                        fill="#292D32"></path>
+                                    <path
+                                        d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z"
+                                        fill="#292D32"></path>
+                                    <path
+                                        d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z"
+                                        fill="#292D32"></path>
+                                    <path
+                                        d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z"
+                                        fill="#292D32"></path>
+                                    <path
+                                        d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z"
+                                        fill="#292D32"></path>
+                                </g>
+                            </svg>
+                        </span>
                     </div>
                     <div class="rgt-des">
                         <div>
-                            <div class="main-s pro-nm"><span class="kt-dt-cnt-view">{{assigncount}}/{{todocount}}</span> Assign Task</div>
+                            <div class="main-s pro-nm"><span class="kt-dt-cnt-view">{{assigncount}}/{{todocount}}</span>
+                                Assign Task</div>
                         </div>
                     </div>
                 </div>
-                 <!-- /*-----Meeting notes list----------*/ -->
+                <!-- /*-----Meeting notes list----------*/ -->
                 <div class="side-div ng-star-inserted">
 
-                    
+
                     <!-- <div class="d-flex align-items-center ng-star-inserted">
                         <div class="px-2">
                             <span>
@@ -1122,7 +1389,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info btn-sm mr-2"  (click)=" Insert_meetingreport()">confirm</button>
+                <button type="button" class="btn btn-info btn-sm mr-2"
+                    (click)=" Insert_meetingreport()">confirm</button>
             </div>
         </div>
     </div>
@@ -1130,297 +1398,311 @@
 
 <!-- Button trigger modal -->
 
-  
-  <!-- Modal -->
-  <div class="modal fade" id="recurcal" tabindex="-1" role="dialog" aria-labelledby="recurcalTitle" aria-hidden="true">
+
+<!-- Modal -->
+<div class="modal fade" id="recurcal" tabindex="-1" role="dialog" aria-labelledby="recurcalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg w-max w-min" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Set due date and recurrence</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="">
-                
-                <div class="d-flex-cen gap-3">
-                    <div class="">
-                        
-                        <div class="rec-btns gap-3">
-                            <button class="btn btn-sm btn-white btn-min">Today</button>
-                            <button class="btn btn-sm btn-white btn-min">Tomorrow</button>
-                            <button class="btn btn-sm btn-white btn-min">Next Monday</button>
-                            <button class="btn btn-sm btn-white btn-min">In a week</button>
-                        </div>
-                        <div class="mt-3 pl-2">
-                            <div class="dropdown show">
-                                <a class="text-info dropdown-toggle" href="#" role="button" id="repeatdrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-redo"></i> Does not repeat
-                                </a>
-                            
-                                <div class="dropdown-menu" aria-labelledby="repeatdrop">
-                                <a class="dropdown-item" href="#"> Does not repeat</a>
-                                <a class="dropdown-item" href="#"> Repeat</a>
-                                <a class="dropdown-item" href="#"> Something else here</a>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Set due date and recurrence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+
+                    <div class="d-flex-cen gap-3">
+                        <div class="">
+
+                            <div class="rec-btns gap-3">
+                                <button class="btn btn-sm btn-white btn-min">Today</button>
+                                <button class="btn btn-sm btn-white btn-min">Tomorrow</button>
+                                <button class="btn btn-sm btn-white btn-min">Next Monday</button>
+                                <button class="btn btn-sm btn-white btn-min">In a week</button>
+                            </div>
+                            <div class="mt-3 pl-2">
+                                <div class="dropdown show">
+                                    <a class="text-info dropdown-toggle" href="#" role="button" id="repeatdrop"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-redo"></i> Does not repeat
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="repeatdrop">
+                                        <a class="dropdown-item" href="#"> Does not repeat</a>
+                                        <a class="dropdown-item" href="#"> Repeat</a>
+                                        <a class="dropdown-item" href="#"> Something else here</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="">
+                        <div class="">
 
-                        <div class="cal">
-                            <div class="calendar-wrap">
-                                <h2 class="month-year">January 2020</h2>
-                            
-                                <table class="calendar">
-                                <thead>
-                                    <tr>
-                                    <th class="day-title" scope="col">Sun</th>
-                                    <th class="day-title" scope="col">Mon</th>
-                                    <th class="day-title" scope="col">Tue</th>
-                                    <th class="day-title" scope="col">Wed</th>
-                                    <th class="day-title" scope="col">Thu</th>
-                                    <th class="day-title" scope="col">Fri</th>
-                                    <th class="day-title" scope="col">Sat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="week">
-                                    <td class="day prev-mon" tabindex="0"><span class="day-number">29</span></td>
-                                    <td class="day prev-mon" tabindex="0"><span class="day-number">30</span></td>
-                                    <td class="day prev-mon" tabindex="0"><span class="day-number">31</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                                    <td class="day today" tabindex="0"><span class="day-number">2</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                                    </tr>
-                                    <tr class="week">
-                                    <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">6</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                                    </tr>
-                                    <tr class="week">
-                                    <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                                    </tr>
-                                    <tr class="week">
-                                    <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                                    </tr>
-                                    <tr class="week">
-                                    <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                                    <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                                    <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                                    </tr>
-                                </tbody>
-                                </table>
-                                
-                                <a class="button reset">Clear date-range</a>
+                            <div class="cal">
+                                <div class="calendar-wrap">
+                                    <h2 class="month-year">January 2020</h2>
+
+                                    <table class="calendar">
+                                        <thead>
+                                            <tr>
+                                                <th class="day-title" scope="col">Sun</th>
+                                                <th class="day-title" scope="col">Mon</th>
+                                                <th class="day-title" scope="col">Tue</th>
+                                                <th class="day-title" scope="col">Wed</th>
+                                                <th class="day-title" scope="col">Thu</th>
+                                                <th class="day-title" scope="col">Fri</th>
+                                                <th class="day-title" scope="col">Sat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="week">
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                </td>
+                                                <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                <td class="day today" tabindex="0"><span class="day-number">2</span>
+                                                </td>
+                                                <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">6</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                <td class="day next-mon" tabindex="0"><span class="day-number">1</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <a class="button reset">Clear date-range</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <a class="text-info">
-                                <i class="far fa-clock"></i> Add time
-                            </a>
+                            <div class="mt-3 text-right">
+                                <a class="text-info">
+                                    <i class="far fa-clock"></i> Add time
+                                </a>
+
+                            </div>
 
                         </div>
-                        
                     </div>
                 </div>
+
+
             </div>
-
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info btn-sm">Save changes</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-info btn-sm">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  
-  <div class="modal fade" id="custmodal" tabindex="-1" role="dialog" aria-labelledby="custom-modal" aria-hidden="true">
+
+<div class="modal fade" id="custmodal" tabindex="-1" role="dialog" aria-labelledby="custom-modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg w-max w-min" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Custom recurrence</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="">
-                
-                <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
-                    <div class="d-flex-cen gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">Project Type</label>
-                        </div>
-                        <div class="w-min-150"  >
-                            <select name="Select Type" placeholder="Do not repeat" class="form-control" >
-                            <option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
-                                {{item.Exec_BlockName}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-flex-cen gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">Repeat</label>
-                        </div>
-                        <div class="w-min-150">
-                            <select name="Select Type" placeholder="Do not repeat" class="form-control">
-                            <option [value]="0">Select Type</option>
-                            <option [value]="1">Daily</option>
-                            <option [value]="2">Weekly</option>
-                            <option  [value]="4">Monthly</option>
-                            <option [value]="8">Quarterly</option>
-                            <option  [value]="10">HalfYearly</option>
-                            <option [value]="16">Annually</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-flex-cen gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">Interval</label>
-                        </div>
-                        <div class="">
-                            <div class="arrws mb-2"><i class="fas fa-chevron-up"></i></div>
-                            <span class="arw-spn mb-1">88</span>
-                            <!-- <input type="text" placeholder="1" class="form-control numbr"> -->
-                            <div class="arrws mt-2"><i class="fas fa-chevron-down"></i></div>
-                        </div>
-                        <div class="">                            
-                            <span class="ml-2">Week</span>
-                        </div>
-                    </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Custom recurrence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
 
-                    <div class="d-flex-cen gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">On days</label>
-                        </div>
-                        <div class="">                            
-                          <div class="">
-                            <div class="d-flex">
-                              <div class=" repeat-day">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Sun" value="Sun"> S
-                              </div>
-                              
-                              <div class=" repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Mon" value="Mon"> M
-                              </div>
-                              
-                              <div class="repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Tue" value="Tue"> T
-                              </div>
-                              
-                              <div class="repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Wed" value="Wed"> W
-                              </div>
-                              
-                              <div class="repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Thu" value="Thu"> Th
-                              </div>
-                              
-                              <div class="repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Fri" value="Fri"> Fr
-                              </div>
-                              
-                              <div class="repeat-day ">
-                                <input type="checkbox" name="DaysChk" class="rep-chk" id="Sat" value="Sat"> Sa
-                              </div>
-                              
+                    <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
+                        <div class="d-flex-cen gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">Project Type</label>
                             </div>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="d-flex-cen gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">Starts</label>
-                        </div>
-                        <div>
-                            <input type="date" placeholder="Select EndDate" class="form-control">
-                        </div>
-                        <div class="ml-2">
-                            <a class="text-info d-flex-cen">
-                                <i class="far fa-clock text-info mr-2"></i> Add a time
-                            </a>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-1 form-group">
-                        <div class="left-lbls">
-                          <label class="mr-1 mb-0">Ends</label>
-                        </div>
-                        <div class="">
-                            <div class="form-check ml-1">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                <label class="form-check-label" for="exampleRadios1">
-                                  Never
-                                </label>
+                            <div class="w-min-150">
+                                <select name="Select Type" placeholder="Do not repeat" class="form-control">
+                                    <option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
+                                        {{item.Exec_BlockName}}</option>
+                                </select>
                             </div>
-                            <div class="mt-3 d-flex-cen">
-                                <div class="form-check ml-1 mr-3">
-                                    <input class="form-check-input" type="radio" name="" id="" value="" checked>
-                                    <label class="form-check-label" for="">
-                                     On
+                        </div>
+                        <div class="d-flex-cen gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">Repeat</label>
+                            </div>
+                            <div class="w-min-150">
+                                <select name="Select Type" placeholder="Do not repeat" class="form-control">
+                                    <option [value]="0">Select Type</option>
+                                    <option [value]="1">Daily</option>
+                                    <option [value]="2">Weekly</option>
+                                    <option [value]="4">Monthly</option>
+                                    <option [value]="8">Quarterly</option>
+                                    <option [value]="10">HalfYearly</option>
+                                    <option [value]="16">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex-cen gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">Interval</label>
+                            </div>
+                            <div class="">
+                                <div class="arrws mb-2"><i class="fas fa-chevron-up"></i></div>
+                                <span class="arw-spn mb-1">88</span>
+                                <!-- <input type="text" placeholder="1" class="form-control numbr"> -->
+                                <div class="arrws mt-2"><i class="fas fa-chevron-down"></i></div>
+                            </div>
+                            <div class="">
+                                <span class="ml-2">Week</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex-cen gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">On days</label>
+                            </div>
+                            <div class="">
+                                <div class="">
+                                    <div class="d-flex">
+                                        <div class=" repeat-day">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Sun" value="Sun">
+                                            S
+                                        </div>
+
+                                        <div class=" repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Mon" value="Mon">
+                                            M
+                                        </div>
+
+                                        <div class="repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Tue" value="Tue">
+                                            T
+                                        </div>
+
+                                        <div class="repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Wed" value="Wed">
+                                            W
+                                        </div>
+
+                                        <div class="repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Thu" value="Thu">
+                                            Th
+                                        </div>
+
+                                        <div class="repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Fri" value="Fri">
+                                            Fr
+                                        </div>
+
+                                        <div class="repeat-day ">
+                                            <input type="checkbox" name="DaysChk" class="rep-chk" id="Sat" value="Sat">
+                                            Sa
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex-cen gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">Starts</label>
+                            </div>
+                            <div>
+                                <input type="date" placeholder="Select EndDate" class="form-control">
+                            </div>
+                            <div class="ml-2">
+                                <a class="text-info d-flex-cen">
+                                    <i class="far fa-clock text-info mr-2"></i> Add a time
+                                </a>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 form-group">
+                            <div class="left-lbls">
+                                <label class="mr-1 mb-0">Ends</label>
+                            </div>
+                            <div class="">
+                                <div class="form-check ml-1">
+                                    <input class="form-check-input" type="radio" name="exampleRadios"
+                                        id="exampleRadios1" value="option1" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        Never
                                     </label>
                                 </div>
+                                <div class="mt-3 d-flex-cen">
+                                    <div class="form-check ml-1 mr-3">
+                                        <input class="form-check-input" type="radio" name="" id="" value="" checked>
+                                        <label class="form-check-label" for="">
+                                            On
+                                        </label>
+                                    </div>
 
-                                <div>
-                                    <input type="date" placeholder="Select EndDate" class="form-control">
+                                    <div>
+                                        <input type="date" placeholder="Select EndDate" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
-                  </div>
+                </div>
+
 
             </div>
+            <div class="modal-footer">
+                <div class="flex-1 d-flex-between m-0">
+                    <div class="">
+                        <span>Weekly on Tuesday</span>
+                    </div>
+                    <div class="">
 
-
-        </div>
-        <div class="modal-footer">
-            <div class="flex-1 d-flex-between m-0">
-                <div class="">
-                    <span>Weekly on Tuesday</span>
-                </div>
-                <div class="">
-                    
-                    <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-info btn-sm">Save changes</button>
+                        <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info btn-sm">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div id="rightbar-overlay" (click)="closeInfo()"></div>
+</div>
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
 
-  <div id="mysideInfobar" class="sideInfobar animate-right">
-      <router-outlet></router-outlet>
-  </div>
+<div id="mysideInfobar" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
 
-  <!-- <div class="todo-list">
+<!-- <div class="todo-list">
     <div class="task-item"  *ngFor="let item of text; let i=index;">
       <input class="task-status" type="checkbox">
       <label class="task-name">{{item}}</label>

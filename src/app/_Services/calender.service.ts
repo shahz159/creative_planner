@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CalenderDTO } from '../_Models/calender-dto';
 import { ApiurlService } from './apiurl.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -184,4 +185,22 @@ NewGetMeetingdata_notes(obj: CalenderDTO){
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_datas", this.obj_CalenderDTO);
 
 }
+
+NewGetMeetingnote_comp(obj: CalenderDTO){
+  
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_dataco", this.obj_CalenderDTO);
+
+}
+autoRefresh(interval: number): Observable<any> {
+  return new Observable<any>(observer => {
+    setInterval(() => {
+      this.NewGetMeetingnote_comp(this.obj_CalenderDTO).subscribe(data => {
+        observer.next(data);
+      });
+    }, interval);
+  });
+}
+
 }
