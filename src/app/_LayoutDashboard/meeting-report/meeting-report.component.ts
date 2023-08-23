@@ -174,7 +174,8 @@ export class MeetingReportComponent implements OnInit {
     this._ObjCompletedProj = new CompletedProjectsDTO();
 
   }
-  _meetingNotesAry: [];
+  _meetingNotesAry: any = [];
+  _userfullname: string;
   ngOnInit(): void {
 
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
@@ -197,9 +198,10 @@ export class MeetingReportComponent implements OnInit {
     this.refreshSubscription = this.CalenderService.autoRefresh(refreshInterval)
       .subscribe(data => {
         // Handle the emitted data here
-        
+
         console.log('Refreshed data:', data);
         this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
         // Update your component's properties or perform other actions with the data
       });
     // modal caledar start
