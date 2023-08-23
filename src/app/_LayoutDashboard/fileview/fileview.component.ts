@@ -3,6 +3,8 @@ import { ActivatedRoute,ParamMap  } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PDFDocumentProxy, PDFProgressData} from 'ng2-pdf-viewer/src/app/pdf-viewer/pdf-viewer.module';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { NotificationService } from 'src/app/_Services/notification.service';
 
 @Component({
   selector: 'app-fileview',
@@ -41,21 +43,26 @@ export class FileviewComponent implements OnInit {
   _mailid: number;
   _AnnouncementDocId: number;
   createdBy: number;
-  IsCommunicarionMemoDownload: boolean;
+  IsCommunicarionMemoDownload: any;
   _IsConfidential: string = 'false';
   Current_user_ID:string;
   _LoginUserId:string;
+  url_project_code:any;
+  invalid: boolean =false;
+  objProjectDto: ProjectDetailsDTO;
 
-  constructor(private route: ActivatedRoute,public service: ProjectTypeService
+  constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
   ) {
     this._LoginUserId = this.Current_user_ID;
+    this.objProjectDto = new ProjectDetailsDTO();
   }
 
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.IsCommunicarionMemoDownload = localStorage.getItem('IsCommunicationDownload');
     var decoder = new TextDecoder();
-
+    this.url_project_code=this.route.snapshot.params['projectcode'];
     let surl = this.route.snapshot.params['url'];
     this.route.queryParams.subscribe(params => {
 
@@ -70,6 +77,8 @@ export class FileviewComponent implements OnInit {
       });
 
         if (decoder.decode(new Uint8Array(arruid)).toString() != this.Current_user_ID.toString()) {
+          this.viewer='';
+          this.invalid=true;
         alert('Invalid User');
         return false;
       }
@@ -276,6 +285,15 @@ export class FileviewComponent implements OnInit {
   }
 
   download(url, filename) {
+
+    this.objProjectDto.Project_Code=this.url_project_code;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.filename=this.filename;
+
+    this.service._InsertDownloadhistoryServie(this.objProjectDto).subscribe(data=>{
+        this.notifyService.showSuccess("Downloaded successfully","Success");
+    });
+
       fetch(url).then(function (t) {
         return t.blob().then((b) => {
           var a = document.createElement("a");
@@ -285,28 +303,19 @@ export class FileviewComponent implements OnInit {
         }
         );
       });
-
   }
 
-
+  history_list:any;
   // HistoryList: any;
-  // DownloadHistory() {
-  //   // alert(this.MailDocId);
-  //   this._obj.MailDocId = this.MailDocId;
-  //   this._obj.OrganizationId = this._LoginUserId;
-  //   this._obj.AnnouncementDocId = this._AnnouncementDocId;
+  DownloadHistory() {
+    this.objProjectDto.Project_Code=this.url_project_code;
+    this.objProjectDto.Emp_No=this.Current_user_ID;
+    this.objProjectDto.filename=this.filename;
 
-  //   this._obj.MailId = this._mailid;
-  //   this.newmemoService.HistoryDownload(this._obj).subscribe(
-  //     data => {
-  //       this._obj = data as InboxDTO;
-  //       this.HistoryList = JSON.parse(this._obj.RequestJson);
-  //       this.HistoryList.forEach(element => {
-  //         element.DatesJson = JSON.parse(element.DatesJson);
-  //       });
-  //       // console.log(this.HistoryList, "HistoryList");
-  //     })
-  // }
+    this.service._InsertDownloadhistoryServie(this.objProjectDto).subscribe(data=>{
+      // this.history_list=
+    });
+  }
   searchhistory() {
     this.HistorySearch = "";
   }

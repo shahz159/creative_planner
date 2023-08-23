@@ -540,7 +540,7 @@
                                         <h6 class="txtm-cus pt-1">Allocated</h6>
                                         <h5 class="mt-1"
                                             *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks'">
-                                            {{maxDuration}}Hrs
+                                            {{maxDuration}} Hrs
                                         </h5>
                                         <h5 class="mt-1"
                                             *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks'">
@@ -981,7 +981,7 @@
                                                             <div class="kt-portlet__body px-3">
                                                                 <h5><strong>DAR Summary</strong></h5>
                                                                 <h6>Total Max Duration : <span
-                                                                        *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks'"><b>{{maxDuration}}Hrs</b></span>
+                                                                        *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks'"><b>{{maxDuration}} Hrs</b></span>
                                                                     <span
                                                                         *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks'"><b>{{standardDuration}}</b></span>
                                                                 </h6>
@@ -3794,7 +3794,7 @@
 
                     <!-- Files Section -->
                     <!-- <div class="tab-pane fade" id="Links" role="tabpanel" aria-labelledby="Links1">Links</div> -->
-                    <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="Files1">
+                    <div class="tab-pane fade kt-files-bg-rds" id="Files" role="tabpanel" aria-labelledby="Files1">
                         <div class="d-flex-cen justify-content-between px-2 mb-2">                                        
                             <h4 class="kt-subheader__title mb-0" *ngIf="attachmentlength!=0">Files</h4> 
                             <div class="" *ngIf="attachmentlength!=0">
@@ -3827,24 +3827,11 @@
                         <ng-container *ngIf="attachmentlength!=0; else noResultsFound">
                         <div class="scrollbar1 col-md-12" *ngIf="ProjectBlock=='003' else others">
                             <ng-container *ngFor="let item of AttachmentList; let i=index">
-                                <div class="card mb-3 kt-project-md" *ngIf="item.Proofdoc" >
-                                    <div class=" card-body">
+                                <div class="card mb-3 kt-project-md kt-files-card" *ngIf="item.Proofdoc" >
+                                    <!-- <div class=" card-body">
                                     
                                         <div class="kt-widget__files">
                                             <a class="d-flex-cen">
-                                                <!-- <div class="kt-widget__media mr-3">
-                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf">
-                                                        <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
-                                                    </svg>
-                                                </div> -->
-                                                <!-- <div class="flex-1">
-                                                    <h6 class="kt-widget__desc p-0 curser-pointer"
-                                                        (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc)">{{item.Proofdoc}}</h6>
-    
-                                                    <h6 class="mb-0" *ngIf="item.Remarks!='undefined'">
-                                                        <span class="sqre"></span><span>{{item.Remarks}}</span>
-                                                    </h6>
-                                                </div> -->
                                                 <div class="flex-1">
                                                     <div class="d-flex">
                                                         <div class="kt-md-icon">
@@ -3885,96 +3872,30 @@
                                                 </div>
                                             </a>
                                         </div>
-                                    </div>
-                                </div>  
-                            </ng-container>
-                            
-                        </div>
-                        <ng-template #others>
-                            <div class="scrollbar1 col-md-12">
-                                <div class="card mb-3 kt-project-md" *ngFor="let item of AttachmentList; let i=index">
-                                    <div class=" card-body">
-                                    
+                                    </div> -->
+                                    <div class="card-body curser-pointer" (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc,item.contenttype)">
                                         <div class="kt-widget__files">
                                             <a class="d-flex-cen">
-                                                <!-- <div class="kt-widget__media mr-3">
-                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg project-pdf">
-                                                        <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
-                                                    </svg>
-                                                </div> -->
-                                                <!-- <div class="flex-1">
-                                                    <h6 class="kt-widget__desc p-0 curser-pointer"
-                                                        *ngIf="Status!='ToDo Achieved'"
-                                                        (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.Sourcefile}}</h6>
-                                                    <h6 class="kt-widget__desc p-0 curser-pointer"
-                                                        *ngIf="Status=='ToDo Achieved'"
-                                                        (click)="openPDF(item.IsCloud,item.CompleteProofDoc)">{{item.CompleteProofDoc}}</h6>
-                                                    <h6 class="kt-widget__desc p-0">
-                                                        <span>{{item.LastUpdate | date:'fullDate'}}</span>
-                                                    </h6>
-                                                    <h6 class="" *ngIf="item.Remarks!='undefined'">
-                                                       <span class="sqre"></span> <span>Remark: {{item.Remarks}}</span>
-                                                    </h6>
-                                                </div> -->
-                                                <div class="flex-1">
-                                                    <div class="d-flex">
-                                                        <div class="kt-md-icon">
-                                                            <span class="detail-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16" fill="currentColor"
-                                                                    class="bi bi-paperclip" viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        
-                                                        <h6 class="kt-widget__desc p-0 curser-pointer" data-toggle="tooltip" title="attachment"
-                                                            *ngIf="Status!='ToDo Achieved'" 
-                                                            (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)"><span class="text-info">{{item.Sourcefile}}</span></h6>
-                                                        <h6 class="kt-widget__desc p-0 curser-pointer" data-toggle="tooltip" title="attachment"
-                                                            *ngIf="Status=='ToDo Achieved'"
-                                                            (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)"><span class="text-info">{{item.CompleteProofDoc}}</span></h6>
-                                                        
+                                                <div class="flex-1 d-flex align-items-center">
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='pdf'">
+                                                        <span class="kt-ic-svg asseticn corol-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn corol-icn memo_attachment_img ng-star-inserted"><path  d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path></svg></span>
                                                     </div>
-                                                
-                                                    <div class="d-flex">
-                                                        <div class="kt-md-icon">
-                                                            <span class="detail-icn">
-                                                                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
-                                                            </span>
-                                                        </div>
-                                                        <h6 class="kt-widget__other pt-1" *ngIf="item.Remarks!='undefined'">
-                                                            <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
-                                                        </h6>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='png' || item.contenttype=='jpg'">
+                                                        <span class="kt-ic-svg asseticn prim-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z"></path></svg></span>
                                                     </div>
-                                                </div>
-                                                <div class="flex-column-end">                                                
-                                                    <h6 class="" title="Submitted By {{item.SubmittedBy}}">
-                                                        <span><i class="far fa-user"></i> {{item.SubmittedBy}}</span>
-                                                    </h6>
-                                                    <h6 class="mb-0 text-muted" title="Submitted Date">
-                                                        <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="" *ngIf="action_attachment">
-                                    <div class="card mb-3 kt-action-md" *ngFor="let item of action_attachment; let i=index">
-                                        <div class=" card-body">
-                                            <div class="kt-widget__files">
-                                                <a class="d-flex-cen">
-                                                    <!-- <div class="kt-widget__media mr-3">
-                                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg action-pdf">
-                                                            <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
-                                                        </svg>
-                                                    </div> -->
-                                                    <div class="flex-1">
-                                                        <h6 class="kt-action-name-md pt-1">
-                                                            <span>Action: {{item.Project_Name}}</span>
-                                                        </h6>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='txt' ||item.contenttype=='html' || item.contenttype=='doc' || item.contenttype=='docx' || item.contenttype=='json' || item.contenttype=='xml'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='ppt' || item.contenttype=='pptx'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='xlsx' || item.contenttype=='xls'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype!='xlsx' && item.contenttype!='xls' && item.contenttype!='ppt' && item.contenttype!='pptx' && item.contenttype!='txt' && item.contenttype!='html' && item.contenttype!='doc' && item.contenttype!='docx' && item.contenttype!='png' && item.contenttype!='jpg' && item.contenttype!='pdf'">
+                                                        <span class="kt-ic-svg"> <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-fis-data-v">
                                                         <div class="d-flex">
                                                             <div class="kt-md-icon">
                                                                 <span class="detail-icn">
@@ -3986,29 +3907,247 @@
                                                                     </svg>
                                                                 </span>
                                                             </div>
-                                                             <h6 class="kt-widget__other p-0 curser-pointer" data-toggle="tooltip" title="attachment"
-                                                            (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)"><span class="text-info">{{item.Sourcefile}}</span>
+                                                             <h6 class="kt-widget__other p-0 curser-pointer" data-toggle="tooltip" title="attachment"><span class="kt-attachment-tittle">{{item.Proofdoc}}</span>
                                                             </h6>
                                                         </div>
                                                        
-                                                        <div class="d-flex">
+                                                        <div class="d-flex align-items-baseline"  *ngIf="item.Remarks!='undefined'">
                                                             <div class="kt-md-icon">
                                                                 <span class="detail-icn">
                                                                     <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
                                                                 </span>
                                                             </div>
-                                                            <h6 class="kt-widget__other pt-1" *ngIf="item.Remarks!='undefined'">
+                                                            <h6 class="kt-widget__other pt-1">
                                                                 <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
                                                             </h6>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="flex-column-end" title="Submitted By {{item.SubmittedBy}}">  
+                                                    
+                                                    <h6 class="">
+                                                        <span ><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
+                                                    </h6>
+                                                    <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                        <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                            2
+                                                        </span>   <span><i class="far fa-calendar-alt mr-1"></i> {{item.Reportdate|date:'fullDate'}}</span>
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
+                                </div>  
+                            </ng-container>
+                            
+                        </div>
+                        <ng-template #others>
+                            <div class="scrollbar1 col-md-12">
+                                <div class="card mb-3 kt-project-md kt-files-card" *ngFor="let item of AttachmentList; let i=index">
+                                    <div class=" card-body curser-pointer"  *ngIf="Status!='ToDo Achieved'" 
+                                        (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                        
+                                        <div class="kt-widget__files">
+                                            <a class="d-flex-cen">
+                                                <div class="flex-1 d-flex align-items-center kt-w-70">
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='pdf'">
+                                                        <span class="kt-ic-svg asseticn corol-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn corol-icn memo_attachment_img ng-star-inserted"><path  d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='png' || item.contenttype=='jpg'">
+                                                        <span class="kt-ic-svg asseticn prim-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='txt' ||item.contenttype=='html' || item.contenttype=='doc' || item.contenttype=='docx' || item.contenttype=='json' || item.contenttype=='xml'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='ppt' || item.contenttype=='pptx'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype=='xlsx' || item.contenttype=='xls'">
+                                                        <span class="kt-ic-svg"><svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-icon-files" *ngIf="item.contenttype!='xlsx' && item.contenttype!='xls' && item.contenttype!='ppt' && item.contenttype!='pptx' && item.contenttype!='txt' && item.contenttype!='html' && item.contenttype!='doc' && item.contenttype!='docx' && item.contenttype!='png' && item.contenttype!='jpg' && item.contenttype!='pdf'">
+                                                        <span class="kt-ic-svg"> <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z"></path></svg></span>
+                                                    </div>
+                                                    <div class="kt-fis-data-v">
+                                                        <div class="d-flex w-100">
+                                                            <div class="kt-md-icon">
+                                                                <span class="detail-icn">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        width="16" height="16" fill="currentColor"
+                                                                        class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                                    </svg>
+                                                                </span>
+                                                            </div>
+                                                            <h6 class="kt-widget__desc p-0 curser-pointer" data-toggle="tooltip" title="attachment"><span class="kt-attachment-tittle">{{item.Sourcefile | truncate: 60}}</span></h6>
+                                                        </div>
+                                                       
+                                                        <div class="d-flex align-items-baseline"  *ngIf="item.Remarks!='undefined'">
+                                                            <div class="kt-md-icon">
+                                                                <span class="detail-icn">
+                                                                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
+                                                                </span>
+                                                            </div>
+                                                            <h6 class="kt-widget__other pt-1">
+                                                                <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-column-end">                                                
+                                                    <h6 class="" title="Submitted By {{item.SubmittedBy}}">
+                                                        <span><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
+                                                    </h6>
+                                                    <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                        <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                            2
+                                                        </span> 
+                                                        <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class=" card-body curser-pointer"  *ngIf="Status=='ToDo Achieved'"
+                                    (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                    <div class="kt-widget__files">
+                                        <a class="d-flex-cen">
+                                            <div class="flex-1 d-flex align-items-center">
+                                                <div class="kt-icon-files" *ngIf="item.contenttype=='pdf'">
+                                                    <span class="kt-ic-svg asseticn corol-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn corol-icn memo_attachment_img ng-star-inserted"><path  d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-icon-files" *ngIf="item.contenttype=='png' || item.contenttype=='jpg'">
+                                                    <span class="kt-ic-svg asseticn prim-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-icon-files" *ngIf="item.contenttype=='txt' ||item.contenttype=='html' || item.contenttype=='doc' || item.contenttype=='docx' || item.contenttype=='json' || item.contenttype=='xml'">
+                                                    <span class="kt-ic-svg"><svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-icon-files" *ngIf="item.contenttype=='ppt' || item.contenttype=='pptx'">
+                                                    <span class="kt-ic-svg"><svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-icon-files" *ngIf="item.contenttype=='xlsx' || item.contenttype=='xls'">
+                                                    <span class="kt-ic-svg"><svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-icon-files" *ngIf="item.contenttype!='xlsx' && item.contenttype!='xls' && item.contenttype!='ppt' && item.contenttype!='pptx' && item.contenttype!='txt' && item.contenttype!='html' && item.contenttype!='doc' && item.contenttype!='docx' && item.contenttype!='png' && item.contenttype!='jpg' && item.contenttype!='pdf'">
+                                                    <span class="kt-ic-svg"> <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z"></path></svg></span>
+                                                </div>
+                                                <div class="kt-fis-data-v">
+                                                    <div class="d-flex">
+                                                        <div class="kt-md-icon">
+                                                            <span class="detail-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16" fill="currentColor"
+                                                                    class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <h6 class="kt-widget__desc p-0 curser-pointer" data-toggle="tooltip" title="attachment"><span class="kt-attachment-tittle">{{item.Sourcefile}}</span></h6>
+                                                         <!-- <h6 class="kt-widget__desc p-0 curser-pointer" data-toggle="tooltip" title="attachment"><span class="kt-attachment-tittle">{{item.CompleteProofDoc}}</span></h6> -->
+                                                    </div>
+                                                   
+                                                    <div class="d-flex align-items-baseline"  *ngIf="item.Remarks!='undefined'">
+                                                        <div class="kt-md-icon">
+                                                            <span class="detail-icn">
+                                                                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
+                                                            </span>
+                                                        </div>
+                                                        <h6 class="kt-widget__other pt-1">
+                                                            <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-column-end">                                                
+                                                <h6 class="" title="Submitted By {{item.SubmittedBy}}">
+                                                    <span><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
+                                                </h6>
+                                                <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                    <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                        2
+                                                    </span> 
+                                                    <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
+                                                </h6>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="" *ngIf="action_attachment">
+                                    <div class="card mb-3 kt-action-md kt-files-card" *ngFor="let item of action_attachment; let i=index">
+                                        <div class="card-body curser-pointer" (click)="LoadDocument_action(item.Project_Code,item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                            <div class="kt-widget__files">
+                                                <a class="d-flex-cen">
+                                                    <!-- <div class="kt-widget__media mr-3">
+                                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="pdf-svg action-pdf">
+                                                            <path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path>
+                                                        </svg>
+                                                    </div> -->
+                                                    <div class="flex-1 d-flex align-items-center">
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype=='pdf'">
+                                                            <span class="kt-ic-svg asseticn corol-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn corol-icn memo_attachment_img ng-star-inserted"><path  d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype=='png' || item.contenttype=='jpg'">
+                                                            <span class="kt-ic-svg asseticn prim-icn"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype=='txt' ||item.contenttype=='html' || item.contenttype=='doc' || item.contenttype=='docx' || item.contenttype=='json' || item.contenttype=='xml'">
+                                                            <span class="kt-ic-svg"><svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype=='ppt' || item.contenttype=='pptx'">
+                                                            <span class="kt-ic-svg"><svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype=='xlsx' || item.contenttype=='xls'">
+                                                            <span class="kt-ic-svg"><svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-icon-files" *ngIf="item.contenttype!='xlsx' && item.contenttype!='xls' && item.contenttype!='ppt' && item.contenttype!='pptx' && item.contenttype!='txt' && item.contenttype!='html' && item.contenttype!='doc' && item.contenttype!='docx' && item.contenttype!='png' && item.contenttype!='jpg' && item.contenttype!='pdf'">
+                                                            <span class="kt-ic-svg"> <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z"></path></svg></span>
+                                                        </div>
+                                                        <div class="kt-fis-data-v">
+                                                            <h6 class="kt-action-name-md pt-1">
+                                                                <span>Action: {{item.Project_Name}}</span>
+                                                            </h6>
+                                                            <div class="d-flex">
+                                                                <div class="kt-md-icon">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                                 <h6 class="kt-widget__other p-0 curser-pointer" data-toggle="tooltip" title="attachment"><span class="kt-attachment-tittle">{{item.Sourcefile | truncate: 60}}</span>
+                                                                </h6>
+                                                            </div>
+                                                           
+                                                            <div class="d-flex align-items-baseline"  *ngIf="item.Remarks!='undefined'">
+                                                                <div class="kt-md-icon">
+                                                                    <span class="detail-icn">
+                                                                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
+                                                                    </span>
+                                                                </div>
+                                                                <h6 class="kt-widget__other pt-1">
+                                                                    <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        
                                                        
                                                        
                                                     </div>
                                                     <div class="flex-column-end" title="Submitted By {{item.SubmittedBy}}">                                                    
                                                         <h6 class="">
-                                                            <span><i class="far fa-user"></i> {{item.Team_Autho}}</span>
+                                                            <span ><i class="far fa-user kt-user-bg-rd"></i> {{item.Team_Autho}}</span>
                                                         </h6>
                                                         <h6 class="mb-0 text-muted" title="Submitted Date">
+                                                            <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                                2
+                                                            </span> 
                                                             <span><i class="far fa-calendar-alt mr-1"></i> {{item.CreatedOn|date:'fullDate'}}</span>
                                                         </h6>
                                                     </div>
@@ -4032,7 +4171,7 @@
                         <div class="text-right d-flex-cen justify-content-end mb-3">
                             <div class="mr-2">
                                 <h6 class="mb-0">
-                                    <strong>Total Achievement Hours - {{totalHours}}</strong>
+                                    <strong>Total Achievement Hours - {{totalHours | number:'1.2-2'.toLocaleString()}} Hrs</strong>
                                 </h6>
                             </div> 
 

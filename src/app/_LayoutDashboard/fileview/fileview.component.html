@@ -1,4 +1,5 @@
 <div>
+    <!-- \&& IsCommunicarionMemoDownload=='true' -->
     <div *ngIf="viewer!=''" class="">
         <a class="btn btn-info float-left mb mt-3 mx-3" (click)="download(src,filename)">
             <span class="svg-icns">
@@ -13,9 +14,9 @@
             </span>
         </a>
     </div>
-    <!-- <a (click)="DownloadHistory()" *ngIf="DocumentSource==1" class="btn btn-info mt-3" href="javascript:void(0)"
+    <a (click)="DownloadHistory(filename)" *ngIf="invalid==false" class="btn btn-dull mt-3" href="javascript:void(0)"
         data-target="#open_modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false">
-        <span class="svg-icns">
+        <!-- <span class="svg-icns">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
                 viewBox="0 0 16 16">
                 <path
@@ -24,8 +25,12 @@
                     d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
             </svg>
             History
+        </span> -->
+        <span class="svg-icns1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 24 24" fill="none"><path d="M19.6873 14.2222C19.8909 13.5167 20 12.7711 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.3413 20 16.4476 18.9943 17.9106 17.3912M19.6873 14.2222L19 13M19.6873 14.2222L20.75 13.25M9 12L11 14L15 10" stroke="#464455" stroke-linecap="round" stroke-linejoin="round"/></svg>
+             History
         </span>
-    </a> -->
+    </a>
 
     <ng-container *ngIf="viewer=='pdf'">
         <div class="pt-3 px-3">
@@ -112,15 +117,25 @@
         <div class="pt-3 px-3 no-prevw d-flex">
             <div class="d-flex align-items-center flex-column m-auto">
                 <div class="shake2">
-                    <img src="assets/media/files/doc-brek.png" />
+                    <img src="assets/images/doc-brek.png" />
                 </div>
-                <div class="text-center">
+                <div class="text-center" *ngIf="invalid==false">
                     <h2>Preview Not Available</h2>
                     <h5>
                         The File is not available for preview currently. Please download the file to view.
                     </h5>
                     <span 
-                        class="btn btn-info mt-3" (click)="download(src,filename)">
+                        class="btn btn-info mt-3" *ngIf="viewer!='' && IsCommunicarionMemoDownload==true" (click)="download(src,filename)">
+                        <i class="material-icons p-0 mr-1 fs-4">download</i>Download File
+                    </span>
+                </div>
+                <div class="text-center" *ngIf="invalid==true">
+                    <h2>Access Denied</h2>
+                    <h5>
+                        You do not have access to view the file.
+                    </h5>
+                    <span 
+                        class="btn btn-info mt-3" *ngIf="viewer!='' && IsCommunicarionMemoDownload==true" (click)="download(src,filename)">
                         <i class="material-icons p-0 mr-1 fs-4">download</i>Download File
                     </span>
                 </div>
@@ -191,6 +206,68 @@
                         </div>
                         <div class="card-body crd-list scroll-y p-0">
                             <div class="">
+                                <!-- <ng-container *ngFor="let data of history_list | filter:HistorySearch; let R= index">
+                                    <div class="users-list">
+                                        <div class="usr-item" data-toggle="collapse"
+                                            [attr.data-target]="'#collapseExample'+R" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                            <div class="img-container">
+                                                <img *ngIf="data.DownloadUserInboxThumbnail==''"
+                                                    src="assets/media/icons/user2.png" alt="user Image" class="usr-img">
+                                                <img *ngIf="data.DownloadUserInboxThumbnail!=''" alt="img"
+                                                    src="https://yrglobaldocuments.blob.core.windows.net/documents/{{data.DownloadUserInboxThumbnail}}"
+                                                    class="">
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="">
+                                                    <span class="user-name">{{data.empname}}</span>
+                                                </div>
+                                                <div class="">
+                                                    <span class="read-time">{{data.DownloadDate|date: 'MMM d y'}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <a class="dwn-cnt btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="cate-icns" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                        <path
+                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                                    </svg>
+                                                    {{data.count}}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample{{R}}">
+                                            <div class="card mx-4">
+                                                <ng-container *ngFor="let src of data.DatesJson">
+                                                    <div class="usr-item">
+                                                        <span class="clp-dwn">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor" class=""
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                                <path
+                                                                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                                            </svg>
+                                                        </span>
+                                                        <div class="flex-1">
+
+                                                            <div class="">
+                                                                <span class="read-time">Downloaded on
+                                                                    {{src.DownloadDate|date: 'MMM d y'}}</span>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container> -->
                             </div>
                         </div>
                     </div>
