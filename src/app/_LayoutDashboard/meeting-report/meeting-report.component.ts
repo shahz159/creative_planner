@@ -193,12 +193,13 @@ export class MeetingReportComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.GetcompletedMeeting_data();
     this.GetNotedata();
-    const refreshInterval = 10000; // Refresh every 5 seconds (adjust as needed)
+    const refreshInterval = 5000; // Refresh every 5 seconds (adjust as needed)
     this.refreshSubscription = this.CalenderService.autoRefresh(refreshInterval)
       .subscribe(data => {
         // Handle the emitted data here
+        
         console.log('Refreshed data:', data);
-        this._meetingNotesAry = JSON.parse(data[0]["Checkdatetimejson"]);
+        this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
         // Update your component's properties or perform other actions with the data
       });
     // modal caledar start
@@ -393,6 +394,7 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto.Emp_No = this.CurrentUser_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
+        debugger
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
         this.Meetingstatuscom = this.CompletedMeeting_notes[0]['meeting_status']
         this.Userstatus = this.CompletedMeeting_notes[0]['Status']

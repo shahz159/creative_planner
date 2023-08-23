@@ -632,7 +632,6 @@
                                                     <div class="kt-user-dt">
                                                         <div class="kt-user-2lt kt-clr-1">NS</div>
                                                         <div class="kt-user-name">{{empname}} </div>
-                                                        <!-- <span class="kt-met-time-date">00:34</span> -->
                                                     </div>
                                                     <div class="kt-user-note kt-clr-bg-1">
                                                         <ul>
@@ -649,7 +648,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="kt-user-note kt-clr-bg-2">
-                                                            <li [innerHTML]="note.Meeting_notes"></li>
+                                                            <ul>
+                                                                <li [innerHTML]="note.Meeting_notes"></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </ng-container>
