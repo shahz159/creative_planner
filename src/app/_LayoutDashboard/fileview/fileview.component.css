@@ -273,3 +273,11 @@ a.dwn-cnt {
 .clp-dwn{
   color: #9886eb;
 }
+.btn-dull {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #ffffff !important;
+}
+span.svg-icns1 svg path {
+  stroke: #fff;
+}

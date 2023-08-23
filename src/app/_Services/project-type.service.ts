@@ -21,8 +21,9 @@ import { CompletedProjectsDTO } from '../_Models/completed-projects-dto';
 import { DarDTO } from '../_Models/dar-dto';
 import { AssigntaskDTO } from '../_Models/assigntask-dto';
 import { CategoryDTO } from '../_Models/category-dto';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { AuthenticationDTO } from '../_Models/authentication-dto';
 //import { BarChartComponent } from '../_Views/bar-chart/bar-chart.component';
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,7 @@ export class ProjectTypeService {
   _ObjCompletedProj: CompletedProjectsDTO;
   _objDARAchievement: DarDTO;
   _ObjAssigntaskDTO: AssigntaskDTO;
+  _userobj: AuthenticationDTO;
 
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
     this.ObjprojectTypeDto = new ProjecttypeDTO;
@@ -78,6 +80,7 @@ export class ProjectTypeService {
     this.ObjCategoryDTO = new CategoryDTO();
     this.ObjDto = new ProjectDetailsDTO();
     this._ObjProjectDTO= new ProjectDetailsDTO();
+    this._userobj = new AuthenticationDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
 
@@ -263,6 +266,14 @@ export class ProjectTypeService {
     //   alert("Second :" + JSON.stringify(this.User_Details));
     // });
   }
+
+  login(uobjLoginDetails) {
+    this._userobj.userId=uobjLoginDetails.UserName;
+    this._userobj.OldPassWord=uobjLoginDetails.Password;
+     return this.http.post<any>('https://cswebapps.com/dmsapi/api/' + '/AuthenticationAPI/NewLoginDetailsJSON',this._userobj);
+   }
+
+
   NewGetUserDetails(UserName) {
     this.userDTO.UserName = UserName;
     return this.http.post(this.rootUrl + "TestAPI/NewGetUserDetails", this.userDTO).
@@ -728,6 +739,22 @@ export class ProjectTypeService {
     this.ObjDto.Master_code = obj.Master_code;
     
     return this.http.post(this.rootUrl + "TestAPI/NewInsertDAR", this.ObjDto);
+  }
+
+  _InsertDownloadhistoryServie(obj: ProjectDetailsDTO ) {
+    this.ObjDto.Emp_No = obj.Emp_No;
+    this.ObjDto.Project_Code = obj.Project_Code;
+    this.ObjDto.filename = obj.filename;
+    
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertDownloadHistory", this.ObjDto);
+  }
+
+  _GetDownloadhistoryServie(obj: ProjectDetailsDTO ) {
+    this.ObjDto.Emp_No = obj.Emp_No;
+    this.ObjDto.Project_Code = obj.Project_Code;
+    this.ObjDto.filename = obj.filename;
+    
+    return this.http.post(this.rootUrl + "TestAPI/NewGetDownloadHistory", this.ObjDto);
   }
 
   _GetTimeforDar(empid, date) {

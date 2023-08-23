@@ -54,4 +54,6 @@ export class ProjectDetailsDTO {
     date:any;
     TimeCount:any;
     WorkAchieved:any;
+
+    filename:any;
 }
