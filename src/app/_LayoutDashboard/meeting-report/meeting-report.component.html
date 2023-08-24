@@ -226,7 +226,7 @@
                                                 <span>Admin</span>
                                             </div>
                                             <div class="admin-check curser-pointer"
-                                                *ngIf="Isadmin==true && sched_admin==false "
+                                                *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==true"
                                                 (click)=" Updating_Adminmeeting(Emp_No)">
                                                 <span aria-hidden="true" class="admin-check-svg">
                                                     <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
@@ -383,7 +383,7 @@
                                                         <span>Admin</span>
                                                     </div>
                                                     <div class="admin-check curser-pointer"
-                                                        *ngIf="_user.IsAdmin == false && Isadmin==true"
+                                                        *ngIf="_user.IsAdmin == false && Isadmin==true && isCheckboxDisabled==true"
                                                         (click)=" Updating_Adminmeeting(_user.stringval)">
                                                         <span _ngcontent-hko-c392="" aria-hidden="true"
                                                             class="admin-check-svg">
@@ -623,7 +623,64 @@
                                         <div class="rgt-des" *ngIf="Meetingstatuscom!='Completed' ">
                                             <label class="cus-lbl">Meeting notes </label>
                                             <div class="note-text d-none">
-                                                <div class="main-s" [innerHTML]="Meetingnotescom"></div>
+                                                <div class="main-s" [innerHTML]="Notespoint"></div>
+                                            </div>
+
+                                            <!-------------Meeting Notes with users-------------->
+                                            <div class="kt-mt-dw">
+                                                <div class="kt-card N-user-1">
+                                                    <div class="kt-user-dt">
+                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-name">{{_userfullname}} </div>
+                                                    </div>
+                                                    <div class="kt-user-note kt-clr-bg-1">
+                                                        <ul>
+                                                            <li [innerHTML]="Notes_Type"></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <ng-container *ngFor="let note of _meetingNotesAry">
+                                                    <div *ngIf="CurrentUser_ID != note.Emp_no" class="kt-card N-user-2">
+                                                        <div class="kt-user-dt">
+                                                            <div class="kt-user-2lt kt-clr-2">GD</div>
+                                                            <div class="kt-user-name">{{note.Emp_Name}}
+                                                                <!-- <span class="kt-met-time-date">05:34</span> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="kt-user-note kt-clr-bg-2">
+                                                            <ul>
+                                                                <li [innerHTML]="note.Meeting_notes"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- <div class="kt-card N-user-2">
+                                                    <div class="kt-user-dt">
+                                                        <div class="kt-user-2lt kt-clr-3">LI</div><div class="kt-user-name">Lorem Ipsum <span class="kt-met-time-date">15:34</span></div>
+                                                    </div>
+                                                    <div class="kt-user-note kt-clr-bg-3">
+                                                        <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                                        <p>ages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,</p>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+
+                                            <div class="form-group mt-notes" id="Descrip_Name"
+                                                *ngIf="Meetingstatuscom==Completed ">
+                                                <label class="cus-lbl">Meeting notes </label>
+                                                <angular-editor [(ngModel)]="Notes_Type" #myTextarea
+                                                    (keyup)="addBulletPointsOnEnter($event)"
+                                                    [config]="config"></angular-editor>
+                                            </div>
+
+                                            <!-------------Meeting Notes with users-------------->
+
+                                        </div>
+                                        <div class="rgt-des" *ngIf="Meetingstatuscom=='Completed' ">
+                                            <label class="cus-lbl">Meeting notes </label>
+                                            <div class="note-text d-none">
+                                                <div class="main-s" [innerHTML]="Notespoint"></div>
                                             </div>
 
                                             <!-------------Meeting Notes with users-------------->
@@ -984,7 +1041,7 @@
                 <button class="btn btn-secondary btn-sm mr-2">cancel</button>
             </div>
             <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false">
-                <button class="btn btn-info btn-sm mr-2">Leave Meeting</button>
+                <button class="btn btn-info btn-sm mr-2" (click)=" leavemeet($event)">Leave Meeting</button>
                 <button class="btn btn-secondary btn-sm mr-2">cancel</button>
             </div>
 

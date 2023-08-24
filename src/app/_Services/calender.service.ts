@@ -98,6 +98,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
+    this.obj_CalenderDTO.Status_type = obj.Status_type;
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_notes1", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
@@ -193,14 +194,6 @@ NewGetMeetingnote_comp(obj: CalenderDTO){
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_dataco", this.obj_CalenderDTO);
 
 }
-autoRefresh(interval: number): Observable<any> {
-  return new Observable<any>(observer => {
-    setInterval(() => {
-      this.NewGetMeetingnote_comp(this.obj_CalenderDTO).subscribe(data => {
-        observer.next(data);
-      });
-    }, interval);
-  });
-}
+
 
 }
