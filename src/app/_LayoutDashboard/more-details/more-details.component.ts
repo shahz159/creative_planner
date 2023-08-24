@@ -3331,8 +3331,7 @@ export class MoreDetailsComponent implements OnInit {
   
 
 
-  openPDF_Standard(cloud, repDate: Date, proofDoc, type) {
-    debugger
+  openPDF_Standard(standardid,cloud, repDate: Date, proofDoc, type) {
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3362,7 +3361,7 @@ export class MoreDetailsComponent implements OnInit {
         FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
       }
 
-      let name = "ArchiveView/"+this.URL_ProjectCode;
+      let name = "ArchiveView/"+standardid;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
@@ -3396,7 +3395,7 @@ export class MoreDetailsComponent implements OnInit {
 
       
 
-      let name = "ArchiveView/"+this.URL_ProjectCode;
+      let name = "ArchiveView/"+standardid;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
@@ -5362,5 +5361,11 @@ actiondeadline_alert(){
     myWindow.focus();
   }
 
+
+  //search actions:
+  actionsearch:any;
+  clearsearch(){
+    this.actionsearch="";
+  }
 
 }

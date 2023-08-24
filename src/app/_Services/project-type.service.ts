@@ -750,7 +750,6 @@ export class ProjectTypeService {
   }
 
   _GetDownloadhistoryServie(obj: ProjectDetailsDTO ) {
-    this.ObjDto.Emp_No = obj.Emp_No;
     this.ObjDto.Project_Code = obj.Project_Code;
     this.ObjDto.filename = obj.filename;
     

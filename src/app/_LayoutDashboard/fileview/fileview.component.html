@@ -1,6 +1,6 @@
 <div>
     <!-- \&& IsCommunicarionMemoDownload=='true' -->
-    <div *ngIf="viewer!=''" class="">
+    <div *ngIf="viewer!='' && Current_user_ID=='2000'" class="">
         <a class="btn btn-info float-left mb mt-3 mx-3" (click)="download(src,filename)">
             <span class="svg-icns">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -206,17 +206,20 @@
                         </div>
                         <div class="card-body crd-list scroll-y p-0">
                             <div class="">
-                                <!-- <ng-container *ngFor="let data of history_list | filter:HistorySearch; let R= index">
+                                <ng-container *ngFor="let data of history_list | filter:HistorySearch; let R= index">
                                     <div class="users-list">
                                         <div class="usr-item" data-toggle="collapse"
                                             [attr.data-target]="'#collapseExample'+R" aria-expanded="false"
                                             aria-controls="collapseExample">
-                                            <div class="img-container">
+                                            <!-- <div class="img-container">
                                                 <img *ngIf="data.DownloadUserInboxThumbnail==''"
                                                     src="assets/media/icons/user2.png" alt="user Image" class="usr-img">
                                                 <img *ngIf="data.DownloadUserInboxThumbnail!=''" alt="img"
                                                     src="https://yrglobaldocuments.blob.core.windows.net/documents/{{data.DownloadUserInboxThumbnail}}"
                                                     class="">
+                                            </div> -->
+                                            <div class="initial-box color-7 b-50 mr-2">
+                                                {{data.Initial}}
                                             </div>
                                             <div class="flex-1">
                                                 <div class="">
@@ -241,7 +244,7 @@
                                         </div>
                                         <div class="collapse" id="collapseExample{{R}}">
                                             <div class="card mx-4">
-                                                <ng-container *ngFor="let src of data.DatesJson">
+                                                <ng-container *ngFor="let src of data.dates">
                                                     <div class="usr-item">
                                                         <span class="clp-dwn">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -257,7 +260,7 @@
 
                                                             <div class="">
                                                                 <span class="read-time">Downloaded on
-                                                                    {{src.DownloadDate|date: 'MMM d y'}}</span>
+                                                                    {{src.download_date|date: 'MMM d y'}}</span>
                                                             </div>
 
                                                         </div>
@@ -267,7 +270,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </ng-container> -->
+                                </ng-container>
                             </div>
                         </div>
                     </div>

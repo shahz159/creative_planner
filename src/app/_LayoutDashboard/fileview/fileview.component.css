@@ -281,3 +281,33 @@ a.dwn-cnt {
 span.svg-icns1 svg path {
   stroke: #fff;
 }
+.initial-box {
+  background-color: #f9ce6f;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+.color-7 {
+  background-color: #9b59b6;
+}
+.b-50 {
+  border-radius: 50%;
+}
+.srch-btns {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0 5px;
+  line-height: 0;
+}
+.srch-btns svg {
+  color: #444746;
+  /* -webkit-border-radius: 50%;
+  border-radius: 50%; */
+}
+.srch-btns:hover svg{
+  /* background-color: rgba(60,64,67,.08); */
+  fill: #2786fb !important;
+}

@@ -306,14 +306,17 @@ export class FileviewComponent implements OnInit {
   }
 
   history_list:any;
+  datelist:any;
   // HistoryList: any;
-  DownloadHistory() {
+  DownloadHistory(filename) {
+    
     this.objProjectDto.Project_Code=this.url_project_code;
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.filename=this.filename;
+    this.objProjectDto.filename=filename;
 
-    this.service._InsertDownloadhistoryServie(this.objProjectDto).subscribe(data=>{
-      // this.history_list=
+    this.service._GetDownloadhistoryServie(this.objProjectDto).subscribe(data=>{
+       this.history_list=(JSON.parse(data[0]['historyList']));
+       this.datelist=(JSON.parse(data[0]['DatesJson']));
+      console.log(JSON.parse(data[0]['historyList']),"history");
     });
   }
   searchhistory() {

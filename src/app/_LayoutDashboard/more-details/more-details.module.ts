@@ -6,7 +6,7 @@ import { MoreDetailsComponent } from './more-details.component';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -31,7 +31,8 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     MatDatepickerModule,NgSelectModule,
     MatFormFieldModule,ProjectInfoModule,
     PdfViewerModule,
-    NgxDocViewerModule
+    NgxDocViewerModule,
+    Ng2SearchPipeModule
   ],
   providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]

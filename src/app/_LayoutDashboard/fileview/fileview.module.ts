@@ -6,6 +6,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { FileviewComponent } from './fileview.component';
 import { MaterialModule } from 'src/app/material-module';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MaterialModule } from 'src/app/material-module';
     NgxDocViewerModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    Ng2SearchPipeModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

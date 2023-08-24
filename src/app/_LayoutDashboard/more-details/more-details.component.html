@@ -1306,17 +1306,22 @@
                                                 class="fas fa-plus mr-2"></i>New Action</button>
                                     </div>
                                     <div class=" ribbon-box my-3" *ngIf="Subtask_List">
-                                            <div class="srch-actns mb-3" *ngIf="subTaskCount!=0" (click)="notinAction()">
-                                                <input class="form-control" placeholder="search..." />
-                                                <span class="srch-icon">
+                                            <div class="srch-actns mb-3" *ngIf="subTaskCount!=0">
+                                                <input class="form-control" [(ngModel)]="actionsearch" placeholder="search..." />
+                                                <span class="srch-icon curser-pointer" *ngIf="!actionsearch">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="cancl-icon curser-pointer" *ngIf="actionsearch" (click)="clearsearch()">
+                                                    <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                        <path d="M0 0h24v24H0z" fill="none"></path>
                                                     </svg>
                                                 </span>
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="subTaskCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+                                            <div class="subtask-list" *ngFor="let item of Subtask_List | filter :actionsearch;let i =index"
                                                 [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
                                                 <div class="lbl-act ml-2">
                                                     <label
@@ -3873,7 +3878,7 @@
                                             </a>
                                         </div>
                                     </div> -->
-                                    <div class="card-body curser-pointer" (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc,item.contenttype)">
+                                    <div class="card-body curser-pointer" (click)="openPDF_Standard(item.StandardId,item.IsCloud,item.Reportdate,item.Proofdoc,item.contenttype)">
                                         <div class="kt-widget__files">
                                             <a class="d-flex-cen">
                                                 <div class="flex-1 d-flex align-items-center">
@@ -3930,9 +3935,10 @@
                                                         <span ><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
                                                     </h6>
                                                     <h6 class="mb-0 text-muted" title="Submitted Date">
-                                                        <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
-                                                            2
-                                                        </span>   <span><i class="far fa-calendar-alt mr-1"></i> {{item.Reportdate|date:'fullDate'}}</span>
+                                                        <span class="dwn-cnt btn" *ngIf="item.filecount>0"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                            {{item.filecount}}
+                                                        </span> 
+                                                        <span><i class="far fa-calendar-alt mr-1"></i> {{item.Reportdate|date:'fullDate'}}</span>
                                                     </h6>
                                                 </div>
                                             </a>
@@ -4002,8 +4008,8 @@
                                                         <span><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
                                                     </h6>
                                                     <h6 class="mb-0 text-muted" title="Submitted Date">
-                                                        <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
-                                                            2
+                                                        <span class="dwn-cnt btn" *ngIf="item.filecount>0"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                            {{item.filecount}}
                                                         </span> 
                                                         <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
                                                     </h6>
@@ -4067,8 +4073,8 @@
                                                     <span><i class="far fa-user kt-user-bg-rd"></i> {{item.SubmittedBy}}</span>
                                                 </h6>
                                                 <h6 class="mb-0 text-muted" title="Submitted Date">
-                                                    <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
-                                                        2
+                                                    <span class="dwn-cnt btn" *ngIf="item.filecount>0"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                        {{item.filecount}}
                                                     </span> 
                                                     <span><i class="far fa-calendar-alt mr-1"></i> {{item.Rec_Date|date:'fullDate'}}</span>
                                                 </h6>
@@ -4145,8 +4151,8 @@
                                                             <span ><i class="far fa-user kt-user-bg-rd"></i> {{item.Team_Autho}}</span>
                                                         </h6>
                                                         <h6 class="mb-0 text-muted" title="Submitted Date">
-                                                            <span class="dwn-cnt btn"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
-                                                                2
+                                                            <span class="dwn-cnt btn" *ngIf="item.filecount>0"><svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="cate-icns" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" /><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" /></svg> 
+                                                                {{item.filecount}}
                                                             </span> 
                                                             <span><i class="far fa-calendar-alt mr-1"></i> {{item.CreatedOn|date:'fullDate'}}</span>
                                                         </h6>

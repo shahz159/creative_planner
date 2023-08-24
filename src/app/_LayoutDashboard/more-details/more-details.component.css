@@ -1409,6 +1409,15 @@ span.guest-icns, .svg-icn {
   width: 14px;
   height: 14px;
 }
+.cancl-icon{
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+.cancl-icon svg{
+  width: 18px;
+  height: 18px;
+}
 .spacer--body .height-scroll   {
   overflow-y: auto;
 }
