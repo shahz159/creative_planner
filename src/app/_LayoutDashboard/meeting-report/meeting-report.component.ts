@@ -15,7 +15,7 @@ import * as moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -176,14 +176,14 @@ export class MeetingReportComponent implements OnInit {
   }
   _meetingNotesAry: any = [];
   _userfullname: string;
+  interval = 0;
   ngOnInit(): void {
-
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
-
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
+
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
@@ -191,19 +191,11 @@ export class MeetingReportComponent implements OnInit {
     this.GetTimeslabfordate();
     this.meeting_details();
     this.getScheduleId();
-    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.GetcompletedMeeting_data();
-    this.GetNotedata();
-    const refreshInterval = 5000; // Refresh every 5 seconds (adjust as needed)
-    this.refreshSubscription = this.CalenderService.autoRefresh(refreshInterval)
-      .subscribe(data => {
-        // Handle the emitted data here
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
-        console.log('Refreshed data:', data);
-        this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
-        this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
-        // Update your component's properties or perform other actions with the data
-      });
+
+
     // modal caledar start
     var dragging = false;
     var days = document.querySelectorAll('.day');
@@ -338,6 +330,7 @@ export class MeetingReportComponent implements OnInit {
 
     // modal caledar end
 
+
   }
 
   // addBulletPointsOnFocus() {
@@ -348,16 +341,28 @@ export class MeetingReportComponent implements OnInit {
   //     textarea.value = '• ';
   //   }
   // }
-
+  leave: boolean = false;
+  leavemeet(event: any) {
+    this.leave = true;
+    this.addBulletPointsOnEnter(event)
+    setTimeout(() => {
+      this.delayedFunction();
+    }, 2000);
+  }
+  delayedFunction() {
+    console.log('Function called after 5 seconds');
+    window.close();
+  }
   addBulletPointsOnEnter(event: any) {
 
-    if (event.keyCode === 32 || event.keyCode === 13) {
+    if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
 
 
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.CurrentUser_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type;
+      this._calenderDto.Status_type = "Left"
       // alert(this.Notes_Type)
       // console.log(this._calenderDto);
       this.CalenderService.NewGetMeeting_notes(this._calenderDto).subscribe
@@ -371,7 +376,6 @@ export class MeetingReportComponent implements OnInit {
 
   Meetingnotes_time: any = [];
   GetMeetingnotes_data() {
-
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
@@ -390,24 +394,29 @@ export class MeetingReportComponent implements OnInit {
   isCheckboxDisabled: boolean = false;
   Userstatus: string;
   Isadmin: boolean = false;
+  unsubscribe: boolean = false;
+
   GetcompletedMeeting_data() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
-        debugger
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        this.Meetingstatuscom = this.CompletedMeeting_notes[0]['meeting_status']
-        this.Userstatus = this.CompletedMeeting_notes[0]['Status']
-        this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes']
-        // alert( this.Meetingnotescom)
-        if (this.Meetingstatuscom == 'Completed') {
+        this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
+        this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
+        this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
+        this.GetNotedata();
+        if (this.Meetingstatuscom == "Completed") {
           this.isCheckboxDisabled = true;
         }
-        console.log(this.Meetingnotescom, 'notes11122')
+        else {
+          this.interval = setInterval(() => {
+            this.GetNotedata();
+          }, 5000);
+        }
+        console.log(this.CompletedMeeting_notes, 'notes11122')
       });
-
   }
   meetingpoint: string;
   Notespoint: string;
@@ -418,14 +427,16 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto.Emp_No = this.CurrentUser_ID;
     this.CalenderService.NewGetMeetingnote_comp(this._calenderDto).subscribe
       (data => {
-        this.meetingpoint = JSON.parse(data['Checkdatetimejson']);
-        this.Notespoint = this.meetingpoint[0]['Meeting_notes']
-        this.empname = this.meetingpoint[0]['Emp_Name']
+        this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
 
-        console.log(data, 'notes122211')
+        if (this.Meetingstatuscom == "Completed") {
+          this.interval == 0;
+          if (this.interval == 0) {
+            clearInterval(this.interval);
+          }
+        }
       });
-
-
   }
 
 
@@ -758,6 +769,14 @@ export class MeetingReportComponent implements OnInit {
 
             });
         }
+         if (this.Meetingstatuscom == "Completed") {
+          this.isCheckboxDisabled = true;
+        }
+        else {
+          this.interval = setInterval(() => {
+            this.GetNotedata();
+          }, 5000);
+        }
 
       });
 
@@ -930,7 +949,13 @@ export class MeetingReportComponent implements OnInit {
       (data => {
         this.notifyService.showSuccess("Successfully", "Completed");
         // window.close();
-        this.GetcompletedMeeting_data()
+        this.GetcompletedMeeting_data();
+        if (this.Meetingstatuscom == 'Completed') {
+          this.interval == 0;
+          if (this.interval == 0) {
+            clearInterval(this.interval);
+          }
+        }
       });
     const modalElement = document.getElementById('exampleModal');
 
@@ -945,7 +970,9 @@ export class MeetingReportComponent implements OnInit {
       }
     }
 
-
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");

@@ -1,4 +1,5 @@
 export class CalenderDTO {
+    Status_type:string;
     IsAdmin:boolean;
     Meeting_notes:any;
     Portfolio:string;
