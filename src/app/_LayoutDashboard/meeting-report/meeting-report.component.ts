@@ -346,16 +346,17 @@ export class MeetingReportComponent implements OnInit {
   leave: boolean = false;
   leavemeet(event: any) {
     this.leave = true;
+    
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
+    this.notifyService.showSuccess("Meeting left","Success");
 
     
   }
   delayedFunction() {
     console.log('Function called after 5 seconds');
-    this.notifyService.showSuccess("Meeting left","Success");
     window.close();
   }
   addBulletPointsOnEnter(event: any) {
