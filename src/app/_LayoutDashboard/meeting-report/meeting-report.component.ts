@@ -350,9 +350,12 @@ export class MeetingReportComponent implements OnInit {
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
+
+    
   }
   delayedFunction() {
     console.log('Function called after 5 seconds');
+    this.notifyService.showSuccess("Meeting left","Success");
     window.close();
   }
   addBulletPointsOnEnter(event: any) {
@@ -462,7 +465,9 @@ export class MeetingReportComponent implements OnInit {
         this.meeting_details();
       });
       this.ngEmployeeDropdown1=null;
+      this.notifyService.showSuccess("Participant added successfully","Success");
   }
+
   updatedateandtime_meetingreport() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -981,6 +986,7 @@ export class MeetingReportComponent implements OnInit {
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
+    this.notifyService.showSuccess("Meeting completed successfully","Success");
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");
