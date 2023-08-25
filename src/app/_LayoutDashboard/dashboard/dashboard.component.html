@@ -516,7 +516,7 @@
                                                 <path d="M0,0h24v24H0V0z" fill="none"></path>
                                             </svg>
                                         </button>
-                                        <button class="btn-svgs btn-clear" aria-label="Search" role="button" (click)="clearsearch()">
+                                        <button class="btn-svgs btn-clear" aria-label="Search" role="button" *ngIf="Searchword" (click)="clearsearch()">
                                             <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
