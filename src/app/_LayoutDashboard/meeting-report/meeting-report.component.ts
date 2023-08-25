@@ -50,7 +50,9 @@ export class MeetingReportComponent implements OnInit {
   Notes_Type: any;
   ProjectTypelist: any;
   Action_item: any = [];
+
   checkedusers: any = [];
+  ngEmployeeDropdown:any = [];
   checkedproject: any = [];
   checkeddms: any = [];
   checkedportfolio: any = [];
@@ -87,7 +89,7 @@ export class MeetingReportComponent implements OnInit {
   minDate = moment().format("YYYY-MM-DD").toString();
   disablePreviousDate = new Date();
   ScheduleType: any;
-  ngEmployeeDropdown: any;
+  ngEmployeeDropdown1: any;
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -187,7 +189,7 @@ export class MeetingReportComponent implements OnInit {
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
-    this.GetProjectAndsubtashDrpforCalender()
+    // this.GetProjectAndsubtashDrpforCalender()
     this.GetTimeslabfordate();
     this.meeting_details();
     this.getScheduleId();
@@ -445,15 +447,21 @@ export class MeetingReportComponent implements OnInit {
     console.log(val, "ttt");
   }
   Adduser_meetingreport() {
+
+    for (const element of this.ngEmployeeDropdown1) {
+      this.ngEmployeeDropdown.push(element);
+  }
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
-    this._calenderDto.User_list = this.ngEmployeeDropdown
+    this._calenderDto.User_list = this.ngEmployeeDropdown;
+
+
     this.CalenderService.Newinsertuser_meetingreport(this._calenderDto).subscribe
       (data => {
         this.meeting_details();
       });
-
+      this.ngEmployeeDropdown1=null;
   }
   updatedateandtime_meetingreport() {
 
@@ -913,19 +921,19 @@ export class MeetingReportComponent implements OnInit {
   }
   _EmployeeListForDropdown: any = [];
 
-  GetProjectAndsubtashDrpforCalender() {
+  // GetProjectAndsubtashDrpforCalender() {
 
-    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-      ((data) => {
+  //   this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+  //     ((data) => {
 
-        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+  //       this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
 
-        // this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        // this.ProjectListArray = JSON.parse(data['Projectlist']);
-        // console.log(this._EmployeeListForDropdown, "Project List Array");
+  //       // this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+  //       // this.ProjectListArray = JSON.parse(data['Projectlist']);
+  //       // console.log(this._EmployeeListForDropdown, "Project List Array");
 
-      });
-  }
+  //     });
+  // }
 
   Insert_meetingreport() {
 
