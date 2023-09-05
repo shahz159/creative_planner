@@ -3527,12 +3527,27 @@ export class MoreDetailsComponent implements OnInit {
         FileUrl=proofDoc
       }
       else{
+        let Day = repDate.getDate();
+        let Month = repDate.getMonth() + 1;
+        let Year = repDate.getFullYear();
+        if (Month < 10) {
+          this._month = '0' + Month;
+        }
+        else {
+          this._month = Month;
+        }
+        if (Day < 10) {
+          this._day = Day;
+        }
+        else {
+          this._day = Day;
+        }
             var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
           if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-            FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+            FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
           }
           else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-            FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + ".application/pdf");
+            FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
           }
       }
 
