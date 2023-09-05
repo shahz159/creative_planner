@@ -356,7 +356,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
-      //  console.log("Summary Data---->", this._ProjectDataList);
+        console.log("Summary Data---->", this._ProjectDataList);
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
       }
@@ -382,7 +382,7 @@ export class ProjectsSummaryComponent implements OnInit {
       this.ObjUserDetails.PageSize = 30;
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
-        //  console.log("Summary Data---->", this._ProjectDataList);
+         console.log("Summary Data---->", this._ProjectDataList);
         this.ActualDataList = data;
         if (this._ProjectDataList.length > 0) {
         }

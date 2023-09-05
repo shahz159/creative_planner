@@ -176,8 +176,22 @@
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
+                                        
                                         <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
+                                            <div class="card my-1 shadow-sm brdr kt-pot-ttls">
+                                                <div class="card-body d-flex align-items-center justify-content-around">
+                                                    <div class="icond"></div>
+                                                    <div class="mx-2 p-1" style="flex: 1;"> <p class="kt-widget__title mb-0" style="width: 250px;">ProjectName</p></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other">ProjectType</span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other">Category</span></div>
+                                                    <div class="mx-2 p-1" style="flex: 1;"><span class="kt-widget__other">Responsible</span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other text-nowrap">Deadline </span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other"> Last Update </span> </div>
+                                                    <div class="mx-2 p-1" style="flex: 0.5;"><span class="kt-widget__other"> Status</span> </div>
+                                                    <div class="mx-2 p-1"  style="flex: 0;"><span class="kt-widget__other"> Actions</span> </div>
 
+                                                </div>
+                                            </div>
                                             <ng-container
                                             *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
                                             

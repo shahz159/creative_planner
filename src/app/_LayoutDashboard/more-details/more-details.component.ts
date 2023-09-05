@@ -392,6 +392,7 @@ export class MoreDetailsComponent implements OnInit {
   _portfoliosList: any;
   action_details: any;
   approve_details: any;
+  _fullname:any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -403,6 +404,7 @@ export class MoreDetailsComponent implements OnInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
+    this.getusername();
     this.gethierarchy();
     this.getholdate();
     this.getRejectType();
@@ -449,6 +451,12 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
+  getusername(){
+    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{
+      this._fullname=data['Emp_First_Name'];
+    });
+  }
+
   french() {
     this._locale = 'fr';
     this._adapter.setLocale(this._locale);
@@ -458,14 +466,14 @@ export class MoreDetailsComponent implements OnInit {
     this.approvalObj.Project_Code=this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data=>{
-      console.log(data,"appact");
+      // console.log(data,"appact");
       if(data[0]['actiondetails']!='[]' || data[0]['approvaldetails']!='[]' ){
         if(data[0]['actiondetails']!='[]')
         this.action_details=JSON.parse(data[0]['actiondetails']);
         if(data[0]['approvaldetails']!='[]')
         this.approve_details=JSON.parse(data[0]['approvaldetails']);
 
-        console.log(this.action_details,this.approve_details,"details")
+        // console.log(this.action_details,this.approve_details,"details");
       }
     })
   }
@@ -508,6 +516,7 @@ export class MoreDetailsComponent implements OnInit {
     this.noRejectType = false;
   }
 
+  singleapporval_json:any[] = [];
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -515,6 +524,7 @@ export class MoreDetailsComponent implements OnInit {
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
+      console.log(this.requestDetails,"approvals");
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -533,6 +543,8 @@ export class MoreDetailsComponent implements OnInit {
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
         this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+        this.singleapporval_json=  JSON.parse(this.requestDetails[0]['singleapproval_json']);
+        console.log(this.singleapporval_json,"s-1");
         if(this.prviousCommentsList.length>1){
           this.previouscoments=true;
         }
@@ -599,7 +611,7 @@ export class MoreDetailsComponent implements OnInit {
       this.send_from= data[0]["sendFrom"];
       this.rejectactivity= data[0]["rejectactivity"];
       this.lastactivity = JSON.parse(data[0]["lastactivity"]);
-      console.log(this.activity,this.lastactivity)
+      // console.log(this.activity,this.lastactivity)
     });
   }
 
@@ -638,7 +650,8 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
- 
+  rejectlength:any;
+
   rejectApproval() {
     this.noRejectType = false;
     this.reject_list.forEach(element => {
@@ -681,412 +694,538 @@ export class MoreDetailsComponent implements OnInit {
 
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
       this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+      this.rejectlength=this.rejectcommentsList.length;
     });
   }
 
 
   submitApproval() {
-    if (this.requestType != 'Project Forward' && this.requestType!='Task Complete' && this.requestType!='Revert Back') {
-      if (this.selectedType == '1') {
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        this.approvalObj.Request_type = this.requestType;
+    // if (this.requestType != 'Project Forward' && this.requestType!='Task Complete' && this.requestType!='Revert Back') {
+    //   if (this.selectedType == '1') {
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     this.approvalObj.Request_type = this.requestType;
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+    //     this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+    //       subscribe((data) => {
+    //         this._Message = (data['message']);
+    //         if (this._Message == 'Not Authorized' || this._Message == '0') {
+    //           this.notifyService.showError("project not approved", 'Failed.');
+    //         }
+    //         else {
+    //           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+    //           this.GetProjectDetails();
+    //           this.GetSubtask_Details();
+    //           this.getapprovalStats();
+    //           this.GetprojectComments();
+    //         }
+    //         this.Clear_Feilds();
+    //       });
+    //   }
+    //   else if (this.selectedType == '2') {
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     this.approvalObj.Request_type = this.requestType;
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+
+    //     this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+    //       subscribe((data) => {
+    //         this._Message = (data['message']);
+    //         if (this._Message == 'Not Authorized' || this._Message == '0') {
+    //           this.notifyService.showError("project not approved", 'Failed.');
+    //         }
+    //         else {
+    //           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+    //           this.GetProjectDetails();
+    //           this.GetSubtask_Details();
+    //           this.getapprovalStats();
+    //           this.GetprojectComments();
+    //         }
+    //         this.Clear_Feilds();
+    //       });
+    //   }
+    //   else if (this.selectedType == '3') {
+    //     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+    //       this.noRejectType = true;
+    //       this.notifyService.showError("Please select Reject Type", "Failed");
+    //       return false;
+    //     }
+    //     else {
+    //       this.approvalObj.Emp_no = this.Current_user_ID;
+    //       this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //       this.approvalObj.Request_type = this.requestType;
+    //       this.approvalObj.rejectType = this.rejectType;
+    //       this.approvalObj.Remarks = this.comments;
+
+    //       this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+    //         subscribe((data) => {
+    //           this._Message = (data['message']);
+    //           if (this._Message == 'Not Authorized' || this._Message == '0') {
+    //             this.notifyService.showError("project not approved", 'Failed.');
+    //           }
+    //           else {
+    //             this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+    //             this.GetProjectDetails();
+    //             this.GetSubtask_Details();
+    //             this.getapprovalStats();
+    //             this.GetprojectComments();
+    //             this.getRejectType();
+    //             this.getReasonforholdandRejected();
+    //           }
+    //           this.Clear_Feilds();
+    //         });
+    //     }
+    //   }
+    //   document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("moredet").classList.remove("position-fixed");
+    //   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("rightbar-overlay").style.display = "none";
+    // }
+    // else if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
+    //   if (this.selectedType == '3') {
+    //     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+    //       this.noRejectType = true;
+    //       this.notifyService.showError("Please select Reject Type", "Failed");
+    //       return false;
+    //     }
+    //     else {
+    //       this.approvalObj.Emp_no = this.Current_user_ID;
+    //       this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //       this.approvalObj.Request_type = this.requestType;
+    //       this.approvalObj.rejectType = this.rejectType;
+    //       this.approvalObj.Remarks = this.comments;
+
+    //       this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+    //         subscribe((data) => {
+    //           this._Message = (data['message']);
+    //           if (this._Message == 'Not Authorized') {
+    //             this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
+    //             this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
+    //           }
+    //           else {
+    //             this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+    //             this.GetProjectDetails();
+    //             this.GetSubtask_Details();
+    //             this.getapprovalStats();
+    //             this.GetprojectComments();
+    //             this.getRejectType();
+    //             this.getReasonforholdandRejected();
+    //           }
+    //           this.Clear_Feilds();
+    //         });
+    //     }
+    //   }
+    //   else if (this.selectedType == '1') {
+    //     this.Employee_List.forEach(element => {
+    //       if (element.Emp_No == this.newResponsible) {
+    //         this.new_Res = element.DisplayName;
+    //       }
+    //     });
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Responsible = this.newResponsible;
+    //     this.approvalObj.deadline = this.requestDeadline;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+
+    //     this.approvalservice.InsertForwardApprovalService(this.approvalObj).subscribe(data => {
+    //       this._Message = data['message'];
+
+    //       if (this._Message == '1') {
+    //         this.notifyService.showSuccess("Project will be forwarded to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Forwarded");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '2') {
+    //         this.notifyService.showSuccess("Project Forward request sent to -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Forward under approval!");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '4' || this._Message == null) {
+    //         this.notifyService.showError("Please contact Support.", "Project not forwarded!");
+    //       }
+    //     });
+    //     this.closeInfo();
+    //   }
+    //   this.closeInfo();
+    //   document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("moredet").classList.remove("position-fixed");
+    //   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("rightbar-overlay").style.display = "none";
+    // }
+    // else if (this.requestType == 'Project Forward' && this.forwardType == 'T') {
+    //   if (this.selectedType == '3') {
+    //     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+    //       this.noRejectType = true;
+    //       this.notifyService.showError("Please select Reject Type", "Failed");
+    //       return false;
+    //     }
+    //     else {
+    //       this.approvalObj.Emp_no = this.Current_user_ID;
+    //       this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //       this.approvalObj.Request_type = this.requestType;
+    //       this.approvalObj.rejectType = this.rejectType;
+    //       this.approvalObj.Remarks = this.comments;
+
+    //       this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+    //         subscribe((data) => {
+    //           this._Message = (data['message']);
+    //           if (this._Message == 'Not Authorized') {
+    //             this.notifyService.showError("project not approved", 'Failed.');
+    //           }
+    //           else {
+    //             this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+    //             this.GetProjectDetails();
+    //             this.GetSubtask_Details();
+    //             this.getapprovalStats();
+    //             this.GetprojectComments();
+    //             this.getRejectType();
+    //             this.getReasonforholdandRejected();
+    //           }
+    //           this.Clear_Feilds();
+    //         });
+    //     }
+    //   }
+    //   else if (this.selectedType == '1') {
+    //     this.Employee_List.forEach(element => {
+    //       if (element.Emp_No == this.newResponsible) {
+    //         this.new_Res = element.DisplayName;
+    //       }
+    //     });
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Responsible = this.newResponsible;
+    //     this.approvalObj.deadline = this.requestDeadline;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+
+    //     this.approvalservice.InsertTransferApprovalService(this.approvalObj).subscribe(data => {
+    //       this._Message = data['message'];
+
+    //       if (this._Message == '1') {
+    //         this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Transferred");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '2') {
+    //         this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '4' || this._Message == null || this._Message == '0') {
+    //         this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
+    //       }
+    //     });
+    //     this.closeInfo();
+    //   }
+    //   document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("moredet").classList.remove("position-fixed");
+    //   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("rightbar-overlay").style.display = "none";
+    // }
+    // else if (this.requestType == 'Task Complete') {
+    //   if (this.selectedType == '1') {
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     this.approvalObj.Request_Date = this.requestDate;
+    //     this.approvalObj.Request_type = this.requestType;
+    //     this.approvalObj.rejectType = null;
+    //     this.approvalObj.approvaltype = 'Accept';
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+    //     this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+    //       subscribe((data) => {
+    //         this._Message = (data['message']);
+    //         if (this._Message == 'Not Authorized' || this._Message == '0') {
+    //           this.notifyService.showError("project not approved", 'Failed.');
+    //         }
+    //         else {
+    //           this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+    //           this.GetProjectDetails();
+    //           this.GetSubtask_Details();
+    //           this.getapprovalStats();
+    //           this.GetprojectComments();
+    //         }
+    //         this.Clear_Feilds();
+    //       });
+    //   }
+    //   else if (this.selectedType == '3') {
+    //     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+    //       this.noRejectType = true;
+    //       this.notifyService.showError("Please select Reject Type", "Failed");
+    //       return false;
+    //     }
+    //     else {
+    //       this.approvalObj.Emp_no = this.Current_user_ID;
+    //       this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //       this.approvalObj.Request_Date = this.requestDate;
+    //       this.approvalObj.Request_type = this.requestType;
+    //       this.approvalObj.rejectType = this.rejectType;
+    //       this.approvalObj.Remarks = this.comments;
+    //       this.approvalObj.approvaltype = 'Reject';
+
+    //       this.approvalservice.InsertStandardApprovalService(this.approvalObj).
+    //         subscribe((data) => {
+    //           this._Message = (data['message']);
+    //           if (this._Message == 'Not Authorized' || this._Message == '0') {
+    //             this.notifyService.showError("project not approved", 'Failed.');
+    //           }
+    //           else {
+    //             this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+    //             this.GetProjectDetails();
+    //             this.GetSubtask_Details();
+    //             this.getapprovalStats();
+    //             this.GetprojectComments();
+    //             this.getRejectType();
+    //             this.getReasonforholdandRejected();
+    //           }
+    //           this.Clear_Feilds();
+    //         });
+    //     }
+    //   }
+    //   else if (this._Message == '4' || this._Message == null) {
+    //     this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
+    //   }
+    //   document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("moredet").classList.remove("position-fixed");
+    //   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("rightbar-overlay").style.display = "none";
+    // }
+    // else if (this.requestType == 'Revert Back'){
+    //   if (this.selectedType == '3') {
+    //     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+    //       this.noRejectType = true;
+    //       this.notifyService.showError("Please select Reject Type", "Failed");
+    //       return false;
+    //     }
+    //     else {
+    //       this.approvalObj.Emp_no = this.Current_user_ID;
+    //       this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //       this.approvalObj.Request_type = this.requestType;
+    //       this.approvalObj.rejectType = this.rejectType;
+    //       this.approvalObj.Remarks = this.comments;
+
+    //       this.approvalservice.InsertRejectApprovalService(this.approvalObj).
+    //         subscribe((data) => {
+    //           this._Message = (data['message']);
+    //           if (this._Message == 'Not Authorized') {
+    //             this.notifyService.showError("project not approved", 'Failed.');
+    //           }
+    //           else {
+    //             this.notifyService.showSuccess(this._Message, "Rejected Successfully");
+    //             this.GetProjectDetails();
+    //             this.GetSubtask_Details();
+    //             this.getapprovalStats();
+    //             this.GetprojectComments();
+    //             this.getRejectType();
+    //             this.getReasonforholdandRejected();
+    //           }
+    //           this.Clear_Feilds();
+    //         });
+    //     }
+    //   }
+    //   else if (this.selectedType == '1') {
+    //     this.Employee_List.forEach(element => {
+    //       if (element.Emp_No == this.newResponsible) {
+    //         this.new_Res = element.DisplayName;
+    //       }
+    //     });
+    //     this.approvalObj.Emp_no = this.Current_user_ID;
+    //     this.approvalObj.Responsible = this.newResponsible;
+    //     this.approvalObj.deadline = this.requestDeadline;
+    //     this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //     if (this.comments == '' || this.comments == null) {
+    //       this.approvalObj.Remarks = 'Accepted';
+    //     }
+    //     else {
+    //       this.approvalObj.Remarks = this.comments;
+    //     }
+
+    //     this.approvalservice.InsertRevertApprovalService(this.approvalObj).subscribe(data => {
+    //       this._Message = data['message'];
+
+    //       if (this._Message == '1') {
+    //         this.notifyService.showSuccess("Project Reverted back to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Reverted back");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '2') {
+    //         this.notifyService.showSuccess("Project Revert back request sent to -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Success!");
+    //         this.GetProjectDetails();
+    //         this.GetSubtask_Details();
+    //         this.getapprovalStats();
+    //         this.GetprojectComments();
+    //       }
+    //       else if (this._Message == '4' || this._Message == null) {
+    //         this.notifyService.showError("Please contact Support.", "Project not Reverted!");
+    //       }
+    //     });
+    //     this.closeInfo();
+    //   }
+    //   this.closeInfo();
+    //   document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("moredet").classList.remove("position-fixed");
+    //   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    //   document.getElementById("rightbar-overlay").style.display = "none";
+    // }
+
+
+    if (this.selectedType == '1') {
+      // this.approvalObj.Emp_no = this.Current_user_ID;
+      // this.approvalObj.Project_Code = this.URL_ProjectCode;
+      // this.approvalObj.Request_type = this.requestType;
+      // if (this.comments == '' || this.comments == null) {
+      //   this.approvalObj.Remarks = 'Accepted';
+      // }
+      // else {
+      //   this.approvalObj.Remarks = this.comments;
+      // }
+      // this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+      //   subscribe((data) => {
+      //     this._Message = (data['message']);
+      //     if (this._Message == 'Not Authorized' || this._Message == '0') {
+      //       this.notifyService.showError("project not approved", 'Failed.');
+      //     }
+      //     else {
+            
+      //     }
+    //   this.notifyService.showSuccess("Project Approved Successfully", "");
+    //   this.GetProjectDetails();
+    //   this.GetSubtask_Details();
+    //   this.getapprovalStats();
+    //   this.GetprojectComments();
+    // this.Clear_Feilds();
+        // });
+
         if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
-        this.approvalservice.InsertAcceptApprovalService(this.approvalObj).
+            
+          this.singleapporval_json.forEach(element => {
+            element.Remarks='Accepted';
+          });
+          }
+          else {
+            this.singleapporval_json.forEach(element => {
+              element.Remarks=this.comments;
+            });
+          }
+      
+
+        this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
           subscribe((data) => {
-            this._Message = (data['message']);
-            if (this._Message == 'Not Authorized' || this._Message == '0') {
-              this.notifyService.showError("project not approved", 'Failed.');
-            }
-            else {
-              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.notifyService.showSuccess("Project Approved successfully by - "+this._fullname, "Success");
               this.GetProjectDetails();
               this.GetSubtask_Details();
               this.getapprovalStats();
               this.GetprojectComments();
-            }
+              this.getRejectType();
+              this.getReasonforholdandRejected();
             this.Clear_Feilds();
           });
+        console.log(this.singleapporval_json,"accept")
+    }
+    else if (this.selectedType == '2') {
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = this.requestType;
+      if (this.comments == '' || this.comments == null) {
+        this.approvalObj.Remarks = 'Accepted';
       }
-      else if (this.selectedType == '2') {
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        this.approvalObj.Request_type = this.requestType;
-        if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
+      else {
+        this.approvalObj.Remarks = this.comments;
+      }
 
-        this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+        subscribe((data) => {
+          this._Message = (data['message']);
+          if (this._Message == 'Not Authorized' || this._Message == '0') {
+            this.notifyService.showError("project not approved", 'Failed.');
+          }
+          else {
+            this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
+            this.GetprojectComments();
+          }
+          this.Clear_Feilds();
+        });
+    }
+    else if (this.selectedType == '3') {
+      if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+        this.noRejectType = true;
+        this.notifyService.showError("Please select Reject Type", "Failed");
+        return false;
+      }
+      else {
+        // this.approvalObj.Emp_no = this.Current_user_ID;
+        // this.approvalObj.Project_Code = this.URL_ProjectCode;
+        // this.approvalObj.Request_type = this.requestType;
+        // this.approvalObj.rejectType = this.rejectType;
+        // this.approvalObj.Remarks = this.comments;
+          // this._Message = (data['message']);
+            // if (this._Message == 'Not Authorized' || this._Message == '0') {
+            //   this.notifyService.showError("project not approved", 'Failed.');
+            // }
+            // else {
+              
+            // }
+        this.singleapporval_json.forEach(element => {
+          element.Remarks=this.comments;
+          element.RejectType=this.rejectType;
+        });
+
+        this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
-            this._Message = (data['message']);
-            if (this._Message == 'Not Authorized' || this._Message == '0') {
-              this.notifyService.showError("project not approved", 'Failed.');
-            }
-            else {
-              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+          
+            this.notifyService.showSuccess("Project Rejected successfully by - "+this._fullname, "Success");
               this.GetProjectDetails();
               this.GetSubtask_Details();
               this.getapprovalStats();
               this.GetprojectComments();
-            }
+              this.getRejectType();
+              this.getReasonforholdandRejected();
             this.Clear_Feilds();
           });
       }
-      else if (this.selectedType == '3') {
-        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-          this.noRejectType = true;
-          this.notifyService.showError("Please select Reject Type", "Failed");
-          return false;
-        }
-        else {
-          this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.URL_ProjectCode;
-          this.approvalObj.Request_type = this.requestType;
-          this.approvalObj.rejectType = this.rejectType;
-          this.approvalObj.Remarks = this.comments;
+      console.log(this.singleapporval_json,"reject")
 
-          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
-            subscribe((data) => {
-              this._Message = (data['message']);
-              if (this._Message == 'Not Authorized' || this._Message == '0') {
-                this.notifyService.showError("project not approved", 'Failed.');
-              }
-              else {
-                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
-                this.GetProjectDetails();
-                this.GetSubtask_Details();
-                this.getapprovalStats();
-                this.GetprojectComments();
-                this.getRejectType();
-                this.getReasonforholdandRejected();
-              }
-              this.Clear_Feilds();
-            });
-        }
-      }
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      document.getElementById("moredet").classList.remove("position-fixed");
-      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-      document.getElementById("rightbar-overlay").style.display = "none";
     }
-    else if (this.requestType == 'Project Forward' && this.forwardType != 'T') {
-      if (this.selectedType == '3') {
-        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-          this.noRejectType = true;
-          this.notifyService.showError("Please select Reject Type", "Failed");
-          return false;
-        }
-        else {
-          this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.URL_ProjectCode;
-          this.approvalObj.Request_type = this.requestType;
-          this.approvalObj.rejectType = this.rejectType;
-          this.approvalObj.Remarks = this.comments;
-
-          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
-            subscribe((data) => {
-              this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved.", 'you are not authorized to approve the project!!')
-                this.notifyService.showInfo('to approve the project', 'Please contact the Project Owner');
-              }
-              else {
-                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
-                this.GetProjectDetails();
-                this.GetSubtask_Details();
-                this.getapprovalStats();
-                this.GetprojectComments();
-                this.getRejectType();
-                this.getReasonforholdandRejected();
-              }
-              this.Clear_Feilds();
-            });
-        }
-      }
-      else if (this.selectedType == '1') {
-        this.Employee_List.forEach(element => {
-          if (element.Emp_No == this.newResponsible) {
-            this.new_Res = element.DisplayName;
-          }
-        });
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Responsible = this.newResponsible;
-        this.approvalObj.deadline = this.requestDeadline;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
-
-        this.approvalservice.InsertForwardApprovalService(this.approvalObj).subscribe(data => {
-          this._Message = data['message'];
-
-          if (this._Message == '1') {
-            this.notifyService.showSuccess("Project will be forwarded to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Forwarded");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '2') {
-            this.notifyService.showSuccess("Project Forward request sent to -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Forward under approval!");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '4' || this._Message == null) {
-            this.notifyService.showError("Please contact Support.", "Project not forwarded!");
-          }
-        });
-        this.closeInfo();
-      }
-      this.closeInfo();
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      document.getElementById("moredet").classList.remove("position-fixed");
-      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-      document.getElementById("rightbar-overlay").style.display = "none";
-    }
-    else if (this.requestType == 'Project Forward' && this.forwardType == 'T') {
-      if (this.selectedType == '3') {
-        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-          this.noRejectType = true;
-          this.notifyService.showError("Please select Reject Type", "Failed");
-          return false;
-        }
-        else {
-          this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.URL_ProjectCode;
-          this.approvalObj.Request_type = this.requestType;
-          this.approvalObj.rejectType = this.rejectType;
-          this.approvalObj.Remarks = this.comments;
-
-          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
-            subscribe((data) => {
-              this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved", 'Failed.');
-              }
-              else {
-                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
-                this.GetProjectDetails();
-                this.GetSubtask_Details();
-                this.getapprovalStats();
-                this.GetprojectComments();
-                this.getRejectType();
-                this.getReasonforholdandRejected();
-              }
-              this.Clear_Feilds();
-            });
-        }
-      }
-      else if (this.selectedType == '1') {
-        this.Employee_List.forEach(element => {
-          if (element.Emp_No == this.newResponsible) {
-            this.new_Res = element.DisplayName;
-          }
-        });
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Responsible = this.newResponsible;
-        this.approvalObj.deadline = this.requestDeadline;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
-
-        this.approvalservice.InsertTransferApprovalService(this.approvalObj).subscribe(data => {
-          this._Message = data['message'];
-
-          if (this._Message == '1') {
-            this.notifyService.showSuccess("Project transferred to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Transferred");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '2') {
-            this.notifyService.showSuccess("Project Transfer request sent to the transferee -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Transfer under approval!");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '4' || this._Message == null || this._Message == '0') {
-            this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
-          }
-        });
-        this.closeInfo();
-      }
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      document.getElementById("moredet").classList.remove("position-fixed");
-      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-      document.getElementById("rightbar-overlay").style.display = "none";
-    }
-    else if (this.requestType == 'Task Complete') {
-      if (this.selectedType == '1') {
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        this.approvalObj.Request_Date = this.requestDate;
-        this.approvalObj.Request_type = this.requestType;
-        this.approvalObj.rejectType = null;
-        this.approvalObj.approvaltype = 'Accept';
-        if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
-        this.approvalservice.InsertStandardApprovalService(this.approvalObj).
-          subscribe((data) => {
-            this._Message = (data['message']);
-            if (this._Message == 'Not Authorized' || this._Message == '0') {
-              this.notifyService.showError("project not approved", 'Failed.');
-            }
-            else {
-              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-              this.GetProjectDetails();
-              this.GetSubtask_Details();
-              this.getapprovalStats();
-              this.GetprojectComments();
-            }
-            this.Clear_Feilds();
-          });
-      }
-      else if (this.selectedType == '3') {
-        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-          this.noRejectType = true;
-          this.notifyService.showError("Please select Reject Type", "Failed");
-          return false;
-        }
-        else {
-          this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.URL_ProjectCode;
-          this.approvalObj.Request_Date = this.requestDate;
-          this.approvalObj.Request_type = this.requestType;
-          this.approvalObj.rejectType = this.rejectType;
-          this.approvalObj.Remarks = this.comments;
-          this.approvalObj.approvaltype = 'Reject';
-
-          this.approvalservice.InsertStandardApprovalService(this.approvalObj).
-            subscribe((data) => {
-              this._Message = (data['message']);
-              if (this._Message == 'Not Authorized' || this._Message == '0') {
-                this.notifyService.showError("project not approved", 'Failed.');
-              }
-              else {
-                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
-                this.GetProjectDetails();
-                this.GetSubtask_Details();
-                this.getapprovalStats();
-                this.GetprojectComments();
-                this.getRejectType();
-                this.getReasonforholdandRejected();
-              }
-              this.Clear_Feilds();
-            });
-        }
-      }
-      else if (this._Message == '4' || this._Message == null) {
-        this.notifyService.showError("Please contact Support.", "Project Not Transferred!");
-      }
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      document.getElementById("moredet").classList.remove("position-fixed");
-      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-      document.getElementById("rightbar-overlay").style.display = "none";
-    }
-    else if (this.requestType == 'Revert Back'){
-      if (this.selectedType == '3') {
-        if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-          this.noRejectType = true;
-          this.notifyService.showError("Please select Reject Type", "Failed");
-          return false;
-        }
-        else {
-          this.approvalObj.Emp_no = this.Current_user_ID;
-          this.approvalObj.Project_Code = this.URL_ProjectCode;
-          this.approvalObj.Request_type = this.requestType;
-          this.approvalObj.rejectType = this.rejectType;
-          this.approvalObj.Remarks = this.comments;
-
-          this.approvalservice.InsertRejectApprovalService(this.approvalObj).
-            subscribe((data) => {
-              this._Message = (data['message']);
-              if (this._Message == 'Not Authorized') {
-                this.notifyService.showError("project not approved", 'Failed.');
-              }
-              else {
-                this.notifyService.showSuccess(this._Message, "Rejected Successfully");
-                this.GetProjectDetails();
-                this.GetSubtask_Details();
-                this.getapprovalStats();
-                this.GetprojectComments();
-                this.getRejectType();
-                this.getReasonforholdandRejected();
-              }
-              this.Clear_Feilds();
-            });
-        }
-      }
-      else if (this.selectedType == '1') {
-        this.Employee_List.forEach(element => {
-          if (element.Emp_No == this.newResponsible) {
-            this.new_Res = element.DisplayName;
-          }
-        });
-        this.approvalObj.Emp_no = this.Current_user_ID;
-        this.approvalObj.Responsible = this.newResponsible;
-        this.approvalObj.deadline = this.requestDeadline;
-        this.approvalObj.Project_Code = this.URL_ProjectCode;
-        if (this.comments == '' || this.comments == null) {
-          this.approvalObj.Remarks = 'Accepted';
-        }
-        else {
-          this.approvalObj.Remarks = this.comments;
-        }
-
-        this.approvalservice.InsertRevertApprovalService(this.approvalObj).subscribe(data => {
-          this._Message = data['message'];
-
-          if (this._Message == '1') {
-            this.notifyService.showSuccess("Project Reverted back to " + this.new_Res + '(' + this.approvalObj.Responsible + ')' + " from " + this.Responsible + '(' + this.Responsible_EmpNo + ')', "Successfully Reverted back");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '2') {
-            this.notifyService.showSuccess("Project Revert back request sent to -" + this.new_Res + '(' + this.approvalObj.Responsible + ')', "Success!");
-            this.GetProjectDetails();
-            this.GetSubtask_Details();
-            this.getapprovalStats();
-            this.GetprojectComments();
-          }
-          else if (this._Message == '4' || this._Message == null) {
-            this.notifyService.showError("Please contact Support.", "Project not Reverted!");
-          }
-        });
-        this.closeInfo();
-      }
-      this.closeInfo();
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      document.getElementById("moredet").classList.remove("position-fixed");
-      document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-      document.getElementById("rightbar-overlay").style.display = "none";
-    }
-
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   getnextDeadline() {
@@ -1105,7 +1244,7 @@ export class MoreDetailsComponent implements OnInit {
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
-        console.log(data,"meet")
+        // console.log(data,"meet")
         if((data[0]['MeetingFor_projects'].length > 0) && data!=null){
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
         this.meeting_arry = this.meetingList;
@@ -1131,7 +1270,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        console.log(this.darArray,"DAR");
+        // console.log(this.darArray,"DAR");
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -1352,7 +1491,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
           this.Client_List = JSON.parse(data[0]['ClientDropdown']);
           this._portfoliolist = JSON.parse(data[0]['Portfolio_json']);
-           console.log("Test---->", this.ProjectInfo_List);
+          //  console.log("Test---->", this.ProjectInfo_List);
           this.ProjectName = this.ProjectInfo_List[0]['Project_Name'];
           this.Pid = this.ProjectInfo_List[0]['id'];
           this.Status = this.ProjectInfo_List[0]['Status'];
@@ -1478,7 +1617,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.DarGraphDataList = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         //  console.log(data[0]['RemainingHours']);
-        console.log("MaxDu....", data1);
+        // console.log("MaxDu....", data1);
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         this.standardDuration = (data2[0]['DurationTime']);
@@ -1617,6 +1756,8 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
+  _allocated: any;
+
   close_space() {
     this.Editbutton=false;
     this.selectedEmp_No = null;
@@ -1630,6 +1771,8 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedclient = null;
     this.selectedsupport = null;
     this.selectedOwnResp = null;
+    this.allocation=false;
+    
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3476,7 +3619,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          console.log(this.Subtask_List, "status");
+          // console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
           this.Inprocess_List= JSON.parse(data[0]['Inprocess_SubtaskDetails']);
@@ -3981,11 +4124,12 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  onEditEndDate(id, aname, i, acode,edate) {
+  onEditEndDate(id, aname, i, acode,edate,sdate) {
     this.actionName = aname;
     this.actCode = acode;
     this.actnum = i;
     this.actionenddate=edate;
+    this.actionStartdate=sdate;
     this.Editbutton = true;
     this.edithold = false;
     this.editCategory = false;
@@ -4272,7 +4416,7 @@ export class MoreDetailsComponent implements OnInit {
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     console.log(this._ProjDeadline, id, Pcode, "act");
     if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(Pcode, this._ProjDeadline, null, this.extend_remarks).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(Pcode, this._ProjDeadline, null, this.extend_remarks,null).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -4321,8 +4465,10 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
+  allocation:boolean =false;
+
 actiondeadline_alert(){
- 
+
     const dateOne = moment(this.Projectdeadline).format("YYYY/MM/DD");
     const dateTwo =moment(this._ProjDeadline).format("YYYY/MM/DD");
     console.log(dateOne,dateTwo,"dates")
@@ -4357,10 +4503,23 @@ actiondeadline_alert(){
   }
 }
 
+check_allocation(){
+  const newenddate = new Date(this._ProjDeadline); 
+  const oldendate = new Date(this.actionenddate); 
+  
+  if(newenddate > oldendate){
+    this.allocation = true;
+  }
+  else{
+    this.allocation = false;
+  }
+
+}
+
   onAction_ExtendDeadline() {
       this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
       if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -4398,7 +4557,7 @@ actiondeadline_alert(){
           this.objProjectDto.Project_Name = null;
           this.objProjectDto.Master_code = this.URL_ProjectCode;
           this.objProjectDto.Project_Code = this.actCode;
-
+          
           // this.service._InsertDARServie(this.objProjectDto)
           // .subscribe(data => {
           //   this._Message = data['message'];
@@ -4429,7 +4588,7 @@ actiondeadline_alert(){
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     // console.log(this._ProjDeadline,id,Pcode,"act");
     if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(this.actCode, null, this._ProjDeadline, this.extend_remarks).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(this.actCode, null, this._ProjDeadline, this.extend_remarks,null).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -5364,8 +5523,25 @@ actiondeadline_alert(){
 
   //search actions:
   actionsearch:any;
+  maxAllocation:any;
+
   clearsearch(){
     this.actionsearch="";
+  }
+
+  alertMaxAllocation() {
+      const newenddate = new Date(this._ProjDeadline); 
+      const oldendate = new Date(this.actionenddate); 
+
+      if(newenddate > oldendate){
+        var Difference_In_Time = oldendate.getTime() - newenddate.getTime();
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+      if(Difference_In_Days==0){
+        Difference_In_Days=-1;
+      }
+      console.log(Difference_In_Time,Difference_In_Days,"allocation");
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
   }
 
 }

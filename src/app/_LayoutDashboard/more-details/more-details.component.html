@@ -1600,7 +1600,7 @@
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
-                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
@@ -2105,7 +2105,7 @@
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
-                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
@@ -2603,7 +2603,7 @@
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
-                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
@@ -3101,7 +3101,7 @@
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
-                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
+                                                                                    (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
                                                                                     aria-expanded="true"
                                                                                     class="dropdown-toggle no-after text-info">
                                                                                     <i data-toggle="tooltip"
@@ -5239,7 +5239,7 @@
                                             <span *ngIf="noRejectType==true" style="color:red">Please select Reject
                                                 type!!</span>
                                         </div>
-                                        <div class="form-group" *ngIf="rejectType && selectedType=='3'">
+                                        <div class="form-group" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
                                             <label class="mb-2" *ngIf="rejectType && selectedType=='3'">Select From Existing
                                                 Comments</label>
                                             <!-- <ng-select required #action="ngModel" name="comment_reject"
@@ -5993,18 +5993,28 @@
                         </div>
                         <div class="form-group input-group">
                             <label>Set new end date <span class="text-danger">*</span></label>
-                            <div class="d-flex input-group">
-                                <input matInput [matDatepicker]="picker5" #actionend="ngModel" (click)="picker5.open();"
-                                    (keydown.enter)="actiondeadline_alert();" [min]="disablePreviousDate1"
-                                    placeholder="Select Date" [(ngModel)]="_ProjDeadline" class="form-control"
-                                    name="date">
-                                <div class="input-group-append">
-                                    <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker class="form-group" #picker5></mat-datepicker>
+                                <div class="d-flex input-group">
+                                    <input matInput [matDatepicker]="picker5" #actionend="ngModel" (click)="picker5.open();"
+                                        (keydown.enter)="actiondeadline_alert();" [min]="disablePreviousDate1" (dateChange)="check_allocation()"
+                                        placeholder="Select Date" [(ngModel)]="_ProjDeadline" class="form-control"
+                                        name="date">
+                                    <div class="input-group-append">
+                                        <mat-datepicker-toggle matSuffix [for]="picker5" class="btn-secondary">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker class="form-group" #picker5></mat-datepicker>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
+                        <!-- <div class="form-group" *ngIf="allocation==true">
+                            <label>Allocated Hours<span class="text-danger">*</span></label>
+                            <input #allocatedInput id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
+                                (click)="alertMaxAllocation()">
+                            <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
+                            <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 10 hours.</span>
+                            <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                            <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a value.</span>
+                            <span *ngIf="this._StartDate == null || this._EndDate == null" style="color:red">{{_message}}</span>
+                        </div> -->
                         <div class="form-group mb-1">
                             <label>Remarks <span class="text-danger">*</span>
                             </label>
