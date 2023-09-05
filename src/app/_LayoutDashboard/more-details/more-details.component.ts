@@ -1525,6 +1525,7 @@ export class MoreDetailsComponent implements OnInit {
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
 
+          
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
@@ -3474,7 +3475,7 @@ export class MoreDetailsComponent implements OnInit {
   
 
 
-  openPDF_Standard(standardid,cloud, repDate: Date, proofDoc, type) {
+  openPDF_Standard(standardid, emp_no, cloud, repDate: Date, proofDoc, type) {
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3497,12 +3498,14 @@ export class MoreDetailsComponent implements OnInit {
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
 
     if (cloud == false) {
-      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-        FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
-      }
-      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
-      }
+      // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+      // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+
+      FileUrl= (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
 
       let name = "ArchiveView/"+standardid;
       var rurl = document.baseURI + name;
@@ -3543,17 +3546,17 @@ export class MoreDetailsComponent implements OnInit {
           this._day = Day;
         }
             var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
-          if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-            FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
-          }
-          else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-            FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
-          }
+
+          // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+          //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+          // }
+          // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+          //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+          // }
+          FileUrl= (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
       }
 
-      
-
-      let name = "ArchiveView/"+standardid;
+    let name = "ArchiveView/"+standardid;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
@@ -3574,35 +3577,52 @@ export class MoreDetailsComponent implements OnInit {
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
+    // if (cloud == false) {
+    //   if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+    //     FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+    //   }
+    //   else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+    //     FileUrl=(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+    //   }
+
+    // let name = "ArchiveView/"+this.URL_ProjectCode;
+    // var rurl = document.baseURI + name;
+    // var encoder = new TextEncoder();
+    // let url = encoder.encode(FileUrl);
+    // let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    // // proofDoc = proofDoc.replace(/#/g, "%23");
+    // // proofDoc = proofDoc.replace(/&/g, "%26");
+    // // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid;
+    // var myWindow = window.open(myurl, url.toString());
+    // myWindow.focus();
+    // }
+    // else if (cloud == true) {
+    //   // window.open(docName);
+    //   let name = "ArchiveView/"+this.URL_ProjectCode;
+    // var rurl = document.baseURI + name;
+    // var encoder = new TextEncoder();
+    // let url = encoder.encode(FileUrl);
+    // let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    // // proofDoc = proofDoc.replace(/#/g, "%23");
+    // // proofDoc = proofDoc.replace(/&/g, "%26");
+    // // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid ;
+    // var myWindow = window.open(myurl, url.toString());
+    // myWindow.focus();
+    // }
+
     if (cloud == false) {
-      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      if(this.Authority_EmpNo==this.Responsible_EmpNo){
+        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.projectCode + "/" + docName);
       }
-      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      else if(this.Authority_EmpNo!=this.Responsible_EmpNo){
+        window.open(FileUrl + this.Authority_EmpNo + "/" + this.projectCode + "/" + docName);
       }
     }
     else if (cloud == true) {
       window.open(docName);
     }
-    // let cd_date = new Date();
-    // FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
-    // let Day = cd_date.getDate();
-    // let Month = cd_date.getMonth() + 1;
-    // let Year = cd_date.getFullYear();
-    // if (Month < 10) {
-    //   this._month = '0' + Month;
-    // }
-    // else {
-    //   this._month = Month;
-    // }
-    // if (Day < 10) {
-    //   this._day = '0' + Day;
-    // }
-    // else {
-    //   this._day = Day;
-    // }
-    // var date = this._month + "_" + this._day + "_" + cd_date.getFullYear();
   }
 
   
@@ -5505,34 +5525,100 @@ check_allocation(){
   }
 
 
-  LoadDocument1(iscloud: string,filename: string ,url1: string, type: string) {
+  LoadDocument1(iscloud: boolean,filename: string ,url1: string, type: string) {
+
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    if (iscloud == false) {
+      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+      }
+      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+      }
+
+      let name = "ArchiveView/"+this.URL_ProjectCode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/"+this.URL_ProjectCode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
     
-    let name = "ArchiveView/"+this.URL_ProjectCode;
-    var rurl = document.baseURI + name;
-    var encoder = new TextEncoder();
-    let url = encoder.encode(url1);
-    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-    filename = filename.replace(/#/g, "%23");
-    filename = filename.replace(/&/g, "%26");
-    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
-    var myWindow = window.open(myurl, url.toString());
-    myWindow.focus();
+   
   }
 
-  LoadDocument_action(pcode:string, iscloud: string,filename: string ,url1: string, type: string) {
+  LoadDocument_action(pcode:string, iscloud: boolean,filename: string ,url1: string, type: string) {
     
-    let name = "ArchiveView/"+pcode;
-    var rurl = document.baseURI + name;
-    var encoder = new TextEncoder();
-    let url = encoder.encode(url1);
-    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-    filename = filename.replace(/#/g, "%23");
-    filename = filename.replace(/&/g, "%26");
-    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
-    var myWindow = window.open(myurl, url.toString());
-    myWindow.focus();
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    if (iscloud == false) {
+      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+      }
+      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+      }
+
+      let name = "ArchiveView/"+pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/"+pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+    
+
+
+    // let name = "ArchiveView/"+pcode;
+    // var rurl = document.baseURI + name;
+    // var encoder = new TextEncoder();
+    // let url = encoder.encode(url1);
+    // let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    // filename = filename.replace(/#/g, "%23");
+    // filename = filename.replace(/&/g, "%26");
+    // // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+    // var myWindow = window.open(myurl, url.toString());
+    // myWindow.focus();
   }
 
 

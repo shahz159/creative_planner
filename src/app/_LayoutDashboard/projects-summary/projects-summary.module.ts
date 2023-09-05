@@ -31,6 +31,7 @@ import { SortDirective } from './sort.directive';
     NgbModule,
     NgMultiSelectDropDownModule,
     VirtualScrollerModule
-  ] 
+  ],
+  exports: [SortDirective] 
 })
 export class ProjectsSummaryModule { }
