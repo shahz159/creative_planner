@@ -346,10 +346,14 @@ this.GetPreviousdate_meetingdata();
   leave: boolean = false;
   leavemeet(event: any) {
     this.leave = true;
+    
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
+    this.notifyService.showSuccess("Meeting left","Success");
+
+    
   }
   delayedFunction() {
     console.log('Function called after 5 seconds');
@@ -462,7 +466,9 @@ this.GetPreviousdate_meetingdata();
         this.meeting_details();
       });
       this.ngEmployeeDropdown1=null;
+      this.notifyService.showSuccess("Participant added successfully","Success");
   }
+
   updatedateandtime_meetingreport() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -1005,6 +1011,7 @@ Notes:any=[];
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
+    this.notifyService.showSuccess("Meeting completed successfully","Success");
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");

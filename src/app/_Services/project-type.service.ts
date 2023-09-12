@@ -820,13 +820,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectUpdateOwnerResponsible", this.ObjDto);
   }
 
-  _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks) {
+  _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks,allocated) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjDto.Emp_No = EmpNo;
     this.ObjDto.Project_Code=pcode;
     this.ObjDto.Project_EndDate=enddate;
     this.ObjDto.Project_StartDate=startdate;
     this.ObjDto.Remarks=remarks;
+    this.ObjDto.Duration=allocated;
     return this.http.post(this.rootUrl + "Category/NewProjectDeadlineExtend", this.ObjDto);
   }
 

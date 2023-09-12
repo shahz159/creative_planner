@@ -78,6 +78,14 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateRejectApprovals",obj);
   }
 
+  NewUpdateSingleAcceptApprovalsService(obj) {
+    return this.http.post(this.rootUrl + "ApprovalAPI/UpdateSingleAcceptApproval",obj);
+  }
+  
+  NewUpdateSingleRejectApprovalsService(obj) {
+    return this.http.post(this.rootUrl + "ApprovalAPI/UpdateSingleRejectApprovals",obj);
+  }
+
   GetRejectComments(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no=obj.Emp_no;
     this.obj_approvalDTO.rejectType = obj.rejectType;

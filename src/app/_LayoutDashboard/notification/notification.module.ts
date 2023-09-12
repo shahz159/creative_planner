@@ -6,6 +6,7 @@ import { NotificationComponent } from './notification.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SortDirective } from '../projects-summary/sort.directive';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   ],
   exports:[
     NotificationComponent
-  ]
+  ],
+  providers: [SortDirective]
 })
 export class NotificationModule { }
