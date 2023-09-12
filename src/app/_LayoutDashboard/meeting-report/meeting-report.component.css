@@ -1214,3 +1214,75 @@ span.side-icns.kt-org-ic {
   max-height: 150px;
   overflow: auto;
 }
+/*--------meeting notes data view btn -------------*/
+.svg-met-note svg {
+  height: 25px;
+  width: 25px;
+  position: fixed;
+  fill: #ffffff;
+  position: relative;
+  top: 2px;
+}
+
+.kt-met-notes-v {
+  padding: 5px 15px;
+  background-color: transparent;
+  border: 1px solid #2786fb;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px; 
+  background-color: #2786fb;
+  color: #fff;cursor: pointer;
+}
+
+.titlediv{
+  position: relative;
+  cursor: pointer;
+  color: #636363;
+  font-size: 13px;
+  line-height: 27px;
+ width: 100%;
+  font-weight: 400;
+  padding: 5px 4px;
+  border-radius: 2px;
+  background-color: #ecf5ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.kt-text-wrap{
+  white-space: nowrap;
+  overflow: hidden!important;
+  text-overflow: ellipsis;
+  width: 75%;
+}
+.titlediv.collapsed i {
+  transform: rotate(270deg);
+}
+
+.titlediv i{
+  position: relative;
+  right: 0;
+  top: 6px;
+  color: #747a96;
+}
+
+.kt-meeting-list-view {
+  margin-bottom: 5px;
+}
+
+.kt-met-notes-v:hover {
+  background-color: #f7f8fa;
+  color: #2786fb;
+  fill: #2786fb;
+}
+
+.kt-met-notes-v:hover .svg-met-note svg {
+  fill: #2786fb;
+}
+.admin-check span:hover {
+  background-color: #e1efff;
+  color: #2786fb;
+  padding: 1px 2px;
+  border-radius: 3px;
+}

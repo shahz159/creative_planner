@@ -1,4 +1,4 @@
-<div class="grey-bg side_view">
+<div class="grey-bg side_view" id="metting_slide">
     <div class="col-md-12 p-3" *ngFor="let item of EventScheduledjson">
 
         <div class="card meet-card">
@@ -22,82 +22,105 @@
                     </div>
 
                 </div> -->
-                    <div class="title-right" id="">
-                        <div class="title-area">
-                            <div class="title-main">
-                                <span id="title1"> {{item.Task_Name}} </span>
-                            </div>
-                            <div class="d-flex">
-                                <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}
-                                    <span>,</span>
-                                    <span>{{item.NewSt_Time}} –
+                    <!-- -------------- this one is 1st ----------------- -->
+                    <div class="d-flex align-items-center justify-content-between w-100">
 
-                                    </span>
 
+                        <div class="title-right" id="">
+                            <div class="title-area">
+                                <div class="title-main">
+                                    <span id="title1"> {{item.Task_Name}} </span>
                                 </div>
-                                <div class="title-day ropdown">
-                                    <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
+                                <div class="d-flex">
+                                    <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}
+                                        <span>,</span>
+                                        <span>{{item.NewSt_Time}} –
+
+                                        </span>
+
+                                    </div>
+                                    <div class="title-day ropdown">
+                                        <!-- <span *ngIf="item.Schedule_date!=item.SEndDate">
                                     {{item.SEndDate| date:'EEEE, MMMM d'}}
                                 </span> -->
 
-                                    {{item.NewEd_Time}}
+                                        {{item.NewEd_Time}}
 
-                                    <span type="button" id="-icn" class="text-info dropdown-toggle"
-                                        *ngIf="Meetingstatuscom==Completed && Isadmin==true" type="button"
-                                        id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <i data-toggle="tooltip" title="edit time "
-                                            class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
-                                    </span>
-                                    <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick">
+                                        <span type="button" id="-icn" class="text-info dropdown-toggle"
+                                            *ngIf="Meetingstatuscom==Completed && Isadmin==true" type="button"
+                                            id="DW_time_pick" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i data-toggle="tooltip" title="edit time "
+                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
+                                        <div class="dropdown-menu p-3 cstm-swd" aria-labelledby="DW_time_pick">
 
-                                        <div class="input-group">
-                                            <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
-                                                (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                                [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
-                                            <div class="input-group-append">
+                                            <div class="input-group">
+                                                <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                                    (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                                    [(ngModel)]="_StartDate" placeholder="Start Date"
+                                                    class="form-control">
+                                                <div class="input-group-append">
 
-                                                <div class="input-group-text p-0">
-                                                    <mat-datepicker-toggle matSuffix
-                                                        [for]="picker1"></mat-datepicker-toggle>
-                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                    <div class="input-group-text p-0">
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="picker1"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker1></mat-datepicker>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group flex-1 mb-2" (click)="$event.stopPropagation()">
+                                                <label class="cus-lbl">Start Time </label>
+                                                <ng-select class="kt-input form-control" id="startid"
+                                                    placeholder="Start Time" [(ngModel)]="Startts"
+                                                    (open)="onfocus($event)" (change)="addstarttime()">
+                                                    <ng-option *ngFor="let item of  StartTimearr; let i=index"
+                                                        [value]="item">
+                                                        {{item}}</ng-option>
+                                                </ng-select>
+
+                                            </div>
+                                            <div class="form-group flex-1 mb-1" (click)="$event.stopPropagation()">
+                                                <label class="cus-lbl">End Time</label>
+                                                <ng-select class="kt-input form-control" placeholder="End Time"
+                                                    (open)="onfocus($event)" [(ngModel)]="Endtms">
+                                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                        {{item1}}</ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="form-group mb-0 ng-star-inserted text-right mt-3">
+                                                <button type="cancel"
+                                                    class="btn btn-secondary btn-sm">Close</button>&nbsp;
+                                                <button type="submit" class="btn btn-info btn-sm"
+                                                    (click)="updatedateandtime_meetingreport()">Submit</button>
+                                            </div>
+
+
                                         </div>
-
-                                        <div class="form-group flex-1 mb-2" (click)="$event.stopPropagation()">
-                                            <label class="cus-lbl">Start Time </label>
-                                            <ng-select class="kt-input form-control" id="startid"
-                                                placeholder="Start Time" [(ngModel)]="Startts" (open)="onfocus($event)"
-                                                (change)="addstarttime()">
-                                                <ng-option *ngFor="let item of  StartTimearr; let i=index"
-                                                    [value]="item">
-                                                    {{item}}</ng-option>
-                                            </ng-select>
-
-                                        </div>
-                                        <div class="form-group flex-1 mb-1" (click)="$event.stopPropagation()">
-                                            <label class="cus-lbl">End Time</label>
-                                            <ng-select class="kt-input form-control" placeholder="End Time"
-                                                (open)="onfocus($event)" [(ngModel)]="Endtms">
-                                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                                    {{item1}}</ng-option>
-                                            </ng-select>
-                                        </div>
-
-                                        <div class="form-group mb-0 ng-star-inserted text-right mt-3">
-                                            <button type="cancel" class="btn btn-secondary btn-sm">Close</button>&nbsp;
-                                            <button type="submit" class="btn btn-info btn-sm"
-                                                (click)="updatedateandtime_meetingreport()">Submit</button>
-                                        </div>
-
-
                                     </div>
                                 </div>
+
+
                             </div>
-
-
                         </div>
+
+                        <div class="kt-btn-left" *ngIf="Previousdata_meeting.length>1">
+                            <button class="kt-met-notes-v" type="button" (click)="Slide_meeting()"><span
+                                    class="svg-met-note"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                        viewBox="0 0 100 125" x="0px" y="0px">
+                                        <title>74 all</title>
+                                        <path
+                                            d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z" />
+                                        <rect x="16.37" y="37.13" width="44.1" height="8" />
+                                        <rect x="16.37" y="53.09" width="30.8" height="8" />
+                                        <rect x="16.37" y="22.13" width="44.1" height="8" />
+                                        <path
+                                            d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z" />
+                                    </svg></span>Previous Meeting Notes</button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -229,13 +252,13 @@
                                                 *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==true"
                                                 (click)=" Updating_Adminmeeting(Emp_No)">
                                                 <span aria-hidden="true" class="admin-check-svg">
-                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                    <!-- <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                         <path fill="#5867dd"
                                                             d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                         </path>
                                                         <path fill="none" stroke="#fff" stroke-width="1.5"
                                                             d="M3.5 6.5L6 9l5-5"></path>
-                                                    </svg>
+                                                    </svg> -->
                                                 </span>
                                                 <span>Mark as admin</span>
                                             </div>
@@ -387,15 +410,15 @@
                                                         (click)=" Updating_Adminmeeting(_user.stringval)">
                                                         <span _ngcontent-hko-c392="" aria-hidden="true"
                                                             class="admin-check-svg">
-                                                            <svg _ngcontent-hko-c392=""
+                                                            <!-- <svg _ngcontent-hko-c392=""
                                                                 xmlns="https://www.w3.org/2000/svg" width="14"
                                                                 height="14">
                                                                 <path _ngcontent-hko-c392="" fill="#5867dd"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                                 </path>
-                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#5867dd"
                                                                     stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
-                                                            </svg>
+                                                            </svg> -->
                                                         </span>
                                                         <span>Mark as admin</span>
                                                     </div>
@@ -744,14 +767,16 @@
                                         class="custom-textarea form-control mb-2" placeholder="Add events"></textarea> -->
                                 </div>
 
-                                <div class="action-section" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                                <div class="action-section">
+                                    <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
-                                        <div class="task-header" *ngIf="Meetingstatuscom!=Completed && todocount>0">
+                                        <div class="task-header">
+                                            <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
                                             <h1 class="task-header-title">Assign Task</h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed ">
+                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed">
                                                 <input class="task-input" id="todo-input" name="text"
                                                     [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
                                                     placeholder="Add a new task..." autofocus="true">
@@ -759,12 +784,12 @@
                                                     id="btn1">Add Task</button>
                                             </form>
                                         </div>
-                                        <div class="task-header" *ngIf="Meetingstatuscom==Completed  ">
+                                        <div class="task-header" *ngIf="Meetingstatuscom==Completed">
                                             <h1 class="task-header-title">Assign Task</h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed  ">
+                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed">
                                                 <input class="task-input" id="todo-input" name="text"
                                                     [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
                                                     placeholder="Add a new task..." autofocus="true">
@@ -1072,6 +1097,7 @@
                     <div class="boxcl-div">
                         <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
                     </div>
+
                     <div id="" class="title-right">
                         <div class="title-area">
                             <div class="title-main">
@@ -1087,6 +1113,10 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
                 </div>
                 <!-- /*------location----*/ -->
                 <!-- <div  id="location" class="eve-area ng-star-inserted">
@@ -1759,8 +1789,65 @@
 <div id="mysideInfobar" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
 </div>
+<div id="Previous_sidebar" class="sideInfobar animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
+                <h4 class="m-0"> Previous Meeting Notes</h4>
+                <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                        fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+            <div class="kt-met-flr">
+                <div class="d-flex">
+                    <div class="kt-left-view">
 
-<!-- <div class="todo-list">
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
+                <ng-container *ngIf="term.Previous_meeting.length>0">
+                    <div class="kt-meeting-list-view">
+                        <a data-toggle="collapse" aria-expanded="false"
+                            class="mb-0 titlediv d-flex align-items-baseline justify-content-between collapsed"
+                            href="#Note_{{i+1}}">
+
+                            <span class="kt-text-wrap"><i class="material-icons fs-2 mr-2">expand_more</i>
+                                {{term.Schedule_date}}</span>
+                        </a>
+                    </div>
+
+                    <div class="kt-widget__items mt-2 mr-1 px-2 collapse" id="Note_{{i+1}}">
+                        <div *ngFor="let pre of term.Previous_meeting">
+                            <!-- <p>{{pre.Emp_Name}}</p>
+                    <p [innerHtml]="pre.Meeting_notes"></p> -->
+
+                            <div class="kt-card N-user-1">
+                                <div class="kt-user-dt">
+                                    <div class="kt-user-2lt kt-clr-1">NS</div>
+                                    <div class="kt-user-name">{{pre.Emp_Name}}</div>
+                                </div>
+                                <div class="kt-user-note kt-clr-bg-1">
+                                    <p [innerHtml]="pre.Meeting_notes"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+
+        </div>
+    </div>
+
+    <!-- <div class="todo-list">
     <div class="task-item"  *ngFor="let item of text; let i=index;">
       <input class="task-status" type="checkbox">
       <label class="task-name">{{item}}</label>

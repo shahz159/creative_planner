@@ -185,7 +185,7 @@ export class MeetingReportComponent implements OnInit {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
-
+this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
@@ -934,6 +934,30 @@ export class MeetingReportComponent implements OnInit {
 
   //     });
   // }
+Previousdata_meeting:any=[];
+sched_date:any;
+notes_data:any;
+Notes:any=[];
+  GetPreviousdate_meetingdata(){
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.Emp_No = this.CurrentUser_ID;
+    
+    this.CalenderService.NewPrevious_meetingreport(this._calenderDto).subscribe
+      (data => {
+       this.Previousdata_meeting=JSON.parse(data['previousmeet_data']);
+
+       // Assuming Previousdata_meeting is an array of objects with a Previous_meeting property
+// this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+
+      //  this.Notes = this.Previousdata_meeting.filter(element => !element.Previous_meeting);
+      
+      //  this.Notes= this.Previousdata_meeting;
+
+       console.log(this.Previousdata_meeting,"wassssss1111")
+    //  console.log(this.Notes,"wassssss") 
+      });
+  }
 
   Insert_meetingreport() {
 
@@ -1002,7 +1026,7 @@ export class MeetingReportComponent implements OnInit {
       (data) => {
         this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
       });
-    // console.log(this.ProjectTypelist,"121")
+    console.log(this.ProjectTypelist,"121")
   }
 
   close_side() {
@@ -1011,6 +1035,7 @@ export class MeetingReportComponent implements OnInit {
   ActionedAssigned_Josn: any = [];
   assigncount: number;
   GetAssigned_SubtaskProjects() {
+   
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = 2411;
@@ -1019,6 +1044,7 @@ export class MeetingReportComponent implements OnInit {
 
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+        debugger
         // console.log("Data---->", data);
         // this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
@@ -1029,9 +1055,9 @@ export class MeetingReportComponent implements OnInit {
 
         this.assigncount = this.ActionedAssigned_Josn.length;
         this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-
+        console.log("the sss", this._TodoList)
       });
-    console.log("the sss", this._TodoList)
+   
   }
   _taskName: any;
   task_id: any;
@@ -1063,6 +1089,23 @@ export class MeetingReportComponent implements OnInit {
 
     $("#mysideInfobar").scrollTop(0);
 
+  }
+  _AssignId:any;
+  ActionToProject_Click(taskName, Assignid) {
+    // debugger
+    this._taskName = taskName;
+    this._AssignId = Assignid;
+    this.router.navigate(["Meeting-Report/" + this.Schedule_ID + "/ActionToProject/3"]);
+    this.BsService.SetNewAssignId(this._AssignId);
+    this.BsService.SetNewAssignedName(this._taskName);
+    
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+   
+    //this.GetProjectsByUserName();
   }
 
   _Deletetask(id, name) {
@@ -1100,13 +1143,21 @@ export class MeetingReportComponent implements OnInit {
 
 
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-
+    document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("metting_slide").classList.remove("position-fixed");
   }
   ngOnDestroy(): void {
     // Unsubscribe when the component is destroyed to prevent memory leaks
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
+  }
+  Slide_meeting(){
+    document.getElementById("metting_slide").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
+
   }
 
 
