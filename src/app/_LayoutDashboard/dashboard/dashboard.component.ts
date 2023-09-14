@@ -542,6 +542,8 @@ export class DashboardComponent implements OnInit {
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
+   this.Getdraft_datalistmeeting();
+   this.GetPending_Request();
     //Setting recurance max date
     //start
     this.maxDate = moment().format("YYYY-MM-DD").toString();
@@ -3601,7 +3603,8 @@ console.log(this.User_Scheduledjson,"12")
     this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
       ((data) => {
         this.Pending_request = data as []
-        
+        // alert(this.Pending_request.length)
+        // console.log(this.Pending_request,"111100000")
       });
   }
   GetScheduledJson() {
@@ -4234,10 +4237,86 @@ console.log(this.User_Scheduledjson,"12")
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
+  Insert_indraft(){
+    this._calenderDto.Task_Name = this.Title_Name;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Dms = this.SelectDms.toString();
+    this._calenderDto.Portfolio  = this.Portfolio.toString();
+    this._calenderDto.location = this.Location_Type;
+    this._calenderDto.loc_status = this.Location_Type;
+    this._calenderDto.Note =this.Description_Type;
+    this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+   alert( this.ScheduleType);
+    this._calenderDto.User_list =this.ngEmployeeDropdown.toString();
+    this._calenderDto.Project_Code =this.MasterCode.toString();
 
+    this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+      (data => {
+        
+      });
+
+  }
+  draftdata_meet:any=[];
+
+  Getdraft_datalistmeeting(){
+    
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
+      (data => {
+        this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
+        
+    console.log(this.draftdata_meet,"ssdddd")
+      });
+
+  }
+draft_arry:any=[];
+  darft_click(Sno,val){
+    debugger
+    this.Task_type(val)
+    this.draft_arry= this.draftdata_meet.filter(x=>x.Sno==Sno);
+   this.Title_Name=this.draft_arry[0]["Task_name"]
+
+console.log(this.draft_arry,"ss11111111")
+   this.MasterCode = [];
+   this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
+   this.arr.forEach(element => {
+     this.MasterCode.push(element.stringval);
+   });
+  //  this.MasterCode=this.draft_arry[0]["Project_Code"]
+  this.Portfolio = [];
+  this.Portfolio1 = [];
+  this.arr1 = JSON.parse(this.draft_arry[0]['Portfolio_id']);
+  this.arr1.forEach(element => {
+    this.Portfolio.push(element.numberval);
+  });
+  //  this.Portfolio=this.draft_arry[0]["portfolio_id"]
+  this.SelectDms = [];
+  this.SelectDms1 = [];
+  let arr3 = [];
+  var str = (this.draft_arry[0]['dms_id']);
+  arr3 = str.split(",");
+  for (var i = 0; i < arr3.length; i++) {
+    this.Memos_List.forEach(element => {
+      if (element.MailId == arr3[i]) {
+        this.SelectDms.push(element.MailId);
+      }
+    });
+  }
+  //  this.SelectDms=this.draft_arry[0]["dms_id"]
+
+   this.ngEmployeeDropdown = [];
+   this.ngEmployeeDropdown1 = [];
+   this.arr2 = JSON.parse(this.draft_arry[0]['guest_id']);
+   this.arr2.forEach(element => {
+     this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+   });
+  //  this.ngEmployeeDropdown=this.draft_arry[0]["guest_id"]
+   this.Description_Type=this.draft_arry[0]["Description"]
+   this._onlinelink=this.draft_arry[0]["online"]
+  }
   closeschd() {
 
-
+    // this.Insert_indraft();
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -4457,8 +4536,23 @@ console.log(this.User_Scheduledjson,"12")
     this.GetPending_Request();
     // document.getElementById("act-btn").style.display = "none";
   }
+  penshow1() {
+   
+    
+    document.getElementById("pendlist1").classList.add("show");
+    document.getElementById("cal-main").classList.add("col-lg-9");
+    document.getElementById("cal-main").classList.remove("col-lg-12");
+    this.Getdraft_datalistmeeting()
+    
+    // document.getElementById("act-btn").style.display = "none";
+  }
   penhide() {
     document.getElementById("pendlist").classList.remove("show");
+    document.getElementById("cal-main").classList.remove("col-lg-9");
+    document.getElementById("cal-main").classList.add("col-lg-12");
+  }
+  penhide1() {
+    document.getElementById("pendlist1").classList.remove("show");
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }

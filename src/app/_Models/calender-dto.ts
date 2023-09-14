@@ -1,4 +1,8 @@
 export class CalenderDTO {
+    location:String;
+    loc_status:Boolean;
+    Schedule_type:number;
+    Emp_no:number;
     Status_type:string;
     IsAdmin:boolean;
     Meeting_notes:any;
@@ -40,6 +44,7 @@ export class CalenderDTO {
     Title:String;
     Task_Name:string;
     Scheduledsearchlist:string;
+    previousmeet_data:string;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

@@ -8,6 +8,10 @@ children:[
   {
     path:'ActionToAssign/:id',
     loadChildren: () => import('../action-to-assign/action-to-assign.module').then(m => m.ActionToAssignModule)
+  },
+  {
+    path: 'ActionToProject/:id',
+    loadChildren: () => import('../action-to-project/action-to-project.module').then(m => m.ActionToProjectModule)
   }
 
 ] 

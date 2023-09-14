@@ -19,6 +19,7 @@ import { ProjectInfoModule } from '../project-info/project-info.module';
 import { TruncatePipe } from '../project-info/truncate.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     NgxDocViewerModule,
     Ng2SearchPipeModule
   ],
-  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe,
+  providers:[ProjectUnplannedTaskComponent,ToDoProjectsComponent,DatePipe, ProjectsSummaryComponent,NotificationComponent, TruncatePipe,MeetingReportComponent,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
     // ,{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })

@@ -67,7 +67,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Current_user_ID = localStorage.getItem('EmpNo');
-   
+  //  alert(123)
     // this.GetApplicationDetails();
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
