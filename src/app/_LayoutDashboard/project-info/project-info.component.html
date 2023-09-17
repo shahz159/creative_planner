@@ -122,6 +122,37 @@
             </svg>
         </a>
     </div>
+    <ng-container *ngIf="action_details">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center px-3" *ngFor="let item of action_details">
+                <h6 class="mb-0">This is an action for the project 
+                    <a  href="javascript:void(0)" class="custom-link" (click)="moreDetails1(item.Master_Code)"
+                        data-toggle="tooltip" title="click to open project in new window">{{item.Project_Name}} </a>
+                </h6>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="approve_details">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center " *ngFor="let item of approve_details">
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Under Approval'">New project under approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Completion Under Approval'">The project is Completion Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Forward Under Approval'">The project is Forward Under Approval with  - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Deadline Extend Under Approval'">The project is Deadline Extend Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Enactive Under Approval'">The project is Enactive Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+            </div>
+        </div>
+    </ng-container>
 
     <div class="card-body card-car side_scroll scroll-y" *ngFor="let item of ProjectInfo_List">
 
@@ -387,7 +418,7 @@
                                             <div class="left-w">
                                                 <h6 class="txtm-cus">Complete attachment</h6>
                                                 <a (click)="openPDF(iscloud,url)">
-                                                    <h6 class="mt-1"><u>{{completedoc}}</u></h6>
+                                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc | truncate : 55}}</u></h6>
                                                 </a>
                                             </div>
                                         </div>
@@ -396,7 +427,7 @@
                                             <div class="left-w">
                                                 <h6 class="txtm-cus">Complete attachment</h6>
                                                 <a (click)="openPDF(iscloud,url)">
-                                                    <h6 class="mt-1"><u>{{url}}</u></h6>
+                                                    <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 55}}</u></h6>
                                                 </a>
                                             </div>
                                         </div>
@@ -1420,9 +1451,9 @@
                         <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i> DMS Link
                         </label> -->
-                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
+                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
                             data-toggle="collapse" data-target="#DMSlapse" aria-expanded="false">
-                            <i class="fa fa-file-alt mr-2"></i> DMS Link
+                            <i class="fa fa-file-alt mr-2"></i> DMS Link<i class="fa fa-chevron-up ml-2 m-0"></i>
                         </button>
                     </div>
 
@@ -1477,9 +1508,9 @@
                         <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i>Portfolio Link
                         </label> -->
-                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
+                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
                             data-toggle="collapse" data-target="#portfoliolapse" aria-expanded="false">
-                            <i class="fa fa-file-alt mr-2"></i> Portfolio Link
+                            <i class="fa fa-file-alt mr-2"></i> Portfolio Link<i class="fa fa-chevron-up ml-2 m-0"></i>
                         </button>
                     </div>
                 </div>
@@ -1529,9 +1560,10 @@
                 <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                     <i class="fa fa-list mr-2"></i> Inprocess actions list
                 </label> -->
-                <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
+                <button type="button"
+                 class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
                     data-toggle="collapse" data-target="#inprocesslapse" aria-expanded="false">
-                    <i class="fa fa-list mr-2"></i> In process actions
+                    <i class="fa fa-list mr-2"></i> Actions<i class="fa fa-chevron-up ml-2 m-0"></i>
                 </button>
             </div>
         </div>
@@ -1580,13 +1612,13 @@
                             <h5 data-toggle="tooltip" class=" "
                                 *ngIf="item.SubProject_Status!='Delay'"
                                 [ngClass]="{
-                        'text-success':item.SubProject_Status=='Completed',
-                        'text-warning':item.SubProject_Status=='InProcess',
+                        'text-success':item.SubProject_Status=='Completed' ,
+                        'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
                         'text-primary':item.SubProject_Status=='Under Approval',
                         'text-info':item.SubProject_Status=='Completion Under Approval',
                         'text-Rejected':item.SubProject_Status=='New Project Rejected',
                         'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                        'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                        
                         'text-underApp':item.SubProject_Status=='New Project',
                         'text-completed':item.SubProject_Status=='Completion Under Approval',
                         'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -1594,7 +1626,8 @@
                                 data-toggle="tooltip"
                                 title="Action Status!">
                                 {{item.SubProject_Status}} </h5>
-
+                            <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 50}}</span>
                             <h5 data-toggle="tooltip"
                                 class=" text-danger"
                                 data-toggle="tooltip"
@@ -1715,12 +1748,12 @@
                                         *ngIf="item.SubProject_Status!='Delay'"
                                         [ngClass]="{
                                 'text-success':item.SubProject_Status=='Completed',
-                                'text-warning':item.SubProject_Status=='InProcess',
+                                'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
                                 'text-primary':item.SubProject_Status=='Under Approval',
                                 'text-info':item.SubProject_Status=='Completion Under Approval',
                                 'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                 'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                'text-underApproval':item.SubProject_Status=='Forward Under Approval',
+                                
                                 'text-underApp':item.SubProject_Status=='New Project',
                                 'text-completed':item.SubProject_Status=='Completion Under Approval',
                                 'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -1728,7 +1761,8 @@
                                         data-toggle="tooltip"
                                         title="Action Status!">
                                         {{item.SubProject_Status}} </h5>
-
+                                        <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                         title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 35}}</span>
                                     <h5 data-toggle="tooltip"
                                         class=" text-danger"
                                         data-toggle="tooltip"
@@ -1956,9 +1990,9 @@
                     <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                         <i class="fa fa-list mr-2"></i> Completed actions list
                     </label> -->
-                    <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center"
+                    <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
                           data-toggle="collapse" data-target="#completedlapse" aria-expanded="false">
-                        <i class="fa fa-list mr-2"></i> Completed actions
+                        <i class="fa fa-list mr-2"></i> Completed actions<i class="fa fa-chevron-up ml-2 m-0"></i>
                     </button>
                     
                 </div>

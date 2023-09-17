@@ -112,7 +112,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this._Urlid = this.route.snapshot.params['id'];
     // alert(this._Urlid);
-
     this.route.paramMap.subscribe(params => {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
@@ -121,7 +120,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.fun_LoadProjectDetails();
       this.getdeadlinecount();
       this.getProjectHoldDate();
+      this.getapproval_actiondetails();
     });
+   
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
@@ -606,6 +607,14 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     var url = document.baseURI + name;
     var myurl = `${url}/${this.projectCode}`;
     var myWindow = window.open(myurl, this.projectCode);
+    myWindow.focus();
+  }
+
+  moreDetails1(pcode) {
+    let name: string = 'MoreDetails';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
 
@@ -2233,6 +2242,26 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
   close_space(){
     document.getElementById("btm-space").classList.add("d-none");
+  }
+
+
+  action_details: any;
+  approve_details: any;
+
+  getapproval_actiondetails(){
+    this.approvalObj.Project_Code=this.projectCode;
+
+    this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data=>{
+      // console.log(data,"appact");
+      if(data[0]['actiondetails']!='[]' || data[0]['approvaldetails']!='[]' ){
+        if(data[0]['actiondetails']!='[]')
+        this.action_details=JSON.parse(data[0]['actiondetails']);
+        if(data[0]['approvaldetails']!='[]')
+        this.approve_details=JSON.parse(data[0]['approvaldetails']);
+
+        // console.log(this.action_details,this.approve_details,"details");
+      }
+    })
   }
 
 }

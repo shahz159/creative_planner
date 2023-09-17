@@ -1378,7 +1378,6 @@
                                                                     {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
                                                                 </span>
                                                             </div>
-
                                                             <span class="mr-2 showv">|</span>
                                                             <div class="d-flex-cen showv">
                                                                 <span class="detail-icn mr-1  d-none">
@@ -1406,7 +1405,8 @@
                                                                         data-toggle="tooltip"
                                                                         title="Action Status!">
                                                                         {{item.SubProject_Status}} </h5>
-
+                                                                        <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                                                        title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name}}</span>
                                                                     <h5 data-toggle="tooltip"
                                                                         class=" text-danger"
                                                                         data-toggle="tooltip"
@@ -1544,7 +1544,8 @@
                                                                                 data-toggle="tooltip"
                                                                                 title="Action Status!">
                                                                                 {{item.SubProject_Status}} </h5>
-
+                                                                                <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                                                                title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 56}}</span>
                                                                             <h5 data-toggle="tooltip"
                                                                                 class=" text-danger"
                                                                                 data-toggle="tooltip"
@@ -1905,8 +1906,9 @@
                                                                 'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                                         data-toggle="tooltip"
                                                                         title="Action Status!">
-                                                                        {{item.SubProject_Status}} </h5>
-
+                                                                        {{item.SubProject_Status}}</h5>
+                                                                        <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                                                        title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name}}</span>
                                                                     <h5 data-toggle="tooltip"
                                                                         class=" text-danger"
                                                                         data-toggle="tooltip"
@@ -2036,7 +2038,7 @@
                                                                                 *ngIf="item.SubProject_Status!='Delay'"
                                                                                 [ngClass]="{
                                                                         'text-success':item.SubProject_Status=='Completed',
-                                                                        'text-warning':item.SubProject_Status=='InProcess',
+                                                                        'text-warning':item.SubProject_Status=='InProcess'  || item.SubProject_Status=='Forward Under Approval',
                                                                         'text-primary':item.SubProject_Status=='Under Approval',
                                                                         'text-info':item.SubProject_Status=='Completion Under Approval',
                                                                         'text-Rejected':item.SubProject_Status=='New Project Rejected',
@@ -2049,7 +2051,8 @@
                                                                                 data-toggle="tooltip"
                                                                                 title="Action Status!">
                                                                                 {{item.SubProject_Status}} </h5>
-
+                                                                                <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                                                                title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 56}}</span>
                                                                             <h5 data-toggle="tooltip"
                                                                                 class=" text-danger"
                                                                                 data-toggle="tooltip"
@@ -5119,7 +5122,7 @@
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Complete attachment</h6>
                                 <a (click)="openPDF(iscloud,url)">
-                                    <h6 class="mt-1"><u>{{completedoc}}</u></h6>
+                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 50}}</u></h6>
                                 </a>
                             </div>
                         </div>
@@ -5127,7 +5130,7 @@
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Complete attachment</h6>
                                 <a (click)="openPDF(iscloud,url)">
-                                    <h6 class="mt-1"><u>{{url}}</u></h6>
+                                    <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 50}}</u></h6>
                                 </a>
                             </div>
                         </div>
