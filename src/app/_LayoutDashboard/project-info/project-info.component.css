@@ -485,3 +485,15 @@ display: block;
   top: 0px;
   font-size: 18px;
 }
+
+.desc-msg h6 {
+  font-size: 11px;
+}
+.desc-msg{
+  padding: 6px 7px;
+}
+
+.custom-link {
+  color: navy;
+  text-decoration: underline;
+}
