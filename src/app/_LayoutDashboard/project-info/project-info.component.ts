@@ -1624,6 +1624,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             }
             else if (this._Urlid == '5') {
               this._toDo.GetProjectsByUserName();
+              this._toDo.GetSubtask_Details();
             }
             else if (this._Urlid == '6') {
               this.router.navigate(["Notifications"]);

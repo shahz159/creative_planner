@@ -5089,6 +5089,10 @@ check_allocation(){
 
 
   updateMainProject() {
+    if(this.ProjectBlockName=='To do List'){
+      this.selectedFile=null;
+    }
+
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority);
@@ -5111,6 +5115,7 @@ check_allocation(){
           // console.log(this._Message,this.progress,"json");
         }
         this.closeInfo();
+        this.getapproval_actiondetails();
         this.GetSubtask_Details();
         this.GetProjectDetails();
         this.getapprovalStats();

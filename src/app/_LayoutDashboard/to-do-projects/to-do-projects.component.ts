@@ -599,23 +599,37 @@ export class ToDoProjectsComponent implements OnInit {
   progress: any;
 
   updateMainProject() {
+    if(this.Proj_ExecBlck=='To do List'){
+      this.selectedFile=null;
+    }
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.EmpNo_Autho);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
+    fd.append("Emp_No", this.CurrentUser_ID);
     fd.append("Project_Name", this._ProjectName);
     this.service._fileuploadService(fd).
       subscribe(event => {
         //console.log(event);
+        // if (event.type == HttpEventType.UploadProgress) {
+        //   this.progress = Math.round(event.loaded / event.total * 100);
+        //   this.notifyService.showSuccess("", "File uploaded successfully");
+        //   this.notifyService.showInfo("", "Project Updated");
+        // }
+        // else if (event.type === HttpEventType.Response) {
+        //   //console.log(event);
+        // }
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showSuccess("", "File uploaded successfully");
-          this.notifyService.showInfo("", "Project Updated");
         }
         else if (event.type === HttpEventType.Response) {
-          //console.log(event);
+          // console.log(event);
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).Message;
+          this.notifyService.showSuccess(this._Message, 'Success');
+          // console.log(this._Message,this.progress,"json");
         }
         this.closeInfo();
         this.GetProjectsByUserName();
