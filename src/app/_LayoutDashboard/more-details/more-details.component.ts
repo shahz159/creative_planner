@@ -3725,7 +3725,12 @@ export class MoreDetailsComponent implements OnInit {
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
+<<<<<<< HEAD
+    else if ((this.inProcessCount+this.delaycount)==1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true)) {
+    
+=======
     else if(this.inProcessCount==1 && (this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Owner_EmpNo || this.Current_user_ID==this.Authority_EmpNo || this.isHierarchy==true)){
+>>>>>>> c3ea1cacc54ffdf793c711fe77ce5d80352ff200
       Swal.fire({
         title: 'This is the last action to be completed.',
         text: 'Do you want to proceed with main project submission?',
