@@ -467,8 +467,7 @@ export class DashboardComponent implements OnInit {
     this._labelName = "Schedule Date :";
     this.timelineType = this.type1;
     this.selectedSort = 'today';
-
-    // document.getElementById("div_endDate").style.display = "none";
+    
     this.MinLastNameLength = true;
     this.selectedrecuvalue = "0";
     this.display = 'none';
@@ -518,6 +517,7 @@ export class DashboardComponent implements OnInit {
     this.projectactivity_Div = false;
     this.DARactivity_Div = true;
     this.CurrentUser_fullname = localStorage.getItem('UserfullName');
+
     this.GetDashboardSummary();
     this.getDashboardnotifications();
     this.service.GetActivities(this.Current_user_ID).subscribe(
@@ -3597,12 +3597,15 @@ console.log(this.User_Scheduledjson,"12")
     this.Searchword = null;
   }
   Pending_request: any[] = [];
+  pendingcount:any;
   GetPending_Request() {
     this._calenderDto.Emp_No = this.Current_user_ID;
 
     this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
       ((data) => {
         this.Pending_request = data as []
+        this.pendingcount=this.Pending_request.length
+        // alert(this.pendingcount)
         // alert(this.Pending_request.length)
         // console.log(this.Pending_request,"111100000")
       });
@@ -4243,10 +4246,10 @@ console.log(this.User_Scheduledjson,"12")
     this._calenderDto.Dms = this.SelectDms.toString();
     this._calenderDto.Portfolio  = this.Portfolio.toString();
     this._calenderDto.location = this.Location_Type;
-    this._calenderDto.loc_status = this.Location_Type;
+    this._calenderDto.loc_status = this._onlinelink;
     this._calenderDto.Note =this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
-   alert( this.ScheduleType);
+  //  alert( this.ScheduleType);
     this._calenderDto.User_list =this.ngEmployeeDropdown.toString();
     this._calenderDto.Project_Code =this.MasterCode.toString();
 
@@ -4254,18 +4257,21 @@ console.log(this.User_Scheduledjson,"12")
       (data => {
         
       });
+      this.Getdraft_datalistmeeting();
+this.closeschd();
 
   }
   draftdata_meet:any=[];
-
+draftcount:any;
   Getdraft_datalistmeeting(){
     
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
         this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
-        
-    console.log(this.draftdata_meet,"ssdddd")
+        this.draftcount=this.draftdata_meet.length;
+        // alert(this.draftcount)
+    // console.log(this.draftdata_meet,"ssdddd")
       });
 
   }
@@ -4276,7 +4282,7 @@ draft_arry:any=[];
     this.draft_arry= this.draftdata_meet.filter(x=>x.Sno==Sno);
    this.Title_Name=this.draft_arry[0]["Task_name"]
 
-console.log(this.draft_arry,"ss11111111")
+// console.log(this.draft_arry,"ss11111111")
    this.MasterCode = [];
    this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
    this.arr.forEach(element => {
@@ -4313,6 +4319,8 @@ console.log(this.draft_arry,"ss11111111")
   //  this.ngEmployeeDropdown=this.draft_arry[0]["guest_id"]
    this.Description_Type=this.draft_arry[0]["Description"]
    this._onlinelink=this.draft_arry[0]["online"]
+   this.Location_Type=this.draft_arry[0]["location"]
+  
   }
   closeschd() {
 
