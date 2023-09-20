@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TimelineRoutingModule } from './timeline-routing.module';
 import { DatePipe } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -11,6 +12,6 @@ import { DatePipe } from '@angular/common';
     CommonModule,
     TimelineRoutingModule
   ],
-  providers:[DatePipe]
+  providers:[DatePipe,{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
 })
 export class TimelineModule { }

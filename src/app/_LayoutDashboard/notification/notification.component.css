@@ -873,3 +873,28 @@ span.count2 {
   justify-content: center;
   font-weight: 600;
 }
+
+.noti {
+  background: #153b5669;
+  border-radius: 50%;
+  padding: 0.2em 0.5rem 0.35rem 0.5rem;
+  min-width: 1.429rem;
+  min-height: 1.429rem;
+  line-height: 1;
+  margin-left: 5px;
+  position: absolute;
+  right: 5px;
+}
+.noti-cus {
+  background: #153b5669 !important;
+  border-radius: 500px !important;
+  padding: 0.2em 0.8rem 0.35rem 0.8rem;
+  min-width: 1.429rem;
+  min-height: 1.429rem;
+  line-height: 1;
+  margin-left: 45px;
+  color: #fff !important;
+  font-size: 13px;
+  font-weight: 400;
+  box-shadow: rgb(0 0 0 / 10%) 0px 0px 5px 0px, rgb(0 0 0 / 10%) 0px 0px 1px 0px;
+}

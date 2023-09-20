@@ -304,21 +304,23 @@ export class ProjectAssignTaskComponent implements OnInit {
   }
 
   ShowForm() {
-    this.paragraph_msg = true;
-    this._DisplayForm = false;
-    this.Div_TaskDetails = true;
-    this._DemoVersion = true;
-    let typeoftask: any = "IFAT";
-    this.BsService.setNewTypeofTask(typeoftask);
-    this.router.navigate(["AssignTask/ActionToAssign/"]);
-    document.getElementById("mysideInfobar").style.width = "60%";
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // this.paragraph_msg = true;
+    // this._DisplayForm = false;
+    // this.Div_TaskDetails = true;
+    // this._DemoVersion = true;
+    // let typeoftask: any = "IFAT";
+    // this.BsService.setNewTypeofTask(typeoftask);
+    // this.router.navigate(["AssignTask/ActionToAssign/"]);
+    // document.getElementById("mysideInfobar").style.width = "60%";
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    this.notifyService.showError("Development under maintainance","Failed");
   }
 
   closeInfo() {
     this.Clearfeilds();
-    document.getElementById("mysideInfobar").style.width = "0px";
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
 
   Task_Name: string;
@@ -489,9 +491,8 @@ export class ProjectAssignTaskComponent implements OnInit {
   }
 
   ProjectInfoDetails() {
-    console.log("For Accept", this.ProjectCode);
-    document.getElementById("mysideInfobar").style.width = "60%";
-    //document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
     this.router.navigate(["AssignTask/projectinfo", this.ProjectCode]);
   }
 

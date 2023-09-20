@@ -1,8 +1,8 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
     <div class="row">
         <div class="col-lg-12">
             <!--begin:: Widgets/Authors Profit-->
-            <div class="kt-portlet kt-portlet--bordered-semi">
+            <div class="kt-portlet kt-portlet--bordered-semi mt-3">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-2">
@@ -10,7 +10,7 @@
                             <!-- <i class="kt-menu__link-icon fas fa-clipboard-check mr-2 text-primary"></i> -->
                             <strong>Assigned Tasks</strong>
                         </h3>
-                        <h6 class="text-muted mt-2">({{FilteredText}})</h6>
+                        <h6 class="text-muted mt-2">{{FilteredText}}</h6>
                     </div>
                     <div class="kt-header__topbar pr-0">
 
@@ -40,18 +40,18 @@
                                         </div>
                                         <span class="kt-drop-text">Accepted</span>
                                     </a>
-                                    <a class="dropdown-item" (click)="GetInProcess()">
+                                    <!-- <a class="dropdown-item" (click)="GetInProcess()">
                                         <div><span
                                                 class="kt-badge kt-badge--info kt-badge--inline mr-2">{{countInprocess}}</span>
                                         </div>
                                         <span class="kt-drop-text"> In Process</span>
-                                    </a>
-                                    <a class="dropdown-item">
+                                    </a> -->
+                                    <!-- <a class="dropdown-item">
                                         <div><span
                                                 class="kt-badge kt-badge--success kt-badge--inline mr-2">{{countCompleted}}</span>
                                         </div>
                                         <span class="kt-drop-text">Completed</span>
-                                    </a>
+                                    </a> -->
                                     <a class="dropdown-item" (click)="GetRejected()">
                                         <div><span
                                                 class="kt-badge kt-badge--danger kt-badge--inline mr-2">{{countRejected}}</span>
@@ -60,7 +60,7 @@
                                     </a>
                                     <a class="dropdown-item" (click)="GetNotStarted()">
                                         <div><span
-                                                class="kt-badge kt-badge--dark kt-badge--inline mr-2">{{countNotStarted}}</span>
+                                                class="kt-badge kt-badge--warning kt-badge--inline mr-2">{{countNotStarted}}</span>
                                         </div>
                                         <span class="kt-drop-text">Not Started</span>
                                     </a>
@@ -209,8 +209,8 @@
                                             <b>{{ProjectType}}</b>
                                         </span>
                                         <span class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-success':Status=='Accepted',
-                                        'text-info':Status=='Pending',
-                                        'text-warning':Status=='Rejected'
+                                        'text-warning':Status=='Pending',
+                                        'text-danger':Status=='Rejected'
                                        }">
                                             <b>{{Status}}</b>
                                         </span>
@@ -245,8 +245,7 @@
                                         </span>
                                         <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
-                                            <b>On : {{ModifyDate|date:'dd-MM-yyyy'}} &nbsp; {{ModifyDate|date:'h:mm
-                                                a'}}</b>
+                                            <b>On : {{ModifyDate|date:'dd-MM-yyyy'}} </b>
                                         </span>
                                     </p>
                                     <p class="mb-1 pl-15px">
@@ -368,7 +367,8 @@
 </div>
 
 <!-- Modal -->
-<div id="rightbar-overlay"></div>
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
 <!-- For Update Projects-->
 
 <!-- Project Info Details -->

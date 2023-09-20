@@ -4,17 +4,17 @@
 
         <div class="col-lg-12">
             <!--begin:: Widgets/Authors Profit-->
-            <div class="kt-portlet kt-portlet--bordered-semi">
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong *ngIf="sendtype=='Req'">Approvals</strong>
+                            <strong *ngIf="sendtype=='Req'">Approval</strong>
                             <strong *ngIf="sendtype=='Res'">Information</strong>
                         </h3>
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approvals</a>
-                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information</a>
+                            <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
+                            <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
                         </div>
                         <div *ngIf="sendtype=='Req' && selectedItems.length >0">
                             <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
@@ -240,11 +240,11 @@
                                                     aria-label="Project Type: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Project Type
                                                 </th>
-                                                <th data-order="desc" data-name="ReportType" tabindex="0"
-                                                    aria-controls="project-4" rowspan="1" colspan="1"
-                                                    class="curser-pointer"
-                                                    aria-label="Category: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Request Type
+                                                <th data-order="desc" data-name="Category" tabindex="0"
+                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Project Type: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Category
                                                 </th>
                                                 <th data-order="desc" data-name="Submitedby" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
@@ -252,12 +252,26 @@
                                                     aria-label="User Name: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Submitted By
                                                 </th>
-                                                <th data-order="desc" data-name="RequestDate" tabindex="0"
+                                                <th data-order="desc" data-name="Deadline" tabindex="0"
+                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="User Name: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Deadline
+                                                </th>
+                                                <!-- <th data-order="desc" data-name="RequestDate" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Date
+                                                </th> -->
+                                                <th data-order="desc" data-name="RequestType" tabindex="0"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    class="curser-pointer"
+                                                    aria-label="Category: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Request Type
                                                 </th>
+                                               
+                                                
                                                 <!-- <th data-order="desc" data-name="Status" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
@@ -298,6 +312,21 @@
                                                 </p></td>
                                                 <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span></td>
                                                 <td>
+                                                    <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span>
+                                                    <span class="kt-widget__other" *ngIf="!item.Category">No Category</span>
+                                                </td>
+                                                <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
+                                                <td>
+                                                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
+                                                        <span class="kt-widget__other text-nowrap">{{item.SubmissionType}}</span>
+                                                    </div>
+                                                    <ng-template #Projecttype>
+                                                        <span class="kt-widget__other text-nowrap">
+                                                            {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                    </ng-template>
+                                                </td>
+                                                <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
+                                                <td>
                                                     <span class="text-info font-weight-400" 
                                                         *ngIf="item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                                || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
@@ -311,8 +340,8 @@
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
                                                 </td>
 
-                                                <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
-                                                <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td>
+                                                
+                                                
                                                 
                                                 <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
@@ -323,7 +352,9 @@
                                                     </div>
                                                 </td> -->
                                                 <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
-                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}} </td>
+                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}} 
+                                                    <p data-toggle="tooltip" title="Request date">{{item.Rec_Date | date:'dd-MM-yyyy' }}</p>
+                                                </td>
                                                 <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
                                                     Not Provided</td>
                                                 <div class="hvr-item" *ngIf="item.Send_From=='WR'" data-toggle="tooltip" title="{{item.Req_Coments}}">

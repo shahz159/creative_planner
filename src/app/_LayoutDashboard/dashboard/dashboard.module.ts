@@ -6,7 +6,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent, MY_FORMATS } from './dashboard.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
@@ -28,6 +28,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DatePickerFormatDirective } from "./date-picker-format.directive";
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+
 FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,
@@ -58,6 +60,8 @@ FullCalendarModule.registerPlugins([
     , MaterialModule
     , GooglePlaceModule
     , NgxDaterangepickerMd.forRoot()
+    ,PdfViewerModule
+    ,NgxDocViewerModule
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},

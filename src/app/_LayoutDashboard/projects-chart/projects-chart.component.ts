@@ -729,4 +729,10 @@ export class ProjectsChartComponent implements OnInit {
     series.slices.template.cornerRadius = 5;
     series.colors.step = 3;
   }
+
+  closeInfo(){
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
 }

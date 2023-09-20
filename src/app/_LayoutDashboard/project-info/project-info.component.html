@@ -122,6 +122,37 @@
             </svg>
         </a>
     </div>
+    <ng-container *ngIf="action_details">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center px-3" *ngFor="let item of action_details">
+                <h6 class="mb-0">This is an action for the project 
+                    <a  href="javascript:void(0)" class="custom-link" (click)="moreDetails1(item.Master_Code)"
+                        data-toggle="tooltip" title="click to open project in new window">{{item.Project_Name}} </a>
+                </h6>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="approve_details">
+        <div class="desc-msg rejct-msg">
+            <div class="d-flex align-items-center " *ngFor="let item of approve_details">
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Under Approval'">New project under approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Completion Under Approval'">The project is Completion Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Forward Under Approval'">The project is Forward Under Approval with  - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Deadline Extend Under Approval'">The project is Deadline Extend Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Enactive Under Approval'">The project is Enactive Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+            </div>
+        </div>
+    </ng-container>
 
     <div class="card-body card-car side_scroll scroll-y" *ngFor="let item of ProjectInfo_List">
 
@@ -212,7 +243,7 @@
                 <h5 class="text-hover-underline text-hover-info mb-0" data-toggle="collapse" href="#pro_actns"
                     role="button" aria-expanded="true" aria-controls="pro_actns" *ngIf="pro_act==true">
                     <!-- <i class="fas fa-check-circle"></i> -->
-                    Approvals
+                    Approval
                     <!-- <i class="fa fa-chevron-up ml-2 m-0"></i> -->
                 </h5>
             </div>
@@ -387,7 +418,7 @@
                                             <div class="left-w">
                                                 <h6 class="txtm-cus">Complete attachment</h6>
                                                 <a (click)="openPDF(iscloud,url)">
-                                                    <h6 class="mt-1"><u>{{completedoc}}</u></h6>
+                                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc | truncate : 55}}</u></h6>
                                                 </a>
                                             </div>
                                         </div>
@@ -396,7 +427,7 @@
                                             <div class="left-w">
                                                 <h6 class="txtm-cus">Complete attachment</h6>
                                                 <a (click)="openPDF(iscloud,url)">
-                                                    <h6 class="mt-1"><u>{{url}}</u></h6>
+                                                    <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 55}}</u></h6>
                                                 </a>
                                             </div>
                                         </div>
@@ -472,7 +503,7 @@
                             <div class="card-title mb-0">
                                 <!-- <div class="card-title mb-0" data-toggle="collapse" data-target="#proj_act_acc" aria-expanded="true" aria-controls="proj_act_acc"> -->
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="det-text pro-nm pl-1 text-blue">Approvals<span
+                                    <span class="det-text pro-nm pl-1 text-blue">Approval<span
                                             style="color:red">*</span></span>
                                     <i class="fas fa-chevron-up text-info1 mr-2 d-none"></i>
                                 </div>
@@ -523,12 +554,12 @@
                                                     type!!</span>
                                             </div>
 
-                                            <label class="mb-2" *ngIf="rejectType && selectedType=='3'">Select From
+                                            <label class="mb-2" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">Select From
                                                 Existing Comments</label>
-                                            <div class="appr-comts" *ngIf="rejectType && selectedType=='3'">
+                                            <div class="appr-comts" *ngIf="rejectType && selectedType=='3' && rejectlength>0">
 
                                                 <div class="exs-cmts card">
-                                                    <div class="card-header">
+                                                    <div class="card-header" *ngIf="rejectlength>0">
                                                         <h6 class="mb-0">Existing Comments</h6>
                                                     </div>
                                                     <div class="crd-bdy scroll-y">
@@ -1264,7 +1295,7 @@
                         <h5 class="fs-4 my-1">{{Project_Responsible}}</h5>
                     </div>
                     <!--Transfer-->
-                    <div class="ml-2 mt-3">
+                    <!-- <div class="ml-2 mt-3">
                         <div class="dropdown"
                             *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo|| Current_user_ID == item.Responsible)&& (item.Status!='Completed')">
                             <button class="btn btn-primary btn-sm py-1 px-2 dropdown-toggle no-after"
@@ -1297,25 +1328,9 @@
                                                             *ngIf="(EmpNo_Res!=item.Emp_No && EmpNo_Own!=item.Emp_No)">{{item.DisplayName}}</a>
                                                     </ng-option>
                                                 </ng-select>
-                                                <!-- <span style="color:red">Transfer to required!</span>  (Change)="EmployeeOnSelect($event)" (keydown.enter)="onProject_Hold(Pid,_MasterCode);"-->
                                             </div>
-                                            <!-- <div class="form-group">
-                                                <label>Select New Deadline<span class="text-danger">*</span></label>
-                                                <input matInput [matDatepicker]="picker4" id="Transtext_{{Pid}}"
-                                                #Transdt="ngModel"
-                                                (click)="picker4.open();"
-                                                [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                                [(ngModel)]="TransDate" class="form-control"
-                                                name="date">
-                                                <div class="input-group-append">
-                                                        <mat-datepicker-toggle matSuffix [for]="picker4" class="btn-secondary">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker class="form-group" #picker4></mat-datepicker>
-                                                </div>
-                                            </div> -->
                                             <div class="form-group input-group">
                                                 <label>Set new deadline (optional):</label>
-                                                <!-- <span class="text-danger">*</span> -->
                                                 <div class="input-group">
                                                     <input matInput [matDatepicker]="picker4" #Transdt="ngModel"
                                                         (click)="picker4.open();"
@@ -1338,7 +1353,6 @@
                                                     placeholder="Define your exact reason here." rows="2" cols="20"
                                                     style="height:70px;"></textarea>
                                             </div>
-                                            <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                                         </div>
 
                                     </div>
@@ -1361,7 +1375,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!--Transfer end-->
 
                 </div>
@@ -1433,10 +1447,14 @@
         <div class=" border-top">
             <div class="d-flex  align-items-center justify-content-between mt-3">
                 <div class>
-                    <div class="my-0">
-                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
+                    <div class="my-2">
+                        <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i> DMS Link
-                        </label>
+                        </label> -->
+                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                            data-toggle="collapse" data-target="#DMSlapse" aria-expanded="false">
+                            <i class="fa fa-file-alt mr-2"></i> DMS Link<i class="fa fa-chevron-up ml-2 m-0"></i>
+                        </button>
                     </div>
 
                 </div>
@@ -1447,8 +1465,8 @@
                 </div>
             </div>
 
-            <div class="card-body">
-                <div class="fs-6">
+            <div class="card-body collapse" id="DMSlapse" aria-labelledby="DMSlapse">
+                <div class="fs-6  scrollbar1">
                     <table class="table">
                         <tbody>
                             <tr *ngFor="let itemMemos of _MemosSubjectList; let i=index">
@@ -1462,7 +1480,7 @@
                             </tr>
 
                         </tbody>
-                        <p style="color:gray">{{_MemosNotFound}}</p>
+                        <p style="color:gray" *ngIf="_MemosNotFound!=''">{{_MemosNotFound}}</p>
                     </table>
                 </div>
             </div>
@@ -1485,11 +1503,15 @@
         <!-- Linked Portfolios -->
         <div class=" border-top">
             <div class="d-flex  align-items-center justify-content-between mt-3">
-                <div class>
+                <div class >
                     <div class="my-2">
-                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
+                        <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
                             <i class="fa fa-file-alt mr-2"></i>Portfolio Link
-                        </label>
+                        </label> -->
+                        <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                            data-toggle="collapse" data-target="#portfoliolapse" aria-expanded="false">
+                            <i class="fa fa-file-alt mr-2"></i> Portfolio Link<i class="fa fa-chevron-up ml-2 m-0"></i>
+                        </button>
                     </div>
                 </div>
                 <div>
@@ -1505,8 +1527,8 @@
                         </div>                       
                 </div>              
             </div>     -->
-            <div class="card-body">
-                <div class="fs-6">
+            <div class="card-body collapse" id="portfoliolapse" aria-labelledby="portfoliolapse">
+                <div class="fs-6  scrollbar1">
                     <table class="table">
                         <tbody>
                             <tr *ngFor="let tezz of _portfoliolist; let i=index">
@@ -1523,7 +1545,7 @@
 
                         </tbody>
                         <!-- <ng-template #NoPortfolio> -->
-                        <p style="color:gray">{{noPort}}</p>
+                        <p style="color:gray" *ngIf="noPort!=''">{{noPort}}</p>
                         <!-- </ng-template> -->
                     </table>
                 </div>
@@ -1533,176 +1555,153 @@
         <!-- Linked Portfolios -->
 
         <!-- Subtask List -->
-        <div class="border-top d-block align-items-center justify-content-between mt-3" *ngIf="Subtask_List != ''">
-            <div class>
-                <div class="my-2">
-                    <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
-                        <i class="fa fa-list mr-2"></i> Inprocess actions list
-                    </label>
-                </div>
+        <div class="border-top" *ngIf="Subtask_List != ''">
+            <div class="my-2">
+                <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
+                    <i class="fa fa-list mr-2"></i> Inprocess actions list
+                </label> -->
+                <button type="button"
+                 class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                    data-toggle="collapse" data-target="#inprocesslapse" aria-expanded="false">
+                    <i class="fa fa-list mr-2"></i> Actions<i class="fa fa-chevron-up ml-2 m-0"></i>
+                </button>
             </div>
         </div>
-        <a class="subtask-list" *ngFor="let task of Subtask_List;let i=index"
-            data-toggle="collapse" href="#colp_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
-            <div class="d-flex  align-items-center justify-content-between" >
-                <div>
-                    <div class="my-2">
-                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
-                            <i class="fa fa-window-restore mr-2"></i> Action {{i+1}}
-                        </label>
+        <div class=" collapse scrollbar1" id="inprocesslapse" aria-labelledby="inprocesslapse" *ngIf="Subtask_List != ''">
+            
+        <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+        [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
+        <div class="lbl-act ml-2">
+            <label
+                class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                <i class="fa fa-window-restore mr-2"></i>Action {{item.IndexId}}
+            </label>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="d-flex-cen">
+            
+            <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
+                <div class="d-flex-cen">
+                    <div class="subtask-list-title text-hover-primary 
+                        fs-5 mb-0 flex-hdv">
+                        <span class="mr-2" id="InprocessProjName_{{item.id}}"
+                            data-toggle="tooltip" title="{{item.Project_Name }}" (click)="toggleExpand()">
+                            {{item.Project_Name |  truncate: isExpanded ? 9999 : 60}}</span>
                     </div>
+
+                    <span class="mr-2 showv">|</span>
+                    <div class="">
+                        <span class="showv mr-2 text-muted">
+                            <i class="far fa-calendar-alt mr-1"></i>
+                            {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                        </span>
+                    </div>
+
+                    <span class="mr-2 showv">|</span>
+                    <div class="d-flex-cen showv">
+                        <span class="detail-icn mr-1  d-none">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="14" height="14" fill="currentColor"
+                                class="bi bi-star" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                            </svg>
+                        </span>
+                        <div>
+                            <h5 data-toggle="tooltip" class=" "
+                                *ngIf="item.SubProject_Status!='Delay'"
+                                [ngClass]="{
+                        'text-success':item.SubProject_Status=='Completed' ,
+                        'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
+                        'text-primary':item.SubProject_Status=='Under Approval',
+                        'text-info':item.SubProject_Status=='Completion Under Approval',
+                        'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                        'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                        
+                        'text-underApp':item.SubProject_Status=='New Project',
+                        'text-completed':item.SubProject_Status=='Completion Under Approval',
+                        'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
+                        'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                data-toggle="tooltip"
+                                title="Action Status!">
+                                {{item.SubProject_Status}} </h5>
+                            <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 50}}</span>
+                            <h5 data-toggle="tooltip"
+                                class=" text-danger"
+                                data-toggle="tooltip"
+                                title="Action Status!"
+                                *ngIf="item.SubProject_Status=='Delay'">
+                                {{item.SubProject_Status}}
+                                {{item.Delaydays}} days</h5>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="d-flex mt-3 flex-column">
-                <a class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
-            </div>
-            <div class="card-body collapse" id="colp_{{i+1}}">
+                
+                <div class="d-flex-cen">
+
+                    <div class="d-flex-cen mr-2 showv">                                                                
+                        <div class="initial-box color-7 b-50 mr-2">
+                            <i class="far fa-user"></i>
+                        </div>
+                        <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
+                    </div>
+                    <!-- <a class="text-info swap-view"> View details </a>
+                    <a class="text-info swap-less"> Less details </a>                                                             -->
+                </div>
+            </a>
+        </div>
+            <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
+                
+                <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) ? 'mb-3 ml--2' : 'mb-3 ml--2'">
+                    <span class="mr-2" id="Inprocess_DescName_{{item.id}}"
+                        data-toggle="tooltip" title="Action Description!">
+                        {{item.Project_Description}}</span>
+                    <!-- <span class="text-info" [hidden]="Editbutton"
+                        (click)="OnEditProject_Desc_inprocess(item.id,item.Project_Description)">
+                        <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
+                            [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                    </span>
+                    <span class="kt-inbox__subject" style="display:none;"
+                        id="InprocessTextarea_{{item.id}}">
+                        <div class="d-flex">
+                            <input type="text" class="form-control"
+                                id="Inprocessareafocus_{{item.id}}"
+                                [(ngModel)]="_modelProjDesc"
+                                style="width: 78%;height: 32px;"
+                                (keydown.enter)="OnProject_Rename(item.id)">
+                            <div class="d-inline-block ml-3" id="button-addon4" style="min-width: 140px;">
+                                <button (click)="OnProject_Rename(item.id)"
+                                    class="btn btn-primary btn btn-sm mr-2">Done</button>
+                                <button class=" btn btn-secondary btn btn-sm"
+                                    (click)="onCancel_inprocess(item.id)">Cancel</button>
+                            </div>
+                        </div>
+                    </span> -->
+                </p>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="1 0 14 14">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
-                                  </svg>                       
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-person" viewBox="1 0 14 14">
+                                    <path
+                                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                    </path>
+                                </svg>
                             </span>
                             <div class="w-100">
                                 <h6 class="txtm-cus">Owner</h6>
-                                <h5 class="">{{task.Subtask_Owner}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center detial-item">
-                            <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="1 0 14 14">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
-                                  </svg>                       
-                            </span>
-                            <div class="w-100">
-                                <h6 class="txtm-cus">Responsible</h6>
-                                <h5 class="">{{task.Subtask_Res}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center detial-item">
-                            <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                                </svg>                         
-                            </span>
-                            <div class="w-100">
-                                <h6 class="txtm-cus">Status</h6>
-                                <div *ngIf="task.SubProject_Status=='Under Approval'">
-                                    <h5 class="1 text-info">
-                                        {{task.SubProject_Status}}</h5>
-                                    <!-- <span class="bg-success">{{item.Status}}</span> -->
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Delay'">
-                                    <h5 class="text-danger" *ngIf="task.Delayday==0">
-                                        {{task.SubProject_Status}}</h5>
-                                    <h5 class="text-danger" *ngIf="task.Delaydays>0" data-toggle="tooltip"
-                                        title="{{task.Delaydays}} days delay!">
-                                        {{task.SubProject_Status}} {{task.Delaydays}} days</h5>
-                                    <!-- <span class="font-weight-400">{{item.Status}}</span> -->
-                                </div>
-                                <!-- Other Status -->
-                                <div *ngIf="task.SubProject_Status=='InProcess'">
-                                    <h5 class="text-warning">
-                                        {{task.SubProject_Status}}</h5>
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='ToDo InProcess'">
-                                    <h5 class="text-primary">
-                                        {{task.SubProject_Status}}</h5>
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='New Project'">
-                                    <h5 class="text-primary">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='New Project Rejected'">
-                                    <h5 class="text-danger">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-
-                                <div *ngIf="task.SubProject_Status=='Project Hold'">
-                                    <h5 class="text-danger">
-                                        Hold</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='ToDo Completed'">
-                                    <h5 class="text-primary">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='New Todo'">
-                                    <h5 class="text-primary">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Completion Under Approval'">
-                                    <h5 class="text-primary">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Completed'">
-                                    <h5 class="text-success">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Forward Under Approval'">
-                                    <h5 class="text-warning">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Project Complete Rejected'">
-                                    <h5 class="text-danger">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Enactive Under Approval'">
-                                    <h5 class="text-danger">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-
-                                <div *ngIf="task.SubProject_Status=='Version'">
-                                    <h5 class="text-danger">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Deadline Extend Under Approval'">
-                                    <h5 class="text-info">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Project Holded'">
-                                    <h5 style="color: #c0b5dc;" class="">
-                                        {{task.SubProject_Status}}</h5>
-
-                                </div>
-                                <div *ngIf="task.SubProject_Status=='Project Hold Under Approval'">
-                                    <h5 style="color: #c0b5dc;">
-                                        {{task.SubProject_Status}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center detial-item">
-                            <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4-week" viewBox="0 0 16 16">
-                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
-                                    <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                                  </svg>                          
-                            </span>
-                            <div class="w-100">
-                                <h6 class="txtm-cus">Action Duration </h6>
-                                <h5 class="">
-                                    {{task.StartDate|date:'dd-MM-yyyy'}}/{{task.SubProject_DeadLine|date:'dd-MM-yyyy'}}
+                                <h5 class="" data-toggle="tooltip"
+                                    title="Action Owner!">{{item.Subtask_Owner}}
+                                    <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                        aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
+                                        <i data-toggle="tooltip" title="edit action owner"
+                                        class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                    </span>
                                 </h5>
                             </div>
                         </div>
@@ -1710,90 +1709,231 @@
                     <div class="col-md-4">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                                </svg>                           
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-person" viewBox="1 0 14 14">
+                                    <path
+                                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                    </path>
+                                </svg>
                             </span>
                             <div class="w-100">
-                                <h6 class="txtm-cus">Allocated</h6>
-                                <h5 class="" data-toggle="tooltip" title="Action hours!">
-                                    {{task.SubtaskAllocated}} Hrs</h5>
+                                <h6 class="txtm-cus">Responsible</h6>
+                                <h5 class="" data-toggle="tooltip"
+                                    title="Action Responsible!">
+                                    {{item.Subtask_Res}}
+                                    <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                        aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
+                                        <i data-toggle="tooltip" title="edit action responsible"
+                                        class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                    </span>
+                                </h5>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
-                                    <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
-                                </svg>                             
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="14" height="14" fill="currentColor"
+                                    class="bi bi-star" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                </svg>
                             </span>
                             <div class="w-100">
-                                <h6 class="txtm-cus">Cost</h6>
-                                <h5 class="">{{task.Project_Cost|currency:'SAR '}}</h5>
+                                <h6 class="txtm-cus">Status</h6>
+                                <div>
+                                    <h5 data-toggle="tooltip" class=" "
+                                        *ngIf="item.SubProject_Status!='Delay'"
+                                        [ngClass]="{
+                                'text-success':item.SubProject_Status=='Completed',
+                                'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
+                                'text-primary':item.SubProject_Status=='Under Approval',
+                                'text-info':item.SubProject_Status=='Completion Under Approval',
+                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
+                                
+                                'text-underApp':item.SubProject_Status=='New Project',
+                                'text-completed':item.SubProject_Status=='Completion Under Approval',
+                                'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
+                                'text-Todo':item.SubProject_Status=='ToDo Completed'}"
+                                        data-toggle="tooltip"
+                                        title="Action Status!">
+                                        {{item.SubProject_Status}} </h5>
+                                        <span *ngIf="item.Approver_Name" data-toggle="tooltip"
+                                         title="approval pending with {{item.Approver_Name}}"> with {{item.Approver_Name | truncate: 35}}</span>
+                                    <h5 data-toggle="tooltip"
+                                        class=" text-danger"
+                                        data-toggle="tooltip"
+                                        title="Action Status!"
+                                        *ngIf="item.SubProject_Status=='Delay'">
+                                        {{item.SubProject_Status}}
+                                        {{item.Delaydays}} days</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="row">   
+                <!-- data-toggle="dropdown"  -->
+                <div class="row">
                     <div class="col-md-4">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass" viewBox="0 0 16 16">
-                                    <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z"/>
-                                  </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-calendar4-week"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                    <path
+                                        d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                </svg>
+                            </span>
+                            <div class="w-100">
+                                <h6 class="txtm-cus">Action Duration</h6>
+                                <div class="mb-0 d-flex align-items-center">
+                                    <h5 class="" data-toggle="tooltip"
+                                        title="Start Date!">{{item.StartDate
+                                        |date:'dd-MM-yyyy'}}</h5>
+                                    <!-- <div class="dropdown show"
+                                        *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                        <span type="button" id="start-icn"
+                                            (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
+                                            aria-haspopup="true"
+                                            aria-expanded="true"
+                                            class="dropdown-toggle no-after text-info">
+                                            <i data-toggle="tooltip"
+                                                title="edit action start date"
+                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
+                                    </div> -->
+                                    <h5>/</h5>
+                                    <h5 class="" data-toggle="tooltip"
+                                        title="End Date!">
+                                        {{item.SubProject_DeadLine
+                                        |date:'dd-MM-yyyy'}}</h5>
+
+                                    <!-- <div class="dropdown show"
+                                        *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                        <span type="button" id="end-icn"
+                                            aria-haspopup="true"
+                                            (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine)"
+                                            aria-expanded="true"
+                                            class="dropdown-toggle no-after text-info">
+                                            <i data-toggle="tooltip"
+                                                title="edit action end date"
+                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center detial-item">
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="18" height="18" fill="currentColor"
+                                    class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                    <path
+                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                </svg>
+                            </span>
+                            <div class="w-100">
+                                <h6 class="txtm-cus">Allocated</h6>
+                                <div class="mb-0 d-flex align-items-center">
+                                    
+                                    <h5 class="" data-toggle="tooltip"
+                                    title="Action Cost!">
+                                    {{item.SubtaskAllocated}} Hrs</h5>
+
+                                    <!-- <div class="dropdown show"
+                                        *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                        <span type="button" id="alloc-icn"
+                                            (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
+                                            aria-haspopup="true"
+                                            aria-expanded="true"
+                                            class="dropdown-toggle no-after text-info">
+                                            <i data-toggle="tooltip"
+                                                title="edit action duration"
+                                                class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
+                                        </span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center detial-item">
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="14" height="14" fill="currentColor"
+                                    class="bi bi-wallet" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                                </svg>
+                            </span>
+                            <div class="w-100">
+                                <h6 class="txtm-cus">Cost</h6>
+                                <h5 *ngIf="item.Project_Cost" class="" data-toggle="tooltip"
+                                    title="Action Cost!">
+                                    {{item.Project_Cost|currency:'SAR '}}</h5>
+                                <h5 *ngIf="!item.Project_Cost" class="" data-toggle="tooltip"
+                                title="Action Cost!">
+                                SAR 0.0</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center detial-item">
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-hourglass" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z" />
+                                </svg>
                             </span>
                             <div class="w-100">
                                 <h6 class="txtm-cus">Duration</h6>
-                                <h5 *ngIf="item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks'"
+                                <h5 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'"
                                     class="">
-                                    {{task.SubtaskDuration}} days</h5>
-                                <h5 *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks'"
+                                    {{item.SubtaskDuration}} days</h5>
+                                <h5 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'"
                                     class="">
                                     Continuous</h5>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-4">
-                        <div class="d-flex align-items-center detial-item">
-                            <span class="detail-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
-                                    <path d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-                                  </svg>
-                            </span>
-                            <div class="w-100">
-                                <h6 class="txtm-cus">Percentage</h6>
-                                <h5 class="">{{(task.SubtaskAllocated /
-                                    totalSubtaskHours) | percent:'.1-2'}}</h5>
-                                <h5 class="" *ngIf="totalSubtaskHours == 0"> 0% </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4" *ngIf="task.Sourcefile">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor"
-                                    class="bi bi-paperclip" viewBox="0 0 16 16">
+                                    class="bi bi-percent" viewBox="0 0 16 16">
                                     <path
-                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                                 </svg>
                             </span>
                             <div class="w-100">
-                                <h6 class="txtm-cus">Reference attachment</h6>
-                                <a class="word-break text-info curser-pointer"
-                                    title="Click To Open File"
-                                    (click)="LoadDocument(task.IsCloud,task.Project_Code,task.Team_Res,task.CompleteProofDoc)">
-                                    <b>{{task.Sourcefile}}</b></a>
+                                <h6 class="txtm-cus">Percentage</h6>
+                                <h5 class="">{{(item.SubtaskAllocated /
+                                    totalSubtaskHours) | percent:'.1-2'}}</h5>
+                                <h5 class="" *ngIf="totalSubtaskHours == 0"> 0%
+                                </h5>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" *ngIf="task.Remarks && task.Remarks!='undefined'">
+                    <div class="col-md-4" *ngIf="item.Remarks && item.Remarks!='undefined'">
                         <div class="d-flex align-items-center detial-item">
                             <span class="detail-icn">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -1808,26 +1948,59 @@
                             <div class="w-100">
                                 <h6 class="txtm-cus">Remarks</h6>
                                 <h5 class="" data-toggle="tooltip"
-                                    title="Action Remarks!">{{task.Remarks}}
+                                    title="Action Remarks!">{{item.Remarks}}
                                 </h5>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        <!-- Completed Task  -->
-        <div class="border-top" *ngIf="CompletedList != ''">
-            <div class="d-block align-items-center justify-content-between mt-3">
-                <div class>
-                    <div class="my-2">
-                        <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
-                            <i class="fa fa-list mr-2"></i> Completed actions list
-                        </label>
+                <div class="row">
+                    <div class="col-md-4" *ngIf="item.Sourcefile">
+                        <div class="d-flex align-items-center detial-item">
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-paperclip" viewBox="0 0 16 16">
+                                    <path
+                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                </svg>
+                            </span>
+                            <div class="w-100">
+                                <h6 class="txtm-cus">Reference attachment</h6>
+                                <a class="word-break text-info curser-pointer"
+                                    title="Click To Open File"
+                                    (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                    <b>{{item.Sourcefile}}</b></a>
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
-            <a class="subtask-list" *ngFor="let task of CompletedList;let i=index"
+        </div>
+        </div>
+    </div>
+
+
+        
+        <!-- Completed Task  -->
+        <div class=" border-top d-block align-items-center justify-content-between mt-3" *ngIf="CompletedList != ''">
+            <div>
+                <div class="my-2">
+                    <!-- <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
+                        <i class="fa fa-list mr-2"></i> Completed actions list
+                    </label> -->
+                    <button type="button" class="btn btn-primary btn-sm py-1 d-flex align-items-center asgn-colpse collapsed"
+                          data-toggle="collapse" data-target="#completedlapse" aria-expanded="false">
+                        <i class="fa fa-list mr-2"></i> Completed actions<i class="fa fa-chevron-up ml-2 m-0"></i>
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class=" collapse scrollbar1" id="completedlapse" aria-labelledby="completedlapse" *ngIf="CompletedList != ''">
+            
+            <!-- <a class="d-flex justify-content-between lapse collapsed" *ngFor="let task of CompletedList;let i=index"
                 data-toggle="collapse" href="#colcc_{{i+1}}" role="button" aria-expanded="false" aria-controls="">
                 <div class="text-left">
                     <label class=" kt-badge kt-bg-light-primary kt-badge--inline">
@@ -1835,10 +2008,45 @@
                     </label>
                 </div>
                 <div class="text-left mt-3">
-                    <!-- <p class="mb-2">CLIENT</p> -->
                     <a  class="h5 fs-4 mb-1">{{task.SubProject_Name }}</a>
                 </div>
-                <div class="card-body collapse" id="colcc_{{i+1}}">
+                <span class="mr-2 showv">|</span>
+                <div class="">
+                    <span class="showv mr-2 text-muted">
+                        <i class="far fa-calendar-alt mr-1"></i>
+                        {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                    </span>
+                </div>
+
+                <span class="mr-2 showv">|</span>
+
+
+                <div class="d-flex-cen showv">
+                    
+                    <div class="w-100">
+                        <h6 class="txtm-cus">Status</h6>
+                        <h5 class="text-success">Completed</h5>
+                    </div>
+                </div>
+            
+
+            <div class="d-flex-cen ">
+                <div class="d-flex-cen mr-2 showv">                                                                
+                    <div class="initial-box color-7 b-50 mr-2">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
+                </div>
+                
+                <a class="text-info swap-view"> View details </a>
+                <a class="text-info swap-less"> Less details </a> 
+                
+            </div>
+
+
+            </a> -->
+
+                <!-- <div class="card-body collapse" id="colcc_{{i+1}}">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="d-flex align-items-center detial-item">
@@ -2005,8 +2213,293 @@
                             </div>
                         </div>
                     </div>
+                </div> -->
+
+                <div class="subtask-list" *ngFor="let item of CompletedList; let i=index">
+                    <div class="lbl-act ml-2">
+                        <label
+                            class=" kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
+                            <i class="fa fa-window-restore mr-2"></i>Action {{item.IndexId}}
+                        </label>
+                    </div>
+                    <div class="col-lg-12">
+                        <a class="d-flex justify-content-between lapse collapsed" data-toggle="collapse" href="#colcc_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
+                                                                                                                                        
+                            
+                            <div class="d-flex-cen">
+                                <div class="subtask-list-title text-hover-primary fs-5 mt-1">
+
+                                    <span class="mr-2" id="SpanProjName_{{item.id}}"
+
+                                    data-toggle="tooltip" title="{{item.Project_Name}}"  (click)="toggleExpand()">
+
+                                    {{item.Project_Name |  truncate: isExpanded ? 9999 : 60}}</span>
+
+                                </div>
+
+                                <span class="mr-2 showv">|</span>
+                                <div class="">
+                                    <span class="showv mr-2 text-muted">
+                                        <i class="far fa-calendar-alt mr-1"></i>
+                                        {{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}
+                                    </span>
+                                </div>
+
+                                <span class="mr-2 showv">|</span>
+
+
+                                <div class="d-flex-cen showv">
+                                    <span class="detail-icn mr-1 d-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="14" height="14" fill="currentColor"
+                                            class="bi bi-star" viewBox="0 0 16 16">
+                                            <path
+                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <div class="w-100">
+                                            <h5 class="text-success">Completed</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex-cen ">
+                                <div class="d-flex-cen mr-2 showv">                                                                
+                                    <div class="initial-box color-7 b-50 mr-2">
+                                        <i class="far fa-user"></i>
+                                    </div>
+                                    <h5 class="" data-toggle="tooltip" title="Action Responsible!">{{item.Subtask_Res}}</h5>                                                                
+                                </div>
+                                
+                                <!-- <a class="text-info swap-view"> View details </a>
+                                <a class="text-info swap-less"> Less details </a>  -->
+                                
+                            </div>
+
+                        </a>
+                        <div class="card-body pt-0 collapse c1" id="colcc_{{item.IndexId+1}}">
+                            
+                            <p class="mb-3 ml--2">
+                                <span class="mr-2" id="Span_DescName_{{item.id}}"
+                                    data-toggle="tooltip" title="Action Description!">
+                                    {{item.Project_Description}}</span>
+                            </p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-person" viewBox="1 0 14 14">
+                                                <path
+                                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Owner</h6>
+                                            <h5 class="" data-toggle="tooltip"
+                                                title="Action Owner!">{{item.Subtask_Owner}}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-person" viewBox="1 0 14 14">
+                                                <path
+                                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Responsible</h6>
+                                            <h5 class="" data-toggle="tooltip"
+                                                title="Action Responsible!">
+                                                {{item.Subtask_Res}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="14" height="14" fill="currentColor"
+                                                class="bi bi-star" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Status</h6>
+                                            <div>
+                                                <h5 class="text-success">Completed</h5>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="18" height="18" fill="currentColor"
+                                                class="bi bi-clock" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                <path
+                                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Action Duration</h6>
+                                            <h5 class="" data-toggle="tooltip"
+                                                title="Project Duration">{{item.StartDate
+                                                |date:'dd-MM-yyyy'}}/{{item.SubProject_DeadLine
+                                                |date:'dd-MM-yyyy'}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="18" height="18" fill="currentColor"
+                                                class="bi bi-clock" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                <path
+                                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Allocated</h6>
+                                            <h5 class="" data-toggle="tooltip"
+                                                title="Action Cost!">
+                                                {{item.SubtaskAllocated}} Hrs</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="14" height="14" fill="currentColor"
+                                                class="bi bi-wallet" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Cost</h6>
+                                            <h5 *ngIf="item.Project_Cost" class="" data-toggle="tooltip"
+                                                title="Action Cost!">
+                                                {{item.Project_Cost|currency:'SAR '}}</h5>
+                                            <h5 *ngIf="!item.Project_Cost" class="" data-toggle="tooltip"
+                                            title="Action Cost!">
+                                            SAR 0.0</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-hourglass" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Duration</h6>
+                                            <h5 *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks'"
+                                                class="">
+                                                {{item.SubtaskDuration}} days</h5>
+                                            <h5 *ngIf="ProjectBlockName=='Standard Tasks' || ProjectBlockName=='Routine Tasks'"
+                                                class="">
+                                                Continuous</h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-percent" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Percentage</h6>
+                                            <h5 class="">{{(item.SubtaskAllocated /
+                                                totalSubtaskHours) | percent:'.1-2'}}</h5>
+                                            <h5 class="" *ngIf="totalSubtaskHours == 0"> 0%
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4"  *ngIf="item.Remarks && item.Remarks!='undefined'">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-card-text" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                                <path
+                                                    d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Remarks</h6>
+                                            <h5 class="" data-toggle="tooltip"
+                                                title="Action Remarks!">{{item.Remarks}}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" *ngIf="item.Sourcefile">
+                                    <div class="d-flex align-items-center detial-item">
+                                        <span class="detail-icn">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                            </svg>
+                                        </span>
+                                        <div class="w-100">
+                                            <h6 class="txtm-cus">Complete attachment</h6>
+                                            <a class="word-break text-info curser-pointer"
+                                                title="Click To Open File"
+                                                (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                                <b>{{item.Sourcefile}}</b></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-            </a>
+            
         </div>
         <div class="border-top" *ngIf="AssigntaskList != ''">
             <div class="d-block align-items-center justify-content-between mt-3">

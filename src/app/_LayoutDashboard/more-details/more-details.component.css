@@ -1409,6 +1409,15 @@ span.guest-icns, .svg-icn {
   width: 14px;
   height: 14px;
 }
+.cancl-icon{
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+.cancl-icon svg{
+  width: 18px;
+  height: 18px;
+}
 .spacer--body .height-scroll   {
   overflow-y: auto;
 }
@@ -1504,7 +1513,7 @@ span.legend-box {
   height: 1rem;
   display: inline-block;
   border-radius: 2px;
-  background: #a875ff;
+  background: #583c89;
 }
 .legend-box.two{
   background: #2f8de4;
@@ -1548,3 +1557,145 @@ span.legend-box {
   line-height: 1.25rem;
   font-size: .65rem;
 }
+
+.custom-link {
+  color: navy;
+  text-decoration: underline;
+}
+h6.kt-action-name-md span {
+  font-size: 16px;
+  font-weight: 500;
+}
+.kt-project-md{
+  border-left: 3px solid #583c89 !important;
+}
+.kt-action-md{
+  border-left: 3px solid #2f8de4 !important;
+}
+
+/*-------- files css ---------------*/
+span.kt-ic-svg svg {
+  width: 30px;
+  height: 30px;
+  /* fill: #dc3545; */
+  display: inline-block;
+}
+span.kt-ic-svg {
+  display: inline-block;
+  margin-left: 1rem;
+}
+.kt-icon-files {
+  width: 65px;
+}
+.kt-action-md:hover .text-info {
+  font-weight: 600;
+}
+
+.kt-files-card {
+  margin-bottom: 10px;
+  background: #ffffff;
+  box-shadow: 0 .125rem .25rem #00000014!important;
+  /* display: flex; */
+  /* align-items: center; */
+  padding: 5px 5px;
+  border: 0px solid #ccc;
+  transition: background-color .3s ease;
+}
+
+.kt-files-bg-rds{
+  background-color: #f3f6fb;
+    border-radius: 5px;
+    padding: 2rem 1rem !important;
+}
+.kt-files-card:hover {
+  transform: scale(.98);
+  transition: transform .2s;
+}
+span.kt-attachment-tittle {
+  font-size: 14px;
+  font-weight: 600;
+  /* text-transform: capitalize; */
+}
+.kt-files-card:hover .kt-attachment-tittle {
+  color: #2f8de4;
+}
+.kt-user-bg-rd {
+  padding: 5px;
+  background-color: #e5e5e5;
+  border-radius: 100px;
+  width: 23px;
+  display: inline-flex;
+  font-size: 12px;
+  text-align: center;
+  height: 23px;
+  justify-content: center;
+  align-items: center;
+}
+.card.mb-3.kt-action-md.kt-files-card:hover .kt-md-icon .bi-paperclip {
+  fill: #2f8de4;
+}
+.card.mb-3.kt-project-md.kt-files-card:hover .kt-md-icon .bi-paperclip {
+  fill: #2f8de4;
+}
+.asseticn.corol-icn {
+  fill: #ff5263;
+}
+
+.asseticn.info-icn {
+  fill: #14aaf5;
+}
+
+.asseticn.dark-icn {
+  fill: #6d6e6f;
+}
+
+.asseticn.prim-icn {
+  fill: #9886eb;
+}
+
+.asseticn.suc-icn {
+  fill: #00bf9c;
+}
+
+.asseticn.warn-icn {
+  fill: #fcbd01;
+}
+
+#attachlapse .kt-notification__item {
+  align-items: flex-start;
+}
+
+.asseticn {
+  margin-top: 6px;
+}
+
+.cate-icns {
+  width: 14px;
+  height: 14px;
+}
+
+.dwn-cnt {
+  background: #fff;
+    /* border: 1px solid #9886eb; */
+    padding: 0px 4px;
+    height: 19px;
+    color: #747891;
+    cursor: auto;
+    display: inline-flex;
+    border-radius: 0px;
+    align-items: center;
+    gap: 3px;
+    margin-right: 10px;
+    padding-right: 8px;
+    border-right: 1px solid #ccc;
+}
+.kt-w-70{
+  width: 70% !important;
+}
+/* span.kt-attachment-tittle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 85%;
+} */

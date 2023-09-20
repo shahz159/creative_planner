@@ -21,6 +21,8 @@ export class NotificationComponent implements OnInit {
   _AlertActivity:[];
   notilength:number;
   _totalProjectsCount:number;
+  WScount:number;
+  WRcount:number;
   _filtersMessage:string;
   _filtersMessage2:string;
   CurrentPageNo: number = 1;
@@ -80,6 +82,8 @@ export class NotificationComponent implements OnInit {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -155,6 +159,8 @@ export class NotificationComponent implements OnInit {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -259,6 +265,7 @@ export class NotificationComponent implements OnInit {
   }
 
   closeInfo() {
+    this.resetReject();
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -765,6 +772,41 @@ acceptSelectedValues() {
         this.rejDesc = element.Reject_Description;
       }
     });
+    
+    if(this.selectedItems.length==1){
+      this.approvalObj.Project_Code=(this.selectedItems[0]['Project_Code1'])
+      if ((this.selectedItems[0]['Req_Type']) == 'New Project')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'New Project Reject Release')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'New Project Hold')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete Reject Release')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete Hold')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Deadline Extend')
+        this.approvalObj.Status = 'Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Deadline Extend Hold')
+        this.approvalObj.Status = 'Rejected';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Standardtask Enactive')
+        this.approvalObj.Status = 'Enactive-Reject';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Project Forward')
+        this.approvalObj.Status = 'Forward Reject';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Project Hold')
+        this.approvalObj.Status = 'Project Hold Reject';
+      else if ((this.selectedItems[0]['Req_Type']) == 'Revert Back')
+        this.approvalObj.Status = 'Revert Reject';
+        else if ((this.selectedItems[0]['Req_Type']) == 'Task Complete')
+        this.approvalObj.Status = 'Task-Reject';
+      else{
+        this.approvalObj.Status = 'Rejected';
+      }
+    }
+
+
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.rejectType = this.rejectType;
       this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {

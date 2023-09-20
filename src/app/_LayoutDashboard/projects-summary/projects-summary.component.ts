@@ -67,7 +67,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Current_user_ID = localStorage.getItem('EmpNo');
-   
+  //  alert(123)
     // this.GetApplicationDetails();
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
@@ -356,7 +356,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
-      //  console.log("Summary Data---->", this._ProjectDataList);
+        console.log("Summary Data---->", this._ProjectDataList);
       this.ActualDataList = data;
       if (this._ProjectDataList.length > 0) {
       }
@@ -382,7 +382,7 @@ export class ProjectsSummaryComponent implements OnInit {
       this.ObjUserDetails.PageSize = 30;
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
-        //  console.log("Summary Data---->", this._ProjectDataList);
+         console.log("Summary Data---->", this._ProjectDataList);
         this.ActualDataList = data;
         if (this._ProjectDataList.length > 0) {
         }
@@ -758,6 +758,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);

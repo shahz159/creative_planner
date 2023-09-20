@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NotificationComponent } from './_LayoutDashboard/notification/notification.component';
 import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.component';
 import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meeting-report.component';
+import { FileviewComponent } from './_LayoutDashboard/fileview/fileview.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 
 
@@ -70,7 +73,8 @@ import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meetin
     FormsModule,
     NgbModule,
     NgMultiSelectDropDownModule,
-    
+    PdfViewerModule,
+    NgxDocViewerModule
     
   ],
   providers:

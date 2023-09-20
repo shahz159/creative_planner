@@ -76,7 +76,7 @@ h5.card-ttle{
     align-items: center;
     outline: none;
     -webkit-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+    transition: background-color 100ms linear;    flex-wrap: wrap;
 }
 .eve-modal .scrolly{
     overflow: auto;
@@ -465,7 +465,7 @@ img.dms-icn {
     }
   }
 ::ng-deep .angular-editor-textarea {
-    min-height: 8rem !important;
+    height: 4rem !important;
 }
 .drops{
     z-index: 95;
@@ -1035,4 +1035,254 @@ span.statusicn {
   right: 2px;
   position: absolute;
   top: 4px;
+}
+.kt-timer span {
+  font-weight: 600;
+    font-size: 16px;
+    color: #2786fb;
+    text-transform: uppercase;
+    background-color: #e4f0ff;
+    border-radius: 5px;
+    padding: 5px;
+}
+.kt-timer small {
+  font-size: 11px;
+  text-transform: capitalize;
+}
+span.kt-dt-cnt-view {
+  color: #2786fb;
+  border-right: 1px solid #ccc;
+  padding-right: 10px;
+  margin-right: 8px;
+  width: 26px;
+  display: inline-block;
+}
+.note-text {
+  font-family: Arial, sans-serif;
+}
+span.time-play-btn i {
+  font-size: 12px;
+  position: relative;
+  top: -2px;
+}span.time-play-btn {
+  margin-left: 3px;
+  font-size: 12px;
+ 
+}
+.ast-kt-dw {
+  position: relative;
+  top: 4px;
+}
+.admin-check {
+  position: relative;
+}
+.admin-check {
+  margin-right: 20px;
+}
+.admin-check span {
+  text-transform: capitalize;
+  font-style: italic;
+  font-size: 11px;
+}
+span.admin-check-svg {
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
+}
+.angular-editor-textarea {
+  height: 135px !important;
+}
+.note-text {
+  max-height: 200px;
+  overflow: auto;
+}
+.kt-multy-user-dw.show {
+  width: 100%;
+  transform: unset !important;
+}
+
+.kt-admin-mute span path {
+  fill: #959595;
+}
+
+.kt-admin-mute {
+  color: #959595;
+}
+
+/*-------user notes css------------*/
+.kt-user-2lt {
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  text-align: center;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  color: #fff;
+  align-items: center;
+  justify-content: center;line-height: 15px;text-transform: uppercase;
+}
+.kt-user-dt {
+  display: flex;
+  align-items: center;
+}
+.kt-user-name {
+  margin-left: 5px;
+  font-size: 14px;
+  text-transform: capitalize;
+  font-weight: 500;
+  color: #5e5e5e;
+}
+span.kt-met-time-date {
+  font-size: 11px;
+  color: #8f8f8f;
+  margin-left: 6px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+
+.kt-user-note {
+  background-color:#f7f8fa;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+.kt-user-note p {
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #646464;
+}
+.kt-user-note ul {
+  padding-left: 22px;
+}
+.kt-user-note ul li {
+  color: #646464;
+  font-size: 13px;
+}
+.kt-card {
+  margin-bottom: 10px;
+}
+.kt-organizer-dt {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-left: 54px;
+}
+
+span.side-icns.kt-org-ic {
+  width: 45px;
+}
+.kt-org-v span {
+  font-size: 11px;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  color: #a3a3a3;
+}
+.kt-org-v p {
+  margin-bottom: 0px;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #727272;
+}
+.kt-organizer-dt {
+  background-color: #f0f7ff;padding-right: 0px !important;
+}
+.kt-clr-1 {
+  background-color: #ffac00 !important;
+}
+.kt-clr-bg-1 {
+  background-color: #fffaef !important;
+}
+.kt-clr-2 {
+  background-color: #537c4a !important;
+}
+.kt-clr-bg-2 {
+  background-color: #efffe7 !important
+}
+
+.kt-clr-3 {
+  background-color: #7b63ff !important;
+}
+.kt-clr-bg-3 {
+  background-color:#7b63ff1a !important;
+}
+
+.kt-mt-dw {
+  max-height: 150px;
+  overflow: auto;
+}
+/*--------meeting notes data view btn -------------*/
+.svg-met-note svg {
+  height: 25px;
+  width: 25px;
+  position: fixed;
+  fill: #ffffff;
+  position: relative;
+  top: 2px;
+}
+
+.kt-met-notes-v {
+  padding: 5px 15px;
+  background-color: transparent;
+  border: 1px solid #2786fb;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px; 
+  background-color: #2786fb;
+  color: #fff;cursor: pointer;
+}
+
+.titlediv{
+  position: relative;
+  cursor: pointer;
+  color: #636363;
+  font-size: 13px;
+  line-height: 27px;
+ width: 100%;
+  font-weight: 400;
+  padding: 5px 4px;
+  border-radius: 2px;
+  background-color: #ecf5ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.kt-text-wrap{
+  white-space: nowrap;
+  overflow: hidden!important;
+  text-overflow: ellipsis;
+  width: 75%;
+}
+.titlediv.collapsed i {
+  transform: rotate(270deg);
+}
+
+.titlediv i{
+  position: relative;
+  right: 0;
+  top: 6px;
+  color: #747a96;
+}
+
+.kt-meeting-list-view {
+  margin-bottom: 5px;
+}
+
+.kt-met-notes-v:hover {
+  background-color: #f7f8fa;
+  color: #2786fb;
+  fill: #2786fb;
+}
+
+.kt-met-notes-v:hover .svg-met-note svg {
+  fill: #2786fb;
+}
+.admin-check span:hover {
+  background-color: #e1efff;
+  color: #2786fb;
+  padding: 1px 2px;
+  border-radius: 3px;
 }

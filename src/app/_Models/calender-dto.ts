@@ -1,7 +1,14 @@
 export class CalenderDTO {
+    location:String;
+    loc_status:Boolean;
+    Schedule_type:number;
+    Emp_no:number;
+    Status_type:string;
+    IsAdmin:boolean;
+    Meeting_notes:any;
     Portfolio:string;
     Dms:string;
-    User_list:string;
+    User_list:any;
     Project:string;
     Notes:string;
     Action_item:any;
@@ -24,7 +31,7 @@ export class CalenderDTO {
     End_time:string;
     Status:boolean;
     Note:string;
-    Emp_No:string;
+    Emp_No:any;
     Weekday:string;
     json:string;
     Checkdatetimejson:string;
@@ -37,6 +44,7 @@ export class CalenderDTO {
     Title:String;
     Task_Name:string;
     Scheduledsearchlist:string;
+    previousmeet_data:string;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

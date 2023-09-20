@@ -23,6 +23,11 @@ export const DEFAULT_ROUTES: Routes = [
 
      },
      {
+          path: 'ArchiveView/:projectcode/:url', canActivate: [AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/fileview/fileview.module').then(m => m.FileviewModule),
+
+     },
+     {
           path: 'Notifications', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/notification/notification.module').then(m => m.NotificationModule),
 

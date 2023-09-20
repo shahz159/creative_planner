@@ -107,7 +107,7 @@
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
                             class="badge badge-info kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} Under
-                            Approval's</a>
+                            Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
                         <a href="javascript:void(0)" (click)="labelProjectHold()" [hidden]="HideStatusDropdown"
@@ -176,8 +176,30 @@
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
+                                        
                                         <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
+                                            <div class="card my-1 shadow-sm brdr kt-pot-ttls">
+                                                <div class="card-body d-flex align-items-center justify-content-around">
+                                                    <div class="icond"></div>
+                                                    <div class="mx-2 p-1" style="flex: 1;" (click)="_SortProjectList()"> <p class="kt-widget__title mb-0" style="width: 250px;"  >
+                                                        <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fas fa-sort-alpha-up"></i>
+                                                        </a>
+                                                        <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fa fa-sort-alpha-down-alt"></i>
+                                                        </a>ProjectName</p></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></div>
+                                                    <div class="mx-2 p-1" style="flex: 1;"><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></div>
+                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </div>
+                                                    <div class="mx-2 p-1" style="flex: 0.5;"><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </div>
+                                                    <div class="mx-2 p-1"  style="flex: 0;"><span class="kt-widget__other tb-w-45"> Actions</span> </div>
 
+                                                </div>
+                                            </div>
                                             <ng-container
                                             *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
                                             
@@ -368,11 +390,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="mx-2 p-1" style="flex: 0;" *ngIf="viewpreference != 'View Only'">
+                                                      <div class="tb-w-45">
                                                         <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
-                                                            (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
-                                                            <i class="fas fa-trash-alt mr-0"
-                                                                aria-hidden="true"></i>
-                                                        </a>
+                                                        (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
+                                                        <i class="fas fa-trash-alt mr-0"
+                                                            aria-hidden="true"></i>
+                                                    </a>
+                                                      </div>
+                                                       
                                                     </div>                                           
                                                 </div>
                                             </div>

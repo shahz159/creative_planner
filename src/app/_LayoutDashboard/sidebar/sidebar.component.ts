@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
 
     $(document).ready(function() {  
       // import('../../../assets/js/test.js');
-      $('<script/>',{type:'text/javascript', src:'assets/js/test.js'}).appendTo('head');
+      $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
     });
 
     tippy('#dashboard', {
@@ -145,10 +145,11 @@ export class SidebarComponent implements OnInit {
    // alert("test");
   // }
   menuopen(){ 
-    //document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open-dropdown");
-    // document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--hover");
-    // document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open-dropdown");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--hover");
+    document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open");
   }
+
   logout() {
     this.loadingBar_state.stop();
     //console.log('logout');
@@ -160,10 +161,10 @@ export class SidebarComponent implements OnInit {
     // window.sessionStorage.clear();
     
     //localStorage.removeItem('EmpNo');
-   //window.localStorage.clear();
+    //window.localStorage.clear();
     //console.log("local Storage----->", localStorage.getItem('EmpNo'));
-    
   }
+
   clearSession(): void {
     localStorage.clear();
     sessionStorage.clear();

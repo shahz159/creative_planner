@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12">
             <!--begin:: Widgets/Authors Profit-->
-            <div class="kt-portlet kt-portlet--bordered-semi">
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <div class="dropdown">                            
@@ -561,7 +561,7 @@
                 </div>
             </div>
             <!--begin::Portlet-->
-            <div class="kt-portlet">
+            <div class="kt-portlet scrollbar1">
                 <!-- <div class="kt-portlet__head">
                     <div class="col-md-6 py-3">
                         <input type="text" class="form-control" [(ngModel)]="portfolioName"
@@ -708,10 +708,8 @@
                                                     <td><span class="kt-widget__other">{{item.Team_Res}}</span>
                                                     </td>
                                                     <td>
-                                                        <div
-                                                            *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
-                                                            <span
-                                                                class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
+                                                        <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
+                                                            <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">

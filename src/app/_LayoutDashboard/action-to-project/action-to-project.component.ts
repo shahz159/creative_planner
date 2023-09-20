@@ -16,6 +16,7 @@ import { MoreDetailsComponent } from '../more-details/more-details.component';
 import * as moment from 'moment';
 import { event } from 'jquery';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -73,7 +74,7 @@ export class ActionToProjectComponent implements OnInit {
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
-    public router: Router,
+    public router: Router,public _meetingreport: MeetingReportComponent,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
     public service: ProjectTypeService,
@@ -346,7 +347,7 @@ export class ActionToProjectComponent implements OnInit {
       return false;
     }
     if(this.owner==null || this.owner==undefined || this.owner==''){
-      this.ownerNo=this.Owner_Empno;
+      this.owner=this.Owner_Empno;
     }
     else{
       this.owner = this.owner;
@@ -459,9 +460,17 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
+        else if(this._Urlid == 3){
+          this._meetingreport.getScheduleId();
+            this._meetingreport.GetAssigned_SubtaskProjects();
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
+        }
         else {
           this._MoreDetails.GetProjectDetails();
           this._MoreDetails.GetSubtask_Details();
+          this._MoreDetails.getapproval_actiondetails();
           this.Clear_Feilds();
           this.closeInfo();
           this._inputAttachments = [];
@@ -538,6 +547,9 @@ export class ActionToProjectComponent implements OnInit {
     }
     else if(this._Urlid==1){
       this.router.navigate(["./backend/ToDoProjects/"]);
+    }
+    else if(this._Urlid==3){
+      this._meetingreport.getScheduleId();
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
