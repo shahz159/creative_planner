@@ -1359,6 +1359,15 @@ class SidebarComponent {
             inertia: true,
             placement: 'right'
         });
+        (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#moredetpage', {
+            content: "MoreInfo",
+            arrow: true,
+            animation: 'scale-extreme',
+            theme: 'gradient',
+            animateFill: true,
+            inertia: true,
+            placement: 'right'
+        });
         (0,node_modules_tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('#todo', {
             content: "Process details",
             arrow: true,
@@ -1460,6 +1469,13 @@ class SidebarComponent {
         var myWindow = window.open(myurl);
         myWindow.focus();
     }
+    Btn_Moreinfo() {
+        let name = "Details";
+        var url = document.baseURI + name;
+        var myurl = `${url}`;
+        var myWindow = window.open(myurl);
+        myWindow.focus();
+    }
     notinAction() {
         this.notifyService.showError("Development Under Maintainance", 'Failed');
     }
@@ -1469,7 +1485,7 @@ class SidebarComponent {
     }
 }
 SidebarComponent.ɵfac = function SidebarComponent_Factory(t) { return new (t || SidebarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_Services_auth_service__WEBPACK_IMPORTED_MODULE_1__.AuthService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_Services_notification_service__WEBPACK_IMPORTED_MODULE_2__.NotificationService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_ngx_loading_bar_core__WEBPACK_IMPORTED_MODULE_6__.LoadingBarService)); };
-SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: SidebarComponent, selectors: [["app-sidebar"]], decls: 69, vars: 2, consts: [["id", "kt_aside_close_btn", 1, "kt-aside-close"], [1, "la", "la-close"], ["id", "kt_aside", 1, "kt-aside", "kt-aside--fixed", "kt-grid__item", "kt-grid", "kt-grid--desktop", "kt-grid--hor-desktop"], ["id", "kt_aside_brand", 1, "kt-aside__brand", "kt-grid__item"], [1, "kt-aside__brand-logo"], ["alt", "Logo", "src", "assets/icons/Artboard Copy.png", "id", "creative", 2, "width", "60px"], ["alt", "Logo", "src", "assets/icons/Artboard.png", 1, "logo-txt"], ["id", "kt_aside_menu_wrapper", 1, "kt-aside-menu-wrapper", "kt-grid__item", "kt-grid__item--fluid", "pt-0"], ["id", "kt_aside_menu", "data-ktmenu-vertical", "1", "data-ktmenu-dropdown", "1", "data-ktmenu-scroll", "0", 1, "kt-aside-menu", "kt-aside-menu--dropdown"], [1, "kt-menu__nav", "pt-0"], [1, "kt-menu__item"], ["routerLink", "dashboard", "routerLinkActive", "active", 1, "kt-menu__link", 3, "routerLinkActiveOptions"], ["id", "dashboard", 1, "kt-menu__link-icon", "flaticon2-protection"], [1, "kt-menu__link-text"], [1, "kt-menu__ver-arrow", "la", "la-angle-right"], ["routerLink", "PerformanceDashboard", "routerLinkActive", "active", 1, "kt-menu__link"], ["id", "performance", 1, "kt-menu__link-icon", "far", "fa-chart-bar"], ["routerLink", "Portfolio", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "Portfolio", 1, "kt-menu__link-icon", "fas", "fa-list"], ["routerLink", "ProjectsSummary", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "summary", 1, "kt-menu__link-icon", "fab", "fa-wpforms"], ["routerLink", "ToDoProjects", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "todo", 1, "kt-menu__link-icon", "fas", "fa-clipboard-check"], [1, "kt-menu__link", "kt-menu__toggle", 3, "click"], ["id", "assign", 1, "kt-menu__link-icon", "fab", "fa-buffer"], ["id", "runway", 1, "kt-menu__link-icon", "fas", "fa-registered"], ["routerLink", "Timeline", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "timeline", 1, "kt-menu__link-icon", "fab", "fa-tumblr-square"], ["aria-haspopup", "true", "data-ktmenu-submenu-toggle", "click", 1, "kt-menu__item", "kt-menu__item--submenu", "kt-menu__item--bottom-1", 3, "click"], [1, "kt-menu__link", "kt-menu__toggle"], ["id", "logout", 1, "kt-menu__link-icon", "flaticon-logout"], [1, "side-btn", 3, "click"], [1, "btn-mini"], [1, "fas", "fa-chevron-left"], [1, "kt-aside-menu-overlay"]], template: function SidebarComponent_Template(rf, ctx) { if (rf & 1) {
+SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: SidebarComponent, selectors: [["app-sidebar"]], decls: 75, vars: 2, consts: [["id", "kt_aside_close_btn", 1, "kt-aside-close"], [1, "la", "la-close"], ["id", "kt_aside", 1, "kt-aside", "kt-aside--fixed", "kt-grid__item", "kt-grid", "kt-grid--desktop", "kt-grid--hor-desktop"], ["id", "kt_aside_brand", 1, "kt-aside__brand", "kt-grid__item"], [1, "kt-aside__brand-logo"], ["alt", "Logo", "src", "assets/icons/Artboard Copy.png", "id", "creative", 2, "width", "60px"], ["alt", "Logo", "src", "assets/icons/Artboard.png", 1, "logo-txt"], ["id", "kt_aside_menu_wrapper", 1, "kt-aside-menu-wrapper", "kt-grid__item", "kt-grid__item--fluid", "pt-0"], ["id", "kt_aside_menu", "data-ktmenu-vertical", "1", "data-ktmenu-dropdown", "1", "data-ktmenu-scroll", "0", 1, "kt-aside-menu", "kt-aside-menu--dropdown"], [1, "kt-menu__nav", "pt-0"], [1, "kt-menu__item"], ["routerLink", "dashboard", "routerLinkActive", "active", 1, "kt-menu__link", 3, "routerLinkActiveOptions"], ["id", "dashboard", 1, "kt-menu__link-icon", "flaticon2-protection"], [1, "kt-menu__link-text"], [1, "kt-menu__ver-arrow", "la", "la-angle-right"], ["routerLink", "PerformanceDashboard", "routerLinkActive", "active", 1, "kt-menu__link"], ["id", "performance", 1, "kt-menu__link-icon", "far", "fa-chart-bar"], ["routerLink", "Portfolio", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "Portfolio", 1, "kt-menu__link-icon", "fas", "fa-list"], ["routerLink", "ProjectsSummary", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "summary", 1, "kt-menu__link-icon", "fab", "fa-wpforms"], ["routerLink", "ToDoProjects", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "todo", 1, "kt-menu__link-icon", "fas", "fa-clipboard-check"], [1, "kt-menu__link", "kt-menu__toggle", 3, "click"], ["id", "assign", 1, "kt-menu__link-icon", "fab", "fa-buffer"], ["id", "runway", 1, "kt-menu__link-icon", "fas", "fa-registered"], ["routerLink", "Timeline", "routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle"], ["id", "timeline", 1, "kt-menu__link-icon", "fab", "fa-tumblr-square"], ["routerLinkActive", "active", 1, "kt-menu__link", "kt-menu__toggle", 3, "click"], ["id", "moredetpage", 1, "kt-menu__link-icon", "fa", "fa-chart-bar", "info-icon-cir"], ["aria-haspopup", "true", "data-ktmenu-submenu-toggle", "click", 1, "kt-menu__item", "kt-menu__item--submenu", "kt-menu__item--bottom-1", 3, "click"], [1, "kt-menu__link", "kt-menu__toggle"], ["id", "logout", 1, "kt-menu__link-icon", "flaticon-logout"], [1, "side-btn", 3, "click"], [1, "btn-mini"], [1, "fas", "fa-chevron-left"], [1, "kt-aside-menu-overlay"]], template: function SidebarComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "button", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](1, "i", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
@@ -1536,21 +1552,29 @@ SidebarComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](58, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](59, "li", 28);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_li_click_59_listener() { return ctx.logout(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](60, "a", 29);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](61, "i", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](59, "li", 10)(60, "a", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_a_click_60_listener() { return ctx.Btn_Moreinfo(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](61, "i", 29);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](62, "span", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](63, "Logout");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](63, "More Info");
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](64, "i", 14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](65, "li", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_li_click_65_listener() { return ctx.logout(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](66, "a", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](67, "i", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](68, "span", 13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](69, "Logout");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](70, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()()()()();
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](65, "div", 31);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_div_click_65_listener() { return ctx.menutoggle(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](66, "button", 32);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](67, "i", 33);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](71, "div", 33);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function SidebarComponent_Template_div_click_71_listener() { return ctx.menutoggle(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](72, "button", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](73, "i", 35);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()()();
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](68, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](74, "div", 36);
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](12);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("routerLinkActiveOptions", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction0"](1, _c0));
@@ -4204,6 +4228,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// import { MoreinfoComponent } from './_LayoutDashboard/moreinfo/moreinfo.component';
+// import { MoreinfoModule } from './_LayoutDashboard/moreinfo/moreinfo.module';
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
 //  import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
@@ -4217,6 +4243,7 @@ AppModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵ�
 AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵɵdefineInjector"]({ providers: [_guards_auth_guard__WEBPACK_IMPORTED_MODULE_5__.AuthGuard
         // ,ProjectUnplannedTaskComponent
     ], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__.BrowserModule,
+        // MoreinfoModule,
         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_12__.BrowserAnimationsModule,
         _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule,
         src_app_material_module__WEBPACK_IMPORTED_MODULE_4__.MaterialModule,
@@ -4246,6 +4273,7 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵ�
         //FilterPipeSearchPipe,
         // ProjectInfoComponent
     ], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__.BrowserModule,
+        // MoreinfoModule,
         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_12__.BrowserAnimationsModule,
         _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule,
         src_app_material_module__WEBPACK_IMPORTED_MODULE_4__.MaterialModule,
@@ -4631,6 +4659,10 @@ const DEFAULT_ROUTES = [
     {
         path: 'UnplannedTask', canActivate: [_guards_auth_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuard],
         loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_amcharts_amcharts4_charts_js-node_modules_amcharts_amcharts4_core_js"), __webpack_require__.e("default-src_app__LayoutDashboard_project-info_truncate_pipe_ts-src_app__LayoutDashboard_to-do-5edd93"), __webpack_require__.e("default-src_app__LayoutDashboard_projects-summary_projects-summary_component_ts"), __webpack_require__.e("default-src_app__Services_link_service_ts-node_modules_underscore_modules_index-all_js"), __webpack_require__.e("default-src_app__Services_calender_service_ts-node_modules_kolkov_angular-editor___ivy_ngcc__-f69c55"), __webpack_require__.e("default-src_app__LayoutDashboard_meeting-report_meeting-report_component_ts"), __webpack_require__.e("default-src_app__LayoutDashboard_project-unplanned-task_project-unplanned-task_component_ts"), __webpack_require__.e("default-src_app__LayoutDashboard_more-details_more-details_component_ts-src_app__LayoutDashbo-5d3506"), __webpack_require__.e("src_app__LayoutDashboard_project-unplanned-task_project-unplanned-task_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ../_LayoutDashboard/project-unplanned-task/project-unplanned-task.module */ 25016)).then(m => m.ProjectUnplannedTaskModule)
+    },
+    {
+        path: 'Details', canActivate: [_guards_auth_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuard],
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_details_details_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../_LayoutDashboard/details/details.module */ 65033)).then(m => m.DetailsModule)
     },
     {
         path: 'ViewProjects/:Mode', canActivate: [_guards_auth_guard__WEBPACK_IMPORTED_MODULE_0__.AuthGuard],

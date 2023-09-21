@@ -15,7 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class TruncatePipe {
     transform(value, maxLength) {
-        return value.length > maxLength ? value.slice(0, maxLength) + '...' : value;
+        return value.length > maxLength ? value.slice(0, maxLength).toString() + '...' : value;
     }
 }
 TruncatePipe.ɵfac = function TruncatePipe_Factory(t) { return new (t || TruncatePipe)(); };
