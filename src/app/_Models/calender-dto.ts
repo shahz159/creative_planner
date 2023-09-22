@@ -1,4 +1,5 @@
 export class CalenderDTO {
+    User_Type:string;
     location:String;
     loc_status:Boolean;
     Schedule_type:number;

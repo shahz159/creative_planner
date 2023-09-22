@@ -831,7 +831,33 @@ this.GetPreviousdate_meetingdata();
     // }
   }
 
+  time: number = 0;
+  display ;
+  interval1:number=0;
 
+ startTimer() {
+    console.log("=====>");
+    this.interval1 = setInterval(() => {
+      if (this.time === 0) {
+        this.time++;
+      } else {
+        this.time++;
+      }
+      this.display=this.transform( this.time)
+    }, 1000);
+  }
+
+  transform(value: number): string {
+    var sec_num = value; 
+  var hours   = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+  if (hours   < 1) {hours   = 0;}
+  if (minutes < 1) {minutes = 0;}
+  if (seconds < 1) {seconds = 0;}
+  return hours+':'+minutes+':'+seconds;
+  }
 
 
   Online_methodproject(event) {
@@ -1015,7 +1041,6 @@ Notes:any=[];
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");
-
   }
   dropsw() {
     var offbtn = $("#dropusers").offset();
