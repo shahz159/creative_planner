@@ -305,10 +305,12 @@ export class MoreDetailsComponent implements OnInit {
   underapproval_list:any;
   Inprocess_List: any;
   Delay_List: any;
+  Reject_List: any;
   CompletedList: any;
   inProcessCount: number;
   underapprovalcount:number;
   delaycount:number;
+  rejectcount:number;
   completedCount: number;
   subTaskCount: number;
   empDropdown: any = [];
@@ -611,7 +613,7 @@ export class MoreDetailsComponent implements OnInit {
       this.send_from= data[0]["sendFrom"];
       this.rejectactivity= data[0]["rejectactivity"];
       this.lastactivity = JSON.parse(data[0]["lastactivity"]);
-      // console.log(this.activity,this.lastactivity)
+      console.log(this.activity,this.lastactivity)
     });
   }
 
@@ -700,6 +702,7 @@ export class MoreDetailsComponent implements OnInit {
 
 
   submitApproval() {
+
     // if (this.requestType != 'Project Forward' && this.requestType!='Task Complete' && this.requestType!='Revert Back') {
     //   if (this.selectedType == '1') {
     //     this.approvalObj.Emp_no = this.Current_user_ID;
@@ -3635,12 +3638,15 @@ export class MoreDetailsComponent implements OnInit {
           this.underapproval_list = JSON.parse(data[0]['Underapproval_Responsibleations']);
           this.Inprocess_List= JSON.parse(data[0]['Inprocess_Responsibleations']);
           this.Delay_List= JSON.parse(data[0]['Delay_Responsibleations']);
+          this.Reject_List= JSON.parse(data[0]['Rejected_Responsibleations']);
+
           this.CompletedList = JSON.parse(data[0]['Completed_Responsibleations']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
 
           this.inProcessCount = this.Inprocess_List.length;
           this.underapprovalcount = this.underapproval_list.length;
           this.delaycount = this.Delay_List.length;
+          this.rejectcount = this.Reject_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
@@ -3654,11 +3660,12 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          // console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
           this.Inprocess_List= JSON.parse(data[0]['Inprocess_SubtaskDetails']);
           this.Delay_List= JSON.parse(data[0]['Delay_SubtaskDetails']);
+          this.Reject_List= JSON.parse(data[0]['Rejected_SubtaskDetails']);
+
           this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
 
@@ -3692,6 +3699,8 @@ export class MoreDetailsComponent implements OnInit {
           this.underapprovalcount = this.underapproval_list.length;
           this.inProcessCount = this.Inprocess_List.length;
           this.delaycount = this.Delay_List.length;
+          this.rejectcount = this.Reject_List.length;
+
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
@@ -3725,7 +3734,8 @@ export class MoreDetailsComponent implements OnInit {
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
-    else if(this.inProcessCount==1 && (this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Owner_EmpNo || this.Current_user_ID==this.Authority_EmpNo || this.isHierarchy==true)){
+    else if ((this.inProcessCount+this.delaycount)==1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true)) {
+    
       Swal.fire({
         title: 'This is the last action to be completed.',
         text: 'Do you want to proceed with main project submission?',
@@ -5087,6 +5097,10 @@ check_allocation(){
 
 
   updateMainProject() {
+    if(this.ProjectBlockName=='To do List'){
+      this.selectedFile=null;
+    }
+
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority);
@@ -5109,6 +5123,7 @@ check_allocation(){
           // console.log(this._Message,this.progress,"json");
         }
         this.closeInfo();
+        this.getapproval_actiondetails();
         this.GetSubtask_Details();
         this.GetProjectDetails();
         this.getapprovalStats();

@@ -614,6 +614,7 @@ class ActionToProjectComponent {
                 else {
                     this._MoreDetails.GetProjectDetails();
                     this._MoreDetails.GetSubtask_Details();
+                    this._MoreDetails.getapproval_actiondetails();
                     this.Clear_Feilds();
                     this.closeInfo();
                     this._inputAttachments = [];

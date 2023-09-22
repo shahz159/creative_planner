@@ -870,7 +870,7 @@
               <div>
                 <div class="my-2">
                   <label class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline">
-                    <i class="fa fa-clone mr-2"></i>{{this.Proj_ExecBlck}} </label>
+                    <i class="fa fa-clone mr-2"></i>{{Proj_ExecBlck}} </label>
                 </div>
               </div>
             </div>
@@ -879,8 +879,8 @@
               <span class="text-muted fs-5">{{this.Proj_Desc}}</span>
             </div>
         </div>
-        <div class="form-group mt-3">
-            <label>Attachments</label>
+        <div class="form-group mt-3" *ngIf="Proj_ExecBlck!='To do List'">
+            <label>Attachments <span class="text-danger">*</span></label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">
@@ -925,7 +925,9 @@
 
 
         <div class="form-group mb-1">
-            <button type="submit" class="btn btn-primary" [disabled]="_remarks==''" (click)="updateMainProject()">Submit
+            <button type="submit"  *ngIf="Proj_ExecBlck!='To do List'" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)" (click)="updateMainProject()">Submit
+            </button>
+            <button type="submit"  *ngIf="Proj_ExecBlck=='To do List'" class="btn btn-primary" [disabled]="_remarks==''" (click)="updateMainProject()">Submit
             </button>
         </div>
     </div>
