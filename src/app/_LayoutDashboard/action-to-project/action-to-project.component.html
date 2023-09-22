@@ -52,7 +52,7 @@
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
         <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
-            <ng-option [value]="item.Emp_No" *ngFor="let item of _EmployeeListForDropdown">
+            <ng-option [value]="item.Emp_No" [disabled]="item.Emp_No==Owner_Empno" *ngFor="let item of _EmployeeListForDropdown">
                 {{item.DisplayName}}
             </ng-option>
         </ng-select>

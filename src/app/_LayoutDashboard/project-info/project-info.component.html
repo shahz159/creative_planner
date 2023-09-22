@@ -124,7 +124,7 @@
     </div>
     <ng-container *ngIf="action_details">
         <div class="desc-msg rejct-msg">
-            <div class="d-flex align-items-center px-3" *ngFor="let item of action_details">
+            <div class="d-flex align-items-center" *ngFor="let item of action_details">
                 <h6 class="mb-0">This is an action for the project 
                     <a  href="javascript:void(0)" class="custom-link" (click)="moreDetails1(item.Master_Code)"
                         data-toggle="tooltip" title="click to open project in new window">{{item.Project_Name}} </a>

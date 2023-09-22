@@ -300,18 +300,32 @@ export class ActionToProjectComponent implements OnInit {
   maxlimit: boolean = true;
   _message: string;
   _Message: string;
+  start_dt:any =new Date();
+  end_dt:any =new Date();
+
 
   alertMaxAllocation() {
     if (this._StartDate == null || this._EndDate == null) {
       this._message = "Start Date/End date missing!!"
     }
     else {
-      var Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
+      // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+      // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+      this.start_dt=new Date(this._StartDate);
+      this.end_dt=new Date(this._EndDate);
+
+      console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+      
+      var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       if(Difference_In_Days==0){
         Difference_In_Days=-1;
+        this.maxAllocation = (-Difference_In_Days) * 10 / 1;
       }
-      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+      else{
+        this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+      }
+      console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
     }
   }
   
@@ -441,6 +455,9 @@ export class ActionToProjectComponent implements OnInit {
             this.notifyService.showSuccess("Action created successfully", "Success");
           }
           else if(this._Message=='2'){
+            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
+          }
+          else if(this._Message=='3'){
             this.notifyService.showError("Something went wrong", "Action not created");
           }
           else{
@@ -471,6 +488,7 @@ export class ActionToProjectComponent implements OnInit {
           this._MoreDetails.GetProjectDetails();
           this._MoreDetails.GetSubtask_Details();
           this._MoreDetails.getapproval_actiondetails();
+          this._MoreDetails.getRejectType();
           this.Clear_Feilds();
           this.closeInfo();
           this._inputAttachments = [];
