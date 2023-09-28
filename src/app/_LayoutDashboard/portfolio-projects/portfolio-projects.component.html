@@ -346,6 +346,18 @@
                                                             </span>
 
                                                         </div>
+                                                        <div *ngIf="item1.Status=='Cancellation Under Approval'">
+                                                            <span
+                                                                class="font-weight-400 text-cancel">{{item1.Status}}
+                                                            </span>
+
+                                                        </div>
+                                                        <div *ngIf="item1.Status=='Cancelled'">
+                                                            <span
+                                                                class="font-weight-400 text-cancel">{{item1.Status}}
+                                                            </span>
+
+                                                        </div>
                                                         <div *ngIf="item1.Status=='Forward Under Approval'">
                                                             <span
                                                                 class="font-weight-400 text-warning">{{item1.Status}}

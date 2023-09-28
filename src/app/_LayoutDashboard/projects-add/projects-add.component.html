@@ -400,6 +400,16 @@
                                                                 Approval
                                                             </span>
                                                         </div>
+                                                        <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                                            <span class="text-cancel font-weight-400">Cancellation
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Cancelled'">
+                                                            <span class="text-cancel font-weight-400">Cancelled
+                                                            </span>
+                                                        </div>
                                                         <div *ngIf="item.Status=='Under Approval'">
                                                             <span class="text-info font-weight-400">Under Approval
                                                             </span>

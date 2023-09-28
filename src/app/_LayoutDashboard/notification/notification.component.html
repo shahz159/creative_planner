@@ -332,9 +332,10 @@
                                                                || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
                                                     <span class="text-danger font-weight-400" 
                                                         *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
-                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' || item.Req_Type=='New Action Rejected'">{{item.Req_Type}}</span>
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' 
+                                                               || item.Req_Type=='New Action Rejected' || item.Req_Type=='Project Cancel'">{{item.Req_Type}}</span>
                                                     <span class="text-success font-weight-400" 
-                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
+                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span> 
                                                     <span class="text-primary font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 

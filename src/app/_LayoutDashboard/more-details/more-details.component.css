@@ -384,7 +384,7 @@
     /* Venkat Color -- background: #45abf5; */
     padding: 8px;
     border-radius: 10px;
-    left: 23%;
+    left: 13%;
   }
   
   .space-tabs .nav-item .nav-link {
@@ -752,6 +752,9 @@
   }
   .bg-primary ~ .task-status__controls {
     background-color: #5867dd !important;
+  }
+  .bg-cancel ~ .task-status__controls {
+    background-color: #F88282 !important;
   }
   .bg-warning ~ .task-status__controls {
     background-color: #ffb822 !important;

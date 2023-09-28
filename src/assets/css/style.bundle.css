@@ -7465,6 +7465,17 @@ a.close.disabled {
     vertical-align: text-top !important;
 }
 
+.bg-cancel {
+    background-color: #F88282 !important;
+}
+
+a.bg-cancel:hover,
+a.bg-cancel:focus,
+button.bg-cancel:hover,
+button.bg-cancel:focus {
+    background-color: #F88282 !important;
+}
+
 .bg-primary {
     background-color: #5867dd !important;
 }
@@ -10966,6 +10977,14 @@ a.text-success:focus {
 a.text-info:hover,
 a.text-info:focus {
     color: #0460d2 !important;
+}
+.text-cancel {
+    color: #F88282 !important;
+}
+
+a.text-cancel:hover,
+a.text-cancel:focus {
+    color: #d602c4 !important;
 }
 
 .text-warning {
@@ -44125,6 +44144,11 @@ td>.kt-radio.kt-radio--single {
 .kt-badge.kt-badge--unified-info {
     color: #2786fb;
     background: rgba(39, 134, 251, 0.1);
+}
+
+.kt-badge.kt-badge--unified-cancel {
+    color: #F88282;
+    background: rgba(253, 39, 235, 0.1);
 }
 
 .kt-badge.kt-badge--unified-warning {
