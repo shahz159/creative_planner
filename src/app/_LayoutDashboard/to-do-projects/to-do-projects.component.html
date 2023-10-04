@@ -212,6 +212,7 @@
                                         'text-warning':item.Status=='InProcess',
                                         'text-underApp':item.Status=='Under Approval',
                                         'text-primary':item.Status=='Completion Under Approval',
+                                        'text-cancel':item.Status=='Cancellation Under Approval' || item.Status=='Cancelled',
                                         'text-Rejected':item.Status=='New Project Rejected',
                                         'text-underApproval':item.Status=='Enactive Under Approval',
                                         'text-underApproval':item.Status=='Forward Under Approval',
@@ -269,15 +270,15 @@
                             <label data-toggle="tooltip" title="Project Name!" id="SpanProjName_{{Pid}}"
                                 class="text-info strong h5"
                                 [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks') 
-                                    && (Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && 
-                                    Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='New Project Rejected'
+                                    && (Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && Project_Status!='Cancellation Under Approval' && 
+                                    Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='New Project Rejected' && Project_Status!='Cancelled'
                                     && Project_Status!='Standardtask Enactive Hold')
                                     && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)}">
                                 <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
                                     [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" 
                                     *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval'  && Project_Status!='New Project Rejected'
-                                    && Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && 
-                                    Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval'
+                                    && Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && Project_Status!='Cancellation Under Approval' &&
+                                    Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='Cancelled'
                                     && Project_Status!='Standardtask Enactive Hold') 
                                     && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
                                 {{_ProjectName}}
@@ -333,6 +334,7 @@
                                         'text-warning':Project_Status=='InProcess',
                                         'text-underApp':Project_Status=='Under Approval',
                                         'text-primary':Project_Status=='Completion Under Approval',
+                                        'text-cancel':Project_Status=='Cancellation Under Approval' || Project_Status=='Cancelled',
                                         'text-Rejected':Project_Status=='New Project Rejected',
                                         'text-underApproval':Project_Status=='Enactive Under Approval',
                                         'text-underApproval2':Project_Status=='Forward Under Approval',

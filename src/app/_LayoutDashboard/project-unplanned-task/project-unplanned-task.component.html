@@ -606,7 +606,8 @@
                                                                     'kt-badge--unified-success':item.Project_status=='Completed',
                                                                     'kt-badge--unified-warning':item.Project_status=='InProcess',
                                                                     'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
-                                                                    'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval'}">
+                                                                    'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval',
+                                                                    'kt-badge--unified-cancel':item.Project_status=='Cancellation Under Approval' || item.Project_status=='Cancelled'}">
                                                                 <div> {{item.Project_status}}</div>
                                                          </span>
                                                          <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"

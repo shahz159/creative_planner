@@ -18,10 +18,12 @@ export class FileviewComponent implements OnInit {
   src: string;
   viewer: string;
   filename: string;
+  submitby: string;
   HistorySearch: string
-
+  ShowProgress: boolean = false;
   error: any;
   page = 1;
+  progress: number = 0;
   rotation = 0;
   zoom = 0.5;
   zoomScale = 'page-width';
@@ -109,6 +111,7 @@ export class FileviewComponent implements OnInit {
             }
             else if (pdf) {
               this.viewer = "pdf";
+              this.ShowProgress = true;
             }
             else if (Image) {
               this.viewer = "image";
@@ -129,6 +132,8 @@ export class FileviewComponent implements OnInit {
       let scontenttype = '';
       this.filename = params['filename'];
       this.filename = this.filename.replace(/%26/g, "&");
+      this.submitby = params['submitby'];
+      this.submitby = this.submitby.replace(/%26/g, "&");
       console.log(this.filename,"filename123");
 
       if(this.viewer==null || this.viewer=='' || this.viewer ==undefined){
@@ -219,7 +224,12 @@ export class FileviewComponent implements OnInit {
 
     this.isLoaded = progressData.loaded >= progressData.total;
     this.error = null; // clear error
+    this.progress = Math.round(progressData.loaded / progressData.total * 100);
+    if (this.progress == 100) this.ShowProgress = false;
+    // console.log(`Uploaded! ${this.progress}%`);
+
   }
+  
 
   getInt(value: number): number {
     return Math.round(value);

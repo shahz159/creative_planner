@@ -150,6 +150,9 @@
                 <h6 class="mb-0" *ngIf="_MainProjectStatus=='Enactive Under Approval'">The project is Enactive Under Approval with - 
                     {{item.Emp_Name}}
                 </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Cancellation Under Approval'">The project is Cancellation Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
             </div>
         </div>
     </ng-container>
@@ -794,7 +797,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdown"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed')">
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold') && Status=='InProcess'">
                                             <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 (click)="onHoldClick(Pid)">
@@ -1076,6 +1079,14 @@
                                         <h5 class="text-primary">{{item.Status}}
                                         </h5>
 
+                                    </div>
+                                    <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                        <h5 class="text-cancel">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Cancelled'">
+                                        <h5 class="text-cancel">{{item.Status}}
+                                        </h5>
                                     </div>
                                     <div *ngIf="item.Status=='New Project Rejected'">
                                         <h5 class="text-danger">{{item.Status}}</h5>

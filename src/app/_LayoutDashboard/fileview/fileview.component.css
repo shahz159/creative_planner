@@ -311,3 +311,42 @@ span.svg-icns1 svg path {
   /* background-color: rgba(60,64,67,.08); */
   fill: #2786fb !important;
 }
+.d-flex-center {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+.kt-cus-head {
+  padding: 10px 15px;
+  box-shadow: 1px 3px 4px #cccccc82;
+  background-color: #fff;
+  margin-bottom: 0.5rem;
+}
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family-sans-serif);
+    line-height: 1.5 !important;
+}
+.kt-inbox__message {
+  display: flex;
+  align-items: center;
+}
+.w-49 {
+  width: 49%;
+}
+
+.btn-rounded {
+  border-radius: 25px;
+}
+
+.kt-memo-dt-fl{
+  border-left: 1px solid #ccc;
+  padding-left: 10px;
+}
+
+
