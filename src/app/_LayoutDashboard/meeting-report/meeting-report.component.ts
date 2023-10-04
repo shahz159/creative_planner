@@ -52,7 +52,7 @@ export class MeetingReportComponent implements OnInit {
   Action_item: any = [];
 
   checkedusers: any = [];
-  ngEmployeeDropdown:any = [];
+  ngEmployeeDropdown: any = [];
   checkedproject: any = [];
   checkeddms: any = [];
   checkedportfolio: any = [];
@@ -185,7 +185,7 @@ export class MeetingReportComponent implements OnInit {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
-this.GetPreviousdate_meetingdata();
+    this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
     this.getProjectTypeList();
@@ -346,14 +346,14 @@ this.GetPreviousdate_meetingdata();
   leave: boolean = false;
   leavemeet(event: any) {
     this.leave = true;
-    
+
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
-    this.notifyService.showSuccess("Meeting left","Success");
+    this.notifyService.showSuccess("Meeting left", "Success");
 
-    
+
   }
   delayedFunction() {
     console.log('Function called after 5 seconds');
@@ -389,7 +389,7 @@ this.GetPreviousdate_meetingdata();
       (data => {
         this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
         this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
-        // console.log(this.Meetingnotes_time,'notes111')
+        console.log(this.Meetingnotes_time, 'notes111')
       });
 
   }
@@ -424,6 +424,38 @@ this.GetPreviousdate_meetingdata();
         console.log(this.CompletedMeeting_notes, 'notes11122')
       });
   }
+  EventNumber: any;
+  Statususer: any;
+  sch_date: any;
+  StatusType: boolean = true;
+  time = 0;
+  timer: any;
+  display:any;
+  interval1: number = 0;
+  InsertstartandendTimerMeeting(_val: string) {
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.Emp_No = this.CurrentUser_ID;
+    this._calenderDto.Status = _val;
+    this._calenderDto.User_Type = 'Admin';
+    this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
+      (data => {
+        if (_val == "Start") {
+          this.startTimer();
+          this.StatusType = false;
+        }
+        else if (_val == "Pause") {
+          clearInterval(this.interval1);
+          this.StatusType = true;
+        }
+        // this.startTimer();
+
+      })
+  }
+  // startTimer() {
+  //   this.timer = setInterval(() => {
+  //     this.time++;
+  //   }, 1000);
+  // }
   meetingpoint: string;
   Notespoint: string;
   empname: string;
@@ -454,7 +486,7 @@ this.GetPreviousdate_meetingdata();
 
     for (const element of this.ngEmployeeDropdown1) {
       this.ngEmployeeDropdown.push(element);
-  }
+    }
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
@@ -465,8 +497,8 @@ this.GetPreviousdate_meetingdata();
       (data => {
         this.meeting_details();
       });
-      this.ngEmployeeDropdown1=null;
-      this.notifyService.showSuccess("Participant added successfully","Success");
+    this.ngEmployeeDropdown1 = null;
+    this.notifyService.showSuccess("Participant added successfully", "Success");
   }
 
   updatedateandtime_meetingreport() {
@@ -699,6 +731,7 @@ this.GetPreviousdate_meetingdata();
   status: string;
   Createdby: string;
   sched_admin: string;
+  _duration: number = 0;
   meeting_details() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -707,11 +740,13 @@ this.GetPreviousdate_meetingdata();
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-
-        console.log(this.EventScheduledjson, "111111")
+        this._duration = data['duration'];
+        this.time = this._duration;
+        this.display = this.transform(this.time);
+        // console.log(this.EventScheduledjson, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
-        this.Isadmin = this.EventScheduledjson[0]['IsAdmin']
+        this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
         this.status = this.EventScheduledjson[0]['Status']
         this.Createdby = this.EventScheduledjson[0]['Created_by']
@@ -783,7 +818,7 @@ this.GetPreviousdate_meetingdata();
 
             });
         }
-         if (this.Meetingstatuscom == "Completed") {
+        if (this.Meetingstatuscom == "Completed") {
           this.isCheckboxDisabled = true;
         }
         else {
@@ -831,11 +866,10 @@ this.GetPreviousdate_meetingdata();
     // }
   }
 
-  time: number = 0;
-  display ;
-  interval1:number=0;
+  // time: number = 0;
 
- startTimer() {
+
+  startTimer() {
     console.log("=====>");
     this.interval1 = setInterval(() => {
       if (this.time === 0) {
@@ -843,20 +877,24 @@ this.GetPreviousdate_meetingdata();
       } else {
         this.time++;
       }
-      this.display=this.transform( this.time)
+      this.display = this.transform(this.time)
     }, 1000);
+  }
+  stopTimer() {
+    // Clear the interval to stop the timer.
+    clearInterval(this.interval1);
   }
 
   transform(value: number): string {
-    var sec_num = value; 
-  var hours   = Math.floor(sec_num / 3600);
-  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    var sec_num = value;
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-  if (hours   < 1) {hours   = 0;}
-  if (minutes < 1) {minutes = 0;}
-  if (seconds < 1) {seconds = 0;}
-  return hours+':'+minutes+':'+seconds;
+    if (hours < 1) { hours = 0; }
+    if (minutes < 1) { minutes = 0; }
+    if (seconds < 1) { seconds = 0; }
+    return hours + ':' + minutes + ':' + seconds;
   }
 
 
@@ -966,28 +1004,28 @@ this.GetPreviousdate_meetingdata();
 
   //     });
   // }
-Previousdata_meeting:any=[];
-sched_date:any;
-notes_data:any;
-Notes:any=[];
-  GetPreviousdate_meetingdata(){
+  Previousdata_meeting: any = [];
+  sched_date: any;
+  notes_data: any;
+  Notes: any = [];
+  GetPreviousdate_meetingdata() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
-    
+
     this.CalenderService.NewPrevious_meetingreport(this._calenderDto).subscribe
       (data => {
-       this.Previousdata_meeting=JSON.parse(data['previousmeet_data']);
+        this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
 
-       // Assuming Previousdata_meeting is an array of objects with a Previous_meeting property
-// this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+        // Assuming Previousdata_meeting is an array of objects with a Previous_meeting property
+        // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
 
-      //  this.Notes = this.Previousdata_meeting.filter(element => !element.Previous_meeting);
-      
-      //  this.Notes= this.Previousdata_meeting;
+        //  this.Notes = this.Previousdata_meeting.filter(element => !element.Previous_meeting);
 
-       console.log(this.Previousdata_meeting,"wassssss1111")
-    //  console.log(this.Notes,"wassssss") 
+        //  this.Notes= this.Previousdata_meeting;
+
+        console.log(this.Previousdata_meeting, "wassssss1111")
+        //  console.log(this.Notes,"wassssss") 
       });
   }
 
@@ -1037,7 +1075,7 @@ Notes:any=[];
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
-    this.notifyService.showSuccess("Meeting completed successfully","Success");
+    this.notifyService.showSuccess("Meeting completed successfully", "Success");
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");
@@ -1058,7 +1096,7 @@ Notes:any=[];
       (data) => {
         this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
       });
-    console.log(this.ProjectTypelist,"121")
+    console.log(this.ProjectTypelist, "121")
   }
 
   close_side() {
@@ -1067,7 +1105,7 @@ Notes:any=[];
   ActionedAssigned_Josn: any = [];
   assigncount: number;
   GetAssigned_SubtaskProjects() {
-   
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = 2411;
@@ -1089,7 +1127,7 @@ Notes:any=[];
         this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
         console.log("the sss", this._TodoList)
       });
-   
+
   }
   _taskName: any;
   task_id: any;
@@ -1122,7 +1160,7 @@ Notes:any=[];
     $("#mysideInfobar").scrollTop(0);
 
   }
-  _AssignId:any;
+  _AssignId: any;
   ActionToProject_Click(taskName, Assignid) {
     // debugger
     this._taskName = taskName;
@@ -1130,13 +1168,13 @@ Notes:any=[];
     this.router.navigate(["Meeting-Report/" + this.Schedule_ID + "/ActionToProject/3"]);
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
-    
+
     document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
-   
+
     //this.GetProjectsByUserName();
   }
 
@@ -1185,7 +1223,7 @@ Notes:any=[];
       this.refreshSubscription.unsubscribe();
     }
   }
-  Slide_meeting(){
+  Slide_meeting() {
     document.getElementById("metting_slide").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
