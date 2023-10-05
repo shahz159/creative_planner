@@ -138,7 +138,7 @@
                             </label>
                             <ng-container *ngIf="Status=='Project Hold'">
                                 <label data-toggle="tooltip" title="Project Status!"
-                                    class="kt-badge kt-badge--inline  cus-btn  px-3 py-1 kt-badge--pill hold-sec">
+                                    class="kt-badge kt-badge--inline text-white cus-btn  px-3 py-1 kt-badge--pill bg-danger">
                                     Hold until {{hold_upto}}
                                 </label><i class="fas fa-play mx-1 curser-pointer relse-act" data-toggle="tooltip"
                                     title="click here to release project" (click)="releaseholdProject()"
@@ -1448,7 +1448,7 @@
                                                                 </span>
                                                                 <div>
                                                                     <h5 data-toggle="tooltip" class=" "
-                                                                        *ngIf="item.SubProject_Status!='Delay'"
+                                                                        *ngIf="item.SubProject_Status!='Delay' && item.SubProject_Status!='Project Hold'"
                                                                         [ngClass]="{
                                                                 'text-success':item.SubProject_Status=='Completed',
                                                                 'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
@@ -1472,6 +1472,14 @@
                                                                         *ngIf="item.SubProject_Status=='Delay'">
                                                                         {{item.SubProject_Status}}
                                                                         {{item.Delaydays}} days</h5>
+                                                                    <h5 data-toggle="tooltip"
+                                                                        class=" text-danger"
+                                                                        data-toggle="tooltip"
+                                                                        title="Action Status!"
+                                                                        *ngIf="item.SubProject_Status=='Project Hold'">
+                                                                        Hold
+                                                                        
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1586,7 +1594,7 @@
                                                                         <h6 class="txtm-cus">Status</h6>
                                                                         <div>
                                                                             <h5 data-toggle="tooltip" class=" "
-                                                                                *ngIf="item.SubProject_Status!='Delay'"
+                                                                                *ngIf="item.SubProject_Status!='Delay' && item.SubProject_Status!='Project Hold'"
                                                                                 [ngClass]="{
                                                                         'text-success':item.SubProject_Status=='Completed',
                                                                         'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
@@ -1610,7 +1618,15 @@
                                                                                 title="Action Status!"
                                                                                 *ngIf="item.SubProject_Status=='Delay'">
                                                                                 {{item.SubProject_Status}}
-                                                                                {{item.Delaydays}} days</h5>
+                                                                                {{item.Delaydays}} days
+                                                                            </h5>
+                                                                            <h5 data-toggle="tooltip"
+                                                                                class=" text-danger"
+                                                                                data-toggle="tooltip"
+                                                                                title="Action Status!"
+                                                                                *ngIf="item.SubProject_Status=='Project Hold'">
+                                                                                Hold until {{hold_upto}}
+                                                                            </h5>
                                                                         </div>
                                                                     </div>
                                                                 </div>
