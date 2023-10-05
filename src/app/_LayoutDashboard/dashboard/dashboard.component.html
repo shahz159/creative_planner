@@ -664,7 +664,7 @@
            
             <!-- Calendar Ends -->
             <!-- Activities -->
-            <div class="col-lg-7">
+            <div class="col-lg-7" style="display: none;">
                 <!--begin:: Widgets/Authors Profit-->
                 <div class="kt-portlet kt-portlet--height-fluid">
                     <div class="kt-portlet__head">
@@ -931,7 +931,7 @@
                 </div>
             </div>
             <!-- Portfolio Activity -->
-            <div class="col-lg-5">
+            <div class="col-lg-5"  style="display: none;">
                 <div class="kt-portlet kt-portlet--height-fluid">
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
@@ -3146,9 +3146,10 @@
 
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
-                    (click)="OnSubmitSchedule()">Submit</button> &nbsp;
+                    (click)="OnSubmitSchedule()">Submit</button>
+                    <button type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Save Draft</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
-                <button type="cancel" class="btn btn-secondary btn-sm" (click)="Insert_indraft()">Draft</button>
+                
             </div>
 
 

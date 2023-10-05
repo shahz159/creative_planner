@@ -105,9 +105,10 @@ export class CalenderService {
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Status = obj.Status;
-    this.obj_CalenderDTO.Scheduled_date=obj.Scheduled_date;
-   this.obj_CalenderDTO.EventNumber=obj.EventNumber;
+  //   this.obj_CalenderDTO.Scheduled_date=obj.Scheduled_date;
+  //  this.obj_CalenderDTO.EventNumber=obj.EventNumber;
    this.obj_CalenderDTO.User_Type=obj.User_Type;
+   
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsert_timerrecordco", this.obj_CalenderDTO);
   }
   NewGetMeeting_notes(obj:CalenderDTO){
@@ -172,6 +173,7 @@ NewPending_table(obj:CalenderDTO){
     
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.draftid=obj.draftid;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
   }
 

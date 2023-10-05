@@ -520,25 +520,25 @@ export class DashboardComponent implements OnInit {
 
     this.GetDashboardSummary();
     this.getDashboardnotifications();
-    this.service.GetActivities(this.Current_user_ID).subscribe(
-      (data) => {
-        this._NotificationActivityList = data as NotificationActivityDTO[];
-        this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
-        this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
-      });
+    // this.service.GetActivities(this.Current_user_ID).subscribe(
+    //   (data) => {
+    //     this._NotificationActivityList = data as NotificationActivityDTO[];
+    //     this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
+    //     this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
+    //   });
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
-    this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
-      (data) => {
-        this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
-        this.TotalExpiryPortfolio = data[0]['DelayCount'];
-        if (this._ListProjStat.length == 0) {
-          this.messageForEmpty = false;
-        }
-        else {
-          this.messageForEmpty = true;
-        }
-      });
+    // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+    //   (data) => {
+    //     this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
+    //     this.TotalExpiryPortfolio = data[0]['DelayCount'];
+    //     if (this._ListProjStat.length == 0) {
+    //       this.messageForEmpty = false;
+    //     }
+    //     else {
+    //       this.messageForEmpty = true;
+    //     }
+    //   });
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
@@ -1719,6 +1719,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
+  
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -1892,6 +1893,7 @@ export class DashboardComponent implements OnInit {
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
+      this._calenderDto.draftid=this.draftid;
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
           if (_attachmentValue == 1) {
@@ -1969,7 +1971,10 @@ export class DashboardComponent implements OnInit {
           this.maxDate = null;
           this.calendar.updateTodaysDate();
           this.TImetable();
-
+if(this.draftid!=0){
+this.Getdraft_datalistmeeting();
+this.draftid=0
+}
         });
       this.closeschd();
     }
@@ -4283,9 +4288,12 @@ export class DashboardComponent implements OnInit {
       });
 
   }
+  draftid:number=0;
   draft_arry: any = [];
   darft_click(Sno, val) {
-    debugger
+
+    this.draftid=Sno;
+ 
     this.Task_type(val)
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
