@@ -11,5 +11,6 @@ export class DropdownDTO {
     Selected_SearchText:string;
 
     PortfolioId:number;
+    ActiveStatus:string;
 
 }

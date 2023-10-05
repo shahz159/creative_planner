@@ -15,6 +15,7 @@
                                 <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL Projects Summary</a>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="kt-portlet__head-label mr-2">
                         
@@ -168,6 +169,21 @@
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
                                                         </div>
+                                                        <div class="d-flex justify-content-between" *ngIf="cancelcheck=='1' && canceledit==false">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
+                                                                <p>Cancelled</p>
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{cancelcount}}</span>
+                                                        </div>
+                                                        <!-- <div>
+                                                            <input type="checkbox" id="cancelcheck" class="form-check-input ps-1 btn" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
+                                                            <label *ngIf="Type==type1 && isChecked==false" class="text-dark-50"> check to view RACIS cancelled projects</label>
+                                                            <label *ngIf="Type==type2  && isChecked==false" class="text-dark-50"> check to view All cancelled projects</label>
+                                                            <label *ngIf="Type==type1  && isChecked==true" class="text-danger"> uncheck to view RACIS projects</label>
+                                                            <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -187,8 +203,10 @@
                                                 </div>
                                             </div>
                                             <br>
+                                            
                                             <hr>
                                         </div>
+                                        
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <button

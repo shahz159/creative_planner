@@ -75,6 +75,7 @@ export const MY_DATE_FORMATS = {
 
 export class MoreDetailsComponent implements OnInit {
   @ViewChild('colp') colpRef!: ElementRef; // Reference to the collapsible content
+  
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     private _adapter: DateAdapter<any>,
@@ -480,7 +481,7 @@ export class MoreDetailsComponent implements OnInit {
 
         // console.log(this.action_details,this.approve_details,"details");
       }
-    })
+    });
   }
 
   moreDetails(pcode) {
@@ -1457,7 +1458,8 @@ export class MoreDetailsComponent implements OnInit {
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
-    this.Sub_Autho = item.Subtask_Autho;
+    this.Sub_Autho = item.Team_Res;
+    // alert(this.Sub_Autho)
     this.Sub_Status = item.SubProject_Status;
 
     document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
@@ -1607,10 +1609,10 @@ export class MoreDetailsComponent implements OnInit {
           if (this.Support_EmpNo.includes(this.Current_user_ID)) {
             this.supp = true;
           }
-          if (this.ProjectBlockName == 'To do List' || this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks') {
+          if (this.ProjectBlockName == 'To do List' || this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks'  || this.Status=='Cancelled') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' || this.Status=='Cancelled') {
             this.darbutton = false;
           }
         }
@@ -3690,7 +3692,7 @@ export class MoreDetailsComponent implements OnInit {
           this.raciPeople = values.join(", ");
           //console.log(this.raciPeople,"RACIS");
 
-          // console.log(this.Subtask_List, "tasklist");
+          console.log(this.Subtask_List, "tasklist");
           //SubTasks Multiselect start         
 
           this.dropdownSettings_Employee = {
@@ -3761,7 +3763,7 @@ export class MoreDetailsComponent implements OnInit {
             const fd = new FormData();
             fd.append("Project_Code", this.Sub_ProjectCode);
             fd.append("Master_Code", this._MasterCode);
-            fd.append("Team_Autho", this.Authority_EmpNo);
+            fd.append("Team_Autho", this.Sub_Autho);
             fd.append("Projectblock", this.ProjectBlock);
             fd.append("Remarks", this._remarks);
             fd.append('file', this.selectedFile);
@@ -3828,7 +3830,7 @@ export class MoreDetailsComponent implements OnInit {
           const fd = new FormData();
           fd.append("Project_Code", this.Sub_ProjectCode);
           fd.append("Master_Code", this._MasterCode);
-          fd.append("Team_Autho", this.Authority);
+          fd.append("Team_Autho", this.Sub_Autho);
           fd.append("Projectblock", this.ProjectBlock);
           fd.append("Remarks", this._remarks);
           fd.append('file', this.selectedFile);
@@ -3850,7 +3852,7 @@ export class MoreDetailsComponent implements OnInit {
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
-      fd.append("Team_Autho", this.Authority);
+      fd.append("Team_Autho", this.Sub_Autho);
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("Remarks", this._remarks);
       fd.append('file', this.selectedFile);
@@ -5091,6 +5093,7 @@ export class MoreDetailsComponent implements OnInit {
         if (this._Message == 'Project Hold Updated') {
           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.GetProjectDetails();
+          this.GetSubtask_Details();
           this.getReasonforholdandRejected();
           this.getRejectType();
           this.getholdate();
@@ -5226,7 +5229,6 @@ export class MoreDetailsComponent implements OnInit {
     this.starttimearr = [];
     this.endtimearr = [];
     $("#err2").empty();
-
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
@@ -5250,7 +5252,7 @@ export class MoreDetailsComponent implements OnInit {
 
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
-    fd.append("Team_Autho", this.Authority);
+    fd.append("Team_Autho", this.Authority_EmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
@@ -5857,7 +5859,7 @@ export class MoreDetailsComponent implements OnInit {
 
     Swal.fire({
       title: 'Project Cancel',
-      html: 'Are you sure to cancel the project "<strong>' + this.ProjectName +'</strong>" ?<br>Note: The cancelled project will be deactivated from Creative planner.',
+      html: 'Are you sure to cancel the project "<strong>' + this.ProjectName +'</strong>"?<br>Note: The cancelled project will be deactivated.',
       // icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Yes',

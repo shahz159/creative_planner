@@ -303,7 +303,15 @@
                         </div> -->
                         <!--Transfer end-->
                     </div>
-                    
+                    <div class=" pro-act ml-2" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true)">
+                        <button (click)="cancelProject()" class="btn22" *ngIf="(!Status.includes('Under Approval') && Status!='Completed' && Status!='Cancellation Under Approval' && Status!='Cancelled' && Status!='Project Hold')" data-toggle="tooltip"
+                                title="click to cancel the project">
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 32 32">
+                                    <path d="M 16 3 C 8.832031 3 3 8.832031 3 16 C 3 23.167969 8.832031 29 16 29 C 23.167969 29 29 23.167969 29 16 C 29 8.832031 23.167969 3 16 3 Z M 16 5 C 22.085938 5 27 9.914063 27 16 C 27 22.085938 22.085938 27 16 27 C 9.914063 27 5 22.085938 5 16 C 5 9.914063 9.914063 5 16 5 Z M 12.21875 10.78125 L 10.78125 12.21875 L 14.5625 16 L 10.78125 19.78125 L 12.21875 21.21875 L 16 17.4375 L 19.78125 21.21875 L 21.21875 19.78125 L 17.4375 16 L 21.21875 12.21875 L 19.78125 10.78125 L 16 14.5625 Z"></path>
+                                    </svg>  
+                            Project cancel
+                        </button>
+                    </div>
                     <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
                             && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                         class=" pro-act ml-2">
@@ -332,7 +340,7 @@
                         </button>
                     </div>
                     <div class=" pro-act ml-2" *ngIf="(Current_user_ID == approvalEmpId) && (pro_act==true)">
-                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status!='Completed')">
+                        <button class="btn22" (click)="sideviw();getapprovalStats()" *ngIf="(Status!='Completed'  && Status!='Cancelled')">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                                 <path
                                     d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11.0026 16L6.75999 11.7574L8.17421 10.3431L11.0026 13.1716L16.6595 7.51472L18.0737 8.92893L11.0026 16Z">
@@ -341,19 +349,11 @@
                             Approval
                         </button>
                     </div>
-                    <div class=" pro-act ml-2" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true)">
-                        <button (click)="cancelProject()" class="btn22" *ngIf="(!Status.includes('Under Approval') && Status!='Completed' && Status!='Cancellation Under Approval' && Status!='Cancelled' && Status!='Project Hold')" data-toggle="tooltip"
-                                title="click to cancel the project">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 32 32">
-                                    <path d="M 16 3 C 8.832031 3 3 8.832031 3 16 C 3 23.167969 8.832031 29 16 29 C 23.167969 29 29 23.167969 29 16 C 29 8.832031 23.167969 3 16 3 Z M 16 5 C 22.085938 5 27 9.914063 27 16 C 27 22.085938 22.085938 27 16 27 C 9.914063 27 5 22.085938 5 16 C 5 9.914063 9.914063 5 16 5 Z M 12.21875 10.78125 L 10.78125 12.21875 L 14.5625 16 L 10.78125 19.78125 L 12.21875 21.21875 L 16 17.4375 L 19.78125 21.21875 L 21.21875 19.78125 L 17.4375 16 L 21.21875 12.21875 L 19.78125 10.78125 L 16 14.5625 Z"></path>
-                                    </svg>  
-                            Project cancel
-                        </button>
-                    </div>
+                    
                     <!-- *ngIf="(Current_user_ID == Responsible_EmpNo)" -->
                     <div class=" pro-act ml-2" *ngIf="Status=='New Project Rejected' && Current_user_ID == Responsible_EmpNo">
-                        <button (click)="releaseProject()" class="btn22" *ngIf="(Status!='Completed')" data-toggle="tooltip"
-                                title="click to cancel the project">
+                        <button (click)="releaseProject()" class="btn22" *ngIf="(Status!='Completed'  && Status!='Cancelled')" data-toggle="tooltip"
+                                title="click to release the new project">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="100px" width="100px" version="1.1" viewBox="0 0 512 512" enable-background="new 0 0 512 512">
                                     <g>
                                       <g>
@@ -366,9 +366,9 @@
                             New project release
                         </button>
                     </div>
-                    <div class=" pro-act ml-2" *ngIf="Status=='Project Hold' && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true)">
-                        <button (click)="releaseholdProject()" class="btn22" *ngIf="(Status!='Completed')" data-toggle="tooltip"
-                                title="click to cancel the project">
+                    <!-- <div class=" pro-act ml-2" *ngIf="Status=='Project Hold' && (Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true)">
+                        <button (click)="releaseholdProject()" class="btn22" *ngIf="(Status!='Completed'  && Status!='Cancelled' )" data-toggle="tooltip"
+                                title="click to release the project">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="100px" width="100px" version="1.1" viewBox="0 0 512 512" enable-background="new 0 0 512 512">
                                     <g>
                                       <g>
@@ -380,7 +380,7 @@
 
                             Project release
                         </button>
-                    </div>
+                    </div> -->
                 </div>
 
 
@@ -390,7 +390,7 @@
                             title="Project Name!">{{ProjectName }}</h4>
                         <span class="text-info" [hidden]="Editbutton" (click)="OnEditProject(Pid,ProjectName)"
                             id="EidtBtn_{{Pid}}"
-                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)">
+                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Cancelled'">
                             <i *ngIf="ProjectName" class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                 title="edit project name"></i>
                         </span>
@@ -416,7 +416,7 @@
                         title="Project Description!">{{Description}}</span>
                     <span class="text-info " [hidden]="Editbutton" (click)="OnEditProject_Desc(Pid,Description)"
                         id="EidtBtn_{{Pid}}"
-                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)">
+                        *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)  && Status!='Cancelled'">
                         <i *ngIf="Description" class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                             title="edit project description"></i>
                     </span>
@@ -499,7 +499,7 @@
                                                 title="Extended Deadline for {{deadlineCount}} times"
                                                 *ngIf="deadlineCount>0">{{EndDate}}</h5>
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed'  && Status!='Cancelled')">
                                                 <span class="dropdown-toggle no-after text-info" aria-haspopup="true"
                                                     aria-expanded="false" (click)="onEditDeadline(Pid)">
                                                     <i *ngIf="EndDate" class="fas fa-edit ml-2 mb-1 curser-pointer"
@@ -546,7 +546,7 @@
 
                                             <!-- Project Hold  data-toggle="dropdown" (click)="onHoldClick(Pid)"-->
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed' && Status!='Project Hold') && (Status=='InProcess' || Status=='Delay')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed' && Status!='Project Hold'  && Status!='Cancelled' ) && (Status=='InProcess' || Status=='Delay')">
                                                 <span type="button" id="hold-icn" aria-haspopup="true"
                                                     aria-expanded="false" (click)="onHoldClick(Pid)"
                                                     class="dropdown-toggle no-after text-info">
@@ -555,11 +555,11 @@
                                                 </span>
                                             </div>
                                             <div class="dropdown"
-                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed' && Status=='Project Hold')">
+                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && (Status!='Completed'  && Status!='Cancelled'  && Status=='Project Hold')">
                                                 <span type="button" id="release-icn"
                                                     *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || isHierarchy==true) && (Status=='Project Hold')"
                                                     aria-haspopup="true" aria-expanded="false"
-                                                    (click)="release_project()"
+                                                    (click)="releaseholdProject()"
                                                     class="dropdown-toggle no-after text-info">
                                                     <i *ngIf="EndDate" class="fas fa-play mx-1 curser-pointer relse-act"
                                                         data-toggle="tooltip" title="click here to release project"></i>
@@ -661,7 +661,7 @@
                                     <h6 class="txtm-cus pt-1">Client</h6>
                                     <h5 class="mt-1">{{Client | truncate: 20}}
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)  && Status!='Cancelled'"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditClient()">
                                             <i *ngIf="Client" class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="edit project client"></i>
@@ -689,7 +689,7 @@
                                     <h6 class="txtm-cus pt-1">Owner</h6>
                                     <div class="d-flex align-items-center">
                                         <h5 class="mt-1">{{Owner}}</h5>
-                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)  && Status!='Cancelled'"
                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditProjectOwner()">
                                             <i *ngIf="Owner" data-toggle="tooltip" title="edit project owner"
                                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -735,7 +735,7 @@
                                     <div class="d-flex align-items-center">
                                         <h5 class="mt-1">{{Responsible}}</h5>
                                         <span type="button" id="-icn" class="text-info" 
-                                            *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Forward Under Approval')"
+                                            *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Forward Under Approval'  && Status!='Cancelled')"
                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditProjectResponsible()">
                                             <i *ngIf="Responsible" data-toggle="tooltip" title="edit project responsible"
                                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -766,7 +766,7 @@
                                     <h6 class="txtm-cus pt-1">Category</h6>
                                     <h5 class="mt-1" *ngIf="Category">{{Category}}
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)  && Status!='Cancelled'"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i *ngIf="Category" class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="edit project category"></i>
@@ -774,7 +774,7 @@
                                     </h5>
                                     <h5 class="mt-1" *ngIf="!Category">No category
                                         <span class="dropdown-toggle no-after text-info"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)  && Status!='Cancelled'"
                                             aria-haspopup="true" aria-expanded="false" (click)="onEditCategory()">
                                             <i *ngIf="!Category" class="fas fa-edit ml-2 mb-1 curser-pointer" data-toggle="tooltip"
                                                 title="edit project category"></i>
@@ -1391,12 +1391,12 @@
                                                 <div class="col-lg-12">
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio" (click)="OnSubtaskClick(item)"
-                                                        *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completed' && item.SubProject_Status!='New Project Rejected' && item.SubProject_Status!='Completion Under Approval'"
-                                                        [hidden]="(item.Team_Res!=Current_user_ID && isHierarchy==false )" />
+                                                        *ngIf="(item.Team_Res==Current_user_ID || isHierarchy==true) && (item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completed' && Status!='Cancelled' && item.SubProject_Status!='New Project Rejected' && item.SubProject_Status!='Completion Under Approval')"
+                                                         />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
                                                             <div class="subtask-list-title text-hover-primary 
-                                                                fs-5 mb-0 flex-hdv" *ngIf="item.SubProject_Status!='Completed'" >
+                                                                fs-5 mb-0 flex-hdv" *ngIf="item.SubProject_Status!='Completed'  && Status!='Cancelled' " >
                                                                 <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                                     data-toggle="tooltip" title="{{item.Project_Name }}" (click)="toggleExpand()">
                                                                     {{item.Project_Name |  truncate: isExpanded ?  9999 : 100}}</span>
@@ -1404,7 +1404,7 @@
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false "></i>
+                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
                                                                 </span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
                                                                     id="spanTextbox_{{item.id}}" >
@@ -1423,7 +1423,7 @@
                                                                     </div>
                                                                 </span>
                                                             </div>
-                                                            <div class="subtask-list-title text-hover-primary fs-5 mt-1"  *ngIf="item.SubProject_Status=='Completed'">
+                                                            <div class="subtask-list-title text-hover-primary fs-5 mt-1"  *ngIf="item.SubProject_Status=='Completed' || Status=='Cancelled' ">
                                                                 <span class="mr-2" id="SpanProjName_{{item.id}}"
                                                                 data-toggle="tooltip" title="{{item.Project_Name }}" (click)="toggleExpand()">
                                                                 {{item.Project_Name |  truncate: isExpanded ?  9999 : 100}}</span>
@@ -1491,7 +1491,7 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
                                                         
-                                                        <p *ngIf="item.SubProject_Status!='Completed'" [ngClass]="((item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && item.SubProject_Status!='Under Approval') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                        <p *ngIf="item.SubProject_Status!='Completed'  && Status!='Cancelled' " [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true || item.SubProject_Status!='Under Approval' || Status=='Cancelled') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="Span_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
@@ -1517,7 +1517,7 @@
                                                                 </div>
                                                             </span>
                                                         </p>
-                                                        <p class="mb-3 ml--2" *ngIf="item.SubProject_Status=='Completed'">
+                                                        <p class="mb-3 ml--2" *ngIf="item.SubProject_Status=='Completed'  || Status=='Cancelled' ">
                                                             <span class="mr-2" id="Span_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
@@ -1538,7 +1538,7 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed'"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed'  && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action owner"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -1563,7 +1563,7 @@
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'  && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action responsible"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -1638,7 +1638,7 @@
                                                                                 title="Start Date!">{{item.StartDate
                                                                                 |date:'dd-MM-yyyy'}}</h5>
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'">
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
                                                                                 <span type="button" id="start-icn"
                                                                                     (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
@@ -1656,7 +1656,7 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'">
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -1693,7 +1693,7 @@
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'">
+                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
                                                                                 <span type="button" id="alloc-icn"
                                                                                     (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
                                                                                     aria-haspopup="true"
@@ -1915,8 +1915,8 @@
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
                                                     (click)="OnSubtaskClick(item)"
-                                                    *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval'"
-                                                    [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
+                                                    *ngIf="item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval' && Status!='Cancelled'"
+                                                    [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false  && Status!='Cancelled'" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
                                                             <div class="subtask-list-title text-hover-primary 
@@ -1929,7 +1929,7 @@
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject_underapproval(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                        [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                                 </span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
                                                                     id="underapprovalTextbox_{{item.id}}">
@@ -2023,14 +2023,14 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
                                                         
-                                                        <p [ngClass]="((item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                        <p [ngClass]="((item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && item.SubProject_Status!='Under Approval' && item.SubProject_Status!='Completion Under Approval' && Status!='Cancelled') ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="underapproval_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
                                                             <span class="text-info" [hidden]="Editbutton"
                                                                 (click)="OnEditProject_Desc_underapproval(item.id,item.Project_Description)">
                                                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
-                                                                    [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                    [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                             </span>
                                                             <span class="kt-inbox__subject" style="display:none;"
                                                                 id="underapprovalTextarea_{{item.id}}">
@@ -2065,7 +2065,7 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action owner"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -2090,7 +2090,7 @@
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'  && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action responsible"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -2165,7 +2165,7 @@
                                                                                 title="Start Date!">{{item.StartDate
                                                                                 |date:'dd-MM-yyyy'}}</h5>
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="start-icn"
                                                                                     (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
@@ -2183,7 +2183,7 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -2220,7 +2220,7 @@
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="alloc-icn"
                                                                                     (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
                                                                                     aria-haspopup="true"
@@ -2435,7 +2435,7 @@
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
                                                     (click)="OnSubtaskClick(item)"
-                                                    *ngIf="item.SubProject_Status!='Under Approval'"
+                                                    *ngIf="item.SubProject_Status!='Under Approval' && Status!='Cancelled'"
                                                     [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
@@ -2449,7 +2449,7 @@
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject_inprocess(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                        [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                                 </span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
                                                                     id="InprocessTextbox_{{item.id}}">
@@ -2542,14 +2542,14 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
                                                         
-                                                        <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                        <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && Status!='Cancelled' ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="Inprocess_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
                                                             <span class="text-info" [hidden]="Editbutton"
                                                                 (click)="OnEditProject_Desc_inprocess(item.id,item.Project_Description)">
                                                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
-                                                                    [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                    [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                             </span>
                                                             <span class="kt-inbox__subject" style="display:none;"
                                                                 id="InprocessTextarea_{{item.id}}">
@@ -2584,7 +2584,7 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action owner"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -2609,7 +2609,7 @@
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'  && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action responsible"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -2683,7 +2683,7 @@
                                                                                 title="Start Date!">{{item.StartDate
                                                                                 |date:'dd-MM-yyyy'}}</h5>
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="start-icn"
                                                                                     (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
@@ -2701,7 +2701,7 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -2738,7 +2738,7 @@
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="alloc-icn"
                                                                                     (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
                                                                                     aria-haspopup="true"
@@ -2933,7 +2933,7 @@
                                                     <div class="d-flex-cen">
                                                     <input type="radio" name="Subtask" class="subtask-radio"
                                                     (click)="OnSubtaskClick(item)"
-                                                    *ngIf="item.SubProject_Status!='Under Approval'"
+                                                    *ngIf="item.SubProject_Status!='Under Approval'  && Status!='Cancelled' "
                                                     [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
                                                     <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                         <div class="d-flex-cen">
@@ -2947,7 +2947,7 @@
                                                                     id="EidtBtn_{{item.id}}"
                                                                     (click)="OnEditProject_delay(item.id,item.Project_Name)">
                                                                     <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                        [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                        [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                                 </span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
                                                                     id="DelayTextbox_{{item.id}}">
@@ -3040,14 +3040,14 @@
                                                 </div>
                                                     <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
                                                         
-                                                        <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                        <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && Status!='Cancelled' ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                             <span class="mr-2" id="Delay_DescName_{{item.id}}"
                                                                 data-toggle="tooltip" title="Action Description!">
                                                                 {{item.Project_Description}}</span>
                                                             <span class="text-info" [hidden]="Editbutton"
                                                                 (click)="OnEditProject_Desc_delay(item.id,item.Project_Description)">
                                                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
-                                                                    [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                    [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                             </span>
                                                             <span class="kt-inbox__subject" style="display:none;"
                                                                 id="DelayTextarea_{{item.id}}">
@@ -3082,7 +3082,7 @@
                                                                         <h6 class="txtm-cus">Owner</h6>
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Owner!">{{item.Subtask_Owner}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action owner"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -3107,7 +3107,7 @@
                                                                         <h5 class="" data-toggle="tooltip"
                                                                             title="Action Responsible!">
                                                                             {{item.Subtask_Res}}
-                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'"
+                                                                            <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'  && Status!='Cancelled'"
                                                                                 aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                                 <i data-toggle="tooltip" title="edit action responsible"
                                                                                 class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -3181,7 +3181,7 @@
                                                                                 title="Start Date!">{{item.StartDate
                                                                                 |date:'dd-MM-yyyy'}}</h5>
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="start-icn"
                                                                                     (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                     aria-haspopup="true"
@@ -3199,7 +3199,7 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -3236,7 +3236,7 @@
                                                                             {{item.SubtaskAllocated}} Hrs</h5>
 
                                                                             <div class="dropdown show"
-                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                                *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                                 <span type="button" id="alloc-icn"
                                                                                     (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
                                                                                     aria-haspopup="true"
@@ -3407,7 +3407,7 @@
                                                 <div class="d-flex-cen">
                                                 <input type="radio" name="Subtask" class="subtask-radio"
                                                 (click)="OnSubtaskClick(item)"
-                                                *ngIf="item.SubProject_Status!='Under Approval'"
+                                                *ngIf="item.SubProject_Status!='Under Approval' && Status!='Cancelled' && item.SubProject_Status!='New Project Rejected' "
                                                 [hidden]="item.Team_Res!=Current_user_ID && isHierarchy==false" />
                                                 <a class="d-flex justify-content-between collapsed lapse flex-1" data-toggle="collapse" href="#colp_{{item.IndexId+1}}" role="button" aria-expanded="false" aria-controls="">
                                                     <div class="d-flex-cen">
@@ -3421,7 +3421,7 @@
                                                                 id="EidtBtn_{{item.id}}"
                                                                 (click)="OnEditProject_delay(item.id,item.Project_Name)">
                                                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit action name"
-                                                                    [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                    [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                             </span>
                                                             <span class="kt-inbox__subject" style="display:none;"
                                                                 id="DelayTextbox_{{item.id}}">
@@ -3504,14 +3504,14 @@
                                                 </a>
                                             </div>
                                                 <div class="card-body pt-0 collapse p1 " id="colp_{{item.IndexId+1}}">
-                                                    <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) ? 'mb-3 ml-4' : 'mb-3 ml--2'">
+                                                    <p [ngClass]="(item.Team_Res==Current_user_ID || item.Project_Owner==Current_user_ID || item.Team_Autho==Current_user_ID || isHierarchy==true) && Status!='Cancelled' ? 'mb-3 ml-4' : 'mb-3 ml--2'">
                                                         <span class="mr-2" id="Delay_DescName_{{item.id}}"
                                                             data-toggle="tooltip" title="Action Description!">
                                                             {{item.Project_Description}}</span>
                                                         <span class="text-info" [hidden]="Editbutton"
                                                             (click)="OnEditProject_Desc_delay(item.id,item.Project_Description)">
                                                             <i class="fas fa-edit" data-toggle="tooltip" title="edit action description"
-                                                                [hidden]="item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false"></i>
+                                                                [hidden]="(item.Team_Res!=Current_user_ID && item.Project_Owner!=Current_user_ID && item.Team_Autho!=Current_user_ID && isHierarchy==false) || (Status=='Cancelled')"></i>
                                                         </span>
                                                         <span class="kt-inbox__subject" style="display:none;"
                                                             id="DelayTextarea_{{item.id}}">
@@ -3546,7 +3546,7 @@
                                                                     <h6 class="txtm-cus">Owner</h6>
                                                                     <h5 class="" data-toggle="tooltip"
                                                                         title="Action Owner!">{{item.Subtask_Owner}}
-                                                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                                                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && Status!='Cancelled'"
                                                                             aria-haspopup="true" aria-expanded="false" (click)="onEditActionOwner(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                             <i data-toggle="tooltip" title="edit action owner"
                                                                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -3571,7 +3571,7 @@
                                                                     <h5 class="" data-toggle="tooltip"
                                                                         title="Action Responsible!">
                                                                         {{item.Subtask_Res}}
-                                                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'"
+                                                                        <span type="button" id="-icn" class="text-info" *ngIf="(Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true) && item.SubProject_Status!='Completed' && item.SubProject_Status!='Forward Under Approval'  && Status!='Cancelled'"
                                                                             aria-haspopup="true" aria-expanded="false" (click)="onEditActionResponsible(item.id,item.Project_Name,i+1,item.Project_Code)">
                                                                             <i data-toggle="tooltip" title="edit action responsible"
                                                                             class="fas fa-edit ml-1 mb-1 curser-pointer"></i>
@@ -3644,7 +3644,7 @@
                                                                             title="Start Date!">{{item.StartDate
                                                                             |date:'dd-MM-yyyy'}}</h5>
                                                                         <div class="dropdown show"
-                                                                            *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                            *ngIf="(item.StartDate >= EndDate1) && (Current_user_ID=='2000' || Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                             <span type="button" id="start-icn"
                                                                                 (click)="onEditStartDate(item.id,item.Project_Name,i+1,item.Project_Code,item.StartDate)"
                                                                                 aria-haspopup="true"
@@ -3662,7 +3662,7 @@
                                                                             |date:'dd-MM-yyyy'}}</h5>
 
                                                                         <div class="dropdown show"
-                                                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                             <span type="button" id="end-icn"
                                                                                 aria-haspopup="true"
                                                                                 (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -3699,7 +3699,7 @@
                                                                         {{item.SubtaskAllocated}} Hrs</h5>
 
                                                                         <div class="dropdown show"
-                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho)">
+                                                                            *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
                                                                             <span type="button" id="alloc-icn"
                                                                                 (click)="OnEditProject_Alloc(item.id,item.Project_Name,i+1,item.Project_Code,item.SubtaskDuration)"
                                                                                 aria-haspopup="true"
@@ -4261,7 +4261,7 @@
                     <div class="tab-pane fade" id="DMS" role="tabpanel" aria-labelledby="DMS1">
                         <div class="bg-white p-3 mb-2 scrollbar1">
                             <div class="text-right">
-                                <button class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="AddDms()">
+                                <button class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" *ngIf="Status!='Cancelled'" (click)="AddDms()">
                                     <i class="fa fa-chart-bar"></i>Link DMS</button>
                             </div>
 
@@ -4289,7 +4289,7 @@
                         <div class="bg-white p-3 mb-2">
 
                             <div class="text-right">
-                                <button type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="AddPortfolio()">
+                                <button type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" *ngIf="Status!='Cancelled'" (click)="AddPortfolio()">
                                     <i class="fa fa-chart-bar"></i>Link Portfolio
                                 </button>
                             </div>
@@ -4345,7 +4345,7 @@
                                                     <div class="kt-inbox__datetime">
                                                         <small>{{tezz.Created_DT|date:'medium'}}</small>
                                                     </div>
-                                                    <div class="delete-btn">
+                                                    <div class="delete-btn" *ngIf="Status!='Cancelled'">
                                                         <i class="fas fa-edit invisible"></i>
                                                         <a
                                                             (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
@@ -4950,7 +4950,7 @@
                             <div class="">
                                 <!-- <button class="btn22 btn btn-label-primary btn-pill btn-sm mr-2" (click)="btmspace_opn()">Edit Tab</button> -->
                                 <!-- (click)="OnAddTaskClick()" -->
-                                <button title="Create New Action" *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+                                <button title="Create New Action" *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true)) && Status!='Cancelled'"
                                     class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold" (click)="onEditSupport()">
                                     <i class="fas fa-plus mr-2"></i>Add support team</button>
                             </div>
@@ -6692,54 +6692,6 @@
     </div>
     <!-- action duration edit end -->
 
-    <!-- Project release start-->
-    <div class="spacer--body" *ngIf="editRelease==true">
-        <div class="">
-            <ul class="kt-nav pb-0">
-                <li class="kt-nav__head py-0">
-                    <div><b>Edit project release date</b></div>
-                </li>
-                <li class="kt-nav__separator"></li>
-                <div class="height-scroll h-scr">
-
-                    <div class="px-4 py-3">
-                        <div class="form-group mb-1 d-flex">
-                            This project is on hold until {{hold_upto}}
-                        </div>
-                        <div class="form-group input-group">
-                            <label>Set new release date:<span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input matInput [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
-                                    (click)="picker7.open();" (dateChange)="orgValueChange1($event)"
-                                    [value]="dateR.value" [min]="minhold" [max]="maxhold" placeholder="Select Date"
-                                    class="form-control" name="date">
-                                <div class="input-group-append">
-                                    <mat-datepicker-toggle matSuffix [for]="picker7" class="btn-secondary">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker class="form-group" #picker7></mat-datepicker>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-1">
-                            <label>Remarks<span class="text-danger">*</span></label>
-                            <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
-                                placeholder="Define your exact reason to edit release date." style="height:70px;"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <li class="kt-nav__separator"></li>
-            </ul>
-            <div class="px-4 pb-3">
-                <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!hold_remarks"
-                    (click)="updateReleaseDate()">
-                    Submit
-                </button>
-                <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
-            </div>
-        </div>
-    </div>
-    <!-- Project release end -->
-
     <!-- Project cancel start-->
     <div class="spacer--body" *ngIf="editcancel==true">
         <div class="">
@@ -6787,7 +6739,14 @@
                     <div class="px-4 py-3">
                         <div class="form-group mb-1 d-flex">
                             <b>Project: {{ProjectName}}</b>
+                           
                         </div>
+                        <ng-container  *ngFor="let item of lastactivity">
+                            <h6 class="mb-0" *ngIf="activity=='New Project Rejected' || activity=='New Action Rejected'">
+                                {{activity}} for "{{item.rejectType}}".
+                            </h6>
+                            <h6> <strong>Reject comments:</strong> {{item.Req_Coments}}</h6>
+                        </ng-container>
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
@@ -6808,24 +6767,37 @@
     </div>
     <!-- new Project release end -->
 
-    <!--Project hold release start-->
-    <div class="spacer--body" *ngIf="editholdrelease==true">
+    <!-- Project release start-->
+    <div class="spacer--body" *ngIf="editRelease==true">
         <div class="">
             <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
-                    <div><b>Release project now</b></div>
+                    <div><b>Edit project release date</b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
-
                     <div class="px-4 py-3">
                         <div class="form-group mb-1 d-flex">
-                            <b>Project: {{ProjectName}}</b>
+                            This project is on hold until {{hold_upto}}
+                        </div>
+                        <div class="form-group input-group">
+                            <label>Set new release date:<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input matInput [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
+                                    (click)="picker7.open();" (dateChange)="orgValueChange1($event)"
+                                    [value]="dateR.value" [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                    class="form-control" name="date">
+                                <div class="input-group-append">
+                                    <mat-datepicker-toggle matSuffix [for]="picker7" class="btn-secondary">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker class="form-group" #picker7></mat-datepicker>
+                                </div>
+                            </div> 
                         </div>
                         <div class="form-group mb-1">
                             <label>Remarks<span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
-                                placeholder="Define your exact reason to release the hold project." style="height:150px;"></textarea>
+                                placeholder="Define your exact reason to edit release date." style="height:70px;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -6833,13 +6805,119 @@
             </ul>
             <div class="px-4 pb-3">
                 <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!hold_remarks"
-                    (click)="holdreleaseProject()">
+                    (click)="updateReleaseDate()">
                     Submit
                 </button>
                 <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
             </div>
         </div>
     </div>
-    <!-- Project hold release end -->
+    <!-- Project release end -->
+
+    <!--Project instant hold release start-->
+    <div class="spacer--body" *ngIf="editholdrelease==true">
+        <!-- <div class="kt-popup-tab-view d-flex align-items-center">
+            <div class="form-check mr-4">
+                <input class="form-check-input" type="radio" value="" id="p_now" name="radio2" checked="">
+                <label class="form-check-label" for="p_now">
+                    Release project now
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" id="p_later" name="radio2" >
+                <label class="form-check-label" for="p_later">
+                    Release project later
+                </label>
+            </div>
+        </div> -->
+        
+        <div class="">
+            <ul id="release-tabs" role="tablist" class="nav nav-pills px-3 release-tabs mb-0 pt-2">
+                <li class="nav-item">
+                    <a id="now-1" data-toggle="tab" href="#p_now" class="nav-link active">
+                        <span class="nav-text">Release now</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="later-1" data-toggle="tab" href="#p_later" class="nav-link">
+                        <span class="nav-text">Edit release date</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex">
+            <div class="px-4 py-3">
+                <b>Project: {{ProjectName}}</b><br>
+                This project is on hold until {{hold_upto}}
+            </div>
+        </div>
+        <div class="tab-content" id="release-tabbview">           
+            <div class="tab-pane fade show active" id="p_now" role="tabpanel" aria-labelledby="p_now">
+                <ul class="kt-nav pt-0">
+                    <!-- <li class="kt-nav__separator"></li> -->
+                    <div class="height-scroll h-scr">
+                        <div class="px-4 py-3">
+                            
+                            <div class="form-group mb-1">
+                                <label>Remarks<span class="text-danger">*</span></label>
+                                <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
+                                    placeholder="Define your exact reason to release the hold project." style="height:170px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <li class="kt-nav__separator"></li>
+                </ul>
+                <div class="px-4 pb-3">
+                    <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!hold_remarks"
+                        (click)="holdreleaseProject()">
+                        Submit
+                    </button>
+                    <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="p_later" role="tabpanel" aria-labelledby="p_later">
+                <ul class="kt-nav pt-0">
+                    <div class="height-scroll h-scr">
+                        <div class="px-4 py-3">
+                           
+                            <div class="form-group input-group">
+                                <label>Set new release date:<span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input matInput [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
+                                        (click)="picker7.open();" (dateChange)="orgValueChange1($event)"
+                                        [value]="dateR.value" [min]="minhold" [max]="maxhold" placeholder="Select Date"
+                                        class="form-control" name="date">
+                                    <div class="input-group-append">
+                                        <mat-datepicker-toggle matSuffix [for]="picker7" class="btn-secondary">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker class="form-group" #picker7></mat-datepicker>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group mb-1">
+                                <label>Remarks<span class="text-danger">*</span></label>
+                                <textarea class="form-control" [(ngModel)]="hold_remarks" placeholder="" rows="2" cols="20"
+                                    placeholder="Define your exact reason to edit release date." style="height:100px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <li class="kt-nav__separator"></li>
+                </ul>
+                <div class="px-4 pb-3">
+                    <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!hold_remarks"
+                        (click)="updateReleaseDate()">
+                        Submit
+                    </button>
+                    <button class="btn btn-outline-info btn-sm text-dark-75" (click)="close_space()">Close</button>
+                </div>
+
+            </div>
+        </div>
+           
+        <!-- </div> -->
+    </div>
+    <!-- Project instant hold release end -->
 
 </div>

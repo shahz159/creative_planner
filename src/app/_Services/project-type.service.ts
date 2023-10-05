@@ -152,6 +152,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
+    this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
@@ -164,6 +165,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
+    this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByOwner_ForSummary", this.ObjUserDetails);
   }
@@ -460,6 +462,8 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
+    this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
+
     //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsDataForSummary", this.objDropdownsDTO);
   }
@@ -469,6 +473,8 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
+    this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
+
     //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsOwnerDataForSummary", this.objDropdownsDTO);
   }

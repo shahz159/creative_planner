@@ -35,6 +35,7 @@ export class ProjectsSummaryComponent implements OnInit {
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
   edited: boolean = false;
+  canceledit: boolean =false;
   searchResult: Boolean = false;
   _ObjCompletedProj: CompletedProjectsDTO;
 
@@ -346,6 +347,25 @@ export class ProjectsSummaryComponent implements OnInit {
   Type:string;
   type1:string = "RACIS Projects";
   type2:string = "ALL Projects";
+  isChecked: boolean =false;
+  cancelcheck:any;
+  cancelcount:any;
+
+  onCheckboxClick(type) {
+    this.edited=false;
+    // Update the isChecked property whenever the checkbox is clicked
+    this.isChecked = !this.isChecked;
+    if(this.isChecked==true){
+      this.edited=true;
+    }
+    else{
+      this.edited=false;
+    }
+    this.GetProjectsByUserName(type);
+    // this.getDropdownsDataFromDB();
+    // this.applyFilters();
+    // alert(this.isChecked);
+  }
 
   GetProjectsByUserName(type) {
     this.Type=type;
@@ -354,10 +374,20 @@ export class ProjectsSummaryComponent implements OnInit {
     if(this.Type=='ALL Projects'){
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
+    if(this.isChecked==true){
+      this.ObjUserDetails.ActiveStatus = "Inactive";
+    }
+    else{
+      this.ObjUserDetails.ActiveStatus = "Active";
+    }
+    
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
         console.log("Summary Data---->", this._ProjectDataList);
       this.ActualDataList = data;
+      this.cancelcheck=this.ActualDataList[0]['cancel'];
+      this.cancelcount=this.ActualDataList[0]['cancelcount'];
+
       if (this._ProjectDataList.length > 0) {
       }
       this.un_FilteredProjects = this.ActualDataList;
@@ -380,10 +410,20 @@ export class ProjectsSummaryComponent implements OnInit {
     else if(this.Type=='RACIS Projects'){
       this.ObjUserDetails.PageNumber = this.CurrentPageNo;
       this.ObjUserDetails.PageSize = 30;
+      if(this.isChecked==true){
+        this.ObjUserDetails.ActiveStatus = "Inactive";
+      }
+      else{
+        this.ObjUserDetails.ActiveStatus = "Active";
+      }
+      
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
          console.log("Summary Data---->", this._ProjectDataList);
         this.ActualDataList = data;
+        this.cancelcheck=this.ActualDataList[0]['cancel'];
+        this.cancelcount=this.ActualDataList[0]['cancelcount'];
+
         if (this._ProjectDataList.length > 0) {
         }
         this.un_FilteredProjects = this.ActualDataList;
@@ -412,11 +452,17 @@ export class ProjectsSummaryComponent implements OnInit {
 
   getDropdownsDataFromDB() {
     if(this.Type=='ALL Projects'){
-      this._objDropdownDTO.EmpNo = this.Current_user_ID;
+    this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
+    if(this.isChecked==true){
+      this._objDropdownDTO.ActiveStatus = "Inactive";
+    }
+    else{
+      this._objDropdownDTO.ActiveStatus = "Active";
+    }
     // this._objDropdownDTO.PortfolioId = null;
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
       .subscribe((data) => {
@@ -457,7 +503,7 @@ export class ProjectsSummaryComponent implements OnInit {
         if(this.CurrentPageNo == this.LastPage){
           this.lastPagerecords=30;
         }
-        // console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords );
+        //  console.log(this._totalProjectsCount, this._CurrentpageRecords,this.LastPage,this.lastPagerecords,"drop" );
       });
     }
     else if(this.Type=='RACIS Projects'){
@@ -466,6 +512,12 @@ export class ProjectsSummaryComponent implements OnInit {
       this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
+      if(this.isChecked==true){
+        this._objDropdownDTO.ActiveStatus = "Inactive";
+      }
+      else{
+        this._objDropdownDTO.ActiveStatus = "Active";
+      }
       // this._objDropdownDTO.PortfolioId = null;
       this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO)
         .subscribe((data) => {
@@ -522,6 +574,7 @@ export class ProjectsSummaryComponent implements OnInit {
   isStatusChecked(item) {
     let arr = [];
     this.edited = true;
+    this.canceledit = true;
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Status: element.Name });
@@ -544,9 +597,11 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
       this.edited=false;
+      this.canceledit = false;
     }
     else{
       this.edited=true;
+      // this.canceledit = true;
     }
   }
 
@@ -554,6 +609,8 @@ export class ProjectsSummaryComponent implements OnInit {
 
   isTypeChecked(item) {
     let arr = [];
+    this.edited = true;
+    this.canceledit = true;
     console.log(this.TypeContInFilter,"type")
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
@@ -577,6 +634,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
       this.edited=false;
+      this.canceledit = false;
     }
     else{
       this.edited=true;
@@ -588,6 +646,7 @@ export class ProjectsSummaryComponent implements OnInit {
   isEmpChecked(item) {  
     let arr = [];
     this.edited = true;
+    this.canceledit = true;
     this.EmpCountInFilter.forEach(element => {     
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
@@ -610,6 +669,7 @@ export class ProjectsSummaryComponent implements OnInit {
     });
     if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
       this.edited=false;
+      this.canceledit = false;
     }
     else{
       this.edited=true;
@@ -649,6 +709,12 @@ export class ProjectsSummaryComponent implements OnInit {
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
     this.ObjUserDetails.PortfolioId = null;
+    if(this.isChecked==true){
+      this.ObjUserDetails.ActiveStatus = "Inactive";
+    }
+    else{
+      this.ObjUserDetails.ActiveStatus = "Active";
+    }
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
       .subscribe(data => {
@@ -677,6 +743,13 @@ export class ProjectsSummaryComponent implements OnInit {
       this.ObjUserDetails.PageSize = 30;
       this.ObjUserDetails.SearchText = this.searchText;
       this.ObjUserDetails.PortfolioId = null;
+      if(this.isChecked==true){
+        this.ObjUserDetails.ActiveStatus = "Inactive";
+      }
+      else{
+        this.ObjUserDetails.ActiveStatus = "Active";
+      }
+      
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
@@ -725,7 +798,8 @@ export class ProjectsSummaryComponent implements OnInit {
     this.searchText= '';
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
-    this.selectedItem_Emp.length = 0
+    this.selectedItem_Emp.length = 0;
+    this.isChecked=false;
     this.resetFilters();
   }
 
