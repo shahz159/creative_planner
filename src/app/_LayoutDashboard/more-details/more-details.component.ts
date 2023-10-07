@@ -307,11 +307,13 @@ export class MoreDetailsComponent implements OnInit {
   Inprocess_List: any;
   Delay_List: any;
   Reject_List: any;
+  Cancel_List: any;
   CompletedList: any;
   inProcessCount: number;
   underapprovalcount: number;
   delaycount: number;
   rejectcount: number;
+  cancelcount: number;
   completedCount: number;
   subTaskCount: number;
   empDropdown: any = [];
@@ -3650,7 +3652,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_Responsibleations']);
           this.Delay_List = JSON.parse(data[0]['Delay_Responsibleations']);
           this.Reject_List = JSON.parse(data[0]['Rejected_Responsibleations']);
-
+          this.Cancel_List = JSON.parse(data[0]['Cancelled_Responsibleations']);
           this.CompletedList = JSON.parse(data[0]['Completed_Responsibleations']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
 
@@ -3658,12 +3660,14 @@ export class MoreDetailsComponent implements OnInit {
           this.underapprovalcount = this.underapproval_list.length;
           this.delaycount = this.Delay_List.length;
           this.rejectcount = this.Reject_List.length;
+          this.cancelcount = this.Cancel_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
           if (this.subTaskCount != 0 && this.completedCount != 0) {
             this.action_count = this.completedCount + '/' + this.subTaskCount;
           }
+         
           //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }
@@ -3676,7 +3680,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_SubtaskDetails']);
           this.Delay_List = JSON.parse(data[0]['Delay_SubtaskDetails']);
           this.Reject_List = JSON.parse(data[0]['Rejected_SubtaskDetails']);
-
+          this.Cancel_List = JSON.parse(data[0]['Cancelled_SubtaskDetails']);
           this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
 
@@ -3711,7 +3715,7 @@ export class MoreDetailsComponent implements OnInit {
           this.inProcessCount = this.Inprocess_List.length;
           this.delaycount = this.Delay_List.length;
           this.rejectcount = this.Reject_List.length;
-
+          this.cancelcount = this.Cancel_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
@@ -5736,8 +5740,8 @@ export class MoreDetailsComponent implements OnInit {
   LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-    // FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/"
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (iscloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {
@@ -5779,7 +5783,8 @@ export class MoreDetailsComponent implements OnInit {
   LoadDocument_action(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (iscloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {

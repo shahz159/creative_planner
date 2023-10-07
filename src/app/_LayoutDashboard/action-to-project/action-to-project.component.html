@@ -51,10 +51,33 @@
     </div> -->
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-        <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
+        <!-- <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
             <ng-option [value]="item.Emp_No" [disabled]="item.Emp_No==Owner_Empno" *ngFor="let item of _EmployeeListForDropdown">
                 {{item.DisplayName}}
             </ng-option>
+        </ng-select> -->
+        <ng-select [items]="allUsers" bindLabel="RACIS"
+            bindValue="Emp_No" groupBy="usergroup"
+            (change)="EmployeeOnSelect($event)" placeholder="Select employee"
+            [searchable]="true" name="RACIS"
+            [(ngModel)]="selectedEmpNo" 
+            required>
+            <!-- <ng-template ng-option-tmp let-item="item">
+                <ng-container *ngIf="item.Emp_No === Owner_Empno"> 
+                  <ng-option [value]="item.Emp_No">
+                    <p  >{{ item.RACIS }} </p>
+                </ng-option>
+                </ng-container>
+                <ng-container *ngIf="item.Emp_No !== Owner_Empno">
+                  <ng-option [value]="item.Emp_No">{{ item.RACIS }}</ng-option>
+                </ng-container>
+              </ng-template> -->
+
+              <ng-template ng-option-tmp let-item="item">
+                <span [ngClass]="{'disabled-option': item.Emp_No === Owner_Empno }">
+                  {{ item.RACIS }}
+                </span>
+              </ng-template>
         </ng-select>
         <span *ngIf ="_selectemp == true" style="color:red">Assign To required!</span>
     </div>
@@ -62,7 +85,7 @@
         <label>Action Owner : <strong></strong></label>
         <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
             <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
-                {{item.RACIS}} 
+                <span>{{item.RACIS}}</span> 
             </ng-option>
         </ng-select>
     </div>
