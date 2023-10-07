@@ -242,6 +242,15 @@ export class ActionToProjectComponent implements OnInit {
       }
     });
 
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+      (data) => {
+     
+        this.ownerArr=(JSON.parse(data[0]['RacisList']));
+        this.nonRacis=(JSON.parse(data[0]['OtherList']));
+        this.allUsers=(JSON.parse(data[0]['alluserlist']));
+        console.log(this.allUsers,"groupby");
+
+      });
 
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
