@@ -2209,7 +2209,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.src = url;
 
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (cloud == false) {
       var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/" + url);
@@ -2222,19 +2223,57 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
 
 
-  LoadDocument1(iscloud: string,filename: string ,url1: string, type: string) {
+  LoadDocument1(iscloud: boolean,filename: string ,url1: string, type: string, submitby: string) {
     
-    let name = "ArchiveView/"+this.projectCode;
-    var rurl = document.baseURI + name;
-    var encoder = new TextEncoder();
-    let url = encoder.encode(url1);
-    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-    filename = filename.replace(/#/g, "%23");
-    filename = filename.replace(/&/g, "%26");
-    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
-    var myWindow = window.open(myurl, url.toString());
-    myWindow.focus();
+    // let name = "ArchiveView/"+this.projectCode;
+    // var rurl = document.baseURI + name;
+    // var encoder = new TextEncoder();
+    // let url = encoder.encode(url1);
+    // let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    // filename = filename.replace(/#/g, "%23");
+    // filename = filename.replace(/&/g, "%26");
+    // // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+    // var myWindow = window.open(myurl, url.toString());
+    // myWindow.focus();
+
+    let FileUrl: string;
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (iscloud == false) {
+      if (this.EmpNo_Autho == this.EmpNo_Res) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+      }
+      else if (this.EmpNo_Autho != this.EmpNo_Res) {
+        FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+      }
+
+      let name = "ArchiveView/" + this.projectCode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/" + this.projectCode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
   }
 
   

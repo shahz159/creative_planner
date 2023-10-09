@@ -3,7 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
 import { Router } from '@angular/router';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import * as am5xy from "@amcharts/amcharts5/xy";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -36,7 +36,7 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
-import { MAT_DATE_FORMATS} from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 
@@ -60,7 +60,7 @@ export const MY_DATE_FORMATS = {
   providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
     // `MatMomentDateModule` in your applications root module. We provide it at the component level
     // here, due to limitations of our example generation script.
@@ -69,12 +69,13 @@ export const MY_DATE_FORMATS = {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ]
 })
 
 export class MoreDetailsComponent implements OnInit {
   @ViewChild('colp') colpRef!: ElementRef; // Reference to the collapsible content
+  
   constructor(private route: ActivatedRoute,
     public _LinkService: LinkService,
     private _adapter: DateAdapter<any>,
@@ -129,7 +130,7 @@ export class MoreDetailsComponent implements OnInit {
   currenthours: any;
   currentminutes: any;
   Summarytype: string;
-  
+
   approvalObj = new ApprovalDTO();
   requestDate: any;
   requestDeadline: any;
@@ -163,8 +164,8 @@ export class MoreDetailsComponent implements OnInit {
   complete_List: any;
   iscloud: any;
   url: any;
-  previouscoments:boolean =false;
-  isHierarchy:boolean=false;
+  previouscoments: boolean = false;
+  isHierarchy: boolean = false;
   rejDesc: any;
   rejectcommentsList: any;
   totalHours: any;
@@ -184,8 +185,8 @@ export class MoreDetailsComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
   actionCode: string;
   actionName: string;
-  actionStartdate: any =new Date();
-  actionenddate: any =new Date();
+  actionStartdate: any = new Date();
+  actionenddate: any = new Date();
   minutes: any;
   hours: any;
   temp: any;
@@ -259,17 +260,17 @@ export class MoreDetailsComponent implements OnInit {
   portslength: any;
   selectedcategory: any;
   selectedclient: any;
-  selectedsupport:any;
-  selectedOwnResp :any;
+  selectedsupport: any;
+  selectedOwnResp: any;
   Delaydays: any;
-  supp: boolean =false;
-  nonRacisList:any;
-  hierarchydropdown:any;
-  RACISList:any;
-  responsible_dropdown:any;
-  owner_dropdown:any;
-  Projectdeadline:any;
-  sdate:any;
+  supp: boolean = false;
+  nonRacisList: any;
+  hierarchydropdown: any;
+  RACISList: any;
+  responsible_dropdown: any;
+  owner_dropdown: any;
+  Projectdeadline: any;
+  sdate: any;
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
@@ -302,13 +303,17 @@ export class MoreDetailsComponent implements OnInit {
   _day: any;
   _month: any;
   Subtask_List: any;
-  underapproval_list:any;
+  underapproval_list: any;
   Inprocess_List: any;
   Delay_List: any;
+  Reject_List: any;
+  Cancel_List: any;
   CompletedList: any;
   inProcessCount: number;
-  underapprovalcount:number;
-  delaycount:number;
+  underapprovalcount: number;
+  delaycount: number;
+  rejectcount: number;
+  cancelcount: number;
   completedCount: number;
   subTaskCount: number;
   empDropdown: any = [];
@@ -338,8 +343,8 @@ export class MoreDetailsComponent implements OnInit {
   editCategory: boolean = false;
   editClient: boolean = false;
   editSupport: boolean = false;
-  editprojectOwner:boolean = false;
-  editprojectResponsible:boolean = false;
+  editprojectOwner: boolean = false;
+  editprojectResponsible: boolean = false;
   editActionOwner: boolean = false;
   editActionResp: boolean = false;
 
@@ -349,6 +354,9 @@ export class MoreDetailsComponent implements OnInit {
   actstartedit: boolean = false;
   edithold: boolean = false;
   editRelease: boolean = false;
+  editcancel: boolean = false;
+  editnewrelease: boolean = false;
+  editholdrelease: boolean = false;
   holdDate: any;
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
@@ -392,7 +400,7 @@ export class MoreDetailsComponent implements OnInit {
   _portfoliosList: any;
   action_details: any;
   approve_details: any;
-  _fullname:any;
+  _fullname: any;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -412,7 +420,7 @@ export class MoreDetailsComponent implements OnInit {
     this.GetProjectDetails();
     this.GetSubtask_Details();
     this.getapproval_actiondetails();
-    this.getRACISandNonRACIS();    
+    this.getRACISandNonRACIS();
     this.dar_details();
     this.getResponsibleActions();
     this.getapprovalStats();
@@ -451,9 +459,9 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  getusername(){
-    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{
-      this._fullname=data['Emp_First_Name'];
+  getusername() {
+    this.service._GetUserName(this.Current_user_ID).subscribe(data => {
+      this._fullname = data['Emp_First_Name'];
     });
   }
 
@@ -462,27 +470,27 @@ export class MoreDetailsComponent implements OnInit {
     this._adapter.setLocale(this._locale);
   }
 
-  getapproval_actiondetails(){
-    this.approvalObj.Project_Code=this.URL_ProjectCode;
+  getapproval_actiondetails() {
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data=>{
+    this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
       // console.log(data,"appact");
-      if(data[0]['actiondetails']!='[]' || data[0]['approvaldetails']!='[]' ){
-        if(data[0]['actiondetails']!='[]')
-        this.action_details=JSON.parse(data[0]['actiondetails']);
-        if(data[0]['approvaldetails']!='[]')
-        this.approve_details=JSON.parse(data[0]['approvaldetails']);
+      if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
+        if (data[0]['actiondetails'] != '[]')
+          this.action_details = JSON.parse(data[0]['actiondetails']);
+        if (data[0]['approvaldetails'] != '[]')
+          this.approve_details = JSON.parse(data[0]['approvaldetails']);
 
         // console.log(this.action_details,this.approve_details,"details");
       }
-    })
+    });
   }
 
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-    var myWindow = window.open(myurl,pcode);
+    var myWindow = window.open(myurl, pcode);
     myWindow.focus();
   }
 
@@ -516,7 +524,7 @@ export class MoreDetailsComponent implements OnInit {
     this.noRejectType = false;
   }
 
-  singleapporval_json:any[] = [];
+  singleapporval_json: any[] = [];
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -524,7 +532,7 @@ export class MoreDetailsComponent implements OnInit {
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-      console.log(this.requestDetails,"approvals");
+      console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -543,13 +551,13 @@ export class MoreDetailsComponent implements OnInit {
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
         this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
-        this.singleapporval_json=  JSON.parse(this.requestDetails[0]['singleapproval_json']);
-        console.log(this.singleapporval_json,"s-1");
-        if(this.prviousCommentsList.length>1){
-          this.previouscoments=true;
+        this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+        console.log(this.singleapporval_json, "s-1");
+        if (this.prviousCommentsList.length > 1) {
+          this.previouscoments = true;
         }
-        else{
-          this.previouscoments=false;
+        else {
+          this.previouscoments = false;
         }
         // this.newResponsible = (this.transfer_json[0]['newResp']);
         if (this.requestType == 'Project Forward') {
@@ -557,16 +565,20 @@ export class MoreDetailsComponent implements OnInit {
           this.forwardto = (this.transfer_json[0]['Forwardedto']);
           this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
         }
-        if(this.requestType=='Revert Back'){
+        if (this.requestType == 'Revert Back') {
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
         }
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
-          this.completedoc = (this.complete_List[0]['Sourcefile']);
-          this.iscloud = (this.complete_List[0]['IsCloud']);
-          this.url = (this.complete_List[0]['CompleteProofDoc']);
+          if(this.complete_List !="" && this.complete_List !=undefined && this.complete_List !=null){
+            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.iscloud = (this.complete_List[0]['IsCloud']);
+            this.url = (this.complete_List[0]['CompleteProofDoc']);
+          }
+          console.log(this.complete_List, 'complete');
+
         }
       }
       // console.log(this.requestDetails, 'transfer');
@@ -580,14 +592,14 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
-  
+
   gethierarchy() {
-    this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID,this.URL_ProjectCode).subscribe((data) => {
-      if(data['message']=='1'){
-        this.isHierarchy=true;
+    this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID, this.URL_ProjectCode).subscribe((data) => {
+      if (data['message'] == '1') {
+        this.isHierarchy = true;
       }
-      else{
-        this.isHierarchy=false;
+      else {
+        this.isHierarchy = false;
       }
     });
   }
@@ -600,18 +612,18 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   activity: any;
-  lastactivity:any;
-  send_from:any;
+  lastactivity: any;
+  send_from: any;
   rejectactivity: any;
 
   getRejectType() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
     this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
       this.activity = data[0]["activity"];
-      this.send_from= data[0]["sendFrom"];
-      this.rejectactivity= data[0]["rejectactivity"];
+      this.send_from = data[0]["sendFrom"];
+      this.rejectactivity = data[0]["rejectactivity"];
       this.lastactivity = JSON.parse(data[0]["lastactivity"]);
-      // console.log(this.activity,this.lastactivity)
+      console.log(this.activity, this.lastactivity)
     });
   }
 
@@ -638,6 +650,7 @@ export class MoreDetailsComponent implements OnInit {
           this.GetProjectDetails();
           this.GetSubtask_Details();
           this.getholdate();
+          this.getRejectType();
         }
         else if (this._Message == '2' || this._Message == '0') {
           this.notifyService.showError("Project release date not updated", "Failed");
@@ -650,7 +663,7 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  rejectlength:any;
+  rejectlength: any;
 
   rejectApproval() {
     this.noRejectType = false;
@@ -686,20 +699,21 @@ export class MoreDetailsComponent implements OnInit {
       this.approvalObj.Status = 'Project Hold Reject';
     else if (this.requestType == 'Revert Back')
       this.approvalObj.Status = 'Revert Reject';
-      else if (this.requestType == 'Task Complete')
+    else if (this.requestType == 'Task Complete')
       this.approvalObj.Status = 'Task-Reject';
-    else{
+    else {
       this.approvalObj.Status = 'Rejected';
     }
 
     this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
       this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
-      this.rejectlength=this.rejectcommentsList.length;
+      this.rejectlength = this.rejectcommentsList.length;
     });
   }
 
 
   submitApproval() {
+
     // if (this.requestType != 'Project Forward' && this.requestType!='Task Complete' && this.requestType!='Revert Back') {
     //   if (this.selectedType == '1') {
     //     this.approvalObj.Emp_no = this.Current_user_ID;
@@ -1119,41 +1133,41 @@ export class MoreDetailsComponent implements OnInit {
       //       this.notifyService.showError("project not approved", 'Failed.');
       //     }
       //     else {
-            
+
       //     }
-    //   this.notifyService.showSuccess("Project Approved Successfully", "");
-    //   this.GetProjectDetails();
-    //   this.GetSubtask_Details();
-    //   this.getapprovalStats();
-    //   this.GetprojectComments();
-    // this.Clear_Feilds();
-        // });
+      //   this.notifyService.showSuccess("Project Approved Successfully", "");
+      //   this.GetProjectDetails();
+      //   this.GetSubtask_Details();
+      //   this.getapprovalStats();
+      //   this.GetprojectComments();
+      // this.Clear_Feilds();
+      // });
 
-        if (this.comments == '' || this.comments == null) {
-            
-          this.singleapporval_json.forEach(element => {
-            element.Remarks='Accepted';
-          });
-          }
-          else {
-            this.singleapporval_json.forEach(element => {
-              element.Remarks=this.comments;
-            });
-          }
-      
+      if (this.comments == '' || this.comments == null) {
 
-        this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
-          subscribe((data) => {
-              this.notifyService.showSuccess("Project Approved successfully by - "+this._fullname, "Success");
-              this.GetProjectDetails();
-              this.GetSubtask_Details();
-              this.getapprovalStats();
-              this.GetprojectComments();
-              this.getRejectType();
-              this.getReasonforholdandRejected();
-            this.Clear_Feilds();
-          });
-        console.log(this.singleapporval_json,"accept")
+        this.singleapporval_json.forEach(element => {
+          element.Remarks = 'Accepted';
+        });
+      }
+      else {
+        this.singleapporval_json.forEach(element => {
+          element.Remarks = this.comments;
+        });
+      }
+
+
+      this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
+        subscribe((data) => {
+          this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getapprovalStats();
+          this.GetprojectComments();
+          this.getRejectType();
+          this.getReasonforholdandRejected();
+          this.Clear_Feilds();
+        });
+      console.log(this.singleapporval_json, "accept")
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
@@ -1194,32 +1208,32 @@ export class MoreDetailsComponent implements OnInit {
         // this.approvalObj.Request_type = this.requestType;
         // this.approvalObj.rejectType = this.rejectType;
         // this.approvalObj.Remarks = this.comments;
-          // this._Message = (data['message']);
-            // if (this._Message == 'Not Authorized' || this._Message == '0') {
-            //   this.notifyService.showError("project not approved", 'Failed.');
-            // }
-            // else {
-              
-            // }
+        // this._Message = (data['message']);
+        // if (this._Message == 'Not Authorized' || this._Message == '0') {
+        //   this.notifyService.showError("project not approved", 'Failed.');
+        // }
+        // else {
+
+        // }
         this.singleapporval_json.forEach(element => {
-          element.Remarks=this.comments;
-          element.RejectType=this.rejectType;
+          element.Remarks = this.comments;
+          element.RejectType = this.rejectType;
         });
 
         this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
-          
-            this.notifyService.showSuccess("Project Rejected successfully by - "+this._fullname, "Success");
-              this.GetProjectDetails();
-              this.GetSubtask_Details();
-              this.getapprovalStats();
-              this.GetprojectComments();
-              this.getRejectType();
-              this.getReasonforholdandRejected();
+
+            this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getapprovalStats();
+            this.GetprojectComments();
+            this.getRejectType();
+            this.getReasonforholdandRejected();
             this.Clear_Feilds();
           });
       }
-      console.log(this.singleapporval_json,"reject")
+      console.log(this.singleapporval_json, "reject")
 
     }
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
@@ -1245,17 +1259,17 @@ export class MoreDetailsComponent implements OnInit {
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
         // console.log(data,"meet")
-        if((data[0]['MeetingFor_projects'].length > 0) && data!=null){
+        if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
-        this.meeting_arry = this.meetingList;
-        if(this.meeting_arry.length > 0)
-        this.meetinglength = this.meeting_arry.length;
-        this.meeting_arry.forEach(element => {
-          element.usersjson = JSON.parse(element.Addguest);
+          this.meeting_arry = this.meetingList;
+          if (this.meeting_arry.length > 0)
+            this.meetinglength = this.meeting_arry.length;
+          this.meeting_arry.forEach(element => {
+            element.usersjson = JSON.parse(element.Addguest);
 
-        });
+          });
         }
-        else{
+        else {
           this.meetinglength = 0;
         }
       });
@@ -1446,7 +1460,8 @@ export class MoreDetailsComponent implements OnInit {
     this._Subtaskname = item.Project_Name;
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
-    this.Sub_Autho = item.Subtask_Autho;
+    this.Sub_Autho = item.Team_Res;
+    // alert(this.Sub_Autho)
     this.Sub_Status = item.SubProject_Status;
 
     document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
@@ -1461,30 +1476,30 @@ export class MoreDetailsComponent implements OnInit {
   onFileChangeUST(e) {
     this._inputAttachments = e.target.files[0].name;
   }
- 
 
-  getRACISandNonRACIS(){
+
+  getRACISandNonRACIS() {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
         // console.log(data,"RACIS");
-        this.nonRacisList=(JSON.parse(data[0]['OtherList']));
-        this.RACISList=(JSON.parse(data[0]['RacisList']));
-        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+        this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+        this.RACISList = (JSON.parse(data[0]['RacisList']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       });
 
-      // this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
-      //   (data) => {
-      //     console.log(JSON.parse(data[0]['hierarchy_dropdown']),"hierarchy_dropdown");
-      //     this.hierarchydropdown=(JSON.parse(data[0]['hierarchy_dropdown']));
-      //   });
+    // this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
+    //   (data) => {
+    //     console.log(JSON.parse(data[0]['hierarchy_dropdown']),"hierarchy_dropdown");
+    //     this.hierarchydropdown=(JSON.parse(data[0]['hierarchy_dropdown']));
+    //   });
   }
 
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
-          
+
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Category = this.ProjectInfo_List[0]['ReportType'];
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
@@ -1501,9 +1516,10 @@ export class MoreDetailsComponent implements OnInit {
           this.StartDate = this.ProjectInfo_List[0]['DPG'];
           this.Client = this.ProjectInfo_List[0]['Client_Name'];
           this.EndDate = this.ProjectInfo_List[0]['DeadLine'];
-          this.Projectdeadline=this.EndDate;
+          this.Projectdeadline = this.EndDate;
           // this.EndDate1 = this.EndDate;
           this.EndDate = this.datepipe.transform(this.EndDate, 'dd-MM-yyyy');
+          console.log(this.EndDate,"pause")
           this.sdate = this.datepipe.transform(this.StartDate, 'yyyy-MM-dd');
           this.Cost = this.ProjectInfo_List[0]['Project_Cost'];
           this.Owner = this.ProjectInfo_List[0]['Project_Owner'];
@@ -1512,7 +1528,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Coordinator = this.ProjectInfo_List[0]['Team_Coor'];
           this.Informer = this.ProjectInfo_List[0]['Team_Informer'];
           this.Support = this.ProjectInfo_List[0]['Team_Support'];
-          
+
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
@@ -1525,12 +1541,12 @@ export class MoreDetailsComponent implements OnInit {
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
 
-          
+
           this._LinkService._GetAttachments(this.Authority_EmpNo, this.URL_ProjectCode, this.ProjectBlock)
             .subscribe((data) => {
               this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
               this.action_attachment = JSON.parse(data[0]['action_attachments']);
-              if(this.action_attachment==null)
+              if (this.action_attachment == null)
                 this.attachmentlength = this.AttachmentList.length;
               else
                 this.attachmentlength = this.AttachmentList.length + this.action_attachment.length;
@@ -1592,13 +1608,13 @@ export class MoreDetailsComponent implements OnInit {
           // this.InitSupp.toUpperCase();
           this.InitSupp = "SU";
           const array: string[] = this.Support_EmpNo.split(',');
-          if(this.Support_EmpNo.includes(this.Current_user_ID)){
-            this.supp=true;
+          if (this.Support_EmpNo.includes(this.Current_user_ID)) {
+            this.supp = true;
           }
-          if (this.ProjectBlockName == 'To do List' || this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks') {
+          if (this.ProjectBlockName == 'To do List' || this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks'  || this.Status=='Cancelled') {
             this.actionButton = true;
           }
-          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New KPI Rejected' || this.Status == 'Rejected') {
+          if (this.Status == 'ToDo Completed' || this.Status == 'Completed' || this.Status == 'New KPI Rejected' || this.Status == 'Rejected' || this.Status=='Cancelled') {
             this.darbutton = false;
           }
         }
@@ -1625,7 +1641,7 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  isExpanded:boolean = false;
+  isExpanded: boolean = false;
 
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
@@ -1656,7 +1672,7 @@ export class MoreDetailsComponent implements OnInit {
         };
       });
   }
- 
+
   Memo_Select(selecteditems) {
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
@@ -1760,7 +1776,7 @@ export class MoreDetailsComponent implements OnInit {
   _allocated: any;
 
   close_space() {
-    this.Editbutton=false;
+    this.Editbutton = false;
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
@@ -1772,8 +1788,8 @@ export class MoreDetailsComponent implements OnInit {
     this.selectedclient = null;
     this.selectedsupport = null;
     this.selectedOwnResp = null;
-    this.allocation=false;
-    
+    this.allocation = false;
+
     document.getElementById("btm-space").classList.add("d-none");
     document.getElementById("moredet").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3460,10 +3476,10 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe((data) => {
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         this.action_attachment = JSON.parse(data[0]['action_attachments']);
-        if(this.action_attachment==null)
-                this.attachmentlength = this.AttachmentList.length;
-              else
-                this.attachmentlength = this.AttachmentList.length + this.action_attachment.length;
+        if (this.action_attachment == null)
+          this.attachmentlength = this.AttachmentList.length;
+        else
+          this.attachmentlength = this.AttachmentList.length + this.action_attachment.length;
         this.TotalDocs = (data[0]['TotalDocs']);
         if (this.TotalDocs == 0)
           this.noFiles = true;
@@ -3472,10 +3488,10 @@ export class MoreDetailsComponent implements OnInit {
       });
   }
 
-  
 
 
-  openPDF_Standard(standardid, emp_no, cloud, repDate: Date, proofDoc, type) {
+
+  openPDF_Standard(standardid, emp_no, cloud, repDate: Date, proofDoc, type,submitby) {
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3505,9 +3521,9 @@ export class MoreDetailsComponent implements OnInit {
       //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
       // }
 
-      FileUrl= (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
 
-      let name = "ArchiveView/"+standardid;
+      let name = "ArchiveView/" + standardid;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
@@ -3515,7 +3531,7 @@ export class MoreDetailsComponent implements OnInit {
       proofDoc = proofDoc.replace(/#/g, "%23");
       proofDoc = proofDoc.replace(/&/g, "%26");
       // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + proofDoc + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
 
@@ -3526,10 +3542,10 @@ export class MoreDetailsComponent implements OnInit {
       let FileUrl: string;
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
-      if(proofDoc.includes(FileUrl)){
-        FileUrl=proofDoc
+      if (proofDoc.includes(FileUrl)) {
+        FileUrl = proofDoc
       }
-      else{
+      else {
         let Day = repDate.getDate();
         let Month = repDate.getMonth() + 1;
         let Year = repDate.getFullYear();
@@ -3545,31 +3561,31 @@ export class MoreDetailsComponent implements OnInit {
         else {
           this._day = Day;
         }
-            var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+        var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
 
-          // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-          //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
-          // }
-          // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-          //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
-          // }
-          FileUrl= (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." + type);
       }
 
-    let name = "ArchiveView/"+standardid;
-    var rurl = document.baseURI + name;
-    var encoder = new TextEncoder();
-    let url = encoder.encode(FileUrl);
-    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-    proofDoc = proofDoc.replace(/#/g, "%23");
-    proofDoc = proofDoc.replace(/&/g, "%26");
-    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + proofDoc + "&" + "type=" + type;
-    var myWindow = window.open(myurl, url.toString());
-    myWindow.focus();
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
     }
 
-    
+
   }
 
   openPDF(cloud, docName) {
@@ -3613,10 +3629,10 @@ export class MoreDetailsComponent implements OnInit {
     // }
 
     if (cloud == false) {
-      if(this.Authority_EmpNo==this.Responsible_EmpNo){
+      if (this.Authority_EmpNo == this.Responsible_EmpNo) {
         window.open(FileUrl + this.Responsible_EmpNo + "/" + this.projectCode + "/" + docName);
       }
-      else if(this.Authority_EmpNo!=this.Responsible_EmpNo){
+      else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
         window.open(FileUrl + this.Authority_EmpNo + "/" + this.projectCode + "/" + docName);
       }
     }
@@ -3625,7 +3641,7 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  
+
 
   GetSubtask_Details() {
     if (this.filteredemp == true) {
@@ -3633,20 +3649,25 @@ export class MoreDetailsComponent implements OnInit {
         (data) => {
           this.Subtask_List = JSON.parse(data[0]['All_ResponsibleActions']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_Responsibleations']);
-          this.Inprocess_List= JSON.parse(data[0]['Inprocess_Responsibleations']);
-          this.Delay_List= JSON.parse(data[0]['Delay_Responsibleations']);
+          this.Inprocess_List = JSON.parse(data[0]['Inprocess_Responsibleations']);
+          this.Delay_List = JSON.parse(data[0]['Delay_Responsibleations']);
+          this.Reject_List = JSON.parse(data[0]['Rejected_Responsibleations']);
+          this.Cancel_List = JSON.parse(data[0]['Cancelled_Responsibleations']);
           this.CompletedList = JSON.parse(data[0]['Completed_Responsibleations']);
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
 
           this.inProcessCount = this.Inprocess_List.length;
           this.underapprovalcount = this.underapproval_list.length;
           this.delaycount = this.Delay_List.length;
+          this.rejectcount = this.Reject_List.length;
+          this.cancelcount = this.Cancel_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
           if (this.subTaskCount != 0 && this.completedCount != 0) {
             this.action_count = this.completedCount + '/' + this.subTaskCount;
           }
+         
           //  console.log('inprocess=', this.inProcessCount, 'completed', this.completedCount, 'total=', this.subTaskCount);
         });
     }
@@ -3654,11 +3675,12 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          // console.log(this.Subtask_List, "status");
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
-          this.Inprocess_List= JSON.parse(data[0]['Inprocess_SubtaskDetails']);
-          this.Delay_List= JSON.parse(data[0]['Delay_SubtaskDetails']);
+          this.Inprocess_List = JSON.parse(data[0]['Inprocess_SubtaskDetails']);
+          this.Delay_List = JSON.parse(data[0]['Delay_SubtaskDetails']);
+          this.Reject_List = JSON.parse(data[0]['Rejected_SubtaskDetails']);
+          this.Cancel_List = JSON.parse(data[0]['Cancelled_SubtaskDetails']);
           this.CompletedList = JSON.parse(data[0]['Completed_SubtaskDetails']);
           this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
 
@@ -3674,7 +3696,7 @@ export class MoreDetailsComponent implements OnInit {
           this.raciPeople = values.join(", ");
           //console.log(this.raciPeople,"RACIS");
 
-          // console.log(this.Subtask_List, "tasklist");
+          console.log(this.Subtask_List, "tasklist");
           //SubTasks Multiselect start         
 
           this.dropdownSettings_Employee = {
@@ -3692,6 +3714,8 @@ export class MoreDetailsComponent implements OnInit {
           this.underapprovalcount = this.underapproval_list.length;
           this.inProcessCount = this.Inprocess_List.length;
           this.delaycount = this.Delay_List.length;
+          this.rejectcount = this.Reject_List.length;
+          this.cancelcount = this.Cancel_List.length;
           this.completedCount = this.CompletedList.length;
           this.subTaskCount = this.Subtask_List.length;
 
@@ -3725,8 +3749,8 @@ export class MoreDetailsComponent implements OnInit {
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
-    else if ((this.inProcessCount+this.delaycount)==1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true)) {
-    
+    else if ((this.inProcessCount + this.delaycount) == 1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true)) {
+
       Swal.fire({
         title: 'This is the last action to be completed.',
         text: 'Do you want to proceed with main project submission?',
@@ -3736,60 +3760,81 @@ export class MoreDetailsComponent implements OnInit {
         cancelButtonText: 'No'
       }).then((response: any) => {
         if (response.value) {
-          if(this.selectedFile==null){
-            this.notifyService.showInfo("Please attach the completion file to complete the main project","Note");
+          if (this.selectedFile == null) {
+            this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
           }
-          else{
-              const fd = new FormData();
-              fd.append("Project_Code", this.Sub_ProjectCode);
-              fd.append("Master_Code", this._MasterCode);
-              fd.append("Team_Autho", this.Authority_EmpNo);
-              fd.append("Projectblock", this.ProjectBlock);
-              fd.append("Remarks", this._remarks);
-              fd.append('file', this.selectedFile);
-              fd.append("Project_Name", this._Subtaskname);
-              this.service._UpdateSubtaskByProjectCode(fd)
-                .subscribe(data => {
-                  // this.GetProjectDetails();
-                  // this.GetSubtask_Details();
-                  // Rebinding    
-                });
-                this.notifyService.showSuccess("Successfully Updated", 'Action completed');
-                const fd1 = new FormData();
-                fd1.append("Project_Code", this.URL_ProjectCode);
-                fd1.append("Team_Autho", this.Authority_EmpNo);
-                fd1.append("Remarks", this._remarks);
-                fd1.append("Projectblock", this.ProjectBlock);
-                fd1.append('file', this.selectedFile);
-                fd1.append("Emp_No", this.Current_user_ID);
-                fd1.append("Project_Name", this.ProjectName);
-                console.log(fd1,"complete");
-                this.service._fileuploadService(fd1).
-                  subscribe(event => {
-                    // console.log(event, "PC");
-                    if (event.type == HttpEventType.UploadProgress) {
-                      this.progress = Math.round(event.loaded / event.total * 100);
+          else {
+            const fd = new FormData();
+            fd.append("Project_Code", this.Sub_ProjectCode);
+            fd.append("Master_Code", this._MasterCode);
+            fd.append("Team_Autho", this.Sub_Autho);
+            fd.append("Projectblock", this.ProjectBlock);
+            fd.append("Remarks", this._remarks);
+            fd.append('file', this.selectedFile);
+            fd.append("Project_Name", this._Subtaskname);
+            this.service._UpdateSubtaskByProjectCode(fd)
+              .subscribe(data => {
+                // this.GetProjectDetails();
+                // this.GetSubtask_Details();
+                // Rebinding    
+              });
+            this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+            const fd1 = new FormData();
+            fd1.append("Project_Code", this.URL_ProjectCode);
+            fd1.append("Team_Autho", this.Authority_EmpNo);
+            fd1.append("Remarks", this._remarks);
+            fd1.append("Projectblock", this.ProjectBlock);
+            fd1.append('file', this.selectedFile);
+            fd1.append("Emp_No", this.Current_user_ID);
+            fd1.append("Project_Name", this.ProjectName);
+            console.log(fd1, "complete");
+            this.service._fileuploadService(fd1).
+              subscribe((event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(this.progress, "progress");
+                    if (this.progress == 100) {
+                      this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                      
                     }
-                    else if (event.type === HttpEventType.Response) {
-                      // console.log(event);
-                      var myJSON = JSON.stringify(event);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('File upload done!', event.body);
+                    var myJSON = JSON.stringify(event);
                       this._Message = (JSON.parse(myJSON).body).Message;
                       this.notifyService.showSuccess(this._Message, 'Success');
-                      // console.log(this._Message,this.progress,"json");
-                    }
-                    this.closeInfo();
-                    this.GetSubtask_Details();
-                    this.GetProjectDetails();
-                    this.getapprovalStats();
-                    this._projectSummary.GetProjectsByUserName('RACIS Projects');
-                  });
+                }
+                // console.log(event, "PC");
+                // if (event.type == HttpEventType.UploadProgress) {
+                //   this.progress = Math.round(event.loaded / event.total * 100);
+                // }
+                // else if (event.type === HttpEventType.Response) {
+                //   // console.log(event);
+                //   var myJSON = JSON.stringify(event);
+                //   this._Message = (JSON.parse(myJSON).body).Message;
+                //   this.notifyService.showSuccess(this._Message, 'Success');
+                //   // console.log(this._Message,this.progress,"json");
+                // }
+                this.closeInfo();
+                this.GetSubtask_Details();
+                this.GetProjectDetails();
+                this.getapprovalStats();
+                this._projectSummary.GetProjectsByUserName('RACIS Projects');
+              });
           }
-        } 
+        }
         else if (response.dismiss === Swal.DismissReason.cancel) {
           const fd = new FormData();
           fd.append("Project_Code", this.Sub_ProjectCode);
           fd.append("Master_Code", this._MasterCode);
-          fd.append("Team_Autho", this.Authority);
+          fd.append("Team_Autho", this.Sub_Autho);
           fd.append("Projectblock", this.ProjectBlock);
           fd.append("Remarks", this._remarks);
           fd.append('file', this.selectedFile);
@@ -3803,7 +3848,7 @@ export class MoreDetailsComponent implements OnInit {
               // Rebinding    
               this.closeInfo();
             });
-            this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+          this.notifyService.showSuccess("Successfully Updated", 'Action completed');
         }
       });
     }
@@ -3811,7 +3856,7 @@ export class MoreDetailsComponent implements OnInit {
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
-      fd.append("Team_Autho", this.Authority);
+      fd.append("Team_Autho", this.Sub_Autho);
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("Remarks", this._remarks);
       fd.append('file', this.selectedFile);
@@ -3916,7 +3961,7 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("Delayareafocus_" + id)).focus();
   }
 
-  
+
 
   OnEditProject_Alloc(id, aname, i, acode, duration) {
     this.actionName = aname;
@@ -3931,13 +3976,16 @@ export class MoreDetailsComponent implements OnInit {
     this.actendedit = false;
     this.actstartedit = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
     this.editCategory = false;
     this.editRelease = false;
-    this.editSupport =false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3962,11 +4010,14 @@ export class MoreDetailsComponent implements OnInit {
     this.editCategory = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -3987,11 +4038,14 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -4009,11 +4063,14 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = true;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -4031,16 +4088,19 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=true;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = true;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       });
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -4059,16 +4119,19 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=true;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = true;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       });
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -4090,16 +4153,19 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=true;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = true;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
       (data) => {
-        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       });
 
     document.getElementById("btm-space").classList.remove("d-none");
@@ -4121,18 +4187,21 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=true;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = true;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
       (data) => {
-        this.responsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        this.owner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       });
-      
+
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -4149,38 +4218,44 @@ export class MoreDetailsComponent implements OnInit {
     this.editduration = false;
     this.editRelease = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =true;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = true;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-  onEditEndDate(id, aname, i, acode,edate,sdate) {
+  onEditEndDate(id, aname, i, acode, edate, sdate) {
     this.actionName = aname;
     this.actCode = acode;
     this.actnum = i;
-    this.actionenddate=edate;
-    this.actionStartdate=sdate;
+    this.actionenddate = edate;
+    this.actionStartdate = sdate;
     this.Editbutton = true;
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = true;
     this.actstartedit = false;
     this.editduration = false;
     this.editRelease = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("EndDateArea_" + id)).style.display = "block";
@@ -4199,17 +4274,20 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
     this.actstartedit = true;
     this.editduration = false;
     this.editRelease = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     // (<HTMLInputElement>document.getElementById("Span_EndDate_" + id)).style.display = "none";
     // (<HTMLInputElement>document.getElementById("StartDateArea_" + id)).style.display = "block";
@@ -4217,6 +4295,82 @@ export class MoreDetailsComponent implements OnInit {
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     // (<HTMLInputElement>document.getElementById("StartDatetext_" + id)).focus(); 
+  }
+
+  cancelProject(){
+    this.Editbutton = false;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editClient = false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editcancel=true;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+
+  }
+
+  releaseProject(){
+    this.Editbutton = false;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editcancel=false;
+    this.editClient = false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editnewrelease=true;
+    this.editholdrelease=false;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+  releaseholdProject(){
+    this.Editbutton = false;
+    this.editCategory = false;
+    this.edithold = false;
+    this.editDeadline = false;
+    this.transferproject = false;
+    this.actendedit = false;
+    this.actstartedit = false;
+    this.editduration = false;
+    this.editRelease = false;
+    this.editcancel=false;
+    this.editClient = false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
+    this.editnewrelease=false;
+    this.editholdrelease=true;
+
+    document.getElementById("btm-space").classList.remove("d-none");
+    document.getElementById("moredet").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
 
   onCancel(id) {
@@ -4246,7 +4400,7 @@ export class MoreDetailsComponent implements OnInit {
 
   }
 
-  onCancel_underapproval(id){
+  onCancel_underapproval(id) {
     this.Editbutton = false;
     this._modelProjDesc = null;
     this._modelProjectName = null;
@@ -4258,12 +4412,12 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("underapprovalTextarea_" + id)).style.display = "none";
   }
 
-  onCancel_inprocess(id){
+  onCancel_inprocess(id) {
     this.Editbutton = false;
     this._modelProjDesc = null;
     this._modelProjectName = null;
 
-    
+
     (<HTMLInputElement>document.getElementById("InprocessProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("InprocessTextbox_" + id)).style.display = "none";
 
@@ -4271,12 +4425,12 @@ export class MoreDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("InprocessTextarea_" + id)).style.display = "none";
   }
 
-  onCancel_delay(id){
+  onCancel_delay(id) {
     this.Editbutton = false;
     this._modelProjDesc = null;
     this._modelProjectName = null;
 
-    
+
     (<HTMLInputElement>document.getElementById("DelayProjName_" + id)).style.display = "inline-block";
     (<HTMLInputElement>document.getElementById("DelayTextbox_" + id)).style.display = "none";
 
@@ -4305,17 +4459,20 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = true;
     this.editCategory = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
     this.actstartedit = false;
     this.editduration = false;
     this.editRelease = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -4354,7 +4511,7 @@ export class MoreDetailsComponent implements OnInit {
       this.OnAddTaskClick();
     }
   }
-  
+
   orgValueChange1(val) {
     this.release_date = moment(val.value).format("MM/DD/YYYY");
   }
@@ -4367,17 +4524,20 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
     this.editDeadline = false;
     this.transferproject = false;
     this.actendedit = false;
     this.actstartedit = false;
     this.editduration = false;
     this.editRelease = true;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
@@ -4389,26 +4549,25 @@ export class MoreDetailsComponent implements OnInit {
     this.edithold = false;
     this.editCategory = false;
     this.editClient = false;
-    this.editprojectOwner=false;
-    this.editprojectResponsible=false;
-    this.editActionOwner=false;
-    this.editActionResp=false;
-    this.editSupport =false;
+    this.editprojectOwner = false;
+    this.editprojectResponsible = false;
+    this.editActionOwner = false;
+    this.editActionResp = false;
+    this.editSupport = false;
     this.editDeadline = false;
     this.transferproject = true;
     this.actstartedit = false;
     this.actendedit = false;
     this.editduration = false;
     this.editRelease = false;
+    this.editcancel=false;
+    this.editnewrelease=false;
+    this.editholdrelease=false;
 
     document.getElementById("btm-space").classList.remove("d-none");
     document.getElementById("moredet").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
-    // (<HTMLInputElement>document.getElementById("TransferArea")).classList.add("d-block");
-    // (<HTMLInputElement>document.getElementById("TransferArea_" + id)).classList.add("d-block");
-
-    // this.Editbutton = true;
-    // (<HTMLInputElement>document.getElementById("Transtext_" + id)).focus();
+   
   }
 
   closehold(id) {
@@ -4452,7 +4611,7 @@ export class MoreDetailsComponent implements OnInit {
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     console.log(this._ProjDeadline, id, Pcode, "act");
     if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(Pcode, this._ProjDeadline, null, this.extend_remarks,null).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(Pcode, this._ProjDeadline, null, this.extend_remarks, null).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -4501,14 +4660,14 @@ export class MoreDetailsComponent implements OnInit {
     }
   }
 
-  allocation:boolean =false;
+  allocation: boolean = false;
 
-actiondeadline_alert(){
+  actiondeadline_alert() {
 
     const dateOne = moment(this.Projectdeadline).format("YYYY/MM/DD");
-    const dateTwo =moment(this._ProjDeadline).format("YYYY/MM/DD");
-    console.log(dateOne,dateTwo,"dates")
-    if ((dateOne < dateTwo) && ((this.Current_user_ID==this.Owner_EmpNo || this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Authority_EmpNo || this.isHierarchy==true)) ) {
+    const dateTwo = moment(this._ProjDeadline).format("YYYY/MM/DD");
+    console.log(dateOne, dateTwo, "dates")
+    if ((dateOne < dateTwo) && ((this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true))) {
       Swal.fire({
         title: 'Action deadLine is greater than main project deadLine ?',
         text: 'Do you want to continue for selection of date after main project deadLine!!',
@@ -4526,35 +4685,35 @@ actiondeadline_alert(){
             'error'
           )
         }
-      }); 
+      });
     }
-    else if ((dateOne < dateTwo) && (this.Current_user_ID!=this.Owner_EmpNo && this.Current_user_ID!=this.Responsible_EmpNo && this.Current_user_ID!=this.Authority_EmpNo && this.isHierarchy==false)) {
+    else if ((dateOne < dateTwo) && (this.Current_user_ID != this.Owner_EmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.Authority_EmpNo && this.isHierarchy == false)) {
       Swal.fire({
         title: 'Unable to extend end date for this action.',
         text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
       });
-    }  
-    else {  
+    }
+    else {
       this.onAction_ExtendDeadline();
-  }
-}
-
-check_allocation(){
-  const newenddate = new Date(this._ProjDeadline); 
-  const oldendate = new Date(this.actionenddate); 
-  
-  if(newenddate > oldendate){
-    this.allocation = true;
-  }
-  else{
-    this.allocation = false;
+    }
   }
 
-}
+  check_allocation() {
+    const newenddate = new Date(this._ProjDeadline);
+    const oldendate = new Date(this.actionenddate);
+
+    if (newenddate > oldendate) {
+      this.allocation = true;
+    }
+    else {
+      this.allocation = false;
+    }
+
+  }
 
   onAction_ExtendDeadline() {
-      this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-      if (this._ProjDeadline != null) {
+    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    if (this._ProjDeadline != null) {
       this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
         this._Message = data['message'];
 
@@ -4593,7 +4752,7 @@ check_allocation(){
           this.objProjectDto.Project_Name = null;
           this.objProjectDto.Master_code = this.URL_ProjectCode;
           this.objProjectDto.Project_Code = this.actCode;
-          
+
           // this.service._InsertDARServie(this.objProjectDto)
           // .subscribe(data => {
           //   this._Message = data['message'];
@@ -4606,7 +4765,7 @@ check_allocation(){
         }
         else if (this._Message == 'Project and action Deadline Updated') {
           this.notifyService.showSuccess("Project and Action end date updated.", "Success");
-          
+
           this.GetProjectDetails();
           this.GetSubtask_Details();
         }
@@ -4616,7 +4775,7 @@ check_allocation(){
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
-    
+
 
   }
 
@@ -4624,7 +4783,7 @@ check_allocation(){
     this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
     // console.log(this._ProjDeadline,id,Pcode,"act");
     if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(this.actCode, null, this._ProjDeadline, this.extend_remarks,null).subscribe(data => {
+      this.service._ProjectDeadlineExtendService(this.actCode, null, this._ProjDeadline, this.extend_remarks, null).subscribe(data => {
         this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
@@ -4693,7 +4852,6 @@ check_allocation(){
 
 
   onProject_updateClient() {
-
     if (this.selectedclient != null && this.extend_remarks != null) {
       this.service._NewProjectClientService(this.URL_ProjectCode, this.Current_user_ID, this.selectedclient, this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
@@ -4715,7 +4873,7 @@ check_allocation(){
   }
 
   onProject_updateSupport() {
-       if (this.selectedsupport != null) {
+    if (this.selectedsupport != null) {
       this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, this.selectedsupport, this.extend_remarks).subscribe(data => {
         this._Message = data['message'];
 
@@ -4738,12 +4896,12 @@ check_allocation(){
   }
 
 
-  onProject_updateOwner(){
-    this.objProjectDto.Project_Code=this.URL_ProjectCode;
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Project_Owner=this.selectedOwnResp;
-    this.objProjectDto.Team_Res=null;
-    this.objProjectDto.Remarks=this.extend_remarks;
+  onProject_updateOwner() {
+    this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    this.objProjectDto.Emp_No = this.Current_user_ID;
+    this.objProjectDto.Project_Owner = this.selectedOwnResp;
+    this.objProjectDto.Team_Res = null;
+    this.objProjectDto.Remarks = this.extend_remarks;
     if (this.selectedOwnResp != null) {
       this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
@@ -4768,12 +4926,12 @@ check_allocation(){
     }
   }
 
-  onAction_updateOwner(){
-    this.objProjectDto.Project_Code=this.actCode;
-    this.objProjectDto.Emp_No=this.Current_user_ID;
-    this.objProjectDto.Project_Owner=this.selectedOwnResp;
-    this.objProjectDto.Team_Res=null;
-    this.objProjectDto.Remarks=this.extend_remarks;
+  onAction_updateOwner() {
+    this.objProjectDto.Project_Code = this.actCode;
+    this.objProjectDto.Emp_No = this.Current_user_ID;
+    this.objProjectDto.Project_Owner = this.selectedOwnResp;
+    this.objProjectDto.Team_Res = null;
+    this.objProjectDto.Remarks = this.extend_remarks;
     if (this.selectedOwnResp != null) {
       this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
@@ -4796,7 +4954,7 @@ check_allocation(){
     }
   }
 
-  onProject_updateResp(){
+  onProject_updateResp() {
     // this.objProjectDto.Project_Code=this.URL_ProjectCode;
     // this.objProjectDto.Emp_No=this.Current_user_ID;
     // this.objProjectDto.Project_Owner=null;
@@ -4859,7 +5017,7 @@ check_allocation(){
 
   }
 
-  onAction_updateResp(){
+  onAction_updateResp() {
     // this.objProjectDto.Project_Code=this.actCode;
     // this.objProjectDto.Emp_No=this.Current_user_ID;
     // this.objProjectDto.Project_Owner=null;
@@ -4924,7 +5082,7 @@ check_allocation(){
     this.close_space();
     this.closeInfo();
   }
-  
+
   onProject_Hold(id, Pcode) {
     this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
     // alert(Pcode);
@@ -4937,8 +5095,12 @@ check_allocation(){
         this._Message = data['message'];
 
         if (this._Message == 'Project Hold Updated') {
-          this.notifyService.showSuccess(this._Message + " by " + this.Current_user_ID, "Success");
+          this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getReasonforholdandRejected();
+          this.getRejectType();
+          this.getholdate();
         }
       });
       this.close_space();
@@ -5046,7 +5208,7 @@ check_allocation(){
   }
 
   Clear_Feilds() {
-    this.Editbutton=false;
+    this.Editbutton = false;
     this.Sub_ProjectName = "";
     this._Description = "";
     this._StartDate = null;
@@ -5071,12 +5233,11 @@ check_allocation(){
     this.starttimearr = [];
     this.endtimearr = [];
     $("#err2").empty();
-
     this.selectedType = null;
     this.commentSelected = null;
     this.noRejectType = false;
     this.comments = "";
-    this.exist_comment =[];
+    this.exist_comment = [];
     this.selectedEmp_No = null;
     this.TransDate = null;
     this.transfer_remarks = "";
@@ -5089,31 +5250,52 @@ check_allocation(){
 
 
   updateMainProject() {
-    if(this.ProjectBlockName=='To do List'){
-      this.selectedFile=null;
+    if (this.ProjectBlockName == 'To do List') {
+      this.selectedFile = null;
     }
 
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
-    fd.append("Team_Autho", this.Authority);
+    fd.append("Team_Autho", this.Authority_EmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.ProjectName);
     this.service._fileuploadService(fd).
-      subscribe(event => {
+      subscribe((event: HttpEvent<any>) => {
+        switch (event.type) {
+          case HttpEventType.Sent:
+            console.log('Request has been made!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header has been received!');
+            break;
+          case HttpEventType.UploadProgress:
+            this.progress = Math.round(event.loaded / event.total * 100);
+            console.log(this.progress, "progress");
+            if (this.progress == 100) {
+              this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+              
+            }
+            break;
+          case HttpEventType.Response:
+            console.log('File upload done!', event.body);
+            var myJSON = JSON.stringify(event);
+              this._Message = (JSON.parse(myJSON).body).Message;
+              this.notifyService.showSuccess(this._Message, 'Success');
+        }
         // console.log(event, "PC");
-        if (event.type == HttpEventType.UploadProgress) {
-          this.progress = Math.round(event.loaded / event.total * 100);
-        }
-        else if (event.type === HttpEventType.Response) {
-          // console.log(event);
-          var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
-          this.notifyService.showSuccess(this._Message, 'Success');
-          // console.log(this._Message,this.progress,"json");
-        }
+        // if (event.type == HttpEventType.UploadProgress) {
+        //   this.progress = Math.round(event.loaded / event.total * 100);
+        // }
+        // else if (event.type === HttpEventType.Response) {
+        //   // console.log(event);
+        //   var myJSON = JSON.stringify(event);
+        //   this._Message = (JSON.parse(myJSON).body).Message;
+        //   this.notifyService.showSuccess(this._Message, 'Success');
+        //   // console.log(this._Message,this.progress,"json");
+        // }
         this.closeInfo();
         this.getapproval_actiondetails();
         this.GetSubtask_Details();
@@ -5131,6 +5313,7 @@ check_allocation(){
   }
 
   achieveStandard() {
+    debugger
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority);
@@ -5141,16 +5324,39 @@ check_allocation(){
     fd.append("Project_Name", this.ProjectName);
     // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
     this.service._UpdateStandardTaskSubmission(fd).
-      subscribe(event => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+      subscribe((event: HttpEvent<any>) => {
+        switch (event.type) {
+          case HttpEventType.Sent:
+            console.log('Request has been made!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header has been received!');
+            break;
+          case HttpEventType.UploadProgress:
+            this.progress = Math.round(event.loaded / event.total * 100);
+            console.log(this.progress, "progress");
+            if (this.progress == 100) {
+              this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+              
+            }
+            break;
+          case HttpEventType.Response:
+            console.log('File upload done!', event.body);
+            var myJSON = JSON.stringify(event);
+              this._Message = (JSON.parse(myJSON).body).Message;
+              this.notifyService.showSuccess(this._Message, 'Success');
         }
-        else if (event.type === HttpEventType.Response) {
-          var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
-          this.notifyService.showSuccess(this._Message, 'Success');
-        }
+        // if (event.type == HttpEventType.UploadProgress) {
+        //   this.progress = Math.round(event.loaded / event.total * 100);
+        //   console.log(this.progress, "progress")
+        //   this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+        // }
+        // else if (event.type === HttpEventType.Response) {
+        //   alert(1)
+        //   var myJSON = JSON.stringify(event);
+        //   this._Message = (JSON.parse(myJSON).body).Message;
+        //   this.notifyService.showSuccess(this._Message, 'Success');
+        // }
         this.closeInfo();
         this.GetSubtask_Details();
         this.GetProjectDetails();
@@ -5268,7 +5474,7 @@ check_allocation(){
     let _ary = this.Employee_List.filter(x => x.Emp_No == this.selectedEmp_No);
     Swal.fire({
       title: 'Project Transfer!!',
-      html: 'Do you want to transfer the project "<b>' + this.ProjectName + '</b> to <b>' +_ary[0].DisplayName +'</b>" ?',
+      html: 'Do you want to transfer the project "<b>' + this.ProjectName + '</b> to <b>' + _ary[0].DisplayName + '</b>" ?',
       // icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -5342,7 +5548,7 @@ check_allocation(){
     //   this.notifyService.showInfo("Project Deadline date cannot be empty", "Please select a date.");
     // }
   }
-  showpro(){
+  showpro() {
     document.getElementById("showpro").classList.add("d-none");
     document.getElementById("hidepro").classList.remove("d-none");
   }
@@ -5354,7 +5560,7 @@ check_allocation(){
   //   document.getElementById("hidecc").classList.add("d-none");
   //   document.getElementById("showcc").classList.remove("d-none");
   // }
-  showcc(){
+  showcc() {
     document.getElementById("showcc").classList.add("d-none");
     document.getElementById("hidecc").classList.remove("d-none");
   }
@@ -5499,7 +5705,7 @@ check_allocation(){
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
-  
+
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
 
@@ -5531,87 +5737,89 @@ check_allocation(){
   }
 
 
-  LoadDocument1(iscloud: boolean,filename: string ,url1: string, type: string) {
+  LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (iscloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+        FileUrl = (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
       }
       else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+        FileUrl = (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
       }
 
-      let name = "ArchiveView/"+this.URL_ProjectCode;
+      let name = "ArchiveView/" + this.URL_ProjectCode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
 
     else if (iscloud == true) {
-      let name = "ArchiveView/"+this.URL_ProjectCode;
+      let name = "ArchiveView/" + this.URL_ProjectCode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(url1);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
-    
-   
+
+
   }
 
-  LoadDocument_action(pcode:string, iscloud: boolean,filename: string ,url1: string, type: string) {
-    
+  LoadDocument_action(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (iscloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+        FileUrl = (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
       }
       else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        FileUrl=(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+        FileUrl = (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + url1);
       }
 
-      let name = "ArchiveView/"+pcode;
+      let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
 
     else if (iscloud == true) {
-      let name = "ArchiveView/"+pcode;
+      let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(url1);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&"+ "submitby=" + submitby + "&"+ "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
-    
+
 
 
     // let name = "ArchiveView/"+pcode;
@@ -5629,26 +5837,162 @@ check_allocation(){
 
 
   //search actions:
-  actionsearch:any;
-  maxAllocation:any;
+  actionsearch: any;
+  maxAllocation: any;
 
-  clearsearch(){
-    this.actionsearch="";
+  clearsearch() {
+    this.actionsearch = "";
   }
 
   alertMaxAllocation() {
-      const newenddate = new Date(this._ProjDeadline); 
-      const oldendate = new Date(this.actionenddate); 
+    const newenddate = new Date(this._ProjDeadline);
+    const oldendate = new Date(this.actionenddate);
 
-      if(newenddate > oldendate){
-        var Difference_In_Time = oldendate.getTime() - newenddate.getTime();
+    if (newenddate > oldendate) {
+      var Difference_In_Time = oldendate.getTime() - newenddate.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-      if(Difference_In_Days==0){
-        Difference_In_Days=-1;
+      if (Difference_In_Days == 0) {
+        Difference_In_Days = -1;
       }
-      console.log(Difference_In_Time,Difference_In_Days,"allocation");
+      console.log(Difference_In_Time, Difference_In_Days, "allocation");
       this.maxAllocation = (-Difference_In_Days) * 10 / 1;
     }
   }
+  
+  
+  updateProjectCancel(){
+
+    Swal.fire({
+      title: 'Project Cancel',
+      html: 'Are you sure to cancel the project "<strong>' + this.ProjectName +'</strong>"?<br>Note: The cancelled project will be deactivated.',
+      // icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        if(this.Current_user_ID==this.Responsible_EmpNo){
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = 'Project Cancel';
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Remarks = this.hold_remarks;
+  
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+            this.close_space();
+            this._Message = (data['message']);
+            if (this._Message == '1') {
+              this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getRejectType();
+              this.getapproval_actiondetails();
+            }
+            else if (this._Message == '2' || this._Message == '0') {
+              this.notifyService.showError("Project cancel failed", "Failed");
+            }
+          });
+        this.Clear_Feilds();
+        console.log(this.approvalObj,"cancel")
+      }
+      else if(this.Current_user_ID==this.Owner_EmpNo || this.isHierarchy==true){
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = 'Project Cancel';
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Remarks = this.hold_remarks;
+  
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+            this.close_space();
+            this._Message = (data['message']);
+            if (this._Message == '1') {
+              this.notifyService.showSuccess("Project cancelled by "+this._fullname, "Success");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+              this.getRejectType();
+            }
+            else if (this._Message == '2' || this._Message == '0') {
+              this.notifyService.showError("Project cancel failed", "Failed");
+            }
+          });
+        this.Clear_Feilds();
+        console.log(this.approvalObj,"cancel")
+      }
+      else{
+        this.close_space();
+        this.notifyService.showError("Access denied","Failed")
+      }
+        
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Project not canceled',
+          'error'
+        )
+        this.close_space();
+      }
+    });
+
+    
+  }
+
+  releasenewProject(){
+      if(this.Current_user_ID==this.Responsible_EmpNo){
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = 'New Project Reject Release';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          this.close_space();
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
+            this.GetProjectDetails();
+            this.GetSubtask_Details();
+            this.getRejectType();
+            this.getapproval_actiondetails();
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project release failed", "Failed");
+          }
+        });
+      this.Clear_Feilds();
+      console.log(this.approvalObj,"cancel")
+    }
+    else{
+      this.close_space();
+      this.notifyService.showError("Access denied","Failed")
+    }
+  }
+
+  holdreleaseProject(){
+    if(this.Current_user_ID==this.Responsible_EmpNo || this.Current_user_ID==this.Owner_EmpNo){
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = 'Project Release';
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Remarks = this.hold_remarks;
+
+      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        this.close_space();
+        this._Message = (data['message']);
+        if (this._Message == '1') {
+          this.notifyService.showSuccess("Project released by "+this._fullname, "Success");
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.getRejectType();
+        }
+        else if (this._Message == '2' || this._Message == '0') {
+          this.notifyService.showError("Project release failed", "Failed");
+        }
+       
+      });
+    this.Clear_Feilds();
+    console.log(this.approvalObj,"cancel")
+  }
+  else{
+    this.close_space();
+    this.notifyService.showError("Access denied","Failed")
+  }
+}
+
 
 }

@@ -7,11 +7,23 @@
                     <h5 class="mb-0 card-title">Meeting Report</h5>
                 </div>
                 <div class="kt-timer">
-                <span id="countdown"> 12:43 <small>sec</small></span>
-                <span class="time-play-btn"><i data-toggle="tooltip" title="click here to release project" class="fas fa-play mx-1 curser-pointer relse-act"></i></span>
-                <span class="time-play-btn d-none"><i data-toggle="tooltip" title="click here to release project" class="fas fa-pause p-2 mb-1 curser-pointer relse-act"></i></span>
-           
-            </div>
+                    <span id="countdown"> {{display}}
+                        <!-- <small>sec</small> -->
+                    </span>
+                    <ng-container *ngIf="">
+                    <span *ngIf="StatusType == true" class="time-play-btn">
+                        <i data-toggle="tooltip" title="click here to release project"
+                            (click)="InsertstartandendTimerMeeting('Start')"
+                            class="fas fa-play mx-1 curser-pointer relse-act">
+                        </i>
+                    </span>
+                    <span *ngIf="StatusType ==  false" class="time-play-btn">
+                        <i data-toggle="tooltip" (click)="InsertstartandendTimerMeeting('Pause')" title="click here to release project"
+                            class="fas fa-pause p-2 mb-1 curser-pointer relse-act">
+                        </i>
+                    </span>
+                </ng-container>
+                </div>
             </div>
 
             <div class="header2 pt-3">

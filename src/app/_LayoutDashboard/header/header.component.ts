@@ -105,6 +105,14 @@ export class HeaderComponent implements OnInit {
       });
   }
 
+  moreDetails(ProjectCode) {
+    let name: string = 'MoreDetails';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${ProjectCode}`;
+    var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
+
   actyside() {
     document.getElementById("actyInfobar_header").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";

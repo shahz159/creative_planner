@@ -33,6 +33,7 @@ export class UserDetailsDTO {
     SelectedBlock_No:string;
     SelectedEmp_No:string;
     ApprovalEmpID: string;
+    ActiveStatus : string;
 
     SelectedEmployee:string;
     SelectedCompany:string;
@@ -49,4 +50,6 @@ export class UserDetailsDTO {
     Autho_empno:string;
 
     IsCommunicationDownload: boolean;
+    cancel:any;
+    cancelcount:any;
 }

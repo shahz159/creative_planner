@@ -79,7 +79,7 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this.ObjCategoryDTO = new CategoryDTO();
     this.ObjDto = new ProjectDetailsDTO();
-    this._ObjProjectDTO= new ProjectDetailsDTO();
+    this._ObjProjectDTO = new ProjectDetailsDTO();
     this._userobj = new AuthenticationDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
@@ -152,6 +152,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
+    this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
@@ -164,10 +165,11 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
+    this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByOwner_ForSummary", this.ObjUserDetails);
   }
-  
+
   GetProjectsByUserName_Service_ForProjectsTODO(obj: UserDetailsDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjUserDetails.Emp_No = EmpNo;
@@ -238,15 +240,15 @@ export class ProjectTypeService {
 
   }
 
-  InsertPortfolioIdsByProjectCode(objFromComp : PortfolioDTO) {
+  InsertPortfolioIdsByProjectCode(objFromComp: PortfolioDTO) {
     this.objPortfolioDTO.SelectedPortIdsJson = objFromComp.SelectedPortIdsJson;
     this.objPortfolioDTO.Project_Code = objFromComp.Project_Code;
     this.objPortfolioDTO.Emp_No = objFromComp.Emp_No;
     this.objPortfolioDTO.Created_By = objFromComp.Emp_No;
     this.objPortfolioDTO.Modified_By = objFromComp.Emp_No;
-    
+
     return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfoliosByProjectCode", this.objPortfolioDTO);
- 
+
   }
 
 
@@ -268,10 +270,10 @@ export class ProjectTypeService {
   }
 
   login(uobjLoginDetails) {
-    this._userobj.userId=uobjLoginDetails.UserName;
-    this._userobj.OldPassWord=uobjLoginDetails.Password;
-     return this.http.post<any>('https://cswebapps.com/dmsapi/api/' + '/AuthenticationAPI/NewLoginDetailsJSON',this._userobj);
-   }
+    this._userobj.userId = uobjLoginDetails.UserName;
+    this._userobj.OldPassWord = uobjLoginDetails.Password;
+    return this.http.post<any>('https://cswebapps.com/dmsapi/api/' + '/AuthenticationAPI/NewLoginDetailsJSON', this._userobj);
+  }
 
 
   NewGetUserDetails(UserName) {
@@ -345,10 +347,10 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardNotifications", this.ObjNotificationDto)
   }
-  
-  GetHierarchyofOwnerforMoredetails(empno,projcode) {
-    this._ObjProjectDTO.Emp_No =empno;
-    this._ObjProjectDTO.Project_Code =projcode;
+
+  GetHierarchyofOwnerforMoredetails(empno, projcode) {
+    this._ObjProjectDTO.Emp_No = empno;
+    this._ObjProjectDTO.Project_Code = projcode;
     return this.http.post(this.rootUrl + "Notification/NewGetHierarchyofOwnerforMoredetails", this._ObjProjectDTO)
   }
 
@@ -365,7 +367,7 @@ export class ProjectTypeService {
 
     return this.http.post(this.rootUrl + "Notification/NewGetViewAllNotifications", this.ObjNotificationDto)
   }
-  
+
   SetFavourite_Service(portfolioId, isfav, empId) {
     this.ObjStatusDTO.Portfolio_ID = portfolioId;
     this.ObjStatusDTO.IsFavourite = isfav;
@@ -401,7 +403,7 @@ export class ProjectTypeService {
     //this.clearSession();
   }
   // Project Info 
-  ObjSubTaskDTO: SubTaskDTO; 
+  ObjSubTaskDTO: SubTaskDTO;
 
   GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
@@ -416,7 +418,7 @@ export class ProjectTypeService {
   SubTaskDetailsService(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     let EmpNo = localStorage.getItem('EmpNo');
-    this.ObjSubTaskDTO.Emp_No= EmpNo;
+    this.ObjSubTaskDTO.Emp_No = EmpNo;
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   // New Subtask Page
@@ -460,6 +462,8 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
+    this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
+
     //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsDataForSummary", this.objDropdownsDTO);
   }
@@ -469,6 +473,8 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
+    this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
+
     //this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsOwnerDataForSummary", this.objDropdownsDTO);
   }
@@ -518,15 +524,15 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
-  } 
+  }
 
-  
+
   _GetCategoryCountforRunway(objDTO: CompletedProjectsDTO) {
 
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
     return this.http.post(this.rootUrl + "Notification/NewGetCategoryCountforRunway", this._ObjCompletedProj);
   }
-  
+
   _GetRunwayCatId(EmpID) {
     this._ObjCompletedProj.Emp_No = EmpID;
     return this.http.post(this.rootUrl + "Notification/NewGetRunwayCatId", this._ObjCompletedProj);
@@ -538,7 +544,7 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
     this._ObjCompletedProj.Type = objDTO.Type;
     this._ObjCompletedProj.PageNumber = objDTO.PageNumber;
-    this._ObjCompletedProj.RowsOfPage =objDTO.RowsOfPage;
+    this._ObjCompletedProj.RowsOfPage = objDTO.RowsOfPage;
     this._ObjCompletedProj.SelectedBlock_No = objDTO.SelectedBlock_No;
     this._ObjCompletedProj.SelectedStatus = objDTO.SelectedStatus;
     this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;
@@ -561,12 +567,12 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.PageSize = obj.PageSize;
     return this.http.post(this.rootUrl + "TestAPI/NewDARDetailsByMasterCode", this.ObjSubTaskDTO);
   }
-  _GetMeetingList(obj: SubTaskDTO){
+  _GetMeetingList(obj: SubTaskDTO) {
     this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
   }
 
-  _GetUserName(empno){
+  _GetUserName(empno) {
     this.ObjSubTaskDTO.Emp_No = empno;
     return this.http.post(this.rootUrl + "TestAPI/NewGetUserName", this.ObjSubTaskDTO);
   }
@@ -601,13 +607,13 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.sort = obj.sort;
     this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
     this.ObjSubTaskDTO.End_Date = obj.End_Date;
-    
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
   }
 
   _GetTimelineProjects(obj: SubTaskDTO) {
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
-    this.ObjSubTaskDTO.ProjectBlock=obj.ProjectBlock;
+    this.ObjSubTaskDTO.ProjectBlock = obj.ProjectBlock;
     this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineProjects", this.ObjSubTaskDTO);
@@ -686,6 +692,13 @@ export class ProjectTypeService {
     }).pipe(
       catchError(this.errorMgmt)
     );
+
+    // return this.http.post(this.rootUrl + "Notification/UpdateStandardTaskSubmission", data, {
+    //   reportProgress: true,
+    //   observe: 'events'
+    // }).pipe(
+    //   catchError(this.errorMgmt)
+    // );
   }
 
   _UpdateSubtaskByProjectCode(fd) {
@@ -725,9 +738,9 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
-  _InsertDARServie(obj: ProjectDetailsDTO ) {
+  _InsertDARServie(obj: ProjectDetailsDTO) {
     this.ObjDto.Emp_No = obj.Emp_No;
-    this.ObjDto.Exec_BlockName=obj.Exec_BlockName;
+    this.ObjDto.Exec_BlockName = obj.Exec_BlockName;
     this.ObjDto.Project_Name = obj.Project_Name;
     this.ObjDto.StartTime = obj.StartTime;
     this.ObjDto.EndTime = obj.EndTime;
@@ -737,22 +750,22 @@ export class ProjectTypeService {
     this.ObjDto.Emp_Comp_No = obj.Emp_Comp_No;
     this.ObjDto.Project_Code = obj.Project_Code;
     this.ObjDto.Master_code = obj.Master_code;
-    
+
     return this.http.post(this.rootUrl + "TestAPI/NewInsertDAR", this.ObjDto);
   }
 
-  _InsertDownloadhistoryServie(obj: ProjectDetailsDTO ) {
+  _InsertDownloadhistoryServie(obj: ProjectDetailsDTO) {
     this.ObjDto.Emp_No = obj.Emp_No;
     this.ObjDto.Project_Code = obj.Project_Code;
     this.ObjDto.filename = obj.filename;
-    
+
     return this.http.post(this.rootUrl + "TestAPI/NewInsertDownloadHistory", this.ObjDto);
   }
 
-  _GetDownloadhistoryServie(obj: ProjectDetailsDTO ) {
+  _GetDownloadhistoryServie(obj: ProjectDetailsDTO) {
     this.ObjDto.Project_Code = obj.Project_Code;
     this.ObjDto.filename = obj.filename;
-    
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetDownloadHistory", this.ObjDto);
   }
 
@@ -770,7 +783,7 @@ export class ProjectTypeService {
     this.ObjCategoryDTO.CurrentUser = obj.CurrentUser;
     return this.http.post(this.rootUrl + "Category/NewCategoryRenameDelete", this.ObjCategoryDTO);
   }
-  
+
   _ProjectRenameService(id, pname, Desc, Currentuser) {
     this.ObjDto.Project_Id = id;
     this.ObjDto.Project_Name = pname;
@@ -779,15 +792,15 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectRename", this.ObjDto);
   }
 
-  _NewProjectDurationService(pcode,duration,remarks,emp_no) {
+  _NewProjectDurationService(pcode, duration, remarks, emp_no) {
     this.ObjDto.Project_Code = pcode;
     this.ObjDto.Duration = duration;
     this.ObjDto.Emp_No = emp_no;
     this.ObjDto.Remarks = remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectDuration", this.ObjDto);
-  }NewProjectChangeClient
+  } NewProjectChangeClient
 
-  _NewProjectCategoryService(pcode,Empno,reportid,remarks) {
+  _NewProjectCategoryService(pcode, Empno, reportid, remarks) {
     this.ObjDto.Project_Code = pcode;
     this.ObjDto.Emp_No = Empno;
     this.ObjDto.ReportId = reportid;
@@ -795,7 +808,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectChangeCategory", this.ObjDto);
   }
 
-  _NewProjectClientService(pcode,Empno,clientid,remarks) {
+  _NewProjectClientService(pcode, Empno, clientid, remarks) {
     this.ObjDto.Project_Code = pcode;
     this.ObjDto.Emp_No = Empno;
     this.ObjDto.ClientId = clientid;
@@ -803,7 +816,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectChangeClient", this.ObjDto);
   }
 
-  _NewProjectSupportService(pcode,Empno,support,remarks) {
+  _NewProjectSupportService(pcode, Empno, support, remarks) {
     this.ObjDto.Project_Code = pcode;
     this.ObjDto.Emp_No = Empno;
     this.ObjDto.Team_Support = support;
@@ -820,37 +833,37 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Category/NewProjectUpdateOwnerResponsible", this.ObjDto);
   }
 
-  _ProjectDeadlineExtendService(pcode,enddate,startdate,remarks,allocated) {
+  _ProjectDeadlineExtendService(pcode, enddate, startdate, remarks, allocated) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjDto.Emp_No = EmpNo;
-    this.ObjDto.Project_Code=pcode;
-    this.ObjDto.Project_EndDate=enddate;
-    this.ObjDto.Project_StartDate=startdate;
-    this.ObjDto.Remarks=remarks;
-    this.ObjDto.Duration=allocated;
+    this.ObjDto.Project_Code = pcode;
+    this.ObjDto.Project_EndDate = enddate;
+    this.ObjDto.Project_StartDate = startdate;
+    this.ObjDto.Remarks = remarks;
+    this.ObjDto.Duration = allocated;
     return this.http.post(this.rootUrl + "Category/NewProjectDeadlineExtend", this.ObjDto);
   }
 
-  
+
   _ProjectHoldService(obj: ProjectDetailsDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjDto.Emp_No = EmpNo;
-    this.ObjDto.Project_Code=obj.Project_Code;
-    this.ObjDto.Project_holddate=obj.Project_holddate;
-    this.ObjDto.Remarks=obj.Remarks;
+    this.ObjDto.Project_Code = obj.Project_Code;
+    this.ObjDto.Project_holddate = obj.Project_holddate;
+    this.ObjDto.Remarks = obj.Remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectHold", this.ObjDto);
   }
 
 
-getDeadlineCountbyProjectcode(pCode){
-  this.ObjDto.Project_Code=pCode;
-  return this.http.post(this.rootUrl + "Category/NewGetDeadlineCountbyPCode", this.ObjDto);
-}
+  getDeadlineCountbyProjectcode(pCode) {
+    this.ObjDto.Project_Code = pCode;
+    return this.http.post(this.rootUrl + "Category/NewGetDeadlineCountbyPCode", this.ObjDto);
+  }
 
-getHoldDatebyProjectcode(pCode){
-  this.ObjDto.Project_Code=pCode;
-  return this.http.post(this.rootUrl + "Category/NewGetProjectHoldDatebyPCode", this.ObjDto);
-}
+  getHoldDatebyProjectcode(pCode) {
+    this.ObjDto.Project_Code = pCode;
+    return this.http.post(this.rootUrl + "Category/NewGetProjectHoldDatebyPCode", this.ObjDto);
+  }
 
   SharingDataService(obj) {
     return obj;
@@ -879,7 +892,7 @@ getHoldDatebyProjectcode(pCode){
   }
 
   PathExtention(url: string) {
-    this.ObjDto.message= url;
+    this.ObjDto.message = url;
     return this.http.post(this.rootUrl + 'Notification/NewGetPathFileExtention', this.ObjDto);
   }
 

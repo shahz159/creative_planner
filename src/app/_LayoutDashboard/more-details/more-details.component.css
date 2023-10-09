@@ -384,7 +384,7 @@
     /* Venkat Color -- background: #45abf5; */
     padding: 8px;
     border-radius: 10px;
-    left: 23%;
+    left: 13%;
   }
   
   .space-tabs .nav-item .nav-link {
@@ -752,6 +752,9 @@
   }
   .bg-primary ~ .task-status__controls {
     background-color: #5867dd !important;
+  }
+  .bg-cancel ~ .task-status__controls {
+    background-color: #F88282 !important;
   }
   .bg-warning ~ .task-status__controls {
     background-color: #ffb822 !important;
@@ -1699,3 +1702,18 @@ span.kt-attachment-tittle {
   display: inline-block;
   width: 85%;
 } */
+
+.release-tabs.nav-pills .nav-item .nav-link.active, 
+.release-tabs.nav-pills .nav-item .nav-link:active, .release-tabs.nav-pills .nav-item .nav-link.active:hover {
+    background-color: transparent;
+    color: #7b68ee;
+    font-weight: 600;
+    border-bottom: 2px solid #7b68ee;
+    border-radius: 0px !important;
+}
+.release-tabs.nav-pills .nav-item .nav-link{
+    cursor: pointer;
+}
+.release-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

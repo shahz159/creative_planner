@@ -1,4 +1,6 @@
 export class CalenderDTO {
+    draftid:number;
+    User_Type:string;
     location:String;
     loc_status:Boolean;
     Schedule_type:number;
@@ -29,7 +31,7 @@ export class CalenderDTO {
     End_date:any;
     Start_time:string;
     End_time:string;
-    Status:boolean;
+    Status:string;
     Note:string;
     Emp_No:any;
     Weekday:string;

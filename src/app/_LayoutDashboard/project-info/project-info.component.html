@@ -124,7 +124,7 @@
     </div>
     <ng-container *ngIf="action_details">
         <div class="desc-msg rejct-msg">
-            <div class="d-flex align-items-center px-3" *ngFor="let item of action_details">
+            <div class="d-flex align-items-center" *ngFor="let item of action_details">
                 <h6 class="mb-0">This is an action for the project 
                     <a  href="javascript:void(0)" class="custom-link" (click)="moreDetails1(item.Master_Code)"
                         data-toggle="tooltip" title="click to open project in new window">{{item.Project_Name}} </a>
@@ -148,6 +148,9 @@
                     {{item.Emp_Name}}
                 </h6>
                 <h6 class="mb-0" *ngIf="_MainProjectStatus=='Enactive Under Approval'">The project is Enactive Under Approval with - 
+                    {{item.Emp_Name}}
+                </h6>
+                <h6 class="mb-0" *ngIf="_MainProjectStatus=='Cancellation Under Approval'">The project is Cancellation Under Approval with - 
                     {{item.Emp_Name}}
                 </h6>
             </div>
@@ -794,7 +797,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdown"
-                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed')">
+                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID == item.OwnerEmpNo || Current_user_ID == item.Responsible|| Current_user_ID == item.Authority) && (item.Status!='Completed' && item.Status!='Project Hold') && Status=='InProcess'">
                                             <span class="dropdown-toggle no-after text-info" type="button" id="hold-icn"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 (click)="onHoldClick(Pid)">
@@ -1076,6 +1079,14 @@
                                         <h5 class="text-primary">{{item.Status}}
                                         </h5>
 
+                                    </div>
+                                    <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                        <h5 class="text-cancel">{{item.Status}}
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="item.Status=='Cancelled'">
+                                        <h5 class="text-cancel">{{item.Status}}
+                                        </h5>
                                     </div>
                                     <div *ngIf="item.Status=='New Project Rejected'">
                                         <h5 class="text-danger">{{item.Status}}</h5>
@@ -1616,7 +1627,7 @@
                         'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
                         'text-primary':item.SubProject_Status=='Under Approval',
                         'text-info':item.SubProject_Status=='Completion Under Approval',
-                        'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                        'text-danger':item.SubProject_Status=='New Project Rejected',
                         'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                         
                         'text-underApp':item.SubProject_Status=='New Project',
@@ -1751,7 +1762,7 @@
                                 'text-warning':item.SubProject_Status=='InProcess' || item.SubProject_Status=='Forward Under Approval',
                                 'text-primary':item.SubProject_Status=='Under Approval',
                                 'text-info':item.SubProject_Status=='Completion Under Approval',
-                                'text-Rejected':item.SubProject_Status=='New Project Rejected',
+                                'text-danger':item.SubProject_Status=='New Project Rejected',
                                 'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                 
                                 'text-underApp':item.SubProject_Status=='New Project',
@@ -1969,8 +1980,29 @@
                                 <h6 class="txtm-cus">Reference attachment</h6>
                                 <a class="word-break text-info curser-pointer"
                                     title="Click To Open File"
-                                    (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                    (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype,item.SubmittedBy)">
                                     <b>{{item.Sourcefile}}</b></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center detial-item">
+                            <span class="detail-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor"
+                                    class="bi bi-person" viewBox="1 0 14 14">
+                                    <path
+                                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <div class="w-100">
+                                <h6 class="txtm-cus">Assigned by</h6>
+                                <h5 class="" data-toggle="tooltip"
+                                    title="Assigned by">
+                                    {{item.Assignedby}}
+                                    
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -2489,7 +2521,7 @@
                                             <h6 class="txtm-cus">Complete attachment</h6>
                                             <a class="word-break text-info curser-pointer"
                                                 title="Click To Open File"
-                                                (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype)">
+                                                (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype,item.SubmittedBy)">
                                                 <b>{{item.Sourcefile}}</b></a>
                                         </div>
                                     </div>

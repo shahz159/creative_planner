@@ -1,38 +1,72 @@
 <div>
-    <!-- \&& IsCommunicarionMemoDownload=='true' -->
-    <div *ngIf="viewer!='' && Current_user_ID=='2000'" class="">
-        <a class="btn btn-info float-left mb mt-3 mx-3" (click)="download(src,filename)">
-            <span class="svg-icns">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-download" viewBox="0 0 16 16">
-                    <path
-                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                    <path
-                        d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                </svg>
-                Download
-            </span>
-        </a>
+    <div class="kt-cus-head">
+        <div class="d-flex-cen flex-1">
+            <div class="kt-inbox__info">
+                <div class="kt-inbox__sender">
+                    <span class="kt-media--sm kt-media--dark">
+                        <img src="assets/icons/Group 20.png" style="height:50px" class="w-auto" alt="">
+                    </span>
+                </div>
+            </div>
+            <div class="kt-inbox__details d-flex-center w-100 justify-content-between">
+                <ng-container>
+                    <div class="kt-memo-dt-fl">
+                        <a  class="kt-inbox__message">
+                            <!-- <span class="kt-inbox__subject"> {{item.Subject}}</span> <span class="kt-flv-def"> </span> -->
+                            <span class="kt-inbox__flv-user"><b>{{submitby}}</b></span>
+                        </a>
+                        <div class="kt-inbox__labels">
+                            <span class="kt-fils-v-uname">{{filename}}</span>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div *ngIf="viewer!='' && Current_user_ID=='2000'" class="">
+                    <a class="btn btn-info float-left mb mt-3 mx-3" (click)="download(src,filename)">
+                        <span class="svg-icns">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-download" viewBox="0 0 16 16">
+                                <path
+                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                <path
+                                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                            </svg>
+                            Download
+                        </span>
+                    </a>
+                </div>
+                <a (click)="DownloadHistory(filename)" *ngIf="invalid==false" class="btn btn-dull mt-3" href="javascript:void(0)"
+                    data-target="#open_modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false">
+                    <!-- <span class="svg-icns">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                        </svg>
+                        History
+                    </span> -->
+                    <span class="svg-icns1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 24 24" fill="none"><path d="M19.6873 14.2222C19.8909 13.5167 20 12.7711 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.3413 20 16.4476 18.9943 17.9106 17.3912M19.6873 14.2222L19 13M19.6873 14.2222L20.75 13.25M9 12L11 14L15 10" stroke="#464455" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                         History
+                    </span>
+                </a>
+            </div>
+        </div>
+
     </div>
-    <a (click)="DownloadHistory(filename)" *ngIf="invalid==false" class="btn btn-dull mt-3" href="javascript:void(0)"
-        data-target="#open_modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false">
-        <!-- <span class="svg-icns">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
-                viewBox="0 0 16 16">
-                <path
-                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                <path
-                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-            </svg>
-            History
-        </span> -->
-        <span class="svg-icns1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 24 24" fill="none"><path d="M19.6873 14.2222C19.8909 13.5167 20 12.7711 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.3413 20 16.4476 18.9943 17.9106 17.3912M19.6873 14.2222L19 13M19.6873 14.2222L20.75 13.25M9 12L11 14L15 10" stroke="#464455" stroke-linecap="round" stroke-linejoin="round"/></svg>
-             History
-        </span>
-    </a>
+    <!-- \&& IsCommunicarionMemoDownload=='true' -->
+    
 
     <ng-container *ngIf="viewer=='pdf'">
+        <div class="col-md-12 progress_container mt-mc-20" *ngIf="ShowProgress">
+            <div class="progress form-group" *ngIf="progress > 0">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+                    {{progress}}%
+                </div>
+            </div>
+        </div>
         <div class="pt-3 px-3">
             <div class="">
                 <div class="">
