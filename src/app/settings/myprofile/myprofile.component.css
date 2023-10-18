@@ -1,0 +1,237 @@
+.profile-tab .card1 {
+    display: none;
+}
+.profile-cls{    
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-weight: 600;
+}
+.nav-tabs.nav-tabs-line .nav-link {
+    padding: 10px 0 !important;
+}
+.card-brdr.pl-5 {
+    background-color: #f2f6f6;
+    background-clip: border-box;
+    border-bottom: 1px solid #ebedf2;
+}
+.text-teal{
+    color: #17a2b8 !important;
+}
+.col-lg-3.card{
+    height: 100vh;;
+}
+.mt--2 {
+    margin-top: -20px;
+}
+.brdr-0{
+border-radius:0;
+}
+.dash1 .nav.nav-tabs.flex-column .nav-link {
+    border: 0 !important;
+    border-radius: 0 !important;
+	margin-bottom: 5px;
+}
+.dash1 .nav.nav-tabs.flex-column .nav-link.active {
+    border: 0 !important;
+    border-radius: 0 !important;
+	border-left: 3px solid #6658dd!important;
+	background-color: transparent;
+}
+.dash1 .nav-tabs{
+	border-bottom: 0;
+}
+.profile-tab .active .card1 {
+    display: block;
+}
+
+.tab-content>.active {
+    display: block;
+}
+
+.text-hover-primary {
+    transition: color .2s ease, background-color .2s ease;
+}
+
+.text-gray-900 {
+    color: #181c32!important;
+}
+.text-gray-400 {
+    color: #b5b5c3!important;
+}
+.nav-tabs.nav-tabs-line a.nav-link.active {
+    background-color: transparent;
+    color: #595d6e;
+    border-bottom: 2px solid #22b9ff;
+}
+.text-active-primary.active {
+    transition: color .2s ease, background-color .2s ease;
+    color: #009ef7!important;
+}
+.font-bolder {
+    font-weight: 600 !important;
+}
+.text-hover-primary:hover {
+    transition: color .2s ease, background-color .2s ease;
+    color: #009ef7!important;
+}
+.symbol {
+    display: inline-block;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 0.475rem;
+}
+.position-relative {
+    position: relative !important;
+}
+.symbol>img {
+    width: 100%;
+    flex-shrink: 0;
+    display: inline-block;
+    border-radius: 0.475rem;
+}
+.symbol.symbol-100px.symbol-fixed>img {
+    height: 100px;
+}
+@media (min-width: 992px){
+.symbol.symbol-lg-160px.symbol-fixed>img {
+    height: 200px;
+}
+}
+.font-sp-bold {
+    font-weight: 600;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+.text-teal .svg-icon.svg-icon-primary svg g [fill] {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill:  #17a2b8 !important;
+}
+.icon-svg .svg-icon-primary svg path {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill:  #f2f6f6 !important;
+}
+.icon-svg:hover .svg-icon-primary svg path {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill:  #3699FF !important;
+}
+.text-teal:hover .svg-icon.svg-icon-primary svg g [fill] {
+    fill: #3699FF !important;
+}
+.tab-content.card.profile-tab {
+    height: calc(100vh - 47px);
+    border-radius: 0px;
+    border-top: 0;
+}
+.icon-svg {
+    margin: auto;
+    background: #3699FF;
+    width: 34px !important;
+    height: 34px;
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    max-width: 33.33333%;
+}
+.icon-svg:hover{
+    background: #ffffff;
+    border:1px solid #009ef7;
+    transform: scale(1.1);
+    transition: 0.3s ease;
+    cursor: pointer;
+
+}
+.hoverr .emp1:hover  ~ .emp1>span, .hoverr .emp1:hover  ~ .emp1>a,
+.hoverr .mail1:hover  ~ .mail1>span, .hoverr .mail1:hover  ~ .mail1>a,
+.hoverr .comp1:hover  ~ .comp1>span, .hoverr .comp1:hover  ~ .comp1>a,
+.hoverr .add1:hover  ~ .add1>span, .hoverr .add1:hover  ~ .add1>a {    
+    transform: scale(1.08);
+    transition: 0.3s ease;
+    color: #009ef7 !important;
+    padding-left: 4px;
+}
+.hoverr>.emp1:hover  ~ .hrr {    
+    background-color:#009ef7 !important;
+    padding-left: 40px;;
+}
+.w-80{
+    width: 80%;
+    margin: auto;
+}
+
+/*active deactive switch */
+
+.toggle-switch {
+    position: relative;
+    width: 60px;
+  }
+  
+.switch {
+    position: absolute;
+    width: 100%;
+    height: 35px;
+    background-color: var(--dark);
+    border-radius: 50px;
+    cursor: pointer;    
+    left: 0;
+    top: 0;
+
+  }
+  
+  .swt {
+    position: absolute;
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    border-radius: 50px;
+    transition: 0.3s;
+    border: 1px solid #ccc;
+  }
+  .swit{
+    position: relative;
+    display: flex;
+    background-color: #f2f6f6;
+
+  }
+  .swt:checked ~ .slider {
+    background-color: var(--light);
+  }
+  .btn-d{
+    flex: 1;
+    text-align: left;
+  }
+  .slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    box-shadow: inset 9px 0px 0px 0px var(--light);
+    background-color: var(--dark);
+    transition: 0.3s;    
+  }
+  
+  .swt:checked ~ .slider::before {
+    transform: translateX(25px);
+    background-color: #1dc9b7;
+    box-shadow: none;
+  }
+  input.ng-invalid.ng-touched {
+    border: 1px solid #f86170;
+}
+.alert.alert-danger {
+    background: none;
+    border: none;
+    color: #f86170;
+    padding: 5px 0px;
+    margin-bottom: 5px;
+    flex-direction: row-reverse;
+}

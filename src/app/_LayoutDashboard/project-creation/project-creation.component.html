@@ -1,0 +1,510 @@
+<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid margin-height">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title"> UnPlanned Task </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="new_Project d-flex">
+        <!-- Block 1 -->
+        <div class="leftside-bar mr-3">
+            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-4">
+                    <ul>
+                        <li>
+                            <a href="#"><i class="la la-sun-o"></i> My Day</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="la la-star-o"></i> Important</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="la la-calendar"></i> Planned</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="la la-user"></i> Assigned to me</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="la la-home"></i> Tasks</a>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <a href="#"><i class="la la-list"></i> Globus</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="la la-plus"></i> New List</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Block 2 -->
+        <div class="center-box">
+            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid height-adjust-100">
+                <div class="kt-portlet__body pt-4">
+                    <h4 class="project-name mb-4">Project Name</h4>
+                    <a class="kt-todo__icon mr-3"><i class="la la-plus"></i> New Task</a>
+                    <ul class="tasks-list">
+                        <li>
+                            <label class="kt-radio kt-radio--bold kt-radio--brand mb-0">
+                                <input type="radio" name="radio6"> Task Name 1
+                                <span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="kt-radio kt-radio--bold kt-radio--brand mb-0">
+                                <input type="radio" name="radio6"> Task Name 2
+                                <span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="kt-radio kt-radio--bold kt-radio--brand mb-0">
+                                <input type="radio" name="radio6"> Task Name 3
+                                <span></span>
+                            </label>
+                        </li>
+                    </ul>
+                    <div class="backgroundLines"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Blcok 3 -->
+        <div class="rightside-bar ml-3">
+            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid height-adjust-100">
+                <div class="kt-portlet__body pt-4">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="project-name mb-4 strong-600">Test Task 1</h5>
+                        <a href="#"><i class="far fa-star"></i></a>
+                    </div>
+
+                    <div class="set-box" data-toggle="modal" data-target="#ProjectType">
+                        <p class="mb-0">
+                            <i class="la la-home"></i> Project Type
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#clientname">
+                        <p class="mb-0">
+                            <i class="la la-user"></i> Client
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#CategoryName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Category
+                        </p>
+                    </div>
+                    <h5 class="mb-4 strong-600">Team Section</h5>
+                    <div class="set-box" data-toggle="modal" data-target="#OwnerName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Owner
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#OwnerName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Responsible
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#ResponsibleName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Authority
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#CoordinatingName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Coordinating
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#InformName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Inform
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#AuditorName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Auditor (optional)
+                        </p>
+                    </div>
+                    <div class="set-box" data-toggle="modal" data-target="#SupportName">
+                        <p class="mb-0">
+                            <i class="la la-list"></i> Support
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="ProjectType" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Assigned To</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <span class="btn-brand">V</span> Vali@devboxsoftware.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="btn-success">M</span> Mubeen@devboxsoftware.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="btn-info">A</span> Asif@devboxsoftware.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="btn-brand">V</span> Vali@devboxsoftware.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="btn-success">M</span> Mubeen@devboxsoftware.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="btn-info">A</span> Asif@devboxsoftware.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="clientname" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Client Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="CategoryName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Category</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="OwnerName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Owner Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="ResponsibleName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="AuthorityName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="CoordinatingName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="InformName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="AuditorName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="SupportName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> Creative Solutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> YR Global
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="la la-angle-right"></i> dr.CAFE Coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->

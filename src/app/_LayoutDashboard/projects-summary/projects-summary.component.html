@@ -1,0 +1,1107 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="sumdet">
+    <!--Begin::Row    DIV ONE -->
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin:: Widgets/Authors Profit-->
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <div class="dropdown">                            
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               {{Type}} Summary
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1)">RACIS Projects Summary</a>
+                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL Projects Summary</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="kt-portlet__head-label mr-2">
+                        
+                        <!-- <div class="dropdown">
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                            id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                </svg>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                  </svg>
+                                  <a class="ordr-a" href="javascritp:void(0)">Project Type</a>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
+                                <span class="sort-by pb-2">Sort by</span>
+                                <a class="dropdown-item">Project Name</a>
+                                <a  class="dropdown-item active">
+                                    Project Type
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <a class="dropdown-item">Category</a>
+                            </div>
+                        </div> -->
+                        
+                        <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
+                            <div class="kt-header__topbar-wrapper">
+                                <div class="kt-quick-search kt-quick-search--inline">
+                                    <div class="kt-quick-search__form">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                class="form-control project-search kt-quick-search__input pl-3"
+                                                placeholder="Search Projects" [(ngModel)]="searchText" autofocus
+                                                style="width: 300px" (keydown.enter)="search($event.target.value)">
+                                            <div class="input-group-prepend">
+                                                <button class="input-group-text" (click)="SearchbyText()" type="submit">
+                                                    <i class="flaticon2-search-1"></i>
+                                                    
+                                                </button>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mr-3">
+                            <ng-container *ngIf="CurrentPageNo==1">
+                                {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                CurrentPageNo}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                                {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                            </ng-container>
+                            of
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+                        </div>
+
+                        <!-- <div class="mr-3">
+                            Page <span class="badge badge-pill badge-primary">
+                                {{CurrentPageNo}}</span>
+                        </div> -->
+
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+                            <i class="fas fa-angle-left mr-0"></i>
+                        </button>
+                        <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"                             
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
+                            [disabled]="_CurrentpageRecords<30">
+                            <i class="fas fa-angle-right mr-0"></i></button>
+                        <div class="mr-1">
+                            <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Asc">
+                                <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+                            </a>
+                            <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Desc">
+                                <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
+                            </a>
+                        </div>
+                        <!-- Filters -->
+                        <div class="stores-sec mr-1">
+                            <ul class="nav navbar-nav filters">
+                                <li class="dropdown mega-dropdown" id="filtermenu">
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                            class="fas fa-ellipsis-v mr-0 "></i>
+                                    </a>
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div (click)="$event.stopPropagation();">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <h5><strong>Total Projects - </strong>
+                                                        <h5 class="d-inline-block">
+                                                            <strong>{{_totalProjectsCount}}</strong>
+                                                        </h5>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <!-- Empty Column -->
+                                                </div>
+                                            </div>
+                                            <hr />
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control kt-quick-search__input pl-3"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        style="width: 100%;">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Project Type</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox"  >
+                                                                <input type="checkbox" (change)="isTypeChecked(item)"
+                                                                    [(ngModel)]="item.checked">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Status</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of StatusCountFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isStatusChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between" *ngIf="cancelcheck=='1' && canceledit==false">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
+                                                                <p>Cancelled</p>
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{cancelcount}}</span>
+                                                        </div>
+                                                        <!-- <div>
+                                                            <input type="checkbox" id="cancelcheck" class="form-check-input ps-1 btn" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
+                                                            <label *ngIf="Type==type1 && isChecked==false" class="text-dark-50"> check to view RACIS cancelled projects</label>
+                                                            <label *ngIf="Type==type2  && isChecked==false" class="text-dark-50"> check to view All cancelled projects</label>
+                                                            <label *ngIf="Type==type1  && isChecked==true" class="text-danger"> uncheck to view RACIS projects</label>
+                                                            <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Employees</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isEmpChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            
+                                            <hr>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <button
+                                                    class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown">Submit</button>
+                                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll()">Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- new filters -->
+
+                        <!-- <button class="btn-act btn btn-hvr" data-toggle="kt-tooltip" data-skin="dark" title="Clear Filters">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                role="img" font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
+                                viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z">
+                                </path>
+                            </svg>
+                            <span class="label-hidden">Reload</span>
+                        </button> -->
+                        <div class="btn-group d-none">
+                            <!-- <button class="btn-act btn btn-hvr filter-dot1" data-toggle="dropdown">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" role="img"
+                                    font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
+                                    viewBox="0 -1 17 17">
+                                    <path
+                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+                                </svg>
+                                <span class="label-hidden">Filters</span>
+                            </button> -->
+
+                            <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v mr-0 "></i>
+                            </a>
+                            
+                            <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
+                                <ul  class="kt-nav">
+                                    <li class="kt-nav__head d-flex justify-content-between">
+                                        <div>User Filters</div>
+                                    </li>
+                                    <li class="kt-nav__separator"></li>
+                                    <li class="kt-nav__item px-3 mb-2">
+                                        <input autoFocus type="search" autocomplete="off" name="Search" class="form-control" placeholder="Search...">
+                                    </li>
+                                    <li (click)="$event.stopPropagation();" class="kt-nav__item px-4 pt-2">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Project Type</h6>
+    
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Core Tasks
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Routine Tasks
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Secondary Tasks
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Standard Tasks
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Core Tasks
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Routine Tasks
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+    
+    
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Status</h6>
+    
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Completed
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Completion Under Approval
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        InProcess
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        Hold
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                Completed
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                InProcess
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <h6 class="mb-0">Employees </h6>
+                                                <div class="kt-nav__separator"></div>
+                                                <div class="height-scroll">
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 1
+                                                        <span></span>
+                                                    </label>
+                                                    
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 2
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 3
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-checkbox kt-checkbox--info">
+                                                        <input type="checkbox" name="companychk" value="">
+                                                        User 4
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+    
+    
+                                                <div class="opts-flx">
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                User 1
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="selectd-opts">
+                                                        <div class="slt-div">
+                                                            <div class="opt-txt">
+                                                                User 2
+                                                            </div>
+                                                        </div>
+                                                        <div class="removeButton" aria-hidden="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="rmv-icn w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="kt-nav__separator"></li>
+                                    <li class="px-4 filt-btns">
+                                        <a class="btn btn-info mr-2 text-white btn-xs">Filter</a>
+                                        <a class="btn btn-outline-info btn-xs text-dark-75">Close</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- new filters -->
+
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+                            <i class="fas fa-sync-alt mr-0"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ticks-grad mb-3 mt-3 d-none">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                      </svg>                                      
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">New Projects</h5>
+                                <h4 class="mb-0">12</h4>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Inprocess</h5>
+                                <h4 class="mb-0">15</h4>
+                            </div>
+                        </div>
+                    </div>
+        
+        
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M21.0049 3C21.5572 3 22.0049 3.44772 22.0049 4V9.5C20.6242 9.5 19.5049 10.6193 19.5049 12C19.5049 13.3807 20.6242 14.5 22.0049 14.5V20C22.0049 20.5523 21.5572 21 21.0049 21H3.00488C2.4526 21 2.00488 20.5523 2.00488 20V14.5C3.38559 14.5 4.50488 13.3807 4.50488 12C4.50488 10.6193 3.38559 9.5 2.00488 9.5V4C2.00488 3.44772 2.4526 3 3.00488 3H21.0049ZM20.0049 5H4.00488V7.968L4.16077 8.04908C5.49935 8.78105 6.42516 10.1735 6.49998 11.7882L6.50488 12C6.50488 13.7042 5.55755 15.1871 4.16077 15.9509L4.00488 16.031V19H20.0049V16.031L19.849 15.9509C18.5104 15.219 17.5846 13.8265 17.5098 12.2118L17.5049 12C17.5049 10.2958 18.4522 8.81287 19.849 8.04908L20.0049 7.968V5ZM16.0049 9V15H8.00488V9H16.0049Z" fill="#fff">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Under Approval</h5>
+                                <h4 class="mb-0">5</h4>
+                            </div>
+                        </div>
+                    </div>
+        
+        
+        
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="-1 -1 18 18">
+                                        <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Completed</h5>
+                                <h4 class="mb-0">15</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-2">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                        <path d="M16.05 6v.075m0 30v.00075m000  15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" stroke-linejoin="none23"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Total</h5>
+                                <h4 class="mb-0">1361</h4>
+                            </div>
+                        </div>
+                    </div> -->
+        
+                </div>
+            </div>
+            <!--begin::Portlet-->
+            <div class="kt-portlet scrollbar1">
+                <!-- <div class="kt-portlet__head">
+                    <div class="col-md-6 py-3">
+                        <input type="text" class="form-control" [(ngModel)]="portfolioName"
+                            placeholder="Enter Portfolio Name..." (keypress)="_ontextChange($event.target.value)">
+                        <div>
+                            <strong>
+                                <p class="text-danger mb-0 py-1" [hidden]="portfolioName!=''"> * Please Enter Portfolio
+                                    Name To Enable Checkboxes</p>
+                            </strong>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                    <div class="card projects-list no-border">
+                        <div class="card-body">
+                            <!--begin: Datatable -->
+                            <!-- U hve to Work here Below div This is the DIV Bro -->
+                            <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        
+                                        <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
+                                        <div class="table-responsive">
+                                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
+                                            style="width: 0px;">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label=": activate to sort column descending">
+                                                    </th>
+                                                    <th></th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Project_Name" tabindex="0" aria-controls="project-4"
+                                                        class="curser-pointer" rowspan="1" colspan="1"
+                                                        style="width: 0px;" (click)="_SortPortfoliolist()"
+                                                        aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                        <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fas fa-sort-alpha-up"></i>
+                                                        </a>
+                                                        <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fa fa-sort-alpha-down-alt"></i>
+                                                        </a>
+                                                        ProjectName
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-label="Project Type: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> ProjectType
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="ReportType" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Category: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Category
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-label="User Name: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Responsible
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Deadline
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Last Update
+                                                    </th>
+                                                    <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Users: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> RACIS
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Status
+                                                    </th>
+                                                    <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        Link
+                                                    </th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
+                                                <tr role="row" class="odd"
+                                                    *ngFor="let item of _ProjectDataList;let i=index;">
+                                                    <!-- Information Icon -->
+                                                    <!-- <td></td> -->
+                                                    <td align="center">
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus" data-toggle="tooltip" title="Project Info!">
+                                                            <i class="fa fa-info-circle info-icon-cir"
+                                                                (click)="openInfo(item.Project_Code,item.Project_Name)"></i>
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.Link_Status==1;else not_Linked">
+                                                            <a class="curser-pointer"
+                                                                (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
+                                                                    width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
+
+                                                        </div>
+                                                        <ng-template #not_Linked>
+                                                            <a><img width="19px" class="black-white"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td>
+                                                        <p class="kt-widget__title mb-0">
+                                                            {{item.Project_Name }}
+                                                            <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.ReportType==null;else ReportType">
+                                                            <span class="kt-widget__other">No category</span>
+                                                        </div>
+                                                        <ng-template #ReportType>
+                                                            <span class="kt-widget__other">{{item.ReportType}}</span>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td><span class="kt-widget__other">{{item.Team_Res}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
+                                                            <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
+                                                        </div>
+                                                        <ng-template #Projecttype>
+                                                            <span class="kt-widget__other text-nowrap">
+                                                                {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td data-toggle="tooltip" data-placement="top"
+                                                        title="{{item.LastUpdate|date:'medium'}}">
+                                                        <span class="kt-widget__other text-info">
+                                                            {{item.LastUpdate|dateAgo}}</span>
+                                                    </td>
+                                                    <td data-toggle="tooltip" data-placement="top"
+                                                        title="RACIS">
+                                                        <div class="kt-widget__details">
+                                                            <div class="kt-section__content kt-section__content--solid">
+                                                              <div class="kt-media-group">
+                                                                <!-- href="javascript:void(0)"
+                                                            
+                                                            (click)="OpenDARinfo(item.Project_Code)"
+                                                                      <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                                                </a> -->
+                                                                  <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image"> -->
+
+                                                                <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Owner}}</span>
+                                                                </a>
+                                                                <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
+                                                                </a>
+                                                                <!-- <a *ngIf="item.Owner==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Informer: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
+                                                                </a>  && item.Owner!=item.Informer && item.Owner!=item.Informer
+                                                                <a *ngIf="item.Owner==item.Coord" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Coordinator: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Owner}}</span>
+                                                                </a> -->
+                                                                <!-- <a *ngIf="item.Resp!=item.Autho && item.Resp==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Informer: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Resp}}</span>  && item.Resp!=item.Informer
+                                                                </a> -->
+                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Resp}}</span>
+                                                                  </a>
+                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.Autho}}</span>
+                                                                </a>
+                                                                <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Autho}}</span>
+                                                                  </a>
+                                                                <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator:{{item.Team_Coor}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                    <span>{{item.Coord}}</span>
+                                                                  </a>
+                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Informer:{{item.Team_Informer}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
+                                                                    <span>{{item.Informer}}</span>
+                                                                  </a> -->
+                                                                  <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>{{item.Support}}</span>
+                                                                  </a>
+                                                                <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>1+</span>
+                                                                </a>
+                                                                <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                    <span>1+</span>
+                                                                  </a>
+                                                              </div>
+                                                            </div>
+                                                            <span class="pin-icn d-none">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                              </svg>
+                                                            </span>
+                                                          </div>
+                                                    </td>
+                                                    <td class="stat-td">
+                                                        <!-- <div *ngIf="_MainProjectStatus=='Delay'">
+                                                            <span class="text-danger font-weight-400">Delay</span>
+                                                        </div> -->
+                                                        <div *ngIf="item.Status=='Under Approval'">
+                                                            <span class="text-info font-weight-400">Under
+                                                                Approval</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Delay'">
+                                                            <span class="text-danger font-weight-400">Delay </span>
+                                                            <span *ngIf="item.Delaydays>0"
+                                                                class="text-danger delayDays">
+                                                                <strong>{{item.Delaydays}} days</strong>
+                                                            </span>
+                                                        </div>
+                                                        <!-- Other Status -->
+                                                        <div *ngIf="item.Status=='InProcess'">
+                                                            <span class="text-warning font-weight-400">InProcess</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='ToDo InProcess'">
+                                                            <span class="text-primary font-weight-400">ToDo
+                                                                InProcess</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Project'">
+                                                            <span class="text-primary font-weight-400">New
+                                                                Project</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Project Rejected'">
+                                                            <span class="text-danger font-weight-400">New
+                                                                Project
+                                                                Rejected</span>
+                                                        </div>
+
+                                                        <div *ngIf="item.Status=='Project Hold'">
+                                                            <span class="text-danger font-weight-400">
+                                                                Hold</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='ToDo Completed'">
+                                                            <span class="text-primary font-weight-400">ToDo
+                                                                Completed</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Todo'">
+                                                            <span class="text-primary font-weight-400">New Todo
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Completion Under Approval'">
+                                                            <span class="text-primary font-weight-400">Completion
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                                            <span class="text-cancel font-weight-400">Cancellation
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Cancelled'">
+                                                            <span class="text-cancel font-weight-400">Cancelled
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Completed'">
+                                                            <span class="text-success font-weight-400">Completed
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Forward Under Approval'">
+                                                            <span class="text-warning font-weight-400">Forward
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                            <span class="text-danger font-weight-400">Project
+                                                                Complete
+                                                                Rejected
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                            <span class="text-danger font-weight-400">Enactive
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+
+                                                        <div *ngIf="item.Status=='Version'">
+                                                            <span class="text-danger font-weight-400">Version
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                            <span class="text-info font-weight-400">Deadline Extend
+                                                                Under Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Holded'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Hold
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Project Hold Under Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='ToDo Achieved'">
+                                                            <span class="text-info font-weight-400">ToDo Achieved
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Standardtask Enactive Hold'">
+                                                            <span class="text-danger font-weight-400">Standardtask Enactive Hold
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
+                                                        class="curser-pointer">
+                                                        <a><i class="fa fa-link text-primary"></i></a>
+                                                    </td> -->
+                                                    <!-- <td>
+                                                        
+                                                        <a tabindex="0" role="button" placement="right" data-trigger="focus" class="btn px-0 mr-2"
+                                                            *ngIf="item.ApprovalEmpID!=0" (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)"
+                                                            data-toggle="tooltip" title="Project Actions!">
+                                                            <i class="fa fa-cogs info-icon-cir"></i></a>
+                                                        <div class="dropdown" *ngIf="item.ApprovalEmpID!=0">
+                                                            <a href="#" data-toggle="dropdown" aria-expanded="true" class="dropdown-toggle arrow-none card-drop">
+                                                              <i class="fas fa-ellipsis-v mr-0" style="color: red"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr" 
+                                                                    (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)">Accept</a>
+                                                              <a href="javascript:void(0);" class="dropdown-item dan-hvr">Reject</a>
+                                                            </div>
+                                                        </div>
+                                                    </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                        <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
+                                            <h4>{{_filtersMessage}}</h4>
+                                            <p>{{_filtersMessage2}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Project actions info bar end -->
+
+<!-- dms memos sidebar-->
+<div id="MemosSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                (click)="_CloseMemosidebar()">&times;</a>
+            <div class="title-sidebar mb-0 text-white">
+                <h5 class="curser-pointer">
+                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos
+                </h5>
+                <span class="text-small text-white">{{_displayProjName}}</span>
+
+            </div>
+            <!-- <p class="text-small text-white">{{_displayProjName}}</p> -->
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item" *ngFor="let item of _MemosSubjectList; let i=index">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5 (click)="openUrl(item.Url)" class="curser-pointer">
+                                <!-- -->
+                                <div *ngIf="item.Attachment==true;else Onlysubject">
+                                    <!-- <span style="color:#808080">{{item.MailId}}</span> -->
+                                    <i class="fas fa-paperclip" style="color:#A9A9A9"></i> {{item.Subject}}
+                                </div>
+                                <ng-template #Onlysubject>
+                                    <i class="fas fa-circle"></i> {{item.Subject}}
+                                </ng-template>
+
+                                <!-- <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> -->
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 2
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 3
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 4
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 5
+                            </h5>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Link memos Template -->
+<!-- <div id="LinkSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="closeLinkSideBar()">&times;</a>
+            <h5 class="title-sidebar mb-0 text-white">
+                <i class="fa fa-link"></i>
+                Link Project
+            </h5>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+            <p class="text-primary">
+                {{_displayProjName}}</p>
+            <div class="M_fsize">
+                Total <div class="badge badge-pill badge-outline-info">
+                    {{_totalMemos}}</div>
+                Linked <div class="badge badge-pill badge-outline-success">
+                    {{_mappedMemos}}</div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="d-flex">
+
+                <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                    [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                    (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                </ng-multiselect-dropdown>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+            </div>
+        </li>
+        <li class="kt-nav__foot"></li>
+    </ul>
+</div> -->
+
+<!-- DAR Achievements Side Bar -->
+<div id="DARSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="_CloseDARSideBar()">&times;</a>
+            <div class="title-sidebar mb-0 text-white">
+                <h5 class="curser-pointer">
+                    DAR Achievements
+                </h5>
+                <!-- <p>{{_DARProjectName}}</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <!-- <label>Last Updated DAR</label> -->
+                            <h5 class="curser-pointer">
+                                {{_DarAchievement}}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mysideInfobar" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
+
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>

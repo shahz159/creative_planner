@@ -1,0 +1,481 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="timepage">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin:: Widgets/Authors Profit-->
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+                <div class="kt-portlet__head align-items-center">
+                    <div class="kt-portlet__head-label">
+                        <div class="dropdown">                            
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{Type}}
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1)">{{type1}}</a>
+                                <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2)">{{type2}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <!-- <div class="d-flex align-items-center mr-2">
+                            
+                            <div class="mr-3">
+                                <ng-container *ngIf="CurrentPageNo==1">
+                                    {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                                </ng-container>
+                                <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                                    {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                    CurrentPageNo}}
+                                </ng-container>
+                                <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                                    {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                                </ng-container>
+                                <span>52</span>
+                            </div>
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" 
+                                    (click)="CurrentPageNo = CurrentPageNo - 1;timelineLog(Type)" [disabled]="CurrentPageNo==1">
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                                (click)="CurrentPageNo = CurrentPageNo + 1; timelineLog(Type)"
+                                    [disabled]="_CurrentpageRecords<30">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                        </div> -->
+                        <div class="mr-2"><span>Total Achievement hours: {{timelineDuration | number:'1.2-2'}} hrs</span></div>
+                        
+                        <div class="dropdown">
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                                id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                </svg>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
+                                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                                  </svg>
+                                  <a class="ordr-a" href="javascritp:void(0)">{{sortType}}</a>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
+                                <span class="sort-by pb-2">Sort by</span>
+                                <a [ngClass]="activeDate? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort1)">Date
+                                    <span *ngIf="activeDate==true">
+                                        <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <a [ngClass]="activeProject? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort2)">
+                                    Project
+                                    <span *ngIf="activeProject==true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <!-- <a class="dropdown-item" (click)="notinAction()">User</a> -->
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-info btn-sm btn-fw" (click)="darcreate()"> Create Timeline </button>
+                    </div>
+                </div>
+            </div>
+            <!--begin::Portlet 1 class="sticky-header" style="font-size: 13px;"-->
+            <div class="kt-portlet portlet-height" *ngIf="sortType=='Date'">
+                <div class="kt-portlet__body kt-portlet__body_scroll p-0 scrollbar1">
+                    <div class="mt-3">
+                        <div class="">
+                            <div class="" *ngIf="showtimeline==true">
+                                <div class="px-4" *ngFor="let item of darArray;let i =index">
+                                    <div class="timeline-header sticky-header">
+                                        <h4 class="header-date p-0 ">
+                                            {{item.SubmissionDate | date: 'fullDate'}}
+                                        </h4>
+                                    </div>
+                                    <div class="">
+                                        <table class="time-table mb-1">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50px;">S.No.</th>
+                                                    <th style="width: 280px;">Employee</th>
+                                                    <th style="width: 280px;">Project</th>
+                                                    <th>Achievement</th>
+                                                    <th style="width: 80px;">Start</th>
+                                                    <th style="width: 80px;">End</th>
+                                                    <th style="width: 80px;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item1 of item.Dardata;let j=index">
+                                                    <td>{{j+1}}</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">{{item1.Initial}}
+                                                            </div>
+                                                            <span class="user--name">{{item1.EmpName}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="moreDetails(item1.project_code)">{{item1.ProjectName }}</a>
+                                                        <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
+                                                        <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
+                                                        <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName }}</div>
+                                                    </td>
+                                                    <td>{{item1.WorkAchieved}}</td>
+                                                    <td>{{item1.starttime}}</td>
+                                                    <td>{{item1.endtime}}</td>
+                                                    <td>{{item1.Duration}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                       
+                                    </div>
+                                    <div class="time-totals mb-3">
+                                        <div class="">
+                                            <ul class="time-totals-list">
+                                                <li class="totals-list--item">
+                                                    <span><strong>Total Hours: </strong></span>
+                                                    <span>{{item.TotalDuration}} Hrs</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align:center" *ngIf="Type=='My Timeline'">
+                                     <button class="btn btn-info loadMore"
+                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
+                                        [hidden]="_CurrentpageRecords<30">
+                                        Load More!</button>
+                                </div>
+                                <div style="text-align:center" *ngIf="Type=='RACIS Timeline'">
+                                     <button class="btn btn-info loadMore"
+                                    (click)="CurrentPageNo = CurrentPageNo + 1; loadMore1()"
+                                   [hidden]="_CurrentpageRecords<30">
+                                   Load More!</button>
+                                </div>
+                            </div>
+                            <div class="text-center py-4" style="color: lightgrey"  *ngIf="showtimeline==false">
+                                <h4>No Timeline found.</h4>
+                                <p>Please <a href="javascript:void(0)" (click)="darcreate()"><u>click here</u></a> to create timeline</p>
+                            </div>
+                        </div>
+                        <div class="timeline d-none">
+                            <div class="timeline-header sticky-header">
+                                <span class="header-text header-date d-none">
+                                    14, March 2023
+                                </span>
+                                <a class="pro-name" href="javascript:void(0)">
+                                    <span class="header-text">Stream Application(creative Planner) Development</span>
+                                </a>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                    <div class="symbol-label kt-bg-light-primary">
+                                        <span class="timeline-media">
+                                            VM
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--end::Timeline icon-->
+                                <div class="timeline-content mb-10 mt-n2">
+                                    <div class="overflow-auto pt-2 pr-3">
+                                        
+                                        <div class="timeline-text fs-6">
+                                            Venkata Maharshi
+                                            <span class="desp-txt fs-7">Logged</span> '3 Hrs 30mins' 
+                                            <span class="ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>  
+                                                10:30 AM - 02:00 PM                                
+                                            </span> in
+                                        </div>
+                                        <div class="timeline-text fs-6">
+                                            <span class="desp-txt fs-7">Project</span> <a class="pro-link" href="javascript:void(0)">Stream Application(creative Planner) Development</a>
+                                        </div>
+                                        <div class="timeline-text fs-6"><span class="desp-txt fs-7">Action</span>Notifications And Timeline Activity Modules In Dashboard Page</div>
+                                        <div class="timeline-text fs-6 achv-txt">Rebinding done in notifications page for the responses from the users after clicking on more info icon.</div>
+            
+                                    </div>
+                                </div>
+                                <!--end::Timeline content-->
+                            </div>
+            
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                    <div class="symbol-label kt-bg-light-primary">
+                                        <span class="timeline-media">
+                                            VM
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--end::Timeline icon-->
+                                <div class="timeline-content mb-10 mt-n2">
+                                    <div class="overflow-auto pt-2 pr-3">
+                                        
+                                        <div class="timeline-text fs-6">
+                                            Venkata Maharshi
+                                            <span class="desp-txt fs-7">Logged</span> '3 Hrs 30mins' 
+                                            <span class="ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>  
+                                                10:30 AM - 02:00 PM                                
+                                            </span> in
+                                        </div>
+                                        <div class="timeline-text fs-6">
+                                            <span class="desp-txt fs-7">Project</span> <a class="pro-link" href="javascript:void(0)">Stream Application(creative Planner) Development</a>
+                                        </div>
+                                        <div class="timeline-text fs-6"><span class="desp-txt fs-7">Action</span>Runway Module For Assign Project And Action To Project</div>
+                                        <div class="timeline-text fs-6 achv-txt">Action to project service update for the list of projects to be shown in runway page.</div>
+            
+            
+                                    </div>
+                                </div>
+                                <!--end::Timeline content-->
+                            </div>
+            
+                            <div class="timeline-header sticky-header">
+                                <span class="header-text header-date">
+                                    13, March 2023
+                                </span>
+                                <a class="pro-name d-none" href="javascript:void(0)">
+                                    <span class="header-text">Stream Application(creative Planner) Development</span>
+                                </a>
+                            </div>
+            
+                            <div class="timeline-item">
+                                <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                    <div class="symbol-label kt-bg-light-primary">
+                                        <span class="timeline-media">
+                                            VM
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--end::Timeline icon-->
+                                <div class="timeline-content mb-10 mt-n2">
+                                    <div class="overflow-auto pt-2 pr-3">
+                                        
+                                        <div class="timeline-text fs-6">
+                                            Venkata Maharshi
+                                            <span class="desp-txt fs-7">Logged</span> '3 Hrs 30mins' 
+                                            <span class="ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" 
+                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub;color: #848c93;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>  
+                                                10:30 AM - 02:00 PM                                
+                                            </span> in
+                                        </div>
+                                        <div class="timeline-text fs-6">
+                                            <span class="desp-txt fs-7">Project</span> <a class="pro-link" href="javascript:void(0)">Stream Application(creative Planner) Development</a>
+                                        </div>
+                                        <div class="timeline-text fs-6"><span class="desp-txt fs-7">Action</span>Runway Module For Assign Project And Action To Project</div>
+                                        <div class="timeline-text fs-6 achv-txt">Action to project service update for the list of projects to be shown in runway page.</div>
+            
+            
+                                    </div>
+                                </div>
+                                <!--end::Timeline content-->
+                            </div>
+            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--begin::Portlet 2-->
+            <div class="kt-portlet portlet-height" *ngIf="sortType=='Project'">
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 scrollbar1">
+                    <div class="mt-3">
+                        <div class="">
+                            <div class="item-b  ribbon-content " *ngIf="showtimeline==true">
+                                <div class="mt-3" *ngFor="let item of darArray;let i =index">
+                                    <div class="timeline-header sticky-header">
+                                        <h4 class="header-date p-0 ">
+                                            <a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item.project_code)">{{item.ProjectName }}</a>
+                                        </h4>
+                                    </div>
+                                    <div class="">
+                                        <table class="time-table mb-1">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50px;">S.No.</th>
+                                                    <th style="width: 280px;">Employee</th>
+                                                    <th style="width: 280px;">Achieved Date</th>
+                                                    <th>Achievement</th>
+                                                    <th style="width: 80px;">Start</th>
+                                                    <th style="width: 80px;">End</th>
+                                                    <th style="width: 80px;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item1 of item.Dardata;let j=index">
+                                                    <td>{{j+1}}</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="initial-box color-7 b-50 mr-2">{{item1.Initial}}
+                                                            </div>
+                                                            <span class="user--name">{{item1.EmpName}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="timeline-text fs-6">{{item1.date | date:'fullDate'}}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName">
+                                                            <span class="desp-txt fs-7">Action</span><u>{{item1.ActionName }}</u></div>
+                                                        {{item1.WorkAchieved}}
+                                                    </td>
+                                                    <td>{{item1.starttime}}</td>
+                                                    <td>{{item1.endtime}}</td>
+                                                    <td>{{item1.Duration}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                       
+                                    </div>
+                                    <div class="time-totals mb-3">
+                                        <div class="">
+                                            <ul class="time-totals-list">
+                                                <li class="totals-list--item">
+                                                    <span><strong>Total Hours: </strong></span>
+                                                    <span>{{item.TotalDuration}} Hrs</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="text-align:center">
+                                     <button class="btn btn-info loadMore"
+                                         (click)="CurrentPageNo = CurrentPageNo + 1; loadMorebySort()"
+                                        [hidden]="_CurrentpageRecords<30">
+                                        Load More!</button>
+                                </div>
+                            </div>
+                            <div class="text-center py-4" style="color: lightgrey"  *ngIf="showtimeline==false">
+                                <h4>No Timeline found.</h4>
+                                <p>Please <a href="javascript:void(0)" (click)="darcreate()"><u>click here</u></a> to create timeline</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Portlet 2-->
+        </div>
+    </div>
+</div>
+
+
+
+<div id="darsidebar" class="sideInfobar animate-right">
+    <div class="kt-portlet">
+
+    <div class="kt-portlet__head">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="m-0"><i class="fa fa-link mr-1"></i>Timeline Submission</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closedarBar()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class=" kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+
+        <div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+                <label>Project Type<span class="text-danger">*</span></label>
+                <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType"
+                    [(ngModel)]="project_type" (change)="getTimelineProjects()">
+                    <ng-option value="core">Core/Secondary tasks</ng-option>
+                    <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
+                </ng-select>
+            </div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showProject==true">
+                <label>Project <span class="text-danger">*</span></label>
+                <ng-select required #project="ngModel" name="project" placeholder="Select Project" id="projName"
+                    [(ngModel)]="master_code" (change)="getTimelineActions()">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of projectList">
+                        {{item.Project_Name }}
+                    </ng-option>
+                </ng-select>
+            </div>
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true">
+                <label>Action <span class="text-danger">*</span></label>
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
+                    [(ngModel)]="project_code" >
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
+                        {{item.Project_Name }}
+                    </ng-option>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label>Work Description<span class="text-danger">*</span></label>
+                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Date<span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
+                        [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
+                        [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control"
+                        name="date">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-1">
+                <div class="form-group w-100">
+                    <label>Start Time<span class="text-danger">*</span></label>
+                    <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                        [(ngModel)]="starttime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item!=lastEndtime && bol==false">
+                            <a>{{item}}</a>
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="form-group w-100">
+                    <label>End Time<span class="text-danger">*</span></label>
+                    <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
+                        (click)="getDarTime()" [(ngModel)]="endtime">
+                        <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                            [disabled]="item<=lastEndtime">
+                            <a>{{item}}</a>
+                        </ng-option>
+                    </ng-select>
+                    <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
+                        time!!</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    
+    <div class="kt-portlet__foot py-3">
+        <button type="submit" class="btn btn-sm btn-info" (click)="submitDar()" *ngIf="showAction==true"
+            [disabled]="!master_code || !project_code || !workdes || !starttime || !endtime || endtime < starttime">
+            Submit</button>
+        <button type="submit" class="btn btn-info btn-sm" (click)="submitDar()" *ngIf="showAction==false"
+            [disabled]=" !master_code ||  !workdes  || !starttime || !endtime || endtime < starttime">
+            Submit</button>
+        <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button>
+        <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="closedarBar()">Cancel</button>
+    </div>
+
+
+    </div>
+</div>
+
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>

@@ -1,0 +1,668 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
+    <!--Begin::Row    DIV ONE -->
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin:: Widgets/Authors Profit-->
+            <div class="kt-portlet kt-portlet--bordered-semi mt-3 mb-2">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
+                             {{_Statustitle}}
+                        </h3>
+                        <div class="dropdown"  *ngIf="Mode=='AssignedTask'">                            
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Projects {{Type}}
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a [ngClass]="Type=='Assigned by me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Projects Assigned By Me</a>
+                                <a [ngClass]="Type=='Assigned to me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Projects Assigned To Me</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
+                            <strong> {{_Statustitle}}</strong>
+                        </h3>
+                        <button class="btn btn-primary" *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Assigned by me Projects</button>&nbsp;
+                        <button class="btn btn-primary" *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Assigned to me Projects</button>
+                    </div> -->
+                    <div class="kt-portlet__head-label mr-2">
+                        <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
+                            <div class="kt-header__topbar-wrapper">
+                                <div class="kt-quick-search kt-quick-search--inline">
+                                    <div class="kt-quick-search__form">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                class="form-control project-search kt-quick-search__input pl-3"
+                                                placeholder="Search Projects" [(ngModel)]="searchText" autofocus
+                                                style="width: 300px" (keydown.enter)="SearchbyText()">
+                                            <div class="input-group-prepend">
+                                                <button class="input-group-text" (click)="SearchbyText()"
+                                                    (keydown.enter)="$event">
+                                                    <i class="flaticon2-search-1"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mr-3">
+                            <ng-container *ngIf="CurrentPageNo==0">
+                               0 - 0
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo==1">
+                                {{CurrentPageNo}}
+                                -
+                                {{_CurrentpageRecords}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage && CurrentPageNo!=0">
+                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                                CurrentPageNo}}
+                            </ng-container>
+                            <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                                {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                            </ng-container>
+                            of
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+                        </div>
+
+                        <!-- <div class="mr-3">
+                            Page <span class="badge badge-pill badge-primary">
+                                {{CurrentPageNo}}</span>
+                        </div> -->
+
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo<=1">
+                            <i class="fas fa-angle-left mr-0"></i>
+                        </button>
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            (click)="CurrentPageNo = CurrentPageNo + 1;applyFilters()"
+                            [disabled]="_CurrentpageRecords<30 || (CurrentPageNo==LastPage && _CurrentpageRecords==30)">
+                            <i class="fas fa-angle-right mr-0"></i></button>
+
+                        <!-- Filters -->
+                        <div class="stores-sec mr-1">
+                            <ul class="nav navbar-nav filters">
+                                <li class="dropdown mega-dropdown" id="filtermenu">
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                        class="fas fa-ellipsis-v mr-0 "></i>
+                                </a>
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div (click)="$event.stopPropagation();">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5><strong>Total Projects - </strong>
+                                                        <h5 class="d-inline-block">
+                                                            <strong>{{_totalProjectsCount}}</strong>
+                                                        </h5>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control kt-quick-search__input pl-3"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        style="width: 100%;">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Project Type</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox">
+                                                                <input type="checkbox" (change)="isTypeChecked(item)"
+                                                                    [(ngModel)]="item.checked">
+                                                                {{item.Exec_BlockName}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Status</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of StatusCountFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isStatusChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Status}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Employees</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <!-- <mat-checkbox class="example-margin" color="primary"
+                                                                (change)="isEmpChecked(item)"
+                                                                [(ngModel)]="item.checked">
+                                                                {{item.Name}}
+                                                                </mat-checkbox> -->
+                                                                <input type="checkbox" (change)="isEmpChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.TM_DisplayName}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+                                        </div>
+                                        <div>
+                                            <!-- <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
+                                                (click)="resetFilters($event)">
+                                                Clear
+                                            </button> -->
+                                            <button
+                                                class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
+                                                data-toggle="dropdown">Submit</button>
+                                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold"
+                                                (click)="resetAll()">Reset
+                                                <!-- <i class="fas fa-sync-alt mr-0"></i> -->
+                                            </button>
+                                            <!-- <button class="btn btn-label-primary btn-upper btn-sm btn-bold"
+                                                (click)="applyFilters()">Apply
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mr-1">
+                            <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Asc">
+                                <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+                            </a>
+                            <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
+                                data-toggle="kt-tooltip" title="Click to sort Desc">
+                                <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
+                            </a>
+                        </div>
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+                            <i class="fas fa-sync-alt mr-0"></i>
+                        </button>
+                        <!-- <button class="btn btn-label-primary  btn-sm btn-bold mr-1" (click)="BackBttn()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            <!--begin::Portlet-->
+            <div class="kt-portlet">
+                <!-- <div class="kt-portlet__head">
+                    <div class="col-md-6 py-3">
+                        <input type="text" class="form-control" [(ngModel)]="portfolioName" 
+                            placeholder="Enter Portfolio Name..." (keypress)="_ontextChange($event.target.value)">
+                        <div>
+                            <strong>
+                                <p class="text-danger mb-0 py-1" [hidden]="portfolioName!=''"> * Please Enter Portfolio
+                                    Name To Enable Checkboxes</p>
+                            </strong>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                    <div class="card projects-list no-border">
+                        <div class="card-body">
+                            <div class="dataTables_wrapper dt-bootstrap4 no-footer" [hidden]="AssignedTask">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 100px;"> </th>
+                                                    <th><strong>Task Name</strong></th>
+                                                    <th><strong>Description</strong></th>
+                                                    <th><strong>Type</strong></th>
+                                                    <th><strong>Employee</strong></th>
+                                                    <th><strong>Start Date</strong></th>
+                                                    <th><strong>End Date</strong></th>
+                                                    <th>Last Update</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of _AssignedProjectsList; let i=index">
+                                                    <!-- Project details info column -->
+                                                    <td class="kt-widget__title mb-0 ">
+                                                        <a data-toggle="tooltip" title="Project Details!"
+                                                            class="btn px-0 mr-2"
+                                                            *ngIf="item.Project_Code != null && item.Status !='Pending'"
+                                                            (click)="openInfo(item.Project_Code,item.Project_Name)">
+                                                            <i class="fa fa-info-circle info-icon-cir"></i>
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            *ngIf="item.Project_Code != null && item.Status !='Pending'"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-180px" data-toggle="tooltip" title="{{item.Task_Name}}">
+                                                        {{item.Task_Name}}</td>
+                                                    <td class="kt-widget__title mb-0 text-ellipsis w-max-100px" data-toggle="tooltip" title="{{item.Task_Description}}">
+                                                        {{item.Task_Description}}</td>
+                                                    <!-- style:width="25%" -->
+                                                    <td class="kt-widget__title mb-0">{{item.ProjectType}}</td>
+                                                    <td class="kt-widget__title mb-0">{{item.Employee}}</td>
+                                                    <td class="kt-widget__title mb-0">{{item.Start_Date
+                                                        |date:'dd-MM-yyyy'}}</td>
+                                                    <td class="kt-widget__title mb-0">{{item.End_Date
+                                                        |date:'dd-MM-yyyy'}}</td>
+                                                    <td class="kt-widget__title mb-0">
+                                                        {{item.Creation_Date|dateAgo1}}</td>
+                                                    <td class="kt-widget__title mb-0" [ngClass]="{'text-danger font-weight-400':item.Status=='Rejected',
+                                                            'text-success font-weight-400':item.Status=='Accepted',
+                                                             'text-warning font-weight-400':item.Status=='Pending'}">
+                                                        {{item.Status}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="text-center" style="color: lightgrey">
+                                            <h4>{{notSelectedAnything_msg}} </h4>
+                                            <p> {{notSelectedAnything_msg2}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--begin: Datatable -->
+                            <!-- U hve to Work here Below div This is the DIV Bro -->
+                            <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"
+                                [hidden]="projectsDataTable">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-hover dataTable no-footer dtr-inline" id="project-4"
+                                            role="grid" style="width: 0px;">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label=": activate to sort column descending">
+                                                    </th>
+                                                    <th></th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Project_Name" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" style="width: 0px;"
+                                                        class="curser-pointer" (click)="_SortPortfoliolist()"
+                                                        aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                        <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fas fa-sort-alpha-up"></i>
+                                                        </a>
+                                                        <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fa fa-sort-alpha-down-alt"></i>
+                                                        </a>
+                                                        Project Name
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Exec_BlockName" tabindex="0"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        class="curser-pointer"
+                                                        aria-label="Project Type: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        Project Type
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="ReportType" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Category: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        Category
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="TM_DisplayName" tabindex="0"
+                                                        aria-controls="project-4" rowspan="1" colspan="1"
+                                                        class="curser-pointer"
+                                                        aria-label="User Name: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        Employee
+                                                        Name
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        End
+                                                        Date
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        Last Update
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i>
+                                                        Status
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
+                                                <tr role="row" class="odd"
+                                                    *ngFor="let item of _ProjectDataList;let i=index;">
+                                                    <!-- Information Icon -->
+                                                    <!-- <td></td> -->
+                                                    <td align="center">
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus">
+                                                            <i class="fa fa-info-circle info-icon-cir"
+                                                                (click)="openInfo(item.Project_Code, item.Project_Name)"></i>
+                                                        </a>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.Link_Status==1;else not_Linked">
+                                                            <a class="curser-pointer"
+                                                            (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
+
+                                                        </div>
+                                                        <ng-template #not_Linked>
+                                                            <a><img width="19px" class="black-white"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td>
+                                                        <p class="kt-widget__title mb-0">
+                                                            {{item.Project_Name}}
+                                                            <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
+                                                        </p>
+                                                        
+                                                    </td>
+                                                    <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.ReportType==null;else ReportType">
+                                                            <span class="kt-widget__other">Developemt</span>
+                                                        </div>
+                                                        <ng-template #ReportType>
+                                                            <span class="kt-widget__other">{{item.ReportType}}</span>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td><span class="kt-widget__other">{{item.TM_DisplayName}}</span>
+                                                    </td>
+                                                    <td><span class="kt-widget__other">
+                                                            {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                    </td>
+                                                    <td><span class="kt-widget__other">
+                                                            {{item.LastModified_Date|dateAgo1}}</span>
+                                                    </td>
+                                                    <!-- <td><span class="kt-widget__other">
+                                                            {{item.Creation_Date}}</span>
+                                                    </td> -->
+                                                    <td>
+                                                        <div *ngIf="item.Status=='Under Approval'">
+                                                            <span class="text-info font-weight-400">Under
+                                                                Approval</span>
+                                                            <!-- <span class="bg-success">{{item.Status}}</span> -->
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Delay'">
+                                                            <span class="text-danger font-weight-400">Delay {{item.Delaydays}} days</span>
+                                                            <!-- <span class="font-weight-400">{{item.Status}}</span> -->
+                                                        </div>
+                                                        <!-- Other Status #ed6b75 -->
+                                                        <div *ngIf="item.Status=='InProcess'">
+                                                            <span class="text-warning font-weight-400">InProcess</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='ToDo InProcess'">
+                                                            <span class="text-primary font-weight-400">ToDo
+                                                                InProcess</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Project'">
+                                                            <span class="text-primary font-weight-400">New
+                                                                Project</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Project Rejected'">
+                                                            <span class="text-danger font-weight-400">New
+                                                                Project
+                                                                Rejected</span>
+                                                        </div>
+
+                                                        <div *ngIf="item.Status=='Project Hold'">
+                                                            <span class="text-danger font-weight-400">
+                                                                Hold</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='ToDo Completed'">
+                                                            <span class="text-success font-weight-400">ToDo
+                                                                Completed</span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='New Todo'">
+                                                            <span class="text-primary font-weight-400">New Todo
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Completion Under Approval'">
+                                                            <span class="text-primary font-weight-400">Completion
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Completed'">
+                                                            <span class="text-success font-weight-400">Completed
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Forward Under Approval'">
+                                                            <span class="text-warning font-weight-400">Forward
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                            <span class="text-danger font-weight-400">Project
+                                                                Complete
+                                                                Rejected
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                            <span class="text-danger font-weight-400">Enactive
+                                                                Under
+                                                                Approval
+                                                            </span>
+                                                        </div>
+
+                                                        <div *ngIf="item.Status=='Version'">
+                                                            <span class="text-danger font-weight-400">Version
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                            <span class="text-primary font-weight-400">Deadline Extend
+                                                                Under Approval
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Holded'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Hold
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                            <span class="font-weight-400"
+                                                                style="color: #c0b5dc;">Project Hold Under Approval
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- <div [hidden]="notFoundData" align="center" style="color: lightgrey;">
+                                            <img src="assets/images/NotFound1.png" width="70px" >
+                                            <br>
+                                            <h5>data not found</h5>
+                                            <p>please go back and try again</p>
+                                        </div> -->
+                                        <div class="text-center py-4" style="color: lightgrey">
+                                            <h4>{{_filtersMessage}}</h4>
+                                            <p> {{_filtersMessage2}}</p>
+                                            <h4>{{notSelectedAnything_msg}} </h4>
+                                            <p> {{notSelectedAnything_msg2}}</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5"></div>
+                                    <div class="col-sm-12 col-md-7"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- New Side InformationBar -->
+    <div id="mysideInfobar" class="sideInfobar animate-right">
+        <router-outlet></router-outlet>
+    </div>
+    <!-- Link memos Template -->
+
+    <div id="LinkSideBar" class="sideInfobar animate-right">
+        <div class="kt-portlet__head p-3 bg-primary">
+            <div class="kt-portlet__head-label">
+                <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                    (click)="closeLinkSideBar()">&times;</a>
+                <h5 class="title-sidebar mb-0 text-white">
+                    <i class="fa fa-link"></i>
+                    Link Project
+                </h5>
+            </div>
+        </div>
+        <ul class="kt-nav">
+            <li class="kt-nav__head d-block">
+                <p class="text-primary">
+                    {{_displayProjName}}</p>
+                <div class="M_fsize">
+                    Total <div class="badge badge-pill badge-outline-info">
+                        {{_totalMemos}}</div>
+                    Linked <div class="badge badge-pill badge-outline-success">
+                        {{_mappedMemos}}</div>
+                </div>
+                <div class="kt-nav__separator"></div>
+            </li>
+            <li class="kt-nav__item px-4">
+                <div class="d-flex">
+                    <!-- Working... -->
+                    <ng-multiselect-dropdown [placeholder]="'Select Memo' "
+                        class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Memo"
+                        [data]="Memos_List" [(ngModel)]="ngDropdwonMemo" (onSelect)="Memo_Select(ngDropdwonMemo)"
+                        (onDeSelect)="Memo_Deselect()" style="flex: 3;">
+                    </ng-multiselect-dropdown>
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold" (click)="_AddLink()">Link</button>
+                </div>
+            </li>
+            <li class="kt-nav__foot"></li>
+        </ul>
+    </div>
+    <!-- <app-project-info></app-project-info> -->
+    <!-- <app-shared-projects-detail></app-shared-projects-detail> -->
+    
+<!-- dms memos sidebar-->
+<div id="MemosSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                (click)="_CloseMemosidebar()">&times;</a>
+            <div class="title-sidebar mb-0 text-white">
+                <h5 class="curser-pointer">
+                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos
+                </h5>
+                <span class="text-small text-white">{{_displayProjName}}</span>
+
+            </div>
+            <!-- <p class="text-small text-white">{{_displayProjName}}</p> -->
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item" *ngFor="let item of _MemosSubjectList; let i=index">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5 (click)="openUrl(item.Url)" class="curser-pointer">
+                                <!-- -->
+                                <div *ngIf="item.Attachment==true;else Onlysubject">
+                                    <!-- <span style="color:#808080">{{item.MailId}}</span> -->
+                                    <i class="fas fa-paperclip" style="color:#A9A9A9"></i> {{item.Subject}}
+                                </div>
+                                <ng-template #Onlysubject>
+                                    <i class="fas fa-circle"></i> {{item.Subject}}
+                                </ng-template>
+
+                                <!-- <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> -->
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 2
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 3
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 4
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="kt-widget1__item">
+                        <div class="kt-widget1__info kt-align-left">
+                            <h5>
+                                <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png">
+                                Memo 5
+                            </h5>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
