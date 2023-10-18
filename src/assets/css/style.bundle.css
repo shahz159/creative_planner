@@ -54383,3 +54383,11 @@ font-size: 18px;
 .text-dangr{
     color: #f1416c !important;
 }
+.kt-form-vd .ng-select-container {
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #e2e5ec !important;
+    min-height: 36px;
+    align-items: center;
+}

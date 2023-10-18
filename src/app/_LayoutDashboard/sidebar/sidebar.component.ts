@@ -66,11 +66,20 @@ export class SidebarComponent implements OnInit {
       animation: 'scale-extreme',
       theme: 'gradient',
       animateFill: true,
-      inertia: true,
+      inertia: true,  
       placement:'right'
     });
     tippy('#timeline', {
       content: "Timeline",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right'
+    });
+    tippy('#moredetpage', {
+      content: "MoreInfo",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
@@ -184,6 +193,14 @@ export class SidebarComponent implements OnInit {
     myWindow.focus();
   }
   
+  Btn_Moreinfo() {
+    let name: string = "Details";
+    var url = document.baseURI + name;
+    var myurl = `${url}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
