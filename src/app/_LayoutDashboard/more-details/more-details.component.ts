@@ -1246,10 +1246,23 @@ export class MoreDetailsComponent implements OnInit {
     return this.datepipe.transform(this.EndDate, 'MM-dd-YYYY');
   }
 
+  showaction: boolean =true;
+  noact_msg:boolean=false;
+
   getResponsibleActions() {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+        if(this.darArr.length==0 && (this.Owner_EmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
+          this.showaction=false;
+        }
+        else if(this.darArr.length==0 && this.Owner_EmpNo!=this.Current_user_ID && this.Responsible_EmpNo!=this.Current_user_ID){
+          this.showaction=true;
+          this.noact_msg=true;
+        }
+        else{
+          this.showaction=true;
+        }
       });
   }
 
@@ -1352,7 +1365,7 @@ export class MoreDetailsComponent implements OnInit {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
-    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
+    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount==0)) {
       this.objProjectDto.Project_Name = this.ProjectName;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -5441,7 +5454,7 @@ export class MoreDetailsComponent implements OnInit {
     if (this.ProjectBlockName == 'Standard Tasks' || this.ProjectBlockName == 'Routine Tasks' || this.ProjectBlockName == 'To do List') {
       this.coresecondary = false;
     }
-    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && this.inProcessCount == 0) {
+    else if ((this.ProjectBlockName == 'Core Tasks' || this.ProjectBlockName == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount==0)) {
       this.coresecondary = false;
     }
     document.getElementById("moredet").classList.add("position-fixed");

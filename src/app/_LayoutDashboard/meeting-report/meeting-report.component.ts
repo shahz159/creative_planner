@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -24,6 +25,7 @@ import { Observable, Subscription } from 'rxjs';
 
 export class MeetingReportComponent implements OnInit {
   @ViewChild('myTextarea') myTextarea!: ElementRef<HTMLTextAreaElement>;
+  // @HostListener('window:beforeunload', ['$event'])
 
   _ObjAssigntaskDTO: AssigntaskDTO;
   CurrentUser_ID: string;
@@ -174,11 +176,37 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto = new CalenderDTO;
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-
+    
   }
+  showCustomDialog:boolean=false;
+  
+  // public onBeforeUnload($event: Event) {
+  //   this.showCustomDialog = true;
+  //   Swal.fire({
+  //     title: 'Meeting',
+  //     text: 'Are you sure to leave this meeting?',
+  //     // icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Yes',
+  //     cancelButtonText: 'No'
+  //   }).then((response: any) => {
+  //     if (response.value) {
+  //     } else if (response.dismiss === Swal.DismissReason.cancel) {
+  //       Swal.fire(
+  //         'Cancelled',
+  //         'Meeting report not changed',
+  //         'error'
+  //       )
+  //     }
+  //   });
+
+  // }
+  
   _meetingNotesAry: any = [];
   _userfullname: string;
   interval = 0;
+
+  
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
@@ -344,26 +372,35 @@ export class MeetingReportComponent implements OnInit {
   //   }
   // }
   leave: boolean = false;
+
   leavemeet(event: any) {
-    this.leave = true;
+    this.StatusType=true;
+    if(this.StatusType==true){
+      this.stopTimer();
+      this.leave = true;
 
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
     this.notifyService.showSuccess("Meeting left", "Success");
-
+    this.InsertstartandendTimerMeeting('Pause');
+    }
+    else{
+      this.notifyService.showInfo("Something went wrong","");
+    }
+    
 
   }
+
+
   delayedFunction() {
     console.log('Function called after 5 seconds');
     window.close();
   }
+
   addBulletPointsOnEnter(event: any) {
-
     if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
-
-
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.CurrentUser_ID;
@@ -428,28 +465,40 @@ export class MeetingReportComponent implements OnInit {
   Statususer: any;
   sch_date: any;
   StatusType: boolean = true;
-  time = 0;
+  time:any;
   timer: any;
   display:any;
   interval1: number = 0;
+  
   InsertstartandendTimerMeeting(_val: string) {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
     this._calenderDto.Status = _val;
-    this._calenderDto.User_Type = 'Admin';
+    // alert(this.Isadmin);
+    if(this.Isadmin==true){
+      this._calenderDto.User_Type = 'Admin';
+    }
+    else{
+      this._calenderDto.User_Type = 'User';
+    }
+
+    if (_val == "Start") {
+      this.startTimer();
+      this.StatusType = false;
+    }
+    else if (_val == "Pause") {
+      clearInterval(this.interval1);
+      this.StatusType = true;
+    }
+    else if (_val == "End") {
+      clearInterval(this.interval1);
+    }
     this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
       (data => {
-        if (_val == "Start") {
-          this.startTimer();
-          this.StatusType = false;
-        }
-        else if (_val == "Pause") {
-          clearInterval(this.interval1);
-          this.StatusType = true;
-        }
+     
         // this.startTimer();
 
-      })
+      });
   }
   // startTimer() {
   //   this.timer = setInterval(() => {
@@ -459,6 +508,7 @@ export class MeetingReportComponent implements OnInit {
   meetingpoint: string;
   Notespoint: string;
   empname: string;
+
   GetNotedata() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -732,6 +782,8 @@ export class MeetingReportComponent implements OnInit {
   Createdby: string;
   sched_admin: string;
   _duration: number = 0;
+  durationStatus:any;
+  
   meeting_details() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -740,10 +792,10 @@ export class MeetingReportComponent implements OnInit {
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-        this._duration = data['duration'];
-        this.time = this._duration;
-        this.display = this.transform(this.time);
-        // console.log(this.EventScheduledjson, "111111")
+        // this._duration = data['duration'];
+        // this.time = this._duration;
+        // this.display = this.transform(this.time);
+         console.log(this.EventScheduledjson,data, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -828,8 +880,18 @@ export class MeetingReportComponent implements OnInit {
         }
 
       });
-
-
+    
+      this._calenderDto.Emp_No=this.CurrentUser_ID;
+      this.CalenderService.NewGetMeetingDuration(this._calenderDto).subscribe((data)=>{
+      console.log(data,"time");
+      this.display=data['TotalTime'];
+      if(this.display==""){
+        this.display = "00:00:00";
+      }
+      this.time = this.convertToSeconds(this.display);
+      this.display=this.transform_display(this.display);
+      this.durationStatus=data['Status'];
+    });
 
   }
 
@@ -867,7 +929,12 @@ export class MeetingReportComponent implements OnInit {
   }
 
   // time: number = 0;
-
+  convertToSeconds(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+    return totalSeconds;
+  }
+  
 
   startTimer() {
     console.log("=====>");
@@ -880,21 +947,51 @@ export class MeetingReportComponent implements OnInit {
       this.display = this.transform(this.time)
     }, 1000);
   }
+
   stopTimer() {
     // Clear the interval to stop the timer.
     clearInterval(this.interval1);
   }
 
-  transform(value: number): string {
-    var sec_num = value;
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-    if (hours < 1) { hours = 0; }
-    if (minutes < 1) { minutes = 0; }
-    if (seconds < 1) { seconds = 0; }
-    return hours + ':' + minutes + ':' + seconds;
+  transform(value: number): string {
+    // var sec_num = value;
+    // var hours = Math.floor(sec_num / 3600);
+    // var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    // var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    // if (hours < 1) { hours = 0; }
+    // if (minutes < 1) { minutes = 0; }
+    // if (seconds < 1) { seconds = 0; }
+    // return hours + ':' + minutes + ':' + seconds;
+
+    const hours = Math.floor(value / 3600);
+    const minutes = Math.floor((value % 3600) / 60);
+    const seconds = value % 60;
+
+    const formattedHours = ('0' + hours).slice(-2);  // Ensure two digits
+    const formattedMinutes = ('0' + minutes).slice(-2);  // Ensure two digits
+    const formattedSeconds = ('0' + seconds).slice(-2);  // Ensure two digits
+
+    if(formattedHours=='00'){
+      return ` ${formattedMinutes}:${formattedSeconds}`;
+    }
+    else{
+      return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+  }
+
+  transform_display(value: string): string {
+    const parts = value.split(':');
+    const hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    const seconds = parseInt(parts[2], 10);
+  
+    if (hours === 0) {
+      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    } else {
+      return `${value}`;
+    }
   }
 
 

@@ -4030,14 +4030,45 @@ this.draftid=0
     myWindow.focus();
   }
 
+ 
+  myWin:any = {}
+
   meetingReport() {
 
     let name: string = 'Meeting-Report';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
-    var myWindow = window.open(myurl);
-    myWindow.focus();
+    if(this.Meeting_status == false){
+      var myWindow = window.open(myurl,'popup','width=800,height=800');
+      this.myWin = myWindow;
+      myWindow.focus();
+      this.check();
+    }
+    else if(this.Meeting_status == true){
+      var myWindow = window.open(myurl);
+        myWindow.focus();
+    }
   }
+
+  check(){
+    console.log(this.myWin.closed)
+   
+    var myrhis = this
+    // alert(myrhis.myWin.closed)
+    var timer = setInterval(function () {
+      if (myrhis.myWin.closed) {
+          alert("closed");
+          clearInterval(timer);
+          //window.location.reload(); // Refresh the parent page
+      }
+      else{
+        if(this.myWin.closed){
+          window.close
+        }
+      }
+  }, 1000);
+
+}
 
   GetMemosByEmployeeId() {
 
