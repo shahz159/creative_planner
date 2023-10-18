@@ -407,7 +407,11 @@
                     </ng-option>
                 </ng-select>
             </div>
+<<<<<<< HEAD
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true">
+=======
+            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true && project_type=='core'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                     [(ngModel)]="project_code" >
@@ -415,6 +419,10 @@
                         {{item.Project_Name }}
                     </ng-option>
                 </ng-select>
+<<<<<<< HEAD
+=======
+                <span style="color:red" *ngIf="(noact_msg==true && project_type=='core')">You do not have any action assigned, Please create atleast one action to submit timeline</span>
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>

@@ -154,7 +154,10 @@ export class ProjectTypeService {
     this.ObjUserDetails.SearchText = obj.SearchText;
     this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
   GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {

@@ -62,7 +62,14 @@ export const DEFAULT_ROUTES: Routes = [
           path: 'UnplannedTask', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/project-unplanned-task/project-unplanned-task.module').then(m => m.ProjectUnplannedTaskModule)
      },
+<<<<<<< HEAD
     
+=======
+     {
+          path: 'Details', canActivate: [AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/details/details.module').then(m => m.DetailsModule)
+     },
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
      {
           path: 'ViewProjects/:Mode',canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/view-dashboard-projects/view-dashboard-projects.module').then(m => m.ViewDashboardProjectsModule)

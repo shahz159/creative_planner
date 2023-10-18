@@ -1679,7 +1679,11 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
+<<<<<<< HEAD
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
+=======
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -2206,7 +2210,11 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
+<<<<<<< HEAD
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
+=======
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -2724,7 +2732,11 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
+<<<<<<< HEAD
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
+=======
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -3222,7 +3234,11 @@
                                                                                 |date:'dd-MM-yyyy'}}</h5>
 
                                                                             <div class="dropdown show"
+<<<<<<< HEAD
                                                                                 *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
+=======
+                                                                                *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                                 <span type="button" id="end-icn"
                                                                                     aria-haspopup="true"
                                                                                     (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -3684,7 +3700,11 @@
                                                                             |date:'dd-MM-yyyy'}}</h5>
 
                                                                         <div class="dropdown show"
+<<<<<<< HEAD
                                                                             *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
+=======
+                                                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                             <span type="button" id="end-icn"
                                                                                 aria-haspopup="true"
                                                                                 (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -4142,7 +4162,11 @@
                                                                             |date:'dd-MM-yyyy'}}</h5>
 
                                                                         <div class="dropdown show"
+<<<<<<< HEAD
                                                                             *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
+=======
+                                                                            *ngIf="(Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho || isHierarchy==true) && Status!='Cancelled'">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                                                             <span type="button" id="end-icn"
                                                                                 aria-haspopup="true"
                                                                                 (click)="onEditEndDate(item.id,item.Project_Name,i+1,item.Project_Code,item.SubProject_DeadLine,item.StartDate)"
@@ -5253,7 +5277,11 @@
 
                             <button [hidden]="darbutton==false" type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold"
                                 *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
+<<<<<<< HEAD
                                 (click)="darcreate()">
+=======
+                                (click)="darcreate(); getResponsibleActions();">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                                 Create Timeline
                             </button>
                         </div>
@@ -6496,14 +6524,25 @@
 
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
+<<<<<<< HEAD
                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && ProjectBlockName != 'To do List'">
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                     [(ngModel)]="actionCode" (click)="getResponsibleActions()">
+=======
+                *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && ProjectBlockName != 'To do List' && showaction!=false">
+                <label>Action <span class="text-danger">*</span></label>
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
+                    [(ngModel)]="actionCode">
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                     <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
                         {{item.Project_Name}}
                     </ng-option>
                 </ng-select>
+<<<<<<< HEAD
+=======
+                <span style="color:red" *ngIf="(noact_msg==true)">You do not have any action assigned, Please create atleast one action to submit timeline</span>
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>

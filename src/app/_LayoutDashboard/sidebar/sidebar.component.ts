@@ -66,7 +66,11 @@ export class SidebarComponent implements OnInit {
       animation: 'scale-extreme',
       theme: 'gradient',
       animateFill: true,
+<<<<<<< HEAD
       inertia: true,
+=======
+      inertia: true,  
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
       placement:'right'
     });
     tippy('#timeline', {
@@ -78,6 +82,18 @@ export class SidebarComponent implements OnInit {
       inertia: true,
       placement:'right'
     });
+<<<<<<< HEAD
+=======
+    tippy('#moredetpage', {
+      content: "MoreInfo",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right'
+    });
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     tippy('#todo', {
       content: "Process details",
       arrow: true,
@@ -184,6 +200,17 @@ export class SidebarComponent implements OnInit {
     myWindow.focus();
   }
   
+<<<<<<< HEAD
+=======
+  Btn_Moreinfo() {
+    let name: string = "Details";
+    var url = document.baseURI + name;
+    var myurl = `${url}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }

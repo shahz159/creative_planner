@@ -63,6 +63,37 @@ export class ProjectsSummaryComponent implements OnInit {
   approvalObj = new ApprovalDTO();
 
   ngOnInit() {
+<<<<<<< HEAD
+=======
+// JQUERY
+$(document).ready(function() {
+  // Action next
+  $('.btn-next').on('click', function() {
+    // Get value from data-to in button next
+    const n = $(this).attr('data-to');
+    // Action trigger click for tag a with id in value n
+    $(n).trigger('click');
+  });
+  // Action back
+  $('.btn-prev').on('click', function() {
+    // Get value from data-to in button prev
+    const n = $(this).attr('data-to');
+    // Action trigger click for tag a with id in value n
+    $(n).trigger('click');
+  });
+});
+$(document).ready(function(){
+  $('.card').click(function(){
+    $('.card').removeClass("active");
+    $(this).addClass("active");
+});
+});
+
+
+
+
+
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this._raciDetails = true;
     this.A2Z = true;
     this.Z2A = false;
@@ -827,17 +858,109 @@ export class ProjectsSummaryComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
+<<<<<<< HEAD
 
   closeInfo() {
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+=======
+  OpenProject(){
+    document.getElementById("New_project_Add").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  
+  closeInfo() {
+    this.Clear_Feilds();
+    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("New_project_Add").classList.remove("open_sidebar");
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
+<<<<<<< HEAD
   }
 
+=======
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+  }
+
+  Action_view(){
+    document.getElementsByClassName("Adv-option")[0].classList.add("d-none");
+    document.getElementsByClassName("Adv-option")[1].classList.add("d-none");
+    document.getElementsByClassName("act-view-btns")[0].classList.remove("d-none");
+    document.getElementsByClassName("my-crd")[0].classList.remove("d-none");
+    document.getElementById("bc_pot").style.display = "block";
+  }
+
+  Back_Option(){
+    document.getElementsByClassName("Adv-option")[0].classList.remove("d-none");
+    document.getElementsByClassName("Adv-option")[1].classList.remove("d-none");
+    document.getElementsByClassName("act-view-btns")[0].classList.add("d-none");
+    document.getElementsByClassName("my-crd")[0].classList.add("d-none");
+    document.getElementById("bc_pot").style.display = "none";
+  }
+  APPV_view(){
+    document.getElementsByClassName("kt-assd-pds")[0].classList.add("d-none");
+    document.getElementsByClassName("kt-prd-dtl")[0].classList.remove("d-none");
+  }
+  Add_actions(){
+    document.getElementsByClassName("Add-Act-Move")[0].classList.add("container-fluid");
+    document.getElementsByClassName("Add-Act-Move")[0].classList.remove("container");
+    document.getElementsByClassName("kt-action-list")[1].classList.remove("d-none");
+    document.getElementsByClassName("open-Action-Form")[0].classList.remove("d-none");
+    document.getElementsByClassName("kt-portlet__foot")[1].classList.remove("d-none");
+    document.getElementById("Action_btn_hide").style.display = "None";
+    document.getElementsByClassName("add-w9")[0].classList.add("col-lg-7");
+     document.getElementsByClassName("Add-Act-Move")[1].classList.remove("VW_60"); 
+     document.getElementsByClassName("hide-act-btns")[0].classList.remove("d-none");
+     document.getElementsByClassName("Project-Ct-full")[0].classList.remove("col-lg-12");
+     $('.Add-Act-Move').addClass('container-fluid');
+     $('.Add-Act-Move').removeClass('container');
+     $('#act_bd_box').addClass('d-none');
+     $('.kt-portlet__body').addClass('add-vhd-h');
+  }
+  Back_Option_Act(){
+    document.getElementsByClassName("Add-Act-Move")[0].classList.remove("container-fluid");
+    document.getElementsByClassName("Add-Act-Move")[0].classList.add("container");
+    document.getElementsByClassName("kt-action-list")[1].classList.add("d-none");
+    document.getElementsByClassName("open-Action-Form")[0].classList.add("d-none");
+    document.getElementsByClassName("kt-portlet__foot")[1].classList.add("d-none");
+    document.getElementById("Action_btn_hide").style.display = "block";
+    document.getElementsByClassName("add-w9")[0].classList.remove("col-lg-7");
+    $('#act_bd_box').addClass('d-none');
+    $('.kt-portlet__body').removeClass('add-vhd-h');
+  }
+  Close_action(){
+    // $('#act_bd_box').show();
+    // document.getElementById("act_bd_box").style.display="block";
+    $('#act_bd_box').removeClass('d-none');
+    document.getElementById("act_bd_box").classList.remove("d-none");
+    document.getElementsByClassName("Add-Act-Move")[1].classList.remove("container-fluid");
+    document.getElementsByClassName("Add-Act-Move")[1].classList.add("container");
+    document.getElementsByClassName("Add-Act-Move")[1].classList.add("VW_60");
+    document.getElementsByClassName("open-Action-Form")[0].classList.add("d-none");
+    document.getElementsByClassName("add-w9")[0].classList.remove("col-lg-7");
+    document.getElementsByClassName("hide-act-btns")[0].classList.add("d-none");
+    document.getElementsByClassName("Project-Ct-full")[0].classList.add("col-lg-12");
+    document.getElementsByClassName("Project-Ct-full")[1].classList.remove("col-lg-7");
+  }
+
+  // project info js -------------------------------------
+  Open_project_info(){
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  close_info_Slide(){
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
+  //----------------------project info js end ------------
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   _totalMemos: number;
   _mappedMemos: number;
   _leftMemos: number;

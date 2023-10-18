@@ -4,6 +4,7 @@
         <div class="card meet-card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <div class="">
+<<<<<<< HEAD
                     <h5 class="mb-0 card-title">Meeting Report</h5>
                 </div>
                 <div class="kt-timer">
@@ -23,6 +24,41 @@
                         </i>
                     </span>
                 </ng-container>
+=======
+                    <h5 class="mb-0 card-title" *ngIf="Meetingstatuscom==Completed">Meeting Report</h5>
+                    <h5 class="mb-0 card-title text-Success" *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</h5>
+                    <span *ngIf="Meetingstatuscom==Completed && Isadmin==true && display=='00:00'">Please click in Start <i class="fas fa-play curser-pointer relse-act">
+                    </i> to start the meeting</span>
+                </div>
+                
+                <div class="kt-timer"  *ngIf="Meetingstatuscom==Completed">
+                    <span id="countdown" *ngIf="StatusType==false"> {{display}}
+                    </span>
+                    <span *ngIf="StatusType==true"> {{display}}
+                        <!-- <small>sec</small> class="blink"-->
+                    </span>
+                    <ng-container *ngIf="Isadmin==true && StatusType==true">
+                            <span class="time-play-btn">
+                                <small class="kt-mt-sm">Start</small>
+                                <i data-toggle="tooltip" title="click here to start meeting"
+                                    (click)="InsertstartandendTimerMeeting('Start')"
+                                    class="fas fa-play curser-pointer relse-act">
+                                </i>
+                            </span>
+                    </ng-container>
+                    <ng-container *ngIf="Isadmin==true && StatusType==false">
+                       
+                            <span class="time-play-btn"> <small class="kt-mt-sm">Pause</small>
+                                <i data-toggle="tooltip" (click)="InsertstartandendTimerMeeting('Pause')" title="click here to pause the meeting"
+                                    class="fas fa-pause mx-1 curser-pointer relse-act">
+                                </i>
+                            </span>
+                    </ng-container>
+                </div>
+                <div class="kt-timer" *ngIf="Meetingstatuscom!=Completed"> 
+                    <span data-toggle="tooltip" title="Meeting duration">{{display}}
+                    </span>
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                 </div>
             </div>
 
@@ -1073,8 +1109,14 @@
 
             <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
             <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+<<<<<<< HEAD
                 <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal">End
                     Meeting</button>
+=======
+                <button class="btn btn-info btn-sm mr-2" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal">
+                    End Meeting
+                </button>
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
                 <button class="btn btn-secondary btn-sm mr-2">cancel</button>
             </div>
             <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false">

@@ -1210,7 +1210,11 @@ export class DashboardComponent implements OnInit {
 
   }
   Pending_meeting() {
+<<<<<<< HEAD
 
+=======
+    debugger
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -4030,15 +4034,57 @@ this.draftid=0
     myWindow.focus();
   }
 
+<<<<<<< HEAD
+=======
+ 
+  myWin:any = {}
+
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   meetingReport() {
 
     let name: string = 'Meeting-Report';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
+<<<<<<< HEAD
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
 
+=======
+    if(this.Meeting_status == false){
+      var myWindow = window.open(myurl,'popup','width=800,height=800');
+      this.myWin = myWindow;
+      myWindow.focus();
+      this.check();
+    }
+    else if(this.Meeting_status == true){
+      var myWindow = window.open(myurl);
+        myWindow.focus();
+    }
+  }
+
+  check(){
+    console.log(this.myWin.closed)
+   
+    var myrhis = this
+    // alert(myrhis.myWin.closed)
+    var timer = setInterval(function () {
+      if (myrhis.myWin.closed) {
+          alert("Meeting paused and added to Pending meeting list.");
+          clearInterval(timer);
+          this.Pending_meeting();
+          //window.location.reload(); // Refresh the parent page
+      }
+      else{
+        if(this.myWin.closed){
+          window.close();
+        }
+      }
+  }, 1000);
+
+}
+
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).

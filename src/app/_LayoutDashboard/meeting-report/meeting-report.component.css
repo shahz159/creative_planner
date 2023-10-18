@@ -1036,11 +1036,31 @@ span.statusicn {
   position: absolute;
   top: 4px;
 }
+<<<<<<< HEAD
+=======
+.blink {
+  animation: blinker 1s infinite alternate;
+  /* color: #2786fb; */
+  /* font-family: sans-serif; */
+}
+@keyframes blinker {
+  0% {
+    background-color: #e4f0ff;
+  }
+  100% {
+    background-color: #c4dafe; /* Change to the desired blinking color */
+  }
+}
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 .kt-timer span {
   font-weight: 600;
     font-size: 16px;
     color: #2786fb;
+<<<<<<< HEAD
     text-transform: uppercase;
+=======
+    /* text-transform: uppercase; */
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     background-color: #e4f0ff;
     border-radius: 5px;
     padding: 5px;
@@ -1285,4 +1305,15 @@ span.side-icns.kt-org-ic {
   color: #2786fb;
   padding: 1px 2px;
   border-radius: 3px;
+<<<<<<< HEAD
+=======
+}
+small.kt-mt-sm {
+  margin-right: 9px;
+  font-weight: 600;
+  font-size: 12px !important;
+  position: relative;
+  top: -2px;
+  letter-spacing: 0.5px;
+>>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 }
