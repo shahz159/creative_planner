@@ -213,6 +213,7 @@ export class MeetingReportComponent implements OnInit {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
+    this.getScheduleId();
     this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
@@ -220,7 +221,6 @@ export class MeetingReportComponent implements OnInit {
     // this.GetProjectAndsubtashDrpforCalender()
     this.GetTimeslabfordate();
     this.meeting_details();
-    this.getScheduleId();
     this.GetcompletedMeeting_data();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
