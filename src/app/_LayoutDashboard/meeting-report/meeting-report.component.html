@@ -4,25 +4,39 @@
         <div class="card meet-card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <div class="">
-                    <h5 class="mb-0 card-title">Meeting Report</h5>
+                    <h5 class="mb-0 card-title" *ngIf="Meetingstatuscom==Completed">Meeting Report</h5>
+                    <h5 class="mb-0 card-title text-Success" *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</h5>
+                    <span *ngIf="Meetingstatuscom==Completed && Isadmin==true && display=='00:00'">Please click in Start <i class="fas fa-play curser-pointer relse-act">
+                    </i> to start the meeting</span>
                 </div>
-                <div class="kt-timer">
-                    <span id="countdown"> {{display}}
-                        <!-- <small>sec</small> -->
+                
+                <div class="kt-timer"  *ngIf="Meetingstatuscom==Completed">
+                    <span id="countdown" *ngIf="StatusType==false"> {{display}}
                     </span>
-                    <ng-container *ngIf="">
-                    <span *ngIf="StatusType == true" class="time-play-btn">
-                        <i data-toggle="tooltip" title="click here to release project"
-                            (click)="InsertstartandendTimerMeeting('Start')"
-                            class="fas fa-play mx-1 curser-pointer relse-act">
-                        </i>
+                    <span *ngIf="StatusType==true"> {{display}}
+                        <!-- <small>sec</small> class="blink"-->
                     </span>
-                    <span *ngIf="StatusType ==  false" class="time-play-btn">
-                        <i data-toggle="tooltip" (click)="InsertstartandendTimerMeeting('Pause')" title="click here to release project"
-                            class="fas fa-pause p-2 mb-1 curser-pointer relse-act">
-                        </i>
+                    <ng-container *ngIf="Isadmin==true && StatusType==true">
+                            <span class="time-play-btn">
+                                <small class="kt-mt-sm">Start</small>
+                                <i data-toggle="tooltip" title="click here to start meeting"
+                                    (click)="InsertstartandendTimerMeeting('Start')"
+                                    class="fas fa-play curser-pointer relse-act">
+                                </i>
+                            </span>
+                    </ng-container>
+                    <ng-container *ngIf="Isadmin==true && StatusType==false">
+                       
+                            <span class="time-play-btn"> <small class="kt-mt-sm">Pause</small>
+                                <i data-toggle="tooltip" (click)="InsertstartandendTimerMeeting('Pause')" title="click here to pause the meeting"
+                                    class="fas fa-pause mx-1 curser-pointer relse-act">
+                                </i>
+                            </span>
+                    </ng-container>
+                </div>
+                <div class="kt-timer" *ngIf="Meetingstatuscom!=Completed"> 
+                    <span data-toggle="tooltip" title="Meeting duration">{{display}}
                     </span>
-                </ng-container>
                 </div>
             </div>
 
@@ -1073,8 +1087,9 @@
 
             <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
             <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
-                <button class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#exampleModal">End
-                    Meeting</button>
+                <button class="btn btn-info btn-sm mr-2" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal">
+                    End Meeting
+                </button>
                 <button class="btn btn-secondary btn-sm mr-2">cancel</button>
             </div>
             <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false">

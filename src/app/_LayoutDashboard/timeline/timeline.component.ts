@@ -314,6 +314,7 @@ getTimelineProjects(){
   this.master_code=null;
   this.project_code=null;
   this.showAction=false;
+  this.noact_msg=false;
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
@@ -322,16 +323,28 @@ getTimelineProjects(){
   });
 }
 
+owner_empno: any;
+resp_empno: any;
+noact_msg: boolean =false;
+
 getTimelineActions(){
   this.showAction=false;
   this.project_code=null;
+  this.noact_msg=false;
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
     this.actionList=JSON.parse(data[0]['ActionList']);
-    if(this.actionList==null || this.actionList=='' || this.actionList.length==0){
+    this.owner_empno=(data[0]['Project_Owner']);
+    this.resp_empno=(data[0]['Team_Res']);
+    if((this.actionList==null || this.actionList=='' || this.actionList.length==0) && (this.Current_user_ID==this.owner_empno || this.Current_user_ID==this.resp_empno)){
       this.showAction=false;
+      console.log(this.actionList,"axtions");
+    }
+    else if(this.actionList.length==0 && this.Current_user_ID!=this.owner_empno && this.Current_user_ID!=this.resp_empno){
+      this.showAction=true;
+      this.noact_msg=true;
     }
     else{
       this.showAction=true;
