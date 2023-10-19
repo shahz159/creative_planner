@@ -1345,20 +1345,12 @@ span.count2 {
   font-weight: 600;
 }
 .scrollbar1 {
-<<<<<<< HEAD
-  max-height: calc(100vh - 178px);
-=======
   max-height: calc(100vh - 178px); 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   overflow: hidden;
   overflow-y: auto;
 }
 .scrollbar1 {
-<<<<<<< HEAD
-  max-height: calc(100vh - 138px);
-=======
   max-height: calc(100vh - 138px); 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   overflow-y: auto;
 }
 .scrollbar1::-webkit-scrollbar {
@@ -1393,9 +1385,6 @@ span.count2 {
   position: relative;
   float: unset;
   margin: 4px !important;
-<<<<<<< HEAD
-}
-=======
 }
 
 /*-----new project add side bar css------*/
@@ -2386,4 +2375,3 @@ button.Kt-Approval-btns {
   }
     }
   /*========= project info side bar css end=========*/
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302

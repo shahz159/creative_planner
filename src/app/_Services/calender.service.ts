@@ -153,15 +153,12 @@ export class CalenderService {
 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetProposenewdate", this.obj_CalenderDTO);
   }
-<<<<<<< HEAD
-=======
   NewGetMeetingDuration(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingDuration", this.obj_CalenderDTO);
   }
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   NewGetEvent_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
   

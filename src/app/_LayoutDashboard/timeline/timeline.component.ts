@@ -314,10 +314,7 @@ getTimelineProjects(){
   this.master_code=null;
   this.project_code=null;
   this.showAction=false;
-<<<<<<< HEAD
-=======
   this.noact_msg=false;
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
@@ -326,11 +323,6 @@ getTimelineProjects(){
   });
 }
 
-<<<<<<< HEAD
-getTimelineActions(){
-  this.showAction=false;
-  this.project_code=null;
-=======
 owner_empno: any;
 resp_empno: any;
 noact_msg: boolean =false;
@@ -339,16 +331,11 @@ getTimelineActions(){
   this.showAction=false;
   this.project_code=null;
   this.noact_msg=false;
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
     this.actionList=JSON.parse(data[0]['ActionList']);
-<<<<<<< HEAD
-    if(this.actionList==null || this.actionList=='' || this.actionList.length==0){
-      this.showAction=false;
-=======
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
     if((this.actionList==null || this.actionList=='' || this.actionList.length==0) && (this.Current_user_ID==this.owner_empno || this.Current_user_ID==this.resp_empno)){
@@ -358,7 +345,6 @@ getTimelineActions(){
     else if(this.actionList.length==0 && this.Current_user_ID!=this.owner_empno && this.Current_user_ID!=this.resp_empno){
       this.showAction=true;
       this.noact_msg=true;
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     }
     else{
       this.showAction=true;

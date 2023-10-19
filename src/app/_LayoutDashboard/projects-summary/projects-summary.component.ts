@@ -63,8 +63,6 @@ export class ProjectsSummaryComponent implements OnInit {
   approvalObj = new ApprovalDTO();
 
   ngOnInit() {
-<<<<<<< HEAD
-=======
 // JQUERY
 $(document).ready(function() {
   // Action next
@@ -93,7 +91,6 @@ $(document).ready(function(){
 
 
 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this._raciDetails = true;
     this.A2Z = true;
     this.Z2A = false;
@@ -858,12 +855,6 @@ $(document).ready(function(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-<<<<<<< HEAD
-
-  closeInfo() {
-    this.Clear_Feilds();
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-=======
   OpenProject(){
     document.getElementById("New_project_Add").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -874,16 +865,11 @@ $(document).ready(function(){
     this.Clear_Feilds();
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     //document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
-<<<<<<< HEAD
-  }
-
-=======
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
   }
 
@@ -960,7 +946,6 @@ $(document).ready(function(){
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
   //----------------------project info js end ------------
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   _totalMemos: number;
   _mappedMemos: number;
   _leftMemos: number;
@@ -1089,7 +1074,8 @@ $(document).ready(function(){
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-    var myWindow = window.open(myurl,pcode);
+    console.log("myurl:",myurl);
+    var myWindow = window.open(myurl,"_");
     myWindow.focus();
   }
 

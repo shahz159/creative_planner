@@ -24,11 +24,8 @@ import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meetin
 import { FileviewComponent } from './_LayoutDashboard/fileview/fileview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
-<<<<<<< HEAD
-=======
 // import { MoreinfoComponent } from './_LayoutDashboard/moreinfo/moreinfo.component';
 // import { MoreinfoModule } from './_LayoutDashboard/moreinfo/moreinfo.module';
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 
 
 
@@ -66,10 +63,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
   ],
   imports: [
     BrowserModule,
-<<<<<<< HEAD
-=======
     // MoreinfoModule,
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     BrowserAnimationsModule,
     AppRoutingModule,
     MaterialModule,
@@ -90,11 +84,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     [AuthGuard
       // ,ProjectUnplannedTaskComponent
      ],
-<<<<<<< HEAD
-
-=======
      schemas: [CUSTOM_ELEMENTS_SCHEMA],
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   bootstrap: [AppComponent]
 })
 export class AppModule { }

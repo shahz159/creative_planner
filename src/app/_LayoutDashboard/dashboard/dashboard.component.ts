@@ -1210,11 +1210,7 @@ export class DashboardComponent implements OnInit {
 
   }
   Pending_meeting() {
-<<<<<<< HEAD
-
-=======
     debugger
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -4034,23 +4030,14 @@ this.draftid=0
     myWindow.focus();
   }
 
-<<<<<<< HEAD
-=======
  
   myWin:any = {}
 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   meetingReport() {
 
     let name: string = 'Meeting-Report';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
-<<<<<<< HEAD
-    var myWindow = window.open(myurl);
-    myWindow.focus();
-  }
-
-=======
     if(this.Meeting_status == false){
       var myWindow = window.open(myurl,'popup','width=800,height=800');
       this.myWin = myWindow;
@@ -4084,7 +4071,6 @@ this.draftid=0
 
 }
 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).

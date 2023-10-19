@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-=======
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
@@ -20,10 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subscription } from 'rxjs';
-<<<<<<< HEAD
-=======
 import Swal from 'sweetalert2';
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 @Component({
   selector: 'app-meeting-report',
   templateUrl: './meeting-report.component.html',
@@ -32,10 +25,7 @@ import Swal from 'sweetalert2';
 
 export class MeetingReportComponent implements OnInit {
   @ViewChild('myTextarea') myTextarea!: ElementRef<HTMLTextAreaElement>;
-<<<<<<< HEAD
-=======
   // @HostListener('window:beforeunload', ['$event'])
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 
   _ObjAssigntaskDTO: AssigntaskDTO;
   CurrentUser_ID: string;
@@ -186,13 +176,6 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto = new CalenderDTO;
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-<<<<<<< HEAD
-
-  }
-  _meetingNotesAry: any = [];
-  _userfullname: string;
-  interval = 0;
-=======
     
   }
   showCustomDialog:boolean=false;
@@ -224,17 +207,13 @@ export class MeetingReportComponent implements OnInit {
   interval = 0;
 
   
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
-<<<<<<< HEAD
-=======
     this.getScheduleId();
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
@@ -242,10 +221,6 @@ export class MeetingReportComponent implements OnInit {
     // this.GetProjectAndsubtashDrpforCalender()
     this.GetTimeslabfordate();
     this.meeting_details();
-<<<<<<< HEAD
-    this.getScheduleId();
-=======
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
     this.GetcompletedMeeting_data();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
@@ -397,28 +372,18 @@ export class MeetingReportComponent implements OnInit {
   //   }
   // }
   leave: boolean = false;
-<<<<<<< HEAD
-  leavemeet(event: any) {
-    this.leave = true;
-=======
 
   leavemeet(event: any) {
     this.StatusType=true;
     if(this.StatusType==true){
       this.stopTimer();
       this.leave = true;
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();
     }, 2000);
     this.notifyService.showSuccess("Meeting left", "Success");
-<<<<<<< HEAD
-
-
-  }
-=======
     this.InsertstartandendTimerMeeting('Pause');
     }
     else{
@@ -429,22 +394,13 @@ export class MeetingReportComponent implements OnInit {
   }
 
 
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   delayedFunction() {
     console.log('Function called after 5 seconds');
     window.close();
   }
-<<<<<<< HEAD
-  addBulletPointsOnEnter(event: any) {
-
-    if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
-
-
-=======
 
   addBulletPointsOnEnter(event: any) {
     if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.CurrentUser_ID;
@@ -509,38 +465,15 @@ export class MeetingReportComponent implements OnInit {
   Statususer: any;
   sch_date: any;
   StatusType: boolean = true;
-<<<<<<< HEAD
-  time = 0;
-  timer: any;
-  display:any;
-  interval1: number = 0;
-=======
   time:any;
   timer: any;
   display:any;
   interval1: number = 0;
   
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   InsertstartandendTimerMeeting(_val: string) {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
     this._calenderDto.Status = _val;
-<<<<<<< HEAD
-    this._calenderDto.User_Type = 'Admin';
-    this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
-      (data => {
-        if (_val == "Start") {
-          this.startTimer();
-          this.StatusType = false;
-        }
-        else if (_val == "Pause") {
-          clearInterval(this.interval1);
-          this.StatusType = true;
-        }
-        // this.startTimer();
-
-      })
-=======
     // alert(this.Isadmin);
     if(this.Isadmin==true){
       this._calenderDto.User_Type = 'Admin';
@@ -566,7 +499,6 @@ export class MeetingReportComponent implements OnInit {
         // this.startTimer();
 
       });
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   }
   // startTimer() {
   //   this.timer = setInterval(() => {
@@ -576,10 +508,6 @@ export class MeetingReportComponent implements OnInit {
   meetingpoint: string;
   Notespoint: string;
   empname: string;
-<<<<<<< HEAD
-=======
-
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   GetNotedata() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -853,11 +781,8 @@ export class MeetingReportComponent implements OnInit {
   Createdby: string;
   sched_admin: string;
   _duration: number = 0;
-<<<<<<< HEAD
-=======
   durationStatus:any;
   
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   meeting_details() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -866,17 +791,10 @@ export class MeetingReportComponent implements OnInit {
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-<<<<<<< HEAD
-        this._duration = data['duration'];
-        this.time = this._duration;
-        this.display = this.transform(this.time);
-        // console.log(this.EventScheduledjson, "111111")
-=======
         // this._duration = data['duration'];
         // this.time = this._duration;
         // this.display = this.transform(this.time);
          console.log(this.EventScheduledjson,data, "111111")
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -961,10 +879,6 @@ export class MeetingReportComponent implements OnInit {
         }
 
       });
-<<<<<<< HEAD
-
-
-=======
     
       this._calenderDto.Emp_No=this.CurrentUser_ID;
       this.CalenderService.NewGetMeetingDuration(this._calenderDto).subscribe((data)=>{
@@ -977,7 +891,6 @@ export class MeetingReportComponent implements OnInit {
       this.display=this.transform_display(this.display);
       this.durationStatus=data['Status'];
     });
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 
   }
 
@@ -1015,16 +928,12 @@ export class MeetingReportComponent implements OnInit {
   }
 
   // time: number = 0;
-<<<<<<< HEAD
-
-=======
   convertToSeconds(timeString) {
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
     const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
     return totalSeconds;
   }
   
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
 
   startTimer() {
     console.log("=====>");
@@ -1037,27 +946,11 @@ export class MeetingReportComponent implements OnInit {
       this.display = this.transform(this.time)
     }, 1000);
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   stopTimer() {
     // Clear the interval to stop the timer.
     clearInterval(this.interval1);
   }
 
-<<<<<<< HEAD
-  transform(value: number): string {
-    var sec_num = value;
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 1) { hours = 0; }
-    if (minutes < 1) { minutes = 0; }
-    if (seconds < 1) { seconds = 0; }
-    return hours + ':' + minutes + ':' + seconds;
-=======
 
   transform(value: number): string {
     // var sec_num = value;
@@ -1097,7 +990,6 @@ export class MeetingReportComponent implements OnInit {
     } else {
       return `${value}`;
     }
->>>>>>> 40bca26e69ac8315867e45f4831d9adee3361302
   }
 
 
