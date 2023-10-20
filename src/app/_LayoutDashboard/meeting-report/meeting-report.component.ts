@@ -213,6 +213,7 @@ export class MeetingReportComponent implements OnInit {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
+    this.getScheduleId();
     this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
@@ -220,7 +221,6 @@ export class MeetingReportComponent implements OnInit {
     // this.GetProjectAndsubtashDrpforCalender()
     this.GetTimeslabfordate();
     this.meeting_details();
-    this.getScheduleId();
     this.GetcompletedMeeting_data();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
@@ -508,7 +508,6 @@ export class MeetingReportComponent implements OnInit {
   meetingpoint: string;
   Notespoint: string;
   empname: string;
-
   GetNotedata() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -947,7 +946,6 @@ export class MeetingReportComponent implements OnInit {
       this.display = this.transform(this.time)
     }, 1000);
   }
-
   stopTimer() {
     // Clear the interval to stop the timer.
     clearInterval(this.interval1);

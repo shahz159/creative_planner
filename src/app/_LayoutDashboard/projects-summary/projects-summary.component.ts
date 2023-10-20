@@ -1074,7 +1074,8 @@ $(document).ready(function(){
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-    var myWindow = window.open(myurl,pcode);
+    console.log("myurl:",myurl);
+    var myWindow = window.open(myurl,"_");
     myWindow.focus();
   }
 

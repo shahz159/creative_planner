@@ -1210,7 +1210,7 @@ export class DashboardComponent implements OnInit {
 
   }
   Pending_meeting() {
-
+    debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -4057,13 +4057,14 @@ this.draftid=0
     // alert(myrhis.myWin.closed)
     var timer = setInterval(function () {
       if (myrhis.myWin.closed) {
-          alert("closed");
+          alert("Meeting paused and added to Pending meeting list.");
           clearInterval(timer);
+          this.Pending_meeting();
           //window.location.reload(); // Refresh the parent page
       }
       else{
         if(this.myWin.closed){
-          window.close
+          window.close();
         }
       }
   }, 1000);
