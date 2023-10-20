@@ -479,17 +479,16 @@
                         <div class="kt-project-info-body  pl-3 ">
                             <div class="d-flex justify-content-between">
                                 <div class="kt-project-name">
-                                    <h4>Preventive Maintenance plan for Equipment, RO and RC for month of june 2023</h4>
+                                    <h4>{{projectInformation&&projectInformation.projectName}}</h4>
                                 </div>
                                 <div class="kt-project-type">
                                     <div class="Kt-Pd-Status Core_task">
-                                        Core Task
+                                        {{projectInformation&&projectInformation.projectType}}
                                     </div>
                                 </div>
                             </div>
                             <div class="kt-project-desc">
-                                <p>This report solidifies the current available candidates for the final interview
-                                    session to be conducted by the Chairman</p>
+                                <p>{{projectInformation&&projectInformation.projectDescription}}</p>
                             </div>
 
                         </div>
@@ -614,7 +613,7 @@
                             </div>
                             <div class="kt-project-type">
                                 <div class="Kt-Pd-Status Delay">
-                                    Delay
+                                    {{projectInformation&&projectInformation.projectStatus}}
                                 </div>
                             </div>
 
@@ -627,7 +626,7 @@
                                             Starting date
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            12-08-2023
+                                            {{projectInformation?(projectInformation.projectStartDate.getDate()+'-'+projectInformation.projectStartDate.getMonth()+'-'+projectInformation.projectStartDate.getFullYear()):'' }}
                                         </div>
                                     </div>
 
@@ -636,7 +635,7 @@
                                             Ending date
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            09-04-2024
+                                            {{projectInformation?(projectInformation.projectEndDate.getDate()+'-'+projectInformation.projectEndDate.getMonth()+'-'+projectInformation.projectEndDate.getFullYear()):''}}
                                         </div>
                                     </div>
 
@@ -645,7 +644,7 @@
                                             Duration
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            30 days
+                                            {{projectInformation&&projectInformation.projectDuration}} days
                                         </div>
                                     </div>
 
@@ -654,7 +653,7 @@
                                             Allocated
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            45 hrs
+                                            {{projectInformation&&projectInformation.projectAllocatedHours }} hrs
                                         </div>
                                     </div>
 
