@@ -1386,7 +1386,7 @@
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="subTaskCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List | filter :actionsearch;let i =index"
+                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                                 [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
                                                 <div class="lbl-act ml-2">
                                                     <label

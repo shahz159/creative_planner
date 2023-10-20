@@ -416,6 +416,7 @@ export class ProjectTypeService {
   }
 
   SubTaskDetailsService(prjCode) {
+
     this.ObjSubTaskDTO.Project_Code = prjCode;
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO.Emp_No = EmpNo;
@@ -426,7 +427,6 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Comp_No = compCode;
     this.ObjSubTaskDTO.Emp_No = empno;
-
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
   SubTaskStatusCheck(Project_Code) {

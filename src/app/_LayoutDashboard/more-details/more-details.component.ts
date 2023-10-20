@@ -428,7 +428,7 @@ export class MoreDetailsComponent implements OnInit {
     this.GetDMS_Memos();
     this.GetprojectComments();
     this.GetmeetingDetails();
-    // this.french();
+    // //this.french();
 
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
@@ -1512,7 +1512,7 @@ export class MoreDetailsComponent implements OnInit {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
-
+        console.log("GetProjectDetails data:",data);
           this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
           this.Category = this.ProjectInfo_List[0]['ReportType'];
           this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);

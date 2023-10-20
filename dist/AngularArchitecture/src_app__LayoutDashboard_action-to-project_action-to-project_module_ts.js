@@ -653,10 +653,10 @@ class ActionToProjectComponent {
                     this._inputAttachments = [];
                 }
                 else {
-                    this._MoreDetails.GetProjectDetails();
-                    this._MoreDetails.GetSubtask_Details();
-                    this._MoreDetails.getapproval_actiondetails();
-                    this._MoreDetails.getRejectType();
+                    // this._MoreDetails.GetProjectDetails();
+                    // this._MoreDetails.GetSubtask_Details();
+                    // this._MoreDetails.getapproval_actiondetails();
+                    // this._MoreDetails.getRejectType();
                     this.Clear_Feilds();
                     this.closeInfo();
                     this._inputAttachments = [];

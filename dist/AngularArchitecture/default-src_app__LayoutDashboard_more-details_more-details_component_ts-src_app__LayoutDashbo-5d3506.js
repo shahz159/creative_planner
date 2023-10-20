@@ -2871,14 +2871,13 @@ function MoreDetailsComponent_div_439_div_2_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementStart"](0, "div", 381);
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](1, MoreDetailsComponent_div_439_div_2_div_1_Template, 150, 52, "div", 419);
-    _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵpipe"](2, "filter");
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementEnd"]();
   }
 
   if (rf & 2) {
     const ctx_r249 = _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵpipeBind2"](2, 1, ctx_r249.Subtask_List, ctx_r249.actionsearch));
+    _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵproperty"]("ngForOf", ctx_r249.Subtask_List);
   }
 }
 
@@ -2886,7 +2885,7 @@ function MoreDetailsComponent_div_439_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementStart"](0, "div", 405);
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](1, MoreDetailsComponent_div_439_div_1_Template, 4, 3, "div", 406);
-    _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](2, MoreDetailsComponent_div_439_div_2_Template, 3, 4, "div", 407);
+    _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](2, MoreDetailsComponent_div_439_div_2_Template, 2, 1, "div", 407);
     _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementEnd"]();
   }
 
@@ -11448,7 +11447,7 @@ class MoreDetailsComponent {
     this.getdeadlinecount();
     this.GetDMS_Memos();
     this.GetprojectComments();
-    this.GetmeetingDetails(); // this.french();
+    this.GetmeetingDetails(); // //this.french();
 
     this.EndDate1 = moment__WEBPACK_IMPORTED_MODULE_8__(new Date()).format("YYYY/MM/DD");
     this.minDate.setDate(this.minDate.getDate());
@@ -12430,6 +12429,7 @@ class MoreDetailsComponent {
   GetProjectDetails() {
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(data => {
       if (data != null && data != undefined) {
+        console.log("GetProjectDetails data:", data);
         this.ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
         this.Category = this.ProjectInfo_List[0]['ReportType'];
         this.Employee_List = JSON.parse(data[0]['EmployeeDropdown']);
