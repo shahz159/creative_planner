@@ -2484,7 +2484,7 @@ function (_super) {
         let childIndex = this.nodes.indexOf(child.node);
         link.target = child.node;
         child.parentLink = link;
-          this._forceLinks.push({ source: nodeIndex, target: childIndex });
+         this._forceLinks.push({ source: nodeIndex, target: childIndex });
         */
         var link = node.linkWith(child.node);
         child.parentLink = link;

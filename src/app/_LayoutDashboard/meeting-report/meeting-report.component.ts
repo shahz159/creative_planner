@@ -975,7 +975,6 @@ export class MeetingReportComponent implements OnInit {
       this.display = this.transform(this.time)
     }, 1000);
   }
-
   stopTimer() {
     // Clear the interval to stop the timer.
     clearInterval(this.interval1);
