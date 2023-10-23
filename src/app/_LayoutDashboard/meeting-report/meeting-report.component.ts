@@ -213,7 +213,6 @@ export class MeetingReportComponent implements OnInit {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
     });
-    this.getScheduleId();
     this.GetPreviousdate_meetingdata();
     this.GetMeetingnotes_data();
     this.GetAssigned_SubtaskProjects();
@@ -221,6 +220,7 @@ export class MeetingReportComponent implements OnInit {
     // this.GetProjectAndsubtashDrpforCalender()
     this.GetTimeslabfordate();
     this.meeting_details();
+    this.getScheduleId();
     this.GetcompletedMeeting_data();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
@@ -384,7 +384,7 @@ export class MeetingReportComponent implements OnInit {
       this.delayedFunction();
     }, 2000);
     this.notifyService.showSuccess("Meeting left", "Success");
-    this.InsertstartandendTimerMeeting('Pause');
+    this.InsertstartandendTimerMeeting('Leave');
     }
     else{
       this.notifyService.showInfo("Something went wrong","");
@@ -487,6 +487,7 @@ export class MeetingReportComponent implements OnInit {
       this.StatusType = false;
     }
     else if (_val == "Pause") {
+      this.AdminMeeting_Status=_val;
       clearInterval(this.interval1);
       this.StatusType = true;
     }
@@ -508,6 +509,8 @@ export class MeetingReportComponent implements OnInit {
   meetingpoint: string;
   Notespoint: string;
   empname: string;
+  AdminMeeting_Status: string;
+
 
   GetNotedata() {
     this.Schedule_ID = this.Scheduleid;
@@ -516,6 +519,22 @@ export class MeetingReportComponent implements OnInit {
     this.CalenderService.NewGetMeetingnote_comp(this._calenderDto).subscribe
       (data => {
         this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        this.AdminMeeting_Status = data["AdminMeeting_Status"];
+        
+        if(this.AdminMeeting_Status == 'Pause'){
+          clearInterval(this.interval1);
+          this.interval == 0;
+          if (this.interval == 0) {
+            clearInterval(this.interval);
+          }
+        }
+        // else if(this.AdminMeeting_Status == 'Join'){
+        //   // this._duration = data['duration'];
+        //   // this.time = this._duration;
+        //   // this.display = this.transform(this.time);
+        //   this.startTimer();
+        // }
+
         this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
 
         if (this.Meetingstatuscom == "Completed") {
@@ -784,6 +803,8 @@ export class MeetingReportComponent implements OnInit {
   _duration: number = 0;
   durationStatus:any;
   
+
+  
   meeting_details() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -792,9 +813,16 @@ export class MeetingReportComponent implements OnInit {
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-        // this._duration = data['duration'];
-        // this.time = this._duration;
-        // this.display = this.transform(this.time);
+        this.AdminMeeting_Status = data['AdminMeeting_Status'];
+        this._duration = data['duration'];
+        this.time = this._duration;
+        this.display = this.transform(this.time);
+        if(this.AdminMeeting_Status == 'Start'){
+          this.startTimer();
+        }
+        else if(this.AdminMeeting_Status == 'Pause'){
+          clearInterval(this.interval1);
+        }
          console.log(this.EventScheduledjson,data, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
@@ -881,17 +909,17 @@ export class MeetingReportComponent implements OnInit {
 
       });
     
-      this._calenderDto.Emp_No=this.CurrentUser_ID;
-      this.CalenderService.NewGetMeetingDuration(this._calenderDto).subscribe((data)=>{
-      console.log(data,"time");
-      this.display=data['TotalTime'];
-      if(this.display==""){
-        this.display = "00:00:00";
-      }
-      this.time = this.convertToSeconds(this.display);
-      this.display=this.transform_display(this.display);
-      this.durationStatus=data['Status'];
-    });
+    //   this._calenderDto.Emp_No=this.CurrentUser_ID;
+    //   this.CalenderService.NewGetMeetingDuration(this._calenderDto).subscribe((data)=>{
+    //   console.log(data,"time");
+    //   this.display=data['TotalTime'];
+    //   if(this.display==""){
+    //     this.display = "00:00:00";
+    //   }
+    //   this.time = this.convertToSeconds(this.display);
+    //   this.display=this.transform_display(this.display);
+    //   this.durationStatus=data['Status'];
+    // });
 
   }
 

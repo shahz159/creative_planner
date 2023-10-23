@@ -1210,7 +1210,6 @@ export class DashboardComponent implements OnInit {
 
   }
   Pending_meeting() {
-    debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -1221,7 +1220,7 @@ export class DashboardComponent implements OnInit {
 
       this.closeevearea();
       this.GetScheduledJson();
-    })
+    });
 
   }
 
@@ -3314,7 +3313,11 @@ this.draftid=0
       return select.Emp_No;
     }).join(',');
   }
+
   Meeting_status: boolean;
+  AdminMeeting_Status: string;
+  Isadmin:boolean;
+
   GetClickEventJSON_Calender(arg) {
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
@@ -3324,6 +3327,8 @@ this.draftid=0
       ((data) => {
         debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.AdminMeeting_Status = data['AdminMeeting_Status'];
+        this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
         console.log(this.EventScheduledjson, "Testing1");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -4034,7 +4039,6 @@ this.draftid=0
   myWin:any = {}
 
   meetingReport() {
-
     let name: string = 'Meeting-Report';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
@@ -4052,14 +4056,18 @@ this.draftid=0
 
   check(){
     console.log(this.myWin.closed)
-   
     var myrhis = this
+    var sid =this.Schedule_ID;
+    var sid1=  this._calenderDto.Schedule_ID
+    sid1 = sid;
+
     // alert(myrhis.myWin.closed)
     var timer = setInterval(function () {
       if (myrhis.myWin.closed) {
-          alert("Meeting paused and added to Pending meeting list.");
+          // alert(sid1)
+          
+          // alert("Meeting paused and added to Pending meeting list.");
           clearInterval(timer);
-          this.Pending_meeting();
           //window.location.reload(); // Refresh the parent page
       }
       else{

@@ -669,7 +669,7 @@
 
                                     <div class="eve-area py-2">
 
-                                        <div class="rgt-des" *ngIf="Meetingstatuscom!='Completed' ">
+                                        <div class="rgt-des" *ngIf="Meetingstatuscom!='Completed'">
                                             <label class="cus-lbl">Meeting notes </label>
                                             <div class="note-text d-none">
                                                 <div class="main-s" [innerHTML]="Notespoint"></div>
@@ -716,7 +716,7 @@
                                             </div>
 
                                             <div class="form-group mt-notes" id="Descrip_Name"
-                                                *ngIf="Meetingstatuscom==Completed ">
+                                                *ngIf="AdminMeeting_Status!='Pause'">
                                                 <label class="cus-lbl">Meeting notes </label>
                                                 <angular-editor [(ngModel)]="Notes_Type" #myTextarea
                                                     (keyup)="addBulletPointsOnEnter($event)"
@@ -773,7 +773,7 @@
                                             </div>
 
                                             <div class="form-group mt-notes" id="Descrip_Name"
-                                                *ngIf="Meetingstatuscom==Completed ">
+                                                *ngIf="Meetingstatuscom==Completed">
                                                 <label class="cus-lbl">Meeting notes </label>
                                                 <angular-editor [(ngModel)]="Notes_Type" #myTextarea
                                                     (keyup)="addBulletPointsOnEnter($event)"
@@ -793,7 +793,7 @@
                                         class="custom-textarea form-control mb-2" placeholder="Add events"></textarea> -->
                                 </div>
 
-                                <div class="action-section">
+                                <div class="action-section" *ngIf="Meetingstatuscom!='Completed' && AdminMeeting_Status!='Pause'">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
@@ -802,7 +802,7 @@
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <form class="task-form" *ngIf="Meetingstatuscom==Completed">
+                                            <form class="task-form">
                                                 <input class="task-input" id="todo-input" name="text"
                                                     [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
                                                     placeholder="Add a new task..." autofocus="true">
@@ -1086,20 +1086,17 @@
             </div>
 
             <!-- <div class="card-footer text-right" *ngIf="item.Meeting_status==false"> -->
-            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==true  && AdminMeeting_Status!='Pause'">
                 <button class="btn btn-info btn-sm mr-2" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal">
                     End Meeting
                 </button>
-                <button class="btn btn-secondary btn-sm mr-2">cancel</button>
+                <!-- <button class="btn btn-secondary btn-sm mr-2">cancel</button> -->
             </div>
-            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+            <div class="card-footer text-right" *ngIf="Meetingstatuscom==Completed && Isadmin==false && AdminMeeting_Status!='Pause'">
                 <button class="btn btn-info btn-sm mr-2" (click)=" leavemeet($event)">Leave Meeting</button>
-                <button class="btn btn-secondary btn-sm mr-2">cancel</button>
+                <!-- <button class="btn btn-secondary btn-sm mr-2">cancel</button> -->
             </div>
-
         </div>
-
-
     </div>
 </div>
 
