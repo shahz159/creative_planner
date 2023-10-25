@@ -1879,8 +1879,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       else{
         this.approvalObj.Status = 'Rejected';
       }
-
-        
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
         this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
         this.rejectlength=this.rejectcommentsList.length;
