@@ -129,7 +129,7 @@ export class DetailsComponent implements OnInit,AfterViewInit {
   
   
   ngOnInit(): void {
-    this.getProjectDetails("CRS184037");   // get all project details from the api.
+    this.getProjectDetails("4001232");   // get all project details from the api.
     this.showActionDetails(undefined);     // initially show the Project details
   }
 
@@ -201,7 +201,7 @@ export class DetailsComponent implements OnInit,AfterViewInit {
 
   getProjectDetails(prjCode:string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-      console.log("=====check this=======>", res);
+      console.log("=====check this=======>",JSON.parse(res[0].ProjectInfo_Json)[0]);
 
       const { Project_Name, Project_Type, Project_Description, Project_Code, id } = JSON.parse(res[0].ProjectName_Json)[0];
       const { StartDate, EndDate, AllocatedHours, Status, Delaydays } = JSON.parse(res[0].ProjectStates_Json)[0];
