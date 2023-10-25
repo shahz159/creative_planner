@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, } from '@angular/core';
 import * as moment from 'moment';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
 declare var FusionCharts: any;
@@ -118,7 +118,7 @@ class ProjectInformation {
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit,AfterViewInit {
 
   projectInformation: ProjectInformation;
   currentActionView:number|undefined;
@@ -126,10 +126,22 @@ export class DetailsComponent implements OnInit {
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService) { }
   charts() { }
+  
+  
   ngOnInit(): void {
     this.getProjectDetails("CRS184037");   // get all project details from the api.
     this.showActionDetails(undefined);     // initially show the Project details
+  }
 
+
+  ngAfterViewInit():void{
+     this.drawStatistics();
+  }
+ 
+
+
+
+    drawStatistics(){
     //  chart js ---------------------
     new FusionCharts({
       type: "radialbar",
@@ -179,8 +191,10 @@ export class DetailsComponent implements OnInit {
       }, delay * multiply);
       multiply++;
     });
+    }
 
-  }
+
+
 
 
 
