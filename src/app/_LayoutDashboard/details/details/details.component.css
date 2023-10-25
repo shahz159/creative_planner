@@ -574,9 +574,18 @@ span.kt-dt-l {
   min-width: 130px;
   margin-right: 0px;
 }
+
 .Core_task {
-  background-color: #ffc43a;
+  background-image:linear-gradient(#ffc43a,#e9af29);
 }
+.Secondary_task{
+  background-image:linear-gradient(#0095e8,#00669c);
+}
+.Todo_task{
+  background-image: linear-gradient( rgb(226, 226, 4), rgb(196, 196, 11));
+}
+
+
 .kt-project-name h4 {
   color: #181818;
   font-weight: 700;
@@ -756,8 +765,26 @@ span.Status-Delay {
   border-left: 12px solid #ebf1ff;
   z-index: 9999999;
 }
+
+
+
+.Active .kt-p-box{
+  background-color: rgb(216, 239, 255);
+  
+}
+
+
+
+
+
+
+
+
+
+
 .kt-projcect-act-list.Action-Active {
   position: relative;
+  
 }
 .kt-project-action-list-view {
   margin-top: 10px;
