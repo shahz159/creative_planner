@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { event } from 'jquery';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+import { DetailsComponent } from '../details/details/details.component';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -84,6 +85,7 @@ export class ActionToProjectComponent implements OnInit {
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
     public router: Router,public _meetingreport: MeetingReportComponent,
+    public _details: DetailsComponent,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
     public service: ProjectTypeService,
@@ -515,11 +517,15 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
+        else if(this._Urlid == 4){
+          this._details.getProjectDetails(this.selectedProjectCode);
+          this.closeInfo();
+        }
         else {
-          // this._MoreDetails.GetProjectDetails();
-          // this._MoreDetails.GetSubtask_Details();
-          // this._MoreDetails.getapproval_actiondetails();
-          // this._MoreDetails.getRejectType();
+          this._MoreDetails.GetProjectDetails();
+          this._MoreDetails.GetSubtask_Details();
+          this._MoreDetails.getapproval_actiondetails();
+          this._MoreDetails.getRejectType();
           this.Clear_Feilds();
           this.closeInfo();
           this._inputAttachments = [];
@@ -592,18 +598,26 @@ export class ActionToProjectComponent implements OnInit {
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
     }
     else if(this._Urlid==1){
       this.router.navigate(["./backend/ToDoProjects/"]);
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
     }
     else if(this._Urlid==3){
       this._meetingreport.getScheduleId();
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
+    }
+    else if(this._Urlid==4){
+      this.router.navigate(["./Details", this.selectedProjectCode]);
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
     }
     this.Clear_Feilds();
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -630,7 +644,10 @@ export class ActionToProjectComponent implements OnInit {
     this.selectedEmpNo = '';
     this.selected_Employee = [];
    
-    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  
+    if((<HTMLInputElement>document.getElementById("uploadFile")))
+    (<HTMLInputElement>document.getElementById("uploadFile")).files=null;
+    
   }
 
   startdatechecker(){

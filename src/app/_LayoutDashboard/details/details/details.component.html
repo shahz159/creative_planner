@@ -1,4 +1,4 @@
-<div class="kt-container kt-grid__item kt-grid__item--fluid margin-height side_view mt-3 p-3">
+<div class="kt-container kt-grid__item kt-grid__item--fluid margin-height side_view mt-3 p-3" id="newdetails">
     <div class="card mb-6 mb-xl-9 d-none">
         <div class="card-body pt-9 pb-0">
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
@@ -14,7 +14,7 @@
                             <!--begin::Status-->
                             <div class="d-flex align-items-center mb-1">
                                 <a href="#" class="text-gray-800 text-hover-primary fs-2 fw-bold me-3">CRM Dashboard</a>
-                                <span class="badge badge-light-success me-auto">In Progress</span>
+                                <span class="badge badge-light-success me-auto">In Process</span>
                             </div>
                             <!--end::Status-->
 
@@ -618,7 +618,7 @@
                                 Project States
                             </div>
                             <div class="kt-project-type">
-                                <div  *ngIf="projectInformation"    class="Kt-Pd-Status" [ngClass]="{ 'Delay':projectInformation.projectStatus==='Delay','bg-inprogress':projectInformation.projectStatus==='InProcess','bg-done':projectInformation.projectStatus==='Completed'}" >
+                                <div  *ngIf="projectInformation"    class="Kt-Pd-Status" [ngClass]="{ 'Delay':projectInformation.projectStatus==='Delay','bg-inprogress':projectInformation.projectStatus==='InProcess','bg-done':projectInformation.projectStatus==='Completed','bg-rejected':projectInformation.projectStatus==='New Project Rejected'}" >
                                     {{projectInformation&&projectInformation.projectStatus}}
                                 </div>
                             </div>
@@ -676,7 +676,7 @@
                                     </div>
                                     <div class="col-lg-6 text-center mt-4" *ngIf="projectInformation">
                                         <div class="kt-prg-bar-info">
-                                            <b>{{projectInformation.TOTAL_ACTIONS_IN_PROCESS}}</b> in Progress
+                                            <b>{{projectInformation.TOTAL_ACTIONS_IN_PROCESS}}</b> in Process
                                         </div>
                                     </div>
                                     <div class="col text-center mt-4" *ngIf="projectInformation"  >
@@ -702,7 +702,7 @@
 
                     </div>
 
-                    <div class="kt-info-box pb-0 mt-2">
+                    <div class="kt-info-box pb-0 mt-2" *ngIf="(projectInformation&&(projectInformation.projectType==='Core Tasks'||projectInformation.projectType==='Secondary Tasks'))">
                         <div class="d-flex justify-content-between">
                             <div class="kt-info-box-tittle">
                                 <div class="kt-title-icon">
@@ -747,22 +747,21 @@
                                 </div>
                                 Project Action
                             </div>
-                            <div class="kt-project-type">
-                                <div class="Kt-Pd-Status Add_Action_btn">
+                            <div class="kt-project-type" >
+                                <div class="Kt-Pd-Status Add_Action_btn"  (click)="addNewAction()" >
                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                                             height="16" fill="currentColor" class="bi bi-plus" viewBox="4 3 8 12">
                                             <path
                                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                        </svg></span> Add Action
+                                        </svg></span> Add Action 
                                 </div>
                             </div>
 
                         </div>
-                        <div class="kt-project-action-list-view" *ngIf="projectInformation"   >
-                            
-
-
+                        <div class="kt-project-action-list-view" *ngIf="projectInformation">
                         
+                           <ng-container *ngIf="projectInformation.projectActions.length;else noActionsAvailable"    >
+                            <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
                             <div class="kt-projcect-act-list"      *ngFor="let action of projectInformation.projectActions;let i=index;" (click)="showActionDetails(i)"   [ngClass]="{'Active':currentActionView===i}"      >
                                 <div class="row" >
                                     <div class="col-lg-8 pl-0 pr-1">
@@ -792,7 +791,9 @@
                                                    <span [ngSwitch]="action.status">
                                                     <span *ngSwitchCase="'Completed'"   class="Status-done">Done</span>
                                                     <span *ngSwitchCase="'Delay'"   class="Status-Delay">Delay {{action&&action.actiondelay}} days</span>
-                                                    <span *ngSwitchCase="'InProcess'"   class="Status-In-progress">In Progress</span>
+                                                    <span *ngSwitchCase="'InProcess'"   class="Status-In-progress">In Process</span>
+                                                    <span *ngSwitchCase="'New Project Rejected'"   class="bg-rejected" style="background-color: transparent;">Rejected</span>
+                                                    <span *ngSwitchDefault  class="Status-In-progress" >{{action&&action.status}}</span>
                                                    </span>
 
 
@@ -802,6 +803,15 @@
                                     </div>
                                 </div>
                             </div>
+
+                           </ng-container>
+                           <ng-template #noActionsAvailable>
+                                <!--when there is not even one project action available || projectInformation.projectActions.length=0    -->
+
+                              <h6>no actions available</h6>
+                          
+                           </ng-template>
+                            
 
                             
                         </div>
@@ -998,14 +1008,31 @@
                                     <div class="kt-project-name">
                                         <h4>{{projectInformation&&projectInformation.projectName}}</h4>
                                     </div>
-                                    <div class="kt-project-type"   *ngIf="projectInformation" >
-                                        <div class="Kt-Pd-Status Delay"   *ngIf="projectInformation.projectStatus==='Delay';else completed"     > {{projectInformation&&projectInformation.projectDelayInDays }} days delay </div>
-                                    </div>
-                                    <ng-template #completed >
-                                        <div class="kt-project-type">
+
+                                        <div   *ngIf="projectInformation"    [ngSwitch]="projectInformation.projectStatus">
+                                       
+                                         <div class="kt-project-type"  *ngSwitchCase="'Delay'" >
+                                           <div class="Kt-Pd-Status Delay"> {{projectInformation&&projectInformation.projectDelayInDays }} days delay </div>
+                                         </div>
+                                        
+                                          <div class="kt-project-type" *ngSwitchCase="'Completed'">
                                             <div class="Kt-Pd-Status bg-done "> Completed </div>
-                                        </div>
-                                    </ng-template>
+                                          </div>
+
+                                           <div class="kt-project-type" *ngSwitchCase="'InProcess'"  >
+                                            <div class="Kt-Pd-Status bg-inprogress "> In Process </div>
+                                           </div>
+
+                                           
+                                           <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'"  >
+                                            <div class="Kt-Pd-Status bg-rejected"> Rejected </div>
+                                           </div>
+
+                                           <div class="kt-project-type" *ngSwitchDefault >
+                                            <div class="Kt-Pd-Status"> {{projectInformation&&projectInformation.projectStatus}} </div>
+                                           </div>
+                                        
+                                       </div>
                                     
                                 </div>
                                 <div class="kt-project-desc w-80">
@@ -1378,14 +1405,31 @@
                                     <div class="kt-project-name">
                                         <h4>{{projectInformation&&projectInformation.projectActions[currentActionView].action}}</h4>
                                     </div>
-                                    <div class="kt-project-type"   *ngIf="projectInformation" >
-                                        <div class="Kt-Pd-Status Delay"   *ngIf="projectInformation.projectActions[currentActionView].status==='Delay';else completed"     > {{projectInformation&&projectInformation.projectActions[currentActionView].actiondelay }} days delay </div>
-                                    </div>
-                                    <ng-template #completed >
-                                        <div class="kt-project-type">
+
+                                    <div  [ngSwitch]="projectInformation.projectActions[currentActionView].status">
+                                       
+                                        <div *ngSwitchCase="'Delay'"   class="kt-project-type"   >
+                                             <div class="Kt-Pd-Status Delay" > {{projectInformation&&projectInformation.projectActions[currentActionView].actiondelay }} days delay </div>
+                                        </div>
+                                    
+                                        <div *ngSwitchCase="'Completed'" class="kt-project-type">
                                             <div class="Kt-Pd-Status bg-done "> Completed </div>
                                         </div>
-                                    </ng-template>
+                                
+                              
+                                        <div *ngSwitchCase="'InProcess'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status bg-inprogress "> In Progress </div>
+                                        </div>
+
+                                        <div *ngSwitchCase="'New Project Rejected'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status  bg-rejected"> Rejected </div>
+                                        </div>
+
+                                        <div *ngSwitchDefault class="kt-project-type">
+                                            <div class="Kt-Pd-Status bg-inprogress "> {{projectInformation.projectActions[currentActionView].status}} </div>
+                                        </div>
+                                    
+                                    </div>
                                     
                                 </div>
                                 <div class="kt-project-desc w-80">
@@ -1604,5 +1648,19 @@
 
 
 </div>
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+
+
+<!-- Action-To-Project-New_Subtask -->
+<div id="mysideInfobar1" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
+
+
+
+
+
+
 
 

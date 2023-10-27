@@ -23,7 +23,7 @@ const routes = [{
         children: [
             {
                 path: 'ActionToProject/:id',
-                loadChildren: () => __webpack_require__.e(/*! import() */ "src_app__LayoutDashboard_action-to-project_action-to-project_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-project/action-to-project.module */ 69840)).then(m => m.ActionToProjectModule)
+                loadChildren: () => __webpack_require__.e(/*! import() */ "default-src_app__LayoutDashboard_action-to-project_action-to-project_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-project/action-to-project.module */ 69840)).then(m => m.ActionToProjectModule)
             },
             {
                 path: 'ActionToAssign/:id',

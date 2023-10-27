@@ -1,6 +1,10 @@
 import { AfterViewInit, Component, OnInit, } from '@angular/core';
 import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import Swal from 'sweetalert2';
+
 declare var FusionCharts: any;
 
 class ProjectAction {
@@ -50,23 +54,11 @@ class ProjectInformation {
   projectStatus: string | undefined;
   projectDuration: number | undefined;
   
-
-
-
   projectClient:string|undefined;
   projectOwner:string|undefined;
   projectCost:string|undefined;
   projectCategory:string|undefined;
   projectResponsible:string|undefined;
-
-
-
-
-
-
-
-
-
 
   projectActions: ProjectAction[] | undefined;
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -122,26 +114,26 @@ export class DetailsComponent implements OnInit,AfterViewInit {
 
   projectInformation: ProjectInformation;
   currentActionView:number|undefined;
+  URL_ProjectCode:any;
 
 
-  constructor(private projectMoreDetailsService: ProjectMoreDetailsService) { }
+  constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
+    private router: Router,private activatedRoute: ActivatedRoute,private bsService:BsServiceService) { }
   charts() { }
   
   
   ngOnInit(): void {
-    this.getProjectDetails("4001232");   // get all project details from the api.
+    this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
+    this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
     this.showActionDetails(undefined);     // initially show the Project details
+    // this.router.navigate(["./Details", this.URL_ProjectCode]);
   }
-
 
   ngAfterViewInit():void{
      this.drawStatistics();
   }
  
-
-
-
-    drawStatistics(){
+  drawStatistics(){
     //  chart js ---------------------
     new FusionCharts({
       type: "radialbar",
@@ -195,13 +187,11 @@ export class DetailsComponent implements OnInit,AfterViewInit {
 
 
 
-
-
-
-
   getProjectDetails(prjCode:string) {
+  
+   
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-      console.log("=====check this=======>",JSON.parse(res[0].ProjectInfo_Json)[0]);
+      console.log("=====check this=======>",res);
 
       const { Project_Name, Project_Type, Project_Description, Project_Code, id } = JSON.parse(res[0].ProjectName_Json)[0];
       const { StartDate, EndDate, AllocatedHours, Status, Delaydays } = JSON.parse(res[0].ProjectStates_Json)[0];
@@ -224,6 +214,12 @@ export class DetailsComponent implements OnInit,AfterViewInit {
         action.EndDate
       )) : [];    // if there is no actions in the project then assign an empty array .
       this.projectInformation = new ProjectInformation(Project_Name, Project_Description, Project_Type, Project_Code, id, Status, StartDate, EndDate, AllocatedHours, Delaydays,Client_Name,Owner,Project_Cost,ReportType,Responsible,prjactions);
+      
+      // also setting projectcode, projectname in BsService.
+      
+      this.bsService.SetNewPojectCode(this.projectInformation.projectCode);
+      this.bsService.SetNewPojectName(this.projectInformation.projectName);
+
       console.log("projectInformation:", this.projectInformation);
     });
   }
@@ -238,10 +234,65 @@ export class DetailsComponent implements OnInit,AfterViewInit {
     
    
 
+  //  addNewAction(){
+       
+  //  }
+
+   addNewAction() {
+
+       if(this.projectInformation.projectStatus==='Completed')
+       {
+            Swal.fire({
+              title:"Wait This Project is Already Completed",
+              text:'Do you want to reopen this Project?',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No'
+            })
+            .then((option)=>{
+                if(option.isConfirmed)
+                {   // user said yes to add new action into a project which is already completed.
+                      this.showSideBar();
+                }
+                else{
+                  // when the user said no 
+                  Swal.fire(
+                    'Cancelled',
+                    'Action not created',
+                    'error'
+                  )
+                }
+            })
+            .catch(e=> console.log(e));
+       }
+       else{
+        // if projectStatus is 'Delay' ...
+               this.showSideBar();
+       }
+  
+
+  }
+
+   showSideBar(){
+     this.router.navigate(["./Details",this.URL_ProjectCode,"ActionToProject","4"]);
+     document.getElementById("mysideInfobar1").classList.add("kt-action-panel--on");
+      document.getElementById("newdetails").classList.add("position-fixed");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      $("#mysideInfobar1").scrollTop(0);
+   }
 
 
 
 
+
+
+
+   closeInfo() {
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
+    document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.router.navigate(["./Details",this.URL_ProjectCode]);
+  }
 
 
 
