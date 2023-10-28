@@ -246,11 +246,13 @@ export class ToDoProjectsComponent implements OnInit {
     // myWindow.focus();
     //this.router.navigate([myurl,this._ProjectCode]);
     this.router.navigate(["./backend/ToDoProjects/projectinfo/", this._ProjectCode,"5"]);
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
     //this.router.navigate(["../backend/ToDoProjects/projectinfo", this._ProjectCode]);
     // document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("todo").classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
   selected_Employee = [];
@@ -394,15 +396,18 @@ export class ToDoProjectsComponent implements OnInit {
 
   OnAddTaskClick() {
     this.router.navigate(["./backend/ToDoProjects/ActionToProject/1"]);
-    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    // document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
+
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
      document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("todo").classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
-    $("#mysideInfobar").scrollTop(0);
+    // $("#mysideInfobar").scrollTop(0);
   }
 
   // OnADDClick() {
@@ -506,14 +511,15 @@ export class ToDoProjectsComponent implements OnInit {
   closeInfo() {
     // debugger
     this.Checkbox_checked = 0;
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
-
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
      document.getElementById("todo").classList.remove("position-fixed");
+     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
      $('#uploadFile').val('');
      $('#_upload').html('Select a file');
     // document.getElementById("rightbar-overlay").style.display = "none";

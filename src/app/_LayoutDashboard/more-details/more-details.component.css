@@ -506,7 +506,9 @@
     border: 1px solid transparent;
     font-weight: 600;
   }
+  
   .sideInfobar {
+   
     height: 100%;
     width: 0;
     position: fixed;
@@ -518,7 +520,7 @@
     box-shadow: 0 1px 9px -3px rgb(0 0 0 / 75%);
     transition: transform 0.2s ease-in;
     overflow-x: hidden;
-    color: #212529;
+    color: #212529; 
   }
   .accordion-1 .card-title {
     padding: 12px;

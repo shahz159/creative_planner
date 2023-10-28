@@ -3660,6 +3660,7 @@ export class MoreDetailsComponent implements OnInit {
     if (this.filteredemp == true) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
+          console.log('here',data[0].ActionCount_Json);
           this.Subtask_List = JSON.parse(data[0]['All_ResponsibleActions']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_Responsibleations']);
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_Responsibleations']);

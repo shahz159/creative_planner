@@ -19,7 +19,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,NgSelectModule
-  ],exports:[
+  ],
+  exports:[
     ActionToProjectComponent
   ],
   providers:[
