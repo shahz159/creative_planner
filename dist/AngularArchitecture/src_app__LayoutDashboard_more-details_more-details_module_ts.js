@@ -22,7 +22,7 @@ const routes = [{ path: '', component: _more_details_component__WEBPACK_IMPORTED
         children: [
             {
                 path: 'ActionToProject',
-                loadChildren: () => __webpack_require__.e(/*! import() */ "default-src_app__LayoutDashboard_action-to-project_action-to-project_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-project/action-to-project.module */ 69840)).then(m => m.ActionToProjectModule)
+                loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-src_app__LayoutDashboard_details_details_details_component_ts"), __webpack_require__.e("default-src_app__LayoutDashboard_action-to-project_action-to-project_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ../action-to-project/action-to-project.module */ 69840)).then(m => m.ActionToProjectModule)
             }
         ]
     }];

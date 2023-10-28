@@ -603,8 +603,8 @@ export class ActionToProjectComponent implements OnInit {
     }
     else if(this._Urlid==1){
       this.router.navigate(["./backend/ToDoProjects/"]);
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
-
+    // document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     }
     else if(this._Urlid==3){
       this._meetingreport.getScheduleId();

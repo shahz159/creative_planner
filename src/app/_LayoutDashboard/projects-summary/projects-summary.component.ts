@@ -67,7 +67,7 @@ export class ProjectsSummaryComponent implements OnInit {
 $(document).ready(function() {
   // Action next
   $('.btn-next').on('click', function() {
-    // Get value from data-to in button next
+    // Get value from data-to in button next 
     const n = $(this).attr('data-to');
     // Action trigger click for tag a with id in value n
     $(n).trigger('click');
@@ -848,10 +848,15 @@ $(document).ready(function(){
   _MainProjectStatus: string;
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
+    // this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // // document.getElementById("sumdet").classList.add("position-fixed");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("sumdet").classList.add("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
@@ -863,7 +868,7 @@ $(document).ready(function(){
   
   closeInfo() {
     this.Clear_Feilds();
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("Project_info_slider_bar").classList.remove("kt-quick-panel--on");
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
@@ -940,11 +945,7 @@ $(document).ready(function(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
-  close_info_Slide(){
-    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-  }
+  
   //----------------------project info js end ------------
   _totalMemos: number;
   _mappedMemos: number;

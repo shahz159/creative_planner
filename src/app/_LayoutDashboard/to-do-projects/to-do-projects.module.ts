@@ -20,6 +20,7 @@ import { DatePipe } from '@angular/common';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+import { DetailsComponent } from '../details/details/details.component';
 
 
 
@@ -42,7 +43,8 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule
   ]
-,providers:[NotificationService,ProjectUnplannedTaskComponent,MoreDetailsComponent,DatePipe,ProjectsSummaryComponent,,MeetingReportComponent],
+,providers:[NotificationService,ProjectUnplannedTaskComponent,
+  MoreDetailsComponent,DatePipe,ProjectsSummaryComponent,DetailsComponent,MeetingReportComponent],
 
 exports:[
     ToDoProjectsComponent

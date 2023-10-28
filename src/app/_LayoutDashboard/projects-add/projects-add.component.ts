@@ -387,14 +387,16 @@ export class ProjectsAddComponent implements OnInit {
     this._portfolioId = this.activatedRoute.snapshot.params.portfolioId;
     this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId + "/projectinfo", pcode,"4"]);
     
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId]);
