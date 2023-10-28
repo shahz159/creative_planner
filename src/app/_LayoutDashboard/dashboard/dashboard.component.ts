@@ -1209,6 +1209,29 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
+sweet_pending(){
+  Swal.fire({
+    title: 'Pending Meeting',
+    text: 'Do you want to move the meeting to pending?',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+      this.Pending_meeting();
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Not moved to pending',
+        'error'
+      )
+    }
+  });
+}
+
+ 
+
   Pending_meeting() {
     // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     //   ((data) => {

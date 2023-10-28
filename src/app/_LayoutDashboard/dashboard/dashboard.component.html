@@ -1161,8 +1161,8 @@
                         </span>
                     </div>
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
-                         title="Pending!">
-                        <span class="tool-span" (click)="Pending_meeting()">
+                         title="Pending!" *ngIf="Meeting_status==false">
+                        <span class="tool-span" (click)="sweet_pending()">
                             <svg class="toolicns kt-p-ic-top" width="24" height="24"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
@@ -1236,11 +1236,20 @@
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
-                            <div class="box-cl" *ngIf="item.Schedule_Type!='Task' && Status1 !='Rejected'"
+                            <!-- <div class="box-cl" *ngIf="item.Schedule_Type!='Task' && Status1 !='Rejected' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected'"
+                            <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
+                            </div> -->
+                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
+                                style="background-color: #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
+                                style="background-color: #1dc9b7;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
+                                style="border:4px solid #3788d8; ">
                             </div>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
                             </div>
@@ -1252,22 +1261,22 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="item.Schedule_Type=='Event' && Status1 !='Rejected'"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf="item.Schedule_Type=='Event' && Status1 !='Rejected' && item.Recurrence!='Do not repeat'"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
-                                    <span *ngIf="item.Schedule_Type=='Task'" style="height: 18px;"
+                                    <span *ngIf="Meeting_status==true" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
-                                    <span *ngIf="item.Schedule_Type=='Task' && item.Recurrence!='Do not repeat'"
+                                    <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}

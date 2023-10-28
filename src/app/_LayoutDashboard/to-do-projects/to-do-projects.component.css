@@ -171,6 +171,10 @@ h5 {
     background-color: #f5f6fc;
 }
 
+.project-info-side-bar .kt-portlet__head {
+    background-color: #f5f6fc;
+}
+
 .sideInfobar .closebtn {
     text-decoration: none;
     color: #333;

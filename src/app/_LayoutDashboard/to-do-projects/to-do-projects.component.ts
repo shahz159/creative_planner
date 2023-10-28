@@ -397,13 +397,13 @@ export class ToDoProjectsComponent implements OnInit {
   OnAddTaskClick() {
     this.router.navigate(["./backend/ToDoProjects/ActionToProject/1"]);
     // document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
-    $('#Project_info_slider_bar').addClass('open_sidebar_info');
+    $('#Project_info_slider_bar').addClass('kt-action-panel--on');
 
     // document.getElementById("mysideInfobar_NewSubtask").style.width = "60%";
     // document.getElementById("mysideInfobar_Update").style.width = "0px";
      document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("todo").classList.add("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // this.MatInput = false;
     // this.ButtonAdd = false;
     // this.GetAllEmployeesForAssignDropdown();
@@ -514,6 +514,7 @@ export class ToDoProjectsComponent implements OnInit {
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     // document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    $('#Project_info_slider_bar').removeClass('kt-action-panel--on');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");

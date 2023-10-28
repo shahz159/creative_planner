@@ -1068,11 +1068,12 @@
 <!-- <div id="mysideInfobar" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
 </div> -->
-<div id="Project_info_slider_bar" class="project-info-side-bar animate-right">
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+<div id="Project_info_slider_bar" class="project-info-side-bar sideInfobar animate-right">
     <router-outlet></router-outlet>    
 </div>
 
-<div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!-- <mat-form-field class="example-full-width">
     <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Choose a date">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

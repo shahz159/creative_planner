@@ -1249,11 +1249,11 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       console.log(this.requestDetails, "approval")
 
       if (this.requestDetails.length > 0) {
+        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
-        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.hold_upto = (this.requestDetails[0]['hold_date']);

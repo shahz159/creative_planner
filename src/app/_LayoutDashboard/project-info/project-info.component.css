@@ -586,8 +586,39 @@ margin-top: 10px;
 background-color: #eaf2fd !important;
 }
 .Delay{
-background-color: #Ed6207 !important;
+background-color: #EE4137 !important;
 }
+.UnderApproval{
+  background-color: #888888 !important;
+}
+.Inprocess{
+  background-color: #1B272D !important;
+}
+.NewProjectRejected{
+  background-color: #DFDFDF !important;
+  color:#000;
+}
+.Done{
+  background-color: #62B134 !important;
+  color: #000;
+}
+.EnactiveUnderApproval{
+  background-color: #C9C1E6 !important;
+  color: #000;
+}
+.CompletionUnderApproval{
+  background-color: #B2D732 !important;
+  color:#000;
+}
+.DeadlineExtend{
+  background-color: #F88282 !important;
+  color: #000;
+}
+.Hold{
+  background-color: #E2D9BC;
+  color:#000;
+}
+
 .kt-project-sts-data {
 margin-top: 17px;
 color: #3b3b3b;
