@@ -1209,19 +1209,41 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
+sweet_pending(){
+  Swal.fire({
+    title: 'Pending Meeting',
+    text: 'Do you want to move the meeting to pending?',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+      this.Pending_meeting();
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Not moved to pending',
+        'error'
+      )
+    }
+  });
+}
+
+ 
+
   Pending_meeting() {
-    debugger
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      });
+    // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+    //   ((data) => {
+    //     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    //   });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
     this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
       this.notifyService.showSuccess("Added In Pending Successfully", "Success");
-
-      this.closeevearea();
       this.GetScheduledJson();
-    })
+      this.GetPending_Request();
+      this.closeevearea();
+    });
 
   }
 
@@ -1719,7 +1741,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
-  
+
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -1893,7 +1915,7 @@ export class DashboardComponent implements OnInit {
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid=this.draftid;
+      this._calenderDto.draftid = this.draftid;
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
           if (_attachmentValue == 1) {
@@ -1971,10 +1993,10 @@ export class DashboardComponent implements OnInit {
           this.maxDate = null;
           this.calendar.updateTodaysDate();
           this.TImetable();
-if(this.draftid!=0){
-this.Getdraft_datalistmeeting();
-this.draftid=0
-}
+          if (this.draftid != 0) {
+            this.Getdraft_datalistmeeting();
+            this.draftid = 0
+          }
         });
       this.closeschd();
     }
@@ -1984,8 +2006,9 @@ this.draftid=0
 
   }
 
-  OnSubmitReSchedule() {
+  OnSubmitReSchedule(type: number) {
     this._calenderDto.flagid = this._PopupConfirmedValue;
+    this._calenderDto.type=type;
     var start = moment(this.minDate);
 
     if (this._PopupConfirmedValue == 3) {
@@ -3314,7 +3337,11 @@ this.draftid=0
       return select.Emp_No;
     }).join(',');
   }
+
   Meeting_status: boolean;
+  AdminMeeting_Status: string;
+  Isadmin: boolean;
+
   GetClickEventJSON_Calender(arg) {
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
@@ -3324,6 +3351,8 @@ this.draftid=0
       ((data) => {
         debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.AdminMeeting_Status = data['AdminMeeting_Status'];
+        this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
         console.log(this.EventScheduledjson, "Testing1");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -4030,47 +4059,62 @@ this.draftid=0
     myWindow.focus();
   }
 
- 
-  myWin:any = {}
+
+  myWin: any = {}
 
   meetingReport() {
-
     let name: string = 'Meeting-Report';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
-    if(this.Meeting_status == false){
-      var myWindow = window.open(myurl,'popup','width=800,height=800');
-      this.myWin = myWindow;
-      myWindow.focus();
-      this.check();
-    }
-    else if(this.Meeting_status == true){
-      var myWindow = window.open(myurl);
-        myWindow.focus();
-    }
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+    // if (this.Meeting_status == false) {
+    //   var myWindow = window.open(myurl, 'popup', 'width=800,height=800');
+    //   this.myWin = myWindow;
+    //   myWindow.focus();
+    //   this.check();
+    // }
+    // else if (this.Meeting_status == true) {
+    //   var myWindow = window.open(myurl);
+    //   myWindow.focus();
+    // }
   }
 
-  check(){
+  check() {
     console.log(this.myWin.closed)
-   
     var myrhis = this
+    var sid = this.Schedule_ID;
+    var sid1 = this._calenderDto.Schedule_ID
+    sid1 = sid;
+    if(this.myWin.closed){
+      this.OnCloseCallAPI();
+    }
+
     // alert(myrhis.myWin.closed)
-    var timer = setInterval(function () {
-      if (myrhis.myWin.closed) {
-          alert("Meeting paused and added to Pending meeting list.");
+    var timer =
+      setInterval(function () {
+        if (myrhis.myWin.closed) {
+
+          // alert(sid1)
+          // alert(timer);
+          // alert("Meeting paused and added to Pending meeting list.");
           clearInterval(timer);
-          this.Pending_meeting();
+
+
           //window.location.reload(); // Refresh the parent page
-      }
-      else{
-        if(this.myWin.closed){
-          window.close();
         }
-      }
-  }, 1000);
+        else {
+          if (this.myWin.closed) {
+            window.close();
+          }
+        }
+      }, 1000);
 
-}
+  }
+  OnCloseCallAPI() {
+    alert('API');
 
+  }
   GetMemosByEmployeeId() {
 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -4276,12 +4320,12 @@ this.draftid=0
 
     this._calenderDto.Task_Name = this.Title_Name;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    if(this.SelectDms==null){
-      this.SelectDms=[];
+    if (this.SelectDms == null) {
+      this.SelectDms = [];
     }
     this._calenderDto.Dms = this.SelectDms.toString();
-    if(this.Portfolio==null){
-      this.Portfolio=[];
+    if (this.Portfolio == null) {
+      this.Portfolio = [];
     }
     this._calenderDto.Portfolio = this.Portfolio.toString();
     this._calenderDto.location = this.Location_Type;
@@ -4289,12 +4333,12 @@ this.draftid=0
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
     //  alert( this.ScheduleType);
-    if(this.ngEmployeeDropdown==null){
-      this.ngEmployeeDropdown=[];
+    if (this.ngEmployeeDropdown == null) {
+      this.ngEmployeeDropdown = [];
     }
     this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
-    if(this.MasterCode==null){
-      this.MasterCode=[];
+    if (this.MasterCode == null) {
+      this.MasterCode = [];
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
@@ -4320,12 +4364,12 @@ this.draftid=0
       });
 
   }
-  draftid:number=0;
+  draftid: number = 0;
   draft_arry: any = [];
   darft_click(Sno, val) {
 
-    this.draftid=Sno;
- 
+    this.draftid = Sno;
+
     this.Task_type(val)
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]

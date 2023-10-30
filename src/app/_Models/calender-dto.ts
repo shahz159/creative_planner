@@ -47,6 +47,8 @@ export class CalenderDTO {
     Task_Name:string;
     Scheduledsearchlist:string;
     previousmeet_data:string;
+    AdminMeeting_Status:string;
+    type:number;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

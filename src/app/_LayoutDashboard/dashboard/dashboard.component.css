@@ -2284,6 +2284,47 @@ svg.toolicns.kt-p-ic-top {
     text-transform: uppercase;
     font-size: 9px;
 }
+
+
+.met-start {
+    border-right: 1px solid #ccc !important;
+    padding-right: 7px;
+}
+.met-start span {
+    width: 10px;
+    height: 10px;
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    background-color: #5656d1;
+    border-radius: 50px;
+    margin-right: 6px;
+}
+.met-start small {
+    text-transform: uppercase;
+    font-size: 9px;
+}
+
+.met-pause {
+    border-right: 1px solid #ccc !important;
+    padding-right: 7px;
+}
+.met-pause span {
+    width: 10px;
+    height: 10px;
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    background-color: #ffc63c;
+    border-radius: 50px;
+    margin-right: 6px;
+}
+.met-pause small {
+    text-transform: uppercase;
+    font-size: 9px;
+}
+
+
 .draft-fc {
     position: absolute;
     top: 26px;

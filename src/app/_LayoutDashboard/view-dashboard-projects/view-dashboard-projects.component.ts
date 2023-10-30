@@ -110,14 +110,16 @@ export class ViewDashboardProjectsComponent implements OnInit {
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
   openInfo(pcode,  pName) {
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode,"3"]);
      //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
   closeInfo() {
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["../ViewProjects/" + this.Mode]);

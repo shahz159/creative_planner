@@ -149,7 +149,11 @@
                         <ng-container
                             *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
-                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
+                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
+                                [ngClass]="{'bg-info':Status=='Under Approval',
+                                            'bg-cancel':Status=='Cancellation Under Approval' || Status=='Cancelled',
+                                            'bg-warning':Status=='InProcess'  || Status=='Forward Under Approval',
+                                            'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold' }">
                                 {{Status}}</label>
                         </ng-container>
 
@@ -1002,7 +1006,6 @@
                     </ul>
                 </div>
                 <div class="tab-content p-2 mt-5" id="myTabContent2">
-
                     <!-- Overview Section -->
                     <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
 
@@ -1386,7 +1389,7 @@
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="subTaskCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List | filter :actionsearch;let i =index"
+                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
                                                 [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
                                                 <div class="lbl-act ml-2">
                                                     <label
@@ -5752,10 +5755,16 @@
     <!--no records found end-->
 </div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+
+
 <!-- Action-To-Project-New_Subtask -->
 <div id="mysideInfobar1" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
 </div>
+
+
+
 
 <!-- For Update Project-->
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
