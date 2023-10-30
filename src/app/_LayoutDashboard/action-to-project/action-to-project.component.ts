@@ -598,13 +598,13 @@ export class ActionToProjectComponent implements OnInit {
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
     }
     else if(this._Urlid==1){
       this.router.navigate(["./backend/ToDoProjects/"]);
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
-
+    // document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+    $('#Project_info_slider_bar').removeClass('kt-action-panel--on');
     }
     else if(this._Urlid==3){
       this._meetingreport.getScheduleId();
@@ -613,15 +613,18 @@ export class ActionToProjectComponent implements OnInit {
     }
     else if(this._Urlid==4){
       this.router.navigate(["./Details", this.selectedProjectCode]);
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
+
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
+    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
+
     }
     this.Clear_Feilds();
 
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
   }
 
   Clear_Feilds() {

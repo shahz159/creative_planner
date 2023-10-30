@@ -587,11 +587,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
     
-    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
-    $("#mysideInfobar").scrollTop(0);
+    $("#Project_info_slider_bar").scrollTop(0);
     
   }
 
@@ -612,11 +612,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
     
-    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
-    $("#mysideInfobar").scrollTop(0);
+    $("#Project_info_slider_bar").scrollTop(0);
    
     //this.GetProjectsByUserName();
   }
@@ -852,7 +852,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   openInfo(pcode, pName) {
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // this.router.navigate(["UnplannedTask/ActionToProject/"]);
@@ -861,8 +862,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   closeInfo() {
     this.clearFeilds();  
-    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["UnplannedTask/"]); 

@@ -1340,6 +1340,8 @@ export class MeetingReportComponent implements OnInit {
     document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("metting_slide").classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
   }
   ngOnDestroy(): void {
     // Unsubscribe when the component is destroyed to prevent memory leaks

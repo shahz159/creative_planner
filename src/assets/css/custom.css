@@ -1508,3 +1508,30 @@ margin-bottom: 0;
 .b-50 {
     border-radius: 50%;
 }
+
+.open_sidebar_info {
+    width: 55% !important;
+    }
+
+@media only screen and (min-width: 1800px) and (max-width: 2500px)  {
+    .open_sidebar_info {
+    width: 40% !important;
+    }
+    }
+    
+    @media only screen and (min-width: 1385px) and (max-width: 1800px)  {
+    .open_sidebar_info {
+    width: 50% !important;
+    }
+    }
+    
+    @media only screen and (min-width: 1280px) and (max-width: 1385px)  {
+    .open_sidebar_info {
+    width: 55% !important;
+    }
+    }
+    @media (max-width: 1280px){
+    .open_sidebar_info {
+      width: 58% !important;
+    }
+    }

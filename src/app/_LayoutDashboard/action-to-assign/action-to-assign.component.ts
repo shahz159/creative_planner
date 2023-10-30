@@ -269,11 +269,14 @@ export class ActionToAssignComponent implements OnInit {
     this.clearFeilds();
     if(this._Urlid==1){
       this.router.navigate(["UnplannedTask/"]); 
+    document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+
     }
     else if(this._Urlid==2){
       this._meetingreport.getScheduleId();
-    }
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+
+    }
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("mysideInfobar_NewSubtask").classList.remove("kt-quick-panel--on");

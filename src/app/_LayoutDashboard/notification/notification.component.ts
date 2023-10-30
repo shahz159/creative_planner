@@ -235,7 +235,8 @@ export class NotificationComponent implements OnInit {
   }
 
   openInfo(pcode) {
-    document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["Notifications/projectinfo/", pcode,"6"]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -266,10 +267,11 @@ export class NotificationComponent implements OnInit {
 
   closeInfo() {
     this.resetReject();
-    document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
 
   }
  

@@ -321,6 +321,10 @@ export class HomeComponent implements OnInit {
   ServerSide_Search(value) {
     this.searchResult = true;
     this.searchText = value;
+    this.activeClassAll = true;
+    this.activeClassFav = false;
+    this.activeClassOwners = false;
+    this.activeClassShare = false;
     this.applyFilters();
     // console.log(this.searchText);
   }
@@ -1327,15 +1331,15 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  activeClassOwners: boolean
-  activeClassAll: boolean
-  activeClassShare: boolean
-  activeClassFav: boolean
+  activeClassOwners: boolean =false;
+  activeClassAll: boolean =false;
+  activeClassShare: boolean =false;
+  activeClassFav: boolean =false;
   NoSharedmsg: boolean =false;
   Nofavmsg: boolean=false;
 
   Favourite_Portfolios() {
-    this.Portfolio_CurrentPage = 1;
+    // this.Portfolio_CurrentPage = 1;
     this.NoSharedmsg = true;
     this.activeClassFav = true;
     this.activeClassAll = false;
@@ -1343,16 +1347,17 @@ export class HomeComponent implements OnInit {
     this.activeClassShare = false;
     this.activeClass_NewPortfolio = false;
     this._objStatusDTO.Emp_No = this.Current_user_ID;
+    this._objStatusDTO.PageNumber = this.Portfolio_FavoritePage;
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
         this._ListProjStat = JSON.parse(data[0]['Portfolio_FavouritesList']);
         console.log(this._ListProjStat,"favorite")
-        let favCount = this._ListProjStat.length;
+        let favCount = data[0]['Favourites'];
         if (favCount < 30) {
           this.NoOfPages = 1;
         }
         else {
-          this.NoOfPages = data[0]['NoOfPages'];
+          this.NoOfPages = data[0]['favpages'];
         }
 
         if (this._ListProjStat.length > 0) {
@@ -1374,13 +1379,15 @@ export class HomeComponent implements OnInit {
   }
 
   Shared_Portfolios() {
-    this.Portfolio_CurrentPage = 1;
+    // this.Portfolio_CurrentPage = 1;
     this.Nofavmsg = true;
     this.activeClassShare = true;
     this.activeClassAll = false;
     this.activeClassOwners = false;
     this.activeClassFav = false;
     this.activeClass_NewPortfolio = false;
+    this._objStatusDTO.Emp_No = this.Current_user_ID;
+    this._objStatusDTO.PageNumber = this.Portfolio_SharedPage;
     // this._ListProjStat = this._ActualPortfolioList_ForShare.filter(i => (i.CreatedName != this._CurrentUserFullName));
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
@@ -1390,7 +1397,7 @@ export class HomeComponent implements OnInit {
           this.NoOfPages = 1;
         }
         else {
-          this.NoOfPages = data[0]['NoOfPages'];
+          this.NoOfPages = data[0]['sharedpages'];
         }
 
         // this.countAll = data[0]['Total'];
@@ -1404,7 +1411,7 @@ export class HomeComponent implements OnInit {
   }
 
   Owners_Portfolios() {
-    this.Portfolio_CurrentPage = 1;
+    // this.Portfolio_CurrentPage = 1;
     this.Nofavmsg = true;
     this.NoSharedmsg = true;
     this.activeClassOwners = true;
@@ -1412,6 +1419,8 @@ export class HomeComponent implements OnInit {
     this.activeClassAll = false;
     this.activeClassFav = false;
     this.activeClass_NewPortfolio = false;
+    this._objStatusDTO.Emp_No = this.Current_user_ID;
+    this._objStatusDTO.PageNumber = this.Portfolio_OwnerPage;
     // this._ListProjStat = this.AllPortfolioslist.filter(i => (i.CreatedName == this._CurrentUserFullName));
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
@@ -1421,7 +1430,7 @@ export class HomeComponent implements OnInit {
           this.NoOfPages = 1;
         }
         else {
-          this.NoOfPages = data[0]['NoOfPages'];
+          this.NoOfPages = data[0]['ownerpages'];
         }
       });
   }
@@ -1757,6 +1766,9 @@ export class HomeComponent implements OnInit {
 
   _ItemsPerpage: number;
   Portfolio_CurrentPage: number = 1;
+  Portfolio_OwnerPage: number = 1;
+  Portfolio_SharedPage: number = 1;
+  Portfolio_FavoritePage: number = 1;
 
   _Showentries(event) {
     this._ItemsPerpage = event;

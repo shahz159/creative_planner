@@ -1116,11 +1116,12 @@
                         <span></span><small>completed</small>
                     </div>
                   
-                        <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false && AdminMeeting_Status=='unknown' && Isadmin==true" data-toggle="tooltip"
+                        <div class="icons-right curser-pointer" *ngIf="Meeting_status==false" data-toggle="tooltip"
                             title="Start meeting" (click)="meetingReport()">
-                            <span></span><small>start</small>
-                            <!-- <span class="tool-span" > -->
-                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            <span></span>
+                            <!-- <small>start</small> met-start  && AdminMeeting_Status=='unknown' && Isadmin==true-->
+                            <span class="tool-span" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     fill="none" stroke="#5f6368" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1129,15 +1130,13 @@
                                         <polyline points="9 11 12 14 22 4"></polyline>
                                         <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
                                     </g>
-                                </svg> -->
-                            <!-- </span> -->
+                                </svg>
+                            </span>
                         </div>
 
-                        <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Start') && Isadmin==false" data-toggle="tooltip"
+                        <!-- <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Start') && Isadmin==false" data-toggle="tooltip"
                             title="Join meeting" (click)="meetingReport()">
                             <span></span><small>join</small>
-                            <!-- <span class="tool-span" >
-                            </span> -->
                         </div>
                     
                         <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Pause') && Isadmin==true" data-toggle="tooltip"
@@ -1148,7 +1147,7 @@
                         <div class="icons-right met-pause curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Pause') && Isadmin==false" data-toggle="tooltip"
                             title="Meeting paused" (click)="meetingReport()">
                             <span></span><small>Paused</small>
-                        </div>
+                        </div> -->
 
                     <div id="copy_data" class="icons-right" style="display:block;" data-toggle="tooltip" title="Copy">
                         <span class="tool-span" (click)="DublicateTaskandEvent()">
@@ -1162,8 +1161,8 @@
                         </span>
                     </div>
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
-                         title="Pending!">
-                        <span class="tool-span" (click)="Pending_meeting()">
+                         title="Pending!" *ngIf="Meeting_status==false">
+                        <span class="tool-span" (click)="sweet_pending()">
                             <svg class="toolicns kt-p-ic-top" width="24" height="24"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
@@ -1237,11 +1236,20 @@
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
-                            <div class="box-cl" *ngIf="item.Schedule_Type!='Task' && Status1 !='Rejected'"
+                            <!-- <div class="box-cl" *ngIf="item.Schedule_Type!='Task' && Status1 !='Rejected' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected'"
+                            <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
+                            </div> -->
+                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
+                                style="background-color: #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
+                                style="background-color: #1dc9b7;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
+                                style="border:4px solid #3788d8; ">
                             </div>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
                             </div>
@@ -1253,22 +1261,22 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="item.Schedule_Type=='Event' && Status1 !='Rejected'"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf="item.Schedule_Type=='Event' && Status1 !='Rejected' && item.Recurrence!='Do not repeat'"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
-                                    <span *ngIf="item.Schedule_Type=='Task'" style="height: 18px;"
+                                    <span *ngIf="Meeting_status==true" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
-                                    <span *ngIf="item.Schedule_Type=='Task' && item.Recurrence!='Do not repeat'"
+                                    <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
@@ -1854,7 +1862,7 @@
             </div>
             <div class="modal-footer">
                 <a type="button" class="text-gry fs-5 mr-3" data-dismiss="modal">Close</a>
-                <a type="button" class="text-info fs-5" (click)="OnSubmitReSchedule()" data-dismiss="modal">
+                <a type="button" class="text-info fs-5" (click)="OnSubmitReSchedule(1)" data-dismiss="modal">
                     Save changes</a>
             </div>
         </div>
@@ -3179,15 +3187,16 @@
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule()">Update</button> &nbsp;
+                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule()">Update</button> &nbsp;
+                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                    (click)="OnSubmitReSchedule(2)">Update and Release</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
-
         </div>
     </div>
 

@@ -149,7 +149,11 @@
                         <ng-container
                             *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks')">
                             <label data-toggle="tooltip" title="Project Status!"
-                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-purple">
+                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
+                                [ngClass]="{'bg-info':Status=='Under Approval',
+                                            'bg-cancel':Status=='Cancellation Under Approval' || Status=='Cancelled',
+                                            'bg-warning':Status=='InProcess'  || Status=='Forward Under Approval',
+                                            'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold' }">
                                 {{Status}}</label>
                         </ng-container>
 
@@ -1002,7 +1006,6 @@
                     </ul>
                 </div>
                 <div class="tab-content p-2 mt-5" id="myTabContent2">
-
                     <!-- Overview Section -->
                     <div class="tab-pane fade show active" id="Overview" role="tabpanel" aria-labelledby="Overview1">
 

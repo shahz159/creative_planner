@@ -207,6 +207,7 @@ NewPending_table(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.flagid = obj.flagid;
     this.obj_CalenderDTO.attachment= obj.attachment;
+    this.obj_CalenderDTO.type= obj.type;
     return this.http.post(this.rootUrl + "TestAPI/NewupdateSchedule_Calender", this.obj_CalenderDTO);
   }
 
