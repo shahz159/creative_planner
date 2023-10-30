@@ -26,10 +26,10 @@
                         <i class="fa fa-info-circle info-icon-cir"
                             (click)="Open_project_info()"></i>
                          </a>
-                        <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="Project Info!">
                                 <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
-                         </a> -->
+                         </a>
                         <!-- <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -2368,6 +2368,22 @@
                             
                             </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+                            <label >Dependency type</label>
+                           
+                            <div>
+                                <label for="f-option" class="l-radio">
+                                  <input type="radio" id="f-option" name="selector" tabindex="1">
+                                  <span>dependent</span>
+                                </label>
+                                <label for="s-option" class="l-radio">
+                                  <input type="radio" id="s-option" name="selector" tabindex="2">
+                                  <span>independent</span>
+                                </label>
+                              </div>
+                        </div>
+                    </div>
                     <div class="col-lg-12 mb-2">
                         <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
                             <label >Action Owner</label>
@@ -2379,6 +2395,7 @@
                             
                             </div>
                     </div>
+                   
                     <div class="col-lg-6  mb-1">
                         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
                             <label >Start Date<span  class="text-danger">*</span></label>
