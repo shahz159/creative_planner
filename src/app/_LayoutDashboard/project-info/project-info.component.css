@@ -502,9 +502,10 @@ display: block;
 
 
 .kt-info-body {
-margin: 1.3rem;
-border: 1px solid #ededed;
-height: calc(100vh - 4vh);
+  margin: 1.3rem;
+  border: 1px solid #ededed;
+  min-height: calc(100vh - 4vh);
+  height: auto;
 }
 .kt-title-icon {
 background-color: #527ce2;
@@ -528,14 +529,14 @@ margin-bottom: 10px;    letter-spacing: 0.5px;
 text-align: center;
 }
 .Kt-Pd-Status {
-background-color: #000;
-color: #fff;
-margin: 0px 10px;
-margin-left: 1rem;
-font-weight: 600;
-padding: 6px 13px; 
- max-width: 140px;
-min-width: 130px;
+  background-color: #000;
+  color: #fff;
+  margin: 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 1px 8px;
 }
 .Core_task {
 background-color: #ffc43a;
@@ -582,9 +583,9 @@ border-radius: 50px;
 .kt-client-icon {
 margin-top: 10px;
 }
-.bg-light-shade {
+/* .bg-light-shade {
 background-color: #eaf2fd !important;
-}
+} */
 .Delay{
 background-color: #EE4137 !important;
 }
@@ -600,7 +601,7 @@ background-color: #EE4137 !important;
 }
 .Done{
   background-color: #62B134 !important;
-  color: #000;
+  color: #ffffff;
 }
 .EnactiveUnderApproval{
   background-color: #C9C1E6 !important;
@@ -608,11 +609,11 @@ background-color: #EE4137 !important;
 }
 .CompletionUnderApproval{
   background-color: #B2D732 !important;
-  color:#000;
+  color:#ffffff;
 }
 .DeadlineExtend{
   background-color: #F88282 !important;
-  color: #000;
+  color: #ffffff;
 }
 .Hold{
   background-color: #E2D9BC;
@@ -620,7 +621,7 @@ background-color: #EE4137 !important;
 }
 
 .kt-project-sts-data {
-margin-top: 17px;
+margin-top: 7px;
 color: #3b3b3b;
 font-weight: 500;
 font-size: 14px;
@@ -642,13 +643,14 @@ background-color: #6aad3a;
 font-size: 15px;
 font-weight: 600;
 color: #3d3d3d;
+margin-top: -1px;
 }
 .kt-prg-bar-info b {
 font-size: 20px;
 margin-right: 5px;
 }
 .kt-total-prg-vl b {
-font-size: 21px !important;
+font-size: 17px !important;
 }
 .Deadline_Extend{
 background-color: #f48383;
@@ -662,6 +664,7 @@ color: #4f4f4f;
 border: 2px solid #fff;
 font-weight: 500;
 font-size: 14px;
+min-width: 110px;
 }
 .Btn_Accpet {
 border-color: #8ab991 !important;
@@ -714,4 +717,167 @@ letter-spacing: 0.5px;
 margin: 5px 10px;
 }
 
+/*------new css --------*/
+.more-info .Kt-Pd-Status.More_info {
+  padding: 10px 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 110px;
+}
+.more-info {
+  position: relative;
+}
+.kt-project-name {
+  margin-top: 3px;
+}
+span.B-Bot {
+  display: inline-block;
+  height: 11px;
+  width: 11px;
+  margin-right: 2px;
+  border-radius: 2px;
+  background-color: #e5e5e5;
+}
+.kt-prg-progress ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+.kt-prg-progress ul li {
+  width: 25%;margin-bottom: 9px;
+}
+li.w-50P {
+  width: 50% !important;
+}
+.kt-prg-progress {
+  padding-top: 12px;
+}
 
+.P_In_Progress{
+  background-color: #1B272D !important;
+}
+.P_Not-Started{
+  background-color: #888888 !important;
+}
+.P_Active{
+  background-color: #0089FB !important;
+}
+.P_Completion_under_Approval{
+  background-color: #B2d732 !important;
+}
+.P_Slow{
+  background-color: #Fbcc61 !important;
+}
+.P_Delay{
+  background-color: #EE4137 !important;
+}
+.P_Hold{
+  background-color: #E2d9bc !important;
+}
+.P_Done{
+  background-color: #62b134 !important;
+}
+.P_Very_Slow{
+  background-color: #E1a63d !important;
+}
+.P_Very_Active{
+  background-color: #0272d0 !important;
+}
+.P_Completion_under_Approval{
+  background-color: #b2d732 !important;
+}
+.P_Deadline_Extend_Under_Approval{
+  background-color: #F88282 !important;
+}
+.P_Enactive_Under_Approval{
+  background-color: #C9c1e6 !important;
+}
+.P_New_Project_Rejected{
+  background-color: #Dfdfdf !important;
+}
+.P_New_todo{
+  background-color: #6e9bc4 !important;
+}
+.P_Project_complete_rejected{
+  background-color: #FAF065 !important;
+}
+
+.g-10 {
+  gap: 10px;
+}
+
+.arow-vx {
+  text-align: center;
+}
+.arow-vx svg {
+  fill: #527ce2;
+  width: 30px;height: 30px;
+}
+.fwd-v {
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  margin: 12px 13px;
+  border-radius: 5px;
+  padding: 3px 29px;
+  height: 85px;
+}
+.kt-reject-form-view {
+  margin-top: 13px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 20px 1px #ccc;
+}
+
+/*---- more info btn css ---*/
+.More_info_btn {
+  background-color: #fff !important;
+  color: #2786fb !important;
+  border: 1px solid #2786fb;
+  padding: 3px 12px !important;
+}
+.More_info_btn:hover{
+  background-color: #2786fb !important;
+  color: #Fff !important;
+}
+.More_info_btn:hover span i{
+  color: #fff !important;
+}
+.Kt-Pd-Status.More_info_btn span {
+  position: relative;
+  top: 4px;
+  margin-right: 5px;
+}
+.Paf_info label {
+  font-size: 12px;
+  margin: 0px;
+  line-height: 9px;
+  color: #919191;
+}
+.Paf_info p {
+  margin: 0px;
+  color: #434343;
+  font-size: 14px;
+  font-weight: 500;
+}
+span.Dote_red {
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  border-radius: 50px;
+  position: relative;
+  margin-right: 0px;
+  background-color: #eb1000cc;
+  box-shadow: 0px 0px 7px 1px #d90f00;
+  top: -1px;
+  left: -3px;
+}
+.pending_approval_form {
+  /* background-color: #fff0f0; */
+  padding: 0px 10px;
+  /* border-radius: 5px; */
+  border-left: 1px solid #fbb;
+}

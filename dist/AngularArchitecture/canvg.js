@@ -1,4 +1,4 @@
-(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["canvg"],{
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[2265],{
 
 /***/ 21576:
 /*!*******************************************************************!*\
