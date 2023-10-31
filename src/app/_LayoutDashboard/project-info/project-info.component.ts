@@ -286,7 +286,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json'])
-          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
+          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']); 
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json']!=undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);          
@@ -355,7 +355,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);
-          this.TotalWork_Hours = Math.abs(this.date1.diff(this.date2, "hours"))
+          this.TotalWork_Hours = this.ProjectStatesJson[0].AllocatedHours;
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
           this.subtaskNotFoundMsg = "";
           this._subtaskDiv = false;

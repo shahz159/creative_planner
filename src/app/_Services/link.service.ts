@@ -42,7 +42,10 @@ export class LinkService {
 
 _GetOnlyMemoIdsByProjectCode(projectCode) {
     this.ObjLinkDTO.Project_Code = projectCode;
+    // url console.log(this.rootUrl + "ApplicationLinkAPI/NewGetOnlyMemoIdsByProjectCode",'ggggggggggggggggggg')
+    // body console.log(this.ObjLinkDTO,"ggggggggggggggggg")
     return this.http.post(this.rootUrl + "ApplicationLinkAPI/NewGetOnlyMemoIdsByProjectCode", this.ObjLinkDTO);
+    
   }
   _GetMemosSubject(JsonString) {
     //console.log("Sending JsonFormat----->",JsonString);
@@ -51,6 +54,7 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
     //let Url="https://cswebapps.com/dmsapi/api/LatestCommunicationAPI/NewGetMemosSubject"
     return this.http.post(this.DMS_URL + "LatestCommunicationAPI/NewGetMemosSubject", this.ObjLinkDTO);
   }
+  
   _GetAttachments(EmpNo,ProjCode,ProjBlock){
     this.ObjAttachmentsDTO.EmpNo=EmpNo;
     this.ObjAttachmentsDTO.ProjectCode=ProjCode;
