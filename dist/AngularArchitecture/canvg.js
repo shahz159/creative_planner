@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 (self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["canvg"],{
+=======
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[2265],{
+>>>>>>> 80a2b191447698b83aa101d18f735723b49e6748
 
 /***/ 21576:
 /*!*******************************************************************!*\

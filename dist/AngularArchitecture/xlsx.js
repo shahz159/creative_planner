@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 (self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["xlsx"],{
+=======
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[4297],{
+>>>>>>> 80a2b191447698b83aa101d18f735723b49e6748
 
 /***/ 31528:
 /*!*************************************************!*\

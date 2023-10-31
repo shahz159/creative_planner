@@ -1,5 +1,9 @@
 "use strict";
+<<<<<<< HEAD
 (self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["common"],{
+=======
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[8592],{
+>>>>>>> 80a2b191447698b83aa101d18f735723b49e6748
 
 /***/ 66402:
 /*!***************************************!*\

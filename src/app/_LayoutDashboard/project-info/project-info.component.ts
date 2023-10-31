@@ -369,7 +369,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
   }
-
+ 
   ngOnDestroy() {
   }
 
@@ -998,6 +998,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Accept_Active:boolean=false;
   Reject_active:boolean=false;
   approvalClick(actionType) {
+   
+
     // $("#ProjectInfoNew").scrollTop(0);
     switch (actionType) {
       case 'EDIT': {
@@ -1027,8 +1029,20 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       default: { }
     }
     this.isTextAreaVisible = true;
-  }
+    const targetElementId = `kt_open_scroll`;
+    const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
 
+  }
+  Approval_View(){
+    const targetElementId = `kt_open_scroll`;
+    const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  }
 
   submitApproval() {
     if (this.selectedType == '1') {

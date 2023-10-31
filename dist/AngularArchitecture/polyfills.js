@@ -1,5 +1,9 @@
 "use strict";
+<<<<<<< HEAD
 (self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([["polyfills"],{
+=======
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[6429],{
+>>>>>>> 80a2b191447698b83aa101d18f735723b49e6748
 
 /***/ 7435:
 /*!**************************!*\
