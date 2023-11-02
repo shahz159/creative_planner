@@ -486,10 +486,21 @@ export class DashboardComponent implements OnInit {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
+      
       themeSystem: "solar",
       weekNumbers: true,
       eventClick: this.handleEventClick.bind(this),
       events: this.Scheduledjson,
+      customButtons: {
+        myCustomButton: {
+          text: 'My Custom Button',
+          click: function() {
+            // Add your custom button click handler here
+            // This function will be called when the button is clicked
+            console.log('Custom button clicked!');
+          }
+        }
+      },
       dayMaxEvents: 4,
       eventTimeFormat: {
         hour: 'numeric',
@@ -1087,18 +1098,18 @@ export class DashboardComponent implements OnInit {
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
 
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
 
         }
 
@@ -1210,42 +1221,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-sweet_pending(){
-  Swal.fire({
-    title: 'Pending Meeting',
-    text: 'Do you want to move the meeting to pending?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No'
-  }).then((response: any) => {
-    if (response.value) {
-      this.Pending_meeting();
-    } else if (response.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire(
-        'Cancelled',
-        'Not moved to pending',
-        'error'
-      )
-    }
-  });
-}
-
- 
-
-  Pending_meeting() {
-    // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-    //   ((data) => {
-    //     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-    //   });
-    this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-    this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
-      this.notifyService.showSuccess("Added In Pending Successfully", "Success");
-      this.GetScheduledJson();
-      this.GetPending_Request();
-      this.closeevearea();
-    });
-
-  }
 
   // Customize() {
 
@@ -3349,7 +3324,6 @@ sweet_pending(){
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -3376,18 +3350,18 @@ sweet_pending(){
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
         }
 
@@ -3395,18 +3369,18 @@ sweet_pending(){
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
           // document.getElementById("act-btn").style.display = "none";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -3473,18 +3447,18 @@ sweet_pending(){
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
 
         }
@@ -3492,18 +3466,18 @@ sweet_pending(){
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
           // document.getElementById("act-btn").style.display = "none";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -3565,33 +3539,33 @@ sweet_pending(){
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
-          document.getElementById("copy_data").style.display = "flex";
+          // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
-          document.getElementById("copy_data2").style.display = "flex";
+          // document.getElementById("copy_data2").style.display = "flex";
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
-          document.getElementById("copy_data").style.display = "none";
+          // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
-          document.getElementById("copy_data2").style.display = "none";
+          // document.getElementById("copy_data2").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
@@ -4549,6 +4523,146 @@ sweet_pending(){
     this.GetTimeslabfordate();
 
   }
+
+  sweet_pending(){
+    Swal.fire({
+      title: 'Pending Meeting',
+      text: 'Do you want to move the meeting to pending?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.Pending_meeting();
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Meeting not moved to pending.',
+          'error'
+        )
+      }
+    });
+  }
+  
+  
+  Pending_meeting() {
+    // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+    //   ((data) => {
+    //     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    //   });
+    this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+    this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Added In Pending Successfully", "Success");
+      this.GetScheduledJson();
+      this.GetPending_Request();
+      this.closeevearea();
+    });
+  
+  }
+  
+  sweet_end(){
+    Swal.fire({
+      title: 'End Meeting',
+      text: 'Do you want to end the meeting?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.End_meeting();
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'End meeting cancelled.',
+          'error'
+        )
+      }
+    });
+  }
+   
+  
+  
+    End_meeting(){
+      debugger
+      this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.Status = 'End';
+      this._calenderDto.User_Type = 'Admin';
+      this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
+      (data => {
+     
+      });
+       
+      if (this.ScheduleType == 'Task') {
+        this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+        this.MasterCode = (this.MasterCode[0].stringval);
+        // this._calenderDto.User_list = this.ngEmployeeDropdown;
+        // this._calenderDto.Dms = this.SelectDms;
+        // this._calenderDto.Portfolio = this.Portfolio;
+        this._calenderDto.Project = this.MasterCode;
+        
+      this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+        (data => {
+          // this.notifyService.showSuccess("Successfully", "Completed");
+          this.GetScheduledJson();
+          this.GetPending_Request();
+          this.closeevearea();
+        });
+       console.log(this._calenderDto,"dto")
+  
+      }
+      else if (this.ScheduleType == 'Event') {
+        // this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+        this.MasterCode = [];
+        this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+        this.arr.forEach(element => {
+          this.MasterCode.push(element.stringval);
+        });
+        this.Portfolio = [];
+        this.Portfolio1 = [];
+        this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
+        this.arr1.forEach(element => {
+          this.Portfolio.push(element.numberval);
+        });
+  
+        this.ngEmployeeDropdown = [];
+        this.ngEmployeeDropdown1 = [];
+        this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+        this.arr2.forEach(element => {
+          this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+        });
+        this.SelectDms = [];
+        this.SelectDms1 = [];
+        let arr3 = [];
+        var str = (this.EventScheduledjson[0]['DMS_Name']);
+        arr3 = str.split(",");
+        for (var i = 0; i < arr3.length; i++) {
+          this.Memos_List.forEach(element => {
+            if (element.MailId == arr3[i]) {
+              this.SelectDms.push(element.MailId);
+            }
+          });
+        }
+        this._calenderDto.User_list = this.ngEmployeeDropdown.join(',');
+        this._calenderDto.Dms = this.SelectDms.join(',');
+        this._calenderDto.Portfolio = this.Portfolio.join(',');
+        this._calenderDto.Project = this.MasterCode.join(',');
+      
+      this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+        (data => {
+          // this.notifyService.showSuccess("Successfully", "Completed");
+          this.GetScheduledJson();
+          this.GetPending_Request();
+          this.closeevearea();
+        });
+        console.log(this._calenderDto,"dto")
+  
+      }
+       
+        this.notifyService.showSuccess("Meeting ended successfully.","Success");
+    }
+  
 
   showcore() {
     this.typetext = "This Project consists of Core/Secondary Projects";

@@ -1111,10 +1111,14 @@
                         </div>
                     </div> -->
 
-                    <div class="icons-right met-done curser-pointer" *ngIf="Meeting_status==true"
-                        (click)="meetingReport()">
-                        <span></span><small>completed</small>
-                    </div>
+                        <div class="icons-right met-done curser-pointer" *ngIf="Meeting_status==true"
+                            (click)="meetingReport()">
+                            <span></span><small>Completed</small>
+                        </div>
+                        <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false && Isadmin==true"
+                            (click)="sweet_end()">
+                            <span></span><small>End now</small>
+                        </div>
                   
                         <div class="icons-right curser-pointer" *ngIf="Meeting_status==false" data-toggle="tooltip"
                             title="Start meeting" (click)="meetingReport()">
@@ -1161,7 +1165,7 @@
                         </span>
                     </div>
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
-                         title="Pending!" *ngIf="Meeting_status==false">
+                         title="Pending!" *ngIf="Meeting_status==false && Isadmin==true">
                         <span class="tool-span" (click)="sweet_pending()">
                             <svg class="toolicns kt-p-ic-top" width="24" height="24"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"

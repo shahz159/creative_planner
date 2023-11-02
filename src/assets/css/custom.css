@@ -1454,9 +1454,9 @@ button[disabled] {
     font-size: .8rem;
     color: #74788d;
 }
-.btn-icon:hover i{
+/* .btn-icon:hover i{
     color: #fff;
-}
+} */
 .detial-item {
     margin-bottom: 0.9em !important;
 }
