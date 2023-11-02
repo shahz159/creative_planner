@@ -1694,6 +1694,7 @@ export class MoreDetailsComponent implements OnInit {
     this.Empty_MemoDropdown.forEach(element => {
       arr.push({ MailId: element.MailId })
       this._SelectedMemos = arr;
+      console.log("you have selected:",this._SelectedMemos);
     });
     //console.log("Selected Memos In Array--->", arr)
   }
@@ -3432,6 +3433,7 @@ export class MoreDetailsComponent implements OnInit {
               //console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
               this.dmslist = this._MemosSubjectList.length;
+              
               //console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }

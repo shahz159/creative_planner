@@ -451,7 +451,7 @@
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-body p-3">
-                    <div class="kt-info-box">
+                    <div class="kt-info-box curser-pointer" (click)="showActionDetails(undefined)">
                         <div class="kt-info-box-tittle">
                             <div class="kt-title-icon">
                                 <svg width="20px" height="20px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
@@ -479,22 +479,22 @@
                         <div class="kt-project-info-body  pl-3 ">
                             <div class="d-flex justify-content-between">
                                 <div class="kt-project-name">
-                                    <h4>{{projectInformation&&projectInformation.projectName}}</h4>
+                                    <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
                                 </div>
                                 <div class="kt-project-type">
-                                    <div class="Kt-Pd-Status" *ngIf="projectInformation"  [ngClass]="{
+                                    <div class="Kt-Pd-Status" *ngIf="projectInfo" [ngClass]="{
                                        
-                                        'Core_task':projectInformation.projectType==='Core Tasks',
-                                        'Secondary_task':projectInformation.projectType==='Secondary Tasks',
-                                        'Todo_task':projectInformation.projectType==='To do List'
+                                        'Core_task':projectInfo.Project_Type==='Core Tasks',
+                                        'Secondary_task':projectInfo.Project_Type==='Secondary Tasks',
+                                        'Todo_task':projectInfo.Project_Type==='To do List'
                                     
                                     }">
-                                        {{projectInformation&&projectInformation.projectType}}
+                                        {{projectInfo&&projectInfo.Project_Type}}
                                     </div>
                                 </div>
                             </div>
                             <div class="kt-project-desc">
-                                <p>{{projectInformation&&projectInformation.projectDescription}}</p>
+                                <p>{{projectInfo&&projectInfo.Project_Description}}</p>
                             </div>
 
                         </div>
@@ -615,11 +615,25 @@
                                         </g>
                                     </svg>
                                 </div>
-                                Project States
+                                Project Status
                             </div>
                             <div class="kt-project-type">
-                                <div  *ngIf="projectInformation"    class="Kt-Pd-Status" [ngClass]="{ 'Delay':projectInformation.projectStatus==='Delay','bg-inprogress':projectInformation.projectStatus==='InProcess','bg-done':projectInformation.projectStatus==='Completed','bg-rejected':projectInformation.projectStatus==='New Project Rejected'}" >
-                                    {{projectInformation&&projectInformation.projectStatus}}
+                                <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
+                                     
+                                     'Delay':projectInfo.Status==='Delay',
+                                     'Inprocess':projectInfo.Status==='InProcess',
+                                     'Done':projectInfo.Status==='Completed',
+                                     'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
+                                     'CompletionUnderApproval':projectInfo.Status==='Forward Under Approval',
+                                     'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
+                                     'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
+                                     'NewProjectRejected':projectInfo.Status==='Cancelled',
+                                     'Hold':projectInfo.Status==='Project Hold'
+                                    
+                                    }">
+                                    {{projectInfo&&projectInfo.Status}}
+                                    {{projectInfo&&projectInfo.Status==='Delay'?projectInfo.Delaydays+' days':''}}
                                 </div>
                             </div>
 
@@ -629,80 +643,111 @@
                                 <div class="row">
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
-                                            Starting date
+                                            Start date
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            {{projectInformation?(projectInformation.projectStartDate.getDate()+'-'+projectInformation.projectStartDate.getMonth()+'-'+projectInformation.projectStartDate.getFullYear()):'' }}
+
+                                            {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
+
                                         </div>
                                     </div>
 
-                                    <div class="col text-center">
+                                    <div class="col text-center"
+                                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission">
                                         <div class="kt-info-lable-v">
-                                            Ending date
+                                            Deadline
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            {{projectInformation?(projectInformation.projectEndDate.getDate()+'-'+projectInformation.projectEndDate.getMonth()+'-'+projectInformation.projectEndDate.getFullYear()):''}}
+                                            {{projectInfo&&projectInfo.EndDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
+                                    <ng-template #submission>
+                                        <div class="col text-center">
+                                            <div class="kt-info-lable-v">
+                                                Submission
+                                            </div>
+                                            <div class="kt-project-sts-data">
+                                                {{projectInfo&&projectInfo.SubmissionName}}
+                                            </div>
+                                        </div>
+                                    </ng-template>
 
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Duration
                                         </div>
-                                        <div class="kt-project-sts-data">
-                                            {{projectInformation&&projectInformation.projectDuration}} days
+                                        <div class="kt-project-sts-data"
+                                            *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continuos">
+                                            {{projectInfo&&projectInfo.Duration}} days
                                         </div>
+                                        <ng-template #continuos>
+                                            <div class="kt-project-sts-data"> Continuous</div>
+                                        </ng-template>
                                     </div>
 
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Allocated
                                         </div>
-                                        <div class="kt-project-sts-data">
-                                            {{projectInformation&&projectInformation.projectAllocatedHours }} hrs
+                                        <div class="kt-project-sts-data"
+                                            *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else stdAH">
+                                            {{projectInfo&&projectInfo.AllocatedHours }} hrs
                                         </div>
+                                        <ng-template #stdAH>
+                                            <div class="kt-project-sts-data">
+                                                {{projectInfo&&projectInfo.StandardAllocatedHours }}
+                                            </div>
+                                        </ng-template>
                                     </div>
 
                                     <div class="col-lg-12 mt-4">
-                                        <div class="progress kt-projcect-progress bar"  *ngIf="projectInformation" >
-                                            <div  class="progress-bar bg-inprogress" role="progressbar"
-                                                style="width: {{(projectInformation.TOTAL_ACTIONS_IN_PROCESS/projectInformation.TOTAL_ACTIONS)*100}}%" aria-valuenow="15" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                            <div class="progress-bar bg-delay" role="progressbar" style="width: {{(projectInformation.TOTAL_ACTIONS_IN_DELAY/projectInformation.TOTAL_ACTIONS)*100}}%"
+                                        <div class="progress kt-projcect-progress bar"
+                                            *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
+                                            <div class="progress-bar Inprocess " role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_IN_PROCESS/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar Delay " role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_IN_DELAY/TOTAL_ACTIONS)*100+'%'}"
                                                 aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                            <div class="progress-bar bg-done" role="progressbar" style="width: {{(projectInformation.TOTAL_ACTIONS_DONE/projectInformation.TOTAL_ACTIONS)*100}}%"
+                                            <div class="progress-bar Done " role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_DONE/TOTAL_ACTIONS)*100+'%'}"
                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 text-center mt-4" *ngIf="projectInformation">
-                                        <div class="kt-prg-bar-info">
-                                            <b>{{projectInformation.TOTAL_ACTIONS_IN_PROCESS}}</b> in Process
+                                    <div class="col-lg-6 text-center mt-4"
+                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+                                        <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_IN_PROCESS"  >
+                                            <b>{{TOTAL_ACTIONS_IN_PROCESS}}</b> in Process
                                         </div>
                                     </div>
-                                    <div class="col text-center mt-4" *ngIf="projectInformation"  >
-                                        <div class="kt-prg-bar-info">
-                                            <b>{{projectInformation.TOTAL_ACTIONS_IN_DELAY}}</b> Delay
+                                    <div class="col text-center mt-4"
+                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+                                        <div class="kt-prg-bar-info"  *ngIf="TOTAL_ACTIONS_IN_DELAY"    >
+                                            <b>{{TOTAL_ACTIONS_IN_DELAY}}</b> Delay
                                         </div>
                                     </div>
-                                    <div class="col text-center mt-4" *ngIf="projectInformation">
-                                        <div class="kt-prg-bar-info">
-                                            <b>{{projectInformation.TOTAL_ACTIONS_DONE}}</b> Done
+                                    <div class="col text-center mt-4"
+                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+                                        <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_DONE"   >
+                                            <b>{{TOTAL_ACTIONS_DONE}}</b> Done
                                         </div>
                                     </div>
 
 
                                 </div>
                             </div>
-                            <div class="col-lg-1  p-1 text-center" *ngIf="projectInformation">
-                                <div class="kt-prg-bar-info kt-total-prg-vl mt-4">
-                                    <b>{{projectInformation.TOTAL_ACTIONS_DONE}}/{{projectInformation.TOTAL_ACTIONS }}</b>
+                            <div class="col-lg-1  p-1 text-center"
+                                *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
+                                <div class="kt-prg-bar-info kt-total-prg-vl mt-4" title="Completed/All actions">
+                                    <b>{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
                                 </div>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="kt-info-box pb-0 mt-2" *ngIf="(projectInformation&&(projectInformation.projectType==='Core Tasks'||projectInformation.projectType==='Secondary Tasks'))">
+                    <div class="kt-info-box pb-0 mt-2"
+                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'))">
                         <div class="d-flex justify-content-between">
                             <div class="kt-info-box-tittle">
                                 <div class="kt-title-icon">
@@ -747,74 +792,72 @@
                                 </div>
                                 Project Action
                             </div>
-                            <div class="kt-project-type" >
-                                <div class="Kt-Pd-Status Add_Action_btn"  (click)="addNewAction()" >
+                            <div class="kt-project-type curser-pointer">
+                                <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                                             height="16" fill="currentColor" class="bi bi-plus" viewBox="4 3 8 12">
                                             <path
                                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                        </svg></span> Add Action 
+                                        </svg></span> Add Action
                                 </div>
                             </div>
 
                         </div>
-                        <div class="kt-project-action-list-view" *ngIf="projectInformation">
-                        
-                           <ng-container *ngIf="projectInformation.projectActions.length;else noActionsAvailable"    >
-                            <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
-                            <div class="kt-projcect-act-list"      *ngFor="let action of projectInformation.projectActions;let i=index;" (click)="showActionDetails(i)"   [ngClass]="{'Active':currentActionView===i}"      >
-                                <div class="row" >
-                                    <div class="col-lg-8 pl-0 pr-1">
-                                        <div class="kt-p-box">
-                                            <div class="kt-action-p-tittle">
-                                                <h4>{{action&&action.action}}</h4>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="kt-info-lable-v">
-                                                    By {{action&&action.responsible}}
+                        <div class="kt-project-action-list-view"  >
+
+                                <ng-container  *ngIf="projectActionInfo;else noResultsFound"    >
+                                <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
+                                <div class="kt-projcect-act-list" *ngFor="let action of projectActionInfo;let i=index;"
+                                    (click)="showActionDetails(i)" [ngClass]="{'Active':currentActionView===i}">
+                                    <div class="row curser-pointer">
+                                        <div class="col-lg-8 pl-0 pr-1">
+                                            <div class="kt-p-box">
+                                                <div class="kt-action-p-tittle">
+                                                    <h4>{{action&&action.Project_Name}}</h4>
                                                 </div>
-                                                <div class="kt-info-lable-v">
-                                                    {{action&&action.deadline}}
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="kt-info-lable-v">
+                                                        By {{action&&action.Responsible}}
+                                                    </div>
+                                                    <div class="kt-info-lable-v">
+                                                        {{action&&action.EndDate|date:'dd-MM-YYYY'}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4 pl-2">
-                                        <div class="kt-p-box text-center">
-                                            <div class="kt-p-status">
-                                                <div class="kt-p-action-No">
-                                                    Action {{action&&action.id}}
-                                                </div>
-                                                <div class="kt-p-action-Status">
-
-                                                
-                                                   <span [ngSwitch]="action.status">
-                                                    <span *ngSwitchCase="'Completed'"   class="Status-done">Done</span>
-                                                    <span *ngSwitchCase="'Delay'"   class="Status-Delay">Delay {{action&&action.actiondelay}} days</span>
-                                                    <span *ngSwitchCase="'InProcess'"   class="Status-In-progress">In Process</span>
-                                                    <span *ngSwitchCase="'New Project Rejected'"   class="bg-rejected" style="background-color: transparent;">Rejected</span>
-                                                    <span *ngSwitchDefault  class="Status-In-progress" >{{action&&action.status}}</span>
-                                                   </span>
+                                        <div class="col-lg-4 pl-2">
+                                            <div class="kt-p-box text-center">
+                                                <div class="kt-p-status">
+                                                    <div class="kt-p-action-No">
+                                                        Action {{action&&action.IndexId}}
+                                                    </div>
+                                                    <div class="kt-p-action-Status">
 
 
+                                                        <span [ngSwitch]="action.Status">
+                                                            <span *ngSwitchCase="'Completed'"
+                                                                class="Status-done">Done</span>
+                                                            <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay
+                                                                {{action&&action.Delaydays}} days</span>
+                                                            <span *ngSwitchCase="'InProcess'"
+                                                                class="Status-In-progress">In Process</span>
+                                                            <span *ngSwitchCase="'New Project Rejected'"
+                                                                class="bg-rejected"
+                                                                style="background-color: transparent;">Rejected</span>
+                                                            <span *ngSwitchDefault
+                                                                class="Status-In-progress">{{action&&action.Status}}</span>
+                                                        </span>
+
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                </ng-container>
                             </div>
-
-                           </ng-container>
-                           <ng-template #noActionsAvailable>
-                                <!--when there is not even one project action available || projectInformation.projectActions.length=0    -->
-
-                              <h6>no actions available</h6>
-                          
-                           </ng-template>
-                            
-
-                            
-                        </div>
+                       
 
                     </div>
                 </div>
@@ -826,7 +869,7 @@
                     <div class="kt-info-box pr-2">
                         <div class="kt-project-tool-bar">
                             <div class="d-flex flex-grow-1 align-items-center gap_ic">
-                                <a class="kt-inbox__icon">
+                                <a class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
                                     <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
                                 </a>
 
@@ -994,56 +1037,125 @@
                             </div>
                         </div>
 
-                      
+
                     </div>
-                    
-                     <ng-container *ngIf="currentActionView===undefined;else ActionContent">
+
+                    <ng-container *ngIf="currentActionView===undefined;else ActionContent">
                         <!--Default Content-->
-                            
+
+                        <div class="kt-Note-msg d-flex align-items-center"
+                            *ngIf="projectInfo&&projectInfo.Status==='Delay'">
+                            <div class="kt-note-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65"
+                                    style="enable-background:new 0 0 66 66;" xml:space="preserve">
+                                    <path
+                                        d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z" />
+                                    <path
+                                        d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z" />
+                                    <path
+                                        d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z" />
+                                    <path
+                                        d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z" />
+                                    <path
+                                        d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z" />
+                                    <path
+                                        d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z" />
+                                    <path
+                                        d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z" />
+                                    <path
+                                        d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
+                                </svg>
+                            </div>
+
+                            <div class="kt-note-text">
+                                Your {{projectInfo&&projectInfo.Delaydays}} days delay in the project will affect the
+                                project flow. take extra effect to
+                                catch up on the deadline.
+                            </div>
+                        </div>
+
+
 
                         <div class="kt-info-box mt-2 border-0">
-                            
+
                             <div class="kt-project-info-body">
+
                                 <div class="d-flex justify-content-between">
+
                                     <div class="kt-project-name">
-                                        <h4>{{projectInformation&&projectInformation.projectName}}</h4>
+                                        <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
                                     </div>
 
-                                        <div   *ngIf="projectInformation"    [ngSwitch]="projectInformation.projectStatus">
-                                       
-                                         <div class="kt-project-type"  *ngSwitchCase="'Delay'" >
-                                           <div class="Kt-Pd-Status Delay"> {{projectInformation&&projectInformation.projectDelayInDays }} days delay </div>
-                                         </div>
-                                        
-                                          <div class="kt-project-type" *ngSwitchCase="'Completed'">
-                                            <div class="Kt-Pd-Status bg-done "> Completed </div>
-                                          </div>
+                                    <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status">
 
-                                           <div class="kt-project-type" *ngSwitchCase="'InProcess'"  >
-                                            <div class="Kt-Pd-Status bg-inprogress "> In Process </div>
-                                           </div>
+                                        <div class="kt-project-type " *ngSwitchCase="'Delay'">
+                                            <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays
+                                                }} days </div>
+                                        </div>
 
-                                           
-                                           <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'"  >
-                                            <div class="Kt-Pd-Status bg-rejected"> Rejected </div>
-                                           </div>
+                                        <div class="kt-project-type" *ngSwitchCase="'Completed'">
+                                            <div class="Kt-Pd-Status Done "> Completed </div>
+                                        </div>
 
-                                           <div class="kt-project-type" *ngSwitchDefault >
-                                            <div class="Kt-Pd-Status"> {{projectInformation&&projectInformation.projectStatus}} </div>
-                                           </div>
-                                        
-                                       </div>
-                                    
+                                        <div class="kt-project-type" *ngSwitchCase="'InProcess'">
+                                            <div class="Kt-Pd-Status Inprocess "> In Process </div>
+                                        </div>
+
+
+                                        <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'">
+                                            <div class="Kt-Pd-Status NewProjectRejected"> Rejected </div>
+                                        </div>
+
+
+                                        <div class="kt-project-type" *ngSwitchCase="'Under Approval'">
+                                            <div class="Kt-Pd-Status UnderApproval"> Under Approval </div>
+                                        </div>
+
+                                        <div class="kt-project-type" *ngSwitchCase="'Completion Under Approval'">
+                                            <div class="Kt-Pd-Status CompletionUnderApproval"> Completion Under Approval
+                                            </div>
+                                        </div>
+
+                                        <div class="kt-project-type" *ngSwitchCase="'Forward Under Approval'">
+                                            <div class="Kt-Pd-Status CompletionUnderApproval"> Forward Under Approval
+                                            </div>
+                                        </div>
+
+                                        <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
+                                            <div class="Kt-Pd-Status EnactiveUnderApproval"> In-Active Under Approval
+                                            </div>
+                                        </div>
+
+                                        <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
+                                            <div class="Kt-Pd-Status NewProjectRejected"> Cancelled </div>
+                                        </div>
+                                        <div class="kt-project-type" *ngSwitchCase="'Project Hold'">
+                                            <div class="Kt-Pd-Status Hold"> Hold </div>
+                                        </div>
+                                        <div class="kt-project-type " *ngSwitchCase="'Cancelled Under Approval'">
+                                            <div class="Kt-Pd-Status NewProjectRejected"> Cancelled Under Approval
+                                            </div>
+                                        </div>
+
+
+                                        <div class="kt-project-type" *ngSwitchDefault>
+                                            <div class="Kt-Pd-Status"> {{projectInfo&&projectInfo.Status}} </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
                                 <div class="kt-project-desc w-80">
-                                    <p>{{projectInformation&&projectInformation.projectDescription}}</p>
+                                    <p>{{projectInfo&&projectInfo.Project_Description}}</p>
                                 </div>
-    
+
                                 <div class="row mt-4 px-3">
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon"><svg width="24px" height="24px"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="handshake">
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+                                                    id="handshake">
                                                     <g fill="#898989" data-name="Handshake">
                                                         <path
                                                             d="M10.17 38a1.007 1.007 0 0 1-.458-.11L2.09 33.964a1 1 0 0 1-.434-1.342l8.954-17.686a1 1 0 0 1 1.347-.439l7.251 3.7a1 1 0 0 1 .448 1.324l-8.584 17.908a1.006 1.006 0 0 1-.583.516 1.028 1.028 0 0 1-.319.055Zm-6.281-5.36 5.824 3 7.718-16.1-5.49-2.8Z">
@@ -1082,10 +1194,10 @@
                                                 </svg></span> Owner
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&projectInformation.projectOwner}}
+                                            {{projectInfo&&projectInfo.Owner}}
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon">
@@ -1098,10 +1210,10 @@
                                             </span> Responsible
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&projectInformation.projectResponsible}}
+                                            {{projectInfo&&projectInfo.Responsible}}
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon">
@@ -1115,7 +1227,7 @@
                                             </span> Category
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&projectInformation.projectCategory}}
+                                            {{projectInfo&&projectInfo.Category}}
                                         </div>
                                     </div>
                                     <div class="col text-center">
@@ -1136,7 +1248,7 @@
                                             </span> Cost
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                           {{projectInformation&&projectInformation.projectCost}}
+                                            {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
                                         </div>
                                     </div>
                                     <div class="col text-center">
@@ -1160,51 +1272,89 @@
                                         </div>
                                         <div class="kt-clinet-img-x">
                                             <div class="kt-info-data-v">
-                                              {{projectInformation&&projectInformation.projectClient}}
+                                                {{projectInfo&&projectInfo.Client}}
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
                                 <div class="row mt-5 px-3">
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
-                                            Starting date
+                                            Start date
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&
-                                                (projectInformation.projectStartDate.getDate()+"-"+projectInformation.projectStartDate.getMonth()+"-"+projectInformation.projectStartDate.getFullYear())}}
+                                            {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
-    
-                                    <div class="col text-center">
+
+                                    <div class="col text-center"
+                                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission1">
                                         <div class="kt-info-lable-v">
-                                            Ending date
+                                            Deadline
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&
-                                                (projectInformation.projectEndDate.getDate()+"-"+projectInformation.projectEndDate.getMonth()+"-"+projectInformation.projectEndDate.getFullYear())}}
+                                            {{projectInfo&&projectInfo.EndDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
-    
+
+
+
+                                    <ng-template #submission1>
+                                        <div class="col text-center">
+                                            <div class="kt-info-lable-v">
+                                                Submission
+                                            </div>
+                                            <div class="kt-info-data-v bg-light-shade">
+                                                {{projectInfo&&
+                                                projectInfo.SubmissionName
+                                                }}
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+
+
+
+
+
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Duration
                                         </div>
-                                        <div class="kt-info-data-v">
-                                          {{projectInformation&&projectInformation.projectDuration}} days
+
+                                        <div class="kt-info-data-v"
+                                            *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continuous1">
+                                            {{projectInfo&&projectInfo.Duration}} days
                                         </div>
+                                        <ng-template #continuous1>
+                                            <div class="kt-info-data-v">
+                                                Continuous
+                                            </div>
+                                        </ng-template>
+
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Allocated
                                         </div>
-                                        <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&projectInformation.projectAllocatedHours}} hrs
+                                        <div class="kt-info-data-v bg-light-shade"
+                                            *ngIf="projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else stdaloh">
+                                            {{projectInfo&&projectInfo.AllocatedHours}} hrs
                                         </div>
+                                        <ng-template #stdaloh>
+                                            <div class="kt-info-data-v bg-light-shade">
+                                                {{projectInfo&&projectInfo.StandardAllocatedHours}}
+                                            </div>
+                                        </ng-template>
                                     </div>
-    
+
+
+
+
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             RACIS
@@ -1212,7 +1362,7 @@
                                         <div class="kt-project-sts-data">
                                             <div class="kt-support-view">
                                                 <div class="symbol-group symbol-hover flex-nowrap">
-                                                   
+
                                                     <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                         data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -1223,7 +1373,7 @@
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
                                                             src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
                                                     </div>
-                                                    
+
                                                     <div data-bs-toggle="tooltip" aria-label="Barry Walter"
                                                         data-bs-original-title="Barry Walter" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -1236,11 +1386,11 @@
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
-    
+
                                 <div class="Dividing-line"></div>
-    
+
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="kt-over-pd-in bd-right-x">
@@ -1253,63 +1403,66 @@
                                                 <!--begin::Item-->
                                                 <div class="timeline-item">
                                                     <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br> <span
-                                                            class="kt-dt-l">08:42 AM</span></div>
+                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br>
+                                                        <span class="kt-dt-l">08:42 AM</span></div>
                                                     <!--end::Label-->
-                    
+
                                                     <!--begin::Badge-->
                                                     <div class="timeline-badge">
                                                         <i class="fa fa-genderless text-primary fs-1"></i>
                                                     </div>
                                                     <!--end::Badge-->
-                    
+
                                                     <!--begin::Text-->
                                                     <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project Created</p>
+                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
+                                                            Created</p>
                                                         Outlines keep you honest. And keep structure
                                                     </div>
                                                     <!--end::Text-->
                                                 </div>
                                                 <!--end::Item-->
-                    
+
                                                 <!--begin::Item-->
                                                 <div class="timeline-item">
                                                     <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br> <span
-                                                            class="kt-dt-l">11:42 PM</span></div>
+                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br>
+                                                        <span class="kt-dt-l">11:42 PM</span></div>
                                                     <!--end::Label-->
-                    
+
                                                     <!--begin::Badge-->
                                                     <div class="timeline-badge">
                                                         <i class="fa fa-genderless text-success fs-1"></i>
                                                     </div>
                                                     <!--end::Badge-->
-                    
+
                                                     <!--begin::Content-->
                                                     <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01</p>
+                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
+                                                        </p>
                                                         Rebrand strategy planning
                                                     </div>
                                                     <!--end::Content-->
                                                 </div>
                                                 <!--end::Item-->
-                    
+
                                                 <!--begin::Item-->
                                                 <div class="timeline-item">
                                                     <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br> <span
-                                                            class="kt-dt-l">10:42 PM</span></div>
+                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br>
+                                                        <span class="kt-dt-l">10:42 PM</span></div>
                                                     <!--end::Label-->
-                    
+
                                                     <!--begin::Badge-->
                                                     <div class="timeline-badge">
                                                         <i class="fa fa-genderless text-warning fs-1"></i>
                                                     </div>
                                                     <!--end::Badge-->
-                    
+
                                                     <!--begin::Content-->
                                                     <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02</p>
+                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
+                                                        </p>
                                                         Navigation optimization
                                                     </div>
                                                     <!--end::Content-->
@@ -1318,30 +1471,31 @@
                                                 <!--begin::Item-->
                                                 <div class="timeline-item">
                                                     <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br> <span
-                                                            class="kt-dt-l">01:42 AM</span></div>
+                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br>
+                                                        <span class="kt-dt-l">01:42 AM</span></div>
                                                     <!--end::Label-->
-                    
+
                                                     <!--begin::Badge-->
                                                     <div class="timeline-badge">
                                                         <i class="fa fa-genderless text-warning fs-1"></i>
                                                     </div>
                                                     <!--end::Badge-->
-                    
+
                                                     <!--begin::Content-->
                                                     <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03</p>
+                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
+                                                        </p>
                                                         Indulging in poorly driving and keep structure keep great
                                                     </div>
                                                     <!--end::Content-->
                                                 </div>
                                                 <!--end::Item-->
-                    
+
                                             </div>
-                    
+
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-lg-6">
                                         <div class="kt-over-pd-in">
                                             <div class="kt-ct-project">
@@ -1350,20 +1504,22 @@
                                                 </div>
                                             </div>
                                             <div class="chart" id="chart-container"></div>
-    
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
- 
 
-                     </ng-container>
-                     <ng-template #ActionContent>
+
+                    </ng-container>
+
+                    <ng-template #ActionContent>
                         <!--Action Content-->
-                            
-                        <ng-container *ngIf="projectInformation">
-                            <div class="kt-Note-msg d-flex align-items-center" *ngIf="projectInformation.projectActions[currentActionView].status==='Delay'" >
+                        <ng-container *ngIf="projectActionInfo">
+
+                              <div class="kt-Note-msg d-flex align-items-center"
+                                *ngIf="projectActionInfo[currentActionView].Status==='Delay'">
                                 <div class="kt-note-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65"
@@ -1386,61 +1542,93 @@
                                             d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
                                     </svg>
                                 </div>
-    
-                                <div class="kt-note-text"  >
-                                    Your 2 days delay in the projrct will affect the projrect flow. take extra effect to
+
+                                <div class="kt-note-text">
+                                    Your {{projectActionInfo&&projectActionInfo[currentActionView].Delaydays}} days
+                                    delay in the project will affect the project flow. take extra effect to
                                     catch up on the deadline.
                                 </div>
-                            </div>
-                              </ng-container>
-    
-    
-    
-    <div class="kt-info-box mt-2 border-0">
+                               </div>
+
+                       
+
+
+                        
+                        <div class="kt-info-box mt-2 border-0">
                             <div class="kt-info-box-tittle">
-                                <b>Action {{projectInformation&&projectInformation.projectActions[currentActionView].id}}</b>
+                                <b>Action {{projectActionInfo[currentActionView].IndexId}}</b>
                             </div>
                             <div class="kt-project-info-body">
                                 <div class="d-flex justify-content-between">
                                     <div class="kt-project-name">
-                                        <h4>{{projectInformation&&projectInformation.projectActions[currentActionView].action}}</h4>
+                                        <h4>{{projectActionInfo[currentActionView].Project_Name}}
+                                        </h4>
                                     </div>
 
-                                    <div  [ngSwitch]="projectInformation.projectActions[currentActionView].status">
-                                       
-                                        <div *ngSwitchCase="'Delay'"   class="kt-project-type"   >
-                                             <div class="Kt-Pd-Status Delay" > {{projectInformation&&projectInformation.projectActions[currentActionView].actiondelay }} days delay </div>
+                                    <div [ngSwitch]="projectActionInfo[currentActionView].Status">
+
+                                        <div *ngSwitchCase="'Delay'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status Delay">Delay
+                                                {{projectActionInfo[currentActionView].Delaydays }} days </div>
                                         </div>
-                                    
+
                                         <div *ngSwitchCase="'Completed'" class="kt-project-type">
-                                            <div class="Kt-Pd-Status bg-done "> Completed </div>
+                                            <div class="Kt-Pd-Status Done"> Completed </div>
                                         </div>
-                                
-                              
+
+
                                         <div *ngSwitchCase="'InProcess'" class="kt-project-type">
-                                            <div class="Kt-Pd-Status bg-inprogress "> In Progress </div>
+                                            <div class="Kt-Pd-Status Inprocess "> In Progress </div>
                                         </div>
 
                                         <div *ngSwitchCase="'New Project Rejected'" class="kt-project-type">
-                                            <div class="Kt-Pd-Status  bg-rejected"> Rejected </div>
+                                            <div class="Kt-Pd-Status  NewProjectRejected"> Rejected </div>
                                         </div>
 
-                                        <div *ngSwitchDefault class="kt-project-type">
-                                            <div class="Kt-Pd-Status bg-inprogress "> {{projectInformation.projectActions[currentActionView].status}} </div>
+                                        <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status   UnderApproval">Under Approval</div>
                                         </div>
-                                    
+
+                                        <div *ngSwitchCase="'Completion Under Approval'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status  CompletionUnderApproval">Completion Under Approval
+                                            </div>
+                                        </div>
+
+                                        <div *ngSwitchCase="'Forward Under Approval'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status  CompletionUnderApproval">Forward Under Approval
+                                            </div>
+                                        </div>
+
+                                        <div *ngSwitchCase="'Cancelled'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status  Delay">Cancelled</div>
+                                        </div>
+                                        <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
+                                            <div class="Kt-Pd-Status  Hold">Hold</div>
+                                        </div>
+
+
+
+
+
+                                        <div *ngSwitchDefault class="kt-project-type">
+                                            <div class="Kt-Pd-Status bg-inprogress ">
+                                                {{projectActionInfo[currentActionView].Status}} </div>
+                                        </div>
+
                                     </div>
-                                    
+
                                 </div>
                                 <div class="kt-project-desc w-80">
-                                    <p>{{projectInformation&&projectInformation.projectActions[currentActionView].description}}</p>
+                                    <p>{{projectActionInfo[currentActionView].Project_Description}}
+                                    </p>
                                 </div>
-    
+
                                 <div class="row mt-4 px-3">
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon"><svg width="24px" height="24px"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="handshake">
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+                                                    id="handshake">
                                                     <g fill="#898989" data-name="Handshake">
                                                         <path
                                                             d="M10.17 38a1.007 1.007 0 0 1-.458-.11L2.09 33.964a1 1 0 0 1-.434-1.342l8.954-17.686a1 1 0 0 1 1.347-.439l7.251 3.7a1 1 0 0 1 .448 1.324l-8.584 17.908a1.006 1.006 0 0 1-.583.516 1.028 1.028 0 0 1-.319.055Zm-6.281-5.36 5.824 3 7.718-16.1-5.49-2.8Z">
@@ -1479,10 +1667,10 @@
                                                 </svg></span> Owner
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&projectInformation.projectActions[currentActionView].owner}}
+                                            {{projectActionInfo[currentActionView].Owner}}
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon">
@@ -1495,10 +1683,10 @@
                                             </span> Responsible
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&projectInformation.projectActions[currentActionView].responsible}}
+                                            {{projectActionInfo[currentActionView].Responsible}}
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             <span class="kt-info-lable-icon">
@@ -1512,7 +1700,7 @@
                                             </span> Category
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&projectInformation.projectCategory}}
+                                            {{projectInfo&&projectInfo.Category}}
                                         </div>
                                     </div>
                                     <div class="col text-center">
@@ -1532,8 +1720,11 @@
                                                 </svg>
                                             </span> Cost
                                         </div>
-                                        <div class="kt-info-data-v bg-light-shade">
-                                            120.00
+                                        <div class="kt-info-data-v bg-light-shade" *ngIf="(projectActionInfo[currentActionView].Project_Cost)">
+                                            {{(projectActionInfo[currentActionView].Project_Cost|currency:'SAR')}}
+                                        </div>
+                                        <div class="kt-info-data-v bg-light-shade" *ngIf="!(projectActionInfo[currentActionView].Project_Cost)">
+                                            SAR 0.00
                                         </div>
                                     </div>
                                     <div class="col text-center">
@@ -1557,11 +1748,11 @@
                                         </div>
                                         <div class="kt-clinet-img-x">
                                             <div class="kt-info-data-v">
-                                                {{projectInformation&&projectInformation.projectClient}}
+                                                {{projectActionInfo[currentActionView].Client}}
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
                                 <div class="row mt-5 px-3">
                                     <div class="col text-center">
@@ -1569,39 +1760,39 @@
                                             Starting date
                                         </div>
                                         <div class="kt-info-data-v">
-                                            {{projectInformation&&
-                                                (projectInformation.projectActions[currentActionView].startDate.getDate()+"-"+projectInformation.projectActions[currentActionView].startDate.getMonth()+"-"+projectInformation.projectActions[currentActionView].startDate.getFullYear())}}
+                                            {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
-                                            Ending date
+                                            Deadline
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&
-                                                (projectInformation.projectActions[currentActionView].endDate.getDate()+"-"+projectInformation.projectActions[currentActionView].endDate.getMonth()+"-"+projectInformation.projectActions[currentActionView].endDate.getFullYear())}}
+                                            {{projectActionInfo[currentActionView].EndDate|date:'dd-MM-YYYY'}}
+
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Duration
                                         </div>
                                         <div class="kt-info-data-v">
-                                          {{projectInformation&&projectInformation.projectActions[currentActionView].duration}} days
+                                            {{projectActionInfo[currentActionView].Duration}} days
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             Allocated
                                         </div>
                                         <div class="kt-info-data-v bg-light-shade">
-                                            {{projectInformation&&projectInformation.projectActions[currentActionView].allocated}} hrs
+                                            {{projectActionInfo[currentActionView].AllocatedHours}}
+                                            hrs
                                         </div>
                                     </div>
-    
+
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
                                             RACIS
@@ -1609,7 +1800,7 @@
                                         <div class="kt-project-sts-data">
                                             <div class="kt-support-view">
                                                 <div class="symbol-group symbol-hover flex-nowrap">
-                                                   
+
                                                     <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                         data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -1620,7 +1811,7 @@
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
                                                             src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
                                                     </div>
-                                                    
+
                                                     <div data-bs-toggle="tooltip" aria-label="Barry Walter"
                                                         data-bs-original-title="Barry Walter" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -1633,14 +1824,15 @@
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
-  
+
                             </div>
                         </div>
+                        </ng-container>
 
-                     </ng-template>
- 
+                    </ng-template>
+
                 </div>
             </div>
         </div>
@@ -1661,6 +1853,202 @@
 
 
 
+<!-- Link memos Template -->
+
+<div id="LinkSideBar" class="sideInfobar animate-right">
+    <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-600 m-0"><i class="fa fa-link mr-2"></i>Link DMS</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                (click)="closeLinkSideBar() ">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+            <p class="text-primary m-0">
+                {{projectInfo&&projectInfo.Project_Name}}
+            </p>
+            <div class="M_fsize">
+                Total
+                <div class="badge badge-pill badge-outline-info">
+                    {{_totalMemos}}  
+                </div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                   {{_linkedMemos}} 
+                </div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="d-flex input-group">
+                <!-- Working... -->
+                <ng-multiselect-dropdown 
+                [placeholder]="'Select Memo' "
+                [settings]="dropdownSettings_Memo"
+                [data]="Memos_List" 
+                 (onSelect)="onMemoSelected($event)"
+                 (onDeSelect)="onMemoDeselected($event)"
+                 class="mutlidropdown-set mutlidropdown-full mr-1" 
+                 style="flex: 3;">
+                </ng-multiselect-dropdown>
+
+
+                <div class="input-group-append">
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text">Link</button>
+                </div>
+
+            </div>
+        </li>
+        <li class="kt-nav__item px-4">
+
+            <!-- <table  id="DemoList-Table" >
+            <tbody>
+                <tr >
+                    <td>
+                        <a href="javascript:void(0)">Test 11</a>
+                    </td>
+                    <td class="align-top curser-pointer">
+                        <i class="fas fa-trash-alt text-primary"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table> -->
+
+
+            <div id="DemoList-table" *ngIf="projectMemos;else noResultsFound">
+                <div class="demo"  *ngFor="let memo of projectMemos">
+                    <a href="javascript:void(0)">{{memo.Subject}}</a>
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+            </div> 
+             <!--no records found-->
+    <ng-template #noResultsFound>
+        <div class="NORESULTFOUND">
+            <div class="d-flex-center">
+                <div class="m-auto">
+                    <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="148" height="136" viewBox="0 0 148 136">
+                        <g clip-path="url(#a)">
+                            <path
+                                d="M25.532 24.814c-17.957 22.26-21.952 59.119 1.09 81.273 28.633 27.534 63.831 26.132 92.703 9.462 32.184-18.573 21.146-69.442 12.563-83.971-25.269-42.77-80.228-39.154-106.356-6.764Z"
+                                fill="#E7EBF1" opacity=".5"></path>
+                            <path
+                                d="M2.168 32.184c4.055 44.656 59.34 23.353 56.364-2.453C53.969-9.658-1.42-7.257 2.168 32.184Z"
+                                fill="#79E3AA"></path>
+                            <path
+                                d="M37.58 19.274a2.666 2.666 0 0 0-1.721.95c-5.712 6.35-4.682 7.359-10.103 13.926-.978-.8-1.945-1.609-2.846-2.502a11.285 11.285 0 0 1-1.46-1.938c-1.595-2.772-6.365.168-4.206 3.094 1.1 1.868 6.935 7.79 9.111 7.535 3.855-.453 7.075-9.63 13.555-16.821a2.62 2.62 0 0 0-2.348-4.244h.018Z"
+                                fill="#fff"></path>
+                            <path
+                                d="M141.844 41.842c1.7-3.02 1.111-32.59 1.024-32.696.038-1.454-.778-1.493-1.665-1.493-15.048.067-48.952-.483-49.79-.122h-.052a1.107 1.107 0 0 0-.733.26.875.875 0 0 0-.319.62c-.42 4.74.596 28.805.596 33.557l50.939-.126Z"
+                                fill="#4DA2F8"></path>
+                            <path
+                                d="M144.22 31.907c0-10.408.067-15.917-.066-16.82.094-1.028-.207-1.729-1.178-1.665-8.323-.701-21.453-.151-25.196-.642-.505-.68-1.027-2.684-1.566-3.329-.54-.645-1.802-2.218-2.387-3.073-.894-1.45-1.665-1.517-4.773-1.402-16.575.49-18.629-.4-19.642.302-1.696 3.952-.277 44.22-.182 44.35-.042 1.91.778 1.963 1.665 1.96 15.047-.074 50.974.672 51.811.2h.067a1.017 1.017 0 0 0 .732-.351c.192-.232.3-.523.305-.824.438-6.224.417-12.475.41-18.706Z"
+                                fill="#63C0F9"></path>
+                            <path opacity=".6"
+                                d="M98.916 13.362c-2.31 0-4.237 0-4.762-.066a1.116 1.116 0 0 1 .245-2.219c1.002.105 9.374.032 14.75-.045a1.11 1.11 0 0 1 .815 1.884 1.113 1.113 0 0 1-.78.337c-.883.021-6.182.098-10.268.11Z"
+                                fill="#fff"></path>
+                            <path
+                                d="M45.023 135.513a2.644 2.644 0 0 0 2.724.197 2.64 2.64 0 0 0 1.435-2.324c0 .031-1.682-7.391 1.914-7.556 7.969-.35 17.395-3.357 17.13-10.832-.484-13.544-.225-25.522-5.629-30.07-7.065-5.958-21.226-2.043-33.312-.968-18.314 1.63-23.546 3.75-22.127 21.664a57.15 57.15 0 0 0 2.804 14.214c3.907 10.524 12.013 7.394 23.577 7.317 1.16 0 1.64 1.391 11.484 8.358Z"
+                                fill="#FFD56A"></path>
+                            <path
+                                d="M22.595 107.741a1.57 1.57 0 0 1-1.693-1.353 1.59 1.59 0 0 1 1.346-1.776c5.06-.48 28.511-2.888 33.554-3.231a1.582 1.582 0 0 1 .424 3.129 1.283 1.283 0 0 1-.263 0c-5.01.543-28.27 2.758-33.29 3.21l-.078.021ZM21.884 99.74a1.567 1.567 0 0 1-1.383-2.515 1.591 1.591 0 0 1 1.036-.614c5.056-.48 28.511-2.887 33.55-3.23a1.581 1.581 0 0 1 .428 3.132 1.647 1.647 0 0 1-.263 0c-5.011.543-28.27 2.754-33.291 3.21l-.077.018ZM23.597 115.293a1.541 1.541 0 1 1-.27-3.073l21.104-1.991a1.6 1.6 0 0 1 .616.018 1.598 1.598 0 0 1 .986.702 1.58 1.58 0 0 1-1.354 2.42l-21.089 1.987.007-.063Z"
+                                fill="#CE8D4F"></path>
+                            <path
+                                d="M106.822 90.49c2.642 4.979 22.68 25.157 22.708 25.181 9.781 7.741 22.547-9.714 12.286-16.708-.028-.021-24.106-14.719-29.647-15.745"
+                                fill="#727491"></path>
+                            <path
+                                d="m96.968 93.328 6.307 4.643a4.908 4.908 0 0 0 6.61-.74c3.592-4.117 6.521-8.792 9.482-13.442a4.906 4.906 0 0 0-1.051-6.445c-1.882-1.524-3.427-2.87-6.062-4.808-3.827 7.748-9.886 14.053-15.286 20.792Z"
+                                fill="#727491"></path>
+                            <path
+                                d="M37.611 80.453c29.034 52.397 96.187 11.119 77.513-35.685-5.19-13.026-17.77-22.73-31.651-24.72-32.121-4.604-61.898 31.466-45.862 60.405Z"
+                                fill="#B3B9CE"></path>
+                            <path
+                                d="M47.07 75.922c21.919 39.557 72.613 8.41 58.522-26.942-3.922-9.83-13.418-17.171-23.896-18.66-24.254-3.477-46.73 23.759-34.627 45.602Z"
+                                fill="#E2F6FE"></path>
+                            <g opacity=".3" fill="#63C0F9">
+                                <path opacity=".3"
+                                    d="M87.467 66.456a.718.718 0 0 1-.95-.407.701.701 0 0 1 .25-.85.732.732 0 0 1 .988 1.068.8.8 0 0 1-.288.19ZM85.754 81.402a.796.796 0 0 1-.833-.123.835.835 0 0 1-.25-.35.05.05 0 0 0 0-.02.798.798 0 0 1 .294-.986.841.841 0 0 1 1.125 1.238.912.912 0 0 1-.336.241ZM97.77 89.452a.772.772 0 0 1-.417.052.795.795 0 0 1-.606-.494v-.024a.768.768 0 0 1 .815-1.055.792.792 0 0 1 .513 1.293.84.84 0 0 1-.305.228ZM112.103 83.147a.754.754 0 0 1-.788-.114.783.783 0 0 1-.235-.327.038.038 0 0 1 0-.021.762.762 0 0 1 .276-.929.794.794 0 0 1 1.235.641.79.79 0 0 1-.183.523.839.839 0 0 1-.305.227ZM114.328 69.431a.77.77 0 0 1-.943-.252.784.784 0 0 1-.162-.54.784.784 0 0 1 .24-.511.794.794 0 0 1 1.051-.053.786.786 0 0 1-.182 1.353l-.004.004ZM101.902 60.352a.751.751 0 1 1-.529-1.401.75.75 0 0 1 .753.185v.017a.75.75 0 0 1 .194.663.744.744 0 0 1-.436.536h.018Z">
+                                </path>
+                            </g>
+                            <path opacity=".8" d="M97.024 49.905a25.344 25.344 0 0 0-35.632-3.826" stroke="#fff"
+                                stroke-width="7.36" stroke-miterlimit="10" stroke-linecap="round"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="a">
+                                <path fill="#fff" d="M0 0h148v136H0z"></path>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <div class="bnk-txt mt-3">
+                        <h3 class="blank-txt">No Results Found</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <!--no records found end-->
 
 
 
+
+
+
+        </li>
+
+        <li class="kt-nav__foot"></li>
+    </ul>
+</div>
+<div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
+    <div class="px-4 pt-4 pb-1">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                (click)="closeLinkSideBar()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+            <p class="text-primary">
+                Portfolios</p>
+            <div class="M_fsize">
+                Total
+                <div class="badge badge-pill badge-outline-info">
+                    <!-- {{totalPortfolios}} -->
+                </div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    <!-- {{_portfolioLength}} -->
+                </div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="d-flex">
+                <!-- <ng-multiselect-dropdown appFocusOnClick [placeholder]="'Select Portfolio(s)'"
+                    class="mutlidropdown-set mutlidropdown-full mr-1" [settings]="dropdownSettings_Portfolio"
+                    [data]="_portfoliosList" [(ngModel)]="ngDropdwonPort" (onSelect)="Portfolio_Select(ngDropdwonPort)"
+                    (onDeSelect)="Portfolio_Deselect(ngDropdwonPort)" (onSelectAll)="Portfolio_SelectAll($event)"
+                    (onDeSelectAll)="Portfolio_DeSelectAll()" style="flex: 3;">
+                </ng-multiselect-dropdown> -->
+
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold">Link</button>
+            </div>
+        </li>
+        <li class="kt-nav__foot"></li>
+    </ul>
+</div>

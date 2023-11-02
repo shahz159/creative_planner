@@ -194,7 +194,7 @@ export class SidebarComponent implements OnInit {
   }
   
   Btn_Moreinfo() {
-    let name: string = "Details/40042723"; 
+    let name: string = "Details/4001234"; 
     var url = document.baseURI + name;
     var myurl = `${url}`;
     var myWindow = window.open(myurl);
