@@ -8,6 +8,7 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project
   ],
   imports: [
     CommonModule,
-    DetailsRoutingModule
+    DetailsRoutingModule,
+    NgMultiSelectDropDownModule
   ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent

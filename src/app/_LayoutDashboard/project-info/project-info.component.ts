@@ -270,13 +270,13 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   completed: number = 0;
   delay: number = 0;
   inprogress: number = 0;
-  Rejected:number=0;
-  Completion_Under:number=0;
-  Forward_Under:number=0;
-  Under_Approval:number=0;
+  Rejected: number = 0;
+  Completion_Under: number = 0;
+  Forward_Under: number = 0;
+  Under_Approval: number = 0;
+  Project_Hold: number = 0;
   Project_type: any;
-
-
+  Approver_Name: any;
 
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
@@ -286,12 +286,15 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json'])
-          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
-          if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json']!=undefined) {
+          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);        
+          this.ProjectStatesJson.forEach((item) => {
+            this.Approver_Name = item.ApproverName
+          })
+          if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
-            this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);          
+            this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
             this.Action_countJson.forEach((item) => {
-             
+
               if (item.Status.trim() === "Completed") {
                 this.completed = item.count;
               }
@@ -314,8 +317,14 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               if (item.Status.trim() === 'Under Approval') {
                 this.Under_Approval = item.count;
               }
+
+              if (item.Status.trim() === 'Project Hold') {
+                this.Project_Hold = item.count;
+              }
+
             });
           }
+
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
 
           // console.log(this.ProjectInfoList,"pt");
@@ -355,7 +364,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);
-          this.TotalWork_Hours = Math.abs(this.date1.diff(this.date2, "hours"))
+          this.TotalWork_Hours = this.ProjectStatesJson[0].AllocatedHours;
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
           this.subtaskNotFoundMsg = "";
           this._subtaskDiv = false;
@@ -978,7 +987,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
     this.exist_comment = this.exist_comment.filter((comment) => comment != com);
 
-    this.comments = this.comments.replace(com, "");
+    this.comments = this.comments.replace(com,"").trim();
     console.log(this.exist_comment, "deselect");
 
   }
@@ -989,46 +998,72 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.rejectType = null;
     this.noRejectType = false;
   }
+
+  Close_Comments() {
+    this.comments = "";
+  }
+
   noRejectType: boolean = false;
 
   isTextAreaVisible: boolean = false;
   isRejectOptionsVisible: boolean = false;
-  active: boolean =false;
-  Edit_active:boolean =false;
-  Accept_Active:boolean=false;
-  Reject_active:boolean=false;
+  active: boolean = false;
+  Accept_active: boolean = false;
+  Conditional_Active: boolean = false;
+  Reject_active: boolean = false;
+
+  removeCommit() {
+    this.isTextAreaVisible = false
+  }
+
   approvalClick(actionType) {
     // $("#ProjectInfoNew").scrollTop(0);
+    this.comments=""
     switch (actionType) {
-      case 'EDIT': {
+     
+      case 'ACCEPT': {
         this.isRejectOptionsVisible = false
         this.selectedType = '1';
-        this.rejectType=null;
-        this.Edit_active =true;
-        this.Accept_Active=false;
-        this.Reject_active=false;      
+        this.rejectType = null;
+        this.Accept_active = true;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
       }; break;
       case 'CONDITIONAL': {
         this.isRejectOptionsVisible = false;
         this.selectedType = '2';
-        this.rejectType=null;
-        this.Edit_active =false;
-        this.Accept_Active=true;
-        this.Reject_active=false; 
+        this.rejectType = null;
+        this.Accept_active = false;
+        this.Conditional_Active = true;
+        this.Reject_active = false;
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
         this.selectedType = '3';
-        this.rejectType=null;
-        this.Edit_active =false;
-        this.Accept_Active=false;
-        this.Reject_active=true; 
-      }; break;
+        this.rejectType = null;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = true;
+      };
+        break;
       default: { }
     }
     this.isTextAreaVisible = true;
-  }
 
+    const targetElementId = `kt_open_scroll`;
+    const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+
+  }
+  Approval_View() {
+    const targetElementId = `kt_open_scroll`;
+    const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  }
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -1166,50 +1201,52 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.close_info_Slide();
   }
 
+
+
   submitApproval1() {
-      this.active=true;
-      this.Edit_active =false;
-        this.Accept_Active=false;
-        this.Reject_active=false; 
-      if (this.comments == '' || this.comments == null) {
-        this.singleapporval_json.forEach(element => {
-          element.Remarks = 'Accepted';
-        });
-      }
-      else {
-        this.singleapporval_json.forEach(element => {
-          element.Remarks = this.comments;
-        });
-      }
-      this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
-        subscribe((data) => {
-          this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
-          this.LoadProjectDetails();
-          this.getapprovalStats();
-          if (this._Urlid == '1') {
-            this.router.navigate(["/backend/ProjectsSummary/"]);
-            this._projectSummary.GetProjectsByUserName(this.Summarytype);
-          }
-          else if (this._Urlid == '2') {
-            this._portfolioprojects.GetPortfolioProjectsByPid();
-          }
-          else if (this._Urlid == '3') {
-            this._viewdashboard.GetCompletedProjects();
-          }
-          else if (this._Urlid == '4') {
-            this._projectsAdd.GetProjectsByUserName();
-            this._projectsAdd.getDropdownsDataFromDB();
-          }
-          else if (this._Urlid == '5') {
-            this._toDo.GetProjectsByUserName();
-            this._toDo.GetSubtask_Details();
-          }
-          else if (this._Urlid == '6') {
-            this.router.navigate(["Notifications"]);
-            this._notification.viewAll('Req');
-          }
-        });
-      console.log(this.singleapporval_json, "accept")
+    this.active = true;
+    this.Accept_active = false;
+    this.Conditional_Active = false;
+    this.Reject_active = false;
+    if (this.comments == '' || this.comments == null) {
+      this.singleapporval_json.forEach(element => {
+        element.Remarks = 'Accepted';
+      });
+    }
+    else {
+      this.singleapporval_json.forEach(element => {
+        element.Remarks = this.comments;
+      });
+    }
+    this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
+      subscribe((data) => {
+        this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
+        this.LoadProjectDetails();
+        this.getapprovalStats();
+        if (this._Urlid == '1') {
+          this.router.navigate(["/backend/ProjectsSummary/"]);
+          this._projectSummary.GetProjectsByUserName(this.Summarytype);
+        }
+        else if (this._Urlid == '2') {
+          this._portfolioprojects.GetPortfolioProjectsByPid();
+        }
+        else if (this._Urlid == '3') {
+          this._viewdashboard.GetCompletedProjects();
+        }
+        else if (this._Urlid == '4') {
+          this._projectsAdd.GetProjectsByUserName();
+          this._projectsAdd.getDropdownsDataFromDB();
+        }
+        else if (this._Urlid == '5') {
+          this._toDo.GetProjectsByUserName();
+          this._toDo.GetSubtask_Details();
+        }
+        else if (this._Urlid == '6') {
+          this.router.navigate(["Notifications"]);
+          this._notification.viewAll('Req');
+        }
+      });
+    console.log(this.singleapporval_json, "accept")
 
 
     this.close_info_Slide();
@@ -1265,9 +1302,10 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
         this.initials1 = this.initials1.toUpperCase();
         this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+                this.reject_list.splice(0,1);
         this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
         this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
-        console.log(this.singleapporval_json,"service");
+        console.log(this.reject_list, "service");
         if (this.prviousCommentsList.length > 1) {
           this.previouscoments = true;
         }
@@ -1358,6 +1396,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
 
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
+        console.log('++>',JSON.parse(data[0]['reject_CommentsList']));
         this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
         this.rejectlength = this.rejectcommentsList.length;
       });
