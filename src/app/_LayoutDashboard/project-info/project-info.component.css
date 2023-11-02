@@ -634,7 +634,7 @@ height: 10px;
 background-color: #505050;
 }
 .bg-delay {
-background-color: #Ed6207;
+background-color: #EE4137;
 }
 .bg-done {
 background-color: #6aad3a;
@@ -744,6 +744,7 @@ span.B-Bot {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  /* /justify-content: space-between; */
 }
 .kt-prg-progress ul li {
   width: 25%;margin-bottom: 9px;
@@ -880,4 +881,24 @@ span.Dote_red {
   padding: 0px 10px;
   /* border-radius: 5px; */
   border-left: 1px solid #fbb;
+}
+/*----- attachement css ---------*/
+.attachment-view svg {
+  width: 20px;
+}
+.attachment-view {
+  background-color:#f0f0f0;
+  padding: 8px 3px;
+  border-radius: 5px;
+  margin-top: 7px;
+ 
+  cursor: pointer;
+}
+.attachment-view span {
+  font-weight: 600;
+ 
+}
+.attachment-view:hover{
+  box-shadow: 0px 1px 6px #ccc;
+  background-color: #ffffff;
 }
