@@ -10,6 +10,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     DetailsRoutingModule,
     NgMultiSelectDropDownModule,
+    NgSelectModule,
     FormsModule
   ],
   providers: [ 
