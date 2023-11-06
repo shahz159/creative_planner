@@ -39,7 +39,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   TOTAL_ACTIONS_IN_FUA:number=0;
   TOTAL_ACTIONS_IN_HOLD:number=0;
   TOTAL_ACTIONS: number = 0;
-  onMemosLoaded=new EventEmitter();
+  
 
 
 
@@ -49,7 +49,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   Current_user_ID: string;
   dropdownSettings_Memo:{singleSelection: boolean,idField: string,textField: string,selectAllText:string,unSelectAllText: string,itemsShowLimit: number,allowSearchFilter: boolean}|undefined;
   selectedMemos:{MailId:number,Subject:string}[]=new Array();  // an array of size zero.
-
+  onPrjMemoLoaded=new EventEmitter();
 
  
 
@@ -265,8 +265,7 @@ closeLinkSideBar() {
 }
 
 //
- 
- 
+  
 
 GetDMS_Memos() {
   this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
@@ -307,11 +306,19 @@ GetMemosByEmployeeId() {
                            itemsShowLimit: 1,
                            allowSearchFilter: true
                                          };
-   
-
+            
     });
-
 }
+
+
+
+
+ getMemoOptions(prjMemos,allMemos){
+
+
+
+ }
+
 
 
 
