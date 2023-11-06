@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -16,6 +16,8 @@ import { ViewDashboardProjectsComponent } from '../../view-dashboard-projects/vi
 import { ProjectsAddComponent } from '../../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../../to-do-projects/to-do-projects.component';
 import { NotificationComponent } from '../../notification/notification.component';
+import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -33,7 +35,7 @@ declare var FusionCharts: any;
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit,AfterViewInit {
+export class DetailsComponent implements OnInit,AfterViewInit{
 
   projectInfo:any;
   projectActionInfo:any;
@@ -51,12 +53,22 @@ export class DetailsComponent implements OnInit,AfterViewInit {
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
   TOTAL_ACTIONS_IN_DELAY: number = 0;
   TOTAL_ACTIONS_DONE: number = 0;
+  TOTAL_ACTIONS_UNDER_APPROVAL:number=0;
+  TOTAL_ACTIONS_REJECTED:number=0;
+  TOTAL_ACTIONS_IN_CUA:number=0;
+  TOTAL_ACTIONS_IN_FUA:number=0;
+  TOTAL_ACTIONS_IN_HOLD:number=0;
   TOTAL_ACTIONS: number = 0;
+  onMemosLoaded=new EventEmitter();
+
+
+
+
   currentActionView:number|undefined;
   URL_ProjectCode:any;
   Current_user_ID: string;
   dropdownSettings_Memo:{singleSelection: boolean,idField: string,textField: string,selectAllText:string,unSelectAllText: string,itemsShowLimit: number,allowSearchFilter: boolean}|undefined;
-  selectedMemos:{MailId:string}[];
+  selectedMemos:{MailId:number,Subject:string}[]=new Array();
 
   requestDetails: any;
   requestType: any;
@@ -87,18 +99,10 @@ export class DetailsComponent implements OnInit,AfterViewInit {
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
     private router: Router,private activatedRoute: ActivatedRoute,private bsService:BsServiceService,public _LinkService: LinkService,
-   
+    private dialog: MatDialog,
      public approvalservice: ApprovalsService,
      public service: ProjectTypeService,
-     
      private notifyService: NotificationService,
-    // public _projectSummary: ProjectsSummaryComponent,
-    // public _portfolioprojects: PortfolioProjectsComponent,
-    // public _viewdashboard: ViewDashboardProjectsComponent,
-    // public _projectsAdd: ProjectsAddComponent,
-    // public _toDo: ToDoProjectsComponent,
-    // public _notification: NotificationComponent
-   
     ) { }
   charts() { }
   
@@ -164,10 +168,10 @@ export class DetailsComponent implements OnInit,AfterViewInit {
     }).render();
     // chart js end ----------------
     var lang = {
-      "javascript": "70%",
+      "javascript": "70%", 
     };
     var multiply = 4;
-    $.each(lang, function (language, pourcent) {
+    $.each(lang, function (language, pourcent) { 
       var delay = 700;
       setTimeout(function () {
         $('#' + language + '-pourcent').html(pourcent);
@@ -190,19 +194,25 @@ export class DetailsComponent implements OnInit,AfterViewInit {
       
       if(this.projectActionInfo){
         this.projectActionInfo.forEach(action => {
-          if (action.Status === 'Completed')
-            this.TOTAL_ACTIONS_DONE += 1;
-          else if (action.Status === 'Delay')
-            this.TOTAL_ACTIONS_IN_DELAY += 1;
-          else if (action.Status === 'InProcess')
-            this.TOTAL_ACTIONS_IN_PROCESS += 1;
+
+             switch(action.Status){
+                 case 'Completed':this.TOTAL_ACTIONS_DONE+=1;break;
+                 case 'Delay':this.TOTAL_ACTIONS_IN_DELAY+=1;break;
+                 case 'InProcess':this.TOTAL_ACTIONS_IN_PROCESS+=1;break;
+                 case 'Under Approval':this.TOTAL_ACTIONS_UNDER_APPROVAL+=1;break;
+                 case 'New Project Rejected':this.TOTAL_ACTIONS_REJECTED+=1;break;
+                 case 'Completion Under Approval':this.TOTAL_ACTIONS_IN_CUA+=1;break;
+                 case 'Forward Under Approval':this.TOTAL_ACTIONS_IN_FUA+=1;break;
+                 case 'Hold':this.TOTAL_ACTIONS_IN_HOLD+=1;break;
+                 default:{};
+             }
+
         })
       }
       else
           this.projectActionInfo=null;
         
-    
-      this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS;
+      this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS+this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_REJECTED+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_HOLD;
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
@@ -215,6 +225,11 @@ export class DetailsComponent implements OnInit,AfterViewInit {
     this.currentActionView=index;
   }
     
+  showProjectDetails(){
+    this.showActionDetails(undefined);
+    setTimeout(()=>this.drawStatistics(),100);  // because the view that holds the statistics graph must be available before drawStatistics() is get called.
+  }
+  
    
 
   // ADDING NEW ACTIONS 
@@ -274,11 +289,9 @@ export class DetailsComponent implements OnInit,AfterViewInit {
 //  ADD NEW DMS
 addNewDMS(){
 
-
-   
    this.GetDMS_Memos(); 
    this.GetMemosByEmployeeId();
-
+  
 
     // opens the addnewdms sidebar
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
@@ -296,23 +309,27 @@ closeLinkSideBar() {
 }
 
 //
-
-
+ 
+ 
 
 GetDMS_Memos() {
   this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
     subscribe((data:any) => {
       
       console.log("get memos here:",data)
-         if(data){ // if data is null means there is no memos of the project.
+         if(data&&data.length>0){ // if data is not [] means there will be atleast one memo present in the project.
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
           subscribe((data:any) => {
+            if(data.JsonData){
               this.projectMemos=JSON.parse(data.JsonData);
               this._linkedMemos=this.projectMemos.length;
-
+              }
               console.log("get memo subject:",this.projectMemos);
             
           });
+         }
+         else{   // if data is [] and length is 0.   means if there is not even one memo present in the project.
+              this._linkedMemos=0;
          }
           
     });
@@ -324,6 +341,7 @@ GetMemosByEmployeeId() {
              console.log("getmemosbyempid:",JSON.parse(data.JsonData));
              this._totalMemos=JSON.parse(data.JsonData).length;
              this.Memos_List=JSON.parse(data.JsonData);
+             console.log("this is Memos_List:",this.Memos_List);
              this.dropdownSettings_Memo = {
                            singleSelection: true,
                            idField: 'MailId',
@@ -333,32 +351,156 @@ GetMemosByEmployeeId() {
                            itemsShowLimit: 1,
                            allowSearchFilter: true
                                          };
+   
+
     });
 
-  // this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
-  //   subscribe((data) => {
-  //     this.Memos_List = JSON.parse(data['JsonData']);
-  //     this._ActualMemoslist = JSON.parse(data['JsonData']);
-  //     // console.log("Actual Memo List By EmpId--->", this._ActualMemoslist)
-  //     this._totalMemos = this._ActualMemoslist.length;
-  //     // console.log("Memos List", JSON.parse(data['JsonData']));
-  //     this.dropdownSettings_Memo = {
-  //       singleSelection: true,
-  //       idField: 'MailId',
-  //       textField: 'Subject',
-  //       selectAllText: 'Select All',
-  //       unSelectAllText: 'UnSelect All',
-  //       itemsShowLimit: 1,
-  //       allowSearchFilter: true
-  //     };
-  // });
 }
 
-   onMemoSelected(e:ElementRef){ 
-      console.log(e);
 
+
+
+   onMemoSelected(e:{MailId:number,Subject:string}){ 
+    // when single selection 
+      this.selectedMemos=new Array({MailId:e.MailId,Subject:e.Subject});
+    //
+       console.log("selectedMemos:",this.selectedMemos);
    }
-   onMemoDeselected(e){    }
+  
+
+
+   onMemoDeselected(e:{MailId:number,Subject:string}){ 
+       const index=this.selectedMemos.indexOf({MailId:e.MailId,Subject:e.Subject});
+       if(index!==-1){
+        this.selectedMemos.splice(index,1);
+       } 
+       console.log("selectedMemos:",this.selectedMemos);
+    }
+
+
+// ADD DMS STARTS HERE
+    addDMSToTheProject() {
+      try{
+       
+        if(this.selectedMemos.length){  
+          // when user has selected memo.  when selectedMemos.length>0
+        let totalmemos=[];      
+        if(this.projectMemos)  
+        totalmemos=this.projectMemos.map((item:any)=>({MailId:item.MailId})); // get current memos list.
+       
+        let newmemos=this.selectedMemos.map((item:any)=>({MailId:item.MailId}));  // get selected memos.
+        newmemos.forEach((memo:{MailId:number})=>{
+            totalmemos.push(memo);
+        });   // adding selected memos to the totalmemos
+  
+  
+        let projectcode:number=this.URL_ProjectCode;
+        let appId: number = 101;//this._ApplicationId;
+        let dmsMemo=JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
+        let userid:number=+this.Current_user_ID;
+        console.log("here we go",projectcode,appId,dmsMemo,userid);
+        this._LinkService.InsertMemosOn_ProjectCode(projectcode,appId,dmsMemo,userid).subscribe((res:any)=>{
+               console.log("Response=>",res);   
+               if(res.Message==="Updated Successfully")
+               {
+                this.notifyService.showSuccess("", "DMS Successfully Added.");
+               }
+                  
+        });
+
+
+        }
+        else{
+          // when user tries to click addlink btn without selecting memo.   when selectedMemos.length=0
+          this.notifyService.showInfo("Request Cancelled", "Please select memo(s) to link");
+        }
+
+      }
+      catch(e){  // if we faces any error during the process.
+        console.log(e);
+        this.notifyService.showInfo("Request Cancelled", "Error!");
+      }
+
+
+        this.selectedMemos=new Array();    
+        this.closeLinkSideBar();       
+      }
+// ADD DMS END HERE
+
+
+
+
+deleteMemos(memoId:number) {
+
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'memos_Delete',
+      title1: 'Confirmation ',
+      //message1: "proj_Name"
+    }
+  });
+  confirmDialog.afterClosed().subscribe((result:any)=>{
+          if(result===true)
+          {    // user confirmed to do deletion.
+            let projectcode=this.URL_ProjectCode; 
+            let appId:number = 101;
+            let totalmemos=this.projectMemos; // current total memos list.
+            let userid:number=+this.Current_user_ID;
+            if(this._linkedMemos)
+            {   // if there is atleast one memo.
+            let memotodelete:any=totalmemos.find((amemo:any)=>amemo.MailId===memoId);
+              if(memotodelete)
+                {   // memo found
+                  let index=totalmemos.indexOf(memotodelete);    // it will never return -1 at this point.
+                  totalmemos.splice(index,1);
+                  let memosAfterDeletion:string=JSON.stringify(totalmemos.map((item:any)=>({MailId:item.MailId}))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
+                  this._LinkService.InsertMemosOn_ProjectCode(projectcode,appId,memosAfterDeletion,userid).subscribe((res:any)=>{
+                    if(res.Message==='Updated Successfully'){
+                     this.notifyService.showInfo("", "Memo Removed."); 
+                     this._linkedMemos--;
+                      }
+                  });  
+                } 
+            }
+            else
+            {  // if there is no memos to delete.
+              this.notifyService.showError("No Memos Present", '');
+            }
+          }
+          else
+          {   // when deletion operation has cancelled.
+            this.notifyService.showInfo("Action Cancelled ", '');
+          }
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////new Approval section Start ////////////////////
 
