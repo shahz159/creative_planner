@@ -451,47 +451,29 @@
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-body p-3">
-                    <div class="kt-info-box curser-pointer" (click)="showActionDetails(undefined)">
+                    <div class="kt-info-box curser-pointer" (click)="showProjectDetails()">
                         <div class="kt-info-box-tittle">
                             <div class="kt-title-icon">
-                                <svg width="20px" height="20px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
-                                    fill="#ffffff" stroke="none">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <g id="Layer_2" data-name="Layer 2">
-                                            <g id="invisible_box" data-name="invisible box">
-                                                <rect width="48" height="48" fill="none"></rect>
-                                            </g>
-                                            <g id="Layer_7" data-name="Layer 7">
-                                                <g>
-                                                    <rect x="33" y="4" width="10" height="40" rx="2"></rect>
-                                                    <rect x="19" y="19" width="10" height="25" rx="2"></rect>
-                                                    <rect x="5" y="33" width="10" height="11" rx="2"></rect>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </svg>
+                             <span class="svg-icon kt-title-icon m-0"><svg  width="22px" height="22px" fill="#fff" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 105" style="enable-background:new 0 0 100 100;" xml:space="preserve"><switch><foreignObject requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1" height="1"/><g i:extraneous="self"><g><path d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z"/><path d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z"/><path d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z"/><path d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z"/><path d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z"/><path d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z"/><path d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z"/><path d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z"/><path d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z"/></g></g></switch></svg>   </span>
                             </div>
-                            Project Name
+                            <div class="kt-project-type">
+                                <div class="Kt-Pd-Status" *ngIf="projectInfo" [ngClass]="{
+                                   
+                                    'Core_task':projectInfo.Project_Type==='Core Tasks',
+                                    'Secondary_task':projectInfo.Project_Type==='Secondary Tasks',
+                                    'Todo_task':projectInfo.Project_Type==='To do List'
+                                
+                                }">
+                                    {{projectInfo&&projectInfo.Project_Type}}
+                                </div>
+                            </div>
                         </div>
                         <div class="kt-project-info-body  pl-3 ">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex">
                                 <div class="kt-project-name">
                                     <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
                                 </div>
-                                <div class="kt-project-type">
-                                    <div class="Kt-Pd-Status" *ngIf="projectInfo" [ngClass]="{
-                                       
-                                        'Core_task':projectInfo.Project_Type==='Core Tasks',
-                                        'Secondary_task':projectInfo.Project_Type==='Secondary Tasks',
-                                        'Todo_task':projectInfo.Project_Type==='To do List'
-                                    
-                                    }">
-                                        {{projectInfo&&projectInfo.Project_Type}}
-                                    </div>
-                                </div>
+                               
                             </div>
                             <div class="kt-project-desc">
                                 <p>{{projectInfo&&projectInfo.Project_Description}}</p>
@@ -572,51 +554,18 @@
                     
                 </div>
          -->
+              <ng-container  *ngIf="projectInfo" >  
                     <div class="kt-info-box mt-2">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex">
                             <div class="kt-info-box-tittle">
                                 <div class="kt-title-icon">
-                                    <svg width="20px" height="20px" viewBox="0 0 512 512" id="svg2793"
-                                        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
-                                        version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:cc="http://creativecommons.org/ns#"
-                                        xmlns:dc="http://purl.org/dc/elements/1.1/"
-                                        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                                        xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg"
-                                        fill="#ffffff" stroke="#ffffff">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <defs id="defs2797"></defs>
-                                            <g id="_09-Round-Chart" style="display:inline"
-                                                transform="translate(-3072,-1024)">
-                                                <g id="g2606" transform="translate(3282.77,1327.86)">
-                                                    <path
-                                                        d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348"
-                                                        id="path2604" style="fill-rule:nonzero"></path>
-                                                </g>
-                                                <g id="g2610" transform="translate(3373.23,1327.86)">
-                                                    <path
-                                                        d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071"
-                                                        id="path2608" style="fill-rule:nonzero"></path>
-                                                </g>
-                                                <g id="g2614" transform="translate(3282.77,1140.29)">
-                                                    <path
-                                                        d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242"
-                                                        id="path2612" style="fill-rule:nonzero"></path>
-                                                </g>
-                                                <g id="g2618" transform="translate(3373.23,1231.74)">
-                                                    <path
-                                                        d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553"
-                                                        id="path2616" style="fill-rule:nonzero"></path>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                    <span class="svg-icon">
+                                        <svg width="22px" height="22px" fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 105" style="enable-background:new 0 0 100 100;" xml:space="preserve"><path d="M93.7,50.1c-1.1,0-2.1,0.9-2.1,2.1c0,23.3-19,42.3-42.3,42.3S7,75.5,7,52.2C7,29.8,24.4,11.5,46.4,10  l-1.8,1.4c-0.9,0.7-1.1,2-0.4,2.9c0.4,0.5,1,0.8,1.6,0.8c0.4,0,0.9-0.1,1.2-0.4l6.8-5.2c0.5-0.4,0.8-1,0.8-1.7s-0.4-1.3-0.9-1.6  l-6.8-4.5c-0.9-0.6-2.2-0.4-2.8,0.6c-0.6,0.9-0.4,2.2,0.6,2.8L46,5.9C22,7.6,2.9,27.7,2.9,52.2c0,25.6,20.8,46.4,46.4,46.4  s46.4-20.8,46.4-46.4C95.7,51,94.8,50.1,93.7,50.1z"/><circle cx="92.1" cy="41.4" r="2.5"/><circle cx="88.9" cy="32.1" r="2.5"/><circle cx="82.9" cy="23.4" r="2.5"/><circle cx="74.5" cy="15.9" r="2.5"/><circle cx="64.6" cy="10.6" r="2.5"/><path d="M72.3,69.6c-0.2-0.8-0.2-2.1-0.2-3.6c0-4.9,0.1-12.3-5.6-21.1c0,0,0,0,0,0l-3.4-5.4c-0.6-0.9-1.5-1.6-2.6-1.8  c-1.1-0.2-2.2,0-3.1,0.6c0,0,0,0-0.1,0c-0.6,0.4-1,0.8-1.3,1.4c-0.5-0.4-1-0.7-1.7-0.8c-1.1-0.2-2.3,0-3.2,0.6c0,0-0.1,0.1-0.1,0.1  c-0.7,0.5-1.3,1.2-1.6,1.9c-1.2-0.5-2.7-0.5-3.9,0.2c-0.1,0-0.1,0-0.2,0.1c-0.5,0.3-1,0.8-1.3,1.3l-5.5-8.7c-0.7-1-1.7-1.8-2.9-2  c-1.2-0.3-2.4,0-3.5,0.6c0,0,0,0,0,0c0,0,0,0-0.1,0c-1,0.7-1.8,1.7-2,2.9c-0.3,1.2-0.1,2.4,0.6,3.5l9.2,14.5  c-0.5,0.2-0.9,0.5-1.3,0.8c-0.2,0.1-0.4,0.3-0.7,0.4l0,0c-1.1,0.7-1.9,1.8-2.1,3c-0.3,1.3-0.1,2.6,0.6,3.7l3.2,5.1  c0.1,0.1,0.1,0.2,0.2,0.2c3.9,5.4,8.7,6.8,11.9,7.7c0.9,0.3,1.7,0.5,2.2,0.7c0.1,0,0.2,0.1,0.3,0.1c0,0,0,0,0,0  c1.5,0.3,1.9,1.1,2.8,2.4l0.3,0.5c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-0.3-0.4  c-0.9-1.5-1.9-3-4.4-3.6c0,0,0,0,0,0c-0.7-0.3-1.5-0.5-2.4-0.8c-3.3-1-7.7-2.3-11.2-7.8l0,0l-2.7-4.2c-0.3-0.5-0.4-1.2-0.3-1.8  c0.1-0.6,0.5-1.1,1-1.5c0,0,0,0,0,0c0.3-0.2,0.5-0.3,0.7-0.5c0.4-0.3,1.1-0.7,1.2-0.8c0,0,0.1,0.1,0.2,0.3l3.8,5.9  c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-3.8-5.9c0,0,0,0,0,0c0,0,0,0,0,0L32.8,38.1  c-0.3-0.5-0.4-1-0.3-1.6c0.1-0.5,0.5-1,0.9-1.3c0,0,0,0,0,0c0,0,0,0,0.1,0c0.5-0.3,1-0.4,1.6-0.3c0.5,0.1,1,0.5,1.3,0.9l7.6,12l0,0  l0,0l3.6,5.6c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-3.6-5.6c-0.5-0.8-0.3-1.9,0.5-2.5l0,0  c0.8-0.5,1.9-0.3,2.5,0.5l3.6,5.6c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7L52,44c0,0,0,0,0,0  c-0.3-0.4-0.3-0.9-0.2-1.3c0.1-0.5,0.4-0.9,0.8-1.1c0,0,0,0,0,0c0.4-0.3,0.9-0.3,1.3-0.2c0.5,0.1,0.9,0.4,1.1,0.8l1.2,1.9  c0,0,0,0,0,0c0,0,0,0,0,0l2.4,3.7c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-2.4-3.7l0,0  c-0.2-0.4-0.3-0.8-0.2-1.2c0.1-0.4,0.4-0.8,0.7-1l0,0c0.4-0.2,0.8-0.3,1.2-0.2c0.4,0.1,0.8,0.4,1,0.7l3.4,5.4  c5.2,8.2,5.2,15.2,5.2,19.8c0,1.8,0,3.2,0.3,4.3c0.1,0.6,0.7,1,1.2,1c0.1,0,0.2,0,0.3,0C72.1,71,72.5,70.3,72.3,69.6z"/><path d="M41.1,31.8c-2.2-2.8-5.9-3.8-9.1-2.8l1.2,1.8c2.3-0.5,4.7,0.3,6.3,2.2l3,4.2l1.6-1.3L41.1,31.8z"/><path d="M29.6,40.8c-1.7-2.3-1.6-5.4,0.1-7.5l-1.1-1.9c-2.7,2.9-3,7.4-0.6,10.6l2.7,3.4l1.5-1.2L29.6,40.8z"/></svg>
+                                            </span>
                                 </div>
-                                Project Status
+                              
                             </div>
+                             
                             <div class="kt-project-type">
                                 <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
                                      
@@ -632,8 +581,8 @@
                                      'Hold':projectInfo.Status==='Project Hold'
                                     
                                     }">
-                                    {{projectInfo&&projectInfo.Status}}
-                                    {{projectInfo&&projectInfo.Status==='Delay'?projectInfo.Delaydays+' days':''}}
+                                    {{projectInfo.Status}}
+                                    {{projectInfo.Status==='Delay'?projectInfo.Delaydays+' days':''}}
                                 </div>
                             </div>
 
@@ -647,18 +596,18 @@
                                         </div>
                                         <div class="kt-project-sts-data">
 
-                                            {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
+                                            {{projectInfo.StartDate|date:'dd-MM-YYYY'}}
 
                                         </div>
                                     </div>
 
                                     <div class="col text-center"
-                                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission">
+                                        *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else submission">
                                         <div class="kt-info-lable-v">
                                             Deadline
                                         </div>
                                         <div class="kt-project-sts-data">
-                                            {{projectInfo&&projectInfo.EndDate|date:'dd-MM-YYYY'}}
+                                            {{projectInfo.EndDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
                                     <ng-template #submission>
@@ -667,7 +616,7 @@
                                                 Submission
                                             </div>
                                             <div class="kt-project-sts-data">
-                                                {{projectInfo&&projectInfo.SubmissionName}}
+                                                {{projectInfo.SubmissionName}}
                                             </div>
                                         </div>
                                     </ng-template>
@@ -677,8 +626,8 @@
                                             Duration
                                         </div>
                                         <div class="kt-project-sts-data"
-                                            *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continuos">
-                                            {{projectInfo&&projectInfo.Duration}} days
+                                            *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else continuos">
+                                            {{projectInfo.Duration}} days
                                         </div>
                                         <ng-template #continuos>
                                             <div class="kt-project-sts-data"> Continuous</div>
@@ -690,19 +639,20 @@
                                             Allocated
                                         </div>
                                         <div class="kt-project-sts-data"
-                                            *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else stdAH">
-                                            {{projectInfo&&projectInfo.AllocatedHours }} hrs
+                                            *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else stdAH">
+                                            {{projectInfo.AllocatedHours }} hrs
                                         </div>
                                         <ng-template #stdAH>
                                             <div class="kt-project-sts-data">
-                                                {{projectInfo&&projectInfo.StandardAllocatedHours }}
+                                                {{projectInfo.StandardAllocatedHours }}
                                             </div>
                                         </ng-template>
                                     </div>
 
                                     <div class="col-lg-12 mt-4">
                                         <div class="progress kt-projcect-progress bar"
-                                            *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
+                                            *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
+                                           
                                             <div class="progress-bar Inprocess " role="progressbar"
                                                 [ngStyle]="{width: (TOTAL_ACTIONS_IN_PROCESS/TOTAL_ACTIONS)*100+'%'}"
                                                 aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
@@ -712,40 +662,80 @@
                                             <div class="progress-bar Done " role="progressbar"
                                                 [ngStyle]="{width: (TOTAL_ACTIONS_DONE/TOTAL_ACTIONS)*100+'%'}"
                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar UnderApproval" role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_UNDER_APPROVAL/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar NewProjectRejected" role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_REJECTED/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar CompletionUnderApproval" role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_IN_CUA/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar CompletionUnderApproval" role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_IN_FUA/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar Hold" role="progressbar"
+                                                [ngStyle]="{width: (TOTAL_ACTIONS_IN_HOLD/TOTAL_ACTIONS)*100+'%'}"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 text-center mt-4"
-                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+
+
+
+                                    <div class="col-lg-12">
+                                        <div class="kt-prg-progress">
+                                            <ul type="none">
+                                                <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL" ><span class="B-Bot P_Not_Started"></span> Under Approval <b>({{ TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
+                                                <li *ngIf="TOTAL_ACTIONS_IN_PROCESS" ><span class="B-Bot P_In_Progress"></span>In Processs <b>({{TOTAL_ACTIONS_IN_PROCESS}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_IN_DELAY" ><span class="B-Bot P_Delay"></span> Delay <b>({{TOTAL_ACTIONS_IN_DELAY}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_REJECTED" class="w-50P" ><span class="B-Bot P_New_Project_Rejected w-50P"></span> New Project Rejected <b>({{TOTAL_ACTIONS_REJECTED}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_IN_CUA" class="w-50P"  ><span class="B-Bot P_Completion_under_Approval w-50P"></span> Completion Under Approval  <b>({{TOTAL_ACTIONS_IN_CUA}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_IN_FUA" class="w-50P" ><span class="B-Bot P_Completion_under_Approval w-50P"></span> Forward Under Approval  <b>({{TOTAL_ACTIONS_IN_FUA}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_DONE" ><span class="B-Bot P_Done"></span> Completed <b>({{TOTAL_ACTIONS_DONE}})</b></li>
+                                                <li *ngIf="TOTAL_ACTIONS_IN_HOLD"><span class="B-Bot P_Hold" ></span> Hold <b>({{TOTAL_ACTIONS_IN_HOLD}})</b> </li>
+                            
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <!-- <div class="col-lg-6 text-center mt-4"
+                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
                                         <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_IN_PROCESS"  >
                                             <b>{{TOTAL_ACTIONS_IN_PROCESS}}</b> in Process
                                         </div>
                                     </div>
                                     <div class="col text-center mt-4"
-                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
                                         <div class="kt-prg-bar-info"  *ngIf="TOTAL_ACTIONS_IN_DELAY"    >
                                             <b>{{TOTAL_ACTIONS_IN_DELAY}}</b> Delay
                                         </div>
                                     </div>
                                     <div class="col text-center mt-4"
-                                        *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
+                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
                                         <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_DONE"   >
                                             <b>{{TOTAL_ACTIONS_DONE}}</b> Done
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                 </div>
                             </div>
                             <div class="col-lg-1  p-1 text-center"
-                                *ngIf="projectInfo&&(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
+                                *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
                                 <div class="kt-prg-bar-info kt-total-prg-vl mt-4" title="Completed/All actions">
                                     <b>{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
                                 </div>
                             </div>
                         </div>
 
-                    </div>
 
+                      </div>
+                </ng-container>
+                
                     <div class="kt-info-box pb-0 mt-2"
                         *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'))">
                         <div class="d-flex justify-content-between">
@@ -805,7 +795,7 @@
                         </div>
                         <div class="kt-project-action-list-view"  >
 
-                                <ng-container  *ngIf="projectActionInfo;else noResultsFound"    >
+                                <ng-container  *ngIf="projectActionInfo;else noProjectActionFound"    >
                                 <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
                                 <div class="kt-projcect-act-list" *ngFor="let action of projectActionInfo;let i=index;"
                                     (click)="showActionDetails(i)" [ngClass]="{'Active':currentActionView===i}">
@@ -836,7 +826,7 @@
 
                                                         <span [ngSwitch]="action.Status">
                                                             <span *ngSwitchCase="'Completed'"
-                                                                class="Status-done">Done</span>
+                                                                class="Status-done">Completed</span>
                                                             <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay
                                                                 {{action&&action.Delaydays}} days</span>
                                                             <span *ngSwitchCase="'InProcess'"
@@ -856,6 +846,14 @@
                                     </div>
                                 </div>
                                 </ng-container>
+                                <ng-template #noProjectActionFound>
+                                    <div class="noresultsfound1">
+                                    <ng-template *ngIf="false;else noResultsFound"></ng-template>
+                                    <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                        <h3 class="blank-txt fs-3">No Actions Created.</h3>
+                                    </div>
+                                    </div>
+                                </ng-template>
                             </div>
                        
 
@@ -1503,7 +1501,7 @@
                                                     <h6>Statistics</h6>
                                                 </div>
                                             </div>
-                                            <div class="chart" id="chart-container"></div>
+                                            <div class="chart" id="chart-container" ></div>
 
                                         </div>
                                     </div>
@@ -1894,6 +1892,7 @@
                 [placeholder]="'Select Memo' "
                 [settings]="dropdownSettings_Memo"
                 [data]="Memos_List" 
+                [(ngModel)]="selectedMemos"
                  (onSelect)="onMemoSelected($event)"
                  (onDeSelect)="onMemoDeselected($event)"
                  class="mutlidropdown-set mutlidropdown-full mr-1" 
@@ -1902,7 +1901,7 @@
 
 
                 <div class="input-group-append">
-                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text">Link</button>
+                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text" (click)="addDMSToTheProject()"    >Link</button>
                 </div>
 
             </div>
@@ -1923,14 +1922,24 @@
         </table> -->
 
 
-            <div id="DemoList-table" *ngIf="projectMemos;else noResultsFound">
+            <div id="DemoList-table" *ngIf="projectMemos&&_linkedMemos;else noResultsFound1">
+                
                 <div class="demo"  *ngFor="let memo of projectMemos">
                     <a href="javascript:void(0)">{{memo.Subject}}</a>
-                    <i class="fas fa-trash-alt"></i>
+                    <i class="fas fa-trash-alt" (click)="deleteMemos(memo.MailId)"         ></i>
                 </div>
             </div> 
+            <ng-template #noResultsFound1>
+                <div class="noresultsfound1">
+                <ng-template *ngIf="false;else noResultsFound"></ng-template>
+                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                    <h3 class="blank-txt">Memo not found.</h3>
+                </div>
+                </div>
+            </ng-template>
+            
              <!--no records found-->
-    <ng-template #noResultsFound>
+    <ng-template #noResultsFound >
         <div class="NORESULTFOUND">
             <div class="d-flex-center">
                 <div class="m-auto">
@@ -1980,15 +1989,13 @@
                             <path opacity=".8" d="M97.024 49.905a25.344 25.344 0 0 0-35.632-3.826" stroke="#fff"
                                 stroke-width="7.36" stroke-miterlimit="10" stroke-linecap="round"></path>
                         </g>
-                        <defs>
+                        <defs> 
                             <clipPath id="a">
                                 <path fill="#fff" d="M0 0h148v136H0z"></path>
                             </clipPath>
                         </defs>
                     </svg>
-                    <div class="bnk-txt mt-3">
-                        <h3 class="blank-txt">No Results Found</h3>
-                    </div>
+                    
                 </div>
             </div>
         </div>

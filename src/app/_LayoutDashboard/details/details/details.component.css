@@ -759,13 +759,12 @@ span.kt-dt-l {
 .Kt-Pd-Status {
   background-color: #000;
   color: #fff;
-  margin: 0px 10px;
-  margin-left: 1rem;
   font-weight: 600;
-  padding: 6px 13px;
-  max-width: 140px;
-  min-width: 130px;
-  margin-right: 0px;
+  padding:0.2em;
+  padding-left:0.6em;
+  padding-right:0.6em;
+  border-radius:2px;
+  font-size:15px;
 }
 
 .Core_task {
@@ -878,17 +877,17 @@ span.kt-dt-l {
 
 .kt-prg-bar-info {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 600; 
   color: #3d3d3d;
 }
 
 .kt-prg-bar-info b {
-  font-size: 20px;
+  font-size: 20px; 
   margin-right: 5px;
 }
 
 .kt-total-prg-vl b {
-  font-size: 18px !important;
+  font-size: 15px !important;
   margin-right: 0px;
 }
 
@@ -1468,3 +1467,78 @@ div#DemoList-table div.demo i:hover {
   justify-content: center;
   align-items: center;
 }
+
+
+.noresultsfound1{
+    padding-top:15%;
+    color:#646c9a;
+}
+
+
+
+/*  FOR PROJECT STATUS COMPONENT PROGRESSBAR*/
+span.B-Bot {
+  display: inline-block;
+  height: 11px;
+  width: 11px;
+  margin-right: 2px;
+  border-radius: 2px;
+  background-color: #e5e5e5;
+}
+.P_In_Progress{
+  background-color: #1B272D !important;
+}
+.P_Not-Started{
+  background-color: #888888 !important;
+}
+.P_Active{
+  background-color: #0089FB !important;
+}
+.P_Completion_under_Approval{
+  background-color: #B2d732 !important;
+}
+.P_Slow{
+  background-color: #Fbcc61 !important;
+}
+.P_Delay{
+  background-color: #EE4137 !important;
+}
+.P_Hold{
+  background-color: #E2d9bc !important;
+}
+.P_Done{
+  background-color: #62b134 !important;
+}
+.P_Very_Slow{
+  background-color: #E1a63d !important;
+}
+.P_Very_Active{
+  background-color: #0272d0 !important;
+}
+.P_Completion_under_Approval{
+  background-color: #b2d732 !important;
+}
+.P_Deadline_Extend_Under_Approval{
+  background-color: #F88282 !important;
+}
+.P_Enactive_Under_Approval{
+  background-color: #C9c1e6 !important;
+}
+.P_New_Project_Rejected{
+  background-color: #Dfdfdf !important;
+}
+.P_New_todo{
+  background-color: #6e9bc4 !important;
+}
+.P_Project_complete_rejected{
+  background-color: #FAF065 !important;
+}
+
+.kt-prg-progress ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.5em;
+}
+/* PROJECT STATUS COMPONENT PROGRESS BAR END CSS END*/

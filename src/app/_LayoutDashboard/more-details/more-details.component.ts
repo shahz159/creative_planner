@@ -1687,7 +1687,8 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   Memo_Select(selecteditems) {
-    //console.log("Selected Item---->",selecteditems)
+    
+    console.log("Selected Item-sahil--->",selecteditems)
     let arr = [];
     this.Empty_MemoDropdown = selecteditems;
     // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
@@ -1702,6 +1703,7 @@ export class MoreDetailsComponent implements OnInit {
   Memo_Deselect() {
     let arr = [];
     this.Empty_MemoDropdown = this.ngDropdwonMemo;
+    console.log("ngDropdwonMemo:",this.ngDropdwonMemo)
     this.Empty_MemoDropdown.forEach(element => {
       arr.push({ MailId: element.MailId })
       this._SelectedMemos = arr;
@@ -3448,7 +3450,7 @@ export class MoreDetailsComponent implements OnInit {
   _AddLink() {
     let _ProjectCode: string = this.URL_ProjectCode;
     let appId: number = 101;//this._ApplicationId;
-    //console.log("selected Memos From Dropdown-->", this._SelectedMemos);
+    // console.log("selected Memos From Dropdown-->", this._SelectedMemos); //eg: [{MailId:234}]
     if (this._SelectedIdsfromDb > 0 || this._SelectedIdsfromDb != undefined) {
       // console.log("Table Ids-->", this._SelectedIdsfromDb);
       this.memoId = JSON.stringify(this._SelectedIdsfromDb.concat(this._SelectedMemos));
@@ -3460,6 +3462,7 @@ export class MoreDetailsComponent implements OnInit {
     }
     let UserId = this.Current_user_ID;
     if (this._SelectedMemos.length > 0) {
+      console.log("body:",_ProjectCode,appId,this.memoId,UserId);
       this._LinkService.InsertMemosOn_ProjectCode(_ProjectCode, appId, this.memoId, UserId).
         subscribe((data) => {
           this.UpdateMemos(_ProjectCode);
