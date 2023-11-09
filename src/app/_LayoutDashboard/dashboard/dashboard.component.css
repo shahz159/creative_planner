@@ -1052,7 +1052,7 @@ background-color: #f1f3f4;
     color: #fff !important;
 } */
 ::ng-deep .fc .fc-list-event:hover td{
-    background-color: unset !important;
+    background-color: #eeecec !important;
 }
 ::ng-deep .fc-info .fc-daygrid-event-dot, ::ng-deep .fc-info .fc-list-event-dot{
     border-color:  #3788d8 !important;;
@@ -2397,3 +2397,8 @@ span.kt-dashboard-cnt {
     border-color: #6C757D;
     color: #FFFFFF !important;
 }
+.red-line {
+    border-left: 3px solid red; /* Adjust the border properties as needed */
+    padding-left: 5px; /* Add padding to separate the line from the text */
+  }
+  

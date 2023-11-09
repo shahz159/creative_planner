@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
   calendarOptions: CalendarOptions;
   _NotificationActivityList: NotificationActivityDTO[];
   _RequestActivity: [];
-  _DarActivityList: [];
   _NotificationActivity: [];
   _AlertActivity: [];
   notilength: number;
@@ -456,7 +455,6 @@ export class DashboardComponent implements OnInit {
     this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
     this._subname = false;
     this._subname1 = false;
-    this.notificationDTO = new NotificationActivityDTO();
     this._lstMultipleFiales = [];
   }
 
@@ -467,7 +465,6 @@ export class DashboardComponent implements OnInit {
     this._labelName = "Schedule Date :";
     this.timelineType = this.type1;
     this.selectedSort = 'today';
-
     this.MinLastNameLength = true;
     this.selectedrecuvalue = "0";
     this.display = 'none';
@@ -476,7 +473,6 @@ export class DashboardComponent implements OnInit {
     // this.selectedCar = '3';
     // this.calendar.updateTodaysDate();
     this.calendarOptions = {
-
       initialView: 'listWeek',
       firstDay: moment().weekday(),
       //  timeZone: 'local',
@@ -491,16 +487,6 @@ export class DashboardComponent implements OnInit {
       weekNumbers: true,
       eventClick: this.handleEventClick.bind(this),
       events: this.Scheduledjson,
-      customButtons: {
-        myCustomButton: {
-          text: 'My Custom Button',
-          click: function() {
-            // Add your custom button click handler here
-            // This function will be called when the button is clicked
-            console.log('Custom button clicked!');
-          }
-        }
-      },
       dayMaxEvents: 4,
       eventTimeFormat: {
         hour: 'numeric',
@@ -510,7 +496,6 @@ export class DashboardComponent implements OnInit {
       },
       nowIndicator: true,
       allDaySlot: false
-
     };
     this.MinLastNameLength = true;
     this._subname = false;
@@ -530,31 +515,15 @@ export class DashboardComponent implements OnInit {
     this.CurrentUser_fullname = localStorage.getItem('UserfullName');
 
     this.GetDashboardSummary();
-    this.getDashboardnotifications();
-    // this.service.GetActivities(this.Current_user_ID).subscribe(
-    //   (data) => {
-    //     this._NotificationActivityList = data as NotificationActivityDTO[];
-    //     this._RequestActivity = JSON.parse(this._NotificationActivityList[0]['RequestActivity_Json']);
-    //     this._DarActivityList = JSON.parse(this._NotificationActivityList[0]['DarActivity_Json']);
-    //   });
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
-    // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
-    //   (data) => {
-    //     this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
-    //     this.TotalExpiryPortfolio = data[0]['DelayCount'];
-    //     if (this._ListProjStat.length == 0) {
-    //       this.messageForEmpty = false;
-    //     }
-    //     else {
-    //       this.messageForEmpty = true;
-    //     }
-    //   });
+   
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.Getdraft_datalistmeeting();
     this.GetPending_Request();
+    this.GetDelay_Actions();
     //Setting recurance max date
     //start
     this.maxDate = moment().format("YYYY-MM-DD").toString();
@@ -620,249 +589,7 @@ export class DashboardComponent implements OnInit {
 
     });
   }
-  timelineLog(type) {
-    this.showtimeline = true;
-    if (this.selectedSort == 'custom') {
-      this.customTimeline();
-    }
-
-    else {
-      if (type == this.type1) {
-        this.timelineType = type;
-        this.timelineList = null;
-        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-        this.ObjSubTaskDTO.PageNumber = 1;
-        this.ObjSubTaskDTO.PageSize = 2;
-        this.ObjSubTaskDTO.sort = this.selectedSort;
-        this.ObjSubTaskDTO.Start_Date = null;
-        this.ObjSubTaskDTO.End_Date = null;
-
-        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-          (data => {
-            this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-            this.timelineDuration = (data[0]['TotalTime']);
-            if (this.timelineList.length == 0) {
-              this.showtimeline = false;
-              this.timelineDuration = 0;
-            }
-
-            const hrstippy = document.getElementById('hrs-tippy');
-            tippy('.tippy', {
-              content: hrstippy.innerHTML,
-              arrow: true,
-              allowHTML: true,
-              animation: 'scale-extreme',
-              theme: 'gradient',
-              animateFill: true,
-              inertia: true,
-              placement: 'top'
-            });
-
-          });
-      }
-
-      else if (type == this.type2) {
-        this.timelineType = type;
-        this.timelineList = null;
-        this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-        this.ObjSubTaskDTO.PageNumber = 1;
-        this.ObjSubTaskDTO.PageSize = 2;
-        this.ObjSubTaskDTO.sort = this.selectedSort;
-        this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-          (data => {
-            this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-            if (this.timelineList.length == 0) {
-              this.showtimeline = false;
-              this.timelineDuration = 0;
-            }
-            const hrstippy = document.getElementById('hrs-tippy');
-            tippy('.tippy', {
-              content: hrstippy.innerHTML,
-              arrow: true,
-              allowHTML: true,
-              animation: 'scale-extreme',
-              theme: 'gradient',
-              animateFill: true,
-              inertia: true,
-              placement: 'top'
-            });
-          });
-        this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-          (data => {
-            this.timelineDuration = (data[0]['TotalTime']);
-          });
-      }
-    }
-  }
-
-  sortTimeline(sort) {
-    this.selectedSort = sort;
-    this.showtimeline = true;
-    this.timeFrom = null;
-    this.timeTo = null;
-
-    if (this.timelineType == this.type1) {
-      this.timelineList = null;
-      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-      this.ObjSubTaskDTO.PageNumber = 1;
-      this.ObjSubTaskDTO.PageSize = 2;
-      this.ObjSubTaskDTO.sort = this.selectedSort;
-      this.ObjSubTaskDTO.Start_Date = null;
-      this.ObjSubTaskDTO.End_Date = null;
-      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          this.timelineDuration = (data[0]['TotalTime']);
-          if (this.timelineList.length == 0) {
-            this.showtimeline = false;
-            this.timelineDuration = 0;
-          }
-
-          const hrstippy = document.getElementById('hrs-tippy');
-          tippy('.tippy', {
-            content: hrstippy.innerHTML,
-            arrow: true,
-            allowHTML: true,
-            animation: 'scale-extreme',
-            theme: 'gradient',
-            animateFill: true,
-            inertia: true,
-            placement: 'top'
-          });
-
-        });
-    }
-
-
-    else if (this.timelineType == this.type2) {
-      this.timelineList = null;
-      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-      this.ObjSubTaskDTO.PageNumber = 1;
-      this.ObjSubTaskDTO.PageSize = 2;
-      this.ObjSubTaskDTO.sort = this.selectedSort;
-      this.ObjSubTaskDTO.Start_Date = null;
-      this.ObjSubTaskDTO.End_Date = null;
-      this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          if (this.timelineList.length == 0) {
-            this.showtimeline = false;
-            this.timelineDuration = 0;
-          }
-          const hrstippy = document.getElementById('hrs-tippy');
-          tippy('.tippy', {
-            content: hrstippy.innerHTML,
-            arrow: true,
-            allowHTML: true,
-            animation: 'scale-extreme',
-            theme: 'gradient',
-            animateFill: true,
-            inertia: true,
-            placement: 'top'
-          });
-        });
-      this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineDuration = (data[0]['TotalTime']);
-        });
-    }
-  }
-
-  customTimeline() {
-
-    this.selectedSort = 'custom';
-    this.showtimeline = true;
-
-    if (this.timelineType == this.type1) {
-      this.timelineList = null;
-      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-      this.ObjSubTaskDTO.PageNumber = 1;
-      this.ObjSubTaskDTO.PageSize = 2;
-      this.ObjSubTaskDTO.sort = this.selectedSort;
-      this.ObjSubTaskDTO.Start_Date = this.timeFrom;
-      this.ObjSubTaskDTO.End_Date = this.timeTo;
-
-      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          this.timelineDuration = (data[0]['TotalTime']);
-          if (this.timelineList.length == 0) {
-            this.showtimeline = false;
-            this.timelineDuration = 0;
-          }
-
-          const hrstippy = document.getElementById('hrs-tippy');
-          tippy('.tippy', {
-            content: hrstippy.innerHTML,
-            arrow: true,
-            allowHTML: true,
-            animation: 'scale-extreme',
-            theme: 'gradient',
-            animateFill: true,
-            inertia: true,
-            placement: 'top'
-          });
-
-        });
-    }
-
-
-    else if (this.timelineType == this.type2) {
-      this.timelineList = null;
-      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-      this.ObjSubTaskDTO.PageNumber = 1;
-      this.ObjSubTaskDTO.PageSize = 2;
-      this.ObjSubTaskDTO.sort = this.selectedSort;
-      this.ObjSubTaskDTO.Start_Date = this.timeFrom;
-      this.ObjSubTaskDTO.End_Date = this.timeTo;
-
-      this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          if (this.timelineList.length == 0) {
-            this.showtimeline = false;
-            this.timelineDuration = 0;
-          }
-          const hrstippy = document.getElementById('hrs-tippy');
-          tippy('.tippy', {
-            content: hrstippy.innerHTML,
-            arrow: true,
-            allowHTML: true,
-            animation: 'scale-extreme',
-            theme: 'gradient',
-            animateFill: true,
-            inertia: true,
-            placement: 'top'
-          });
-        });
-      this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
-        (data => {
-          this.timelineDuration = (data[0]['TotalTime']);
-        });
-    }
-  }
-
-
-  cleardates() {
-    this.timeFrom = null;
-    this.timeTo = null;
-  }
-
-  viewTimeline() {
-    this.router.navigate(["../backend/Timeline"]);
-  }
-
-  notificationDTO: NotificationActivityDTO;
-
-  getDashboardnotifications() {
-    this.notificationDTO.Emp_No = this.Current_user_ID;
-    this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => {
-        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
-        this.notilength = (data[0]['notificationcount']);
-        console.log(data, 'Notif');
-      });
-  }
+  
 
   onFileChange(event) {
 
@@ -1717,7 +1444,6 @@ export class DashboardComponent implements OnInit {
 
   OnSubmitSchedule() {
 
-
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -2212,7 +1938,7 @@ export class DashboardComponent implements OnInit {
       frmData.append("flag_id", this._calenderDto.flagid.toString());
       this._calenderDto.attachment = this.RemovedAttach.toString();
 
-      console.log(JSON.stringify(finalarray), "finalarray");
+      // console.log(JSON.stringify(finalarray), "finalarray");
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
           this.RemovedAttach = [];
@@ -2255,7 +1981,15 @@ export class DashboardComponent implements OnInit {
 
           // console.log(data, "m");
           this._Message = data['message'];
-          this.notifyService.showSuccess(this._Message, "Success");
+          if(this._Message == 'Not updated'){
+            Swal.fire({
+              title: 'Meeting not released from the Pending list.',
+              text: 'Meeting already exists on the selected scheduled date. Please change the Schedule date and try again.',
+            });
+          }
+          else{
+            this.notifyService.showSuccess(this._Message, "Success");
+          }
           this.GetScheduledJson();
           this.GetPending_Request();
           this.penhide();
@@ -2564,13 +2298,25 @@ export class DashboardComponent implements OnInit {
     // this.Recurr_arr.push(days.target.value);
   }
 
+  pendingavailability:boolean = true;
+
   selectStartDate(event) {
     this._StartDate = event.value;
+    
     let sd = event.value.format("YYYY-MM-DD").toString();
 
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
-
+    this._calenderDto.Schedule_ID=this.Schedule_ID;
+    this._calenderDto.Scheduled_date=sd;
+    // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
+    //   if(data['message']=='1'){
+    //     this.pendingavailability==false;
+    //   }
+    //   else{
+    //     this.pendingavailability==true;
+    //   }
+    // });
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -3438,6 +3184,8 @@ export class DashboardComponent implements OnInit {
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this.creation_date = this.EventScheduledjson[0].Created_date;
+        this.pending_status = this.EventScheduledjson[0].Pending_meeting;
+        this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
 
@@ -3610,9 +3358,26 @@ export class DashboardComponent implements OnInit {
         this.pendingcount = this.Pending_request.length
         // alert(this.pendingcount)
         // alert(this.Pending_request.length)
-        // console.log(this.Pending_request,"111100000")
+         console.log(this.Pending_request,"111100000")
       });
   }
+
+  DelayActionsList: any[] = [];
+  DelayActionscount: any;
+
+  GetDelay_Actions() {
+    this._calenderDto.Emp_No = this.Current_user_ID;
+
+    this.CalenderService.NewGetDelay_actions(this._calenderDto).subscribe
+      ((data) => {
+        this.DelayActionsList = JSON.parse(data[0]['DelayActions_Json']);
+        this.DelayActionscount = data[0]['Delayaction_Count'];
+        // alert(this.pendingcount)
+        // alert(this.Pending_request.length)
+         console.log(this.DelayActionsList,"Delayactions")
+      });
+  }
+
   GetScheduledJson() {
 
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -3642,6 +3407,7 @@ export class DashboardComponent implements OnInit {
           weekNumbers: true,
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
+          // eventDidMount: this.customizeEvent,
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',
@@ -3650,8 +3416,7 @@ export class DashboardComponent implements OnInit {
             hour12: true
           },
           nowIndicator: true,
-          allDaySlot: false,
-
+          allDaySlot: false
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -3662,6 +3427,16 @@ export class DashboardComponent implements OnInit {
           // }
         };
       });
+  }
+
+  customizeEvent(info) {
+    const eventDate = info.event.start;
+    const currentDate = new Date();
+
+    if (eventDate < currentDate) {
+      const eventElement = info.el;
+      eventElement.style.opacity = '0.5'; // Change the background color for past events
+    }
   }
 
   public handleAddressChange(address: Address) {
@@ -3726,7 +3501,7 @@ export class DashboardComponent implements OnInit {
   }
 
   closeInfo() {
-    document.getElementById("mysideInfobar").style.width = "0";
+    // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
@@ -4745,6 +4520,7 @@ export class DashboardComponent implements OnInit {
   penshow() {
     document.getElementById("pendlist1").classList.remove("show");
     document.getElementById("pendlist").classList.add("show");
+    document.getElementById("Delaylist").classList.remove("show");
     document.getElementById("cal-main").classList.add("col-lg-9");
     document.getElementById("cal-main").classList.remove("col-lg-12");
 
@@ -4755,6 +4531,17 @@ export class DashboardComponent implements OnInit {
 
     document.getElementById("pendlist").classList.remove("show");
     document.getElementById("pendlist1").classList.add("show");
+    document.getElementById("Delaylist").classList.remove("show");
+    document.getElementById("cal-main").classList.add("col-lg-9");
+    document.getElementById("cal-main").classList.remove("col-lg-12");
+    this.Getdraft_datalistmeeting()
+
+    // document.getElementById("act-btn").style.display = "none";
+  }
+  penshow2() {
+    document.getElementById("Delaylist").classList.add("show");
+    document.getElementById("pendlist").classList.remove("show");
+    document.getElementById("pendlist1").classList.remove("show");
     document.getElementById("cal-main").classList.add("col-lg-9");
     document.getElementById("cal-main").classList.remove("col-lg-12");
     this.Getdraft_datalistmeeting()
@@ -4768,6 +4555,11 @@ export class DashboardComponent implements OnInit {
   }
   penhide1() {
     document.getElementById("pendlist1").classList.remove("show");
+    document.getElementById("cal-main").classList.remove("col-lg-9");
+    document.getElementById("cal-main").classList.add("col-lg-12");
+  }
+  penhide2() {
+    document.getElementById("Delaylist").classList.remove("show");
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }

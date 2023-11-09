@@ -401,6 +401,7 @@ export class MoreDetailsComponent implements OnInit {
   action_details: any;
   approve_details: any;
   _fullname: any;
+  isAction:boolean = false;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -470,18 +471,24 @@ export class MoreDetailsComponent implements OnInit {
     this._adapter.setLocale(this._locale);
   }
 
+  mainDeadline:any;
+  
   getapproval_actiondetails() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
       // console.log(data,"appact");
       if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
-        if (data[0]['actiondetails'] != '[]')
+        if (data[0]['actiondetails'] != '[]'){
           this.action_details = JSON.parse(data[0]['actiondetails']);
+          this.mainDeadline = this.action_details[0]['mainDeadline']; 
+          alert(this.mainDeadline);
+          this.isAction=true;
+        }
         if (data[0]['approvaldetails'] != '[]')
           this.approve_details = JSON.parse(data[0]['approvaldetails']);
 
-        // console.log(this.action_details,this.approve_details,"details");
+        console.log(this.action_details,"details");
       }
     });
   }
@@ -4624,8 +4631,10 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onProject_ExtendDeadline(id, Pcode) {
-    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    console.log(this._ProjDeadline, id, Pcode, "act");
+
+    if(this.isAction==false){
+      this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+    console.log(this._ProjDeadline, Pcode, "act");
     if (this._ProjDeadline != null) {
       this.service._ProjectDeadlineExtendService(Pcode, this._ProjDeadline, null, this.extend_remarks, null).subscribe(data => {
         this._Message = data['message'];
@@ -4636,37 +4645,6 @@ export class MoreDetailsComponent implements OnInit {
         }
         else if (this._Message == 'Project Deadline Updated') {
           this.notifyService.showSuccess("Project end date updated", "Success");
-          this.objProjectDto.Emp_No = this.Current_user_ID;
-          this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-          if (this.currenthours < 10) {
-            this.currenthours = "0" + this.currenthours;
-          }
-          if (this.currentminutes >= 0 && this.currentminutes <= 15) {
-            this.currentminutes = "15";
-          }
-          else if (this.currentminutes > 15 && this.currentminutes <= 30) {
-            this.currentminutes = "30"
-          }
-          else if (this.currentminutes > 30 && this.currentminutes <= 45) {
-            this.currentminutes = "45"
-          }
-          else if (this.currentminutes > 45 && this.currentminutes <= 59) {
-            this.currentminutes = "00"
-          }
-
-          this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
-          this.objProjectDto.EndTime = ((this.currenthours + 1) + ":" + this.currentminutes);
-          this.objProjectDto.TimeCount = "01:00";
-          this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-          this.objProjectDto.date = this.current_Date;
-          this.objProjectDto.WorkAchieved = "Deadline Extend:" + this.extend_remarks;
-          this.objProjectDto.Emp_Comp_No = this.Comp_No;
-          this.objProjectDto.Project_Name = this.ProjectName;
-          this.objProjectDto.Master_code = this.URL_ProjectCode;
-          this.objProjectDto.Project_Code = this.URL_ProjectCode;
-          this.dar_details();
-          this.getDarTime();
-          this.GetProjectDetails();
         }
       });
       this.close_space();
@@ -4674,6 +4652,11 @@ export class MoreDetailsComponent implements OnInit {
     else {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
+    }
+    else if(this.isAction==true){
+      
+    }
+    
   }
 
   allocation: boolean = false;
@@ -4740,40 +4723,6 @@ export class MoreDetailsComponent implements OnInit {
         }
         else if (this._Message == 'Project Deadline Updated') {
           this.notifyService.showSuccess("Action end date updated.", "Success");
-          this.objProjectDto.Emp_No = this.Current_user_ID;
-          this.objProjectDto.Exec_BlockName = this.ProjectBlockName;
-          if (this.currenthours < 10) {
-            this.currenthours = "0" + this.currenthours;
-          }
-          if (this.currentminutes >= 0 && this.currentminutes <= 15) {
-            this.currentminutes = "15";
-          }
-          else if (this.currentminutes > 15 && this.currentminutes <= 30) {
-            this.currentminutes = "30"
-          }
-          else if (this.currentminutes > 30 && this.currentminutes <= 45) {
-            this.currentminutes = "45"
-          }
-          else if (this.currentminutes > 45 && this.currentminutes <= 59) {
-            this.currentminutes = "00"
-          }
-
-          this.objProjectDto.StartTime = (this.currenthours + ":" + this.currentminutes);
-          this.objProjectDto.EndTime = ((this.currenthours + 1) + ":" + this.currentminutes);
-          this.objProjectDto.TimeCount = "01:00";
-          this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-          this.objProjectDto.date = this.current_Date;
-          this.objProjectDto.WorkAchieved = "Deadline Extend:" + this.extend_remarks;
-          this.objProjectDto.Emp_Comp_No = this.Comp_No;
-          this.objProjectDto.Project_Name = null;
-          this.objProjectDto.Master_code = this.URL_ProjectCode;
-          this.objProjectDto.Project_Code = this.actCode;
-
-          // this.service._InsertDARServie(this.objProjectDto)
-          // .subscribe(data => {
-          //   this._Message = data['message'];
-          //   this.notifyService.showSuccess(this._Message, "Success");
-          // });
           this.dar_details();
           this.getDarTime();
           this.GetProjectDetails();
