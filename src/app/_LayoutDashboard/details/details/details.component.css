@@ -759,13 +759,12 @@ span.kt-dt-l {
 .Kt-Pd-Status {
   background-color: #000;
   color: #fff;
-  margin: 0px 10px;
-  margin-left: 1rem;
   font-weight: 600;
-  padding: 6px 13px;
-  max-width: 140px;
-  min-width: 130px;
-  margin-right: 0px;
+  padding:0.2em;
+  padding-left:0.6em;
+  padding-right:0.6em;
+  border-radius:2px;
+  font-size:15px;
 }
 
 .Core_task {
@@ -878,17 +877,17 @@ span.kt-dt-l {
 
 .kt-prg-bar-info {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 600; 
   color: #3d3d3d;
 }
 
 .kt-prg-bar-info b {
-  font-size: 20px;
+  font-size: 20px; 
   margin-right: 5px;
 }
 
 .kt-total-prg-vl b {
-  font-size: 18px !important;
+  font-size: 15px !important;
   margin-right: 0px;
 }
 
@@ -910,18 +909,27 @@ button.Kt-Approval-btns {
 .Btn_Accpet {
   border-color: #8ab991 !important;
 }
-
-.Btn_Edit_Accept {
-  border-color: #7caccd !important;
-}
+.Btn_Accpet.active{
+  background-color: #8ab991 !important;
+  color: #fff;
+  }
 
 .Btn_Conditional_Accept {
   border-color: #407f4c !important;
+}
+.Btn_Conditional_Accept.active {
+  background-color: #407f4c !important;
+  color: #fff;
 }
 
 .Btn_Reject {
   border-color: #cf8e66 !important;
 }
+ 
+.Btn_Reject.active {
+  background-color: #cf8e66 !important;
+  color: #fff;
+} 
 
 .kt-approval-msg {
   background-color: #f0f0f0;
@@ -1376,7 +1384,8 @@ label.my-chosse-flv {
   background-color: #DFDFDF !important;
   color: #000;
 }
-.NewProjectRejected1{
+
+.NewProjectRejected1 {
   background-color: #DFDFDF !important;
   color: #000;
 }
@@ -1463,8 +1472,81 @@ div#DemoList-table div.demo i:hover {
 
 
 
-.NORESULTFOUND{
-  display:flex;
+.NORESULTFOUND {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
+
+
+/* ////////////////////////// Approval section Start ////////////////////////////////////// */
+button.Kt-Approval-btns{
+  width: 100%;
+  padding: 3px 5px;
+  border-radius: 50px;
+  background-color: #fff;
+  color: #4f4f4f;
+  border: 2px solid #fff;
+  font-weight: 500;
+  font-size: 14px;
+  min-width: 110px;
+}
+.kt-info-box {
+  padding: 10px 10px;
+  border-bottom: 1px solid #ededed;
+}
+.Btn_Conditional_Accept {
+  border-color: #407f4c !important;
+  }
+  /*----- attachement css ---------*/
+  .attachment-view svg {
+    width: 20px;
+  }
+  .attachment-view {
+    background-color:#f0f0f0;
+    padding: 8px 3px;
+    border-radius: 5px;
+    margin-top: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .attachment-view span {
+    font-weight: 600;  
+  }
+  .attachment-view:hover{
+    box-shadow: 0px 1px 6px #ccc;
+    background-color: #ffffff;
+  }
+  .appr-comts h6 {
+    margin: 0;
+    flex: 1;
+  }
+  .exs-cmts .crd-bdy{  
+    overflow: auto;
+    max-height: 200px;
+  }
+  .cmts-items {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    border-bottom: 1px solid #e4e7e8;
+  }
+  .cmts-items:hover .cmts-svg svg {
+    transform: scale(1.1);
+    fill: #2786fb;
+  }
+  .cmts-svg svg {
+    width: 20px;
+    height: 20px;
+    fill: #8d95a5;
+  }
+  .cmts-svg {
+    cursor: pointer;
+  }
+  .g-10 {
+    gap: 10px;
+}
+
+/* ////////////////////////// Approval section End ////////////////////////////////////// */

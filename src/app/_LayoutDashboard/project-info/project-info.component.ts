@@ -96,6 +96,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Mode: string = "UnderApproval";
   _fullname: any;
 
+
   /*
     routing Url id's for different components
       URL_ID     Component
@@ -1019,8 +1020,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   approvalClick(actionType) {
     // $("#ProjectInfoNew").scrollTop(0);
     this.comments=""
-    switch (actionType) {
-     
+   switch (actionType) {    
       case 'ACCEPT': {
         this.isRejectOptionsVisible = false
         this.selectedType = '1';
@@ -1393,15 +1393,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       else {
         this.approvalObj.Status = 'Rejected';
       }
-
-
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
-        console.log('++>',JSON.parse(data[0]['reject_CommentsList']));
+        console.log('++>',JSON.parse(data[0]['reject_CommentsList']));      
         this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
         this.rejectlength = this.rejectcommentsList.length;
       });
     }
-
   }
 
   underDev() {
