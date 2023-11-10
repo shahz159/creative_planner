@@ -29,6 +29,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DatePickerFormatDirective } from "./date-picker-format.directive";
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 
 FullCalendarModule.registerPlugins([
   interactionPlugin,
@@ -61,11 +62,12 @@ FullCalendarModule.registerPlugins([
     , GooglePlaceModule
     , NgxDaterangepickerMd.forRoot()
     ,PdfViewerModule
-    ,NgxDocViewerModule
+    ,NgxDocViewerModule,
+    GuidedTourModule
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}, GuidedTourService,
   ],
   exports: [DashboardComponent]
 })

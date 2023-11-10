@@ -65,6 +65,10 @@ class CalenderService {
         this.obj_CalenderDTO.Emp_No = obj.Emp_No;
         return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
     }
+    NewGetDelay_actions(obj) {
+        this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+        return this.http.post(this.rootUrl + "CalenderAPI/NewGetDelay_actions", this.obj_CalenderDTO);
+    }
     NewClickEventJSON(obj) {
         this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
         return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);

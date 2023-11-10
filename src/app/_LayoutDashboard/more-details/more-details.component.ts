@@ -472,6 +472,9 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   mainDeadline:any;
+  mainowner:any;
+  mainResp:any;
+  mainAutho:any;
   
   getapproval_actiondetails() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -481,8 +484,11 @@ export class MoreDetailsComponent implements OnInit {
       if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
         if (data[0]['actiondetails'] != '[]'){
           this.action_details = JSON.parse(data[0]['actiondetails']);
-          this.mainDeadline = this.action_details[0]['mainDeadline']; 
-          alert(this.mainDeadline);
+          this.mainDeadline = this.action_details[0]['mainDeadline'];
+          this.mainowner = this.action_details[0]['mainowner'];
+          this.mainResp = this.action_details[0]['mainResp'];
+          this.mainAutho = this.action_details[0]['mainAutho'];
+          console.log(this.action_details,"actionss")
           this.isAction=true;
         }
         if (data[0]['approvaldetails'] != '[]')
@@ -4657,7 +4663,38 @@ export class MoreDetailsComponent implements OnInit {
     }
     }
     else if(this.isAction==true){
-      
+      const dateOne = moment(this.mainDeadline).format("YYYY/MM/DD");
+      const dateTwo = moment(this._ProjDeadline).format("YYYY/MM/DD");
+      console.log(dateOne, dateTwo, "dates")
+      if ((dateOne < dateTwo) && ((this.Current_user_ID == this.mainowner || this.Current_user_ID == this.mainResp || this.Current_user_ID == this.mainAutho))) {
+        Swal.fire({
+          title: 'Action deadLine is greater than main project deadLine ?',
+          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((response: any) => {
+          if (response.value) {
+            this.onAction_ExtendDeadline();
+          } else if (response.dismiss === Swal.DismissReason.cancel) {
+            this.close_space();
+            Swal.fire(
+              'Cancelled',
+              'Action end date not updated',
+              'error'
+            )
+          }
+        });
+      }
+      else if ((dateOne < dateTwo) && (this.Current_user_ID != this.mainowner && this.Current_user_ID != this.mainResp && this.Current_user_ID != this.mainAutho)) {
+        Swal.fire({
+          title: 'Unable to extend end date for this action.',
+          text: 'You have selected the action end date greater than project deadline. Please contact the main project responsible to extend main project end date and try again.',
+        });
+      }
+      else {
+        this.onAction_ExtendDeadline();
+      }
     }
     
   }
@@ -4714,10 +4751,44 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onAction_ExtendDeadline() {
-    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
-        this._Message = data['message'];
+
+    if(this.isAction==false){
+          this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+        if (this._ProjDeadline != null) {
+          this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
+            this._Message = data['message'];
+
+            if (this._Message == 'Project Deadline not Updated') {
+              this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+            else if (this._Message == 'Project Deadline Updated') {
+              this.notifyService.showSuccess("Action end date updated.", "Success");
+              this.dar_details();
+              this.getDarTime();
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+            else if (this._Message == 'Project and action Deadline Updated') {
+              this.notifyService.showSuccess("Project and Action end date updated.", "Success");
+
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+          });
+          this.close_space();
+        }
+        else {
+          this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
+        }
+
+    }
+    else if(this.isAction==true){
+      this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+      if (this._ProjDeadline != null) {
+        this.service._ProjectDeadlineExtendService(this.URL_ProjectCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
+          this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
           this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
@@ -4744,6 +4815,8 @@ export class MoreDetailsComponent implements OnInit {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
 
+}
+    
 
   }
 

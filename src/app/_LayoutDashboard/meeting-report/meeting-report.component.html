@@ -679,7 +679,7 @@
                                             <div class="kt-mt-dw">
                                                 <div class="kt-card N-user-1">
                                                     <div class="kt-user-dt">
-                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-2lt kt-clr-1">{{initials}}</div>
                                                         <div class="kt-user-name">{{_userfullname}} </div>
                                                     </div>
                                                     <div class="kt-user-note kt-clr-bg-1">
@@ -691,7 +691,7 @@
                                                 <ng-container *ngFor="let note of _meetingNotesAry">
                                                     <div *ngIf="CurrentUser_ID != note.Emp_no" class="kt-card N-user-2">
                                                         <div class="kt-user-dt">
-                                                            <div class="kt-user-2lt kt-clr-2">GD</div>
+                                                            <div class="kt-user-2lt kt-clr-2">{{note.initials}}</div>
                                                             <div class="kt-user-name">{{note.Emp_Name}}
                                                                 <!-- <span class="kt-met-time-date">05:34</span> -->
                                                             </div>
@@ -736,7 +736,7 @@
                                             <div class="kt-mt-dw">
                                                 <div class="kt-card N-user-1">
                                                     <div class="kt-user-dt">
-                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-2lt kt-clr-1">{{initials}}</div>
                                                         <div class="kt-user-name">{{_userfullname}} </div>
                                                     </div>
                                                     <div class="kt-user-note kt-clr-bg-1">
@@ -1856,7 +1856,7 @@
 
                             <div class="kt-card N-user-1">
                                 <div class="kt-user-dt">
-                                    <div class="kt-user-2lt kt-clr-1">NS</div>
+                                    <div class="kt-user-2lt kt-clr-1">{{pre.initials}}</div>
                                     <div class="kt-user-name">{{pre.Emp_Name}}</div>
                                 </div>
                                 <div class="kt-user-note kt-clr-bg-1">
