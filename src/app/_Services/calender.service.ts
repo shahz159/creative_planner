@@ -43,6 +43,10 @@ export class CalenderService {
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
   }
+  NewGetDelay_actions(obj:CalenderDTO){
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetDelay_actions", this.obj_CalenderDTO);
+  }
   NewClickEventJSON(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
   
@@ -152,6 +156,12 @@ export class CalenderService {
     this.obj_CalenderDTO.propose_edt = obj.propose_edt;
 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetProposenewdate", this.obj_CalenderDTO);
+  }
+  NewGetPendingAvailability(obj:CalenderDTO){
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Scheduled_date = obj.Scheduled_date;
+
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetPendingAvailabilty", this.obj_CalenderDTO);
   }
   NewGetMeetingDuration(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;

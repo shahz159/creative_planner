@@ -518,6 +518,7 @@ export class ActionToProjectComponent implements OnInit {
           this._inputAttachments = [];
         }
         else if(this._Urlid == 4){
+       
           this._details.getProjectDetails(this.selectedProjectCode);
           this.closeInfo();
         }
@@ -612,6 +613,7 @@ export class ActionToProjectComponent implements OnInit {
 
     }
     else if(this._Urlid==4){
+     
       this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
 

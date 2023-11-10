@@ -1170,36 +1170,36 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto.Dms = this.checkeddms.join(',');
     this._calenderDto.Portfolio = this.checkedportfolio.join(',');
     this._calenderDto.Project = this.checkedproject.join(',');
-    // console.log(this._calenderDto,"dto")
-    this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
-      (data => {
-        this.notifyService.showSuccess("Successfully", "Completed");
-        // window.close();
-        this.GetcompletedMeeting_data();
-        if (this.Meetingstatuscom == 'Completed') {
-          this.interval == 0;
-          if (this.interval == 0) {
-            clearInterval(this.interval);
-          }
-        }
-      });
-    const modalElement = document.getElementById('exampleModal');
+    console.log(this._calenderDto,"dto")
+    // this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+    //   (data => {
+    //     this.notifyService.showSuccess("Successfully", "Completed");
+    //     // window.close();
+    //     this.GetcompletedMeeting_data();
+    //     if (this.Meetingstatuscom == 'Completed') {
+    //       this.interval == 0;
+    //       if (this.interval == 0) {
+    //         clearInterval(this.interval);
+    //       }
+    //     }
+    //   });
+    // const modalElement = document.getElementById('exampleModal');
 
-    // Close the modal by removing the "show" class from the modal element
-    if (modalElement) {
-      modalElement.classList.remove('show');
+    // // Close the modal by removing the "show" class from the modal element
+    // if (modalElement) {
+    //   modalElement.classList.remove('show');
 
-      // Additionally, you might want to reset the modal backdrop (optional)
-      const modalBackdrop = document.querySelector('.modal-backdrop');
-      if (modalBackdrop) {
-        modalBackdrop.parentNode?.removeChild(modalBackdrop);
-      }
-    }
+    //   // Additionally, you might want to reset the modal backdrop (optional)
+    //   const modalBackdrop = document.querySelector('.modal-backdrop');
+    //   if (modalBackdrop) {
+    //     modalBackdrop.parentNode?.removeChild(modalBackdrop);
+    //   }
+    // }
 
-    if (this.refreshSubscription) {
-      this.refreshSubscription.unsubscribe();
-    }
-    this.notifyService.showSuccess("Meeting completed successfully", "Success");
+    // if (this.refreshSubscription) {
+    //   this.refreshSubscription.unsubscribe();
+    // }
+    // this.notifyService.showSuccess("Meeting completed successfully", "Success");
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");
@@ -1340,7 +1340,7 @@ export class MeetingReportComponent implements OnInit {
     document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("metting_slide").classList.remove("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
 
   }
   ngOnDestroy(): void {

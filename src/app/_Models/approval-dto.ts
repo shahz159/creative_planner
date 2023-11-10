@@ -1,6 +1,6 @@
 export class ApprovalDTO {
 
-    Project_Code: string;
+    Project_Code: any;
     Emp_no: string;
     Request_Date: string;
     Request_type: string;
