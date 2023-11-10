@@ -307,6 +307,36 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.closeLinkSideBar();
   }
 
+
+
+
+  darcreate() {
+    document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  View_Activity(){
+    document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  Attachment_view(){
+    document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  closedarBar() {
+    document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+  }
+
+  View_timeline(){
+    document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
+
+
 ///  
 
 //  ADD NEW DMS

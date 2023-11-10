@@ -109,7 +109,8 @@
                                                     <div class="col-md-10">
                                                         <h5><strong>Total Portfolios - </strong>
                                                             <span class="d-inline-block">
-                                                                <strong>{{countAll.toLocaleString()}}</strong>
+                                                                <strong *ngIf="countAll>=1000">{{countAll.toLocaleString()}}</strong>
+                                                                <strong *ngIf="countAll<1000">{{countAll}}</strong>
                                                             </span>
                                                         </h5>
                                                     </div>
