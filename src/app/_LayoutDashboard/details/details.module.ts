@@ -11,6 +11,7 @@ import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     DetailsRoutingModule,
     NgMultiSelectDropDownModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule
   ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent

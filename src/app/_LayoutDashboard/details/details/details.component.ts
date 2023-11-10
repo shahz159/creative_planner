@@ -18,6 +18,11 @@ import { ToDoProjectsComponent } from '../../to-do-projects/to-do-projects.compo
 import { NotificationComponent } from '../../notification/notification.component';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
+import { DatePipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 
 
@@ -43,6 +48,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   _totalMemos:number=0;
   _linkedMemos:number=0;
   Memos_List:any;
+  memosOptions:any;
   approvalObj:ApprovalDTO;
 
 
@@ -89,7 +95,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   reject_list: any;
   comments_list: any;
   new_cost: any;
-
+  ObjSubTaskDTO: SubTaskDTO;
 
 
 
@@ -103,7 +109,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      public approvalservice: ApprovalsService,
      public service: ProjectTypeService,
      private notifyService: NotificationService,
-    ) { }
+     public datepipe: DatePipe,
+    ) {
+
+      this.ObjSubTaskDTO = new SubTaskDTO();
+      this.objProjectDto = new ProjectDetailsDTO();
+
+     }
   charts() { }
   
   
@@ -111,11 +123,10 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.Current_user_ID=localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
-    this.showActionDetails(undefined);     // initially show the Project details
-    this.approvalObj=new ApprovalDTO();
-    this.getapprovalStats();
+    this.getapprovalStats();       
     this.getusername(); 
-    // this.router.navigate(["./Details", this.URL_ProjectCode]);
+    this.gethierarchy();
+    this.showActionDetails(undefined);     // initially show the Project details
   }
 
   ngAfterViewInit():void{
@@ -183,16 +194,27 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
   getProjectDetails(prjCode:string) {
-  
-   
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
 
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];   // projectInfo is an Object
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
-
+      this._MasterCode=this.projectInfo.Project_Code;
       console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
-      
+
       if(this.projectActionInfo){
+// all must be zero before calculation.
+    this.TOTAL_ACTIONS_DONE=0;
+    this.TOTAL_ACTIONS=0;
+    this.TOTAL_ACTIONS_IN_HOLD=0;
+    this.TOTAL_ACTIONS_IN_CUA=0;
+    this.TOTAL_ACTIONS_IN_FUA=0;
+    this.TOTAL_ACTIONS_IN_DELAY=0;
+    this.TOTAL_ACTIONS_IN_PROCESS=0;
+    this.TOTAL_ACTIONS_REJECTED=0;
+    this.TOTAL_ACTIONS_UNDER_APPROVAL=0;
+// 
+
         this.projectActionInfo.forEach(action => {
 
              switch(action.Status){
@@ -281,18 +303,17 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
+    this.getProjectDetails(this.URL_ProjectCode);
     this.closeLinkSideBar();
   }
 
 ///  
 
 //  ADD NEW DMS
+
+
 addNewDMS(){
-
-   this.GetDMS_Memos(); 
-   this.GetMemosByEmployeeId();
-  
-
+   this.GetMemosByEmployeeId();   // get all project's memos and memos for ngselect.
     // opens the addnewdms sidebar
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -311,33 +332,14 @@ closeLinkSideBar() {
 //
   
 
-GetDMS_Memos() {
-  this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
-    subscribe((data:any) => {
-      
-      console.log("get memos here:",data)
-         if(data&&data.length>0){ // if data is not [] means there will be atleast one memo present in the project.
-          this._LinkService._GetMemosSubject(data[0]['JsonData']).
-          subscribe((data:any) => {
-            if(data.JsonData){
-              this.projectMemos=JSON.parse(data.JsonData);
-              this._linkedMemos=this.projectMemos.length;
-              }
-              console.log("get memo subject:",this.projectMemos);
-            
-          });
-         }
-         else{   // if data is [] and length is 0.   means if there is not even one memo present in the project.
-              this._linkedMemos=0;
-         }
-          
-    });
-}
+
+
+
+
 
 
 GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data:any)=>{
-             console.log("getmemosbyempid:",JSON.parse(data.JsonData));
              this._totalMemos=JSON.parse(data.JsonData).length;
              this.Memos_List=JSON.parse(data.JsonData);
              console.log("this is Memos_List:",this.Memos_List);
@@ -350,18 +352,53 @@ GetMemosByEmployeeId() {
                            itemsShowLimit: 1,
                            allowSearchFilter: true
                                          };
+      this.GetDMS_Memos(); 
             
+    });
+}
+
+
+GetDMS_Memos() {
+  this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
+    subscribe((data:any) => {
+      console.log("inside GetDMS_Memos:",data);
+         if(data&&data.length>0){ // if data is not [] means there will be atleast one memo present in the project.
+          this._LinkService._GetMemosSubject(data[0]['JsonData']).
+          subscribe((data:any) => {
+          
+            if(data.JsonData){
+              this.projectMemos=JSON.parse(data.JsonData);
+              this._linkedMemos=this.projectMemos.length;
+             
+              // at this point we have projmemos and totalmemos available. we dont need to show memos in the ngselect which are already selected so
+             this.memosOptions=this.Memos_List.filter((item:any)=>{
+                   let selectornot=true;
+                   for(let i=0;i<this.projectMemos.length;i++)
+                   {
+                       if(this.projectMemos[i].MailId===item.MailId)
+                       { selectornot=false;  break;         }
+                   }
+                   return selectornot;
+              });
+              // now only unselected memos will be visible.
+              
+             console.log("this memosOptions:",this.memosOptions)
+              }
+              console.log("get memo subject:",this.projectMemos);
+            
+          });
+         }
+         else{   // if data is [] and length is 0.   means if there is not even one memo present in the project.
+          this.memosOptions=this.Memos_List;   // if the project contain no memos then all list memos in the memos options.
+          this._linkedMemos=0;
+         }
+          
     });
 }
 
 
 
 
- getMemoOptions(prjMemos,allMemos){
-
-
-
- }
 
 
 
@@ -427,10 +464,9 @@ GetMemosByEmployeeId() {
         console.log(e);
         this.notifyService.showInfo("Request Cancelled", "Error!");
       }
-
-
+        this.GetMemosByEmployeeId();    // get new data.
         this.selectedMemos=new Array();    
-        this.closeLinkSideBar();       
+        // this.closeLinkSideBar();         //closes the sidebar.
       }
 // ADD DMS END HERE
 
@@ -465,6 +501,7 @@ deleteMemos(memoId:number) {
                     if(res.Message==='Updated Successfully'){
                      this.notifyService.showInfo("", "Memo Removed."); 
                      this._linkedMemos--;
+                     this.GetDMS_Memos();
                       }
                   });  
                 } 
@@ -482,36 +519,7 @@ deleteMemos(memoId:number) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///////////////////////////new Approval section Start ////////////////////
-
-
 url: any;
 iscloud: any;
 completedoc: any;
@@ -558,7 +566,9 @@ Close_Comments() {
 
 getapprovalStats() {
   // this.approvalEmpId = null;
+  this.approvalObj=new ApprovalDTO();
   this.approvalObj.Project_Code = this.URL_ProjectCode;
+
   this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
     this.requestDetails = data as [];
      console.log(this.requestDetails, "approvals");
@@ -805,20 +815,6 @@ clickondeselect(com, id) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 EmpNo_Res: string;
 EmpNo_Autho: string;
 ProjectNameJson: any;
@@ -886,6 +882,492 @@ openPDF(cloud, docName) {
     window.open(docName);
   }
 }
+
+
+
+
+// Action completion sidebar code starts from here
+isHierarchy: boolean = false;
+_MasterCode: string;
+
+
+
+Sub_ProjectCode: string;
+Sub_Desc: string;
+_Subtaskname: string;
+Sub_StartDT: Date;
+Sub_EndDT: Date;
+Sub_Autho: string;
+Sub_Status: string;
+_remarks: string = "";
+selectedFile: any = null;
+progress: any;
+_inputAttachments: string;
+
+gethierarchy() {
+  this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID, this.URL_ProjectCode).subscribe((data) => {
+    if (data['message'] == '1') {
+      this.isHierarchy = true;
+    }
+    else {
+      this.isHierarchy = false;
+    }
+  });
+
+}
+
+
+
+
+
+
+
+markCompleted(selectedAction:{Project_Code:string,Project_Description:string,Project_Name:string,StartDate:Date,EndDate:Date,TeamRes:string,Status:string}){
+
+this.Sub_ProjectCode=selectedAction.Project_Code;
+this.Sub_Desc=selectedAction.Project_Description;
+this._Subtaskname=selectedAction.Project_Name;
+this.Sub_StartDT=selectedAction.StartDate;
+this.Sub_EndDT=selectedAction.EndDate;
+this.Sub_Autho=selectedAction.TeamRes;
+this.Sub_Status=selectedAction.Status;
+
+  // opens the actioncompletion sidebar code here.
+  document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+  //
+}
+
+closeActCompSideBar(){
+  document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementById("newdetails").classList.add("position-fixed");
+}  // for temp we are using this.
+
+
+actionCompleted(){
+  if (this._remarks ==="") { // when the user not provided the remark then.
+    this.notifyService.showInfo("Remarks Cannot be Empty", '');
+  }
+  else if ((this.inProcessCount + this.delaycount) == 1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo|| this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) 
+  {  // when the user provided the remark then.
+       Swal.fire({
+        title: 'This is the last action to be completed.',
+        text: 'Do you want to proceed with main project submission?',
+        // icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+       }).then((res:any)=>{
+
+               if(res.value)
+               {   
+                if (this.selectedFile == null) {
+                  this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
+                }
+                else {
+                  const fd = new FormData();
+                  fd.append("Project_Code", this.Sub_ProjectCode);
+                  fd.append("Master_Code", this._MasterCode);
+                  fd.append("Team_Autho", this.Sub_Autho);
+                  fd.append("Projectblock", this.projectInfo.Project_Block);
+                  fd.append("Remarks", this._remarks);
+                  fd.append('file', this.selectedFile);
+                  fd.append("Project_Name", this._Subtaskname);
+                  this.service._UpdateSubtaskByProjectCode(fd)
+                    .subscribe(data => {
+                         
+                    });
+                  this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+                  const fd1 = new FormData();
+                  fd1.append("Project_Code", this.URL_ProjectCode);
+                  fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+                  fd1.append("Remarks", this._remarks);
+                  fd1.append("Projectblock", this.projectInfo.Project_Block);
+                  fd1.append('file', this.selectedFile);
+                  fd1.append("Emp_No", this.Current_user_ID);
+                  fd1.append("Project_Name", this.projectInfo.Project_Name);
+                  console.log(fd1, "complete");
+                  this.service._fileuploadService(fd1).
+                    subscribe((event: HttpEvent<any>) => {
+                      switch (event.type) {
+                        case HttpEventType.Sent:
+                          console.log('Request has been made!');
+                          break;
+                        case HttpEventType.ResponseHeader:
+                          console.log('Response header has been received!');
+                          break;
+                        case HttpEventType.UploadProgress:
+                          this.progress = Math.round(event.loaded / event.total * 100);
+                          console.log(this.progress, "progress");
+                          if (this.progress == 100) {
+                            this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                            
+                          }
+                          break;
+                        case HttpEventType.Response:
+                          console.log('File upload done!', event.body);
+                          var myJSON = JSON.stringify(event);
+                            this._Message = (JSON.parse(myJSON).body).Message;
+                            this.notifyService.showSuccess(this._Message, 'Success');
+                      }
+                 
+                      this.closeActCompSideBar();
+                      this.getProjectDetails(this.URL_ProjectCode);
+                      // this.GetSubtask_Details();
+                      // this.GetProjectDetails();
+                      // this.getapprovalStats();
+                      // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+                    });
+                }
+               }
+               else if(res.dismiss === Swal.DismissReason.cancel)
+               {
+                const fd = new FormData();
+                fd.append("Project_Code", this.Sub_ProjectCode);
+                fd.append("Master_Code", this._MasterCode);
+                fd.append("Team_Autho", this.Sub_Autho);
+                fd.append("Projectblock", this.projectInfo.Project_Block);
+                fd.append("Remarks", this._remarks);
+                fd.append('file', this.selectedFile);
+                fd.append("Project_Name", this._Subtaskname);
+                this.service._UpdateSubtaskByProjectCode(fd)
+                .subscribe(data => {
+                  this._remarks = "";
+                  this._inputAttachments = "";
+                  // this.GetProjectDetails();
+                  // this.GetSubtask_Details();
+                  // Rebinding    
+                  // this.closeInfo();   //closing the sidebar.
+
+                  this.getProjectDetails(this.URL_ProjectCode); // rebinding data.
+                  this.closeActCompSideBar();  // closing the action completion sidebar.
+                });
+                this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+               }
+       });   //swal end
+
+  }
+  else{
+    const fd = new FormData();
+    fd.append("Project_Code", this.Sub_ProjectCode);
+    fd.append("Master_Code", this._MasterCode);
+    fd.append("Team_Autho", this.Sub_Autho);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Remarks", this._remarks);
+    fd.append('file', this.selectedFile);
+    fd.append("Project_Name", this._Subtaskname);
+    this.service._UpdateSubtaskByProjectCode(fd)
+        .subscribe(data => {
+          // this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
+          this._remarks = "";
+          this._inputAttachments = "";
+          // this.GetProjectDetails();
+          // this.GetSubtask_Details();
+          // Rebinding    
+          this.getProjectDetails(this.URL_ProjectCode); 
+          this.closeActCompSideBar();
+        });
+        this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+// Action completion sidebar code end at here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//timeline section code here start
+noTimeline: boolean;
+darList: any;
+darArr: any;
+darArray: any = [];
+totalHours: any;
+totalRecords: any;
+_CurrentpageRecords: any;
+ProjectBlockName: any;
+showaction: boolean =true;
+workdes: string;
+current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
+dateF = new FormControl(new Date());
+todayDate = new Date();
+disablePreviousDate = new Date();
+starttime: any;
+timedata: any = [];
+timedata1: any;
+objProjectDto: ProjectDetailsDTO;
+date11: any;
+currenthours: any;
+timeList: any;
+bol: boolean = true;
+starttimearr: any = [];
+endtimearr: any = [];
+lastEndtime: any;
+endtime: any;
+coresecondary: boolean = true;
+Responsible_EmpNo: string;
+noact_msg:boolean=false;
+date = new Date();
+actionCode: string;
+timecount: any;
+minutes: any;
+hours: any;
+Comp_No: string;
+inProcessCount: number;
+delaycount: number;
+
+
+
+openDarSideBar(){
+  // opens the dar side bar 
+  document.getElementById("newdetails").classList.add("position-fixed");
+  document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+ //
+ // get all actions
+ this.getResponsibleActions();
+ //
+ this.currenthours = this.date.getHours();
+ 
+}
+closeDarSideBar(){
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+}
+
+
+
+
+getResponsibleActions() {
+  this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
+    (data) => {
+      this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+      console.log('darArr:',this.darArr);
+      if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
+        this.showaction=false;
+      }
+      else if(this.darArr.length==0 && this.projectInfo.OwnerEmpNo!=this.Current_user_ID && this.Responsible_EmpNo!=this.Current_user_ID){
+        this.showaction=true;
+        this.noact_msg=true;
+      }
+      else{
+        this.showaction=true;
+      }
+    });
+}
+
+
+
+
+
+
+
+
+dar_details() {
+  this.noTimeline = false;
+  this.ObjSubTaskDTO.MasterCode = this.URL_ProjectCode;
+  this.ObjSubTaskDTO.PageNumber = 1;
+  this.ObjSubTaskDTO.PageSize = 10;
+  this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
+    .subscribe(data1 => {
+      
+      this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
+      console.log(this.darList);
+      this.darArray = this.darList;
+      // console.log(this.darArray,"DAR");
+      this.totalHours = (data1[0]['Totalhours']);
+      this.totalRecords = (data1[0]['TotalRecords']);
+      if (this.darList.length == 0) {
+        this.noTimeline = true;
+      }
+      if (this.darList) {
+        this._CurrentpageRecords = this.darList.length;
+      }
+    });
+}
+
+
+
+getDarTime() { 
+  this.timedata = [];
+  this.timedata1 = ["08:00",
+    "08:15", "08:30", "08:45", "09:00",
+    "09:15", "09:30", "09:45", "10:00",
+    "10:15", "10:30", "10:45", "11:00",
+    "11:15", "11:30", "11:45", "12:00",
+    "12:15", "12:30", "12:45", "13:00",
+    "13:15", "13:30", "13:45", "14:00",
+    "14:15", "14:30", "14:45", "15:00",
+    "15:15", "15:30", "15:45", "16:00",
+    "16:15", "16:30", "16:45", "17:00",
+    "17:15", "17:30", "17:45", "18:00",
+    "18:15", "18:30", "18:45", "19:00",
+    "19:15", "19:30", "19:45", "20:00"];
+   
+
+  this.objProjectDto.Emp_No = this.Current_user_ID;
+  this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+  this.date11 = moment(new Date()).format("MM/DD/YYYY");
+  this.objProjectDto.date = this.current_Date;
+
+
+  if (this.current_Date == this.date11) {
+    
+    this.timedata1.forEach(element => {
+      const [shours, sminutes] = element.split(":");
+      if (shours <= this.currenthours)
+        this.timedata.push(element);
+    });
+    console.log('check this:',this.timedata);
+    
+  }
+  else {
+    this.timedata1.forEach(element => {
+      this.timedata.push(element);
+    });
+  }
+console.log("timedata:",this.timedata);
+  this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+    .subscribe(data => {
+      this.timeList = JSON.parse(data[0]['time_json']);
+      console.log(this.timeList, "time");
+      if (this.timeList.length != 0) {
+        this.bol = false;
+        this.timeList.forEach(element => {
+          this.starttimearr.push(element.starttime);
+        });
+        this.timeList.forEach(element => {
+          this.endtimearr.push(element.endtime);
+        });
+        let l = this.endtimearr.length;
+        this.lastEndtime = this.endtimearr[l - 1];
+      }
+      else if (this.timeList.length == 0) { 
+        this.bol = true;
+        this.lastEndtime = 0;
+        this.starttimearr = [];
+        this.endtimearr = [];
+      }
+    });
+}
+
+orgValueChange(val) {
+  this.current_Date = moment(val.value).format("MM/DD/YYYY");
+}
+
+diff_minutes(dt2, dt1) {
+  var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= 60;
+  return Math.abs(Math.round(diff));
+}
+
+
+
+
+submitDar() {
+    
+  if (this.starttime != null && this.endtime != null) {
+    const [shours, sminutes] = this.starttime.split(":");
+    const [ehours, eminutes] = this.endtime.split(":");
+    var dt1 = new Date(2014, 10, 2, shours, sminutes);
+    var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+    this.minutes = this.diff_minutes(dt1, dt2) % 60;
+    if (this.minutes < 10) {
+      this.minutes = "0" + this.minutes
+    }
+    this.hours = Math.floor(this.diff_minutes(dt1, dt2) / 60);
+    if (this.hours < 10) {
+      this.hours = "0" + this.hours;
+    }
+    this.timecount = (this.hours + ":" + this.minutes);
+  }  // this is for calculating the timecount using the hours and minutes
+
+  this.objProjectDto.Emp_No = this.Current_user_ID;                  // setting the current user id.
+  this.objProjectDto.Exec_BlockName = this.projectInfo.Project_Type;  // setting the project type.
+  if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
+    this.objProjectDto.StartTime = this.starttime;
+    this.objProjectDto.EndTime = this.endtime;
+    this.objProjectDto.TimeCount = this.timecount;
+  }
+  this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+  this.objProjectDto.date = this.current_Date;
+  this.objProjectDto.WorkAchieved = this.workdes;
+  this.objProjectDto.Emp_Comp_No = this.Comp_No;
+
+  if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
+    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    this.objProjectDto.Master_code = this.URL_ProjectCode;
+    this.objProjectDto.Project_Code = this.URL_ProjectCode;
+  }
+  else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount==0)) {
+    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    this.objProjectDto.Master_code = this.URL_ProjectCode;
+    this.objProjectDto.Project_Code = this.URL_ProjectCode;
+  }
+  else {
+    this.objProjectDto.Master_code = this.URL_ProjectCode;
+    this.objProjectDto.Project_Code = this.actionCode;
+  }
+
+ console.log("objProjectDto:",this.objProjectDto);
+
+
+  this.service._InsertDARServie(this.objProjectDto)
+    .subscribe(data => {
+      this._Message = data['message'];
+      this.notifyService.showSuccess(this._Message, "Success");
+    });
+  this.dar_details();
+  this.getDarTime();
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  // this.Clear_Feilds();
+}
+
+
+
+// timeline code end here
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 ///////////////////////////new Approval section End ////////////////////
