@@ -1,26 +1,5 @@
 <div class="kt-container  kt-container--fluid p-0 kt-grid__item kt-grid__item--fluid text-dark project-info-page side_view"
     id="moredet">
-    <!-- <div class="row">
-        <div class="col-lg-12">
-            <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            <strong>dr.CAFE-206, Olaya St, Al Nuruji Project
-                            </strong>
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <ng-container *ngIf="Status=='Project Hold' && reason!=''">
-        <div class="desc-msg hold-msg">
-            <div class="d-flex align-items-center px-3">
-                <h6 class="mb-0">Remark: {{reason}} </h6>
-            </div>
-        </div>
-    </ng-container> -->
     <ng-container *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
                     (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') || 
                     activity=='Project Complete Rejected'  || activity=='Rejected' || (activity=='New Action Rejected') || (activity=='Project Release' && send_from=='WR')
@@ -5802,7 +5781,7 @@
                     </div>
                 </div>
                 <div class="form-group mt-3" *ngIf="ProjectBlockName!='To do List'">
-                    <label>Attachments</label><span class="text-danger">*</span>
+                    <label>Attachments</label><span *ngIf="isAction==false" class="text-danger">*</span>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -5823,22 +5802,6 @@
                     </div>
                     <span class="text-info"> *Accept only pdf files </span>
                 </div>
-                <!-- <div class="form-group">
-                    <label>Attachments 1 </label>
-                    <div></div>
-                    <div class="custom-file">
-                        <input type="file" class="form-control-file" id="_pdf" accept="application/pdf"
-                            (change)="onFileChange($event)">
-                    </div>
-                </div> -->
-
-                <!-- <div class="form-group">
-                    <label>Attachments 2</label>
-                    <div></div>
-                    <div class="custom-file">
-                        <input type="file" class="form-control-file" id="uploadFile" (change)="onFileChange2($event)">
-                    </div>
-                </div> -->
                 <div class="form-group">
                     <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
                     <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
@@ -5847,10 +5810,10 @@
                 </div>
 
                 <div class="form-group mb-1">
-                    <button type="submit" *ngIf="ProjectBlockName!='To do List'" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
+                    <button type="submit" *ngIf="ProjectBlockName!='To do List' && isAction==false" class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
                         (click)="updateMainProject()">Submit
                     </button>
-                    <button type="submit" *ngIf="ProjectBlockName=='To do List'" class="btn btn-primary" [disabled]="(_remarks=='')"
+                    <button type="submit" *ngIf="ProjectBlockName=='To do List' || isAction==true" class="btn btn-primary" [disabled]="(_remarks=='')"
                         (click)="updateMainProject()">Submit
                     </button>
                 </div>

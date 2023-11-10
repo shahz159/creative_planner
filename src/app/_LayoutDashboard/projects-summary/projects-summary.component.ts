@@ -395,7 +395,7 @@ $(document).ready(function(){
     // alert(this.isChecked);
   }
 
-  GetProjectsByUserName(type) {
+    GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 

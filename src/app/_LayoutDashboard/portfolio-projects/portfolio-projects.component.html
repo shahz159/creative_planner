@@ -12,38 +12,39 @@
                             <i class="fa fa-arrow-left mr-0" aria-hidden="true"></i>
                         </button>
                     </span> -->
-                    <h3 class="kt-portlet__head-title mr-3">
-                        <strong>{{_PortFolio_Namecardheader}}</strong>
-                    </h3>
-                    <button id="groupportfolio" class="btn btn-outline-hover-primary btn-sm btn-icon btn-circle"
-                        data-toggle="dropdown" (click)="btnEdit()" [disabled]="_MessageIfNotOwner!=''">
-                        <strong><i class="fa fa-edit m-2"></i></strong>
-                    </button>
-                    <span class=" ml-4" style="color:red" [hidden]="Max50Char">
-                        <strong>*Only 50 characters allowed</strong>
-                    </span>
-                    <div
-                        class="dropdown-menu dropdown-menu-left dropdown-menu-fit dropdown-menu-md bg-ground-short mr-2">
-                        <!--begin::Nav-->
-                        <ul class="kt-nav">
-                            <li class="kt-nav__head d-block">
-                                <p class="mb-0"><strong>Rename Portfolio</strong></p>
-                                <div class="kt-nav__separator"></div>
-                            </li>
-                            <li class="kt-nav__item px-4">
-                                <input type="text" class="form-control" placeholder="Enter Portfolio Name"
-                                    [(ngModel)]="Rename_PortfolioName"
-                                    [ngStyle]="{'border-color':Rename_PortfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)' }">
-
-                            </li>
-                            <li class="kt-nav__foot">
-                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-3"
-                                    (click)="RenamePortfolio()" [disabled]="Rename_PortfolioName==''">Update
-                                    Portfolio</button>
-                            </li>
-                        </ul>
-                        <!--end:: Nav-->
-                    </div>
+                        <h3 class="kt-portlet__head-title mr-3">
+                            <strong data-toggle="tooltip" title="Portfolio name">{{_PortFolio_Namecardheader}}</strong>
+                            <button id="groupportfolio" class="btn btn-outline-hover-primary btn-sm btn-icon btn-circle"
+                                data-toggle="dropdown" style="color:#5867dd" (click)="btnEdit()" [disabled]="_MessageIfNotOwner!=''">
+                                <strong><i class="fa fa-edit m-2"></i></strong>
+                            </button>
+                            <span class=" ml-4" [hidden]="Max50Char">
+                                <small style="color:red;" >*Only 50 characters allowed</small>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-left dropdown-menu-fit dropdown-menu-md bg-ground-short mr-2">
+                                <!--begin::Nav-->
+                                <ul class="kt-nav">
+                                    <li class="kt-nav__head d-block">
+                                        <p class="mb-0"><strong>Rename Portfolio</strong></p>
+                                        <div class="kt-nav__separator"></div>
+                                    </li>
+                                    <li class="kt-nav__item px-4">
+                                        <input type="text" class="form-control" placeholder="Enter Portfolio Name"
+                                            [(ngModel)]="Rename_PortfolioName"
+                                            [ngStyle]="{'border-color':Rename_PortfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)' }">
+        
+                                    </li>
+                                    <li class="kt-nav__foot">
+                                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-3"
+                                            (click)="RenamePortfolio()" [disabled]="Rename_PortfolioName==''">Update
+                                            Portfolio</button>
+                                    </li>
+                                </ul>
+                                <!--end:: Nav-->
+                            </div>
+                            <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>                   
+                        </h3>
+                    
                     <!-- Vali Work's -->
                     <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
                         <div class="kt-quick-search__form">
