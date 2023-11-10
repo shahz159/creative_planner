@@ -1509,6 +1509,7 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   GetProjectDetails() {
+   
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
@@ -3662,7 +3663,7 @@ export class MoreDetailsComponent implements OnInit {
 
 
   GetSubtask_Details() {
-    if (this.filteredemp == true) {
+    if (this.filteredemp == true) {   
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
           console.log('here',data[0].ActionCount_Json);
@@ -3694,6 +3695,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
+          console.log('jere',data);
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_SubtaskDetails']);
@@ -5604,7 +5606,6 @@ export class MoreDetailsComponent implements OnInit {
       this._portfolioLength = 0;
 
     }
-
     else
       this._portfolioLength = this._portfoliolist.length;
     // console.log(this._portfoliolist,"lll");
@@ -5727,7 +5728,7 @@ export class MoreDetailsComponent implements OnInit {
 
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
-
+   
     this._portfoliolist.forEach(element => {
       if (port_id == element.Portfolio_ID)
         this.portfolioName = element.Portfolio_Name
@@ -5739,10 +5740,10 @@ export class MoreDetailsComponent implements OnInit {
         mode: 'delete',
         title1: 'Confirmation ',
         message1: this.portfolioName
-
       }
     });
     confirmDialog.afterClosed().subscribe(result => {
+      
       if (result === true) {
         this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
           this.GetProjectDetails();

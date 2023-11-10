@@ -18,6 +18,7 @@ import { ToDoProjectsComponent } from '../../to-do-projects/to-do-projects.compo
 import { NotificationComponent } from '../../notification/notification.component';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 
 
 
@@ -89,7 +90,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   reject_list: any;
   comments_list: any;
   new_cost: any;
-
+  Pid: number;
+  _MasterCode: string;
 
 
 
@@ -98,12 +100,15 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
-    private router: Router,private activatedRoute: ActivatedRoute,private bsService:BsServiceService,public _LinkService: LinkService,
-    private dialog: MatDialog,
+     private router: Router,private activatedRoute: ActivatedRoute,
+     private bsService:BsServiceService,public _LinkService: LinkService,
+     private dialog: MatDialog,
      public approvalservice: ApprovalsService,
      public service: ProjectTypeService,
      private notifyService: NotificationService,
-    ) { }
+    ) {
+      this.objPortfolioDto = new PortfolioDTO()
+     }
   charts() { }
   
   
@@ -115,6 +120,9 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.approvalObj=new ApprovalDTO();
     this.getapprovalStats();
     this.getusername(); 
+    
+ 
+    
     // this.router.navigate(["./Details", this.URL_ProjectCode]);
   }
 
@@ -182,14 +190,15 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
-  getProjectDetails(prjCode:string) {
-  
+    getProjectDetails(prjCode:string) {
    
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
 
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];   // projectInfo is an Object
+      this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
+      this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
-
+      
       console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
       
       if(this.projectActionInfo){
@@ -549,6 +558,8 @@ Close_Comments() {
   this.comments = "";
 }
 
+
+
 getapprovalStats() {
   // this.approvalEmpId = null;
   this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -717,6 +728,7 @@ submitApproval() {
         this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
         this.getapprovalStats();     
         this.getProjectDetails(this.URL_ProjectCode);
+       
       });
     console.log(this.singleapporval_json, "accept")
   }
@@ -880,5 +892,179 @@ openPDF(cloud, docName) {
   }
 }
 
-}
+
 ///////////////////////////new Approval section End ////////////////////
+
+
+
+_portfoliolist: any;
+_portfolioLength: any;
+totalPortfolios: number;
+_portfoliosList: any;
+dropdownSettings_Portfolio: IDropdownSettings = {};
+ngDropdwonPort: any;
+Empty_portDropdown: any;
+_SelectedPorts: any;
+selectedportID: any;
+objPortfolioDto: PortfolioDTO;
+deletedBy: string;
+portfolioName: string;
+ProjectInfo_List: any;
+
+
+
+getPortfoliosDetails(){
+  this.service.getPortfolios(this.URL_ProjectCode).subscribe((res)=>{
+    if (res != null && res != undefined) {
+       this._portfoliolist=JSON.parse(res[0].Portfolio_json);  
+          this.getPortfolios()
+    }
+  })
+}
+
+AddPortfolio() {
+   this.getPortfoliosDetails()
+}
+
+
+getPortfolios() {
+  if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
+    this._portfolioLength = 0;
+  }
+  else
+    this._portfolioLength = this._portfoliolist.length;
+  
+  this.service.GetTotalPortfoliosBy_Employeeid().subscribe
+    ((data) => {
+      this.totalPortfolios = (data[0]['TotalPortfolios']);     
+    });
+  this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
+    ((data) => {
+      this._portfoliosList = data as [];
+
+      this.dropdownSettings_Portfolio = {
+        singleSelection: false,
+        idField: 'Portfolio_ID',
+        textField: 'Portfolio_Name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 4,
+        allowSearchFilter: true,
+        clearSearchFilter: true
+      };
+    });
+  document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
+  document.getElementById("newdetails").classList.add("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "block";
+}
+
+
+Portfolio_Select(selecteditems) {
+  //console.log("Selected Item---->",selecteditems)
+  let arr = [];
+  this.Empty_portDropdown = selecteditems;
+  // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+  this.Empty_portDropdown.forEach(element => {
+    arr.push({ Port_Id: element.Portfolio_ID })
+    this._SelectedPorts = arr;
+  });
+  // console.log("Selected Ports In Array--->", this._SelectedPorts);
+  // console.log(this.ngDropdwonPort,"ports");
+
+}
+
+Portfolio_SelectAll(selecteditems) {
+  let arr = [];
+  this.Empty_portDropdown = selecteditems;
+  // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+  this.Empty_portDropdown.forEach(element => {
+    arr.push({ Port_Id: element.Portfolio_ID })
+    this._SelectedPorts = arr;
+  });
+  //  console.log("Selected Ports In Array1--->", this._SelectedPorts);
+}
+
+Portfolio_DeSelectAll() {
+  this._SelectedPorts = [];
+  // console.log("Selected Ports In Array1--->", this._SelectedPorts);
+}
+
+
+Portfolio_Deselect(selecteditems) {
+  let arr = [];
+
+  this.Empty_portDropdown = selecteditems;
+  if (this.Empty_portDropdown != '') {
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+  }
+  else {
+    this._SelectedPorts = [];
+  }
+  // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
+}
+
+
+addProjectToPortfolio() {
+  this.selectedportID = JSON.stringify(this._SelectedPorts);
+  // console.log(this.selectedportID,"portids");
+  if (this.selectedportID != null) {
+    this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
+    this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
+    this.objPortfolioDto.Emp_No = this.Current_user_ID;
+    this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
+      subscribe((data) => {
+        this._Message = (data['message']);
+        if (this._Message == 'Updated Successfully'){
+          this.getPortfoliosDetails();
+          this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);        
+        }else{
+          this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
+        }
+      });
+   
+  }
+
+
+  this.ngDropdwonPort = [];
+  //this.closeLinkSideBar();
+   this.getPortfoliosDetails();
+  // this._openInfoSideBar = false;
+}
+
+
+DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
+  this.deletedBy = this.Current_user_ID;
+  
+  this._portfoliolist.forEach(element => {
+    if (port_id == element.Portfolio_ID)
+      this.portfolioName = element.Portfolio_Name
+     
+  });
+  //if (createdBy == this.Current_user_ID) {
+  let String_Text = 'Delete';
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'delete',
+      title1: 'Confirmation ',
+      message1: this.portfolioName
+    }
+  });
+  confirmDialog.afterClosed().subscribe(result => {
+    
+    if (result === true) {
+      this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, this.deletedBy).subscribe((data) => {
+       
+        this.getPortfoliosDetails();   
+        this.getPortfolios(); 
+        this.notifyService.showSuccess("Deleted successfully ", '');
+      });
+    }
+    else {
+      this.notifyService.showError("Action Cancelled ", '');
+    }
+  });
+}
+}

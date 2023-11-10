@@ -958,6 +958,8 @@
                     <ul class="nav navtab-bg nav-pills px-3 mb-3 space-tabs" id="myTab2" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="Overview1" data-toggle="tab"
                                 href="#Overview"><span class="nav-text">Overview</span></a></li>
+                   
+                   
                         <li *ngIf="ProjectBlockName!='Standard Tasks' && ProjectBlockName!='Routine Tasks' &&  ProjectBlockName!='To do List'"
                                 class="nav-item" (click)="OnTabTask_Click()"><a class="nav-link" id="Tasks1"
                                 data-toggle="tab" href="#Tasks" aria-controls="profile">
@@ -983,11 +985,14 @@
                                 <span class="noti" *ngIf="portslength!=0">{{portslength}}</span></a></li>
                         <!-- <li class="nav-item"><a class="nav-link" id="Links1" data-toggle="tab" href="#Links"><span
                             class="nav-text">Links</span></a></li> -->
+                       
                         <li class="nav-item" (click)="getAttachments()"><a class="nav-link" id="Files1"
                                 data-toggle="tab" href="#Files" aria-controls="profile"><span
                                     class="nav-text">Files</span>
                                 <span class="noti" *ngIf="attachmentlength!=0">{{attachmentlength}}</span></a></li>
-                        <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
+                        
+                        
+                                <li class="nav-item" (click)="dar_details()"><a class="nav-link" id="Timeline1"
                                 data-toggle="tab" href="#Timeline"><span class="nav-text">Timeline</span>
                                 <span class="noti" *ngIf="totalRecords!=0">{{totalRecords}}</span></a></li>
                         <li class="nav-item"><a class="nav-link" id="Notes1" data-toggle="tab" href="#Notes"
@@ -5690,7 +5695,7 @@
     </div> 
     <!--no records found-->
     <ng-template #noResultsFound>
-        <div class="">
+        <div class="" >
             <div class="d-flex-center">
                 <div class="m-auto">
                     <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="148" height="136" viewBox="0 0 148 136">
