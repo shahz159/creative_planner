@@ -416,12 +416,23 @@ export class ProjectTypeService {
   }
 
   SubTaskDetailsService(prjCode) {
-
     this.ObjSubTaskDTO.Project_Code = prjCode;
     let EmpNo = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO.Emp_No = EmpNo;
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
+
+
+  getPortfolios(prjCode) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    const body={
+      Emp_No:EmpNo,
+      Project_Code:prjCode
+    };
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioDetails",body);
+  }
+
+
 
   NewSubTaskDetailsService(prjCode) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
