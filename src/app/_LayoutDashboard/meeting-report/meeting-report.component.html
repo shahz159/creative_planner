@@ -262,7 +262,20 @@
                                             </div>
                                             <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                             <div class="admin-check curser-pointer"
-                                                *ngIf="Isadmin==true && status=='Owner' ">
+                                                *ngIf="Isadmin==true && status=='Owner'">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                        <path fill="#5867dd"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#fff" stroke-width="1.5"
+                                                            d="M3.5 6.5L6 9l5-5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>Admin</span>
+                                            </div>
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="Isadmin==false && status!='Owner' && sched_admin==true">
                                                 <span aria-hidden="true" class="admin-check-svg">
                                                     <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                         <path fill="#5867dd"
@@ -417,10 +430,8 @@
                                                     </div>
                                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                                     <div class="admin-check curser-pointer" *ngIf="_user.IsAdmin">
-                                                        <span _ngcontent-hko-c392="" aria-hidden="true"
-                                                            class="admin-check-svg">
-                                                            <svg _ngcontent-hko-c392=""
-                                                                xmlns="https://www.w3.org/2000/svg" width="14"
+                                                        <span aria-hidden="true" class="admin-check-svg">
+                                                            <svg xmlns="https://www.w3.org/2000/svg" width="14"
                                                                 height="14">
                                                                 <path _ngcontent-hko-c392="" fill="#5867dd"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">

@@ -3416,10 +3416,10 @@ export class DashboardComponent implements OnInit {
         this.DelayActionsList = JSON.parse(data[0]['DelayActions_Json']);
         this.DelayActionscount = data[0]['Delayaction_Count'];
         
-        if(this.DelayActionscount>0){
-          $('.bg-ovr1').addClass('d-block');
-          $('.side_view').addClass('position-fixed');
-        }
+        // if(this.DelayActionscount>0){
+        //   $('.bg-ovr1').addClass('d-block');
+        //   $('.side_view').addClass('position-fixed');
+        // }
            console.log(this.DelayActionsList,"Delayactions")
       });
   }
@@ -3453,7 +3453,7 @@ export class DashboardComponent implements OnInit {
           weekNumbers: true,
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
-          // eventDidMount: this.customizeEvent,
+          eventDidMount: this.customizeEvent,
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',

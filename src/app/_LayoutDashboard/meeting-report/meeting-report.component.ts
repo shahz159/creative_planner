@@ -209,6 +209,8 @@ export class MeetingReportComponent implements OnInit {
   
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
+    this._userfullname = localStorage.getItem('UserfullName');
+    this.initials=this.getInitials(this._userfullname);
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
@@ -550,8 +552,8 @@ export class MeetingReportComponent implements OnInit {
         //   this.startTimer();
         // }
 
-        this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
-        this.initials = this.getInitials(this._userfullname);
+        // this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
+        // this.initials = this.getInitials(this._userfullname);
 
         if (this.Meetingstatuscom == "Completed") {
           this.interval == 0;
@@ -830,15 +832,15 @@ export class MeetingReportComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
-        this._duration = data['duration'];
-        this.time = this._duration;
-        this.display = this.transform(this.time);
-        if(this.AdminMeeting_Status == 'Start'){
-          this.startTimer();
-        }
-        else if(this.AdminMeeting_Status == 'Pause'){
-          clearInterval(this.interval1);
-        }
+        // this._duration = data['duration'];
+        // this.time = this._duration;
+        // this.display = this.transform(this.time);
+        // if(this.AdminMeeting_Status == 'Start'){
+        //   this.startTimer();
+        // }
+        // else if(this.AdminMeeting_Status == 'Pause'){
+        //   clearInterval(this.interval1);
+        // }
          console.log(this.EventScheduledjson,data, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']

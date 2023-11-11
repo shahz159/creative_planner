@@ -475,6 +475,7 @@ export class MoreDetailsComponent implements OnInit {
   mainowner:any;
   mainResp:any;
   mainAutho:any;
+  mainMastercode:any;
   
   getapproval_actiondetails() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -488,6 +489,7 @@ export class MoreDetailsComponent implements OnInit {
           this.mainowner = this.action_details[0]['mainowner'];
           this.mainResp = this.action_details[0]['mainResp'];
           this.mainAutho = this.action_details[0]['mainAutho'];
+          this.mainMastercode = this.action_details[0]['Master_Code'];
           console.log(this.action_details,"actionss")
           this.isAction=true;
         }
@@ -5308,7 +5310,8 @@ export class MoreDetailsComponent implements OnInit {
       this.selectedFile = null;
     }
 
-    const fd = new FormData();
+    if(this.isAction==false){
+      const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority_EmpNo);
     fd.append("Remarks", this._remarks);
@@ -5339,17 +5342,6 @@ export class MoreDetailsComponent implements OnInit {
               this._Message = (JSON.parse(myJSON).body).Message;
               this.notifyService.showSuccess(this._Message, 'Success');
         }
-        // console.log(event, "PC");
-        // if (event.type == HttpEventType.UploadProgress) {
-        //   this.progress = Math.round(event.loaded / event.total * 100);
-        // }
-        // else if (event.type === HttpEventType.Response) {
-        //   // console.log(event);
-        //   var myJSON = JSON.stringify(event);
-        //   this._Message = (JSON.parse(myJSON).body).Message;
-        //   this.notifyService.showSuccess(this._Message, 'Success');
-        //   // console.log(this._Message,this.progress,"json");
-        // }
         this.closeInfo();
         this.getapproval_actiondetails();
         this.GetSubtask_Details();
@@ -5357,6 +5349,30 @@ export class MoreDetailsComponent implements OnInit {
         this.getapprovalStats();
         this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
+    }
+
+    else if(this.isAction==true){
+      const fd = new FormData();
+      fd.append("Project_Code", this.URL_ProjectCode);
+      fd.append("Master_Code", this.mainMastercode);
+      fd.append("Team_Autho", this.Authority_EmpNo);
+      fd.append("Projectblock", this.ProjectBlock);
+      fd.append("Remarks", this._remarks);
+      fd.append('file', this.selectedFile);
+      fd.append("Project_Name", this.ProjectName);
+
+      this.service._UpdateSubtaskByProjectCode(fd)
+        .subscribe(data => {
+          this._remarks = "";
+          this._inputAttachments = "";
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.closeInfo();
+
+        });
+      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+    }
+    
   }
 
   changeStandard() {
