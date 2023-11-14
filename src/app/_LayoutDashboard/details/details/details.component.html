@@ -3027,49 +3027,103 @@
             {{tmlSrtOrd}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item btn-filtr"  (click)="onTLSrtOrdrChanged('Date')"  [ngClass]="{'active2':tmlSrtOrd==='Date'}"  >
+            <a class="dropdown-item btn-filtr d-flex justify-content-between" (click)="onTLSrtOrdrChanged('Date')"  [ngClass]="{'active2':tmlSrtOrd==='Date'}"  >
+                <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-calendar3">
                     <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"></path>
                     <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
                 </svg>
                 <span class="pl-2" >Date</span>
+               </span>
+                <span class="chck-icn" *ngIf="tmlSrtOrd==='Date'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" viewBox="0 0 16 16"
+                        class="bi bi-check2">
+                        <path
+                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                        </path>
+                    </svg>
+                </span>
+                
             </a>
-            <a class="dropdown-item btn-filtr"   (click)="onTLSrtOrdrChanged('Project')" [ngClass]="{'active2':tmlSrtOrd==='Project'}"   >
+            <a class="dropdown-item btn-filtr d-flex justify-content-between"   (click)="onTLSrtOrdrChanged('Project')" [ngClass]="{'active2':tmlSrtOrd==='Project'}"   >
+                <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-heading">
                     <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path>
                     <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"></path>
                 </svg>
                 <span class="pl-2">Project</span>
+               </span>
+
+                <span class="chck-icn"  *ngIf="tmlSrtOrd==='Project'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" viewBox="0 0 16 16"
+                        class="bi bi-check2">
+                        <path
+                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                        </path>
+                    </svg>
+                </span>
+
+
+
+
             </a>
-            <a class="dropdown-item btn-filtr" (click)="onTLSrtOrdrChanged('Employee')" [ngClass]="{'active2':tmlSrtOrd==='Employee'}"    >
+            <a class="dropdown-item btn-filtr d-flex justify-content-between" (click)="onTLSrtOrdrChanged('Employee')" [ngClass]="{'active2':tmlSrtOrd==='Employee'}"    >
+                
+                <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-people">
                     <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path>
                 </svg>
                 <span class="pl-2">Employee</span>
+               </span>
+
+                <span class="chck-icn"  *ngIf="tmlSrtOrd==='Employee'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" viewBox="0 0 16 16"
+                        class="bi bi-check2">
+                        <path
+                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                        </path>
+                    </svg>
+                </span>
             </a>
             
-            <a class="dropdown-item btn-filtr" (click)="onTLSrtOrdrChanged('Me')"  [ngClass]="{'active2':tmlSrtOrd==='Me'}"   >  
+            <a class="dropdown-item btn-filtr d-flex justify-content-between" (click)="onTLSrtOrdrChanged('Me')"  [ngClass]="{'active2':tmlSrtOrd==='Me'}"   >  
+                
+                <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-send">
                     <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"></path>
                 </svg>
                 <span class="pl-2">By me</span>
+                </span>
+
+                <span class="chck-icn" *ngIf="tmlSrtOrd==='Me'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" viewBox="0 0 16 16"
+                        class="bi bi-check2">
+                        <path
+                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                        </path>
+                    </svg>
+                </span>
             </a>
                 
             </div>
             </div>
         </div>
     </div>
-    <div class="kt-portlet__body pt-2 kt-portlet__body_scroll" >
+    <div class="kt-portlet__body pt-2  kt-portlet__body_scroll" >
         <div class="kt-time-line-view" *ngIf="isTimelinePresent" >
 
      <ng-container  *ngFor="let timeline of timelineList; let i=index">
 
-            <div  data-toggle="collapse" aria-expanded="false" [attr.data-target]="'#Time_line_'+i" class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0" >
+            <div  data-toggle="collapse" aria-expanded="false" class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"  [attr.data-target]="'#Time_line_'+i">
                 <span  class="kt-text-wrap"><i  class="material-icons fs-2">expand_more</i> {{timeline.Value}}</span>
                 <span  class="Kt-replay-time"> Total Hours :<small class="tlv-df">{{timeline.TotalDuration|number:'1.2-2'}}</small> </span>
             </div>
             
-            <div id="Time_line_{{i}}" class="kt-widget__items mt-2 mx-0 px-2 collapse" aria-labelledby="Time_line_{{i}}" aria-hidden="true">
+            <div id="Time_line_{{i}}" class="kt-widget__items mt-2 mx-0 px-2 collapse" style="transition-duration:1s; transition-timing-function:cubic-bezier(0.68, -0.55, 0.27, 1.55);" aria-labelledby="Time_line_{{i}}" aria-hidden="true">
                 <div class="timeline"  *ngFor="let item of timeline.JsonData"  >
                     <div class="timeline-item">
                         <div class="timeline-line w-40px">
@@ -3102,7 +3156,7 @@
                                            <div class="user-kt-time"> <span class="svg-time-icon"> <svg  xmlns="http://www.w3.org/2000/svg" fill="none" width="16px" height="16px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="vertical-align: sub; color: #848c93;"><path  stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>  </span> <span class="tmv-tm">{{item.starttime}} AM</span> <span class="mdl-line-h"></span><span class="tmv-tm">{{item.endtime}} PM</span> <span class="total-time-kt">{{item.Duration}} Hrs</span></div>
                                            <div class="date-view-rt">
                                             <div class="time-line-date">
-                                                <h4>{{item.date}}</h4>
+                                                <h4>{{item.date|date:'dd-MM-YYYY'}}</h4>
                                             </div>
                                            </div>
                                         </div>

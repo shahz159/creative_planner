@@ -313,6 +313,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -353,9 +354,9 @@ tmlSrtOrd:"Date"|"Project"|"Employee"|"Me"|undefined;
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
 
+ 
 
-
-///  
+///   
 
 //  ADD NEW DMS
 
