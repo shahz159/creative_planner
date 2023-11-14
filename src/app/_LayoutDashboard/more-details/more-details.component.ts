@@ -1304,7 +1304,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        // console.log(this.darArray,"DAR");
+        console.log(this.darArray,"DARsahil");
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {

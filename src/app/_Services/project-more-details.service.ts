@@ -15,4 +15,17 @@ export class ProjectMoreDetailsService {
       return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',body);
   }
 
+ 
+  getProjectTimeLine(projectcode:string,sortOrder:string,Empno:string){
+    const body={
+         Project_Code:projectcode,
+         sort:sortOrder,
+         Emp_No:Empno
+    }
+     return this.http.post(this.rootUrl+'TestAPI/NewGetProjectTimelineList',body)
+  }
+
+
+
+
 }
