@@ -286,7 +286,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         if (data != null && data != undefined) {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
-          this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json'])
+          this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json']);
+ 
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);        
           this.ProjectStatesJson.forEach((item) => {
             this.Approver_Name = item.ApproverName
@@ -322,7 +323,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
               if (item.Status.trim() === 'Project Hold') {
                 this.Project_Hold = item.count;
               }
-
             });
           }
 

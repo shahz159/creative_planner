@@ -209,6 +209,8 @@ export class MeetingReportComponent implements OnInit {
   
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
+    this._userfullname = localStorage.getItem('UserfullName');
+    this.initials=this.getInitials(this._userfullname);
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
       this.Scheduleid = scode;
@@ -371,6 +373,21 @@ export class MeetingReportComponent implements OnInit {
   //     textarea.value = '• ';
   //   }
   // }
+
+
+  getInitials(fullName: string): string {
+    const names = fullName.split(' ');
+
+    if (names.length === 1) {
+      // If there is a single name, return the uppercase initial
+      return names[0].charAt(0).toUpperCase();
+    } else {
+      // If there are multiple names, return the uppercase initials for each name
+      return names.map(name => name.charAt(0).toUpperCase()).join('');
+    }
+  }
+
+
   leave: boolean = false;
 
   leavemeet(event: any) {
@@ -510,7 +527,7 @@ export class MeetingReportComponent implements OnInit {
   Notespoint: string;
   empname: string;
   AdminMeeting_Status: string;
-
+  initials:any;
 
   GetNotedata() {
     this.Schedule_ID = this.Scheduleid;
@@ -521,13 +538,13 @@ export class MeetingReportComponent implements OnInit {
         this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
         this.AdminMeeting_Status = data["AdminMeeting_Status"];
         
-        if(this.AdminMeeting_Status == 'Pause'){
-          clearInterval(this.interval1);
-          this.interval == 0;
-          if (this.interval == 0) {
-            clearInterval(this.interval);
-          }
-        }
+        // if(this.AdminMeeting_Status == 'Pause'){
+        //   clearInterval(this.interval1);
+        //   this.interval == 0;
+        //   if (this.interval == 0) {
+        //     clearInterval(this.interval);
+        //   }
+        // }
         // else if(this.AdminMeeting_Status == 'Join'){
         //   // this._duration = data['duration'];
         //   // this.time = this._duration;
@@ -535,7 +552,8 @@ export class MeetingReportComponent implements OnInit {
         //   this.startTimer();
         // }
 
-        this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
+        // this._userfullname = this._meetingNotesAry.filter(x => x.Emp_no == this.CurrentUser_ID)[0]["Emp_Name"];
+        // this.initials = this.getInitials(this._userfullname);
 
         if (this.Meetingstatuscom == "Completed") {
           this.interval == 0;
@@ -814,15 +832,15 @@ export class MeetingReportComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
-        this._duration = data['duration'];
-        this.time = this._duration;
-        this.display = this.transform(this.time);
-        if(this.AdminMeeting_Status == 'Start'){
-          this.startTimer();
-        }
-        else if(this.AdminMeeting_Status == 'Pause'){
-          clearInterval(this.interval1);
-        }
+        // this._duration = data['duration'];
+        // this.time = this._duration;
+        // this.display = this.transform(this.time);
+        // if(this.AdminMeeting_Status == 'Start'){
+        //   this.startTimer();
+        // }
+        // else if(this.AdminMeeting_Status == 'Pause'){
+        //   clearInterval(this.interval1);
+        // }
          console.log(this.EventScheduledjson,data, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
@@ -1171,35 +1189,35 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto.Portfolio = this.checkedportfolio.join(',');
     this._calenderDto.Project = this.checkedproject.join(',');
     console.log(this._calenderDto,"dto")
-    // this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
-    //   (data => {
-    //     this.notifyService.showSuccess("Successfully", "Completed");
-    //     // window.close();
-    //     this.GetcompletedMeeting_data();
-    //     if (this.Meetingstatuscom == 'Completed') {
-    //       this.interval == 0;
-    //       if (this.interval == 0) {
-    //         clearInterval(this.interval);
-    //       }
-    //     }
-    //   });
-    // const modalElement = document.getElementById('exampleModal');
+    this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+      (data => {
+        this.notifyService.showSuccess("Successfully", "Completed");
+        // window.close();
+        this.GetcompletedMeeting_data();
+        if (this.Meetingstatuscom == 'Completed') {
+          this.interval == 0;
+          if (this.interval == 0) {
+            clearInterval(this.interval);
+          }
+        }
+      });
+    const modalElement = document.getElementById('exampleModal');
 
-    // // Close the modal by removing the "show" class from the modal element
-    // if (modalElement) {
-    //   modalElement.classList.remove('show');
+    // Close the modal by removing the "show" class from the modal element
+    if (modalElement) {
+      modalElement.classList.remove('show');
 
-    //   // Additionally, you might want to reset the modal backdrop (optional)
-    //   const modalBackdrop = document.querySelector('.modal-backdrop');
-    //   if (modalBackdrop) {
-    //     modalBackdrop.parentNode?.removeChild(modalBackdrop);
-    //   }
-    // }
+      // Additionally, you might want to reset the modal backdrop (optional)
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop) {
+        modalBackdrop.parentNode?.removeChild(modalBackdrop);
+      }
+    }
 
-    // if (this.refreshSubscription) {
-    //   this.refreshSubscription.unsubscribe();
-    // }
-    // this.notifyService.showSuccess("Meeting completed successfully", "Success");
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+    this.notifyService.showSuccess("Meeting completed successfully", "Success");
   }
   open_side() {
     document.getElementById("cardmain").classList.add("cards-main");

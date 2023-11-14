@@ -1694,7 +1694,88 @@ a.kt-inbox__icon:hover svg path {
 
 
 
+.arow-vx {
+  text-align: center;
+}
+.arow-vx svg {
+  fill: #527ce2;
+  width: 30px;height: 30px;
+}
+.arow-vx {
+  text-align: center;
+}
+.arow-vx svg {
+  fill: #527ce2;
+  width: 30px;height: 30px;
+}
+.fwd-v {
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  margin: 12px 13px;
+  border-radius: 5px;
+  padding: 3px 29px;
+  height: 85px;
+}
+
 /* ////////////////////////// Approval section End ////////////////////////////////////// */
+
+.delete-btn i {
+  background: none;
+  font-size: 16px;
+  outline: none !important;
+  box-shadow: none;
+  outline: none !important;
+  height: 30px;
+  width: 30px;
+  background-color: #f5f6fc;
+  border: 1px solid #b3bcff;
+  color: #5867dd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 10px 8px 0 0;
+  border-radius: 0;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.delete-btn {
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #f2f3f7;
+  color: grey;
+  line-height: 59px;
+  padding: 0 20px;
+  transition: all 2s ease !important;
+}
+.kt-inbox__item:hover .delete-btn {
+  display: block;
+}
+.delete-btn i:hover {
+  background-color: #5867dd;
+  color: #fff;
+}
+
+
+/* ////////////////////////// Link Portfolio section Start ////////////////////////////////////// */
+
+
+.d-flex-center {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+a.kt-inbox__icon:hover svg path {
+  stroke: #527CE2;
+}
+
 
 
 /*--------- new css ------------*/

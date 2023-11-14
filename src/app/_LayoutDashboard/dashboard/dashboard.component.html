@@ -457,14 +457,11 @@
                                 <button type="button" (click)="penshow1()" class="draft-btn">Draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-
-                            <div class="fc pend-bg">
-                                <button type="button" (click)="penshow2()" class="draft-btn">Delay actions</button>
-                                <span class="kt-dashboard-cnt">{{DelayActionscount}}</span>
+                            <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
+                                <button type="button" (click)="penshow2()" class="pend-btn">Delay actions</button>
+                                <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
                             </div>
                         </div>
-
-
 
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
@@ -475,7 +472,7 @@
                 </div>
                 <!--end::Portlet-->
             </div>
-
+          
 
 
             <div id="pendlist" class="pend-section col-lg-3">
@@ -588,7 +585,7 @@
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
-                                    <div class="fc-event-title ml-5">{{action.Project_Name}}</div>
+                                    <div class="fc-event-title  ml-5">{{action.Project_Name}} - {{action.Delaydays}} days delay</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
@@ -1647,7 +1644,48 @@
         </div>
     </div>
 </div>
-<div class="bg-ovr1">
+<div class="bg-ovr1" id=""> 
+    <div class="eve-modal1 open" style="display: block !important; opacity: 1;" id="cal-events" tabindex="-1" role="dialog">
+        <div class="card flex-1 mb-3 border-0">
+            <div class="head-c bg-white">
+                <div class="">
+                        <h4>Your Delay Actions</h4>
+                </div>
+                
+                <div class="icons-flex float-right">
+
+                    <div class="icons-right" data-toggle="tooltip" title="Close">
+                        <span class="tool-span" (click)="closeevearea()">
+                            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body scrolly popup-ht-70vh">
+                <div class="" *ngFor="let action of DelayActionsList">
+                    <div id="NameDate" class="main-title curser-pointer" (click)="moreDetails(action.Project_Code)">
+                        <div class="boxcl-div">
+                            <div class="box-cl" style="background-color: #EE4137;">
+                            </div>
+                        </div>
+                        <h6 class="pt-2">{{action.Project_Name}} - {{action.Delaydays}} days delay</h6>
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="foot-main overflow-hidden" style="display: block;" id="main-foot">
+                <div class="foot-body foot-contain pt-3" id="ft_body">
+                    <h6 class="text-danger">**Your delay actions will affect the project flow. Be a responsible member, take extra effect to catch up on the deadline or complete the actions as needed.</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="bg-ovr1">
     <div class="eve-modal1 open" tabindex="-1" role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
@@ -1668,7 +1706,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 
@@ -2696,3 +2734,4 @@
         </div>
     </div>
 </div>
+<ngx-guided-tour></ngx-guided-tour>
