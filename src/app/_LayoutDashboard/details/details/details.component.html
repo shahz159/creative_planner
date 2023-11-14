@@ -3007,7 +3007,10 @@
     </div>
     <div class="d-flex align-items-center justify-content-between kt-tm-hd">
         <div class="kt-total-ac-hr">
-            <h4>Total Achivement Hours : <span>2,546,17 Hrs</span></h4>
+            <h4>Total Achivement Hours : 
+                <span *ngIf="tlTotalHours>=1000">{{tlTotalHours|number:'1.2-2'.toLocaleString()}} Hrs</span>
+                <span *ngIf="tlTotalHours<1000">{{tlTotalHours|number:'1.2-2'}} Hrs</span>
+            </h4>
         </div>
         <div class="sort-view">
             <div class="sort-ttl">
@@ -3057,7 +3060,7 @@
 
             <div  data-toggle="collapse" aria-expanded="false" [attr.data-target]="'#Time_line_'+i" class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0" >
                 <span  class="kt-text-wrap"><i  class="material-icons fs-2">expand_more</i> {{timeline.Value}}</span>
-                <span  class="Kt-replay-time"> Total Hours :<small class="tlv-df">{{timeline.TotalDuration}}</small> </span>
+                <span  class="Kt-replay-time"> Total Hours :<small class="tlv-df">{{timeline.TotalDuration|number:'1.2-2'}}</small> </span>
             </div>
             
             <div id="Time_line_{{i}}" class="kt-widget__items mt-2 mx-0 px-2 collapse" aria-labelledby="Time_line_{{i}}" aria-hidden="true">
@@ -3073,7 +3076,7 @@
                                         <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="black"></path>
                                     </svg>
                                 </span>
-                            </div>
+                            </div> 
                         </div>
                         <div class="timeline-content time-line-cnt">
     

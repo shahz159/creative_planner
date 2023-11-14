@@ -347,6 +347,7 @@ tmlSrtOrd:"Date"|"Project"|"Employee"|"Me"|undefined;
   View_timeline(){
     document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
     this.tmlSrtOrd='Date';   // by default.
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
@@ -1434,7 +1435,7 @@ AddPortfolio() {
 // timeline view section start here
 timelineList:any;
 isTimelinePresent:boolean=true;
-
+tlTotalHours:number;
 
 
 
@@ -1449,19 +1450,18 @@ onTLSrtOrdrChanged(option:"Date"|"Project"|"Employee"|"Me"){
           default:sorttype="1";
       }
       this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code,sorttype,this.Current_user_ID).subscribe((res:any)=>{
-        console.log("timeline data here:", JSON.parse(JSON.parse(res[0].Timeline_List)[0].JsonData));
+        console.log("timeline data here:", res);
         this.timelineList=JSON.parse(res[0].Timeline_List);
+        this.tlTotalHours=+JSON.parse(res[0].Totalhours);
+        console.log(Math.abs(this.tlTotalHours))
         if(this.timelineList&&this.timelineList.length)
           { 
             this.isTimelinePresent=true;
             this.timelineList=this.timelineList.map((timeline:any)=>({ ...timeline,JsonData:JSON.parse(timeline.JsonData) }));
             console.log('our new timeline:',this.timelineList);
           }
-        
-        
-      })
-
-
+         
+      });
 
 }
 
