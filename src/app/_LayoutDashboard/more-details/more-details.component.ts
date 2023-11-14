@@ -472,6 +472,10 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   mainDeadline:any;
+  mainowner:any;
+  mainResp:any;
+  mainAutho:any;
+  mainMastercode:any;
   
   getapproval_actiondetails() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
@@ -481,8 +485,12 @@ export class MoreDetailsComponent implements OnInit {
       if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
         if (data[0]['actiondetails'] != '[]'){
           this.action_details = JSON.parse(data[0]['actiondetails']);
-          this.mainDeadline = this.action_details[0]['mainDeadline']; 
-          alert(this.mainDeadline);
+          this.mainDeadline = this.action_details[0]['mainDeadline'];
+          this.mainowner = this.action_details[0]['mainowner'];
+          this.mainResp = this.action_details[0]['mainResp'];
+          this.mainAutho = this.action_details[0]['mainAutho'];
+          this.mainMastercode = this.action_details[0]['Master_Code'];
+          console.log(this.action_details,"actionss")
           this.isAction=true;
         }
         if (data[0]['approvaldetails'] != '[]')
@@ -1304,7 +1312,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        // console.log(this.darArray,"DAR");
+        console.log(this.darArray,"DARsahil");
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -4670,7 +4678,38 @@ export class MoreDetailsComponent implements OnInit {
     }
     }
     else if(this.isAction==true){
-      
+      const dateOne = moment(this.mainDeadline).format("YYYY/MM/DD");
+      const dateTwo = moment(this._ProjDeadline).format("YYYY/MM/DD");
+      console.log(dateOne, dateTwo, "dates")
+      if ((dateOne < dateTwo) && ((this.Current_user_ID == this.mainowner || this.Current_user_ID == this.mainResp || this.Current_user_ID == this.mainAutho))) {
+        Swal.fire({
+          title: 'Action deadLine is greater than main project deadLine ?',
+          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((response: any) => {
+          if (response.value) {
+            this.onAction_ExtendDeadline();
+          } else if (response.dismiss === Swal.DismissReason.cancel) {
+            this.close_space();
+            Swal.fire(
+              'Cancelled',
+              'Action end date not updated',
+              'error'
+            )
+          }
+        });
+      }
+      else if ((dateOne < dateTwo) && (this.Current_user_ID != this.mainowner && this.Current_user_ID != this.mainResp && this.Current_user_ID != this.mainAutho)) {
+        Swal.fire({
+          title: 'Unable to extend end date for this action.',
+          text: 'You have selected the action end date greater than project deadline. Please contact the main project responsible to extend main project end date and try again.',
+        });
+      }
+      else {
+        this.onAction_ExtendDeadline();
+      }
     }
     
   }
@@ -4727,10 +4766,44 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   onAction_ExtendDeadline() {
-    this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
-    if (this._ProjDeadline != null) {
-      this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
-        this._Message = data['message'];
+
+    if(this.isAction==false){
+          this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+        if (this._ProjDeadline != null) {
+          this.service._ProjectDeadlineExtendService(this.actCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
+            this._Message = data['message'];
+
+            if (this._Message == 'Project Deadline not Updated') {
+              this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+            else if (this._Message == 'Project Deadline Updated') {
+              this.notifyService.showSuccess("Action end date updated.", "Success");
+              this.dar_details();
+              this.getDarTime();
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+            else if (this._Message == 'Project and action Deadline Updated') {
+              this.notifyService.showSuccess("Project and Action end date updated.", "Success");
+
+              this.GetProjectDetails();
+              this.GetSubtask_Details();
+            }
+          });
+          this.close_space();
+        }
+        else {
+          this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
+        }
+
+    }
+    else if(this.isAction==true){
+      this._ProjDeadline = this.datepipe.transform(this._ProjDeadline, 'MM/dd/yyyy');
+      if (this._ProjDeadline != null) {
+        this.service._ProjectDeadlineExtendService(this.URL_ProjectCode, this._ProjDeadline, null, this.extend_remarks, this._allocated).subscribe(data => {
+          this._Message = data['message'];
 
         if (this._Message == 'Project Deadline not Updated') {
           this.notifyService.showError(this._Message + '.' + "Please select the appropriate date and try again.", "Failed");
@@ -4757,6 +4830,8 @@ export class MoreDetailsComponent implements OnInit {
       this.notifyService.showInfo("Date field cannot be empty", "Please select date.");
     }
 
+}
+    
 
   }
 
@@ -5235,7 +5310,8 @@ export class MoreDetailsComponent implements OnInit {
       this.selectedFile = null;
     }
 
-    const fd = new FormData();
+    if(this.isAction==false){
+      const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority_EmpNo);
     fd.append("Remarks", this._remarks);
@@ -5266,17 +5342,6 @@ export class MoreDetailsComponent implements OnInit {
               this._Message = (JSON.parse(myJSON).body).Message;
               this.notifyService.showSuccess(this._Message, 'Success');
         }
-        // console.log(event, "PC");
-        // if (event.type == HttpEventType.UploadProgress) {
-        //   this.progress = Math.round(event.loaded / event.total * 100);
-        // }
-        // else if (event.type === HttpEventType.Response) {
-        //   // console.log(event);
-        //   var myJSON = JSON.stringify(event);
-        //   this._Message = (JSON.parse(myJSON).body).Message;
-        //   this.notifyService.showSuccess(this._Message, 'Success');
-        //   // console.log(this._Message,this.progress,"json");
-        // }
         this.closeInfo();
         this.getapproval_actiondetails();
         this.GetSubtask_Details();
@@ -5284,6 +5349,30 @@ export class MoreDetailsComponent implements OnInit {
         this.getapprovalStats();
         this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
+    }
+
+    else if(this.isAction==true){
+      const fd = new FormData();
+      fd.append("Project_Code", this.URL_ProjectCode);
+      fd.append("Master_Code", this.mainMastercode);
+      fd.append("Team_Autho", this.Authority_EmpNo);
+      fd.append("Projectblock", this.ProjectBlock);
+      fd.append("Remarks", this._remarks);
+      fd.append('file', this.selectedFile);
+      fd.append("Project_Name", this.ProjectName);
+
+      this.service._UpdateSubtaskByProjectCode(fd)
+        .subscribe(data => {
+          this._remarks = "";
+          this._inputAttachments = "";
+          this.GetProjectDetails();
+          this.GetSubtask_Details();
+          this.closeInfo();
+
+        });
+      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+    }
+    
   }
 
   changeStandard() {

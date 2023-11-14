@@ -34,6 +34,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { validationLatitudeLongitude } from "validation-latitude-longitude";
 import { empty } from 'rxjs';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -444,7 +445,8 @@ export class DashboardComponent implements OnInit {
     private notifyService: NotificationService,
     public _LinkService: LinkService, private CalenderService: CalenderService,
     private cd: ChangeDetectorRef,
-    public BsService: BsServiceService
+    public BsService: BsServiceService,
+    private guidedTourService: GuidedTourService
   ) {
     this._objStatusDTO = new StatusDTO;
     this._ObjCompletedProj = new CompletedProjectsDTO();
@@ -578,6 +580,8 @@ export class DashboardComponent implements OnInit {
         }
       }
 
+      
+
       // hide search
       // if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
       //   if ($('.drop-search.show').hasClass('show')) {
@@ -588,8 +592,45 @@ export class DashboardComponent implements OnInit {
       // }
 
     });
+
+    $(document).mouseup(function (e) {
+      const myDiv = $('.bg-ovr1');
+      const modaldv = $('.eve-modal1');
+
+      if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
+        if (myDiv.hasClass('d-block')) {
+          myDiv.removeClass('d-block');
+          $('.side_view').removeClass('position-fixed');
+        }
+      }
+    });
+   
   }
   
+  // ngAfterViewInit() {
+    
+  //   setTimeout(() => {
+  //     this.startTour();
+  //   }, 3000);
+  // }
+
+
+  public startTour() {
+      this.guidedTourService.startTour({
+        tourId: 'DelayActions',
+        useOrb: false,
+        skipCallback: () => '',
+        completeCallback: () => this.penshow2() ,
+        steps: [
+          {
+            title: 'Delay Actions',
+            selector: '#post1',
+            content: 'Please check your Delay actions, You can extend the deadline or complete your delay actions.',
+            orientation: 'bottom'
+          }
+        ]
+      });
+  }
 
   onFileChange(event) {
 
@@ -647,6 +688,8 @@ export class DashboardComponent implements OnInit {
 
   closeevearea() {
     $('.bg-ovr').removeClass('d-block');
+    $('.bg-ovr1').removeClass('d-block');
+
     $('.side_view').removeClass('position-fixed');
   }
   // Scheduling Work
@@ -3372,9 +3415,12 @@ export class DashboardComponent implements OnInit {
       ((data) => {
         this.DelayActionsList = JSON.parse(data[0]['DelayActions_Json']);
         this.DelayActionscount = data[0]['Delayaction_Count'];
-        // alert(this.pendingcount)
-        // alert(this.Pending_request.length)
-         console.log(this.DelayActionsList,"Delayactions")
+        
+        // if(this.DelayActionscount>0){
+        //   $('.bg-ovr1').addClass('d-block');
+        //   $('.side_view').addClass('position-fixed');
+        // }
+           console.log(this.DelayActionsList,"Delayactions")
       });
   }
 
@@ -3407,7 +3453,7 @@ export class DashboardComponent implements OnInit {
           weekNumbers: true,
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
-          // eventDidMount: this.customizeEvent,
+          eventDidMount: this.customizeEvent,
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',

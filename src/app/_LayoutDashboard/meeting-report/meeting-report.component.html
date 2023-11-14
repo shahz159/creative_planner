@@ -262,7 +262,20 @@
                                             </div>
                                             <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                             <div class="admin-check curser-pointer"
-                                                *ngIf="Isadmin==true && status=='Owner' ">
+                                                *ngIf="Isadmin==true && status=='Owner'">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                    <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                        <path fill="#5867dd"
+                                                            d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                        </path>
+                                                        <path fill="none" stroke="#fff" stroke-width="1.5"
+                                                            d="M3.5 6.5L6 9l5-5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>Admin</span>
+                                            </div>
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="Isadmin==false && status!='Owner' && sched_admin==true">
                                                 <span aria-hidden="true" class="admin-check-svg">
                                                     <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                         <path fill="#5867dd"
@@ -417,10 +430,8 @@
                                                     </div>
                                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                                     <div class="admin-check curser-pointer" *ngIf="_user.IsAdmin">
-                                                        <span _ngcontent-hko-c392="" aria-hidden="true"
-                                                            class="admin-check-svg">
-                                                            <svg _ngcontent-hko-c392=""
-                                                                xmlns="https://www.w3.org/2000/svg" width="14"
+                                                        <span aria-hidden="true" class="admin-check-svg">
+                                                            <svg xmlns="https://www.w3.org/2000/svg" width="14"
                                                                 height="14">
                                                                 <path _ngcontent-hko-c392="" fill="#5867dd"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
@@ -679,7 +690,7 @@
                                             <div class="kt-mt-dw">
                                                 <div class="kt-card N-user-1">
                                                     <div class="kt-user-dt">
-                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-2lt kt-clr-1">{{initials}}</div>
                                                         <div class="kt-user-name">{{_userfullname}} </div>
                                                     </div>
                                                     <div class="kt-user-note kt-clr-bg-1">
@@ -691,7 +702,7 @@
                                                 <ng-container *ngFor="let note of _meetingNotesAry">
                                                     <div *ngIf="CurrentUser_ID != note.Emp_no" class="kt-card N-user-2">
                                                         <div class="kt-user-dt">
-                                                            <div class="kt-user-2lt kt-clr-2">GD</div>
+                                                            <div class="kt-user-2lt kt-clr-2">{{note.initials}}</div>
                                                             <div class="kt-user-name">{{note.Emp_Name}}
                                                                 <!-- <span class="kt-met-time-date">05:34</span> -->
                                                             </div>
@@ -736,7 +747,7 @@
                                             <div class="kt-mt-dw">
                                                 <div class="kt-card N-user-1">
                                                     <div class="kt-user-dt">
-                                                        <div class="kt-user-2lt kt-clr-1">NS</div>
+                                                        <div class="kt-user-2lt kt-clr-1">{{initials}}</div>
                                                         <div class="kt-user-name">{{_userfullname}} </div>
                                                     </div>
                                                     <div class="kt-user-note kt-clr-bg-1">
@@ -1856,7 +1867,7 @@
 
                             <div class="kt-card N-user-1">
                                 <div class="kt-user-dt">
-                                    <div class="kt-user-2lt kt-clr-1">NS</div>
+                                    <div class="kt-user-2lt kt-clr-1">{{pre.initials}}</div>
                                     <div class="kt-user-name">{{pre.Emp_Name}}</div>
                                 </div>
                                 <div class="kt-user-note kt-clr-bg-1">

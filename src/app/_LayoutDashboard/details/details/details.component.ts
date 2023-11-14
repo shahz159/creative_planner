@@ -100,7 +100,10 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+  
 
+
+ 
 
 
 
@@ -113,7 +116,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      private notifyService: NotificationService,
      public datepipe: DatePipe,
     ) {
-
+     
       this.ObjSubTaskDTO = new SubTaskDTO();
       this.objProjectDto = new ProjectDetailsDTO();
       this.objPortfolioDto = new PortfolioDTO()
@@ -339,9 +342,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
+
+tmlSrtOrd:"Date"|"Project"|"Employee"|"Me"|undefined;
+
   View_timeline(){
     document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.tmlSrtOrd='Date';   // by default.
+    this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
 
 
@@ -360,9 +368,12 @@ addNewDMS(){
     //
 }
 
+
+// closes open linksidebar.
 closeLinkSideBar() {
   document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
   document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
+
   document.getElementById("newdetails").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
  
@@ -1260,9 +1271,8 @@ dar_details() {
     .subscribe(data1 => {
       
       this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
-      console.log(this.darList);
       this.darArray = this.darList;
-      // console.log(this.darArray,"DAR");
+      console.log("sahil bhai this is your DAR array:",this.darArray);
       this.totalHours = (data1[0]['Totalhours']);
       this.totalRecords = (data1[0]['TotalRecords']);
       if (this.darList.length == 0) {
@@ -1422,6 +1432,39 @@ AddPortfolio() {
    this.getPortfoliosDetails()
 }
 
+// timeline view section start here
+timelineList:any;
+isTimelinePresent:boolean=true;
+
+
+
+
+onTLSrtOrdrChanged(option:"Date"|"Project"|"Employee"|"Me"){
+      this.tmlSrtOrd=option;
+      let sorttype:string="1";
+      switch(option){
+          case 'Date':sorttype="1";break;
+          case 'Project':sorttype="2";break;
+          case 'Employee':sorttype="3";break;
+          case 'Me':sorttype="4";break;
+          default:sorttype="1";
+      }
+      this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code,sorttype,this.Current_user_ID).subscribe((res:any)=>{
+        console.log("timeline data here:", JSON.parse(JSON.parse(res[0].Timeline_List)[0].JsonData));
+        this.timelineList=JSON.parse(res[0].Timeline_List);
+        if(this.timelineList&&this.timelineList.length)
+          { 
+            this.isTimelinePresent=true;
+            this.timelineList=this.timelineList.map((timeline:any)=>({ ...timeline,JsonData:JSON.parse(timeline.JsonData) }));
+            console.log('our new timeline:',this.timelineList);
+          }
+        
+        
+      })
+
+
+
+}
 
 getPortfolios() {
   if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
