@@ -1766,7 +1766,6 @@ a.kt-inbox__icon:hover svg path {
 
 
 .d-flex-center {
-  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2399,4 +2398,14 @@ a#Filter_btn::after {
   background-color: #f2f6f6;
   height: calc(100vh - 60px);
   overflow: auto;
+}
+
+
+
+.dropdown-item:active{
+   color: #2786fb;
+   background: rgba(39,134,251,.1)!important;
+}
+.dropdown-item:active svg{
+  color: #2786fb;
 }
