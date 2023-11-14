@@ -1395,16 +1395,16 @@ export class MoreDetailsComponent implements OnInit {
 
  
 
-    // this.service._InsertDARServie(this.objProjectDto)
-    //   .subscribe(data => {
-    //     this._Message = data['message'];
-    //     this.notifyService.showSuccess(this._Message, "Success");
-    //   });
-    // this.dar_details();
-    // this.getDarTime();
-    // document.getElementById("moredet").classList.remove("position-fixed");
-    // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    // document.getElementById("rightbar-overlay").style.display = "none";
+    this.service._InsertDARServie(this.objProjectDto)
+      .subscribe(data => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "Success");
+      });
+    this.dar_details();
+    this.getDarTime();
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
 

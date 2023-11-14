@@ -59,7 +59,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ng-multiselect-dropdown */ 61664);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ng-select/ng-select */ 90413);
+/* harmony import */ var _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/datepicker */ 42298);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 22560);
+
 
 
 
@@ -82,12 +84,14 @@ DetailsModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["
         _details_routing_module__WEBPACK_IMPORTED_MODULE_0__.DetailsRoutingModule,
         ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_9__.NgMultiSelectDropDownModule,
         _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_10__.NgSelectModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule] });
+        _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule,
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_12__.MatDatepickerModule] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsetNgModuleScope"](DetailsModule, { declarations: [_details_details_component__WEBPACK_IMPORTED_MODULE_1__.DetailsComponent], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule,
         _details_routing_module__WEBPACK_IMPORTED_MODULE_0__.DetailsRoutingModule,
         ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_9__.NgMultiSelectDropDownModule,
         _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_10__.NgSelectModule,
-        _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule] }); })();
+        _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule,
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_12__.MatDatepickerModule] }); })();
 
 
 /***/ })
