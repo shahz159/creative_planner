@@ -307,6 +307,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
    }
 
    closeInfo() {
+    document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -328,7 +329,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   }
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("rightbar-overlay").style.display = "block";  
   }
   closedarBar() {
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
