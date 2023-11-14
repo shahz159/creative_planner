@@ -301,7 +301,7 @@ export class DashboardComponent implements OnInit {
   EventScheduledjson: any[] = [];
   Project_NameScheduledjson: any[] = [];
   Project_dateScheduledjson: any[] = [];
-  Schedule_type1: any
+  Schedule_type1: any = 'Event';
   Status1: any;
   portfolio_Scheduledjson: any[] = [];
   User_Scheduledjson: any[] = [];
@@ -3478,11 +3478,15 @@ export class DashboardComponent implements OnInit {
   customizeEvent(info) {
     const eventDate = info.event.start;
     const currentDate = new Date();
-
+    const taskComplete = info.event.className;
     if (eventDate < currentDate) {
       const eventElement = info.el;
       eventElement.style.opacity = '0.5'; // Change the background color for past events
     }
+    // if(taskComplete == 'fc-green'){
+    //   const eventElement = info.el;
+    //   eventElement.style.opacity = '0.5';
+    // }
   }
 
   public handleAddressChange(address: Address) {
@@ -4404,7 +4408,6 @@ export class DashboardComponent implements OnInit {
   
   
     End_meeting(){
-      debugger
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -4431,7 +4434,7 @@ export class DashboardComponent implements OnInit {
           this.closeevearea();
         });
        console.log(this._calenderDto,"dto")
-  
+       this.notifyService.showSuccess("Task completed.","Success");
       }
       else if (this.ScheduleType == 'Event') {
         // this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -4478,12 +4481,24 @@ export class DashboardComponent implements OnInit {
           this.closeevearea();
         });
         console.log(this._calenderDto,"dto")
-  
+        this.notifyService.showSuccess("Meeting ended successfully.","Success");
       }
        
-        this.notifyService.showSuccess("Meeting ended successfully.","Success");
+        
     }
   
+    uncomplete_task(){
+      // alert(this.Schedule_ID)
+        
+      this.CalenderService.NewTaskUncomplete(this.Schedule_ID).subscribe
+        (data => {
+          this.GetScheduledJson();
+          this.GetPending_Request();
+          this.closeevearea();
+        });
+       console.log(this._calenderDto,"dto")
+       this.notifyService.showSuccess("Task Uncomplete.","Success");
+    }
 
   showcore() {
     this.typetext = "This Project consists of Core/Secondary Projects";
