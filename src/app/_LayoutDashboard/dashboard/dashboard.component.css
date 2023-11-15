@@ -1072,6 +1072,15 @@ background-color: #f1f3f4;
     border-color: #f10505 !important;   
     text-decoration: line-through !important;
 }
+
+::ng-deep .fc-green .fc-daygrid-event-dot, ::ng-deep .fc-green .fc-list-event-dot{
+    border-color: #1dc9b7 !important;   
+    text-decoration: line-through;
+}
+::ng-deep .fc-green {
+    border-color: #1dc9b7 !important;   
+    text-decoration: line-through !important;
+}
 ::ng-deep .fc-grey .fc-daygrid-event-dot, ::ng-deep .fc-grey .fc-list-event-dot{
     border-color: #adb3af !important;   
 }
@@ -1103,6 +1112,10 @@ height: auto !important;
     color: #3788d8;
     background: transparent;
 }
+::ng-deep .fc-timegrid-event.fc-req, ::ng-deep .fc-timegrid-event.fc-green {
+    color: #3788d8;
+    background: transparent;
+}
 ::ng-deep .fc-timegrid-event.fc-req .fc-event-main{
     color: #3788d8;
     background: transparent;
@@ -1110,10 +1123,18 @@ height: auto !important;
 ::ng-deep .fc-timegrid-event.fc-red {
     border-color: #3788d8 !important;
 }
+::ng-deep .fc-timegrid-event.fc-green {
+    border-color: #3788d8 !important;
+}
 ::ng-deep .fc-timegrid-event-harness {
     min-height: 20px;
 }
 ::ng-deep .fc-timegrid-event.fc-red .fc-event-main{
+    text-decoration: line-through !important;
+    color: #3788d8;
+    background: transparent;
+}
+::ng-deep .fc-timegrid-event.fc-green .fc-event-main{
     text-decoration: line-through !important;
     color: #3788d8;
     background: transparent;
@@ -2432,6 +2453,28 @@ span.kt-dashboard-delay-cnt {
   
   /* Handle on hover */
   .popup-ht-70vh::-webkit-scrollbar-thumb:hover {
+    background: #282236; 
+  }
+  
+  .popup-ht-50vh {
+    height: 45vh !important;
+}
+.popup-ht-50vh::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  .popup-ht-50vh::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  .popup-ht-50vh::-webkit-scrollbar-thumb {
+    background: #a5a5a5; 
+  }
+  
+  /* Handle on hover */
+  .popup-ht-50vh::-webkit-scrollbar-thumb:hover {
     background: #282236; 
   }
   .btn-dull {
