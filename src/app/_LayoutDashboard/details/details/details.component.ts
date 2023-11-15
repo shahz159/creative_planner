@@ -203,10 +203,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
     Pid:any;
   getProjectDetails(prjCode:string) {
-
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
 
-      this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];   // projectInfo is an Object
+      this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
+// alert(this.projectInfo.Project_Block)
+// projectInfo is an Object
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
@@ -313,6 +314,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -333,6 +335,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";  
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.getAttachments(1);
   }
   closedarBar() {
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -353,9 +357,9 @@ tmlSrtOrd:"Date"|"Project"|"Employee"|"Me"|undefined;
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
 
+ 
 
-
-///  
+///   
 
 //  ADD NEW DMS
 
@@ -1606,4 +1610,185 @@ DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string
     }
   });
 }
+
+
+
+// Files Attachment Working Area Start
+
+flSrtOrd:string;
+AttachmentList:any;
+_TotalDocs:any;
+getAttachments(sorttype:number) {
+  switch(sorttype){
+    case 1:this.flSrtOrd="Date";break;
+    case 2:this.flSrtOrd="Project";break;
+    case 3:this.flSrtOrd="Employee";break;
+    case 4:this.flSrtOrd="me";break;
+    default:this.flSrtOrd="none";
+}
+  this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode,sorttype.toString())
+    .subscribe((data) => {    
+      console.log(data,"Slider")
+      this.AttachmentList = JSON.parse(data[0]['Attachments_Json']); 
+      this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+      if(this.AttachmentList&&this.AttachmentList.length)
+      { 
+        this.AttachmentList=this.AttachmentList.map((Attachment:any)=>({ ...Attachment,JsonData:JSON.parse(Attachment.JsonData) }));
+        console.log('our new AttachmentList:',data,this.AttachmentList);
+      } 
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type,submitby) {
+    repDate = new Date(repDate);
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    let Day = repDate.getDate();
+    let Month = repDate.getMonth() + 1;
+    let Year = repDate.getFullYear();
+    if (Month < 10) {
+      this._month = '0' + Month;
+    }
+    else {
+      this._month = Month;
+    }
+    if (Day < 10) {
+      this._day = '0' + Day;
+    }
+    else {
+      this._day = Day;
+    }
+    var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+    if (cloud == false) {
+      // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+      // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+
+      FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+
+    }
+
+    else if (cloud == true) {
+
+      let FileUrl: string;
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+      if (proofDoc.includes(FileUrl)) {
+        FileUrl = proofDoc
+      }
+      else {
+        let Day = repDate.getDate();
+        let Month = repDate.getMonth() + 1;
+        let Year = repDate.getFullYear();
+        if (Month < 10) {
+          this._month = '0' + Month;
+        }
+        else {
+          this._month = Month;
+        }
+        if (Day < 10) {
+          this._day = Day;
+        }
+        else {
+          this._day = Day;
+        }
+        var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+        // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." + type);
+      }
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+
+  }
+
+
+  LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+
+    let FileUrl: string;
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (iscloud == false) {
+      if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+      }
+      else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+        FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+      }
+
+      let name = "ArchiveView/" + pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/" + pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&"+ "submitby=" + submitby + "&"+ "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+  }
+// Files Attachment Working Area End
 }
