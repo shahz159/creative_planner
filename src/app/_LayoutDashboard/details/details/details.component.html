@@ -926,7 +926,7 @@
 
                                 <div class="br-line"></div>
 
-                                <a class="kt-inbox__icon">
+                                <a class="kt-inbox__icon" (click)="AddPortfolio()" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
                                         fill="none">
                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -991,7 +991,7 @@
 <!--  Files Working Area Start-->
 
                                 <div class="br-line"></div>
-                                <a class="kt-inbox__icon Attachment_view"    (click)="Attachment_view()">
+                                <a class="kt-inbox__icon Attachment_view"    (click)="Attachment_view()"  >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 15 15"
                                         fill="none">
                                         <path
@@ -2512,10 +2512,8 @@
 
                             </div>
                         </ng-container>
-
                     </ng-template>
-                    <button (click)="openDarSideBar()">click</button>
-                    <button (click)="AddPortfolio()"> portfolio</button> 
+                    <button (click)="openDarSideBar()">click</button>                    
                 </div>
             </div>
         </div>
@@ -3404,15 +3402,7 @@
 
 
 
-<!--  Files Working Area Start-->
-
-
-
-
-
-
-
-
+<!--  Files Attachment Working Area Start-->
 <div id="Attachment_view" class="sideInfobar animate-right bg-slide-br">
     <div class="kt-portlet">
 
@@ -3431,7 +3421,7 @@
                                 d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                                 stroke="#a3a3a3"></path>
                         </svg> </span><span class="kt-chat__title"> List of Attachments </span> <span
-                        class="kt-at-count">27</span> </h4>
+                        class="kt-at-count" *ngIf="_TotalDocs>0">{{_TotalDocs}}</span> </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="closedarBar()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -3479,7 +3469,8 @@
                                     </div>
                                     <ul class="drop-ul">
                                         <li class="dropdown-header">Sort by</li>
-                                        <li><button class="btn btn-filtr active2">
+                                        <li>
+                                            <button class="btn btn-filtr " (click)="getAttachments(1)"  [ngClass]="{'active2':flSrtOrd==='Date'}"       >
                                                 <div class="d-flex align-items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" viewBox="0 0 16 16" class="bi bi-calendar3">
@@ -3491,7 +3482,7 @@
                                                         </path>
                                                     </svg>
                                                     <div class="fil-lbl">Date</div>
-                                                    <span class="chck-icn">
+                                                    <span class="chck-icn" *ngIf="flSrtOrd==='Date'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" viewBox="0 0 16 16"
                                                             class="bi bi-check2">
@@ -3504,7 +3495,7 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr" (click)="getAttachments(2)" [ngClass]="{'active2':flSrtOrd==='Project'}">
                                                 <div class="d-flex align-items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" viewBox="0 0 16 16"
@@ -3516,8 +3507,8 @@
                                                             d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z">
                                                         </path>
                                                     </svg>
-                                                    <div class="fil-lbl">Subject</div>
-                                                    <span class="chck-icn">
+                                                    <div class="fil-lbl">Project</div>
+                                                    <span class="chck-icn" *ngIf="flSrtOrd==='Project'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" viewBox="0 0 16 16"
                                                             class="bi bi-check2">
@@ -3530,7 +3521,7 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr"  (click)="getAttachments(3)" [ngClass]="{'active2':flSrtOrd==='Employee'}">
                                                 <div class="d-flex align-items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" viewBox="0 0 16 16" class="bi bi-people">
@@ -3538,8 +3529,8 @@
                                                             d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
                                                         </path>
                                                     </svg>
-                                                    <div class="fil-lbl">Users</div>
-                                                    <span class="chck-icn">
+                                                    <div class="fil-lbl">Employee</div>
+                                                    <span class="chck-icn" *ngIf="flSrtOrd==='Employee'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" viewBox="0 0 16 16"
                                                             class="bi bi-check2">
@@ -3552,7 +3543,7 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr" (click)="getAttachments(4)" [ngClass]="{'active2':flSrtOrd==='me'}">
                                                 <div class="d-flex align-items-center" style="margin-left: -2px;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" viewBox="0 0 16 16" class="bi bi-send">
@@ -3561,7 +3552,8 @@
                                                         </path>
                                                     </svg>
                                                     <div class="fil-lbl ml-1">By me</div>
-                                                    <span class="chck-icn">
+
+                                                    <span class="chck-icn" *ngIf="flSrtOrd==='me'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" viewBox="0 0 16 16"
                                                             class="bi bi-check2">
@@ -3573,7 +3565,7 @@
                                                 </div>
                                             </button>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <button class="btn btn-filtr">
                                                 <div class="d-flex align-items-center" style="margin-left: -2px;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -3595,7 +3587,7 @@
                                                     </span>
                                                 </div>
                                             </button>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>
@@ -3603,139 +3595,133 @@
                     </div>
                 </div>
             </div>
- 
+  <!--  Older Start-->
 
- <!--      List of Attachments :-   Older Start     -->
-
-            <div class="attachament-list-view">
-                <div data-toggle="collapse" aria-expanded="True"
-                    class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0"
-                    data-target="#Div_attachments1_0">
-                    <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i> Older </span>
-                    <span class="Kt-replay-count"> 2</span>
+            <div class="attachament-list-view" *ngFor="let item of AttachmentList;let i=index">
+                <div data-toggle="collapse" aria-expanded="true"  
+                    class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
+                    [attr.data-target]="'#Div_attachments'+ i">
+                    <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
+                    <span class="Kt-replay-count">{{item.TotalFiles}}</span>
                 </div>
 
-                <div class="kt-widget__items mt-2 mx-0 px-2 collapse show" id="Div_attachments1_0">
-                    <div class="kt-notification__item no-after position-relative ng-star-inserted">
-                        <div data-toggle="modal" data-target="#document-1" class="kt-notification__item-icon">
+                <div class="kt-widget__items mt-2 mx-0 px-2  collapse show"  id="Div_attachments{{i}}"  >
+                    <div class="kt-notification__item no-after position-relative ng-star-inserted" *ngFor="let file of item.JsonData">
+                                             
+                        <!-- <div data-toggle="modal"  class="kt-notification__item-icon" >
                             <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
                                 class="asseticn prim-icn memo_attachment_img ng-star-inserted">
                                 <path
                                     d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
                                 </path>
-                            </svg>
+                            </svg>                 
+                        </div> -->
+
+                         <div data-toggle="modal"  class="kt-notification__item-icon" *ngIf="file.contenttype=='pdf' || file.contenttype=='application/pdf'">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn corol-icn memo_attachment_img ng-star-inserted"> <path  d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z"></path></svg>                
                         </div>
-                        <div data-toggle="modal" data-target="#document-1" class="kt-notification__item-details">
-                            <div class="d-flex-center">
-                                <div class="kt-notification__item-title fw-bold">
-                                    pexels-nubia-navarro-(nubikini)-386009.jpg </div>
-                                <div class="d-flex align-items-center">
-                                    <div data-toggle="tooltip" data-placement="top" title=""
-                                        class="symbol symbol-circle symbol-22px">
-                                        <img class="rounded-circle ng-star-inserted"
-                                            src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+
+                        <div data-toggle="modal"  class="kt-notification__item-icon" *ngIf="file.contenttype=='png' || file.contenttype=='jpg'">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn prim-icn"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z"></path></svg>               
+                        </div>
+
+                        <div data-toggle="modal"  class="kt-notification__item-icon"  *ngIf="file.contenttype=='txt' ||file.contenttype=='html' || file.contenttype=='doc' || file.contenttype=='docx' || file.contenttype=='json' || file.contenttype=='xml'">
+                            <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z"></path></svg>      
+                        </div>
+
+                        <div data-toggle="modal"  class="kt-notification__item-icon" *ngIf="file.contenttype=='ppt' || file.contenttype=='pptx'">
+                            <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z"></path></svg>               
+                        </div>
+
+                        <div data-toggle="modal"  class="kt-notification__item-icon" *ngIf="file.contenttype=='xlsx' || file.contenttype=='xls'">                  
+                             <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z"></path></svg>               
+                        </div>
+
+                        <div data-toggle="modal"  class="kt-notification__item-icon"  *ngIf=" file.contenttype!='application/pdf' && file.contenttype!='xlsx' && file.contenttype!='xls' && file.contenttype!='ppt' && file.contenttype!='pptx' && file.contenttype!='txt' && file.contenttype!='html' && file.contenttype!='doc' && file.contenttype!='docx' && file.contenttype!='png' && file.contenttype!='jpg' && file.contenttype!='pdf'" >
+                            <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z"></path></svg>              
+                        </div>
+
+                        <ng-container *ngIf="projectInfo.Project_Block=='003'">
+                            <div data-toggle="modal"   class="kt-notification__item-details" (click)="openPDF_Standards(file.StandardId,file.Submitted_By_EmpNo,file.IsCloud,file.date,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
+                                <div class="d-flex-center">
+                                    <div class="kt-notification__item-title fw-bold" >
+                                        <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                        {{file.CompleteProofDoc}}
+                                     </div>
+                                    <div class="d-flex align-items-center">
+                                        <div data-toggle="tooltip" data-placement="top" title=""
+                                            class="symbol symbol-circle symbol-22px">
+                                            <img class="rounded-circle ng-star-inserted"
+                                                src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                        </div>
+                                        <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
                                     </div>
-                                    <div class="text-muted ml-2 fs-7">Administrator </div>
                                 </div>
-                            </div>
-                            <div class="d-flex-center mt-1">
-                                <div class="text-muted fs-7 d-flex">
-                                    <span class="mr-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
-                                            <path
-                                                d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
-                                            </path>
-                                            <path
-                                                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                    Other
-                                </div>
-                                <div class="text-muted ml-1 fs-7"> 23/05/2023 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kt-notification__item no-after position-relative ng-star-inserted">
-                        <div data-toggle="modal" data-target="#document-1" class="kt-notification__item-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
-                                class="asseticn prim-icn memo_attachment_img ng-star-inserted">
-                                <path
-                                    d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div data-toggle="modal" data-target="#document-1" class="kt-notification__item-details">
-                            <div class="d-flex-center">
-                                <div class="kt-notification__item-title fw-bold"> creative-sols.png </div>
-                                <div class="d-flex align-items-center">
-                                    <div data-toggle="tooltip" data-placement="top" title=""
-                                        class="symbol symbol-circle symbol-22px">
-                                        <img class="rounded-circle ng-star-inserted"
-                                            src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                <div class="d-flex-center mt-1">
+                                    <div class="text-muted fs-7 d-flex">
+                                        <span class="mr-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
+                                                <path
+                                                    d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
+                                                </path>
+                                                <path
+                                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                       {{file.Remarks}}
                                     </div>
-                                    <div class="text-muted ml-2 fs-7">Administrator </div>
+                                    <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
                                 </div>
                             </div>
-                            <div class="d-flex-center mt-1">
-                                <div class="text-muted fs-7 d-flex">
-                                    <span class="mr-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
-                                            <path
-                                                d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
-                                            </path>
-                                            <path
-                                                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
-                                            </path>
-                                        </svg>
-                                    </span> Memo 987
+                        </ng-container>
+                        <ng-container *ngIf="projectInfo.Project_Block!='003'">
+                            <div data-toggle="modal"   class="kt-notification__item-details" (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
+                                <div class="d-flex-center">
+                                    <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44" >
+                                        <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                        {{file.Sourcefile}}
+                                     </div>
+                                     <div class="kt-notification__item-title fw-bold" *ngIf="file.Sourcefile.length<45">
+                                        <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                        {{file.Sourcefile}}
+                                     </div>
+                                    
+                                     
+                                    <div class="d-flex align-items-center">
+                                        <div data-toggle="tooltip" data-placement="top" title=""
+                                            class="symbol symbol-circle symbol-22px">
+                                            <img class="rounded-circle ng-star-inserted"
+                                                src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                        </div>
+                                        <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
+                                    </div>
                                 </div>
-                                <div class="text-muted ml-1 fs-7">
-                                    23/05/2023
+                                <div class="d-flex-center mt-1">
+                                    <div class="text-muted fs-7 d-flex">
+                                        <span class="mr-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
+                                                <path
+                                                    d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
+                                                </path>
+                                                <path
+                                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                       {{file.Remarks}}
+                                    </div>
+                                    <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="kt-attachment-more-options ng-star-inserted">
-                            <div class="kt-att-preview kt-at-info">
-                                <span title=" Attachment Info" class="kt-stt-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        xmlns:serif="http://www.serif.com/" viewBox="0 0 64 65" version="1.1"
-                                        xml:space="preserve" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd"
-                                        stroke-linejoin="round" stroke-miterlimit="2">
-                                        <g transform="matrix(1,0,0,1,-480,-480)">
-                                            <g transform="matrix(1,0,0,1,480,480)">
-                                                <rect x="0" y="0" width="64" height="64" fill="none"></rect>
-                                                <g transform="matrix(1,0,0,-1,-156,52)">
-                                                    <path
-                                                        d="M189,27C189.552,27 190,27.448 190,28L190,30C190,30.552 189.552,31 189,31L187,31C186.448,31 186,30.552 186,30L186,28C186,27.448 186.448,27 187,27L189,27Z">
-                                                    </path>
-                                                </g>
-                                                <g transform="matrix(1,0,0,-6.5,-156,224)">
-                                                    <path
-                                                        d="M189,27.846C189.552,27.846 190,27.915 190,28L190,30C190,30.085 189.552,30.154 189,30.154L187,30.154C186.448,30.154 186,30.085 186,30L186,28C186,27.915 186.448,27.846 187,27.846L189,27.846Z">
-                                                    </path>
-                                                </g>
-                                                <g transform="matrix(6.12323e-17,1,1,-6.12323e-17,-320,-400)">
-                                                    <path
-                                                        d="M446,374L448,374C451.311,374 454,371.311 454,368C454,368 454,336 454,336C454,332.689 451.311,330 448,330C448,330 416,330 416,330C412.689,330 410,332.689 410,336C410,336 410,368 410,368C410,371.311 412.689,374 416,374C416,374 438,374 438,374C439.104,374 440,374.896 440,376C440,377.104 439.104,378 438,378L416,378C410.481,378 406,373.519 406,368L406,336C406,330.481 410.481,326 416,326L448,326C453.519,326 458,330.481 458,336L458,368C458,373.519 453.519,378 448,378L446,378C444.896,378 444,377.104 444,376C444,374.896 444.896,374 446,374Z">
-                                                    </path>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
+                        </ng-container>
+                        
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
-
-
 <!--  Files Working Area End-->
