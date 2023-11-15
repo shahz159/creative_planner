@@ -339,6 +339,7 @@
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span> 
                                                     <span class="text-primary font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
+                                                        <p data-toggle="tooltip" title="Forwarded to" *ngIf="item.Req_Type=='Project Forward'">{{item.ForwardTo}}</p>
                                                 </td>
 
                                                 <!-- <td>
