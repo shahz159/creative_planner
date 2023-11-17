@@ -240,11 +240,11 @@
                                                     aria-label="Project Type: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Project Type
                                                 </th>
-                                                <th data-order="desc" data-name="Category" tabindex="0"
+                                                <th data-order="desc" data-name="Cost" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Project Type: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Category
+                                                    <i class="fas fa-sort"></i> Cost
                                                 </th>
                                                 <th data-order="desc" data-name="Submitedby" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
@@ -270,6 +270,12 @@
                                                     aria-label="Category: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Type
                                                 </th>
+                                                <th data-order="desc" data-name="RACIS" tabindex="0"
+                                                aria-controls="project-4" rowspan="1" colspan="1"
+                                                class="curser-pointer"
+                                                aria-label="Category: activate to sort column ascending">
+                                                <i class="fas fa-sort"></i> RACIS
+                                            </th>
                                                
                                                 
                                                 <!-- <th data-order="desc" data-name="Status" tabindex="0"
@@ -310,10 +316,15 @@
                                                     {{item.Project_Name}}
                                                     <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
                                                 </p></td>
-                                                <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span></td>
                                                 <td>
-                                                    <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span>
-                                                    <span class="kt-widget__other" *ngIf="!item.Category">No Category</span>
+                                                    <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
+                                                    <span class="kt-widget__other d-block st-line" *ngIf="item.Category">{{item.Category}}</span>
+                                                    <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
+                                                </td>
+                                                <td>
+                                                    <span class="kt-widget__other">SAR 972.00</span>
+                                                    <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
+                                                    <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
                                                 </td>
                                                 <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
                                                 <td>
@@ -324,6 +335,7 @@
                                                         <span class="kt-widget__other text-nowrap">
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                     </ng-template>
+                                                    <span class="kt-widget__other d-block st-line">43 hrs</span>
                                                 </td>
                                                 <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
                                                 <td>
@@ -339,8 +351,26 @@
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span> 
                                                     <span class="text-primary font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
-                                                        <p data-toggle="tooltip" title="Forwarded to" *ngIf="item.Req_Type=='Project Forward'">{{item.ForwardTo}}</p>
+                                                        <span class="kt-widget__other d-block st-line">Md Waseem Akram</span> 
                                                 </td>
+
+                                                  <td>
+                                                    <div  class="kt-media-group">
+                                                        <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Owner:Aquib Shahbaz">
+                                                            <span >AS</span>
+                                                        </a>
+                                                      <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Responsible &amp; Authority: Md Waseem Akram">
+                                                        <span >MA</span>
+                                                    </a>
+                                                    <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Support: Md Waseem Akram">
+                                                        <span >MA</span>
+                                                    </a>
+                                                    <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle" title="Coordinator &amp; Informer: Aquib Shahbaz ">
+                                                        <span >1+</span>
+                                                    </a>
+                                                    
+                                                </div>
+                                                </td> 
 
                                                 <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
