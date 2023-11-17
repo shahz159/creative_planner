@@ -388,6 +388,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.commentSelected = null;
     this.comments = "";
     this.exist_comment = [];
+    // $('.project-list_AC').removeClass('active');
     document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("todo").classList.remove("position-fixed");
@@ -395,7 +396,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     document.getElementById("btm-space").classList.add("d-none");
 
     if (this._Urlid == '1') {
+      this._projectSummary.closeInfo();
       this.router.navigate(["/backend/ProjectsSummary/"]);
+    
     }
     else if (this._Urlid == '2') {
       this.BsService.bs_SelectedPortId.subscribe(c => { this.port_id = c });

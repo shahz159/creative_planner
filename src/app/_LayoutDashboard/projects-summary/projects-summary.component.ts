@@ -858,6 +858,20 @@ $(document).ready(function(){
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    
+  }
+
+  info_active_btn(){
+  
+    var listItems = document.querySelectorAll(".project-list_AC");
+    listItems.forEach(function(item) {
+      item.addEventListener("click", function() {
+        listItems.forEach(function(innerItem) {
+          innerItem.classList.remove("active");
+        });
+        item.classList.add("active");
+      });
+    });
 
   }
   OpenProject(){
@@ -876,6 +890,7 @@ $(document).ready(function(){
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    $('.project-list_AC').removeClass('active');
   }
 
   Action_view(){
@@ -945,6 +960,8 @@ $(document).ready(function(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
+
+ 
   
   //----------------------project info js end ------------
   _totalMemos: number;

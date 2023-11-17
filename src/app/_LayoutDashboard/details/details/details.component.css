@@ -1766,7 +1766,6 @@ a.kt-inbox__icon:hover svg path {
 
 
 .d-flex-center {
-  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2399,4 +2398,260 @@ a#Filter_btn::after {
   background-color: #f2f6f6;
   height: calc(100vh - 60px);
   overflow: auto;
+}
+.Bt-hold {
+  background-color: transparent;
+  color: #8f8153;
+  font-size: 14px;
+  border: 2px solid #E2d9bc;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-hold:hover {
+  background-color: #E2d9bc;
+  color: #fff;
+}
+.Bt-cancel{
+  background-color: transparent;
+  color: #EE4137;
+  font-size: 14px;
+  border: 2px solid #EE4137;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+}
+.Bt-cancel:hover{
+  background-color: #EE4137;
+  color: #ffffff;}
+.active .Bt-cancel{
+    background-color: #EE4137;
+  color: #ffffff;
+  }
+  .active .Bt-hold{
+    background-color: #E2d9bc;
+  color: #fff;
+  }
+  .active .Bt-Submit {
+    background-color: #2786fb;
+  color: #fff;
+  }
+  a.nav-link.c-cancel.active {
+    border-bottom: 1px solid #ee4137 !important;
+}
+a.nav-link.c-hold.active {
+  border-bottom: 1px solid #E2d9bc !important;
+}
+a.nav-link.c-Submit.active {
+  border-bottom: 1px solid #2786fb !important;
+}
+.tab-view-dw {
+  margin: 1rem 1rem;
+  background-color: #f5f5f5;
+  padding: 1rem 1rem;
+  border-radius: 5px;
+}
+
+a.nav-link:hover{
+  border-bottom: #ccc !important;
+}
+.tav-vdc {
+  margin: 0rem 1rem !important;
+}
+
+/*------------ new css for add user list ------------*/
+.user-icon-round {
+  position: relative;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+}
+.user-icon-round img {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  object-fit: cover;
+  color: transparent;
+  text-indent: 10000px;
+}
+.user-list-card {
+  -webkit-tap-highlight-color: transparent;
+  background-color: transparent;
+  outline: 0px;
+  border: 0px;
+  margin: 0px 0px 8px;
+  border-radius: 0px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  appearance: none;
+  color: inherit;
+  display: flex;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+  text-decoration: none;
+  min-width: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 8px 16px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.user-icc-info {
+  flex: 1 1 auto;
+  min-width: 0px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.mvc-vb {
+  min-width: 56px;
+  flex-shrink: 0;
+}
+.user-icc-info h6 {
+ margin: 0px;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+.user-icc-info p {
+    margin-bottom: 0px;
+    color: #959595;
+}
+.user-list-card:hover {
+  background-color: #0000000a;
+  border-radius: 5px;
+}
+
+.user-Ltr {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 400;
+}
+button.Ct-btn.head-btn-right {
+  margin-right: 29px;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+.header-new-sp-team h5 {
+  text-transform: capitalize;
+  font-size: 17px;
+  color: #4f4f4f;
+  margin-bottom: 0px;
+  line-height: 19px;
+}
+.header-new-sp-team span {
+  font-size: 13px;
+  color: #6f6f6f;
+  display: block;
+  margin-top: 3px;
+}
+
+/*-------- custom checkbox css ---------*/
+.add-check-box input[type=checkbox] {
+  position: relative;
+  background-color: #ccc !important;
+	border-radius: 2px;
+	background: none;
+	cursor: pointer;
+	line-height: 0;
+	margin: 0 .6em 0 0;
+	outline: 0;
+	padding: 0 !important;
+	vertical-align: text-top;
+	height: 20px;
+	width: 20px;
+  opacity: .5;
+}
+
+.add-check-box input[type=checkbox]:hover {
+  opacity: 1;
+}
+
+.add-check-box input[type=checkbox]:checked {
+  background-color: #2196F3 !important;
+  opacity: 1;
+}
+
+
+.add-check-box input[type=checkbox]:before {
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: unset;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+.add-check-box input[type=checkbox]:checked:before {
+  border: solid #FFF;
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 6px;
+  height: 12px;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+.user-roll-vx .dropdown-menu {
+  min-width: fit-content;
+  min-width: -webkit-fill-available !important;
+}
+.back-team-list-btn button {
+  border: 0;
+  background-color: #e8ebeb;
+  padding: 5px 11px;
+  border-radius: 5px;
+  color: #959595;
+}
+.back-team-list-btn button:hover{
+  background-color: #ccc;
+  color: #000;
+}
+.back-team-list-btn button span {
+  margin-right: 4px;
+  position: relative;
+  top: -1px;
+}
+.header-team-view {
+  padding-top: 10px;
+}
+div#add_new_team_sp .kt-portlet__head {
+  height: 60px;
+}
+.back-team-list-btn .closebtn {
+  top: 17px;
 }

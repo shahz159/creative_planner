@@ -330,7 +330,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
+  View_User_list(){
+    document.getElementById("User_list_View").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
   closedarBar() {
+    document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -343,7 +348,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
-
+  add_support_team(){
+    document.getElementById("Team_view_pr").classList.add("d-none");
+    document.getElementById("add_new_team_sp").classList.remove("d-none");
+  }
+  back_to_team_list(){
+    document.getElementById("Team_view_pr").classList.remove("d-none");
+    document.getElementById("add_new_team_sp").classList.add("d-none");
+  }
 
 ///  
 
