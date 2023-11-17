@@ -105,6 +105,10 @@ export class CalenderService {
    this.obj_CalenderDTO.Project=obj.Project;
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_reports1", this.obj_CalenderDTO);
   }
+  NewTaskUncomplete(sc_id){
+    this.obj_CalenderDTO.Schedule_ID = sc_id;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewUpdateCalendarTaskUncomplete", this.obj_CalenderDTO);
+  }
   NewTImerMeeting_report(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;

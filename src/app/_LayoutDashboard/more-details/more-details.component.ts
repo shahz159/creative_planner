@@ -1312,7 +1312,7 @@ export class MoreDetailsComponent implements OnInit {
       .subscribe(data1 => {
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        // console.log(this.darArray,"DAR");
+        console.log(this.darArray,"DARsahil");
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -1395,16 +1395,16 @@ export class MoreDetailsComponent implements OnInit {
 
  
 
-    // this.service._InsertDARServie(this.objProjectDto)
-    //   .subscribe(data => {
-    //     this._Message = data['message'];
-    //     this.notifyService.showSuccess(this._Message, "Success");
-    //   });
-    // this.dar_details();
-    // this.getDarTime();
-    // document.getElementById("moredet").classList.remove("position-fixed");
-    // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    // document.getElementById("rightbar-overlay").style.display = "none";
+    this.service._InsertDARServie(this.objProjectDto)
+      .subscribe(data => {
+        this._Message = data['message'];
+        this.notifyService.showSuccess(this._Message, "Success");
+      });
+    this.dar_details();
+    this.getDarTime();
+    document.getElementById("moredet").classList.remove("position-fixed");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
     this.Clear_Feilds();
   }
 

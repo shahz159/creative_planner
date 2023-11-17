@@ -61,4 +61,16 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
     this.ObjAttachmentsDTO.ProjectType=ProjBlock;
     return this.http.post(this.rootUrl+"Notification/NewGetAttachmentsFiles",this.ObjAttachmentsDTO);
   }
+
+  /////////////////// by 69 Start /////////////////////
+
+  GetAttachements(EmpNo,ProjCode,sorttype){  
+    this.ObjAttachmentsDTO.EmpNo=EmpNo
+    this.ObjAttachmentsDTO.ProjectCode=ProjCode;
+    this.ObjAttachmentsDTO.sorttype=sorttype;
+
+    return this.http.post(this.rootUrl+"Notification/NewGetProjectFiles",this.ObjAttachmentsDTO);
+  }
+ 
+    /////////////////// by 69 End /////////////////////
 }
