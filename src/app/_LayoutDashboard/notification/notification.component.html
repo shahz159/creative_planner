@@ -322,7 +322,8 @@
                                                     <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
                                                 </td>
                                                 <td>
-                                                    <span class="kt-widget__other">SAR 972.00</span>
+                                                    <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR '}}</span>
+                                                    <span class="kt-widget__other" *ngIf="!item.Project_Cost">SAR 0.00</span>
                                                     <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
                                                     <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
                                                 </td>
@@ -330,12 +331,14 @@
                                                 <td>
                                                     <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                         <span class="kt-widget__other text-nowrap">{{item.SubmissionType}}</span>
+                                                        <span class="kt-widget__other d-block st-line">{{item.DurationTime}}</span>
                                                     </div>
                                                     <ng-template #Projecttype>
                                                         <span class="kt-widget__other text-nowrap">
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                            <span class="kt-widget__other d-block st-line">{{item.Duration}} hrs</span>
                                                     </ng-template>
-                                                    <span class="kt-widget__other d-block st-line">43 hrs</span>
+                                                    
                                                 </td>
                                                 <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
                                                 <td>
@@ -351,7 +354,7 @@
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span> 
                                                     <span class="text-primary font-weight-400" 
                                                         *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
-                                                        <span class="kt-widget__other d-block st-line">Md Waseem Akram</span> 
+                                                        <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line" title="Forward to">{{item.ForwardTo}}</span> 
                                                 </td>
 
                                                   <td>
