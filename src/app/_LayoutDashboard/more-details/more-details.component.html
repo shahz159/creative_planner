@@ -6250,16 +6250,16 @@
                         </div>
                         <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete' && completedoc">
                             <div class="left-w">
-                                <h6 class="txtm-cus pt-1">Complete attachment</h6>
-                                <a (click)="openPDF(iscloud,url)">
+                                <h6 class="txtm-cus pt-1">Attachment</h6>
+                                <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
                                     <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 50}}</u></h6>
                                 </a>
                             </div>
                         </div>
                         <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved' && completedoc">
                             <div class="left-w">
-                                <h6 class="txtm-cus pt-1">Complete attachment</h6>
-                                <a (click)="openPDF(iscloud,url)">
+                                <h6 class="txtm-cus pt-1">Attachment</h6>
+                                <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
                                     <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 50}}</u></h6>
                                 </a>
                             </div>

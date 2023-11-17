@@ -356,8 +356,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.Proj_Desc = this.ProjectNameJson[0]['Project_Description'];
           this.Comp_No = this.ProjectNameJson[0]['Emp_Comp_No'];
           this.Project_Owner = this.ProjectNameJson[0]['Project_Owner'];
-          this.EmpNo_Own = this.ProjectNameJson[0]['OwnerEmpNo'];
-          this.EmpNo_Res = this.ProjectNameJson[0]['Responsible'];
+          this.EmpNo_Own = this.ProjectInfoJson[0]['OwnerEmpNo'];
+          this.EmpNo_Res = this.ProjectInfoJson[0]['ResponsibleEmpNo'];
           this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
           // alert(this.EmpNo_Own);
           //console.log("Date In ----->", this.date1, this.date2)
@@ -1738,8 +1738,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
 
 
-  LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+  LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
     // let name = "ArchiveView/"+this.projectCode;
     // var rurl = document.baseURI + name;
     // var encoder = new TextEncoder();
