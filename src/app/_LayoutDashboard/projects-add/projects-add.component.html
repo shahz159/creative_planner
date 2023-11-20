@@ -284,8 +284,8 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd"
-                                                    *ngFor="let item of _ProjectDataList;let i=index;">
+                                                <tr role="row" class="odd project-list_AC"
+                                                    *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <td tabindex="0" class="sorting_1">
                                                         <mat-list-item>
                                                             <mat-checkbox checked color="primary"
@@ -300,7 +300,7 @@
                                                         <a tabindex="0" class="btn p-0 mr-2" role="button" placement="right"
                                                             data-trigger="focus">
                                                             <i class="fa fa-info-circle info-icon-cir"
-                                                                (click)="openInfo(item.Project_Code,item.Project_Name)"></i>
+                                                                (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
                                                         <a tabindex="0" class="btn p-0" role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">

@@ -667,7 +667,8 @@ button.Kt-Approval-btns {
   font-size: 13px;
   letter-spacing: 0;
   font-weight: 500;
-  border-radius: 3px;    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-radius: 3px; 
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .Btn_Accpet {
 border-color: #8ab991 !important;
@@ -949,4 +950,48 @@ span.kt-info-lable-icon svg {
   position: relative;
   top: -3px;
   right: 1px;
+}
+/*----------- new css for approvel --------*/
+span.svg-Rq-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #fff;
+  background-color: #9E9E9E;
+  border-radius: 50px;
+}
+span.svg-Rq-icon svg {
+  stroke: #fff;
+  height: 14px;
+  width: 14px;
+}
+.Requested_user_info {
+  text-align: justify;
+  margin-top: 9px;
+}
+span.Requested_user_name {
+  color: #656565;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+span.Rq_date_V {
+  color: #656565;
+  font-size: 14px;
+  text-transform: capitalize;
+  border-left: 1px solid #ccc;
+  margin-left: 5px;
+  padding-left: 3px;
+}
+.kt_remarks_data {
+  background-color: #f0f0f0;
+  padding: 8px 5px;
+  border-radius: 5px;
+  margin-top: 7px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* cursor: pointer; */
 }

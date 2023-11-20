@@ -239,13 +239,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let item of _AssignedProjectsList; let i=index">
+                                                <tr class="odd project-list_AC" *ngFor="let item of _AssignedProjectsList; let i=index" [class.active]="item.isActive">
                                                     <!-- Project details info column -->
                                                     <td class="kt-widget__title mb-0 ">
                                                         <a data-toggle="tooltip" title="Project Details!"
                                                             class="btn px-0 mr-2"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                            (click)="openInfo(item.Project_Code,item.Project_Name)">
+                                                            (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <i class="fa fa-info-circle info-icon-cir"></i>
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
@@ -364,7 +364,7 @@
 
 
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd"
+                                                <tr role="row" [class.active]="item.isActive" class="odd project-list_AC"
                                                     *ngFor="let item of _ProjectDataList;let i=index;">
                                                     <!-- Information Icon -->
                                                     <!-- <td></td> -->
@@ -372,7 +372,7 @@
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                                             data-trigger="focus">
                                                             <i class="fa fa-info-circle info-icon-cir"
-                                                                (click)="openInfo(item.Project_Code, item.Project_Name)"></i>
+                                                                (click)="openInfo(item.Project_Code, item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">

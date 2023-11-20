@@ -266,7 +266,9 @@ export class NotificationComponent implements OnInit {
   }
 
   closeInfo() {
+    this._NotificationActivity.forEach(item => item.isActive = false);
     this.resetReject();
+    $('.project-list_AC').removeClass('active');
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -903,6 +905,21 @@ acceptSelectedValues() {
     
   }
 
+
+  info_active_btn(item){
+  
+    item.isActive = !item.isActive;
+
+      // If you want to allow only one item to be active at a time, uncomment the following lines:
+    if (item.isActive) {
+      this._NotificationActivity.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.isActive = false;
+        }
+      });
+    }
+
+  }
 
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');

@@ -1373,7 +1373,7 @@
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="subTaskCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+                                            <div class="subtask-list" *ngFor="let item of Subtask_List | filter :actionsearch;let i =index"
                                                 [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
                                                 <div class="lbl-act ml-2">
                                                     <label
@@ -1835,7 +1835,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4" *ngIf="item.SubProject_Status=='Under Approval' && item.IsCloud==true">
+                                                            <div class="col-md-4" *ngIf="item.IsCloud==true">
                                                                 <div class="d-flex align-items-center detial-item">
                                                                     <span class="detail-icn">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -2355,7 +2355,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4" *ngIf="item.SubProject_Status=='Under Approval' && item.IsCloud==true">
+                                                            <div class="col-md-4" *ngIf="item.IsCloud==true">
                                                                 <div class="d-flex align-items-center detial-item">
                                                                     <span class="detail-icn">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -2873,6 +2873,26 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-4" *ngIf="item.IsCloud==true">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Assigned by</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
+                                                                            title="Assigned by">
+                                                                            {{item.Assignedby}}
+                                                                        </h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             
                                                         </div>
                                                     </div>
@@ -3369,6 +3389,26 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-4" *ngIf="item.IsCloud==true">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Assigned by</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
+                                                                            title="Assigned by">
+                                                                            {{item.Assignedby}}
+                                                                        </h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             
                                                         </div>
                                                     </div>
@@ -3831,6 +3871,26 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-4" *ngIf="item.IsCloud==true">
+                                                            <div class="d-flex align-items-center detial-item">
+                                                                <span class="detail-icn">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        width="16" height="16" fill="currentColor"
+                                                                        class="bi bi-person" viewBox="1 0 14 14">
+                                                                        <path
+                                                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+                                                                <div class="w-100">
+                                                                    <h6 class="txtm-cus">Assigned by</h6>
+                                                                    <h5 class="" data-toggle="tooltip"
+                                                                        title="Assigned by">
+                                                                        {{item.Assignedby}}
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         
                                                     </div>
                                                 </div>
@@ -4289,6 +4349,26 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-4" *ngIf="item.IsCloud==true">
+                                                            <div class="d-flex align-items-center detial-item">
+                                                                <span class="detail-icn">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        width="16" height="16" fill="currentColor"
+                                                                        class="bi bi-person" viewBox="1 0 14 14">
+                                                                        <path
+                                                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+                                                                <div class="w-100">
+                                                                    <h6 class="txtm-cus">Assigned by</h6>
+                                                                    <h5 class="" data-toggle="tooltip"
+                                                                        title="Assigned by">
+                                                                        {{item.Assignedby}}
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         
                                                     </div>
                                                 </div>
@@ -4652,6 +4732,26 @@
                                                                             title="Click To Open File"
                                                                             (click)="LoadDocument1(item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype,item.Subtask_Res)">
                                                                             <b>{{item.Sourcefile}}</b></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4" *ngIf="item.IsCloud==true">
+                                                                <div class="d-flex align-items-center detial-item">
+                                                                    <span class="detail-icn">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-person" viewBox="1 0 14 14">
+                                                                            <path
+                                                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                    <div class="w-100">
+                                                                        <h6 class="txtm-cus">Assigned by</h6>
+                                                                        <h5 class="" data-toggle="tooltip"
+                                                                            title="Assigned by">
+                                                                            {{item.Assignedby}}
+                                                                        </h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -6148,18 +6248,18 @@
                                 
                             </span>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='Project Complete' && completedoc">
                             <div class="left-w">
-                                <h6 class="txtm-cus pt-1">Complete attachment</h6>
-                                <a (click)="openPDF(iscloud,url)">
+                                <h6 class="txtm-cus pt-1">Attachment</h6>
+                                <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
                                     <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 50}}</u></h6>
                                 </a>
                             </div>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='ToDo Achieved' && completedoc">
                             <div class="left-w">
-                                <h6 class="txtm-cus pt-1">Complete attachment</h6>
-                                <a (click)="openPDF(iscloud,url)">
+                                <h6 class="txtm-cus pt-1">Attachment</h6>
+                                <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
                                     <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 50}}</u></h6>
                                 </a>
                             </div>

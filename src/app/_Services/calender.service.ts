@@ -133,6 +133,7 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_darftmeetdatacon", this.obj_CalenderDTO);
   }
   Newdraft_Meetingnotes(obj:CalenderDTO){
+    this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Task_Name = obj.Task_Name;
@@ -195,6 +196,12 @@ NewPending_table(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
+  }
+
+  NewDeleteDraft(obj: CalenderDTO){
+    this.obj_CalenderDTO.draftid=obj.draftid;
+    this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+    return this.http.post(this.rootUrl + "TestAPI/NewDeleteDraft", this.obj_CalenderDTO);
   }
 
   UploadCalendarAttachmenst(data) {

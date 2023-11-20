@@ -22,6 +22,12 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
   }
 
+  GetProjectApproval(pcode: string) {
+    this.obj_approvalDTO.Project_Code = pcode;
+    
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetProjectApprovals", this.obj_approvalDTO);
+  }
+
   GetAppovalandActionDetails(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     
