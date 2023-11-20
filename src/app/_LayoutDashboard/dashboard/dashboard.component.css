@@ -2185,7 +2185,6 @@ a.ordr-a {
     align-items: center;
 }
 .item-1{
-    padding: 10px 0;
     border-bottom: 1px solid #ddd;
 }
 .date-1{
@@ -2193,8 +2192,7 @@ a.ordr-a {
     width: 170px;
 }
 .time-event{
-    padding-right: 25px
-
+position: relative;
 }
 .time-event .fc-event-time{
     width:70px;
@@ -2204,12 +2202,12 @@ a.ordr-a {
     margin-right: 10px;
 }
 .time-event .fc-daygrid-dot-event{
-    padding-left:10px;
+    padding:10px;
     cursor: pointer;
 }
 .time-event .fc-daygrid-dot-event:hover{
-    background: rgb(53 54 58 / 10%);    
-    border-radius: 20px;
+    background: rgb(249 249 249);
+  
 }
 ::ng-deep .fc-daygrid-dot-event:hover {
     background: rgb(53 54 58 / 10%);
@@ -2540,4 +2538,50 @@ span.kt-dashboard-delay-cnt {
     border-top: 1rem solid #FFFFFF;
     border-left: 1rem solid transparent;
     border-right: 1rem solid transparent;
+}
+.time-event a .fc-event-title {
+    white-space: initial;
+    font-weight: 500;
+}
+
+/*-----on hover view delete button --------*/
+.delete-btn {
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    height:100%;
+    width: 50px;
+    transform: translateY(-50%);
+    background-color: #f2f3f7;
+    color: grey;
+    transition: all 2s ease !important;
+}
+.delete-btn i{
+    background: none;
+    font-size: 14px;
+    outline: none !important;
+    box-shadow: none;
+    outline: none !important;
+    width: 100%;
+    background-color: #f5f6fc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 0;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.delete-btn a {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.delete-btn i:hover {
+    color: #5867dd;
+}
+.time-event:hover .delete-btn{
+    display: block;
 }

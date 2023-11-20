@@ -12,11 +12,16 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
+//import { FilterPipe } from 'path-to-filter-pipe';
 
 @NgModule({
   declarations: [
-    DetailsComponent
+    // FilterPipe,
+    DetailsComponent,
+   
+    
   ],
   imports: [
     CommonModule,
@@ -24,7 +29,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgMultiSelectDropDownModule,
     NgSelectModule,
     FormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,Ng2SearchPipeModule
   ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent

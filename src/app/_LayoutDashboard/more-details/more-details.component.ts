@@ -3675,10 +3675,10 @@ export class MoreDetailsComponent implements OnInit {
 
     if (cloud == false) {
       if (this.Authority_EmpNo == this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.projectCode + "/" + docName);
+        window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
       }
       else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
-        window.open(FileUrl + this.Authority_EmpNo + "/" + this.projectCode + "/" + docName);
+        window.open(FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
       }
     }
     else if (cloud == true) {

@@ -858,8 +858,23 @@ $(document).ready(function(){
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
+    
   }
+  selectedIndex: number | null = null;
+
+  info_active_btn(item) {
+    item.isActive = !item.isActive;
+
+      // If you want to allow only one item to be active at a time, uncomment the following lines:
+    if (item.isActive) {
+      this._ProjectDataList.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.isActive = false;
+        }
+      });
+    }
+  }
+  
   OpenProject(){
     document.getElementById("New_project_Add").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -867,6 +882,8 @@ $(document).ready(function(){
   }
   
   closeInfo() {
+    // $('.project-list_AC').removeClass('active');
+    this._ProjectDataList.forEach(item => item.isActive = false);
     this.Clear_Feilds();
     // document.getElementById("Project_info_slider_bar").classList.remove("kt-quick-panel--on");
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
@@ -945,6 +962,8 @@ $(document).ready(function(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
+
+ 
   
   //----------------------project info js end ------------
   _totalMemos: number;

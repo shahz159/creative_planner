@@ -209,7 +209,9 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   getProjectDetails(prjCode:string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
 
-      this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];   // projectInfo is an Object
+      this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
+// alert(this.projectInfo.Project_Block)
+// projectInfo is an Object
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
@@ -259,7 +261,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   showActionDetails(index:number|undefined)
   {
     this.currentActionView=index;
-
+    if(this.projectActionInfo[index].Status==="Under Approval")
+    this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
     
   showProjectDetails(){
@@ -341,6 +344,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";  
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.getAttachments(1);
+  }
+  View_User_list(){
+    document.getElementById("User_list_View").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
   }
   closedarBar() {
     // document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -353,6 +362,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.workdes = "";
     this.starttime = null;
     this.endtime = null;
+    document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
+    document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
 
@@ -367,9 +382,16 @@ tmlSrtOrd:"Date"|"Action"|"Employee"|"Me"|undefined;
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
 
- 
+  add_support_team(){
+    document.getElementById("Team_view_pr").classList.add("d-none");
+    document.getElementById("add_new_team_sp").classList.remove("d-none");
+  }
+  back_to_team_list(){
+    document.getElementById("Team_view_pr").classList.remove("d-none");
+    document.getElementById("add_new_team_sp").classList.add("d-none");
+  }
 
-///   
+///  
 
 //  ADD NEW DMS
 
@@ -692,7 +714,6 @@ getapprovalStats() {
     console.log(this.requestDetails, 'transfer'); 
 }
 
-
 approvalClick(actionType) {
   this.comments=""
   switch (actionType) { 
@@ -799,7 +820,8 @@ submitApproval() {
     this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
       subscribe((data) => {
         this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
-        this.getapprovalStats();     
+        this.getapprovalStats(); 
+        this.GetApproval(1);    
         this.getProjectDetails(this.URL_ProjectCode);
        
       });
@@ -852,8 +874,14 @@ submitApproval() {
   }
   this.close_info_Slide();
 }
+
+
 close_info_Slide() {
 }
+
+
+
+
 
 clickonselect(com) {
   if (this.comments == null) {
@@ -1177,25 +1205,7 @@ console.log('total actions in process:',this.TOTAL_ACTIONS_IN_PROCESS,'total act
 
 
 
-
-
-
-
-
-
 // Action completion sidebar code end at here.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //timeline section code here start
@@ -1845,6 +1855,252 @@ updateMainProject() {
   }
   
 }
+// Files Attachment Working Area Start
+
+flSrtOrd:string;
+AttachmentList:any;
+_TotalDocs:any;
+getAttachments(sorttype:number) {
+  switch(sorttype){
+    case 1:this.flSrtOrd="Date";break;
+    case 2:this.flSrtOrd="Project";break;
+    case 3:this.flSrtOrd="Employee";break;
+    case 4:this.flSrtOrd="me";break;
+    default:this.flSrtOrd="none";
+}
+  this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode,sorttype.toString())
+    .subscribe((data) => {    
+      console.log(data,"Slider")
+      this.AttachmentList = JSON.parse(data[0]['Attachments_Json']); 
+      this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+
+   
+      if(this.AttachmentList&&this.AttachmentList.length)
+      { 
+        this.AttachmentList=this.AttachmentList.map((Attachment:any)=>({ ...Attachment,JsonData:JSON.parse(Attachment.JsonData) }));
+        console.log('our new AttachmentList:',data,this.AttachmentList);
+      } 
+    });
+}
+
+
+
+
+ openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type,submitby) {
+    repDate = new Date(repDate);
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    let Day = repDate.getDate();
+    let Month = repDate.getMonth() + 1;
+    let Year = repDate.getFullYear();
+    if (Month < 10) {
+      this._month = '0' + Month;
+    }
+    else {
+      this._month = Month;
+    }
+    if (Day < 10) {
+      this._day = '0' + Day;
+    }
+    else {
+      this._day = Day;
+    }
+    var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+    if (cloud == false) {
+      // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+      // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+      //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+      // }
+
+      FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+
+    }
+
+    else if (cloud == true) {
+
+      let FileUrl: string;
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+      if (proofDoc.includes(FileUrl)) {
+        FileUrl = proofDoc
+      }
+      else {
+        let Day = repDate.getDate();
+        let Month = repDate.getMonth() + 1;
+        let Year = repDate.getFullYear();
+        if (Month < 10) {
+          this._month = '0' + Month;
+        }
+        else {
+          this._month = Month;
+        }
+        if (Day < 10) {
+          this._day = Day;
+        }
+        else {
+          this._day = Day;
+        }
+        var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+        // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        // else if (this.Authority_EmpNo != this.Responsible_EmpNo) {
+        //   FileUrl= (FileUrl + this.Authority_EmpNo + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." +type);
+        // }
+        FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." + type);
+      }
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+
+  }
+
+
+  LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+
+    let FileUrl: string;
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (iscloud == false) {
+      if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+      }
+      else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+        FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+      }
+
+      let name = "ArchiveView/" + pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/" + pcode;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&"+ "submitby=" + submitby + "&"+ "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+  }
+// Files Attachment Working Area End
+
+
+
+
+
+
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
+filterText:string='';
+approval_Emp:any
+
+
+// clearsearch() {
+//   this.filterText = "";
+// }
+
+
+GetApproval(code){
+  this.approvalObj=new ApprovalDTO();
+  this.approvalObj.Project_Code = code;
+
+  this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.requestDetails = data as [];
+    
+     if (this.requestDetails.length > 0) {
+      this.requestType = (this.requestDetails[0]['Request_type']);
+       this.forwardType = (this.requestDetails[0]['ForwardType']);
+       this.requestDate = (this.requestDetails[0]['Request_date']);
+       this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+       this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+       this.requestComments = (this.requestDetails[0]['Remarks']);
+       this.new_deadline = (this.requestDetails[0]['new_deadline']);
+       this.new_cost = (this.requestDetails[0]['new_cost']);
+       this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+     
+       this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+       const fullName = this.Submitted_By.split(' ');
+       this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+       this.initials1 = this.initials1.toUpperCase();
+       this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+       this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+       this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+       this.reject_list.splice(0,1);
+       this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+       this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+       console.log(this.singleapporval_json, "s-1");
+       if (this.prviousCommentsList.length > 1) {
+         this.previouscoments = true;
+       }
+       else {
+         this.previouscoments = false;
+      }
+      
+      if (this.requestType == 'Project Forward') {
+        this.newResponsible = (this.transfer_json[0]['newResp']);
+        this.forwardto = (this.transfer_json[0]['Forwardedto']);
+        this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Revert Back') {
+        this.newResponsible = (this.revert_json[0]['newResp']);
+        this.forwardto = (this.revert_json[0]['Forwardedto']);
+        this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
+        if(this.complete_List !="" && this.complete_List !=undefined && this.complete_List !=null){
+          this.completedoc = (this.complete_List[0]['Sourcefile']);
+          this.iscloud = (this.complete_List[0]['IsCloud']);
+          this.url = (this.complete_List[0]['CompleteProofDoc']);
+        }
+        console.log(this.complete_List, 'complete');
+      }
+ } 
+});
+    console.log(this.requestDetails, 'transfer'); 
+}
 
 
 
@@ -1894,5 +2150,6 @@ getholdate() {
 
 
 
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
 
 }

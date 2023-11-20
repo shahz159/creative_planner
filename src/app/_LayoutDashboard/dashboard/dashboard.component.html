@@ -453,14 +453,14 @@
                                 <span class="kt-dashboard-cnt">{{pendingcount}}</span>
                             </div>
 
-                            <div class="fc pend-bg" *ngIf="draftdata_meet.length>0">
+                            <div class="fc pend-bg" *ngIf="draftcount>0">
                                 <button type="button" (click)="penshow1()" class="draft-btn">Draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-                            <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
+                            <!-- <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
                                 <button type="button" (click)="penshow2()" class="pend-btn">Delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- <div id="kt_calendar"></div> -->
@@ -505,7 +505,7 @@
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
-                                    <div class="fc-event-title ml-5"> {{item.Task_Name}}</div>
+                                    <div class="fc-event-title ml-2"> {{item.Task_Name}}</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
@@ -545,9 +545,11 @@
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
-                                    <div class="fc-event-title ml-5"> {{item.Task_name}}</div>
+                                    <div class="fc-event-title ml-2"> {{item.Task_name}}</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                <div class="delete-btn" title="Delete draft" (click)="delete_draft(item.Sno)">
+                                    <a ><i  class="fas fa-trash-alt"></i></a></div>
                             </div>
                         </div>
 
@@ -585,7 +587,7 @@
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
-                                    <div class="fc-event-title  ml-5">{{action.Project_Name}} - {{action.Delaydays}} days delay</div>
+                                    <div class="fc-event-title  ml-2">{{action.Project_Name}} - {{action.Delaydays}} days delay</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
@@ -3160,7 +3162,8 @@
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
                     (click)="OnSubmitSchedule()">Submit</button>
-                    <button type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Save Draft</button> &nbsp;
+                    <button *ngIf="draftid==0" type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Save Draft</button>
+                    <button *ngIf="draftid!=0" type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Update Draft</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 
             </div>

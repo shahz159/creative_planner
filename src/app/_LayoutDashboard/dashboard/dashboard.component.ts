@@ -1699,7 +1699,18 @@ export class DashboardComponent implements OnInit {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          this.notifyService.showSuccess(this._Message, "Success");
+          if(this._Message == "Updated Successfully"){
+            if (this.draftid != 0) {
+              this.Getdraft_datalistmeeting();
+              this.draftid = 0
+            }
+            this.notifyService.showSuccess(this._Message, "Success");
+          }
+          else{
+            this.notifyService.showError(this._Message, "Failed");
+          }
+          
+          
           this.GetScheduledJson();
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
@@ -1737,10 +1748,7 @@ export class DashboardComponent implements OnInit {
           this.maxDate = null;
           this.calendar.updateTodaysDate();
           this.TImetable();
-          if (this.draftid != 0) {
-            this.Getdraft_datalistmeeting();
-            this.draftid = 0
-          }
+          
         });
       this.closeschd();
     }
@@ -4116,7 +4124,12 @@ export class DashboardComponent implements OnInit {
 
   }
   Insert_indraft() {
-
+    if(this.draftid!=0){
+      this._calenderDto.draftid = this.draftid;
+    }
+    else{
+      this._calenderDto.draftid=0;
+    }
     this._calenderDto.Task_Name = this.Title_Name;
     this._calenderDto.Emp_No = this.Current_user_ID;
     if (this.SelectDms == null) {
@@ -4143,10 +4156,18 @@ export class DashboardComponent implements OnInit {
 
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
-
+        if(data['message']=='1'){
+          this.Getdraft_datalistmeeting();
+          this.closeschd();
+          this.notifyService.showSuccess("Draft saved","Success");
+        }
+        if(data['message']=='2'){
+          this.Getdraft_datalistmeeting();
+          this.closeschd();
+          this.notifyService.showSuccess("Draft updated","Success");
+        }
       });
-    this.Getdraft_datalistmeeting();
-    this.closeschd();
+
 
   }
   draftdata_meet: any = [];
@@ -4156,20 +4177,42 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
-        this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
-        this.draftcount = this.draftdata_meet.length;
+        // console.log(data,"ssdddd")
+        if(data['Draft_meetingdata']!="" && data['Draft_meetingdata']!=null && data['Draft_meetingdata']!=undefined){
+          this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
+          this.draftcount = this.draftdata_meet.length;
+        }
+        else{
+          this.draftdata_meet = null;
+          this.draftcount = 0;
+          this.penhide1();
+        }
+        
         // alert(this.draftcount)
-        // console.log(this.draftdata_meet,"ssdddd")
       });
 
   }
+
+  delete_draft(draftid){
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.draftid = draftid;
+    this.CalenderService.NewDeleteDraft(this._calenderDto).subscribe
+      (data => {
+        if(data['message']=='1'){
+          this.Getdraft_datalistmeeting();
+          this.notifyService.showSuccess("Draft deleted","Success");
+        }
+      });
+  }
+
   draftid: number = 0;
   draft_arry: any = [];
+
   darft_click(Sno, val) {
 
     this.draftid = Sno;
 
-    this.Task_type(val)
+    this.Task_type(val);
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
 
@@ -4243,6 +4286,7 @@ export class DashboardComponent implements OnInit {
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
+    this.draftid=0;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
