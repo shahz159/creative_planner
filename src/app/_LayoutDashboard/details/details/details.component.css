@@ -2409,3 +2409,12 @@ a#Filter_btn::after {
 .dropdown-item:active svg{
   color: #2786fb;
 }
+
+
+.bounce-effect{
+  transition-duration:0.5s; 
+  transition-timing-function:cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+
+
