@@ -2022,8 +2022,7 @@
 
                                     
 
-                                    <!-- *ngIf="Current_user_ID  == approvalEmpId" -->
-                                    <ng-container>
+                                    <ng-container  *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval')">
                                         <div class="kt-info-box mt-2 border-0">
                                             <div class="d-flex justify-content-between align-items-center">
 
@@ -3498,7 +3497,7 @@
                 <div class="d-flex-center">
                     <div class="position-relative w-100">
                         <input type="text" autocomplete="off" name="search" placeholder="Search..."
-                            class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
+                        [(ngModel)]="filterText"    class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
                     </div>
                     <span class="kt-user-list-ic d-none">
                         <i class="material-icons kt-menu__link-icon">person</i>
@@ -3654,16 +3653,18 @@
             </div>
   <!--  Older Start-->
 
-            <div class="attachament-list-view" *ngFor="let item of AttachmentList;let i=index">
+            <div class="attachament-list-view" *ngFor="let item of AttachmentList  | filter :filterText;let i=index">
+           
                 <div data-toggle="collapse" aria-expanded="true"  
                     class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
                     [attr.data-target]="'#Div_attachments'+ i">
+                   
                     <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
                     <span class="Kt-replay-count">{{item.TotalFiles}}</span>
                 </div>
 
                 <div class="kt-widget__items mt-2 mx-0 px-2  collapse show"  id="Div_attachments{{i}}"  >
-                    <div class="kt-notification__item no-after position-relative ng-star-inserted" *ngFor="let file of item.JsonData">
+                    <div class="kt-notification__item no-after position-relative ng-star-inserted" *ngFor="let file of item.JsonData | filter :filterText;let i=index">
                                              
                         <!-- <div data-toggle="modal"  class="kt-notification__item-icon" >
                             <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
@@ -3773,12 +3774,25 @@
                                     <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
                                 </div>
                             </div>
-                        </ng-container>
-                        
+                        </ng-container>       
                     </div>
                 </div>
             </div>
+      
+<ng-container  *ngIf="_TotalDocs===0">
+    <div class="text-center">
+        <img src="../../../../assets/images/No Attachment.png" width="268" height="256">
+      <div class="bnk-txt mt-3"  >
+      <h3 class="blank-txt">No Attachment Found</h3>
+      </div>
+    </div>
+</ng-container>
         </div>
     </div>
 </div>
 <!--  Files Working Area End-->
+
+
+
+
+<!-- | filter :actionsearch" -->

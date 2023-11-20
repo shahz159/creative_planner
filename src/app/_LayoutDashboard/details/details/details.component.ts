@@ -257,6 +257,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   showActionDetails(index:number|undefined)
   {
     this.currentActionView=index;
+    if(this.projectActionInfo[index].Status==="Under Approval")
+    this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
     
   showProjectDetails(){
@@ -682,7 +684,6 @@ getapprovalStats() {
     console.log(this.requestDetails, 'transfer'); 
 }
 
-
 approvalClick(actionType) {
   this.comments=""
   switch (actionType) { 
@@ -789,7 +790,8 @@ submitApproval() {
     this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
       subscribe((data) => {
         this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
-        this.getapprovalStats();     
+        this.getapprovalStats(); 
+        this.GetApproval(1);    
         this.getProjectDetails(this.URL_ProjectCode);
        
       });
@@ -842,8 +844,14 @@ submitApproval() {
   }
   this.close_info_Slide();
 }
+
+
 close_info_Slide() {
 }
+
+
+
+
 
 clickonselect(com) {
   if (this.comments == null) {
@@ -1159,25 +1167,7 @@ actionCompleted(){
 
 
 
-
-
-
-
-
-
 // Action completion sidebar code end at here.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //timeline section code here start
@@ -1631,6 +1621,8 @@ getAttachments(sorttype:number) {
       console.log(data,"Slider")
       this.AttachmentList = JSON.parse(data[0]['Attachments_Json']); 
       this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+
+   
       if(this.AttachmentList&&this.AttachmentList.length)
       { 
         this.AttachmentList=this.AttachmentList.map((Attachment:any)=>({ ...Attachment,JsonData:JSON.parse(Attachment.JsonData) }));
@@ -1638,16 +1630,6 @@ getAttachments(sorttype:number) {
       } 
     });
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1791,4 +1773,88 @@ getAttachments(sorttype:number) {
     }
   }
 // Files Attachment Working Area End
+
+
+
+
+
+
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
+filterText:string='';
+approval_Emp:any
+
+
+// clearsearch() {
+//   this.filterText = "";
+// }
+
+
+GetApproval(code){
+  this.approvalObj=new ApprovalDTO();
+  this.approvalObj.Project_Code = code;
+
+  this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.requestDetails = data as [];
+    
+     if (this.requestDetails.length > 0) {
+      this.requestType = (this.requestDetails[0]['Request_type']);
+       this.forwardType = (this.requestDetails[0]['ForwardType']);
+       this.requestDate = (this.requestDetails[0]['Request_date']);
+       this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+       this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+       this.requestComments = (this.requestDetails[0]['Remarks']);
+       this.new_deadline = (this.requestDetails[0]['new_deadline']);
+       this.new_cost = (this.requestDetails[0]['new_cost']);
+       this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+     
+       this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+       const fullName = this.Submitted_By.split(' ');
+       this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+       this.initials1 = this.initials1.toUpperCase();
+       this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+       this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+       this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+       this.reject_list.splice(0,1);
+       this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+       this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+       console.log(this.singleapporval_json, "s-1");
+       if (this.prviousCommentsList.length > 1) {
+         this.previouscoments = true;
+       }
+       else {
+         this.previouscoments = false;
+      }
+      
+      if (this.requestType == 'Project Forward') {
+        this.newResponsible = (this.transfer_json[0]['newResp']);
+        this.forwardto = (this.transfer_json[0]['Forwardedto']);
+        this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Revert Back') {
+        this.newResponsible = (this.revert_json[0]['newResp']);
+        this.forwardto = (this.revert_json[0]['Forwardedto']);
+        this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
+        if(this.complete_List !="" && this.complete_List !=undefined && this.complete_List !=null){
+          this.completedoc = (this.complete_List[0]['Sourcefile']);
+          this.iscloud = (this.complete_List[0]['IsCloud']);
+          this.url = (this.complete_List[0]['CompleteProofDoc']);
+        }
+        console.log(this.complete_List, 'complete');
+      }
+ } 
+});
+    console.log(this.requestDetails, 'transfer'); 
+}
+
+
+
+
+
+
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
 }
