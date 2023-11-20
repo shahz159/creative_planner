@@ -6248,7 +6248,7 @@
                                 
                             </span>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='Project Complete' && completedoc">
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
@@ -6256,7 +6256,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='ToDo Achieved' && completedoc">
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">

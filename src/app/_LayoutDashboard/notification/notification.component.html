@@ -121,13 +121,16 @@
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox">
-                                                                <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                    [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
+                                                            <ng-container *ngIf="item.Count !=0">
+                                                                <label class="kt-checkbox">
+                                                                    <input type="checkbox" (change)="isTypeChecked(item)"
+                                                                        [(ngModel)]="item.checked">
+                                                                    {{item.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{item.Count}}</span>
+                                                            </ng-container>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,14 +218,14 @@
                                             <tr role="row">
                                                 <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
                                                          rowspan="1" colspan="1" >
-                                                    <input type="checkbox"  id="snocheck"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
+                                                    <input type="checkbox"  id="snocheck" title="Select All"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
                                                    
                                                 </th>
                                                 <th style="width: 100px;" tabindex="0" aria-controls="project-4"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
                                                     aria-label=": activate to sort column descending">
                                                 </th>
-                                                <th data-order="desc" data-name="Project_Name" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
                                                     aria-controls="project-4" class="curser-pointer" rowspan="1"
                                                     colspan="1" style="width: 0px;" (click)="_SortPortfoliolist()"
                                                     aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
@@ -234,25 +237,25 @@
                                                     </a>
                                                     Project Name
                                                 </th>
-                                                <th data-order="desc" data-name="Exec_BlockName" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Exec_BlockName" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Project Type: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Project Type
                                                 </th>
-                                                <th data-order="desc" data-name="Cost" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Cost" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
-                                                    aria-label="Project Type: activate to sort column ascending">
+                                                    aria-label="Cost: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Cost
                                                 </th>
-                                                <th data-order="desc" data-name="Submitedby" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="SubmittedBy" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
                                                     aria-label="User Name: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Submitted By
                                                 </th>
-                                                <th data-order="desc" data-name="Deadline" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="DeadLine" tabindex="0"
                                                     class="curser-pointer" aria-controls="project-4" rowspan="1"
                                                     colspan="1"
                                                     aria-label="User Name: activate to sort column ascending">
@@ -264,13 +267,13 @@
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Date
                                                 </th> -->
-                                                <th data-order="desc" data-name="RequestType" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="RequestType" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
                                                     aria-label="Category: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Type
                                                 </th>
-                                                <th data-order="desc" data-name="RACIS" tabindex="0"
+                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
                                                 aria-controls="project-4" rowspan="1" colspan="1"
                                                 class="curser-pointer"
                                                 aria-label="Category: activate to sort column ascending">
@@ -294,7 +297,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of _NotificationActivity">
+                                            <tr role="row" class="odd project-list_AC" *ngFor="let item of _NotificationActivity" [class.active]="item.isActive">
                                                 <td  align="center">
                                                     <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"  (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
             
@@ -302,7 +305,7 @@
                                                 <td align="center">
                                                     <a tabindex="0" class="btn px-0 mb-0" role="button"
                                                         placement="right" data-trigger="focus" data-toggle="tooltip"
-                                                        title="Project Info!" (click)="openInfo(item.Project_Code1)">
+                                                        title="Project Info!" (click)="openInfo(item.Project_Code1);info_active_btn(item)">
                                                         <i class="fa fa-info-circle info-icon-cir"></i>
                                                     </a>
                                                     <a tabindex="0" class="btn px-0 mr-2" role="button"
@@ -318,7 +321,7 @@
                                                 </p></td>
                                                 <td>
                                                     <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
-                                                    <span class="kt-widget__other d-block st-line" *ngIf="item.Category">{{item.Category}}</span>
+                                                    <span class="kt-widget__other d-block st-line" title="category" *ngIf="item.Category">{{item.Category}}</span>
                                                     <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
                                                 </td>
                                                 <td>
@@ -336,7 +339,7 @@
                                                     <ng-template #Projecttype>
                                                         <span class="kt-widget__other text-nowrap">
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
-                                                            <span class="kt-widget__other d-block st-line">{{item.Duration}} hrs</span>
+                                                            <span class="kt-widget__other d-block st-line" title="Allocated hrs">{{item.Duration}} hrs</span>
                                                     </ng-template>
                                                     
                                                 </td>
@@ -359,18 +362,32 @@
 
                                                   <td>
                                                     <div  class="kt-media-group">
-                                                        <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Owner:Aquib Shahbaz">
-                                                            <span >AS</span>
-                                                        </a>
-                                                      <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Responsible &amp; Authority: Md Waseem Akram">
-                                                        <span >MA</span>
-                                                    </a>
-                                                    <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle" title="Support: Md Waseem Akram">
-                                                        <span >MA</span>
-                                                    </a>
-                                                    <a  data-toggle="kt-tooltip" data-skin="brand" data-placement="top" data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle" title="Coordinator &amp; Informer: Aquib Shahbaz ">
-                                                        <span >1+</span>
-                                                    </a>
+                                                        <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                            <span>{{item.Owner}}</span>
+                                                          </a>
+                                                          <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{item.Owner}}</span>
+                                                          </a>
+                                                          
+                                                          <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{item.Resp}}</span>
+                                                            </a>
+                                                          <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                            <span>{{item.Autho}}</span>
+                                                          </a>
+                                                          <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{item.Autho}}</span>
+                                                            </a>
+                                                          
+                                                            <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{item.Support}}</span>
+                                                            </a>
+                                                          <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                            <span>1+</span>
+                                                          </a>
+                                                          <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>1+</span>
+                                                            </a>
                                                     
                                                 </div>
                                                 </td> 

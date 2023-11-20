@@ -667,7 +667,8 @@ button.Kt-Approval-btns {
   font-size: 13px;
   letter-spacing: 0;
   font-weight: 500;
-  border-radius: 3px;    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-radius: 3px; 
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .Btn_Accpet {
 border-color: #8ab991 !important;
@@ -992,5 +993,5 @@ span.Rq_date_V {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
+  /* cursor: pointer; */
 }

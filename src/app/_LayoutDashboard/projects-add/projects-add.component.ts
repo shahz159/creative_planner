@@ -394,7 +394,21 @@ export class ProjectsAddComponent implements OnInit {
 
   }
 
+  info_active_btn(item) {
+    item.isActive = !item.isActive;
+
+      // If you want to allow only one item to be active at a time, uncomment the following lines:
+    if (item.isActive) {
+      this._ProjectDataList.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.isActive = false;
+        }
+      });
+    }
+  }
+
   closeInfo() {
+    this._ProjectDataList.forEach(item => item.isActive = false);
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "none";

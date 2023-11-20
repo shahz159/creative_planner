@@ -117,8 +117,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       var Pcode = params.get('projectcode');
       this.projectCode = Pcode;
       this.getusername();
-      this.getapprovalStats();
       this.LoadProjectDetails();
+      // this.getapprovalStats();
+      
       // this.getdeadlinecount();
       // this.getProjectHoldDate();
       // this.getapproval_actiondetails();
@@ -278,6 +279,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Project_Hold: number = 0;
   Project_type: any;
   Approver_Name: any;
+  Approver_No: any;
+  isRequest: any;
 
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
@@ -288,10 +291,16 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json']);
  
-          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);        
+          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);  
+          this.Approver_No = this.ProjectStatesJson[0]['ApproverEmpNo'];
+          this.isRequest = this.ProjectStatesJson[0]['request_type'];
+          if(this.Approver_No && this.Approver_No==this.Current_user_ID){
+            this.getapprovalStats();
+          }    
           this.ProjectStatesJson.forEach((item) => {
             this.Approver_Name = item.ApproverName
-          })
+          });
+          
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
@@ -341,7 +350,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];
-          this._MainProjectStatus = data[0]['MainProjectStatus'];
+          this._MainProjectStatus = this.ProjectStatesJson[0]['Status'];
+          
           console.log("ProjectDetails-->", this.ProjectNameJson);
           this.date1 = this.ProjectStatesJson[0]['StartDate'];
 
@@ -371,7 +381,12 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this._subtaskDiv = false;
         }
       });
-    this._OpenMemosInfo(this.projectCode);
+
+      
+      // this.approvalservice.GetProjectApproval(this.projectCode).subscribe((data)=>{
+      //   if(data['message']="1"){
+      //   }
+      // });
   }
 
   isExpanded: boolean = false;
@@ -1017,7 +1032,10 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   Reject_active: boolean = false;
 
   removeCommit() {
-    this.isTextAreaVisible = false
+    this.isTextAreaVisible = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
   }
 
   approvalClick(actionType) {
@@ -1029,6 +1047,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.selectedType = '1';
         this.rejectType = null;
         this.Accept_active = true;
+        $(".Btn_Accpet").addClass('active');
         this.Conditional_Active = false;
         this.Reject_active = false;
       }; break;
@@ -1038,6 +1057,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.rejectType = null;
         this.Accept_active = false;
         this.Conditional_Active = true;
+        $(".Btn_Conditional_Accept").addClass('active');
         this.Reject_active = false;
       }; break;
       case 'REJECT': {
@@ -1047,17 +1067,18 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
+        $(".Btn_Reject").addClass('active');
       };
         break;
       default: { }
     }
     this.isTextAreaVisible = true;
 
-    const targetElementId = `kt_open_scroll`;
-    const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-    }
+    // const targetElementId = `kt_open_scroll`;
+    // const targetElement = this.elementRef.nativeElement.querySelector(`#${targetElementId}`);
+    // if (targetElement) {
+    //   targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    // }
 
   }
   Approval_View() {
@@ -1823,17 +1844,21 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     if (this._Urlid == '1') {
+      this._projectSummary.closeInfo();
       this.router.navigate(["/backend/ProjectsSummary/"]);
     }
     else if (this._Urlid == '2') {
       this.BsService.bs_SelectedPortId.subscribe(c => { this.port_id = c });
+      this._portfolioprojects.closeInfo();
       // alert(this.port_id);
       this.router.navigate(["../portfolioprojects/" + this.port_id + "/"]);
     }
     else if (this._Urlid == '3') {
+      this._viewdashboard.closeInfo();
       this.router.navigate(["../ViewProjects/" + this.Mode]);
     }
     else if (this._Urlid == '4') {
+      this._projectsAdd.closeInfo();
       this.BsService.bs_SelectedPortId.subscribe(c => { this.port_id = c });
       this.router.navigate(["../AddProjectsToPortfolio/" + this.port_id]);
     }
@@ -1841,6 +1866,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.router.navigate(["./backend/ToDoProjects/"]);
     }
     else if (this._Urlid == '6') {
+      this._notification.closeInfo();
       this.router.navigate(["Notifications"]);
     }
   }
