@@ -128,14 +128,18 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.Current_user_ID=localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
+    this.approvalObj=new ApprovalDTO();              
     this.getapprovalStats();       
     this.getusername(); 
-    
- 
     
     // this.router.navigate(["./Details", this.URL_ProjectCode]);
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
+    this.getapproval_actiondetails();      // get main project approval state.
+    this.getholdate();                     // get project hold date.
+
+
+
   }
 
   ngAfterViewInit():void{
@@ -211,7 +215,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
-      this._MasterCode=this.projectInfo.Project_Code;
       console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
 
       if(this.projectActionInfo){
@@ -242,6 +245,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
              }
 
         })
+        
       }
       else
           this.projectActionInfo=null;
@@ -257,6 +261,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   showActionDetails(index:number|undefined)
   {
     this.currentActionView=index;
+    if(this.projectActionInfo[index].Status==="Under Approval")
+    this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
     
   showProjectDetails(){
@@ -313,8 +319,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
    closeInfo() {
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
-    document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -324,10 +333,10 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
-  darcreate() {
-    document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "block";
-  }
+  // darcreate() {
+  //   document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  // }
   View_Activity(){
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -343,6 +352,16 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("rightbar-overlay").style.display = "block";
   }
   closedarBar() {
+    // document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    // document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
+    // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    // document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    // document.getElementById("rightbar-overlay").style.display = "none";
+    this.closeInfo();
+    this.workdes = "";
+    this.starttime = null;
+    this.endtime = null;
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -352,12 +371,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   }
 
 
-tmlSrtOrd:"Date"|"Project"|"Employee"|"Me"|undefined;
+tmlSrtOrd:"Date"|"Action"|"Employee"|"Me"|undefined;
 
   View_timeline(){
     document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
-    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+
     this.tmlSrtOrd='Date';   // by default.
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);  
   }
@@ -635,7 +655,7 @@ Close_Comments() {
 
 getapprovalStats() {
   // this.approvalEmpId = null;
-  this.approvalObj=new ApprovalDTO();
+ 
   this.approvalObj.Project_Code = this.URL_ProjectCode;
 
   this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
@@ -693,7 +713,6 @@ getapprovalStats() {
 });
     console.log(this.requestDetails, 'transfer'); 
 }
-
 
 approvalClick(actionType) {
   this.comments=""
@@ -801,7 +820,8 @@ submitApproval() {
     this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
       subscribe((data) => {
         this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
-        this.getapprovalStats();     
+        this.getapprovalStats(); 
+        this.GetApproval(1);    
         this.getProjectDetails(this.URL_ProjectCode);
        
       });
@@ -854,8 +874,14 @@ submitApproval() {
   }
   this.close_info_Slide();
 }
+
+
 close_info_Slide() {
 }
+
+
+
+
 
 clickonselect(com) {
   if (this.comments == null) {
@@ -934,7 +960,7 @@ openPDF_Standard(cloud, repDate: Date, proofDoc) {
   else if (cloud == true) {
     window.open(proofDoc);
   }
-}
+} 
 
 openPDF(cloud, docName) {
   let FileUrl: string;
@@ -1010,7 +1036,13 @@ gethierarchy() {
 }
 
 
-
+onFileChangeUST(e) {
+  this._inputAttachments = e.target.files[0].name;
+}
+onFileChange(e) {
+  this.selectedFile = <File>e.target.files[0];
+  //console.log("--------------->",this.selectedFile)
+}
 
 
 
@@ -1032,19 +1064,19 @@ this.Sub_Status=selectedAction.Status;
   //
 }
 
-closeActCompSideBar(){
-  document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-  document.getElementById("rightbar-overlay").style.display = "none";
-  document.getElementById("newdetails").classList.add("position-fixed");
-}  // for temp we are using this.
+// closeActCompSideBar(){
+//   document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+//   document.getElementById("rightbar-overlay").style.display = "none";
+//   document.getElementById("newdetails").classList.add("position-fixed");
+// }  // for temp we are using this.
 
 
 actionCompleted(){
   if (this._remarks ==="") { // when the user not provided the remark then.
     this.notifyService.showInfo("Remarks Cannot be Empty", '');
   }
-  else if ((this.inProcessCount + this.delaycount) == 1 && (this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo|| this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) 
-  {  // when the user provided the remark then.
+  else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo|| this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) 
+  {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
        Swal.fire({
         title: 'This is the last action to be completed.',
         text: 'Do you want to proceed with main project submission?',
@@ -1055,7 +1087,7 @@ actionCompleted(){
        }).then((res:any)=>{
 
                if(res.value)
-               {   
+               {   // when user proceed also with the main project submission.
                 if (this.selectedFile == null) {
                   this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
                 }
@@ -1106,7 +1138,7 @@ actionCompleted(){
                             this.notifyService.showSuccess(this._Message, 'Success');
                       }
                  
-                      this.closeActCompSideBar();
+                      this.closeInfo();
                       this.getProjectDetails(this.URL_ProjectCode);
                       // this.GetSubtask_Details();
                       // this.GetProjectDetails();
@@ -1135,7 +1167,7 @@ actionCompleted(){
                   // this.closeInfo();   //closing the sidebar.
 
                   this.getProjectDetails(this.URL_ProjectCode); // rebinding data.
-                  this.closeActCompSideBar();  // closing the action completion sidebar.
+                  this.closeInfo();  // closing the action completion sidebar.
                 });
                 this.notifyService.showSuccess("Successfully Updated", 'Action completed');
                }
@@ -1143,6 +1175,8 @@ actionCompleted(){
 
   }
   else{
+// if user is O,R,A or is in Heirarchy and there are actions in the project which are in process and delay states.
+console.log('total actions in process:',this.TOTAL_ACTIONS_IN_PROCESS,'total actions in delay:',this.TOTAL_ACTIONS_IN_DELAY);
     const fd = new FormData();
     fd.append("Project_Code", this.Sub_ProjectCode);
     fd.append("Master_Code", this._MasterCode);
@@ -1160,7 +1194,7 @@ actionCompleted(){
           // this.GetSubtask_Details();
           // Rebinding    
           this.getProjectDetails(this.URL_ProjectCode); 
-          this.closeActCompSideBar();
+          this.closeInfo();
         });
         this.notifyService.showSuccess("Successfully Updated", 'Action completed');
   }
@@ -1171,25 +1205,7 @@ actionCompleted(){
 
 
 
-
-
-
-
-
-
 // Action completion sidebar code end at here.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //timeline section code here start
@@ -1235,8 +1251,9 @@ delaycount: number;
 
 openDarSideBar(){
   // opens the dar side bar 
-  document.getElementById("newdetails").classList.add("position-fixed");
+
   document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+  document.getElementById("newdetails").classList.add("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "block";
  //
  // get all actions
@@ -1261,21 +1278,21 @@ getResponsibleActions() {
       console.log('darArr:',this.darArr);
       if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
         this.showaction=false;
+      
       }
       else if(this.darArr.length==0 && this.projectInfo.OwnerEmpNo!=this.Current_user_ID && this.Responsible_EmpNo!=this.Current_user_ID){
         this.showaction=true;
         this.noact_msg=true;
+       
       }
       else{
-        this.showaction=true;
+        this.showaction=true;    
+        const selectedActionOpt=this.darArr.find((item:any)=>(item.Project_Code===this.projectActionInfo[this.currentActionView].Project_Code))
+        if(selectedActionOpt) 
+        this.actionCode=selectedActionOpt.Project_Code;
       }
     });
 }
-
-
-
-
-
 
 
 
@@ -1405,7 +1422,7 @@ submitDar() {
     this.objProjectDto.TimeCount = this.timecount;
   }
   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-  this.objProjectDto.date = this.current_Date;
+  this.objProjectDto.date = this.current_Date; 
   this.objProjectDto.WorkAchieved = this.workdes;
   this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
@@ -1424,21 +1441,58 @@ submitDar() {
     this.objProjectDto.Project_Code = this.actionCode;
   }
 
- console.log("objProjectDto:",this.objProjectDto);
-
-
+ 
   this.service._InsertDARServie(this.objProjectDto)
     .subscribe(data => {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
-    });
+    }); 
   this.dar_details();
   this.getDarTime();
-  document.getElementById("newdetails").classList.remove("position-fixed");
-  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-  document.getElementById("rightbar-overlay").style.display = "none";
+
+
+
+  this.workdes = "";
+  this.starttime = null;
+  this.endtime = null;
+  // document.getElementById("newdetails").classList.remove("position-fixed");
+  // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  // document.getElementById("rightbar-overlay").style.display = "none";
   // this.Clear_Feilds();
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+onActionChanged(e){
+  let i;
+  for(i=0;i<this.projectActionInfo.length;i++)
+       if(this.projectActionInfo[i].Project_Code.toString().trim()===e.toString().trim())
+       break;
+  if(i!==this.projectActionInfo.length)
+   this.currentActionView=i;
+}   // whenever action is changed or selected.
+
+
+
+
+
+
 
 
 
@@ -1451,17 +1505,17 @@ AddPortfolio() {
 
 // timeline view section start here
 timelineList:any;
-isTimelinePresent:boolean=true;
+isTimelinePresent:boolean=false;
 tlTotalHours:number;
 
 
 
-onTLSrtOrdrChanged(option:"Date"|"Project"|"Employee"|"Me"){
+onTLSrtOrdrChanged(option:"Date"|"Action"|"Employee"|"Me"){
       this.tmlSrtOrd=option;
       let sorttype:string="1";
       switch(option){
           case 'Date':sorttype="1";break;
-          case 'Project':sorttype="2";break;
+          case 'Action':sorttype="2";break;
           case 'Employee':sorttype="3";break;
           case 'Me':sorttype="4";break;
           default:sorttype="1";
@@ -1625,6 +1679,182 @@ DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string
 
 
 
+
+
+
+
+
+
+
+
+
+// this is main project submission code start here
+isAction:boolean = false;  
+
+mainDeadline:any;
+mainowner:any;
+mainResp:any;
+mainAutho:any;
+mainMastercode:any;
+approve_details: any;
+
+getapproval_actiondetails() {
+  this.approvalObj.Project_Code = this.URL_ProjectCode;
+
+  this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
+    // console.log(data,"appact");
+    if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
+      if (data[0]['actiondetails'] != '[]'){
+        let action_details= JSON.parse(data[0]['actiondetails']);
+        
+        this.mainDeadline = action_details[0]['mainDeadline'];
+        this.mainowner = action_details[0]['mainowner'];
+        this.mainResp = action_details[0]['mainResp'];
+        this.mainAutho = action_details[0]['mainAutho'];
+        this.mainMastercode = action_details[0]['Master_Code'];
+        this.isAction=true;
+      }
+      if (data[0]['approvaldetails'] != '[]')
+        this.approve_details = JSON.parse(data[0]['approvaldetails']);
+
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OnClickCheckboxProjectUpdate() {
+  
+  this.service.SubTaskStatusCheck(this.URL_ProjectCode).subscribe(
+    (data) => {
+      if (data['Message'] == 1) {
+        Swal.fire({
+          title: 'Unable to complete this project !!',
+          text: 'Action status are in rejected or pending ?',
+          // icon: 'warning',
+          showCancelButton: true
+        });
+      }
+      else { 
+        // applying sidebar from mysideInfobar_ProjectsUpdate in html
+        document.getElementById("mysideInfobar_ProjectsUpdate").classList.add("kt-quick-panel--on");
+        // placing the backgorund dim on opening sidebar
+        document.getElementById("rightbar-overlay").style.display = "block";
+        // Fixing the scrollbar for sidebar
+        document.getElementById("newdetails").classList.add("position-fixed");
+        document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+        document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+      }
+    });
+
+
+
+}
+
+
+
+
+closeInfoProject() {
+  // For closing sidebar on 'X' buttton
+  document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+  // For sidebar overlay background removing the slide on 'X' button
+  document.getElementById("rightbar-overlay").style.display = "none";
+  // For page top div removing fixed
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  this.selectedFile = "";
+  // this.OnClickCheckboxProjectUpdate();
+  // this.Clear_Feilds();
+}
+
+
+
+
+
+updateMainProject() {
+  if (this.projectInfo.Project_Type == 'To do List') {
+    this.selectedFile = null;
+  }
+
+  if(this.isAction==false){
+    const fd = new FormData();
+  fd.append("Project_Code", this._MasterCode);
+  fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+  fd.append("Remarks", this._remarks);
+  fd.append("Projectblock", this.projectInfo.Project_Block);
+  fd.append('file', this.selectedFile);
+  fd.append("Emp_No", this.Current_user_ID);
+  fd.append("Project_Name", this.projectInfo.Project_Name);
+  this.service._fileuploadService(fd).
+    subscribe((event: HttpEvent<any>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        case HttpEventType.UploadProgress:
+          this.progress = Math.round(event.loaded / event.total * 100);
+          console.log(this.progress, "progress");
+          if (this.progress == 100) {
+            this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+            
+          }
+          break;
+        case HttpEventType.Response:
+          console.log('File upload done!', event.body);
+          var myJSON = JSON.stringify(event);
+            this._Message = (JSON.parse(myJSON).body).Message;
+            this.notifyService.showSuccess(this._Message, 'Success');
+      }
+      this.closeInfoProject();
+      this.getProjectDetails(this.URL_ProjectCode);
+      // this.getapproval_actiondetails();
+      // this.GetSubtask_Details();
+      // this.GetProjectDetails();
+      // this.getapprovalStats();
+      // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+    });
+  }
+
+  else if(this.isAction==true){
+    const fd = new FormData();
+    fd.append("Project_Code", this.URL_ProjectCode);
+    fd.append("Master_Code", this.mainMastercode);
+    fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Remarks", this._remarks);
+    fd.append('file', this.selectedFile);
+    fd.append("Project_Name", this.projectInfo.Project_Name);
+
+    this.service._UpdateSubtaskByProjectCode(fd)
+      .subscribe(data => {
+        this._remarks = "";
+        this._inputAttachments = "";
+        // this.GetProjectDetails();
+        // this.GetSubtask_Details();
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.closeInfoProject();
+
+      });
+    this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+  }
+  
+}
 // Files Attachment Working Area Start
 
 flSrtOrd:string;
@@ -1643,6 +1873,8 @@ getAttachments(sorttype:number) {
       console.log(data,"Slider")
       this.AttachmentList = JSON.parse(data[0]['Attachments_Json']); 
       this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+
+   
       if(this.AttachmentList&&this.AttachmentList.length)
       { 
         this.AttachmentList=this.AttachmentList.map((Attachment:any)=>({ ...Attachment,JsonData:JSON.parse(Attachment.JsonData) }));
@@ -1650,16 +1882,6 @@ getAttachments(sorttype:number) {
       } 
     });
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1803,4 +2025,131 @@ getAttachments(sorttype:number) {
     }
   }
 // Files Attachment Working Area End
+
+
+
+
+
+
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
+filterText:string='';
+approval_Emp:any
+
+
+// clearsearch() {
+//   this.filterText = "";
+// }
+
+
+GetApproval(code){
+  this.approvalObj=new ApprovalDTO();
+  this.approvalObj.Project_Code = code;
+
+  this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.requestDetails = data as [];
+    
+     if (this.requestDetails.length > 0) {
+      this.requestType = (this.requestDetails[0]['Request_type']);
+       this.forwardType = (this.requestDetails[0]['ForwardType']);
+       this.requestDate = (this.requestDetails[0]['Request_date']);
+       this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+       this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+       this.requestComments = (this.requestDetails[0]['Remarks']);
+       this.new_deadline = (this.requestDetails[0]['new_deadline']);
+       this.new_cost = (this.requestDetails[0]['new_cost']);
+       this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+     
+       this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+       const fullName = this.Submitted_By.split(' ');
+       this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+       this.initials1 = this.initials1.toUpperCase();
+       this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+       this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+       this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+       this.reject_list.splice(0,1);
+       this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+       this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+       console.log(this.singleapporval_json, "s-1");
+       if (this.prviousCommentsList.length > 1) {
+         this.previouscoments = true;
+       }
+       else {
+         this.previouscoments = false;
+      }
+      
+      if (this.requestType == 'Project Forward') {
+        this.newResponsible = (this.transfer_json[0]['newResp']);
+        this.forwardto = (this.transfer_json[0]['Forwardedto']);
+        this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Revert Back') {
+        this.newResponsible = (this.revert_json[0]['newResp']);
+        this.forwardto = (this.revert_json[0]['Forwardedto']);
+        this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
+      }
+      if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
+        if(this.complete_List !="" && this.complete_List !=undefined && this.complete_List !=null){
+          this.completedoc = (this.complete_List[0]['Sourcefile']);
+          this.iscloud = (this.complete_List[0]['IsCloud']);
+          this.url = (this.complete_List[0]['CompleteProofDoc']);
+        }
+        console.log(this.complete_List, 'complete');
+      }
+ } 
+});
+    console.log(this.requestDetails, 'transfer'); 
+}
+
+
+
+
+
+
+
+
+
+
+// project submission code end here
+
+
+pro_act: boolean = true;
+hold_upto: any;
+
+closeApproval() {
+  document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+  document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+  document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
+  document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  // document.getElementById("mysideInfobar1").classList.remove("kt-quick-panel--on");
+  // For page top div removing the fixed
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  this.notifyService.showError("Cancelled", '');
+  // this.Clear_Feilds();
+  // this.GetSubtask_Details();
+}
+
+
+
+getholdate() {
+  this.service.getHoldDatebyProjectcode(this.URL_ProjectCode).subscribe((data) => {
+    this.hold_upto = data["Project_holddate"];
+    // this.hold_upto=moment(this.hold_upto).format("DD-MM-YYYY");
+  });
+}
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
 }
