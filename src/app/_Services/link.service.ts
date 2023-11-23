@@ -62,7 +62,7 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
     return this.http.post(this.rootUrl+"Notification/NewGetAttachmentsFiles",this.ObjAttachmentsDTO);
   }
 
-  /////////////////// by 69 Start /////////////////////
+
 
   GetAttachements(EmpNo,ProjCode,sorttype){  
     this.ObjAttachmentsDTO.EmpNo=EmpNo
@@ -71,6 +71,5 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
 
     return this.http.post(this.rootUrl+"Notification/NewGetProjectFiles",this.ObjAttachmentsDTO);
   }
- 
-    /////////////////// by 69 End /////////////////////
+
 }

@@ -1,4 +1,4 @@
-(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[4297],{
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[297],{
 
 /***/ 31528:
 /*!*************************************************!*\

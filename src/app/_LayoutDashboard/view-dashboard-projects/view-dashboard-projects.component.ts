@@ -66,7 +66,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   edited: boolean = false;
 
   Current_user_ID = localStorage.getItem('EmpNo');
-  
+
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
@@ -77,7 +77,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj = new CompletedProjectsDTO();
 
   }
-  
+
   Mode: string;
   _subtaskDiv: boolean;
 
@@ -88,7 +88,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
     this.GetCompletedProjects();
-    this.getAssignedProjects(this.type1); 
+    this.getAssignedProjects(this.type1);
     this.router.navigate(["../ViewProjects/" + this.Mode]);
     // this.notFoundData=true;
     //this.AssignedTask = true;
@@ -109,17 +109,24 @@ export class ViewDashboardProjectsComponent implements OnInit {
   TotalWork_Hours: any;
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
-  openInfo(pcode,  pName) {
+  openInfo(pcode, pName) {
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode,"3"]);
-     //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode, "3"]);
+    //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
   closeInfo() {
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    // $('.project-list_AC').removeClass('active');
+    if (this.Mode == 'AssignedTask') {
+      this._AssignedProjectsList.forEach(item => item.isActive = false);
+    }
+    else{
+      this._ProjectDataList.forEach(item => item.isActive = false);
+    }
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["../ViewProjects/" + this.Mode]);
@@ -136,7 +143,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   notFoundData: boolean;
   notSelectedAnything_msg: string;
   notSelectedAnything_msg2: string;
-  
+
   GetCompletedProjects() {
     // debugger
     // this.Mode = this.service._getMessage();
@@ -147,7 +154,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj.Emp_No = EmpNo;
     this._ObjCompletedProj.PageNumber = Pgno;
     this._ObjCompletedProj.PageSize = 30;
-     
+
     if (this.Mode != "AssignedTask" && this.Mode != "") {
       this.projectsDataTable = false;
       this.AssignedTask = true;
@@ -183,8 +190,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
-            this.CurrentPageNo=0;
-            this._CurrentpageRecords=0;
+            this.CurrentPageNo = 0;
+            this._CurrentpageRecords = 0;
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
@@ -192,27 +199,27 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this._CurrentpageRecords = this._ProjectDataList.length;
-            this._totalProjectsCount = data[0]['delaycount'];           
+            this._totalProjectsCount = data[0]['delaycount'];
           }
         });
     }
   }
 
-  type1:string = "Assigned by me";
-  type2:string = "Assigned to me";
-  Type:String;
+  type1: string = "Assigned by me";
+  type2: string = "Assigned to me";
+  Type: String;
 
-  getAssignedProjects(type){
-    
+  getAssignedProjects(type) {
+
     let EmpNo = this.Current_user_ID;
     if (this.Mode == "AssignedTask") {
       this.AssignedTask = false;
       this.projectsDataTable = true;
       this._Statustitle = "Assigned Projects";
-      this.CurrentPageNo=1;
+      this.CurrentPageNo = 1;
 
       this._ObjCompletedProj.Type = type;
-      this.Type=type;
+      this.Type = type;
       // alert(type);
       this._ObjCompletedProj.Emp_No = EmpNo;
       this._ObjCompletedProj.PageNumber = this.CurrentPageNo;
@@ -222,33 +229,33 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this.service._GetAssignedProjects(this._ObjCompletedProj).
         subscribe(data => {
           console.log(data);
-          
-          if (JSON.parse(data[0]['JsonData_Json']).length==0) {
+
+          if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
-            this.CurrentPageNo=0;
-            this._totalProjectsCount=0;
-            this._CurrentpageRecords=0;
+            this.CurrentPageNo = 0;
+            this._totalProjectsCount = 0;
+            this._CurrentpageRecords = 0;
           }
           else {
             this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
             this._CurrentpageRecords = this._AssignedProjectsList.length;
-            if(type=='Assigned by me')
-            this._totalProjectsCount = (data[0]['AssignTOcount']);
+            if (type == 'Assigned by me')
+              this._totalProjectsCount = (data[0]['AssignTOcount']);
             else
-            this._totalProjectsCount = (data[0]['AssignBYcount']);
+              this._totalProjectsCount = (data[0]['AssignBYcount']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
 
-            console.log(this._AssignedProjectsList,this.TypeContInFilter,this.StatusCountFilter,this.EmpCountInFilter,"test assign");
-            }      
-        });     
+            console.log(this._AssignedProjectsList, this.TypeContInFilter, this.StatusCountFilter, this.EmpCountInFilter, "test assign");
+          }
+        });
     }
   }
 
-  LastPage:number;
-  lastPagerecords:number;
+  LastPage: number;
+  lastPagerecords: number;
 
   BackBttn() {
     this._ProjectDataList = [];
@@ -286,11 +293,11 @@ export class ViewDashboardProjectsComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   selectedItem_Type = [];
@@ -310,24 +317,24 @@ export class ViewDashboardProjectsComponent implements OnInit {
       }
     });
     this.selectedItem_Type.push(arr2);
-    this.TypeContInFilter.forEach(element => {      
+    this.TypeContInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   selectedItem_Emp = [];
   isEmpChecked(item) {
     let arr = [];
     this.edited = true;
-    this.EmpCountInFilter.forEach(element => {     
+    this.EmpCountInFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
         return this.checkedItems_Emp = arr;
@@ -341,17 +348,17 @@ export class ViewDashboardProjectsComponent implements OnInit {
       }
     });
     this.selectedItem_Emp.push(arr2);
-    this.EmpCountInFilter.forEach(element => {     
+    this.EmpCountInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
-      this.edited=false;
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 && this.selectedItem_Emp.length == 0) {
+      this.edited = false;
     }
-    else{
-      this.edited=true;
+    else {
+      this.edited = true;
     }
   }
   resetFilters() {
@@ -359,7 +366,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
-    this.edited=false;
+    this.edited = false;
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -381,7 +388,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.applyFilters();
   }
   applyFilters() {
-    if (this.Mode != "AssignedTask" && this.Mode != ""){
+    if (this.Mode != "AssignedTask" && this.Mode != "") {
       this.selectedEmp_String = this.checkedItems_Emp.map(select => {
         return select.Emp_No;
       }).join(',');
@@ -432,9 +439,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
           else {
             this.StatusCountFilter = this.selectedItem_Status[0];
           }
-  
+
           this._totalProjectsCount = data[0]['delaycount'];
-  
+
           let _vl = this._totalProjectsCount / 30;
           let _vl1 = _vl % 1;
           if (_vl1 > 0.000) {
@@ -443,13 +450,13 @@ export class ViewDashboardProjectsComponent implements OnInit {
           else {
             this.LastPage = Math.trunc(_vl);
           }
-  
-          if(this.CurrentPageNo == this.LastPage){
-            this.lastPagerecords=30;
+
+          if (this.CurrentPageNo == this.LastPage) {
+            this.lastPagerecords = 30;
           }
         });
     }
-    else if (this.Mode == "AssignedTask"){
+    else if (this.Mode == "AssignedTask") {
       this.selectedEmp_String = this.checkedItems_Emp.map(select => {
         return select.Emp_No;
       }).join(',');
@@ -468,50 +475,50 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ObjCompletedProj.Project_SearchText = this.searchText;
       this.service._GetAssignedProjects(this._ObjCompletedProj).
         subscribe(data => {
-          
-            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
-            
-            this._CurrentpageRecords = this._AssignedProjectsList.length;
-            //Type
-            if (this.selectedItem_Type.length == 0) {
-              this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
-            }
-            else {
-              this.TypeContInFilter = this.selectedItem_Type[0];
-            }
-            //Status
-            if (this.selectedItem_Status.length == 0) {
-              this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            }
-            else {
-              this.StatusCountFilter = this.selectedItem_Status[0];
-            }
-            //Employees
-            if (this.selectedItem_Emp.length == 0) {
-              this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
-      
-            }
-            else {
-              this.EmpCountInFilter = this.selectedItem_Emp[0];
-            }               
-            if(this._ObjCompletedProj.Type=='Assigned by me')
+
+          this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+
+          this._CurrentpageRecords = this._AssignedProjectsList.length;
+          //Type
+          if (this.selectedItem_Type.length == 0) {
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+          }
+          else {
+            this.TypeContInFilter = this.selectedItem_Type[0];
+          }
+          //Status
+          if (this.selectedItem_Status.length == 0) {
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          }
+          else {
+            this.StatusCountFilter = this.selectedItem_Status[0];
+          }
+          //Employees
+          if (this.selectedItem_Emp.length == 0) {
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+
+          }
+          else {
+            this.EmpCountInFilter = this.selectedItem_Emp[0];
+          }
+          if (this._ObjCompletedProj.Type == 'Assigned by me')
             this._totalProjectsCount = (data[0]['AssignTOcount']);
-            else
+          else
             this._totalProjectsCount = (data[0]['AssignBYcount']);
-            let _vl = this._totalProjectsCount / 30;
-            let _vl1 = _vl % 1;
-            if (_vl1 > 0.000) {
-              this.LastPage = Math.trunc(_vl) + 1;
-            }
-            else {
-              this.LastPage = Math.trunc(_vl);
-            }
-    
-            if(this.CurrentPageNo == this.LastPage){
-              this.lastPagerecords=30;
-            }
-        }); 
-      }    
+          let _vl = this._totalProjectsCount / 30;
+          let _vl1 = _vl % 1;
+          if (_vl1 > 0.000) {
+            this.LastPage = Math.trunc(_vl) + 1;
+          }
+          else {
+            this.LastPage = Math.trunc(_vl);
+          }
+
+          if (this.CurrentPageNo == this.LastPage) {
+            this.lastPagerecords = 30;
+          }
+        });
+    }
   }
 
   resetAll() {
@@ -591,7 +598,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this.Z2A1 = true;
     }
   }
- 
+
   //DMs Add And Delete 
   _DBMemosIDList: any;
   dropdownSettings_Memo: IDropdownSettings = {};
@@ -796,8 +803,34 @@ export class ViewDashboardProjectsComponent implements OnInit {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-    var myWindow = window.open(myurl,pcode);
+    var myWindow = window.open(myurl, pcode);
     myWindow.focus();
   }
+
+  info_active_btn(item) {
+    item.isActive = !item.isActive;
+
+    if (this.Mode == 'AssignedTask') {
+      if (item.isActive) {
+        this._AssignedProjectsList.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.isActive = false;
+          }
+        });
+      }
+    }
+    else {
+      if (item.isActive) {
+        this._ProjectDataList.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.isActive = false;
+          }
+        });
+      }
+
+    }
+  }
+
+
 
 }

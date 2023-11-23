@@ -71,7 +71,7 @@ const routes = [{
         children: [
             {
                 path: 'projectinfo/:projectcode/:id',
-                loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(1649), __webpack_require__.e(880), __webpack_require__.e(4116), __webpack_require__.e(598), __webpack_require__.e(1784), __webpack_require__.e(476), __webpack_require__.e(2352), __webpack_require__.e(2669), __webpack_require__.e(4220)]).then(__webpack_require__.bind(__webpack_require__, /*! ../project-info/project-info.module */ 71784)).then(m => m.ProjectInfoModule)
+                loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(649), __webpack_require__.e(880), __webpack_require__.e(116), __webpack_require__.e(598), __webpack_require__.e(784), __webpack_require__.e(476), __webpack_require__.e(352), __webpack_require__.e(669), __webpack_require__.e(585)]).then(__webpack_require__.bind(__webpack_require__, /*! ../project-info/project-info.module */ 71784)).then(m => m.ProjectInfoModule)
             }
         ]
     }

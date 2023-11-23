@@ -65300,6 +65300,20 @@ margin-bottom: 0;
     }
     }
 
+.btn:focus, .btn.focus {
+        outline: 0;
+        box-shadow: none !important;
+    }
+
+tr.odd.project-list_AC.active{
+      background-color: #4377ff;
+        color: #fff !important;
+    }
+
+tr.odd.project-list_AC.active * {
+        color: #fff;
+    }
+
 /*!*********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[2]!./src/assets/plugins/datatables/datatables.bundle.css ***!
   \*********************************************************************************************************************************************************************************************************************************************/

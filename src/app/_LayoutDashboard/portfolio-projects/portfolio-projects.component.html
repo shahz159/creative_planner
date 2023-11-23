@@ -201,10 +201,10 @@
 
                                                 </div>
                                             </div>
-                                            <ng-container
+                                            <ng-container 
                                             *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
                                             
-                                            <div class="card my-1 shadow-sm brdr success " [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                            <div class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -225,7 +225,7 @@
                                                         <a tabindex="0" class="p-lg-2 p-0 mr-2" role="button"
                                                             placement="right" data-trigger="focus">
                                                             <i class="fa fa-info-circle info-icon-cir"
-                                                                (click)="openInfo2(item1.Project_Code)"></i>
+                                                                (click)="openInfo2(item1.Project_Code);info_active_btn(item1)"></i>
                                                         <!-- <img src="assets/images/Info1.png" width="25px"> InfoContent2 -->
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[6429],{
+(self["webpackChunkAngularArchitecture"] = self["webpackChunkAngularArchitecture"] || []).push([[429],{
 
 /***/ 7435:
 /*!**************************!*\

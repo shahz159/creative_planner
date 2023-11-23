@@ -2677,6 +2677,13 @@ div#add_new_team_sp .kt-portlet__head {
 }
 
 
+.bounce-effect{
+  transition-duration:0.5s; 
+  transition-timing-function:cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+
+
 /* /////////////////// Files Attachment   //////////////////// */
 .asseticn.corol-icn {
   fill: #ff5263;

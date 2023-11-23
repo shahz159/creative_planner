@@ -1233,9 +1233,22 @@ export class PortfolioProjectsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
+
+  info_active_btn(item: any): void {
+      // If the item is already active, deactivate it
+      // If the item is not active, deactivate all items and activate the clicked one
+      this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
+      item.active = true;
+
+    // Manually trigger change detection
+    this.cdr.detectChanges();
+  }
+
   closeInfo() {
+    this._ProjectsListBy_Pid.forEach(item => item.active = false);
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
@@ -1432,6 +1445,8 @@ export class PortfolioProjectsComponent implements OnInit {
         }
       });
   }
+
+  
 
   
 }

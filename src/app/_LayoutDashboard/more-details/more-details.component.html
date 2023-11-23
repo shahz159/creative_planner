@@ -1373,7 +1373,7 @@
                                             </div>
 
                                         <div class="ribbon-content scrollbar1" *ngIf="subTaskCount!=0">
-                                            <div class="subtask-list" *ngFor="let item of Subtask_List;let i =index"
+                                            <div class="subtask-list" *ngFor="let item of Subtask_List | filter :actionsearch;let i =index"
                                                 [ngClass]="{'bg-custom': (item.Team_Res==Current_user_ID || isHierarchy==true)}">
                                                 <div class="lbl-act ml-2">
                                                     <label
@@ -6017,6 +6017,7 @@
         </div>
     </div>
 </div>
+
 <!-- For Update Subtask -->
 <div id="mysideInfobar_Update" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1">
@@ -6248,7 +6249,7 @@
                                 
                             </span>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='Project Complete' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='Project Complete' && completedoc">
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
@@ -6256,7 +6257,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="action-content d-flex align-items-center gap-1" *ngIf="requestType=='ToDo Achieved' && completedoc">
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='ToDo Achieved' && completedoc">
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
