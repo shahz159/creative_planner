@@ -1099,6 +1099,15 @@ $(document).ready(function(){
     myWindow.focus();
   }
 
+  newDetails(pcode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+   
+    var myWindow = window.open(myurl,"_");
+    myWindow.focus();
+  }
+
   AddDms() {
     this._onRowClick(this.pCode, this.pName);
   }
