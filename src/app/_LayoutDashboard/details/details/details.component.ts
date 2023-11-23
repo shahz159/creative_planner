@@ -316,7 +316,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       $("#mysideInfobar1").scrollTop(0);
    }
 
+   List_Of_Meetings(){
+    document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+   }
+
+
    closeInfo() {
+    document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
