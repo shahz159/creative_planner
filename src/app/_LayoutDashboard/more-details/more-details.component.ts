@@ -1500,7 +1500,6 @@ export class MoreDetailsComponent implements OnInit {
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Team_Res;
-    // alert(this.Sub_Autho)
     this.Sub_Status = item.SubProject_Status;
 
     document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
@@ -3692,7 +3691,7 @@ export class MoreDetailsComponent implements OnInit {
     if (this.filteredemp == true) {   
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.selectedEmployee).subscribe(
         (data) => {
-          console.log('here',data[0].ActionCount_Json);
+       
           this.Subtask_List = JSON.parse(data[0]['All_ResponsibleActions']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_Responsibleations']);
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_Responsibleations']);
@@ -3721,7 +3720,7 @@ export class MoreDetailsComponent implements OnInit {
     else if (this.filteredemp == false) {
       this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, null).subscribe(
         (data) => {
-          console.log('jere',data);
+        
           this.Subtask_List = JSON.parse(data[0]['All_SubtaskDetails']);
           this.underapproval_list = JSON.parse(data[0]['Underapproval_subtaskdetails']);
           this.Inprocess_List = JSON.parse(data[0]['Inprocess_SubtaskDetails']);
@@ -3900,6 +3899,7 @@ export class MoreDetailsComponent implements OnInit {
       });
     }
     else {
+      console.log('in process count:',this.inProcessCount,'delay count:',this.delaycount);
       const fd = new FormData();
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
