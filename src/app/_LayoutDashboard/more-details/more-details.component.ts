@@ -1517,7 +1517,6 @@ export class MoreDetailsComponent implements OnInit {
     this.Sub_StartDT = item.StartDate;
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Team_Res;
-    // alert(this.Sub_Autho)
     this.Sub_Status = item.SubProject_Status;
 
     document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");

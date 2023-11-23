@@ -590,7 +590,7 @@ span.wd-xv {
   border-bottom-width: 2px;
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid #3e97ff;
+  border-bottom: 1px solid #6e6e6e;
   transition: color .2s ease;
   font-weight: 600;
 }
@@ -1782,12 +1782,17 @@ a.kt-inbox__icon:hover svg path {
   border: 0px;
   background-color: transparent;
   border: 1px solid #527ce2;
-  font-size: 14px;
-  padding: 3px 15px;
-  border-radius: 4px;
+  font-size: 13px !important;
+  padding: 3px 5px;
+  border-radius: 4px !important;
+  border-width: 1px !important;
   font-weight: 400;
+  font-weight: 400 !important;
   color: #527ce2;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Action_btn_all ul li {
+  margin-right: 5px !important;
 }
 .Ct-btn:hover {
   background-color: #527ce2;
@@ -2469,7 +2474,7 @@ a.nav-link:hover{
   border-bottom: #ccc !important;
 }
 .tav-vdc {
-  margin: 0rem 1rem !important;
+  margin: 0rem 0rem !important;
 }
 
 /*------------ new css for add user list ------------*/
@@ -2703,3 +2708,93 @@ div#add_new_team_sp .kt-portlet__head {
 .asseticn.suc-icn {
   fill: #00bf9c;
 }
+
+span.cancl-icon:hover svg {
+  fill: #000;
+}
+
+.cancl-icon svg{
+  width: 18px;
+  height: 18px;
+}
+
+span.cancl-icon {
+  position: absolute;
+  right: 8px;
+  top: 9px;
+}
+span.cancl-icon svg {
+  fill: #9b9999;
+}
+span.cancl-icon:hover svg {
+  fill: #000;
+}
+.pfl-img{
+color:#9b9999;
+}
+.Activity_Log_vh {
+  height: calc(100vh - 50px) !important;
+  overflow-y: hidden;
+}
+
+
+.no-prjact-found{
+   height:100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+.no-prjact-found-img{
+    width:30%;
+}
+.no-prjact-found-label{
+  color:#9b9999;
+}
+
+
+.notimeline-present{
+   padding-top:10%;
+   display:flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.notimeline-present-img{
+   width:30%;
+}
+.notimeline-present-label{
+  color:#9b9999;
+}
+
+
+.no-DMS-found{
+     padding-top: 10%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+
+.no-DMS-found-image{
+     width:30%;
+}
+
+.no-DMS-found-label{
+  color:#9b9999;
+}
+
+
+
+/*--------multiselect ------------*/
+#css-dropdown
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 300px;
+    height: 42px;
+    margin: 100px auto 0 auto;
+}
+

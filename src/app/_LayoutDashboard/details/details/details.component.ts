@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -138,8 +138,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.getapproval_actiondetails();      // get main project approval state.
     this.getholdate();                     // get project hold date.
 
-
-
+    // these minhold and maxhold are used in the project hold section,project release section
+    this.minhold.setDate(this.minhold.getDate() + 1);     
+    this.maxhold.setDate(this.minhold.getDate() + 90);
+    this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    //
   }
 
   ngAfterViewInit():void{
@@ -206,51 +209,51 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
     Pid:any;
-  getProjectDetails(prjCode:string) {
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
 
+   calculateProjectActions(){
+    if(this.projectActionInfo){
+      // all must be zero before calculation.
+          this.TOTAL_ACTIONS_DONE=0;
+          this.TOTAL_ACTIONS=0;
+          this.TOTAL_ACTIONS_IN_HOLD=0;
+          this.TOTAL_ACTIONS_IN_CUA=0;
+          this.TOTAL_ACTIONS_IN_FUA=0;
+          this.TOTAL_ACTIONS_IN_DELAY=0;
+          this.TOTAL_ACTIONS_IN_PROCESS=0;
+          this.TOTAL_ACTIONS_REJECTED=0;
+          this.TOTAL_ACTIONS_UNDER_APPROVAL=0;
+      // 
+              this.projectActionInfo.forEach(action => {
+                   switch(action.Status){
+                       case 'Completed':this.TOTAL_ACTIONS_DONE+=1;break;
+                       case 'Delay':this.TOTAL_ACTIONS_IN_DELAY+=1;break;
+                       case 'InProcess':this.TOTAL_ACTIONS_IN_PROCESS+=1;break;
+                       case 'Under Approval':this.TOTAL_ACTIONS_UNDER_APPROVAL+=1;break;
+                       case 'New Project Rejected':this.TOTAL_ACTIONS_REJECTED+=1;break;
+                       case 'Completion Under Approval':this.TOTAL_ACTIONS_IN_CUA+=1;break;
+                       case 'Forward Under Approval':this.TOTAL_ACTIONS_IN_FUA+=1;break;
+                       case 'Hold':this.TOTAL_ACTIONS_IN_HOLD+=1;break;
+                       default:{};
+                   }
+              })
+              
+            }
+            else
+                this.projectActionInfo=null;
+       this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS+this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_REJECTED+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_HOLD;
+   }
+
+
+
+
+  getProjectDetails(prjCode:string) {
+      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
-// alert(this.projectInfo.Project_Block)
-// projectInfo is an Object
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
+      this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
-
-      if(this.projectActionInfo){
-// all must be zero before calculation.
-    this.TOTAL_ACTIONS_DONE=0;
-    this.TOTAL_ACTIONS=0;
-    this.TOTAL_ACTIONS_IN_HOLD=0;
-    this.TOTAL_ACTIONS_IN_CUA=0;
-    this.TOTAL_ACTIONS_IN_FUA=0;
-    this.TOTAL_ACTIONS_IN_DELAY=0;
-    this.TOTAL_ACTIONS_IN_PROCESS=0;
-    this.TOTAL_ACTIONS_REJECTED=0;
-    this.TOTAL_ACTIONS_UNDER_APPROVAL=0;
-// 
-
-        this.projectActionInfo.forEach(action => {
-
-             switch(action.Status){
-                 case 'Completed':this.TOTAL_ACTIONS_DONE+=1;break;
-                 case 'Delay':this.TOTAL_ACTIONS_IN_DELAY+=1;break;
-                 case 'InProcess':this.TOTAL_ACTIONS_IN_PROCESS+=1;break;
-                 case 'Under Approval':this.TOTAL_ACTIONS_UNDER_APPROVAL+=1;break;
-                 case 'New Project Rejected':this.TOTAL_ACTIONS_REJECTED+=1;break;
-                 case 'Completion Under Approval':this.TOTAL_ACTIONS_IN_CUA+=1;break;
-                 case 'Forward Under Approval':this.TOTAL_ACTIONS_IN_FUA+=1;break;
-                 case 'Hold':this.TOTAL_ACTIONS_IN_HOLD+=1;break;
-                 default:{};
-             }
-
-        })
-        
-      }
-      else
-          this.projectActionInfo=null;
-        
-      this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS+this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_REJECTED+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_HOLD;
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
@@ -258,10 +261,47 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+  Project_List:any;
+
+  GetPeopleDatils(){
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
+      (data)=>{
+      if(data !=null && data !=undefined){       
+        this.Project_List=JSON.parse(data[0]['RacisList'])     
+      }
+    })
+  }
+
+
+  Activity_List:any
+
+   GetActivityDetails(){
+      this.service.NewActivityService(this.URL_ProjectCode).subscribe(
+        (data)=>{
+        if(data !==null && data !==undefined){
+           this.Activity_List=JSON.parse(data[0]['ActivityList']) 
+            console.log(this.Activity_List,"testing Api")
+        }     
+      })
+   }
+
+
+   formatTime(time: string): string {
+    const parsedTime = new Date(`1970-01-01T${time}`);
+    return this.datepipe.transform(parsedTime, 'HH:mm');
+  }
+
+
+
+
+
+
   showActionDetails(index:number|undefined)
   {
+  
     this.currentActionView=index;
-    if(this.projectActionInfo[index].Status==="Under Approval")
+      
+    if(index&&this.projectActionInfo[index].Status==="Under Approval")
     this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
     
@@ -320,10 +360,17 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
+   
+    // in case if project submission (main or action) operation cancelled.
+    $('#mainPrjCheckbox').prop('checked',false);
+    $('#project-action-Checkbox').prop('checked',false);
+    //   
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -340,6 +387,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_Activity(){
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetActivityDetails();
   }
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -350,7 +399,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_User_list(){
     document.getElementById("User_list_View").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetPeopleDatils()
   }
+
+
+
   closedarBar() {
     // document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     // document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -368,6 +422,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
   }
 
 
@@ -410,7 +465,6 @@ addNewDMS(){
 closeLinkSideBar() {
   document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
   document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
-
   document.getElementById("newdetails").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
  
@@ -991,7 +1045,7 @@ selectedportID: any;
 objPortfolioDto: PortfolioDTO;
 deletedBy: string;
 portfolioName: string;
-ProjectInfo_List: any;
+
 
 
 
@@ -1010,10 +1064,9 @@ isHierarchy: boolean = false;
 _MasterCode: string;
 
 
-
+_Subtaskname: string;
 Sub_ProjectCode: string;
 Sub_Desc: string;
-_Subtaskname: string;
 Sub_StartDT: Date;
 Sub_EndDT: Date;
 Sub_Autho: string;
@@ -1021,7 +1074,7 @@ Sub_Status: string;
 _remarks: string = "";
 selectedFile: any = null;
 progress: any;
-_inputAttachments: string;
+_inputAttachments: string='';
 
 gethierarchy() {
   this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID, this.URL_ProjectCode).subscribe((data) => {
@@ -1037,24 +1090,25 @@ gethierarchy() {
 
 
 onFileChangeUST(e) {
+  console.log(e.target.files[0]);
   this._inputAttachments = e.target.files[0].name;
 }
 onFileChange(e) {
+  this._inputAttachments=e.target.files[0].name;
   this.selectedFile = <File>e.target.files[0];
-  //console.log("--------------->",this.selectedFile)
 }
 
 
 
 
-markCompleted(selectedAction:{Project_Code:string,Project_Description:string,Project_Name:string,StartDate:Date,EndDate:Date,TeamRes:string,Status:string}){
-
+markCompleted(selectedAction:{Project_Code:string,Project_Description:string,Project_Name:string,StartDate:Date,EndDate:Date,Team_Res:string,Status:string}){
+  
+this._Subtaskname=selectedAction.Project_Name;
 this.Sub_ProjectCode=selectedAction.Project_Code;
 this.Sub_Desc=selectedAction.Project_Description;
-this._Subtaskname=selectedAction.Project_Name;
 this.Sub_StartDT=selectedAction.StartDate;
 this.Sub_EndDT=selectedAction.EndDate;
-this.Sub_Autho=selectedAction.TeamRes;
+this.Sub_Autho=selectedAction.Team_Res;
 this.Sub_Status=selectedAction.Status;
 
   // opens the actioncompletion sidebar code here.
@@ -1064,15 +1118,18 @@ this.Sub_Status=selectedAction.Status;
   //
 }
 
-// closeActCompSideBar(){
-//   document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
-//   document.getElementById("rightbar-overlay").style.display = "none";
-//   document.getElementById("newdetails").classList.add("position-fixed");
-// }  // for temp we are using this.
+closeActCompSideBar(){
+  this._inputAttachments='';
+  this._remarks='';
+  $('#project-action-Checkbox').prop('checked',false);  
+  document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}  // for temp we are using this.
 
 
 actionCompleted(){
-  if (this._remarks ==="") { // when the user not provided the remark then.
+  if (this._remarks ==="") { // when the user not provided the remark then .
     this.notifyService.showInfo("Remarks Cannot be Empty", '');
   }
   else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo|| this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) 
@@ -1092,6 +1149,7 @@ actionCompleted(){
                   this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
                 }
                 else {
+                  // 1.  ACTION SUBMISSION
                   const fd = new FormData();
                   fd.append("Project_Code", this.Sub_ProjectCode);
                   fd.append("Master_Code", this._MasterCode);
@@ -1105,6 +1163,9 @@ actionCompleted(){
                          
                     });
                   this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+                  // ACTION SUBMITTED.
+
+                  // 2.  PROJECT SUBMISSION.
                   const fd1 = new FormData();
                   fd1.append("Project_Code", this.URL_ProjectCode);
                   fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
@@ -1138,6 +1199,9 @@ actionCompleted(){
                             this.notifyService.showSuccess(this._Message, 'Success');
                       }
                  
+                      this.selectedFile=null;
+                      this._inputAttachments='';
+                      this._remarks='';
                       this.closeInfo();
                       this.getProjectDetails(this.URL_ProjectCode);
                       // this.GetSubtask_Details();
@@ -1157,17 +1221,13 @@ actionCompleted(){
                 fd.append("Remarks", this._remarks);
                 fd.append('file', this.selectedFile);
                 fd.append("Project_Name", this._Subtaskname);
-                this.service._UpdateSubtaskByProjectCode(fd)
+                this.service._UpdateSubtaskByProjectCode(fd) 
                 .subscribe(data => {
                   this._remarks = "";
                   this._inputAttachments = "";
-                  // this.GetProjectDetails();
-                  // this.GetSubtask_Details();
-                  // Rebinding    
-                  // this.closeInfo();   //closing the sidebar.
-
-                  this.getProjectDetails(this.URL_ProjectCode); // rebinding data.
-                  this.closeInfo();  // closing the action completion sidebar.
+                  this.selectedFile=null;
+                  this.calculateProjectActions();     // recalculate the project actions. 
+                  this.closeActCompSideBar();         // close action completion sidebar.
                 });
                 this.notifyService.showSuccess("Successfully Updated", 'Action completed');
                }
@@ -1175,8 +1235,8 @@ actionCompleted(){
 
   }
   else{
-// if user is O,R,A or is in Heirarchy and there are actions in the project which are in process and delay states.
-console.log('total actions in process:',this.TOTAL_ACTIONS_IN_PROCESS,'total actions in delay:',this.TOTAL_ACTIONS_IN_DELAY);
+// if user is O,R,A or is in Heirarchy and there are some actions in the project which are in process and delay states.
+
     const fd = new FormData();
     fd.append("Project_Code", this.Sub_ProjectCode);
     fd.append("Master_Code", this._MasterCode);
@@ -1185,16 +1245,24 @@ console.log('total actions in process:',this.TOTAL_ACTIONS_IN_PROCESS,'total act
     fd.append("Remarks", this._remarks);
     fd.append('file', this.selectedFile);
     fd.append("Project_Name", this._Subtaskname);
+
     this.service._UpdateSubtaskByProjectCode(fd)
         .subscribe(data => {
-          // this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
-          this._remarks = "";
-          this._inputAttachments = "";
-          // this.GetProjectDetails();
-          // this.GetSubtask_Details();
-          // Rebinding    
-          this.getProjectDetails(this.URL_ProjectCode); 
-          this.closeInfo();
+
+        let prjAction=this.projectActionInfo.find((prjAct:any)=>prjAct.Project_Code===this.Sub_ProjectCode)
+        const prjActionindex=this.projectActionInfo.indexOf(prjAction)
+         if(prjActionindex!==-1)
+         { 
+          const prjActionComp={...prjAction,Status:'Completed',Remarks:fd.get('Remarks'),IndexId:this.projectActionInfo.length};
+          this.projectActionInfo.splice(prjActionindex,1,prjActionComp);
+         }  // updated project action.
+
+         this._remarks = "";
+         this._inputAttachments = "";
+         this.selectedFile=null;
+         this.calculateProjectActions();     // recalculate the project actions. 
+         this.closeActCompSideBar();        // close action completion sidebar.
+      
         });
         this.notifyService.showSuccess("Successfully Updated", 'Action completed');
   }
@@ -1756,7 +1824,7 @@ OnClickCheckboxProjectUpdate() {
         document.getElementById("rightbar-overlay").style.display = "block";
         // Fixing the scrollbar for sidebar
         document.getElementById("newdetails").classList.add("position-fixed");
-        document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+        // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");   // i have commit this for a while.
         document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
       }
     });
@@ -1775,7 +1843,10 @@ closeInfoProject() {
   document.getElementById("rightbar-overlay").style.display = "none";
   // For page top div removing fixed
   document.getElementById("newdetails").classList.remove("position-fixed");
-  this.selectedFile = "";
+  $('#mainPrjCheckbox').prop('checked',false);
+  this._inputAttachments='';
+  this._remarks='';
+  this.selectedFile = null;
   // this.OnClickCheckboxProjectUpdate();
   // this.Clear_Feilds();
 }
@@ -2033,13 +2104,15 @@ getAttachments(sorttype:number) {
 
 ///////////////////////////////////// Approval section Start  ////////////////////////////////////
 
-filterText:string='';
+filterText:string;
 approval_Emp:any
+SearchItem:string;
 
 
-// clearsearch() {
-//   this.filterText = "";
-// }
+filterSearch() {
+  this.filterText = "";
+  this.SearchItem="";
+}
 
 
 GetApproval(code){
@@ -2144,12 +2217,169 @@ getholdate() {
 
 
 
-
-
-
-
-
-
 ///////////////////////////////////// Approval section Start  ////////////////////////////////////
+
+
+
+
+// meeting section code starts here
+meetingList: any = [];
+meeting_arry: any = [];
+meetinglength: any;
+
+GetmeetingDetails() {
+  this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+  this.service._GetMeetingList(this.ObjSubTaskDTO)
+    .subscribe(data => {
+      // console.log(data,"meet")
+      if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
+        this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+        this.meeting_arry = this.meetingList;
+        if (this.meeting_arry.length > 0)
+          this.meetinglength = this.meeting_arry.length;
+        this.meeting_arry.forEach(element => {
+          element.usersjson = JSON.parse(element.Addguest);
+        });
+      }
+      else {
+        this.meetinglength = 0;
+      }
+    });
+}
+
+// meeting section code end here
+
+// project hold section and release section start
+hold_remarks: string;
+Holddate: string;
+holdDate: any;
+minhold: any = new Date();
+maxhold: any = new Date();
+release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
+
+onProject_Hold(id, Pcode) {
+  this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
+  if (this.Holddate != null) {
+    this.objProjectDto.Project_holddate = this.Holddate;
+    this.objProjectDto.Project_Code = Pcode;
+    this.objProjectDto.Remarks = this.hold_remarks;
+    this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
+      this._Message = data['message'];
+      if (this._Message == 'Project Hold Updated') {
+        this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
+        // this.getReasonforholdandRejected();
+        // this.getRejectType();
+        this.closeTab();
+        this.getProjectDetails(Pcode);
+        this.getholdate();
+      }
+    });
+  }
+  else {
+    this.notifyService.showInfo("Project Hold date cannot be empty", "Please select a date.");
+  }
+}
+
+closeTab(){
+ 
+        this.hold_remarks='';
+        this.Holddate=null;
+        $('#kt_tab_pane_3').removeClass('active show');
+        $('#kt_tab_pane_1').removeClass('active show');
+        $('#hold-Prj-cancel-btn').removeClass('active');
+        $('#release-Prj-tab-btn').removeClass('active');
+        $('#kt_tab_pane_2').removeClass('active show');
+        $('#hold-Prj-tab-btn').removeClass('active');
+}
+
+orgValueChange1(val) {
+  this.release_date = moment(val.value).format("MM/DD/YYYY");
+}
+
+
+
+
+holdreleaseProject(){
+  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo || this.Current_user_ID==this.projectInfo.OwnerEmpNo){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.Request_type = 'Project Release';
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Remarks = this.hold_remarks;
+
+    this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+      this.closeTab();
+      this._Message = (data['message']);
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("Project released by "+this._fullname, "Success");
+        this.getProjectDetails(this.URL_ProjectCode);
+        // this.getRejectType();
+      }
+      else if (this._Message == '2' || this._Message == '0') {
+        this.notifyService.showError("Project release failed", "Failed");
+      }
+     
+    });
+  // this.Clear_Feilds();
+  console.log(this.approvalObj,"cancel")
+}
+else{
+  this.closeTab();
+  this.notifyService.showError("Access denied","Failed")
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+updateReleaseDate() {
+  if (this.release_date == null || this.release_date == 'Invalid date') {
+    this.notifyService.showError("Please enter valid date", "Failed");
+    return false;
+  }
+  else {
+    this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
+    this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.hold_date = this.release_date;
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Remarks = this.hold_remarks;
+    this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
+  
+      this.closeTab();
+      this._Message = (data['message']);
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("Project release date updated", "Success");
+        this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+        this.getProjectDetails(this.projectInfo.Project_Code);
+        this.getholdate();
+        // this.getRejectType();
+      }
+      else if (this._Message == '2' || this._Message == '0') {
+        this.notifyService.showError("Project release date not updated", "Failed");
+      }
+    });
+  }
+
+}
+
+
+
+
+
+
+// project hold section and release section end
+
+
+
 
 }
