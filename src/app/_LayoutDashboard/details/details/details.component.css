@@ -590,7 +590,7 @@ span.wd-xv {
   border-bottom-width: 2px;
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid #3e97ff;
+  border-bottom: 1px solid #6e6e6e;
   transition: color .2s ease;
   font-weight: 600;
 }
@@ -2703,3 +2703,54 @@ div#add_new_team_sp .kt-portlet__head {
 .asseticn.suc-icn {
   fill: #00bf9c;
 }
+
+
+
+.no-prjact-found{
+   height:100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+.no-prjact-found-img{
+    width:30%;
+}
+.no-prjact-found-label{
+  color:#9b9999;
+}
+
+
+.notimeline-present{
+   padding-top:10%;
+   display:flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.notimeline-present-img{
+   width:30%;
+}
+.notimeline-present-label{
+  color:#9b9999;
+}
+
+
+.no-DMS-found{
+     padding-top: 10%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+
+.no-DMS-found-image{
+     width:30%;
+}
+
+.no-DMS-found-label{
+  color:#9b9999;
+}
+
+
+
