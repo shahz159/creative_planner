@@ -2696,3 +2696,31 @@ div#add_new_team_sp .kt-portlet__head {
 .asseticn.suc-icn {
   fill: #00bf9c;
 }
+
+span.cancl-icon:hover svg {
+  fill: #000;
+}
+
+.cancl-icon svg{
+  width: 18px;
+  height: 18px;
+}
+
+span.cancl-icon {
+  position: absolute;
+  right: 8px;
+  top: 9px;
+}
+span.cancl-icon svg {
+  fill: #9b9999;
+}
+span.cancl-icon:hover svg {
+  fill: #000;
+}
+.pfl-img{
+color:#9b9999;
+}
+.Activity_Log_vh {
+  height: calc(100vh - 50px) !important;
+  overflow-y: hidden;
+}

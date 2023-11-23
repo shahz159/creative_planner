@@ -254,6 +254,41 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+  Project_List:any;
+
+  GetPeopleDatils(){
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
+      (data)=>{
+      if(data !=null && data !=undefined){       
+        this.Project_List=JSON.parse(data[0]['RacisList'])     
+      }
+    })
+  }
+
+
+  Activity_List:any
+
+   GetActivityDetails(){
+      this.service.NewActivityService(this.URL_ProjectCode).subscribe(
+        (data)=>{
+        if(data !==null && data !==undefined){
+           this.Activity_List=JSON.parse(data[0]['ActivityList']) 
+            console.log(this.Activity_List,"testing Api")
+        }     
+      })
+   }
+
+
+   formatTime(time: string): string {
+    const parsedTime = new Date(`1970-01-01T${time}`);
+    return this.datepipe.transform(parsedTime, 'HH:mm');
+  }
+
+
+
+
+
+
   showActionDetails(index:number|undefined)
   {
     this.currentActionView=index;
@@ -317,6 +352,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -333,6 +370,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_Activity(){
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetActivityDetails();
   }
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -343,7 +382,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_User_list(){
     document.getElementById("User_list_View").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetPeopleDatils()
   }
+
+
+
   closedarBar() {
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -351,6 +395,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
   }
 
 
@@ -973,7 +1018,7 @@ selectedportID: any;
 objPortfolioDto: PortfolioDTO;
 deletedBy: string;
 portfolioName: string;
-ProjectInfo_List: any;
+
 
 
 
@@ -1793,13 +1838,15 @@ getAttachments(sorttype:number) {
 
 ///////////////////////////////////// Approval section Start  ////////////////////////////////////
 
-filterText:string='';
+filterText:string;
 approval_Emp:any
+SearchItem:string;
 
 
-// clearsearch() {
-//   this.filterText = "";
-// }
+filterSearch() {
+  this.filterText = "";
+  this.SearchItem="";
+}
 
 
 GetApproval(code){
