@@ -1138,6 +1138,16 @@
                         <div class="kt-info-box mt-2 border-0">
 
                             <div class="kt-project-info-body">
+                                <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
+                                    <b>Project</b>
+                                   <div class="Action_btn_all">
+                                            <button  class="Ct-btn Bt-cancel ml-2">Project Cancel</button>
+                                            <button  class="Ct-btn Bt-hold ml-2">Project Hold</button>
+                                            <button class="Ct-btn Bt-Submit ml-2">Task Submission</button>
+                                            <button  class="Ct-btn Bt-Submit ml-2">Project Submission</button>
+                                            <button (click)="darcreate()" class="Ct-btn ml-2">Add Timeline</button>
+                                   </div>
+                                </div>
 
                                 <div class="d-flex justify-content-between">
 
@@ -3910,13 +3920,42 @@
     <div class="kt-portlet" id="Team_view_pr">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
-                <h4 class="m-0"><span class="svg-icv-hd">
+                <!-- <h4 class="m-0"><span class="svg-icv-hd">
                     <svg  xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none"><path  d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </span><span class="kt-chat__title"> People on the project</span>
-                     <!-- <span class="kt-at-count">27</span>  -->
-                    </h4>
+                    
+                    </h4> -->
+                    
+                    <div class="Kt-pp-list">
+
+                        <div class="card-header card-header-tabs-line pb-0 pl-0">
+                            <div class="card-toolbar">
+                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                            <span class="svg-icv-hd">
+                                                <svg  xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none"><path  d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                                </span>
+                                        <span class="nav-text">People on the project</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                            <span class="svg-icv-hd">
+                                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#a3a3a3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>  </span>
+                                                 <span class="nav-text">Add support team</span>
+                                        </a>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                          
+                        </div>
+
+                    </div>
+
                     <div class="rt-btn">
-                        <button class="Ct-btn head-btn-right" (click)="add_support_team()">Add support team</button>
+                        <!-- <button class="Ct-btn head-btn-right" (click)="add_support_team()">Add support team</button> -->
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                         (click)="closedarBar()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -3933,108 +3972,205 @@
             </div>
         </div>
         <div class="kt-Attachament__body">
-            <div class="">
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+            <div class="kt-card-custom">
+               
+                <div class="">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel" aria-labelledby="kt_tab_pane_1_4">
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Aquib Shahbaz</h6>
+                                    <p>Owner</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Mohammed Mateen</h6>
+                                    <p>Responsible</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-4.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Mohammed Mateen</h6>
+                                    <p>Authority</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-5.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Ravi Nadendla</h6>
+                                    <p>Coordinator</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-6.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Md Waseem Akram</h6>
+                                    <p>Support</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-7.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Mohammed Mateen</h6>
+                                    <p>Support</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
+            
+                            <div class="user-list-card">
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <span class="user-Ltr bg-warning text-inverse-warning fw-bold">M</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Mohammed Mateen</h6>
+                                    <p>Support</p>
+                                </div>
+            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Aquib Shahbaz</h6>
-                        <p>Owner</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
+                        <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+                          <div class="">
+                            <div  class="position-relative w-100 mb-2">
+                                <!-- <input  type="text" autocomplete="off" name="search" placeholder="Search..." class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
+                        -->
+                        
+                        <div class="row d-flex justify-content-center mt-100">
+                            <div class="col-md-6"> <select id="choices-multiple-remove-button" placeholder="Select up to 3 tags" multiple>
+                                    <option value="Author" onclick="filterSelection('Author')">Author</option>
+                                    <option value="MSelect">Multiselect Dropdown</option>
+                                    <option value="Accordions" >Accordions</option>
+                                    <option value="Radio Buttons">Radio Buttons</option>
+                                    <option value="SearchBox">Search Boxes</option>
+                                    <option value="Tables">Tables</option>
+                                    <option value="Profiles">Profiles</option>
+                                    <option value="Sliders">Sliders</option>
+                                    <option value="Tabs">Tabs</option>
+                                    <option value="NavMenu">Navigation Menu</option>
+                                    <option value="Cities">Cities</option>
+                                    <option value="Countries">Countries</option>
+                                    <option value="Regions">Regions</option>
+                                </select>
                         </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Mohammed Mateen</h6>
-                        <p>Responsible</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-4.jpg">
                         </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Mohammed Mateen</h6>
-                        <p>Authority</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-5.jpg">
+                            </div>
+                
+                            <div class="list-new-sp-team">
+                                <div class="user-list-card">
+                                    <div class="add-check-box">
+                                        <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
+                                    </div>
+                                    <div class="mvc-vb">
+                                        <div class="user-icon-round">
+                                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="user-icc-info">
+                                        <h6>Aquib Shahbaz</h6>
+                                        <p>Owner</p>
+                                    </div>
+                                     <div class="user-roll-vx">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Responsible
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Authority</a>
+                                                <a class="dropdown-item" href="#">Support</a>
+                                                <a class="dropdown-item" href="#">Coordinator</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+                
+                               <div class="user-list-card">
+                                <div class="add-check-box">
+                                    <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
+                                </div>
+                                <div class="mvc-vb">
+                                    <div class="user-icon-round">
+                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+                                    </div>
+                                </div>
+                                
+                                <div class="user-icc-info">
+                                    <h6>Aquib Shahbaz</h6>
+                                    <p>Authority</p>
+                                </div>
+                                 <div class="user-roll-vx">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Responsible
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Authority</a>
+                                            <a class="dropdown-item" href="#">Support</a>
+                                            <a class="dropdown-item" href="#">Coordinator</a>
+                                        </div>
+                                    </div>
+                                </div>
+                           </div>
+                
+                              
+                            </div>
+                          </div>
                         </div>
+                       
                     </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Ravi Nadendla</h6>
-                        <p>Coordinator</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                 </div>
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-6.jpg">
-                        </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Md Waseem Akram</h6>
-                        <p>Support</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-7.jpg">
-                        </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Mohammed Mateen</h6>
-                        <p>Support</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-
-                <div class="user-list-card">
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <span class="user-Ltr bg-warning text-inverse-warning fw-bold">M</span>
-                        </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Mohammed Mateen</h6>
-                        <p>Support</p>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
-                </div>
-
             </div>
+
           
         </div>
 
@@ -4069,71 +4205,7 @@
         </div>
         <div class="kt-Attachament__body">
 
-            <div  class="position-relative w-100 mb-2">
-                <input  type="text" autocomplete="off" name="search" placeholder="Search..." class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
-            </div>
-
-            <div class="list-new-sp-team">
-                <div class="user-list-card">
-                    <div class="add-check-box">
-                        <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                    </div>
-                    <div class="mvc-vb">
-                        <div class="user-icon-round">
-                            <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
-                        </div>
-                    </div>
-                    
-                    <div class="user-icc-info">
-                        <h6>Aquib Shahbaz</h6>
-                        <p>Owner</p>
-                    </div>
-                     <div class="user-roll-vx">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Responsible
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Authority</a>
-                                <a class="dropdown-item" href="#">Support</a>
-                                <a class="dropdown-item" href="#">Coordinator</a>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-
-               <div class="user-list-card">
-                <div class="add-check-box">
-                    <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                </div>
-                <div class="mvc-vb">
-                    <div class="user-icon-round">
-                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
-                    </div>
-                </div>
-                
-                <div class="user-icc-info">
-                    <h6>Aquib Shahbaz</h6>
-                    <p>Authority</p>
-                </div>
-                 <div class="user-roll-vx">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Responsible
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Authority</a>
-                            <a class="dropdown-item" href="#">Support</a>
-                            <a class="dropdown-item" href="#">Coordinator</a>
-                        </div>
-                    </div>
-                </div>
-           </div>
-
-              
-            </div>
+           
 
         </div>
     </div>
