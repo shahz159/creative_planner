@@ -1,4 +1,3 @@
-
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0 side_view" id="kt_content">
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
@@ -313,7 +312,7 @@
                             <i class="far fa-calendar-alt"></i> My Calendar
                         </h5>
                     </div>
-                    
+
                     <div class="d-flex">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk"
@@ -457,10 +456,10 @@
                                 <button type="button" (click)="penshow1()" class="draft-btn">Draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-                            <!-- <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
+                            <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
                                 <button type="button" (click)="penshow2()" class="pend-btn">Delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
-                            </div> -->
+                            </div>
                         </div>
 
                         <!-- <div id="kt_calendar"></div> -->
@@ -472,7 +471,7 @@
                 </div>
                 <!--end::Portlet-->
             </div>
-          
+
 
 
             <div id="pendlist" class="pend-section col-lg-3">
@@ -549,7 +548,8 @@
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                 <div class="delete-btn" title="Delete draft" (click)="delete_draft(item.Sno)">
-                                    <a ><i  class="fas fa-trash-alt"></i></a></div>
+                                    <a><i class="fas fa-trash-alt"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -582,12 +582,16 @@
                             </div> -->
                             <div class="time-event flex-1">
                                 <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                    tabindex="0" (click)="moreDetails(action.Project_Code)">
+                                    tabindex="0" (click)="GetclickDelayAction_details(action)">
                                     <!-- (click)="GetClickEventPending_Calenders(item.Schedule_ID)" -->
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
-                                    <div class="fc-event-title  ml-2">{{action.Project_Name}} - {{action.Delaydays}} days delay</div>
+                                    <div class="fc-event-title  ml-2"><b>{{action.Project_Name}}</b> -
+                                        {{action.Delaydays}} days delay<br>
+                                        <u>{{action.Master_Name}}</u>
+                                    </div>
+
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
@@ -597,7 +601,7 @@
                 </div>
             </div>
 
-           
+
             <!-- Calendar Ends -->
             <!-- Activities -->
             <div class="col-lg-7" style="display: none;">
@@ -756,7 +760,7 @@
 
                                     <!-- ------------------ DAR Activity -------------------->
 
-                                
+
                                 </div>
                             </div>
                             <div class="tab-pane active" id="kt_widget5_tab2_content" [hidden]="DARactivity_Div">
@@ -811,7 +815,7 @@
                 </div>
             </div>
             <!-- Portfolio Activity -->
-            <div class="col-lg-5"  style="display: none;">
+            <div class="col-lg-5" style="display: none;">
                 <div class="kt-portlet kt-portlet--height-fluid">
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
@@ -932,8 +936,9 @@
 
     </div>
 </div>
-<div class="bg-ovr" id=""> 
-    <div class="eve-modal open" style="display: block !important; opacity: 1;" id="cal-events" tabindex="-1" role="dialog">
+<div class="bg-ovr" id="">
+    <div class="eve-modal open" style="display: block !important; opacity: 1;" id="cal-events" tabindex="-1"
+        role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
                 <div class="">
@@ -942,7 +947,7 @@
                         <div class="date-val"><span> {{creation_date|date:'EEE, MMMM d'}}</span></div>
                     </div>
                 </div>
-                
+
                 <div class="icons-flex float-right">
 
                     <!-- <div id="act-icn" class="icons-right dropdown">
@@ -991,34 +996,34 @@
                         </div>
                     </div> -->
 
-                        <div class="icons-right met-done curser-pointer" *ngIf="Meeting_status==true && Schedule_type1=='Event'"
-                            (click)="meetingReport()">
-                            <span></span><small>Completed</small>
-                        </div>
-                        <!-- <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'"
+                    <div class="icons-right met-done curser-pointer"
+                        *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="meetingReport()">
+                        <span></span><small>Completed</small>
+                    </div>
+                    <!-- <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'"
                             (click)="sweet_end()">
                             <span></span><small>End now</small>
                         </div> -->
-                  
-                        <div class="icons-right curser-pointer" *ngIf="Meeting_status==false && Schedule_type1=='Event'" data-toggle="tooltip"
-                            title="Start meeting" (click)="meetingReport()">
-                            <span></span>
-                            <!-- <small>start</small> met-start  && AdminMeeting_Status=='unknown' && Isadmin==true-->
-                            <span class="tool-span" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="#5f6368" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <polyline points="9 11 12 14 22 4"></polyline>
-                                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-                                    </g>
-                                </svg>
-                            </span>
-                        </div>
 
-                        <!-- <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Start') && Isadmin==false" data-toggle="tooltip"
+                    <div class="icons-right curser-pointer" *ngIf="Meeting_status==false && Schedule_type1=='Event'"
+                        data-toggle="tooltip" title="Start meeting" (click)="meetingReport()">
+                        <span></span>
+                        <!-- <small>start</small> met-start  && AdminMeeting_Status=='unknown' && Isadmin==true-->
+                        <span class="tool-span">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="#5f6368" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                                </g>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <!-- <div class="icons-right met-start curser-pointer" *ngIf="Meeting_status==false  && (AdminMeeting_Status=='Start') && Isadmin==false" data-toggle="tooltip"
                             title="Join meeting" (click)="meetingReport()">
                             <span></span><small>join</small>
                         </div>
@@ -1045,7 +1050,7 @@
                         </span>
                     </div>
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
-                         title="Pending!" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false">
+                        title="Pending!" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false">
                         <span class="tool-span" (click)="sweet_pending()">
                             <svg class="toolicns kt-p-ic-top" width="24" height="24"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
@@ -1083,8 +1088,7 @@
                                 </switch>
                             </svg> </span>
                     </div>
-                    <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip"
-                        title="Edit">
+                    <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip" title="Edit">
                         <span class="tool-span" (click)="ReshudingTaskandEvent()">
                             <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="toolicns">
                                 <path
@@ -1126,10 +1130,12 @@
                             <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div> -->
-                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
+                            <div class="box-cl"
+                                *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
+                            <div class="box-cl"
+                                *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div>
                             <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
@@ -1145,8 +1151,7 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false"
-                                        style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
@@ -1548,10 +1553,12 @@
                             <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div> -->
-                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
+                            <div class="box-cl"
+                                *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
+                            <div class="box-cl"
+                                *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div>
                             <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
@@ -1567,8 +1574,7 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false"
-                                        style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
@@ -1960,6 +1966,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="foot-main overflow-hidden" style="display: block;" id="main-foot">
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <span class="flex-1" aria-hidden="true">Going?</span>
@@ -2048,10 +2055,10 @@
                                         [(ngModel)]="PurposeEnd">
                                         <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                             {{item1}}</ng-option>
-                                     </ng-select>
+                                    </ng-select>
                                 </div>
                             </div>
- 
+
                             <div class="d-flex align-items-center justify-content-end gap-1">
                                 <button class="btn btn-sm btn-info btn-pill footbtns" data-toggle="collapse"
                                     href="#propse" (click)="proposenewtime()">Sumbit</button>
@@ -2065,49 +2072,58 @@
 
                 </div>
             </div>
-            <div class="foot-main overflow-hidden" style="display: block;" id="" *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Task'">
+            <div class="foot-main overflow-hidden" style="display: block;" id=""
+                *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Task'">
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <div class="foot-leftsec">
                         <div class="d-flex align-items-center gap-1">
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="End_meeting()">Mark completed</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="End_meeting()">Mark
+                                completed</button>
+                            <!-- <button class="btn btn-sm btn-light-primary btn-pill footbtns">Schedule Task</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns">More Details</button> -->
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
-            <div class="foot-main overflow-hidden" style="display: block;" id="" *ngIf="Meeting_status==true && Isadmin==true && Schedule_type1=='Task'">
+            <div class="foot-main overflow-hidden" style="display: block;" id=""
+                *ngIf="Meeting_status==true && Isadmin==true && Schedule_type1=='Task'">
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <div class="foot-leftsec">
                         <div class="d-flex align-items-center gap-1">
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="uncomplete_task()">Mark uncompleted</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns"
+                                (click)="uncomplete_task()">Mark uncompleted</button>
                         </div>
                     </div>
-                    
+
                 </div>
-                
+
             </div>
-            <div class="foot-main overflow-hidden" style="display: block;" id="" *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
+            <div class="foot-main overflow-hidden" style="display: block;" id=""
+                *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <div class="foot-leftsec">
                         <div class="d-flex align-items-center gap-1">
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End now</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End
+                                now</button>
                         </div>
                     </div>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </div>
 </div>
-<div class="bg-ovr1" id=""> 
-    <div class="eve-modal1 open" style="display: block !important; opacity: 1;" id="cal-events" tabindex="-1" role="dialog">
+<div class="bg-ovr1" id="">
+    <div class="eve-modal1 open" style="display: block !important; opacity: 1;" id="cal-events" tabindex="-1"
+        role="dialog">
         <div class="card flex-1 mb-3 border-0">
             <div class="head-c bg-white">
-                <div class="">
-                        <h4>Your Delay Actions</h4>
+                <div class="mt-1">
+                    <h4>Delay Action area</h4>
                 </div>
-                
+
                 <div class="icons-flex float-right">
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
@@ -2121,21 +2137,177 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body scrolly popup-ht-70vh">
-                <div class="" *ngFor="let action of DelayActionsList">
-                    <div id="NameDate" class="main-title curser-pointer" (click)="moreDetails(action.Project_Code)">
+            <div class="card-body scrolly popup-ht-50vh">
+                <div class="">
+                    <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
-                            <div class="box-cl" style="background-color: #EE4137;">
+                            <div class="box-cl" style="background-color: #f10505;">
+                            </div>
+
+                        </div>
+                        <div class="title-right" id="">
+                            <div class="title-area">
+                                <div class="title-main">
+                                    <span id="title1">{{delayDetails.Project_Name}}</span>
+                                </div>
+                                <div class="">
+                                    <span style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                        Delay Action
+                                    </span>
+
+                                </div>
+                                <div class="d-flex">
+                                    <div class="title-day">{{delayDetails.Deadline| date:'EEEE, MMMM d'}}
+                                        <!-- <span>,</span> -->
+                                        <span>– {{delayDetails.Delaydays }} days delay
+
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <h6 class="pt-2">{{action.Project_Name}} - {{action.Delaydays}} days delay</h6>
                     </div>
-                  
+                    <div id="project" class="eve-area">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <i class="fab-icn fab fa-wpforms"></i>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s pro-nm">Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-div">
+                        <div class="d-flex align-items-center">
+                            <div class="px-2">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                        class="svg-icn">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M16 12l-6 6V6z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="rgt-des">
+                                <div>
+                                    <div class="main-s"><a href="javascript:void(0)"
+                                            (click)="moreDetails(delayDetails.Master_Code)">
+                                            {{delayDetails.Master_Name}}</a>
+                                    </div>
+                                    <div class="main-s">{{delayDetails.Project_Name}}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="createdby" class="eve-area py-2">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path
+                                        d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 4h5v4H6v-4z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s">{{delayDetails.Responsible}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="foot-main overflow-hidden" style="display: block;" id="main-foot">
-                <div class="foot-body foot-contain pt-3" id="ft_body">
-                    <h6 class="text-danger">**Your delay actions will affect the project flow. Be a responsible member, take extra effect to catch up on the deadline or complete the actions as needed.</h6>
+            <div class="foot-main overflow-hidden" style="display: block;" id="main-foot1">
+                <div class="foot-body foot-contain pt-3" id="ft_body1">
+                    <div class="foot-leftsec">
+                        <div class="d-flex align-items-center gap-1">
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns"
+                                (click)="Task_type1(1)">Schedule Task</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns"
+                                (click)="moreDetails(delayDetails.Project_Code)">
+                                More Details
+                                <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" height="1em"
+                                    viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    <path
+                                        d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z" />
+                                </svg>
+                            </button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="openfooter1()">Complete action
+                                <span class="chev-dn" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
+                                    </svg>
+                                </span>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="foot-body br-top secfootr opend collapse" id="secfootr1">
+                <div class="ftbtns flex-1">
+                    <div class="mt-3" id="propse">
+                        <div class="foot-calendar">
+                            <!-- <label>Attachment</label><input type="file" /> -->
+
+                            <div class="form-group">
+                                <label>Attachment</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                class="bi bi-upload" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                <path
+                                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="_file1" accept="application/pdf"
+                                            (change)="onFileChange1($event)">
+                                        <label class="custom-file-label" id="upload" for="_file1">Select a file</label>
+                                    </div>
+                                </div>
+                                <span class="text-info"> *Accept only pdf files </span>
+                            </div>
+
+                        </div>
+    
+                        <!-- <div class="d-flex mt-3 gap-15">
+                            <div class="form-group flex-1">
+                                <label class="cus-lbl">Remarks*</label>
+                                <textarea width="50%"></textarea>
+                            </div>
+                            
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
+                            <textarea class="form-control"  aria-label="With textarea" style="height: 50px;"
+                                 placeholder="Define your exact reason to complete the action." [(ngModel)]="_remarks"></textarea>
+                            <span class="text-danger mt-1">Note: (*) are mandatory!</span>
+                        </div>
+
+
+
+    
+                        <div class="d-flex align-items-center justify-content-end gap-1">
+                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" [disabled]="!_remarks">Sumbit</button>
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                href="#secfootr1" (click)="closefooter()"    >Cancel</button>
+                        </div>
+    
+                    </div>
                 </div>
             </div>
         </div>
@@ -2671,7 +2843,7 @@
                                         {{item1}}</ng-option>
                                 </ng-select>
                             </div>
-                           
+
                             <div class="form-group flex-1" id="Schenddate">
                                 <label>Schedule End Date <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -2691,7 +2863,7 @@
                         <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                             Note:Selected Project is Expired,Please Extend your Project Deadline date
                         </div>
-                        
+
                         <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                             <div class="wc-cus">
 
@@ -3162,10 +3334,12 @@
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
                     (click)="OnSubmitSchedule()">Submit</button>
-                    <button *ngIf="draftid==0" type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Save Draft</button>
-                    <button *ngIf="draftid!=0" type="cancel"  class="btn btn-sm btn-dull ml-3" (click)="Insert_indraft()">Update Draft</button> &nbsp;
+                <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
+                    (click)="Insert_indraft()">Save Draft</button>
+                <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
+                    (click)="Insert_indraft()">Update Draft</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
-                
+
             </div>
 
 
