@@ -422,6 +422,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
 
+  
+  NewProjectService(prjCode){
+     this.ObjSubTaskDTO.Project_Code=prjCode;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetProjectPeople", this.ObjSubTaskDTO);
+   }
+
+
+
+   NewActivityService(prjCode){
+    this.ObjSubTaskDTO.Project_Code=prjCode
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetProjectActivity",this.ObjSubTaskDTO);
+   }
 
   getPortfolios(prjCode) {
     let EmpNo = localStorage.getItem('EmpNo');

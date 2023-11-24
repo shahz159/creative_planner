@@ -3,11 +3,17 @@
     <ng-container *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
                     (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') || 
                     activity=='Project Complete Rejected'  || activity=='Rejected' || (activity=='New Action Rejected') || (activity=='Project Release' && send_from=='WR')
-                    || (activity=='Project Hold' && send_from=='WR') || (activity=='Project Cancel' && send_from=='WR')">
+                    || (activity=='Project Hold' && send_from=='WR') || (activity=='Project Cancel' && send_from=='WR') || (activity=='Task Complete' && send_from=='WS') || (activity=='StandardTask Completed' && send_from=='WR')">
         <div class="desc-msg rejct-msg" data-toggle="tooltip" title="Latest activity">
             <div class="d-flex align-items-center px-3" *ngFor="let item of lastactivity">
                 <h6 class="mb-0" *ngIf="activity=='New Action'">
                     {{activity}} created by {{item.Empname}} on {{item.Rec_date | date : 'dd-MM-yyyy'}}.
+                </h6>
+                <h6 class="mb-0" *ngIf="activity=='Task Complete'">
+                    {{activity}} Submitted by {{item.Empname}} to {{item.SubmitToEmp}} on {{item.Rec_date | date : 'dd-MM-yyyy'}}.
+                </h6>
+                <h6 class="mb-0" *ngIf="activity=='StandardTask Completed'">
+                    {{activity}} accepted by {{item.Empname}} on {{item.Rec_date | date : 'dd-MM-yyyy'}}.
                 </h6>
                 <h6 class="mb-0" *ngIf="activity=='Approved Project'">
                     {{activity}} accepted by {{item.Empname}} on {{item.Rec_date | date : 'dd-MM-yyyy'}}.
@@ -45,7 +51,6 @@
                     {{rejectactivity}} {{activity}} for "{{item.rejectType}}" by {{item.Empname}} on {{item.Rec_date | date : 'dd-MM-yyyy'}}.
                     Remark: "{{item.Req_Coments}}"
                 </h6>
-                
             </div>
         </div>
     </ng-container>
@@ -309,7 +314,7 @@
                             Project submission
                         </button>
                     </div>
-                    <div *ngIf="(ProjectBlockName == 'Standard Tasks' && Status=='InProcess') && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
+                    <div *ngIf="(ProjectBlockName == 'Standard Tasks' && Status!='Completed' && isStandardSubmit!='true') && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                          class=" pro-act ml-2">
                         <button class="btn  btn22" (click)="OnStandardTaskSubmit()">
                             <!-- btn-pill btn-pill  mr-2-->
@@ -6239,7 +6244,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center mb-3"
-                        *ngIf="(requestType=='Project Complete' || requestType=='ToDo Achieved') && completedoc">
+                        *ngIf="(requestType=='Project Complete' || requestType=='ToDo Achieved' || requestType=='Task Complete') && completedoc">
                         <div class="">
                             <span class="detail-icn">
                                 
@@ -6253,7 +6258,7 @@
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
-                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 50}}</u></h6>
+                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 40}}</u></h6>
                                 </a>
                             </div>
                         </div>
@@ -6261,7 +6266,15 @@
                             <div class="left-w">
                                 <h6 class="txtm-cus pt-1">Attachment</h6>
                                 <a (click)="LoadDocument_action(complete_List.Project_Code,iscloud,completedoc,url,complete_List.contenttype,complete_List.Team_Res)">
-                                    <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 50}}</u></h6>
+                                    <h6 class="mt-1" data-toggle="tooltip" title="{{url}}"><u>{{url  | truncate : 40}}</u></h6>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="action-content d-flex align-items-center gap-1 curser-pointer" *ngIf="requestType=='Task Complete' && completedoc">
+                            <div class="left-w">
+                                <h6 class="txtm-cus pt-1">Task Attachment</h6>
+                                <a (click)="openPDF_Standard(sidno,emp,iscloud,repdate,completedoc,contenttype,submitby)">
+                                    <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc  | truncate : 40}}</u></h6>
                                 </a>
                             </div>
                         </div>

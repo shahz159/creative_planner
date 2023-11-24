@@ -5,6 +5,7 @@ import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-d
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 
 @Component({
   selector: 'app-notification',
@@ -47,7 +48,7 @@ export class NotificationComponent implements OnInit {
     public service: ProjectTypeService,
     public approvalservice: ApprovalsService,
     private notifyService: NotificationService,
-    private router: Router
+    private router: Router,public BsService: BsServiceService
   ) {
     this.notificationDTO=new NotificationActivityDTO();
    }
@@ -243,6 +244,16 @@ export class NotificationComponent implements OnInit {
 
   }
 
+  openInfo1(pcode,sid) {
+    this.BsService.SetNewStandardId(sid);
+    // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
+    $('#Project_info_slider_bar').addClass('open_sidebar_info');
+    this.router.navigate(["Notifications/projectinfo/", pcode,"6"]);
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+  }
+
   clearResponse(pcode,rec_date,req_type){
     this.approvalObj.Emp_no=this.Current_user_ID;
     this.approvalObj.Project_Code=pcode;
@@ -274,7 +285,7 @@ export class NotificationComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
-
+    this.router.navigate(["Notifications"]);
   }
  
 

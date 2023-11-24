@@ -57,6 +57,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.BsService.bs_SummaryType.subscribe(t => {
       this.Summarytype = t;
     });
+    this.BsService.bs_standardid.subscribe(t => {
+      this.standardid = t;
+    });
   }
 
   @Input() inputFromParent: string;
@@ -1297,68 +1300,175 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   url: any;
   previouscoments: boolean = false;
   singleapporval_json: any[] = [];
+  standardDoc:any;
+  sidno:any;
+  emp:any;
+  repdate:any;
+  contenttype: any;
+  submitby:any;
+  standardid:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
     this.selectedType = null;
     this.commentSelected = null;
     this.comments = "";
-    this.approvalObj.Project_Code = this.projectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-      this.requestDetails = data as [];
-      console.log(this.requestDetails, "approval")
+    if(this.standardid==null || this.standardid== ''){
+      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.standardid =0;
 
-      if (this.requestDetails.length > 0) {
-        this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
-        this.requestType = (this.requestDetails[0]['Request_type']);
-        this.forwardType = (this.requestDetails[0]['ForwardType']);
-        this.requestDate = (this.requestDetails[0]['Request_date']);
-        this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
-        this.requestComments = (this.requestDetails[0]['Remarks']);
-        this.new_deadline = (this.requestDetails[0]['new_deadline']);
-        this.hold_upto = (this.requestDetails[0]['hold_date']);
-        this.new_cost = (this.requestDetails[0]['new_cost']);
-        this.new_duration = (this.requestDetails[0]['new_duration']);
-        this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
-        this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
-        const fullName = this.Submitted_By && this.Submitted_By.split(' ');
-        this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
-        this.initials1 = this.initials1.toUpperCase();
-        this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
-                this.reject_list.splice(0,1);
-        this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
-        this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
-        console.log(this.reject_list, "service");
-        if (this.prviousCommentsList.length > 1) {
-          this.previouscoments = true;
+      this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+        this.requestDetails = data as [];
+        console.log(this.requestDetails, "approval")
+  
+        if (this.requestDetails.length > 0) {
+          this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+          this.requestType = (this.requestDetails[0]['Request_type']);
+          this.forwardType = (this.requestDetails[0]['ForwardType']);
+          this.requestDate = (this.requestDetails[0]['Request_date']);
+          this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+          this.requestComments = (this.requestDetails[0]['Remarks']);
+          this.new_deadline = (this.requestDetails[0]['new_deadline']);
+          this.hold_upto = (this.requestDetails[0]['hold_date']);
+          this.new_cost = (this.requestDetails[0]['new_cost']);
+          this.new_duration = (this.requestDetails[0]['new_duration']);
+          this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+          const fullName = this.Submitted_By && this.Submitted_By.split(' ');
+          this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+          this.initials1 = this.initials1.toUpperCase();
+          this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+                  this.reject_list.splice(0,1);
+          this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+          this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+          console.log(this.reject_list, "service");
+          if (this.prviousCommentsList.length > 1) {
+            this.previouscoments = true;
+          }
+          else {
+            this.previouscoments = false;
+          }
+          this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+          if (this.requestType == 'Project Forward') {
+            this.newResponsible = (this.transfer_json[0]['newResp']);
+            this.forwardto = (this.transfer_json[0]['Forwardedto']);
+            this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+          }
+          this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+          if (this.requestType == 'Revert Back') {
+            this.newResponsible = (this.revert_json[0]['newResp']);
+            this.forwardto = (this.revert_json[0]['Forwardedto']);
+            this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
+          }
+          if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+            this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.iscloud = (this.complete_List[0]['IsCloud']);
+            this.url = (this.complete_List[0]['CompleteProofDoc']);
+          }
+          if (this.requestType == 'Task Complete') {
+            this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+            console.log(this.complete_List, "standard")
+            this.completedoc = (this.complete_List[0]['Proofdoc']);
+            this.sidno = (this.complete_List[0]['StandardId']);
+            this.emp = (this.complete_List[0]['Emp_No']);
+            this.repdate = (this.complete_List[0]['Reportdate']);
+            this.submitby = (this.complete_List[0]['SubmittedBy']);
+            this.contenttype = (this.complete_List[0]['contenttype']);
+            this.iscloud = (this.complete_List[0]['IsCloud']);
+          }
+      
+          console.log(this.requestDetails, 'transfer');
         }
-        else {
-          this.previouscoments = false;
+        // console.log(this.comments_list, "req")
+        // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
+      });
+    }
+    else{
+      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.standardid = this.standardid;
+
+      this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+        this.requestDetails = data as [];
+        console.log(this.requestDetails, "approval")
+  
+        if (this.requestDetails.length > 0) {
+          this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+          this.requestType = (this.requestDetails[0]['Request_type']);
+          this.forwardType = (this.requestDetails[0]['ForwardType']);
+          this.requestDate = (this.requestDetails[0]['Request_date']);
+          this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
+          this.requestComments = (this.requestDetails[0]['Remarks']);
+          this.new_deadline = (this.requestDetails[0]['new_deadline']);
+          this.hold_upto = (this.requestDetails[0]['hold_date']);
+          this.new_cost = (this.requestDetails[0]['new_cost']);
+          this.new_duration = (this.requestDetails[0]['new_duration']);
+          this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+          const fullName = this.Submitted_By && this.Submitted_By.split(' ');
+          this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+          this.initials1 = this.initials1.toUpperCase();
+          this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
+                  this.reject_list.splice(0,1);
+          this.prviousCommentsList = JSON.parse(this.requestDetails[0]['previousComments_JSON']);
+          this.singleapporval_json = JSON.parse(this.requestDetails[0]['singleapproval_json']);
+          console.log(this.reject_list, "service");
+          if (this.prviousCommentsList.length > 1) {
+            this.previouscoments = true;
+          }
+          else {
+            this.previouscoments = false;
+          }
+          // this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
+          // if (this.requestType == 'Project Forward') {
+          //   this.newResponsible = (this.transfer_json[0]['newResp']);
+          //   this.forwardto = (this.transfer_json[0]['Forwardedto']);
+          //   this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
+          // }
+          // this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
+          // if (this.requestType == 'Revert Back') {
+          //   this.newResponsible = (this.revert_json[0]['newResp']);
+          //   this.forwardto = (this.revert_json[0]['Forwardedto']);
+          //   this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
+          // }
+          // if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+          //   this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
+          //   this.completedoc = (this.complete_List[0]['Sourcefile']);
+          //   this.iscloud = (this.complete_List[0]['IsCloud']);
+          //   this.url = (this.complete_List[0]['CompleteProofDoc']);
+          // }
+          if (this.requestType == 'Task Complete') {
+            this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+            console.log(this.complete_List, "standard")
+            this.completedoc = (this.complete_List[0]['Proofdoc']);
+            this.sidno = (this.complete_List[0]['StandardId']);
+            this.emp = (this.complete_List[0]['Emp_No']);
+            this.repdate = (this.complete_List[0]['Reportdate']);
+            this.submitby = (this.complete_List[0]['SubmittedBy']);
+            this.contenttype = (this.complete_List[0]['contenttype']);
+            this.iscloud = (this.complete_List[0]['IsCloud']);
+          }
+          if (this.requestType == 'Task Complete' && this._Urlid==6) {
+            this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+            console.log(this.complete_List, "standard")
+            this.completedoc = (this.complete_List[0]['Proofdoc']);
+            this.sidno = (this.complete_List[0]['StandardId']);
+            this.emp = (this.complete_List[0]['Emp_No']);
+            this.repdate = (this.complete_List[0]['Reportdate']);
+            this.submitby = (this.complete_List[0]['SubmittedBy']);
+            this.contenttype = (this.complete_List[0]['contenttype']);
+            this.iscloud = (this.complete_List[0]['IsCloud']);  
+          }
+          console.log(this.requestDetails, 'transfer');
         }
-        this.transfer_json = JSON.parse(this.requestDetails[0]['transfer_json']);
-        if (this.requestType == 'Project Forward') {
-          this.newResponsible = (this.transfer_json[0]['newResp']);
-          this.forwardto = (this.transfer_json[0]['Forwardedto']);
-          this.forwardfrom = (this.transfer_json[0]['Forwardedfrom']);
-        }
-        this.revert_json = JSON.parse(this.requestDetails[0]['revert_json']);
-        if (this.requestType == 'Revert Back') {
-          this.newResponsible = (this.revert_json[0]['newResp']);
-          this.forwardto = (this.revert_json[0]['Forwardedto']);
-          this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
-        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
-          this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
-          this.completedoc = (this.complete_List[0]['Sourcefile']);
-          this.iscloud = (this.complete_List[0]['IsCloud']);
-          this.url = (this.complete_List[0]['CompleteProofDoc']);
-        }
-        console.log(this.requestDetails, 'transfer');
-      }
-      // console.log(this.comments_list, "req")
-      // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
-    });
+        // console.log(this.comments_list, "req")
+        // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
+      });
+    }
+    
+
+   
   }
 
   resetApproval() {
@@ -1678,40 +1788,40 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   _day: any;
   _month: any;
 
-  openPDF_Standard(cloud, repDate: Date, proofDoc) {
-    repDate = new Date(repDate);
-    let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  // openPDF_Standard(cloud, repDate: Date, proofDoc) {
+  //   repDate = new Date(repDate);
+  //   let FileUrl: string;
+  //   FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
-    let Day = repDate.getDate();
-    let Month = repDate.getMonth() + 1;
-    let Year = repDate.getFullYear();
-    if (Month < 10) {
-      this._month = '0' + Month;
-    }
-    else {
-      this._month = Month;
-    }
-    if (Day < 10) {
-      this._day = '0' + Day;
-    }
-    else {
-      this._day = Day;
-    }
-    var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+  //   let Day = repDate.getDate();
+  //   let Month = repDate.getMonth() + 1;
+  //   let Year = repDate.getFullYear();
+  //   if (Month < 10) {
+  //     this._month = '0' + Month;
+  //   }
+  //   else {
+  //     this._month = Month;
+  //   }
+  //   if (Day < 10) {
+  //     this._day = '0' + Day;
+  //   }
+  //   else {
+  //     this._day = Day;
+  //   }
+  //   var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
 
-    if (cloud == false) {
-      if (this.EmpNo_Autho == this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + date + "/" + proofDoc);
-      }
-      else if (this.EmpNo_Autho != this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + date + "/" + proofDoc);
-      }
-    }
-    else if (cloud == true) {
-      window.open(proofDoc);
-    }
-  }
+  //   if (cloud == false) {
+  //     if (this.EmpNo_Autho == this.EmpNo_Res) {
+  //       window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + date + "/" + proofDoc);
+  //     }
+  //     else if (this.EmpNo_Autho != this.EmpNo_Res) {
+  //       window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + date + "/" + proofDoc);
+  //     }
+  //   }
+  //   else if (cloud == true) {
+  //     window.open(proofDoc);
+  //   }
+  // }
 
   openPDF(cloud, docName) {
     let FileUrl: string;
@@ -1760,18 +1870,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
 
   LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-    // let name = "ArchiveView/"+this.projectCode;
-    // var rurl = document.baseURI + name;
-    // var encoder = new TextEncoder();
-    // let url = encoder.encode(url1);
-    // let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-    // filename = filename.replace(/#/g, "%23");
-    // filename = filename.replace(/&/g, "%26");
-    // // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
-    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "type=" + type;
-    // var myWindow = window.open(myurl, url.toString());
-    // myWindow.focus();
-
     let FileUrl: string;
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
@@ -1808,6 +1906,91 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
+
+  }
+
+  openPDF_Standard(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
+    debugger
+    repDate = new Date(repDate);
+    let FileUrl: string;
+    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+    let Day = repDate.getDate();
+    let Month = repDate.getMonth() + 1;
+    let Year = repDate.getFullYear();
+    if (Month < 10) {
+      this._month = '0' + Month;
+    }
+    else {
+      this._month = Month;
+    }
+    if (Day < 10) {
+      this._day = '0' + Day;
+    }
+    else {
+      this._day = Day;
+    }
+    var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+    if (cloud == false) {
+      FileUrl = (FileUrl + emp_no + "/" + this.projectCode + "/" + date + "/" + proofDoc);
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+
+    }
+
+    else if (cloud == true) {
+
+      let FileUrl: string;
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+      if (proofDoc.includes(FileUrl)) {
+        FileUrl = proofDoc
+      }
+      else {
+        let Day = repDate.getDate();
+        let Month = repDate.getMonth() + 1;
+        let Year = repDate.getFullYear();
+        if (Month < 10) {
+          this._month = '0' + Month;
+        }
+        else {
+          this._month = Month;
+        }
+        if (Day < 10) {
+          this._day = Day;
+        }
+        else {
+          this._day = Day;
+        }
+        var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+        FileUrl = (FileUrl + emp_no + "/" + this.projectCode + "/" + date + "/" + proofDoc + "." + type);
+      }
+
+      let name = "ArchiveView/" + standardid;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      proofDoc = proofDoc.replace(/#/g, "%23");
+      proofDoc = proofDoc.replace(/&/g, "%26");
+      // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
 
   }
 
@@ -1870,5 +2053,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.router.navigate(["Notifications"]);
     }
   }
+
+
+  
 
 }

@@ -691,6 +691,7 @@ export class DashboardComponent implements OnInit {
     $('.bg-ovr1').removeClass('d-block');
 
     $('.side_view').removeClass('position-fixed');
+    this.closefooter();
   }
   // Scheduling Work
   // Start Here
@@ -923,6 +924,8 @@ export class DashboardComponent implements OnInit {
         // console.log(this.dmsIdjson,"ids");
       });
   }
+
+ 
 
   Event_requests() {
 
@@ -3416,6 +3419,17 @@ export class DashboardComponent implements OnInit {
   DelayActionsList: any[] = [];
   DelayActionscount: any;
 
+  isDelay: boolean = false;
+  delayDetails: any = [];
+
+  GetclickDelayAction_details(item: any) {
+    this.closeevearea1();
+    $('.bg-ovr1').addClass('d-block');
+    $('.side_view').addClass('position-fixed');
+    this.delayDetails = item;
+    
+  }
+
   GetDelay_Actions() {
     this._calenderDto.Emp_No = this.Current_user_ID;
 
@@ -3430,6 +3444,143 @@ export class DashboardComponent implements OnInit {
         // }
            console.log(this.DelayActionsList,"Delayactions")
       });
+  }
+
+  Task_type1(value) {
+    $('.bg-ovr1').removeClass('d-block');
+    document.getElementsByClassName("bg-ovr1")[0].classList.remove("d-block");
+    document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("div_recurrence").style.display = "block";
+    document.getElementById("weekly_121").style.display = "none";
+    document.getElementById("div_endDate").style.display = "none";
+    document.getElementById("Monthly_121").style.display = "none";
+    document.getElementById("Recurrence_hide").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("Descrip_Name12").style.display = "none";
+    this.clearallfields();
+    this.daysSelected = [];
+    this.singleselectarry = [];
+    this.daysSelectedII = [];
+    this.daysSelected.push(this._StartDate);
+    this.singleselectarry.push(this._StartDate);
+    this.Schedule_ID = 0;
+    this._subname = false;
+    this.Note_deadlineexpire = false;
+    this.editTask = false;
+    this.copyTask = false;
+    this.create = true;
+    if (value == 1) {
+      this.ScheduleType = "Task";
+      document.getElementById("subtaskid").style.display = "block";
+      // document.getElementById("Link_Name").style.display = "none";
+      document.getElementById("Guest_Name").style.display = "none";
+      document.getElementById("Location_Name").style.display = "none";
+      document.getElementById("Descrip_Name").style.display = "none";
+      document.getElementById("core_viw123").style.display = "block";
+      document.getElementById("core_viw121").style.display = "none";
+      document.getElementById("core_viw222").style.display = "none";
+      document.getElementById("core_Dms").style.display = "none";
+      document.getElementById("online-add").style.display = "none";
+
+    }
+    
+    this.Title_Name=this.delayDetails['Project_Name'];
+    this.MasterCode=this.delayDetails['Master_Code'];
+    this.Subtask = this.delayDetails['Project_Code'];
+
+
+    // this.MasterCode=this.delayDetails['Master_Name'];
+    // this.Subtask=this.delayDetails['Project_Name'];
+
+
+
+    this.GetSubtasklistfromProject(this.MasterCode);
+    setTimeout(() => {
+      this.getChangeSubtaskDetais(this.Subtask);
+    }, 2000); 
+   
+    // this.MasterCode = this.ProjectListArray.find(item => item.Project_Code === this.delayDetails['Master_Code']);
+    // alert(this.MasterCode)
+    // alert(this.Subtask)
+
+    const format2 = "YYYY-MM-DD";
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = (moment(this.minDate).format(format2));
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 1;
+    }
+
+
+    this.daysSelectedII.push(jsonData);
+
+    console.log(this.daysSelectedII, "default")
+    // this.Project_Code = "4001176";
+
+  }
+
+  compareFn1(item1: any, item2: any): boolean {
+    return item1 && item2 ? item1.Project_Code === item2.Project_Code : item1 === item2;
+  }
+
+  compareFn(item1: any, item2: any): boolean {
+    return item1 && item2 ? item1.Project_Code === item2.Project_Code : item1 === item2;
+  }
+  
+  openfooter1() {
+    document.getElementById("ft_body1").classList.toggle("go-up");
+    document.getElementById("secfootr1").classList.toggle("opend");
+    document.getElementById("main-foot1").classList.toggle("overflow-hidden");
+  }
+
+  closefooter(){
+    // $('.secfootr1').removeClass('opend');
+    document.getElementById("ft_body1").classList.toggle("go-up");
+    document.getElementById("secfootr1").classList.toggle("opend");
+    document.getElementById("main-foot1").classList.toggle("overflow-hidden");
+    $('#upload').html('Select a file');
+    this._remarks = "";
+  }
+  _remarks:string;
+  submitaction(){
+   
+
+    const fd = new FormData();
+      fd.append("Project_Code", this.delayDetails['Project_Code']);
+      fd.append("Master_Code", this.delayDetails['Master_Code']);
+      fd.append("Team_Autho", this.delayDetails['Team_Res']);
+      fd.append("Projectblock", this.delayDetails['Project_Block']);
+      fd.append("Remarks", this._remarks);
+      fd.append('file', this.selectedFile);
+      fd.append("Project_Name", this.delayDetails['Project_Name']);
+      console.log(this.delayDetails['Project_Code'],'comple')
+      this.service._UpdateSubtaskByProjectCode(fd)
+        .subscribe(data => {
+          this._remarks = "";
+          this.selectedFile=null;
+          this.closeInfo();
+        });
+        this.GetDelay_Actions();
+      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+
+      document.getElementById("ft_body1").classList.toggle("go-up");
+      document.getElementById("secfootr1").classList.toggle("opend");
+      document.getElementById("main-foot1").classList.toggle("overflow-hidden");
+      $('.bg-ovr1').removeClass('d-block');
+  }
+  selectedFile:any =null;
+
+  onFileChange1(e) {
+    this.selectedFile = <File>e.target.files[0];
+    console.log("--------------->",this.selectedFile) 
   }
 
   GetScheduledJson() {
@@ -4649,7 +4800,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("pendlist1").classList.remove("show");
     document.getElementById("cal-main").classList.add("col-lg-9");
     document.getElementById("cal-main").classList.remove("col-lg-12");
-    this.Getdraft_datalistmeeting()
+    this.GetDelay_Actions()
 
     // document.getElementById("act-btn").style.display = "none";
   }
