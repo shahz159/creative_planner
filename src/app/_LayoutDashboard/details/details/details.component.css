@@ -2771,3 +2771,7 @@ div#add_new_team_sp .kt-portlet__head {
     margin: 100px auto 0 auto;
 }
 
+
+div#prj-hold-sidebar {
+  background: #f2f6f6 !important;
+}

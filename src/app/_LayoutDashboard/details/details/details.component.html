@@ -637,7 +637,8 @@
                                      'Hold':projectInfo.Status==='Project Hold'
                                     
                                     }">
-                                            {{projectInfo.Status}}
+                                            {{projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:''}}
+
                                             {{projectInfo.Status==='Delay'?projectInfo.Delaydays+' days':''}}
                                         </div>
                                     </div>
@@ -1186,15 +1187,16 @@
                         </div>
 
 
-
+ 
                         <div class="kt-info-box mt-2 border-0">
 
                             <div class="kt-project-info-body">
                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                     <b>Project</b>
                                    <div class="Action_btn_all">
-                                            <button  class="Ct-btn Bt-cancel ml-2">Project Cancel</button>
-                                            <button  class="Ct-btn Bt-hold ml-2">Project Hold</button>
+                                            <button  class="Ct-btn Bt-cancel ml-2"  (click)="openPrjCancelSb()"  >Project Cancel</button>
+                                            <button *ngIf="projectInfo&&projectInfo.Status==='Project Hold';else prHbtn" class="Ct-btn Bt-hold ml-2"  (click)="openPrjReleaseSideBar()">Project Release</button>
+                                            <ng-template #prHbtn><button   class="Ct-btn Bt-hold ml-2"  (click)="openPrjHoldSideBar()">Project Hold</button></ng-template>
                                             <button class="Ct-btn Bt-Submit ml-2">Task Submission</button>
                                             <button  class="Ct-btn Bt-Submit ml-2">Project Submission</button>
                                             <button (click)="darcreate()" class="Ct-btn ml-2">Add Timeline</button>
@@ -1259,7 +1261,7 @@
                                             <div class="Kt-Pd-Status NewProjectRejected"> Cancelled </div>
                                         </div>
                                         <div class="kt-project-type" *ngSwitchCase="'Project Hold'">
-                                            <div class="Kt-Pd-Status Hold"> Hold </div>
+                                            <div class="Kt-Pd-Status Hold"> Hold until {{hold_upto}}</div>
                                         </div>
                                         <div class="kt-project-type " *ngSwitchCase="'Cancelled Under Approval'">
                                             <div class="Kt-Pd-Status NewProjectRejected"> Cancelled Under Approval
@@ -2569,291 +2571,9 @@
                     </ng-template>
                 </div>
             </div>
+   
+           <!--prj sub prj rel last section here-->
 
-            <div class="card mt-4">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <ul class="nav nav-tabs nav-tabs-line justify-content-start tav-vdc">
-                                <li class="nav-item">
-                                    <a class="nav-link c-cancel" data-toggle="tab" href="#kt_tab_pane_1" id="hold-Prj-cancel-btn"> <button type="submit" class="btn Bt-cancel ml-2"(click)="closeTab()">Project Cancel</button></a>
-                                </li>
-                                <li class="nav-item" *ngIf="projectInfo"><a *ngIf="projectInfo.Status!=='Project Hold';else PrjRelBtn"class="nav-link c-hold" data-toggle="tab" href="#kt_tab_pane_2" id="hold-Prj-tab-btn"> <button type="submit" class="btn Bt-hold ml-2" (click)="closeTab()">Project Hold</button></a>
-                                <ng-template #PrjRelBtn><a class="nav-link c-hold" data-toggle="tab" href="#kt_tab_pane_3" id="release-Prj-tab-btn"> <button type="submit" class="btn Bt-hold ml-2" (click)="closeTab()">Project Release</button></a></ng-template>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link c-submit" data-toggle="tab" href="#kt_tab_pane_3">  <button  type="reset"  class="btn Bt-Submit ml-2">Task Submission</button></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link c-submit" data-toggle="tab" href="#kt_tab_pane_4">   <button  type="submit" class="btn Bt-Submit ml-2">Project Submission</button></a>
-                                </li>
-
-                            </ul>
-                            <div class="tab-content" id="myTabContent">
-
-                                <div class="tab-pane fade" id="kt_tab_pane_1" role="tabpanel"
-                                    aria-labelledby="kt_tab_pane_1">
-                                    <div class="kt-portlet__body">
-                                        <div class="tab-view-dw">
-                                            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-                                                <label>Action <span class="text-danger">*</span></label>
-                                                <ng-select>
-                                                    <ng-option>
-                                                        Project 1
-                                                    </ng-option>
-                                                    <ng-option>
-                                                        Project 2
-                                                    </ng-option>
-                                                </ng-select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Comments<span class="text-danger">*</span></label>
-                                                <textarea type="text" name="work" class="form-control h-100px"
-                                                    placeholder="Type your comment here...."></textarea>
-                                            </div>
-                                            <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
-                                                        (click)="closeTab()">Cancel</button>
-                                                    <button type="submit" disabled="" class="btn w-110 Bt-Submit ml-2">
-                                                        Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              
-                                <div class="spacer--body tab-pane fade" id="kt_tab_pane_2" role="tabpanel"
-                                    aria-labelledby="kt_tab_pane_2">
-                                    <div class="">
-                                        <ul class="kt-nav pb-0">
-                                            <div class="height-scroll h-scr">
-                                                <div class="px-4 py-3">
-                                                    <div class="form-group input-group">
-                                                        <label>Select hold date<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="input-group">
-                                                            <input matInput [matDatepicker]="picker3"
-                                                                id="Holdtext_{{Pid}}" (click)="picker3.open();"
-                                                                [min]="minhold" [max]="maxhold" [(ngModel)]="Holddate"
-                                                                placeholder="Select Date" class="form-control"
-                                                                name="date" />
-                                                            <div class="input-group-append">
-                                                                <mat-datepicker-toggle matSuffix [for]="picker3"
-                                                                    class="btn-secondary">
-                                                                </mat-datepicker-toggle>
-                                                                <mat-datepicker class="form-group"
-                                                                    #picker3></mat-datepicker>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group mb-1">
-                                                        <label>Remarks<span class="text-danger">*</span></label>
-                                                        <textarea class="form-control" placeholder="" rows="2" cols="20"
-                                                            style="height:90px;"
-                                                            placeholder="Define your exact hold reason here. e.g: Waiting for store license"
-                                                            [(ngModel)]="hold_remarks"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <li class="kt-nav__separator"></li>
-                                        </ul>
-                                        <div class="col-lg-12 mt-3 p-0">
-                                            <div class="form-group text-end">
-
-                                                <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
-                                                    (click)="closeTab()">Cancel</button>
-                                                <button type="submit" [disabled]="!Holddate || !hold_remarks"
-                                                    class="btn w-110 Bt-Submit ml-2"
-                                                    (click)="onProject_Hold(Pid,_MasterCode)">Submit</button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="spacer--body tab-pane fade" id="kt_tab_pane_3" role="tabpanel" >
-                                   
-                                    <div class="">
-                                        <ul id="release-tabs" role="tablist" class="nav nav-pills px-3 release-tabs mb-0 pt-2">
-                                            <li class="nav-item">
-                                                <a id="now-1" data-toggle="tab" href="#p_now" class="nav-link active">
-                                                    <span class="nav-text">Release now</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a id="later-1" data-toggle="tab" href="#p_later" class="nav-link">
-                                                    <span class="nav-text">Edit release date</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="px-4 py-3">
-                                            <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b><br>
-                                            This project is on hold until {{hold_upto}}
-                                        </div>
-                                    </div>
-                                    <div class="tab-content" id="release-tabbview">           
-                                        <div class="tab-pane fade show active " id="p_now" role="tabpanel" aria-labelledby="p_now">
-                                            <ul class="kt-nav pt-0">
-                                                <!-- <li class="kt-nav__separator"></li> -->
-                                                <div class="height-scroll h-scr">
-                                                    <div class="px-4 py-3">
-                                                        
-                                                        <div class="form-group mb-1">
-                                                            <label>Remarks<span class="text-danger">*</span></label>
-                                                            <textarea 
-                                                            class="form-control" 
-                                                            rows="2" cols="20"
-                                                            [(ngModel)]="hold_remarks"
-                                                            placeholder="Define your exact reason to release the hold project." 
-                                                            style="height:170px;">
-                                                            </textarea>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <li class="kt-nav__separator"></li>
-                                            </ul>
-                                           
-                                              
-                                            <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-    
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="closeTab()">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks" class="btn w-110 Bt-Submit ml-2"  (click)="holdreleaseProject()">Submit</button>
-    
-                                                </div>
-                                            </div>
-
-                            
-                                        </div>
-                                        <div class="tab-pane fade" id="p_later" role="tabpanel" aria-labelledby="p_later">
-                                            <ul class="kt-nav pt-0">
-                                                <div class="height-scroll h-scr">
-                                                    <div class="px-4 py-3">
-                                                       
-                                                        <div class="form-group input-group">
-                                                            <label>Set new release date:<span class="text-danger">*</span></label>
-                                                            <div class="input-group">
-                                                                <input 
-                                                                    class="form-control" name="date"
-                                                                    matInput [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
-                                                                    (click)="picker7.open();" 
-                                                                    (dateChange)="orgValueChange1($event)"
-                                                                    [value]="dateR.value" [min]="minhold"
-                                                                    [max]="maxhold" 
-                                                                    placeholder="Select Date"
-                                                                    />
-                                                                <div class="input-group-append">
-                                                                    <mat-datepicker-toggle matSuffix [for]="picker7" class="btn-secondary">
-                                                                    </mat-datepicker-toggle>
-                                                                    <mat-datepicker class="form-group" #picker7></mat-datepicker>
-                                                                </div>
-                                                            </div> 
-                                                        </div>
-                                                        <div class="form-group mb-1">
-                                                            <label>Remarks<span class="text-danger">*</span></label>
-                                                            <textarea 
-                                                            class="form-control" rows="2" cols="20"
-                                                            [(ngModel)]="hold_remarks"
-                                                            placeholder="Define your exact reason to edit release date."
-                                                            style="height:100px;">
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <li class="kt-nav__separator"></li>
-                                            </ul>
-
-                                            <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-    
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="closeTab()">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks" class="btn w-110 Bt-Submit ml-2"  (click)="updateReleaseDate()">Submit</button>
-    
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                       
-                                    <!-- </div> -->
-                                </div>
-
-                                <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel"
-                                    aria-labelledby="kt_tab_pane_4">
-                                    <div class="kt-portlet__body">
-                                        <div class="tab-view-dw">
-                                            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-                                                <label>Action <span class="text-danger">*</span></label>
-                                                <ng-select>
-                                                    <ng-option>
-                                                        Project 1
-                                                    </ng-option>
-                                                    <ng-option>
-                                                        Project 2
-                                                    </ng-option>
-                                                </ng-select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Comments<span class="text-danger">*</span></label>
-                                                <textarea type="text" name="work" class="form-control h-100px"
-                                                    placeholder="Type your comment here...."></textarea>
-                                            </div>
-                                            <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-                                                    <button type="submit"
-                                                        class="btn w-110 btn-secondary Bt-Close ml-2">Cancel</button>
-                                                    <button type="submit" disabled="" class="btn w-110 Bt-Submit ml-2">
-                                                        Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel"
-                                    aria-labelledby="kt_tab_pane_5">
-                                    <div class="kt-portlet__body">
-                                        <div class="tab-view-dw">
-                                            <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-                                                <label>Action <span class="text-danger">*</span></label>
-                                                <ng-select>
-                                                    <ng-option>
-                                                        Project 1
-                                                    </ng-option>
-                                                    <ng-option>
-                                                        Project 2
-                                                    </ng-option>
-                                                </ng-select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Comments<span class="text-danger">*</span></label>
-                                                <textarea type="text" name="work" class="form-control h-100px"
-                                                    placeholder="Type your comment here...."></textarea>
-                                            </div>
-                                            <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-                                                    <button type="submit"
-                                                        class="btn w-110 btn-secondary Bt-Close ml-2">Cancel</button>
-                                                    <button type="submit" disabled="" class="btn w-110 Bt-Submit ml-2">
-                                                        Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -4773,5 +4493,346 @@
             </div>
         </div>
     </div>
-
     <!-- For Update Project sidebar  ends here-->
+
+    
+    <!--  Project hold sidebar Area Start-->
+    <div id="prj-hold-sidebar" class="sideInfobar animate-right bg-slide-br">
+        <div class="kt-portlet">
+
+            <div class="kt-portlet__head">
+                <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                       <h4 class="m-0"><span class="svg-icv-hd">
+                            <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                viewBox="0 0 15 15" fill="none">
+                                <path _ngcontent-vqh-c391=""
+                                    d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M11.9626 6.96026V4.1819C11.9626 3.93731 11.9626 3.81502 11.935 3.69993C11.9105 3.59789 11.8701 3.50035 11.8152 3.41088C11.7534 3.30996 11.6669 3.22348 11.494 3.05053L10.1372 1.69373C9.96421 1.52078 9.87773 1.4343 9.77681 1.37246C9.68734 1.31763 9.5898 1.27722 9.48776 1.25273C9.37267 1.2251 9.25038 1.2251 9.00579 1.2251H5.95103C5.11095 1.2251 4.69091 1.2251 4.37004 1.38859C4.0878 1.5324 3.85833 1.76187 3.71452 2.04411C3.55103 2.36498 3.55103 2.78502 3.55103 3.6251V4.66619"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
+                                    stroke="#a3a3a3"></path>
+                            </svg> </span><span class="kt-chat__title"> Project Hold </span>  
+                        </h4>
+                    <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                        (click)="closePrjHoldSideBar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            fill="currentColor">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="kt-Attachament__body">
+
+                <div class="card mt-4">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-lg-12">
+  
+                                    <div class="spacer--body tab-pane fade show active" id="kt_tab_pane_2" role="tabpanel"
+                                        aria-labelledby="kt_tab_pane_2">
+                                        <div class="">
+                                            <ul class="kt-nav pb-0">
+                                                <div class="height-scroll h-scr">
+                                                    <div class="px-4 py-3">
+                                                        <div class="form-group input-group">
+                                                            <label>Select hold date<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <input matInput [matDatepicker]="picker3"
+                                                                    id="Holdtext_{{Pid}}" (click)="picker3.open();"
+                                                                    [min]="minhold" [max]="maxhold" [(ngModel)]="Holddate"
+                                                                    placeholder="Select Date" class="form-control"
+                                                                    name="date" />
+                                                                <div class="input-group-append">
+                                                                    <mat-datepicker-toggle matSuffix [for]="picker3"
+                                                                        class="btn-secondary">
+                                                                    </mat-datepicker-toggle>
+                                                                    <mat-datepicker class="form-group"
+                                                                        #picker3></mat-datepicker>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-1">
+                                                            <label>Remarks<span class="text-danger">*</span></label>
+                                                            <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                                style="height:90px;"
+                                                                placeholder="Define your exact hold reason here. e.g: Waiting for store license"
+                                                                [(ngModel)]="hold_remarks"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <li class="kt-nav__separator"></li>
+                                            </ul>
+                                            <div class="col-lg-12 mt-3 p-0">
+                                                <div class="form-group text-end">
+    
+                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                      (click)="closePrjHoldSideBar()"  >Cancel</button>
+                                                    <button type="submit" [disabled]="!Holddate || !hold_remarks"
+                                                        class="btn w-110 Bt-Submit ml-2"
+                                                        (click)="onProject_Hold(Pid,_MasterCode)">Submit</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+     
+                            </div>
+    
+    
+    
+                        </div>
+                    </div>
+                </div>
+            
+
+               
+
+               
+            </div>
+        </div>
+    </div>
+    <!--   Project hold sidebar Area End-->
+
+
+    <!--Project release sidebar Area start-->
+    <div id="prj-release-sidebar" class="sideInfobar animate-right bg-slide-br">
+        <div class="kt-portlet">
+    
+            <div class="kt-portlet__head">
+                <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                    <h4 class="m-0"><span class="svg-icv-hd">
+                            <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                viewBox="0 0 15 15" fill="none">
+                                <path _ngcontent-vqh-c391=""
+                                    d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M11.9626 6.96026V4.1819C11.9626 3.93731 11.9626 3.81502 11.935 3.69993C11.9105 3.59789 11.8701 3.50035 11.8152 3.41088C11.7534 3.30996 11.6669 3.22348 11.494 3.05053L10.1372 1.69373C9.96421 1.52078 9.87773 1.4343 9.77681 1.37246C9.68734 1.31763 9.5898 1.27722 9.48776 1.25273C9.37267 1.2251 9.25038 1.2251 9.00579 1.2251H5.95103C5.11095 1.2251 4.69091 1.2251 4.37004 1.38859C4.0878 1.5324 3.85833 1.76187 3.71452 2.04411C3.55103 2.36498 3.55103 2.78502 3.55103 3.6251V4.66619"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
+                                    stroke="#a3a3a3"></path>
+                            </svg> </span><span class="kt-chat__title"> Project Release </span>
+                    </h4>
+                    <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                        (click)="closePrjReleaseSideBar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            fill="currentColor">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+    
+            <div class="kt-Attachament__body">
+    
+                <div class="card mt-4">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-lg-12">
+    
+                                    <div class="spacer--body tab-pane fade active show" id="kt_tab_pane_3" role="tabpanel">
+    
+                                        <div class="">
+                                            <ul id="release-tabs" role="tablist"
+                                                class="nav nav-pills px-3 release-tabs mb-0 pt-2">
+                                                <li class="nav-item">
+                                                    <a id="now-1" data-toggle="tab" href="#p_now" class="nav-link active">
+                                                        <span class="nav-text">Release now</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a id="later-1" data-toggle="tab" href="#p_later" class="nav-link">
+                                                        <span class="nav-text">Edit release date</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="px-4 py-3">
+                                                <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b><br>
+                                                This project is on hold until {{hold_upto}}
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="release-tabbview">
+                                            <div class="tab-pane fade show active " id="p_now" role="tabpanel"
+                                                aria-labelledby="p_now">
+                                                <ul class="kt-nav pt-0">
+    
+                                                    <div class="height-scroll h-scr">
+                                                        <div class="px-4 py-3">
+    
+                                                            <div class="form-group mb-1">
+                                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" rows="2" cols="20"
+                                                                    [(ngModel)]="hold_remarks"
+                                                                    placeholder="Define your exact reason to release the hold project."
+                                                                    style="height:170px;">
+                                                                                </textarea>
+                                                            </div>
+    
+                                                        </div>
+                                                    </div>
+                                                    <li class="kt-nav__separator"></li>
+                                                </ul>
+    
+    
+                                                <div class="col-lg-12 mt-3 p-0">
+                                                    <div class="form-group text-end">
+    
+                                                        <button type="submit"
+                                                            class="btn w-110 btn-secondary Bt-Close ml-2" (click)="closePrjReleaseSideBar()"    >Cancel</button>
+                                                        <button type="submit" [disabled]="!hold_remarks"
+                                                            class="btn w-110 Bt-Submit ml-2"
+                                                            (click)="holdreleaseProject()">Submit</button>
+                                                    </div>
+                                                </div>
+    
+    
+                                            </div>
+                                            <div class="tab-pane fade" id="p_later" role="tabpanel"
+                                                aria-labelledby="p_later">
+                                                <ul class="kt-nav pt-0">
+                                                    <div class="height-scroll h-scr">
+                                                        <div class="px-4 py-3">
+    
+                                                            <div class="form-group input-group">
+                                                                <label>Set new release date:<span
+                                                                        class="text-danger">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input class="form-control" name="date" matInput
+                                                                        [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
+                                                                        (click)="picker7.open();"
+                                                                        (dateChange)="orgValueChange1($event)"
+                                                                        [value]="dateR.value" [min]="minhold"
+                                                                        [max]="maxhold" placeholder="Select Date" />
+                                                                    <div class="input-group-append">
+                                                                        <mat-datepicker-toggle matSuffix [for]="picker7"
+                                                                            class="btn-secondary">
+                                                                        </mat-datepicker-toggle>
+                                                                        <mat-datepicker class="form-group"
+                                                                            #picker7></mat-datepicker>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-1">
+                                                                <label>Remarks<span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" rows="2" cols="20"
+                                                                    [(ngModel)]="hold_remarks"
+                                                                    placeholder="Define your exact reason to edit release date."
+                                                                    style="height:100px;">
+                                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <li class="kt-nav__separator"></li>
+                                                </ul>
+    
+                                                <div class="col-lg-12 mt-3 p-0">
+                                                    <div class="form-group text-end">
+    
+                                                        <button type="submit"
+                                                            class="btn w-110 btn-secondary Bt-Close ml-2">Cancel</button>
+                                                        <button type="submit" [disabled]="!hold_remarks"
+                                                            class="btn w-110 Bt-Submit ml-2"
+                                                            (click)="updateReleaseDate()">Submit</button>
+    
+                                                    </div>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+    
+    
+                                    </div>
+    
+                            
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project release sidebar Area end-->
+
+
+
+
+     <!-- Project cancel start-->
+    <div id="prj-cancel-sidebar" class="sideInfobar animate-right bg-slide-br">
+        <div class="kt-portlet">
+
+            <div class="kt-portlet__head">
+                <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                    <h4 class="m-0"><span class="svg-icv-hd">
+                            <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                viewBox="0 0 15 15" fill="none">
+                                <path _ngcontent-vqh-c391=""
+                                    d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M11.9626 6.96026V4.1819C11.9626 3.93731 11.9626 3.81502 11.935 3.69993C11.9105 3.59789 11.8701 3.50035 11.8152 3.41088C11.7534 3.30996 11.6669 3.22348 11.494 3.05053L10.1372 1.69373C9.96421 1.52078 9.87773 1.4343 9.77681 1.37246C9.68734 1.31763 9.5898 1.27722 9.48776 1.25273C9.37267 1.2251 9.25038 1.2251 9.00579 1.2251H5.95103C5.11095 1.2251 4.69091 1.2251 4.37004 1.38859C4.0878 1.5324 3.85833 1.76187 3.71452 2.04411C3.55103 2.36498 3.55103 2.78502 3.55103 3.6251V4.66619"
+                                    stroke="#a3a3a3"></path>
+                                <path _ngcontent-vqh-c391=""
+                                    d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
+                                    stroke="#a3a3a3"></path>
+                            </svg> </span><span class="kt-chat__title"> Project Cancellation </span>
+                    </h4>
+                    <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closePrjCancelSb()"  >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            fill="currentColor">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="spacer--body" *ngIf="editcancel==true"> -->
+            <div class="spacer--body">
+                <div class="">
+                    <ul class="kt-nav pb-0">
+                       
+                        <div class="height-scroll h-scr">
+                            <div class="px-4 py-3">
+                                <div class="form-group mb-1 d-flex">
+                                    <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b>
+                                </div>
+                                <div class="form-group mb-1">
+                                    <label>Remarks<span class="text-danger">*</span></label>
+                                    <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20"
+                                        placeholder="Define your exact reason to cancel the project."
+                                        style="height:150px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <li class="kt-nav__separator"></li>
+                    </ul>
+                    <div class="px-4 pb-3">
+                        <button class="btn btn-info btn-sm mr-2 text-white" [disabled]="!hold_remarks"
+                            (click)="updateProjectCancel()">
+                            Submit
+                        </button>
+                        <button class="btn btn-outline-info btn-sm text-dark-75" (click)="closePrjCancelSb()"   >Close</button>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    <!-- Project cancel end -->

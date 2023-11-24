@@ -326,6 +326,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
@@ -2221,9 +2222,7 @@ onProject_Hold(id, Pcode) {
       this._Message = data['message'];
       if (this._Message == 'Project Hold Updated') {
         this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
-        // this.getReasonforholdandRejected();
-        // this.getRejectType();
-        this.closeTab();
+        this.closePrjHoldSideBar();
         this.getProjectDetails(Pcode);
         this.getholdate();
       }
@@ -2259,40 +2258,24 @@ holdreleaseProject(){
     this.approvalObj.Request_type = 'Project Release';
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Remarks = this.hold_remarks;
-
     this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-      this.closeTab();
+      this.closePrjReleaseSideBar();
       this._Message = (data['message']);
       if (this._Message == '1') {
         this.notifyService.showSuccess("Project released by "+this._fullname, "Success");
         this.getProjectDetails(this.URL_ProjectCode);
-        // this.getRejectType();
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release failed", "Failed");
-      }
-     
+      } 
     });
-  // this.Clear_Feilds();
   console.log(this.approvalObj,"cancel")
-}
-else{
-  this.closeTab();
+  }
+ else{
+  this.closePrjReleaseSideBar();
   this.notifyService.showError("Access denied","Failed")
+  }
 }
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 updateReleaseDate() {
   if (this.release_date == null || this.release_date == 'Invalid date') {
@@ -2307,15 +2290,13 @@ updateReleaseDate() {
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Remarks = this.hold_remarks;
     this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
-  
-      this.closeTab();
       this._Message = (data['message']);
       if (this._Message == '1') {
         this.notifyService.showSuccess("Project release date updated", "Success");
         this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
         this.getProjectDetails(this.projectInfo.Project_Code);
         this.getholdate();
-        // this.getRejectType();
+        this.closePrjReleaseSideBar();
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release date not updated", "Failed");
@@ -2325,12 +2306,128 @@ updateReleaseDate() {
 
 }
 
+ 
+
+openPrjHoldSideBar(){
+  document.getElementById("prj-hold-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+closePrjHoldSideBar(){
+  this.hold_remarks='';
+  this.Holddate=null;
+  document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "none";  
+}
 
 
 
+openPrjReleaseSideBar(){
+  document.getElementById("prj-release-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
 
+closePrjReleaseSideBar(){
+  document.getElementById("prj-release-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";  
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}
 
 // project hold section and release section end
+
+
+
+// project cancel section  start
+
+openPrjCancelSb(){
+  document.getElementById("prj-cancel-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+
+closePrjCancelSb(){
+  document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}
+
+
+
+updateProjectCancel(){
+
+  Swal.fire({
+    title: 'Project Cancel',
+    html: 'Are you sure to cancel the project "<strong>' + this.projectInfo.Project_Name +'</strong>"?<br>Note: The cancelled project will be deactivated.',
+    // icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+      if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = 'Project Cancel';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          this.closePrjCancelSb();
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.getapproval_actiondetails();
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project cancel failed", "Failed");
+          }
+        });
+      // this.Clear_Feilds();
+      console.log(this.approvalObj,"cancel")
+    }
+    else if(this.Current_user_ID==this.projectInfo.OwnerEmpNo || this.isHierarchy==true){
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = 'Project Cancel';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        this.closePrjCancelSb();
+          this._Message = (data['message']);
+          if (this._Message == '1') { 
+            this.notifyService.showSuccess("Project cancelled by "+this._fullname, "Success");
+            this.getProjectDetails(this.URL_ProjectCode);
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project cancel failed", "Failed");
+          }
+        });
+      // this.Clear_Feilds();
+      console.log(this.approvalObj,"cancel")
+    }
+    else{
+      this.closePrjCancelSb();
+      this.notifyService.showError("Access denied","Failed")
+    }
+      
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Project not canceled',
+        'error'
+      )
+      this.closePrjCancelSb();
+    }
+  });
+
+  
+}
+
+// project cancel section end
+
+
 
 
 
