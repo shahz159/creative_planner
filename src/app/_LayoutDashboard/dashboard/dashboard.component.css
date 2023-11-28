@@ -1485,6 +1485,11 @@ height: auto !important;
     transform: translateY(48px);
     border-top: none;
 }
+.secfootr1.opend {
+    -webkit-transform: translateY(48px);
+    transform: translateY(48px);
+    border-top: none;
+}
 .secfootr .ftbtns{
     display: block;
 }

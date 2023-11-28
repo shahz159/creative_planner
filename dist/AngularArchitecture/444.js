@@ -860,8 +860,8 @@ class ProjectUnplannedTaskComponent {
         this._ObjCompletedProj.CategoryId = this._Categoryid;
         this._ObjCompletedProj.Mode = 'Todo';
         this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe((data) => {
-            // console.log("Data---->", data);
             this.CategoryList = JSON.parse(data[0]['CategoryList']);
+            console.log("Data---->", this.CategoryList);
             this._TodoList = JSON.parse(data[0]['JsonData_Json']);
             this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
             this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
@@ -912,7 +912,6 @@ class ProjectUnplannedTaskComponent {
             this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
             this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
             if (this.ActionedSubtask_Json.length > 0 || this.ActionedAssigned_Josn.length > 0 || this._TodoList.length > 0) {
-                document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
                 //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
                 this._CategoryActive = true;
                 this.IfNoTaskFound = "";
@@ -927,6 +926,7 @@ class ProjectUnplannedTaskComponent {
                 this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
                 this._ObjCompletedProj.CategoryId = this._Categoryid;
                 this._ObjCompletedProj.Mode = 'Todo';
+                // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
             }
             this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
             let _Accepted = 0;
@@ -1146,7 +1146,7 @@ class ProjectUnplannedTaskComponent {
             // alert(this.CountsAccepted);
             // console.log(this.CountsAccepted);
         });
-        document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+        // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     }
     GetProjectTypeList(taskName, id) {
         // debugger
@@ -1661,6 +1661,7 @@ class BsServiceService {
     constructor() {
         this._Pcode = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._PName = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
+        this._Scode = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._catId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._catName = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._AssignId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
@@ -1672,6 +1673,7 @@ class BsServiceService {
         this._portId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this.bs_projectCode = this._Pcode.asObservable();
         this.bs_ProjectName = this._PName.asObservable();
+        this.bs_standardid = this._Scode.asObservable();
         this.bs_AssignId = this._AssignId.asObservable();
         this.bs_TaskName = this._TaskName.asObservable();
         this.bs_catId = this._catId.asObservable();
@@ -1687,6 +1689,9 @@ class BsServiceService {
     }
     SetNewPojectName(ProjName) {
         this._PName.next(ProjName);
+    }
+    SetNewStandardId(standarid) {
+        this._Scode.next(standarid);
     }
     SetNewAssignId(assignId) {
         this._AssignId.next(assignId);

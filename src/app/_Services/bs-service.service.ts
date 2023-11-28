@@ -12,7 +12,9 @@ export class BsServiceService {
 
   private _Pcode = new BehaviorSubject<any>(null);
   private _PName = new BehaviorSubject<any>(null);
-  
+
+  private _Scode = new BehaviorSubject<any>(null);
+
   private _catId = new BehaviorSubject<any>(null);
   private _catName = new BehaviorSubject<any>(null);
 
@@ -31,6 +33,8 @@ export class BsServiceService {
   
   bs_projectCode = this._Pcode.asObservable();
   bs_ProjectName = this._PName.asObservable();
+
+  bs_standardid = this._Scode.asObservable();
 
   bs_AssignId = this._AssignId.asObservable();
   bs_TaskName = this._TaskName.asObservable();
@@ -52,9 +56,12 @@ export class BsServiceService {
     this._Pcode.next(NewPCode);
   }
 
-
   SetNewPojectName(ProjName) {
     this._PName.next(ProjName);
+  }
+
+  SetNewStandardId(standarid) {
+    this._Scode.next(standarid);
   }
 
   SetNewAssignId(assignId) {

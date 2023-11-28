@@ -99,7 +99,6 @@ class LinkService {
         this.ObjAttachmentsDTO.ProjectType = ProjBlock;
         return this.http.post(this.rootUrl + "Notification/NewGetAttachmentsFiles", this.ObjAttachmentsDTO);
     }
-    /////////////////// by 69 Start /////////////////////
     GetAttachements(EmpNo, ProjCode, sorttype) {
         this.ObjAttachmentsDTO.EmpNo = EmpNo;
         this.ObjAttachmentsDTO.ProjectCode = ProjCode;

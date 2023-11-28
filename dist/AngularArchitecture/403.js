@@ -217,6 +217,7 @@ class BsServiceService {
     constructor() {
         this._Pcode = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._PName = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
+        this._Scode = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._catId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._catName = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this._AssignId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
@@ -228,6 +229,7 @@ class BsServiceService {
         this._portId = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(null);
         this.bs_projectCode = this._Pcode.asObservable();
         this.bs_ProjectName = this._PName.asObservable();
+        this.bs_standardid = this._Scode.asObservable();
         this.bs_AssignId = this._AssignId.asObservable();
         this.bs_TaskName = this._TaskName.asObservable();
         this.bs_catId = this._catId.asObservable();
@@ -243,6 +245,9 @@ class BsServiceService {
     }
     SetNewPojectName(ProjName) {
         this._PName.next(ProjName);
+    }
+    SetNewStandardId(standarid) {
+        this._Scode.next(standarid);
     }
     SetNewAssignId(assignId) {
         this._AssignId.next(assignId);

@@ -23,10 +23,10 @@
                         <i class="fa fa-info-circle info-icon-cir"
                             (click)="Open_project_info()"></i>
                          </a> -->
-                        <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="Project Info!">
                                 <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
-                         </a> -->
+                         </a>
                         <!-- <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -689,16 +689,20 @@
                                                     <!-- Information Icon -->
                                                     <!-- <td></td> -->
                                                     <td align="center">
-                                                        <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
+                                                        <a tabindex="0" class="btn px-0 mr-2 curser-pointer" role="button" placement="right"
                                                             data-trigger="focus" data-toggle="tooltip" title="Project Info!">
                                                             <i class="fa fa-info-circle info-icon-cir"
                                                                 (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
                                                        
-                                                        <a tabindex="0" class="btn px-0 mr-2"  role="button" placement="right"
+                                                        <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a>
+                                                        <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
+                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!">
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="newDetails(item.Project_Code)"></i>
+                                                        </a> -->
                                                     </td>
                                                     <td>
                                                         <div *ngIf="item.Link_Status==1;else not_Linked">
