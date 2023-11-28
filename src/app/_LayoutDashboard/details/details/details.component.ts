@@ -97,7 +97,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   comments_list: any;
   new_cost: any;
   ObjSubTaskDTO: SubTaskDTO;
-
+  Activity_List:any
+  Project_List:any;
 
 
   
@@ -108,11 +109,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
+    private route: ActivatedRoute,
      private router: Router,private activatedRoute: ActivatedRoute,
      private bsService:BsServiceService,public _LinkService: LinkService,
      private dialog: MatDialog,
      public approvalservice: ApprovalsService,
      public service: ProjectTypeService,
+     public _projectSummary: ProjectsSummaryComponent,
      private notifyService: NotificationService,
      public datepipe: DatePipe,
     ) {
@@ -125,6 +128,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   
   
   ngOnInit(): void {
+
+
+    this.route.paramMap.subscribe(params => {
+      var pcode = params.get('projectcode');
+      this.URL_ProjectCode = pcode;
+      this._MasterCode = pcode;
+    });
     this.Current_user_ID=localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
@@ -137,6 +147,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.showActionDetails(undefined);     // initially show the Project details
     this.getapproval_actiondetails();      // get main project approval state.
     this.getholdate();                     // get project hold date.
+   
+  
+    $(document).on('change', '.custom-file-input', function (event) {
+      $(this).next('.custom-file-label').html(event.target.files[0].name);
+    });
 
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);     
@@ -253,15 +268,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
       this.calculateProjectActions();    // calculate project actions details.
-      console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+     // console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
   }
 
 
-
-  Project_List:any;
 
   GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
@@ -273,14 +286,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   }
 
 
-  Activity_List:any
+
 
    GetActivityDetails(){
       this.service.NewActivityService(this.URL_ProjectCode).subscribe(
         (data)=>{
         if(data !==null && data !==undefined){
            this.Activity_List=JSON.parse(data[0]['ActivityList']) 
-            console.log(this.Activity_List,"testing Api")
+           // console.log(this.Activity_List,"testing Api")
         }     
       })
    }
@@ -375,6 +388,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.router.navigate(["./Details",this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
     this.closeLinkSideBar();
+    
   }
 
 
@@ -970,51 +984,19 @@ EmpNo_Autho: string;
 ProjectNameJson: any;
 projectCode: string;
 
-LoadProjectDetails() {
-  this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
-    (data) => {
-      if (data != null && data != undefined){
-        this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
-        this.EmpNo_Res = this.ProjectNameJson[0]['Responsible'];
-      }    
-    })
-}
+// LoadProjectDetails() {
+//   this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
+//     (data) => {
+//       if (data != null && data != undefined){
+//         this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
+//         this.EmpNo_Res = this.ProjectNameJson[0]['Responsible'];
+//         this.ProjectName = this.ProjectNameJson[0]['Project_Name'];
+//       }    
+//     })
+// }
+
 _day: any;
 _month: any;
-openPDF_Standard(cloud, repDate: Date, proofDoc) {
-  repDate = new Date(repDate);
-  let FileUrl: string;
-  FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-
-  let Day = repDate.getDate();
-  let Month = repDate.getMonth() + 1;
-  let Year = repDate.getFullYear();
-  if (Month < 10) {
-    this._month = '0' + Month;
-  }
-  else {
-    this._month = Month;
-  }
-  if (Day < 10) {
-    this._day = '0' + Day;
-  }
-  else {
-    this._day = Day;
-  }
-  var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
-
-  if (cloud == false) {
-    if (this.EmpNo_Autho == this.EmpNo_Res) {
-      window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + date + "/" + proofDoc);
-    }
-    else if (this.EmpNo_Autho != this.EmpNo_Res) {
-      window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + date + "/" + proofDoc);
-    }
-  }
-  else if (cloud == true) {
-    window.open(proofDoc);
-  }
-} 
 
 openPDF(cloud, docName) {
   let FileUrl: string;
@@ -1096,6 +1078,7 @@ onFileChangeUST(e) {
 onFileChange(e) {
   this._inputAttachments=e.target.files[0].name;
   this.selectedFile = <File>e.target.files[0];
+ 
 }
 
 
@@ -1221,6 +1204,8 @@ actionCompleted(){
                 fd.append("Remarks", this._remarks);
                 fd.append('file', this.selectedFile);
                 fd.append("Project_Name", this._Subtaskname);
+console.log(this.selectedFile,"action file")
+
                 this.service._UpdateSubtaskByProjectCode(fd) 
                 .subscribe(data => {
                   this._remarks = "";
@@ -1245,7 +1230,6 @@ actionCompleted(){
     fd.append("Remarks", this._remarks);
     fd.append('file', this.selectedFile);
     fd.append("Project_Name", this._Subtaskname);
-
     this.service._UpdateSubtaskByProjectCode(fd)
         .subscribe(data => {
 
@@ -1344,6 +1328,7 @@ getResponsibleActions() {
     (data) => {
       this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
       console.log('darArr:',this.darArr);
+     
       if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
         this.showaction=false;
       
@@ -1847,6 +1832,8 @@ closeInfoProject() {
   this._inputAttachments='';
   this._remarks='';
   this.selectedFile = null;
+  $('#_file1').val('');
+  $('#upload').html('Select a file');
   // this.OnClickCheckboxProjectUpdate();
   // this.Clear_Feilds();
 }
@@ -2329,18 +2316,6 @@ else{
 }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 updateReleaseDate() {
   if (this.release_date == null || this.release_date == 'Invalid date') {
     this.notifyService.showError("Please enter valid date", "Failed");
@@ -2372,14 +2347,121 @@ updateReleaseDate() {
 
 }
 
-
-
-
-
-
 // project hold section and release section end
 
+// Task submission section code start here
+
+Authority: string;
+ProjectBlock: string;
+ProjectName: string;
+
+OnStandardTaskSubmit() {
+  $('#_file1').val('');
+  $('#upload').html('Select a file');
+  document.getElementById("mysideInfobar_ProjectsUpdate").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+ // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+  document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+
+}
+
+changeStandard() {
+  $('#_file1').val('');
+  $('#upload').html('Select a file');
+  this.selectedFile = null;
+  this._remarks = "";
+}
 
 
+achieveStandard() {
+  const fd = new FormData();
+  fd.append("Project_Code", this._MasterCode);
+  fd.append("Team_Autho", this.Authority);
+  fd.append("Remarks", this._remarks);
+  fd.append("Projectblock", this.ProjectBlock);
+  fd.append('file', this.selectedFile);
+  fd.append("Emp_No", this.Current_user_ID);
+  fd.append("Project_Name", this.projectInfo.Project_Name);
+ 
+   console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+   
+  this.service._UpdateStandardTaskSubmission(fd).
+    subscribe((event: HttpEvent<any>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        case HttpEventType.UploadProgress:
+          this.progress = Math.round(event.loaded / event.total * 100);
+          console.log(this.progress, "progress");
+          if (this.progress == 100) {
+            this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+            
+          }
+          break;
+        case HttpEventType.Response:
+          console.log('File upload done!', event.body);
+          var myJSON = JSON.stringify(event);
+            this._Message = (JSON.parse(myJSON).body).Message;
+            this.notifyService.showSuccess(this._Message, 'Success');
+      }
+      // if (event.type == HttpEventType.UploadProgress) {
+      //   this.progress = Math.round(event.loaded / event.total * 100);
+      //   console.log(this.progress, "progress")
+      //   this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+      // }
+      // else if (event.type === HttpEventType.Response) {
+      //   alert(1)
+      //   var myJSON = JSON.stringify(event);
+      //   this._Message = (JSON.parse(myJSON).body).Message;
+      //   this.notifyService.showSuccess(this._Message, 'Success');
+      // }
+      this.closeInfo();
+      
+      
+      //59 this.GetSubtask_Details();
+      //59 this.GetProjectDetails();
 
+
+      this.getapprovalStats();
+      this._projectSummary.GetProjectsByUserName('RACIS Projects');
+    });
+}
+
+notachieveStandard() {
+  this.selectedFile = null;
+  const fd = new FormData();
+  fd.append("Project_Code", this._MasterCode);
+  fd.append("Team_Autho", this.Authority);
+  fd.append("Remarks", this._remarks);
+  fd.append("Projectblock", this.ProjectBlock);
+  fd.append('file', this.selectedFile);
+  fd.append("Emp_No", this.Current_user_ID);
+  fd.append("Project_Name", this.ProjectName);
+  // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+  this.service._UpdateStandardTaskSubmission(fd).
+    subscribe(event => {
+      if (event.type == HttpEventType.UploadProgress) {
+        this.progress = Math.round(event.loaded / event.total * 100);
+        this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+      }
+      else if (event.type === HttpEventType.Response) {
+        var myJSON = JSON.stringify(event);
+        this._Message = (JSON.parse(myJSON).body).Message;
+        this.notifyService.showSuccess(this._Message, 'Success');
+      }
+      this.closeInfo();
+    //59  this.GetSubtask_Details();
+    //59  this.GetProjectDetails();
+      this.getapprovalStats();
+      this._projectSummary.GetProjectsByUserName('RACIS Projects');
+    });
+}
+
+//  $('#_file1').val('');
+// Task submission section code End here
 }

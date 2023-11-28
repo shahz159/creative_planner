@@ -1086,7 +1086,7 @@
                                             stroke-linejoin="round" />
                                     </svg>
                                 </a> -->
-                               
+
                                 <a class="kt-inbox__icon" (click)="View_timeline()">
 
                                     <svg width="17" height="17" tittle="timeline" viewBox="0 0 24 24" version="1.1"
@@ -1192,13 +1192,17 @@
                             <div class="kt-project-info-body">
                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                     <b>Project</b>
-                                   <div class="Action_btn_all">
-                                            <button  class="Ct-btn Bt-cancel ml-2">Project Cancel</button>
-                                            <button  class="Ct-btn Bt-hold ml-2">Project Hold</button>
-                                            <button class="Ct-btn Bt-Submit ml-2">Task Submission</button>
-                                            <button  class="Ct-btn Bt-Submit ml-2">Project Submission</button>
-                                            <button (click)="darcreate()" class="Ct-btn ml-2">Add Timeline</button>
-                                   </div>
+                                    <div class="Action_btn_all">
+                                        <button class="Ct-btn Bt-cancel ml-2">Project Cancel</button>
+                                        <button class="Ct-btn Bt-hold ml-2">Project Hold</button>
+                                        <ng-container *ngIf="projectInfo.Project_Type == 'Standard Tasks'">
+                                            <button class="Ct-btn Bt-Submit ml-2" (click)="OnStandardTaskSubmit()">
+                                                Task Submission
+                                            </button>
+                                        </ng-container>
+                                        <button class="Ct-btn Bt-Submit ml-2">Project Submission</button>
+                                        <button (click)="darcreate()" class="Ct-btn ml-2">Add Timeline</button>
+                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-between">
@@ -1207,7 +1211,7 @@
                                         <ng-container *ngIf="projectInfo">
                                             <input id="mainPrjCheckbox"
                                                 *ngIf="(projectInfo.Status == 'InProcess' || projectInfo.Status == 'Delay' ||projectInfo.Status=='Project Complete Rejected') && (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks') 
-                            && (Current_user_ID=='2000' || Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo.AuthorityEmpNo || isHierarchy==true)"
+                                                  && (Current_user_ID=='2000' || Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo.AuthorityEmpNo || isHierarchy==true)"
                                                 title="Mark it as Completed" type="checkbox"
                                                 style="transform:scale(1.5); accent-color:green; font-weight: bolder; cursor:pointer;"
                                                 (click)="OnClickCheckboxProjectUpdate()" />
@@ -1324,62 +1328,7 @@
                                                             (click)="approvalClick('REJECT')">Reject</button>
                                                     </div>
                                                     <!---------- Reject Type html---------------->
-                                                    <!-- <div class="col-lg-12 mt-3" [hidden]="!isTextAreaVisible">
-                                                    <div *ngIf="isRejectOptionsVisible">
-                                                        Reject Type*
-                                                        <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
-                                                            id="rej_type" [(ngModel)]="rejectType" (change)="rejectApproval()">
-                                                            <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
-                                                                {{item.RejectType}}
-                                                            </ng-option>
-                                                        </ng-select>
-                                                    </div>
-     
-                                                    <div class="col-lg-12 mt-3 mb-2" *ngIf="isRejectOptionsVisible">
-                                                        <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                                            <div class="exs-cmts card">
-                                                                <div class="card-header" *ngIf="rejectlength>0">
-                                                                    <h6 class="mb-0">Existing Comments</h6>
-                                                                </div>
-                                                                <div class="crd-bdy scroll-y">
-                                                                    <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
-                                                                        <h6
-                                                                            [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
-                                                                            {{item.Req_Coments}}</h6>
-                                                                        <div class="cmts-actns">
-                                                                            <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
-                                                                                (click)="clickonselect(item.Req_Coments)">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
-                                                                                    </path>
-                                                                                </svg>
-                                                                            </span>
-                                                                            <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
-                                                                                (click)="clickondeselect(item.Req_Coments,i)">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
-                                                                                    </path>
-                                                                                </svg>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <ng-container *ngIf="rejectType">
-                                                        Enter Comments*
-                                                        <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
-                                                        [(ngModel)]="comments"></textarea>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!isRejectOptionsVisible">
-                                                        Enter Comments*
-                                                        <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
-                                                        [(ngModel)]="comments"></textarea>
-                                                    </ng-container>
-                                                </div> -->
+                                                    
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
@@ -2577,10 +2526,19 @@
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs nav-tabs-line justify-content-start tav-vdc">
                                 <li class="nav-item">
-                                    <a class="nav-link c-cancel" data-toggle="tab" href="#kt_tab_pane_1" id="hold-Prj-cancel-btn"> <button type="submit" class="btn Bt-cancel ml-2"(click)="closeTab()">Project Cancel</button></a>
+                                    <a class="nav-link c-cancel" data-toggle="tab" href="#kt_tab_pane_1"
+                                        id="hold-Prj-cancel-btn"> <button type="submit" class="btn Bt-cancel ml-2"
+                                            (click)="closeTab()">Project Cancel</button></a>
                                 </li>
-                                <li class="nav-item" *ngIf="projectInfo"><a *ngIf="projectInfo.Status!=='Project Hold';else PrjRelBtn"class="nav-link c-hold" data-toggle="tab" href="#kt_tab_pane_2" id="hold-Prj-tab-btn"> <button type="submit" class="btn Bt-hold ml-2" (click)="closeTab()">Project Hold</button></a>
-                                <ng-template #PrjRelBtn><a class="nav-link c-hold" data-toggle="tab" href="#kt_tab_pane_3" id="release-Prj-tab-btn"> <button type="submit" class="btn Bt-hold ml-2" (click)="closeTab()">Project Release</button></a></ng-template>
+                                <li class="nav-item" *ngIf="projectInfo"><a
+                                        *ngIf="projectInfo.Status!=='Project Hold';else PrjRelBtn"
+                                        class="nav-link c-hold" data-toggle="tab" href="#kt_tab_pane_2"
+                                        id="hold-Prj-tab-btn"> <button type="submit" class="btn Bt-hold ml-2"
+                                            (click)="closeTab()">Project Hold</button></a>
+                                    <ng-template #PrjRelBtn><a class="nav-link c-hold" data-toggle="tab"
+                                            href="#kt_tab_pane_3" id="release-Prj-tab-btn"> <button type="submit"
+                                                class="btn Bt-hold ml-2" (click)="closeTab()">Project
+                                                Release</button></a></ng-template>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link c-submit" data-toggle="tab" href="#kt_tab_pane_3"> <button
@@ -2624,7 +2582,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              
+
                                 <div class="spacer--body tab-pane fade" id="kt_tab_pane_2" role="tabpanel"
                                     aria-labelledby="kt_tab_pane_2">
                                     <div class="">
@@ -2674,10 +2632,11 @@
                                     </div>
                                 </div>
 
-                                <div class="spacer--body tab-pane fade" id="kt_tab_pane_3" role="tabpanel" >
-                                   
+                                <div class="spacer--body tab-pane fade" id="kt_tab_pane_3" role="tabpanel">
+
                                     <div class="">
-                                        <ul id="release-tabs" role="tablist" class="nav nav-pills px-3 release-tabs mb-0 pt-2">
+                                        <ul id="release-tabs" role="tablist"
+                                            class="nav nav-pills px-3 release-tabs mb-0 pt-2">
                                             <li class="nav-item">
                                                 <a id="now-1" data-toggle="tab" href="#p_now" class="nav-link active">
                                                     <span class="nav-text">Release now</span>
@@ -2696,21 +2655,20 @@
                                             This project is on hold until {{hold_upto}}
                                         </div>
                                     </div>
-                                    <div class="tab-content" id="release-tabbview">           
-                                        <div class="tab-pane fade show active " id="p_now" role="tabpanel" aria-labelledby="p_now">
+                                    <div class="tab-content" id="release-tabbview">
+                                        <div class="tab-pane fade show active " id="p_now" role="tabpanel"
+                                            aria-labelledby="p_now">
                                             <ul class="kt-nav pt-0">
                                                 <!-- <li class="kt-nav__separator"></li> -->
                                                 <div class="height-scroll h-scr">
                                                     <div class="px-4 py-3">
-                                                        
+
                                                         <div class="form-group mb-1">
                                                             <label>Remarks<span class="text-danger">*</span></label>
-                                                            <textarea 
-                                                            class="form-control" 
-                                                            rows="2" cols="20"
-                                                            [(ngModel)]="hold_remarks"
-                                                            placeholder="Define your exact reason to release the hold project." 
-                                                            style="height:170px;">
+                                                            <textarea class="form-control" rows="2" cols="20"
+                                                                [(ngModel)]="hold_remarks"
+                                                                placeholder="Define your exact reason to release the hold project."
+                                                                style="height:170px;">
                                                             </textarea>
                                                         </div>
 
@@ -2718,50 +2676,53 @@
                                                 </div>
                                                 <li class="kt-nav__separator"></li>
                                             </ul>
-                                           
-                                              
+
+
                                             <div class="col-lg-12 mt-3 p-0">
                                                 <div class="form-group text-end">
-    
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="closeTab()">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks" class="btn w-110 Bt-Submit ml-2"  (click)="holdreleaseProject()">Submit</button>
-    
+
+                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                        (click)="closeTab()">Cancel</button>
+                                                    <button type="submit" [disabled]="!hold_remarks"
+                                                        class="btn w-110 Bt-Submit ml-2"
+                                                        (click)="holdreleaseProject()">Submit</button>
+
                                                 </div>
                                             </div>
 
-                            
+
                                         </div>
-                                        <div class="tab-pane fade" id="p_later" role="tabpanel" aria-labelledby="p_later">
+                                        <div class="tab-pane fade" id="p_later" role="tabpanel"
+                                            aria-labelledby="p_later">
                                             <ul class="kt-nav pt-0">
                                                 <div class="height-scroll h-scr">
                                                     <div class="px-4 py-3">
-                                                       
+
                                                         <div class="form-group input-group">
-                                                            <label>Set new release date:<span class="text-danger">*</span></label>
+                                                            <label>Set new release date:<span
+                                                                    class="text-danger">*</span></label>
                                                             <div class="input-group">
-                                                                <input 
-                                                                    class="form-control" name="date"
-                                                                    matInput [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
-                                                                    (click)="picker7.open();" 
+                                                                <input class="form-control" name="date" matInput
+                                                                    [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
+                                                                    (click)="picker7.open();"
                                                                     (dateChange)="orgValueChange1($event)"
                                                                     [value]="dateR.value" [min]="minhold"
-                                                                    [max]="maxhold" 
-                                                                    placeholder="Select Date"
-                                                                    />
+                                                                    [max]="maxhold" placeholder="Select Date" />
                                                                 <div class="input-group-append">
-                                                                    <mat-datepicker-toggle matSuffix [for]="picker7" class="btn-secondary">
+                                                                    <mat-datepicker-toggle matSuffix [for]="picker7"
+                                                                        class="btn-secondary">
                                                                     </mat-datepicker-toggle>
-                                                                    <mat-datepicker class="form-group" #picker7></mat-datepicker>
+                                                                    <mat-datepicker class="form-group"
+                                                                        #picker7></mat-datepicker>
                                                                 </div>
-                                                            </div> 
+                                                            </div>
                                                         </div>
                                                         <div class="form-group mb-1">
                                                             <label>Remarks<span class="text-danger">*</span></label>
-                                                            <textarea 
-                                                            class="form-control" rows="2" cols="20"
-                                                            [(ngModel)]="hold_remarks"
-                                                            placeholder="Define your exact reason to edit release date."
-                                                            style="height:100px;">
+                                                            <textarea class="form-control" rows="2" cols="20"
+                                                                [(ngModel)]="hold_remarks"
+                                                                placeholder="Define your exact reason to edit release date."
+                                                                style="height:100px;">
                                                             </textarea>
                                                         </div>
                                                     </div>
@@ -2771,16 +2732,19 @@
 
                                             <div class="col-lg-12 mt-3 p-0">
                                                 <div class="form-group text-end">
-    
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="closeTab()">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks" class="btn w-110 Bt-Submit ml-2"  (click)="updateReleaseDate()">Submit</button>
-    
+
+                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                        (click)="closeTab()">Cancel</button>
+                                                    <button type="submit" [disabled]="!hold_remarks"
+                                                        class="btn w-110 Bt-Submit ml-2"
+                                                        (click)="updateReleaseDate()">Submit</button>
+
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
-                                       
+
                                     <!-- </div> -->
                                 </div>
 
@@ -3068,7 +3032,7 @@
         <div class="">
             <div class="d-flex-center">
                 <div class="m-auto">
-                    <img src="../../../../assets/images/portfolio.png" width="268" height="256" />
+                    <img src="./assets/images/portfolio.png" width="268" height="256" />
                     <div class="bnk-txt mt-3">
                         <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
                     </div>
@@ -3470,7 +3434,8 @@
                                                         </svg> </span> <span class="tmv-tm">{{item.starttime}} AM</span>
                                                     <span class="mdl-line-h"></span><span
                                                         class="tmv-tm">{{item.endtime}} PM</span> <span
-                                                        class="total-time-kt">{{item.Duration}} Hrs</span></div>
+                                                        class="total-time-kt">{{item.Duration}} Hrs</span>
+                                                </div>
                                                 <div class="date-view-rt">
                                                     <div class="time-line-date">
                                                         <h4>{{item.date|date:'dd-MM-YYYY'}}</h4>
@@ -3538,8 +3503,8 @@
             </div>
 
             <div class="Activity_Log_vh kt-portlet__body kt-portlet__body_scroll">
-                <div class="kt-chat__messages" >
-                    <div class="timeline"  *ngFor="let data of Activity_List">
+                <div class="kt-chat__messages">
+                    <div class="timeline" *ngFor="let data of Activity_List">
 
                         <!-- <div class="timeline-item">
                             <div class="timeline-line w-40px"></div>
@@ -3628,10 +3593,10 @@
                                         {{data.Value}}<br>
 
                                         <span *ngIf="data.oldValue !==''">{{data.oldValue}}</span>
-                                        
-                                        
+
+
                                         <br> {{data.NewValue}}
-                                        </div>
+                                    </div>
                                     <div class="d-flex align-items-center mt-1 fs-6">
                                         <div class="d-flex align-items-center flex-1">
                                             <div class="symbol symbol-circle symbol-22px">
@@ -3789,7 +3754,7 @@
     </div>
 
 
-<!-- Activity Log Working Area End-->
+    <!-- Activity Log Working Area End-->
 
 
     <!--  Files Attachment Working Area Start-->
@@ -4013,179 +3978,181 @@
                 <!--  Older Start-->
                 <ng-container *ngIf="AttachmentList">
                     <ng-container *ngIf="(AttachmentList|filter:filterText).length>0; else box">
-                <div class="attachament-list-view"
-                    *ngFor="let item of AttachmentList  | filter :filterText;let i=index">
-
-                    <div data-toggle="collapse" aria-expanded="true"
-                        class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
-                        [attr.data-target]="'#Div_attachments'+ i">
-
-                        <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
-                        <span class="Kt-replay-count">{{item.TotalFiles}}</span>
-                    </div>
-
-                    <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
-                        <div class="kt-notification__item no-after position-relative ng-star-inserted"
-                            *ngFor="let file of item.JsonData | filter :filterText;let i=index">
-
-                            <!-- <div data-toggle="modal"  class="kt-notification__item-icon" >
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
-                                class="asseticn prim-icn memo_attachment_img ng-star-inserted">
-                                <path
-                                    d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
-                                </path>
-                            </svg>                 
-                        </div> -->
-
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf="file.contenttype=='pdf' || file.contenttype=='application/pdf'">
-                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
-                                    class="asseticn corol-icn memo_attachment_img ng-star-inserted">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
-                                    </path>
-                                </svg>
+                        <div class="attachament-list-view"
+                            *ngFor="let item of AttachmentList  | filter :filterText;let i=index">
+                            <div data-toggle="collapse" aria-expanded="true"
+                                class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
+                                [attr.data-target]="'#Div_attachments'+ i">
+                                <span class="kt-text-wrap "><i
+                                        class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
+                                <span class="Kt-replay-count">{{item.TotalFiles}}</span>
                             </div>
+                            <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
+                                <div class="kt-notification__item no-after position-relative ng-star-inserted"
+                                    *ngFor="let file of item.JsonData | filter :filterText;let i=index">
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf="file.contenttype=='pdf' || file.contenttype=='application/pdf'">
+                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
+                                            class="asseticn corol-icn memo_attachment_img ng-star-inserted">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf="file.contenttype=='png' || file.contenttype=='jpg'">
-                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn prim-icn">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
-                                    </path>
-                                </svg>
-                            </div>
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf="file.contenttype=='png' || file.contenttype=='jpg'">
+                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
+                                            class="asseticn prim-icn">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf="file.contenttype=='txt' ||file.contenttype=='html' || file.contenttype=='doc' || file.contenttype=='docx' || file.contenttype=='json' || file.contenttype=='xml'">
-                                <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z">
-                                    </path>
-                                </svg>
-                            </div>
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf="file.contenttype=='txt' ||file.contenttype=='html' || file.contenttype=='doc' || file.contenttype=='docx' || file.contenttype=='json' || file.contenttype=='xml'">
+                                        <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf="file.contenttype=='ppt' || file.contenttype=='pptx'">
-                                <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z">
-                                    </path>
-                                </svg>
-                            </div>
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf="file.contenttype=='ppt' || file.contenttype=='pptx'">
+                                        <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf="file.contenttype=='xlsx' || file.contenttype=='xls'">
-                                <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z">
-                                    </path>
-                                </svg>
-                            </div>
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf="file.contenttype=='xlsx' || file.contenttype=='xls'">
+                                        <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <div data-toggle="modal" class="kt-notification__item-icon"
-                                *ngIf=" file.contenttype!='application/pdf' && file.contenttype!='xlsx' && file.contenttype!='xls' && file.contenttype!='ppt' && file.contenttype!='pptx' && file.contenttype!='txt' && file.contenttype!='html' && file.contenttype!='doc' && file.contenttype!='docx' && file.contenttype!='png' && file.contenttype!='jpg' && file.contenttype!='pdf'">
-                                <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z">
-                                    </path>
-                                </svg>
-                            </div>
+                                    <div data-toggle="modal" class="kt-notification__item-icon"
+                                        *ngIf=" file.contenttype!='application/pdf' && file.contenttype!='xlsx' && file.contenttype!='xls' && file.contenttype!='ppt' && file.contenttype!='pptx' && file.contenttype!='txt' && file.contenttype!='html' && file.contenttype!='doc' && file.contenttype!='docx' && file.contenttype!='png' && file.contenttype!='jpg' && file.contenttype!='pdf'">
+                                        <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
+                                            <path
+                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                            <ng-container *ngIf="projectInfo.Project_Block=='003'">
-                                <div data-toggle="modal" class="kt-notification__item-details"
-                                    (click)="openPDF_Standards(file.StandardId,file.Submitted_By_EmpNo,file.IsCloud,file.date,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
-                                    <div class="d-flex-center">
-                                        <div class="kt-notification__item-title fw-bold">
-                                            <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
-                                            {{file.CompleteProofDoc}}
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <div data-toggle="tooltip" data-placement="top" title=""
-                                                class="symbol symbol-circle symbol-22px">
-                                                <img class="rounded-circle ng-star-inserted"
-                                                    src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                    <ng-container *ngIf="projectInfo.Project_Block=='003'">
+                                        <div data-toggle="modal" class="kt-notification__item-details"
+                                            (click)="openPDF_Standards(file.StandardId,file.Submitted_By_EmpNo,file.IsCloud,file.date,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
+                                            <div class="d-flex-center">
+                                                <div class="kt-notification__item-title fw-bold">
+                                                    <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                                    {{file.CompleteProofDoc}}
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div data-toggle="tooltip" data-placement="top" title=""
+                                                        class="symbol symbol-circle symbol-22px">
+                                                        <img class="rounded-circle ng-star-inserted"
+                                                            src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                                    </div>
+                                                    <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
+                                                </div>
                                             </div>
-                                            <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex-center mt-1">
-                                        <div class="text-muted fs-7 d-flex">
-                                            <span class="mr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                    fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
-                                                    <path
-                                                        d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
-                                                    </path>
-                                                    <path
-                                                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                            {{file.Remarks}}
-                                        </div>
-                                        <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="projectInfo.Project_Block!='003'">
-                                <div data-toggle="modal" class="kt-notification__item-details"
-                                    (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
-                                    <div class="d-flex-center">
-                                        <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}"
-                                            *ngIf="file.Sourcefile.length>44">
-                                            <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
-                                            {{file.Sourcefile}}
-                                        </div>
-                                        <div class="kt-notification__item-title fw-bold"
-                                            *ngIf="file.Sourcefile.length<45">
-                                            <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
-                                            {{file.Sourcefile}}
-                                        </div>
-
-
-                                        <div class="d-flex align-items-center">
-                                            <div data-toggle="tooltip" data-placement="top" title=""
-                                                class="symbol symbol-circle symbol-22px">
-                                                <img class="rounded-circle ng-star-inserted"
-                                                    src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                            <div class="d-flex-center mt-1">
+                                                <div class="text-muted fs-7 d-flex">
+                                                    <span class="mr-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                            fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
+                                                            <path
+                                                                d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
+                                                            </path>
+                                                            <path
+                                                                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                    {{file.Remarks}}
+                                                </div>
+                                                <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
                                             </div>
-                                            <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex-center mt-1">
-                                        <div class="text-muted fs-7 d-flex">
-                                            <span class="mr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                    fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
-                                                    <path
-                                                        d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
-                                                    </path>
-                                                    <path
-                                                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                            {{file.Remarks}}
+                                    </ng-container>
+                                    <ng-container *ngIf="projectInfo.Project_Block!='003'">
+                                        <div data-toggle="modal" class="kt-notification__item-details"
+                                            (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
+                                            <div class="d-flex-center">
+                                                <div class="kt-notification__item-title fw-bold"
+                                                    title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44">
+                                                    <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                                    {{file.Sourcefile}}
+                                                </div>
+                                                <div class="kt-notification__item-title fw-bold"
+                                                    *ngIf="file.Sourcefile.length<45">
+                                                    <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
+                                                    {{file.Sourcefile}}
+                                                </div>
+
+
+                                                <div class="d-flex align-items-center">
+                                                    <div data-toggle="tooltip" data-placement="top" title=""
+                                                        class="symbol symbol-circle symbol-22px">
+                                                        <img class="rounded-circle ng-star-inserted"
+                                                            src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
+                                                    </div>
+                                                    <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex-center mt-1">
+                                                <div class="text-muted fs-7 d-flex">
+                                                    <span class="mr-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                            fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
+                                                            <path
+                                                                d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z">
+                                                            </path>
+                                                            <path
+                                                                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                    {{file.Remarks}}
+                                                </div>
+                                                <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
+                                            </div>
                                         </div>
-                                        <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}</div>
-                                    </div>
+                                    </ng-container>
                                 </div>
-                            </ng-container>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                </ng-container>
+                    </ng-container>
                 </ng-container>
 
                 <ng-container *ngIf="_TotalDocs===0">
                     <div class="text-center">
-                        <img src="../../../../assets/images/No Attachment.png" width="268" height="256">
+                        <img src="./assets/images/No Attachment.png" width="268" height="256">
                         <div class="bnk-txt mt-3">
-                            <h3 class="blank-txt">No Attachment Found</h3>
+                            <h3 class="blank-txt pfl-img">No Attachment Found</h3>
                         </div>
                     </div>
                 </ng-container>
+
+                <ng-template #box>
+                    <div class="text-center">
+                        <img src="./assets/images/No Attachment.png" width="268" height="256">
+                        <div class="bnk-txt mt-3">
+                            <h3 class="blank-txt pfl-img">No Results Found</h3>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>
@@ -4201,91 +4168,141 @@
         <div class="kt-portlet" id="Team_view_pr">
             <div class="kt-portlet__head">
                 <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
-                        <div class="Kt-pp-list">
-                            <div class="card-header card-header-tabs-line pb-0 pl-0">
-                                <div class="card-toolbar">
-                                    <ul class="nav nav-tabs nav-bold nav-tabs-line">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
-                                                <span class="svg-icv-hd">
-                                                    <svg  xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none"><path  d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                                    </span>
+                    <div class="Kt-pp-list">
+                        <div class="card-header card-header-tabs-line pb-0 pl-0">
+                            <div class="card-toolbar">
+                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                            <span class="svg-icv-hd">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
+                                                    viewBox="0 0 15 14" fill="none">
+                                                    <path
+                                                        d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z"
+                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                    <path
+                                                        d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z"
+                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                    <path
+                                                        d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464"
+                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                    <path
+                                                        d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
+                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                </svg>
+                                            </span>
                                             <span class="nav-text">People on the project</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
-                                                <span class="svg-icv-hd">
-                                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#a3a3a3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>  </span>
-                                                    <span class="nav-text">Add support team</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                            <span class="svg-icv-hd">
+                                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" stroke="#a3a3a3">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                        stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3"
+                                                            stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <path
+                                                            d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
+                                                            stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <path
+                                                            d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
+                                                            stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                    </g>
+                                                </svg> </span>
+                                            <span class="nav-text">Add support team</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="rt-btn">
-                            <!-- <button class="Ct-btn head-btn-right" (click)="add_support_team()">Add support team</button> -->
-                            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                                (click)="closedarBar()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                    fill="currentColor">
-                                    <path fill="none" d="M0 0h24v24H0z"></path>
-                                    <path
-                                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
+                    <div class="rt-btn">
+                        <!-- <button class="Ct-btn head-btn-right" (click)="add_support_team()">Add support team</button> -->
+                        <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                            (click)="closedarBar()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                fill="currentColor">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path
+                                    d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="kt-Attachament__body">
-                    <div class="position-relative w-100 mb-2">
-                        <input type="text" autocomplete="off" name="search" placeholder="Search..."
-                            class="form-control right-flter-bd ng-untouched ng-pristine ng-valid"
-                            [(ngModel)]="SearchItem">
-                        <span class="cancl-icon curser-pointer" *ngIf="SearchItem" (click)="filterSearch()">
-                            <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                                </path>
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                            </svg>
-                        </span>
+                <div class="position-relative w-100 mb-2">
+                    <input type="text" autocomplete="off" name="search" placeholder="Search..."
+                        class="form-control right-flter-bd ng-untouched ng-pristine ng-valid" [(ngModel)]="SearchItem">
+                    <span class="cancl-icon curser-pointer" *ngIf="SearchItem" (click)="filterSearch()">
+                        <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                            </path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                    </span>
 
-                    </div>
-                        <div class="kt-card-custom">
-                        
-                            <div class="">
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel" aria-labelledby="kt_tab_pane_1_4">
-                                        <div class="user-list-card" *ngFor="let Data of Project_List | filter :SearchItem ;let i=index">
-                                            <div class="mvc-vb">
-                                                <div class="user-icon-round">
-                                                    <span class="user-Ltr bg-primary text-inverse-warning fw-bold">R</span>
-                                                    <!-- <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg"> -->
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="user-icc-info">
-                                                <h6>
-                                                    {{Data.RACIS}}
-                                                </h6>
-                                                <p [ngSwitch]="Data.id">
-                                                    <span *ngSwitchCase="1">Owner</span>
-                                                    <span *ngSwitchCase="2">Responsible</span>
-                                                    <span *ngSwitchCase="3">Authority</span>
-                                                    <span *ngSwitchCase="4">Coordinator</span>
-                                                    <span *ngSwitchCase="5">Informer</span>
-                                                    <span *ngSwitchCase="6">Support</span>
-                                                </p>
-                                            </div>
-                        
-                                            <!--    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg> -->
+                </div>
+                <div class="kt-card-custom">
+
+                    <div class="">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
+                                aria-labelledby="kt_tab_pane_1_4">
+                                <ng-container *ngIf="Project_List">
+                                <ng-container *ngIf="(Project_List | filter:SearchItem).length>0 ; else searchPeople">
+                                <div class="user-list-card" *ngFor="let Data of Project_List | filter :SearchItem ;let i=index">
+                                    <div class="mvc-vb">
+                                        <div class="user-icon-round">
+                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold">R</span>
+                                            <!-- <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg"> -->
                                         </div>
-                                        <!-- <div class="user-list-card">
+                                    </div>
+
+                                    <div class="user-icc-info">
+                                        <h6>
+                                            {{Data.RACIS}}
+                                        </h6>
+                                        <p [ngSwitch]="Data.id">
+                                            <span *ngSwitchCase="1">Owner</span>
+                                            <span *ngSwitchCase="2">Responsible</span>
+                                            <span *ngSwitchCase="3">Authority</span>
+                                            <span *ngSwitchCase="4">Coordinator</span>
+                                            <span *ngSwitchCase="5">Informer</span>
+                                            <span *ngSwitchCase="6">Support</span>
+                                        </p>
+                                    </div>
+
+                                    <!--    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg> -->
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                               
+                            <ng-template #searchPeople>
+                                <div class="text-center">
+                                <img src="./assets/images/people on the project 02.png" width="268" height="256">
+                                <div class="bnk-txt mt-3">
+                                    <h3 class="blank-txt pfl-img">No People Found</h3>
+                                </div>
+                            </div>
+                            </ng-template>
+
+                                <!-- <div class="user-list-card">
                                             <div class="mvc-vb">
                                                 <div class="user-icon-round">
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
@@ -4370,57 +4387,32 @@
                         
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div> -->
-                                    </div>
-                                    <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
-                                    <div class="">
-                                        <div class="list-new-sp-team">
-                                            <div class="user-list-card">
-                                                <div class="add-check-box">
-                                                    <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                                                </div>
-                                                <div class="mvc-vb">
-                                                    <div class="user-icon-round">
-                                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="user-icc-info">
-                                                    <h6>Aquib Shahbaz</h6>
-                                                    <p>Owner</p>
-                                                </div>
-                                                <div class="user-roll-vx">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Responsible
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item" href="#">Authority</a>
-                                                            <a class="dropdown-item" href="#">Support</a>
-                                                            <a class="dropdown-item" href="#">Coordinator</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                            
+                            </div>
+                            <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel"
+                                aria-labelledby="kt_tab_pane_2_4">
+                                <div class="">
+                                    <div class="list-new-sp-team">
                                         <div class="user-list-card">
                                             <div class="add-check-box">
-                                                <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
+                                                <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent"
+                                                    type="checkbox" value="yes">
                                             </div>
                                             <div class="mvc-vb">
                                                 <div class="user-icon-round">
-                                                    <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+                                                    <img
+                                                        src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Aquib Shahbaz</h6>
-                                                <p>Authority</p>
+                                                <p>Owner</p>
                                             </div>
                                             <div class="user-roll-vx">
                                                 <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle sort-btn" type="button" id="dropdownMenuButton"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button class="btn btn-secondary dropdown-toggle sort-btn"
+                                                        type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
                                                         Responsible
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -4430,22 +4422,54 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                    </div>
-                            
-                                        
                                         </div>
-                                    </div>
+
+                                        <div class="user-list-card">
+                                            <div class="add-check-box">
+                                                <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent"
+                                                    type="checkbox" value="yes">
+                                            </div>
+                                            <div class="mvc-vb">
+                                                <div class="user-icon-round">
+                                                    <img
+                                                        src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg">
+                                                </div>
+                                            </div>
+
+                                            <div class="user-icc-info">
+                                                <h6>Aquib Shahbaz</h6>
+                                                <p>Authority</p>
+                                            </div>
+                                            <div class="user-roll-vx">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle sort-btn"
+                                                        type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        Responsible
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="#">Authority</a>
+                                                        <a class="dropdown-item" href="#">Support</a>
+                                                        <a class="dropdown-item" href="#">Coordinator</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
             </div>
         </div>
 
     </div>
 
-      <!-------- User list view and add user end----->
+    <!-------- User list view and add user end----->
 
 
     <!--no records found-->
@@ -4727,10 +4751,13 @@
                                             </span>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="_file1"
-                                                accept="application/pdf" (change)="onFileChange($event)">
-                                            <label class="custom-file-label" id="upload" for="_file1">Select a
-                                                file</label>
+                                            <input type="file" class="custom-file-input" id="_file1"  
+                                                accept="application/pdf" (change)="onFileChange($event)" >                                               
+                                            <label class="custom-file-label" id="upload" for="_file1">
+                                                <ng-container >
+                                                    Select a file  
+                                                </ng-container>
+                                            </label>
                                         </div>
                                     </div>
                                     <span class="text-info"> *Accept only pdf files </span>
