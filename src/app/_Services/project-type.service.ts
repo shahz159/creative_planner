@@ -598,6 +598,8 @@ export class ProjectTypeService {
   }
   _GetMeetingList(obj: SubTaskDTO) {
     this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
+    this.ObjSubTaskDTO.startdate = obj.startdate;
+    this.ObjSubTaskDTO.enddate = obj.enddate;
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
   }
 

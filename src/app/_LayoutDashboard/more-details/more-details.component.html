@@ -5661,6 +5661,7 @@
 
                         <div class="">
                             <div class="scrollbar1">
+                                
                                 <div class="event" *ngFor="let item of meeting_arry">
                                     <!-- {{StartDate}} --- {{item.Schedule_date}} -->
                                     <ng-container *ngIf="item.Schedule_date >= sdate">
@@ -6162,7 +6163,7 @@
                                     *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks')">
                                     {{StartDate|date:'dd-MM-yyyy'}}/{{SubmissionName}} </h6>
                             </div>
-                            <div class="px-1"
+                            <div class="px-1" 
                                 *ngIf="Status=='Deadline Extend Under Approval' || Status=='Project Hold' || Status=='Project Hold Under Approval'">
                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                             </div>

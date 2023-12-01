@@ -48,4 +48,7 @@ export class SubTaskDTO {
   PageSize:number;
   sort:string;
 
+  startdate:any;
+  enddate:any;
+
 }

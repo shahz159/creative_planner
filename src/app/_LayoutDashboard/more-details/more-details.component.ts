@@ -1311,7 +1311,6 @@ export class MoreDetailsComponent implements OnInit {
             this.meetinglength = this.meeting_arry.length;
           this.meeting_arry.forEach(element => {
             element.usersjson = JSON.parse(element.Addguest);
-
           });
         }
         else {
@@ -5207,11 +5206,11 @@ export class MoreDetailsComponent implements OnInit {
 
   onFileChange(e) {
     this.selectedFile = <File>e.target.files[0];
-    console.log("--------------->",this.selectedFile)
+    console.log("--------------->",this.selectedFile);
   }
-
+ 
   sweetAlert() {
-    if (this.Status == 'Completed') {
+    if (this.Status == 'Completed') { 
       Swal.fire({
         title: 'This project is completed !',
         text: 'Do you want to reopen this project ?',
