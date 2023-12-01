@@ -540,6 +540,12 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   singleapporval_json: any[] = [];
+  standardDoc:any;
+  sidno:any;
+  emp:any;
+  repdate:any;
+  contenttype: any;
+  submitby:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -594,6 +600,17 @@ export class MoreDetailsComponent implements OnInit {
           }
           console.log(this.complete_List, 'complete');
 
+        }
+        if (this.requestType == 'Task Complete') {
+          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+          console.log(this.complete_List, "standard")
+          this.completedoc = (this.complete_List[0]['Proofdoc']);
+          this.sidno = (this.complete_List[0]['StandardId']);
+          this.emp = (this.complete_List[0]['Emp_No']);
+          this.repdate = (this.complete_List[0]['Reportdate']);
+          this.submitby = (this.complete_List[0]['SubmittedBy']);
+          this.contenttype = (this.complete_List[0]['contenttype']);
+          this.iscloud = (this.complete_List[0]['IsCloud']);
         }
       }
       // console.log(this.requestDetails, 'transfer');
@@ -1294,7 +1311,6 @@ export class MoreDetailsComponent implements OnInit {
             this.meetinglength = this.meeting_arry.length;
           this.meeting_arry.forEach(element => {
             element.usersjson = JSON.parse(element.Addguest);
-
           });
         }
         else {
@@ -1533,6 +1549,7 @@ export class MoreDetailsComponent implements OnInit {
     //   });
   }
 
+  isStandardSubmit:any;
   GetProjectDetails() {
    
     this.service.SubTaskDetailsService(this.URL_ProjectCode).subscribe(
@@ -1576,6 +1593,7 @@ export class MoreDetailsComponent implements OnInit {
           this.Coor_EmpNo = this.ProjectInfo_List[0]['Coor'];
           this.Inform_EmpNo = this.ProjectInfo_List[0]['Informer'];
           this.Support_EmpNo = this.ProjectInfo_List[0]['Support'];
+          this.isStandardSubmit = this.ProjectInfo_List[0]['isStandardSubmit'];
           // console.log(this.Coor_EmpNo,this.Inform_EmpNo,this.Support_EmpNo,"RACIS");
           this.StandardDuration = this.ProjectInfo_List[0]['StandardDuration'];
           this.SubmissionName = this.ProjectInfo_List[0]['SubmissionType1'];
@@ -5188,11 +5206,11 @@ export class MoreDetailsComponent implements OnInit {
 
   onFileChange(e) {
     this.selectedFile = <File>e.target.files[0];
-    //console.log("--------------->",this.selectedFile)
+    console.log("--------------->",this.selectedFile);
   }
-
+ 
   sweetAlert() {
-    if (this.Status == 'Completed') {
+    if (this.Status == 'Completed') { 
       Swal.fire({
         title: 'This project is completed !',
         text: 'Do you want to reopen this project ?',
@@ -5383,7 +5401,6 @@ export class MoreDetailsComponent implements OnInit {
   }
 
   achieveStandard() {
-    debugger
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority);

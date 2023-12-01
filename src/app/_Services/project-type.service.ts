@@ -422,6 +422,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
 
+  
+  NewProjectService(prjCode){
+     this.ObjSubTaskDTO.Project_Code=prjCode;
+    return this.http.post(this.rootUrl + "TestAPI/NewGetProjectPeople", this.ObjSubTaskDTO);
+   }
+
+
+
+   NewActivityService(prjCode){
+    this.ObjSubTaskDTO.Project_Code=prjCode
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetProjectActivity",this.ObjSubTaskDTO);
+   }
 
   getPortfolios(prjCode) {
     let EmpNo = localStorage.getItem('EmpNo');
@@ -586,6 +598,8 @@ export class ProjectTypeService {
   }
   _GetMeetingList(obj: SubTaskDTO) {
     this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
+    this.ObjSubTaskDTO.startdate = obj.startdate;
+    this.ObjSubTaskDTO.enddate = obj.enddate;
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
   }
 

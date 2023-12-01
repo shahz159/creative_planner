@@ -18,6 +18,7 @@ export class ApprovalsService {
 
    GetApprovalStatus(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.standardid = obj.standardid;
     
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
   }

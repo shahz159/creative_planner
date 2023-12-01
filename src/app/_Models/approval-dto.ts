@@ -20,5 +20,6 @@ export class ApprovalDTO {
     OtherType:any;
     sendFrom:any;
     responselist:any;
+    standardid:any;
 
 }

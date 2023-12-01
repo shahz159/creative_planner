@@ -303,9 +303,14 @@
             
                                                 </td>
                                                 <td align="center">
-                                                    <a tabindex="0" class="btn px-0 mb-0" role="button"
+                                                    <a tabindex="0" class="btn px-0 mb-0" role="button" *ngIf="item.Req_Type!='Task Complete'"
                                                         placement="right" data-trigger="focus" data-toggle="tooltip"
                                                         title="Project Info!" (click)="openInfo(item.Project_Code1);info_active_btn(item)">
+                                                        <i class="fa fa-info-circle info-icon-cir"></i>
+                                                    </a>
+                                                    <a tabindex="0" class="btn px-0 mb-0" role="button" *ngIf="item.Req_Type=='Task Complete'"
+                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                        title="Project Info!" (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
                                                         <i class="fa fa-info-circle info-icon-cir"></i>
                                                     </a>
                                                     <a tabindex="0" class="btn px-0 mr-2" role="button"

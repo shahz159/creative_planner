@@ -202,8 +202,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        // console.log("Data---->", data);
+        
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
+        console.log("Data---->", this.CategoryList);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
@@ -272,7 +273,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
            
-          document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+          
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
           this.IfNoTaskFound = "";
@@ -287,6 +288,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
           this._ObjCompletedProj.CategoryId = this._Categoryid;
           this._ObjCompletedProj.Mode = 'Todo';
+          // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
         }
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']); 
         let _Accepted =0;
@@ -551,7 +553,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // alert(this.CountsAccepted);
         // console.log(this.CountsAccepted);
       });
-      document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
   }
 
 

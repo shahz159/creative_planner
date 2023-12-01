@@ -24,7 +24,8 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-
+import { CalenderService } from 'src/app/_Services/calender.service';
+import { CalenderDTO } from 'src/app/_Models/calender-dto';
 
 
 
@@ -115,6 +116,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      public service: ProjectTypeService,
      private notifyService: NotificationService,
      public datepipe: DatePipe,
+     private CalenderService: CalenderService
     ) {
      
       this.ObjSubTaskDTO = new SubTaskDTO();
@@ -261,6 +263,41 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+  Project_List:any;
+
+  GetPeopleDatils(){
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
+      (data)=>{
+      if(data !=null && data !=undefined){       
+        this.Project_List=JSON.parse(data[0]['RacisList'])     
+      }
+    })
+  }
+
+
+  Activity_List:any
+
+   GetActivityDetails(){
+      this.service.NewActivityService(this.URL_ProjectCode).subscribe(
+        (data)=>{
+        if(data !==null && data !==undefined){
+           this.Activity_List=JSON.parse(data[0]['ActivityList']) 
+            console.log(this.Activity_List,"testing Api")
+        }     
+      })
+   }
+
+
+   formatTime(time: string): string {
+    const parsedTime = new Date(`1970-01-01T${time}`);
+    return this.datepipe.transform(parsedTime, 'HH:mm');
+  }
+
+
+
+
+
+
   showActionDetails(index:number|undefined)
   {
   
@@ -321,14 +358,20 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       $("#mysideInfobar1").scrollTop(0);
    }
 
+ 
+
    closeInfo() {
+    document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
    
     // in case if project submission (main or action) operation cancelled.
@@ -351,6 +394,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_Activity(){
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetActivityDetails();
   }
   Attachment_view(){
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -361,7 +406,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   View_User_list(){
     document.getElementById("User_list_View").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetPeopleDatils()
   }
+
+
+
   closedarBar() {
     // document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     // document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -379,6 +429,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
   }
 
 
@@ -1001,7 +1052,7 @@ selectedportID: any;
 objPortfolioDto: PortfolioDTO;
 deletedBy: string;
 portfolioName: string;
-ProjectInfo_List: any;
+
 
 
 
@@ -1803,6 +1854,7 @@ closeInfoProject() {
   this._inputAttachments='';
   this._remarks='';
   this.selectedFile = null;
+
   // this.OnClickCheckboxProjectUpdate();
   // this.Clear_Feilds();
 }
@@ -2060,13 +2112,15 @@ getAttachments(sorttype:number) {
 
 ///////////////////////////////////// Approval section Start  ////////////////////////////////////
 
-filterText:string='';
+filterText:string;
 approval_Emp:any
+SearchItem:string;
 
 
-// clearsearch() {
-//   this.filterText = "";
-// }
+filterSearch() {
+  this.filterText = "";
+  this.SearchItem="";
+}
 
 
 GetApproval(code){
@@ -2132,12 +2186,6 @@ GetApproval(code){
 
 
 
-
-
-
-
-
-
 // project submission code end here
 
 
@@ -2181,11 +2229,31 @@ meetingList: any = [];
 meeting_arry: any = [];
 meetinglength: any;
 
+upcomingMeetings:any=[];
+todaymeetings:any=[];
+last7dmeetings:any=[];
+lastMonthMeetings:any=[];
+olderMeetings:any=[];
+mtgFromD:string='';
+mtgUptoD:string='';
+mtgsInRange:any=[];
+mLdng:boolean=false;
+
+tdMtgCnt:number = 0;   // Today Meetings Count
+upcMtgCnt:number = 0;  // Upcoming Meetings Count
+lstMthCnt:number = 0;  // Last Month Meetings Count
+lst7dCnt:number = 0;   // Last 7 Days Meetings Count
+oldMtgCnt:number = 0;  // Older Meetings Count
+
+
+
 GetmeetingDetails() {
   this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+  this.ObjSubTaskDTO.startdate = null;
+  this.ObjSubTaskDTO.enddate = null;
+       
   this.service._GetMeetingList(this.ObjSubTaskDTO)
     .subscribe(data => {
-      // console.log(data,"meet")
       if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
         this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
         this.meeting_arry = this.meetingList;
@@ -2194,14 +2262,501 @@ GetmeetingDetails() {
         this.meeting_arry.forEach(element => {
           element.usersjson = JSON.parse(element.Addguest);
         });
+
       }
       else {
         this.meetinglength = 0;
       }
+
+
+      console.log('meeting we have:',this.meeting_arry);
+   // AFTER GETTING ALL MEETINGS DETAILS 
+
+       this.upcomingMeetings=this.getUpcomingMeeting(); 
+       this.upcomingMeetings.reverse();                                         // get upcoming meetings.
+       this.upcMtgCnt=this.upcomingMeetings.length;                           // store totalno of meetings.
+       this.upcomingMeetings=this.groupMeetingsByDate(this.upcomingMeetings);   // format them.
+       
+   
+
+       this.todaymeetings=this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
+       this.tdMtgCnt=this.todaymeetings.length;                                                        // store totalno of meetings.
+       this.todaymeetings=this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
+    
+       for(let i=1;i<=7;i++)
+       {
+           const date=new Date();                     // get the current date. 
+           date.setDate(date.getDate()-i);
+           this.last7dmeetings=this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));    
+       }                                                                                               // get last 7 days meetings.
+       this.lst7dCnt=this.last7dmeetings.length;                                                    // store totalno of meetings.
+       this.last7dmeetings=this.groupMeetingsByDate(this.last7dmeetings);                              // format them.  
+       
+
+       const date1=new Date();                 // currentdate.
+       date1.setMonth(date1.getMonth()-1);    // date1 is prev month.
+       this.meeting_arry.forEach(m=>{
+        
+           const sd=new Date(m.Schedule_date);
+           if(sd.getMonth()===date1.getMonth()&&sd.getFullYear()===date1.getFullYear())   
+           {  // when meeting held in last month
+                  this.lastMonthMeetings.push(m);
+           }
+           else if(!(sd.getTime()>date1.getTime()))
+           {   // when meeting held date is even order than last months
+               this.olderMeetings.push(m);
+           }    
+           
+            
+   
+       });
+
+       this.lstMthCnt=this.lastMonthMeetings.length;
+       this.oldMtgCnt=this.olderMeetings.length;
+
+       this.lastMonthMeetings=this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
+       this.olderMeetings=this.groupMeetingsByDate(this.olderMeetings);              // format them.
+       
+    });
+
+
+    //
+}
+
+
+openMeetingSidebar(){
+  document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
+  document.getElementById("rightbar-overlay").style.display = "block";      
+  // sidebar is open                
+  this.GetmeetingDetails(); // get all meeting details.
+ }
+
+closeMeetingSidebar(){
+  document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+} 
+
+
+getUpcomingMeeting()
+{
+    const cd=new Date();   // takes the current date.
+    const upcoming=this.meeting_arry.filter((meeting)=>{
+            const sd=new Date(meeting.Schedule_date);
+            return sd>cd;
+    });
+    return upcoming;
+}
+
+
+groupMeetingsByDate(ar)
+{
+   let result=[];
+   for(let i=0;i<ar.length;i++)
+   {
+    let date1=new Date(ar[i].Schedule_date);
+    if(!result.find((e)=>new Date(e.date).getTime()===date1.getTime())){
+        
+        let totalmeetings=[ar[i]];
+        for(let j=i+1;j<ar.length;j++){
+          
+           if(new Date(ar[j].Schedule_date).getTime()===date1.getTime())
+               totalmeetings.push(ar[j]);
+         }
+       result.push({date:date1,totalmeetings:totalmeetings})  
+    }
+   }
+   return result;
+}
+
+
+getMeetingsByDate(date){
+  const inputdate=new Date(date);
+  const meetingsfound=this.meeting_arry.filter((meeting)=>{
+           const tempd=new Date(meeting.Schedule_date);
+           return (tempd.getTime()===inputdate.getTime())
+  });
+  return meetingsfound;
+}
+
+
+getAttendeesInMeeting(people){  
+      if(Array.isArray(people))
+        {      let total=0;
+               people.forEach((pr)=>{
+                if(pr.Status==="Accepted")
+                 total=total+1;
+              });
+              return total;  
+        }
+     return "";   
+}
+   
+
+
+getMeetingsInRange(){
+    this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+    this.ObjSubTaskDTO.startdate = this.mtgFromD;
+    this.ObjSubTaskDTO.enddate = this.mtgUptoD;
+    this.mLdng=true;     // made loading visible.
+    this.service._GetMeetingList(this.ObjSubTaskDTO).subscribe((res:any)=>{
+        this.mLdng=false;   // made loading invisible.
+      console.log("after sending meeting range:",res)
+      if(res&&res[0].MeetingFor_projects){  // if MeetingFor_projects is not '' , null , undefined
+        this.mtgsInRange=JSON.parse(res[0].MeetingFor_projects)
+        this.mtgsInRange.forEach(element => {
+          element.usersjson = JSON.parse(element.Addguest);
+        });
+        this.mtgsInRange=this.groupMeetingsByDate(this.mtgsInRange);
+        console.log("get meetings list:", this.mtgsInRange);
+      }
+      else{
+        this.mtgsInRange=[];  // when no meetings held during the range.
+      }
+             
+             
+    })
+
+}
+
+
+
+
+ScheduleType:string='';
+editTask: boolean = false;
+copyTask: boolean = false;
+create:boolean=false;
+draftid: number = 0;
+_AllEventTasksCount: number = 0;
+pending_status: boolean;
+_FutureEventTasksCount: number = 0;
+MinLastNameLength: boolean;
+MasterCode: any = [];
+
+Title_Name: any;
+Startts: any;
+Endtms: any;
+
+Projectstartdate: string = "";
+projectEnddate: string;
+Status_project: string; days
+AllocatedHours: number;
+BlockNameProject1: any;
+SubmissionName: string;
+_Exec_BlockName: string = "";
+
+
+
+Task_type(value:number){
+  this.selectedrecuvalue = "0";   
+  this._PopupConfirmedValue = 1; 
+  this.MinLastNameLength = true;
+  this._subname = false;
+  this._calenderDto = new CalenderDTO;
+  this.GetProjectAndsubtashDrpforCalender();
+  this.BlockNameProject1 = [];
+
+  // initialization
+
+  document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+  this.editTask = false;
+  this.copyTask = false;
+  this.create=true;
+  if (value===1) {
+    this.ScheduleType = "Task";
+    // document.getElementById("subtaskid").style.display = "block";
+    // document.getElementById("Guest_Name").style.display = "none";
+    // document.getElementById("Location_Name").style.display = "none";
+    // document.getElementById("Descrip_Name").style.display = "none";
+    // document.getElementById("core_viw123").style.display = "block";
+    // document.getElementById("core_viw121").style.display = "none";
+    // document.getElementById("core_viw222").style.display = "none";
+    // document.getElementById("core_Dms").style.display = "none";
+    // document.getElementById("online-add").style.display = "none";
+
+  }
+  else if(value===2){
+    this.ScheduleType = "Event";
+    // document.getElementById("subtaskid").style.display = "none";
+    // document.getElementById("Guest_Name").style.display = "block";
+    // document.getElementById("Location_Name").style.display = "block";
+    // document.getElementById("Descrip_Name").style.display = "block";
+    // document.getElementById("core_viw121").style.display = "block";
+    // document.getElementById("core_viw123").style.display = "none";
+    // document.getElementById("core_viw222").style.display = "block";
+    // document.getElementById("core_Dms").style.display = "block";
+    // document.getElementById("online-add").style.display = "block";
+
+  }
+}
+
+
+
+selectedrecuvalue: string;
+dayArr: any = [
+  {
+    "Day": "S",
+    "value": "Sun",
+    "checked": false
+  },
+  {
+    "Day": "M",
+    "value": "Mon",
+    "checked": false
+  },
+  {
+    "Day": "T",
+    "value": "Tue",
+    "checked": false
+  },
+  {
+    "Day": "W",
+    "value": "Wed",
+    "checked": false
+  },
+  {
+    "Day": "Th",
+    "value": "Thu",
+    "checked": false
+  },
+  {
+    "Day": "Fr",
+    "value": "Fri",
+    "checked": false
+  },
+  {
+    "Day": "Sa",
+    "value": "Sat",
+    "checked": false
+  }
+];
+MonthArr: any = [
+  { "Day": "01", "value": "01", "checked": false },
+  { "Day": "02", "value": "02", "checked": false },
+  { "Day": "03", "value": "03", "checked": false },
+  { "Day": "04", "value": "04", "checked": false },
+  { "Day": "05", "value": "05", "checked": false },
+  { "Day": "06", "value": "06", "checked": false },
+  { "Day": "07", "value": "07", "checked": false },
+  { "Day": "08", "value": "08", "checked": false },
+  { "Day": "09", "value": "09", "checked": false },
+  { "Day": "10", "value": "10", "checked": false },
+  { "Day": "11", "value": "11", "checked": false },
+  { "Day": "12", "value": "12", "checked": false },
+  { "Day": "13", "value": "13", "checked": false },
+  { "Day": "14", "value": "14", "checked": false },
+  { "Day": "15", "value": "15", "checked": false },
+  { "Day": "16", "value": "16", "checked": false },
+  { "Day": "17", "value": "17", "checked": false },
+  { "Day": "18", "value": "18", "checked": false },
+  { "Day": "19", "value": "19", "checked": false },
+  { "Day": "20", "value": "20", "checked": false },
+  { "Day": "21", "value": "21", "checked": false },
+  { "Day": "22", "value": "22", "checked": false },
+  { "Day": "23", "value": "23", "checked": false },
+  { "Day": "24", "value": "24", "checked": false },
+  { "Day": "25", "value": "25", "checked": false },
+  { "Day": "26", "value": "26", "checked": false },
+  { "Day": "27", "value": "27", "checked": false },
+  { "Day": "28", "value": "28", "checked": false },
+  { "Day": "29", "value": "29", "checked": false },
+  { "Day": "30", "value": "30", "checked": false },
+  { "Day": "31", "value": "31", "checked": false }
+];
+maxDate = "";
+_OldRecurranceId: string;
+_OldRecurranceValues: string;
+_PopupConfirmedValue: number;
+_subname: boolean;
+_calenderDto: CalenderDTO;
+ProjectListArray: any;
+_EmployeeListForDropdown: any[] = [];
+Portfoliolist_1: [];
+Note_deadlineexpire: boolean;
+Subtask: any;
+St_date: string = "";
+Ed_date: string;
+_status: string;
+Allocated_subtask: number;
+TM_DisplayName: string;
+Portfolio: any = [];
+SelectDms: any;
+
+viewconfirm() {
+
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+
+
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = true;
+    radio1.checked = false;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = true;
+
+    var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    radio3.disabled = false;
+    radio3.checked = false;
+    document.getElementById("div_thisevent").style.display = "none";
+
+    this._PopupConfirmedValue = 2;
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+    var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    radio3.disabled = false;
+    radio3.checked = false;
+    this._PopupConfirmedValue = 1;
+
+  }
+}
+
+LastLengthValidation11() {
+  if (this.Title_Name.trim().length < 3) {
+    this.MinLastNameLength = false;
+  }
+  else {
+    this.MinLastNameLength = true;
+  }
+}
+calculateDiff(dateSent) {
+  let currentDate = new Date();
+  dateSent = new Date(dateSent);
+  return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
+}
+
+
+GetProjectAndsubtashDrpforCalender() {
+  console.log(this._calenderDto);
+  this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+    ((data) => {
+      this.ProjectListArray = JSON.parse(data['Projectlist']);
+      this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+      this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+      console.log(this.Portfoliolist_1, "Project List Array");
+
     });
 }
 
+
+
+
+GetSubtasklistfromProject(MasterCode) {
+
+  this.ProjectListArray.forEach(element => {
+
+    if (element.Project_Code == MasterCode) {
+
+      this.Projectstartdate = element.StatDate;
+      this.projectEnddate = element.Enddate;
+      this.Status_project = element.Status;
+      this.AllocatedHours = element.Allocated;
+
+      var number = this.calculateDiff(this.projectEnddate);
+      const format2 = "YYYY-MM-DD"
+      if (number >= 90) {
+        // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+        this.Note_deadlineexpire = false;
+      }
+      else {
+        if (number < 0) {
+          if (this.ScheduleType == "Task") {
+            // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+            this.Note_deadlineexpire = true;
+          }
+          else {
+            // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+          }
+        }
+        else {
+          // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+          this.Note_deadlineexpire = false;
+        }
+      }
+    }
+
+  });
+  if (MasterCode != undefined) {
+
+    this._calenderDto.Project_Code = MasterCode;
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+      ((data) => {
+        // console.log(data);
+        this.BlockNameProject1 = JSON.parse(data['Projectlist']);
+      });
+    this._subname = false;
+    this.ProjectListArray.forEach(element => {
+      if (element.Project_Code == MasterCode) {
+        this._Exec_BlockName = element.Exec_BlockName;
+        this.SubmissionName = element.Submission;
+      }
+    });
+    if (this._Exec_BlockName == "Standard Tasks" || this._Exec_BlockName == "To do List" || this._Exec_BlockName == "Routine Tasks") {
+      (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "none";
+
+    }
+    else {
+      (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
+    }
+  }
+}
+
+
+getChangeSubtaskDetais(Project_Code) {
+  this.BlockNameProject1.forEach(element => {
+
+    if (element.Project_Code == Project_Code) {
+      this.St_date = element.StatDate;
+      this.Ed_date = element.Enddate;
+      this._status = element.Status;
+      this.Allocated_subtask = element.Allocated
+      this.TM_DisplayName = element.TM_DisplayName
+    }
+  });
+
+
+}
+
+
 // meeting section code end here
+
+
+
+
+
+
+
+
+
 
 // project hold section and release section start
 hold_remarks: string;
@@ -2233,17 +2788,7 @@ onProject_Hold(id, Pcode) {
   }
 }
 
-closeTab(){
- 
-        this.hold_remarks='';
-        this.Holddate=null;
-        $('#kt_tab_pane_3').removeClass('active show');
-        $('#kt_tab_pane_1').removeClass('active show');
-        $('#hold-Prj-cancel-btn').removeClass('active');
-        $('#release-Prj-tab-btn').removeClass('active');
-        $('#kt_tab_pane_2').removeClass('active show');
-        $('#hold-Prj-tab-btn').removeClass('active');
-}
+
 
 orgValueChange1(val) {
   this.release_date = moment(val.value).format("MM/DD/YYYY");
@@ -2330,6 +2875,8 @@ openPrjReleaseSideBar(){
 }
 
 closePrjReleaseSideBar(){
+  this.hold_remarks='';
+  this.Holddate=null;
   document.getElementById("prj-release-sidebar").classList.remove("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "none";  
   document.getElementById("newdetails").classList.remove("position-fixed");
@@ -2348,11 +2895,11 @@ openPrjCancelSb(){
 }
 
 closePrjCancelSb(){
-  document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
-  document.getElementById("rightbar-overlay").style.display = "block";  
+  this.hold_remarks='';
+  document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";  
   document.getElementById("newdetails").classList.remove("position-fixed");
 }
-
 
 
 updateProjectCancel(){
