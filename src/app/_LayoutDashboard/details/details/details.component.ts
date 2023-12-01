@@ -99,12 +99,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   ObjSubTaskDTO: SubTaskDTO;
   Activity_List:any
   Project_List:any;
+  Client_List: any;
+  selectedclient: string;
+  owner_dropdown: any;
+  selectedOwnResp: any;
+  responsible_dropdown: any;
+  Category_List: any;
+  selectedcategory: any;
 
-
-  
-
-
- 
 
 
 
@@ -158,10 +160,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
+
   }
 
   ngAfterViewInit():void{
      this.drawStatistics();
+     this.timearrays();
   }
 
   getusername() {
@@ -260,15 +264,19 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+   Submission:any
+     
 
   getProjectDetails(prjCode:string) {
-      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {     
+      this.Submission=JSON.parse(res[0].submission_json); 
+      console.log( this.Submission, "testtsfs")
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
-      this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
+      this.projectActionInfo=JSON.parse(res[0].Action_Json);
       this.calculateProjectActions();    // calculate project actions details.
-     // console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+      console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
@@ -377,6 +385,9 @@ export class DetailsComponent implements OnInit,AfterViewInit{
    Project_details_edit(){
     document.getElementById("Project_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.getResponsibleActions();
+    this.initializeSelectedValue()
+ 
    }
 
    closeInfo() {
@@ -1334,12 +1345,13 @@ closeDarSideBar(){
 
 
 
-
 getResponsibleActions() {
   this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
     (data) => {
+      this.Client_List = JSON.parse(data[0]['ClientDropdown']);
+      this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
       this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-      console.log('darArr:',this.darArr);
+      console.log('darArr:',this.Category_List);
      
       if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
         this.showaction=false;
@@ -1357,7 +1369,132 @@ getResponsibleActions() {
         this.actionCode=selectedActionOpt.Project_Code;
       }
     });
+
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+         console.log(data,"RACIS");
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+      });
 }
+
+selectedOwner: any;
+ProjectType:string
+ProjectDescription:string
+Start_Date:string;
+OGowner:any;
+OGresponsible:any;
+OGownerid:any;
+OGresponsibleid:any;
+OGclient:any;
+OGclientId:any;
+Submission_Name:string
+Allocated_Hours:any;
+Daily_array:any =[];
+Week_array:any =[];
+Month_array:any =[];
+Quarter_array:any =[];
+Halfyear_array:any =[];
+Annual_array:any =[];
+End_Date:any
+Annual_date:any
+Allocated:any
+
+
+
+generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+  const timeArray: string[] = [];
+
+  for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+          const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+          timeArray.push(timeStr);
+      } else {
+          break;  // Exit the loop once the maximum limit is reached
+      }
+  }
+
+  return timeArray;
+}
+
+timearrays(){
+this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+this.Week_array = this.generateTimeIntervals(8, 15, 2);
+this.Month_array = this.generateTimeIntervals(16, 15, 4);
+this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+this.Annual_array = this.generateTimeIntervals(64, 15, 16);
+
+console.log("Daily Array:", this.Quarter_array);
+console.log("Weekly Array:", this.Halfyear_array);
+console.log("Monthly Array:", this.Annual_array);
+}
+
+ initializeSelectedValue() {
+        this.OGownerid = this.projectInfo['OwnerEmpNo'];
+        this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
+        this.OGowner = this.projectInfo.Owner;
+        this.OGresponsible = this.projectInfo.Responsible;
+        this.selectedOwner = this.projectInfo.Owner;
+        this.selectedOwnResp = this.projectInfo.Responsible;
+        this.selectedcategory= this.projectInfo.Category;
+        this.selectedclient=this.projectInfo.Client;
+        this.ProjectType=this.projectInfo.Project_Type
+        this.ProjectName=this.projectInfo.Project_Name
+        this.ProjectDescription=this.projectInfo.Project_Description
+        this.Start_Date=this.projectInfo.StartDate
+        this.Submission_Name=this.projectInfo.SubmissionName
+        this.Allocated_Hours=this.projectInfo.StandardAllocatedHours
+        this.Allocated=this.projectInfo.AllocatedHours
+        this.End_Date =this.projectInfo.EndDate
+                      
+    }
+
+    onAction_updateProject() {  
+        //  console.log(this.selectedclient,"looping")
+
+      if(this.OGowner!=this.selectedOwner){
+        var owner=this.selectedOwner
+        this.selectedOwner=this.selectedOwner;
+      }
+      else{
+        var owner=this.OGownerid;
+        // this.selectedOwner=this.OGownerid;
+      }
+
+      if(this.OGresponsible!=this.selectedOwnResp){
+        var resp = this.selectedOwnResp;
+        this.selectedOwnResp=this.selectedOwnResp;
+      }
+      else{
+        var resp = this.OGresponsibleid;
+        // this.selectedOwnResp=this.OGresponsibleid;
+      }
+
+     const jsonobj={    
+         Project_Type:this.ProjectType, 
+         Project_Name:this.ProjectName,
+         Project_Description:this.ProjectDescription,
+         Owner:owner,
+         Responsible:resp,
+         Category:this.selectedcategory,      
+        Client:this.selectedclient,
+        StartDate:this.Start_Date,
+        SubmissionName:this.Submission_Name,
+        Allocated:this.Allocated_Hours,
+        EndDate:this.End_Date,
+        Annualdate:this.Annual_date,
+        AllocatedHours:this.Allocated
+
+     }
+     const jsonvalue=JSON.stringify(jsonobj)
+      console.log(jsonvalue ,'json');
+    }
+
 
 
 
@@ -1526,20 +1663,6 @@ submitDar() {
   // this.Clear_Feilds();
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2477,3 +2600,33 @@ notachieveStandard() {
 //  $('#_file1').val('');
 // Task submission section code End here
 }
+
+
+// onAction_updateOwner() {
+      
+//   this.objProjectDto.Project_Code = this.actCode;
+//   this.objProjectDto.Emp_No = this.Current_user_ID;
+//   this.objProjectDto.Project_Owner = this.selectedOwnResp;
+//   this.objProjectDto.Team_Res = null;
+//   this.objProjectDto.Remarks = this.extend_remarks;
+//   if (this.selectedOwnResp != null) {
+//     this.service._NewProjectOwnerRespService(this.objProjectDto).subscribe(data => {
+//       this._Message = data['message'];
+
+//       if (this._Message == '2') {
+//         this.notifyService.showError("Action owner not updated", "Failed");
+//         this.GetProjectDetails();
+//         this.GetSubtask_Details();
+//       }
+//       else if (this._Message == '1') {
+//         this.notifyService.showSuccess("Action owner updated successfully", "Success");
+//         this.GetProjectDetails();
+//         this.GetSubtask_Details();
+//       }
+//     });
+//     this.close_space();
+//   }
+//   else {
+//     this.notifyService.showInfo("Action owner cannot be empty", "Please try again with correct value");
+//   }
+// }

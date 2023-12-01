@@ -3096,6 +3096,11 @@ i.date-rg-icon {
 .Project_type_DW {
   min-width: 160px;
 }
+#calender{
+  height: 1px;
+ 
+}
+
 label.pe-label {
   font-size: 13px;
   color: #8f8f8f;

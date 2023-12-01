@@ -14,6 +14,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
+
 //import { FilterPipe } from 'path-to-filter-pipe';
 
 @NgModule({
