@@ -457,7 +457,7 @@
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
                             <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
-                                <button type="button" (click)="penshow2()" class="pend-btn">Delay actions</button>
+                                <button type="button" (click)="penshow2()" class="pend-btn">delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
                             </div>
                         </div>
@@ -2152,7 +2152,7 @@
                                 </div>
                                 <div class="">
                                     <span style="height: 18px;"
-                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                        class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         Delay Action
                                     </span>
 
@@ -2197,7 +2197,7 @@
                                             (click)="moreDetails(delayDetails.Master_Code)">
                                             {{delayDetails.Master_Name}}</a>
                                     </div>
-                                    <div class="main-s">{{delayDetails.Project_Name}}</div>
+                                    <!-- <div class="main-s">{{delayDetails.Project_Name}}</div> -->
 
                                 </div>
                             </div>

@@ -3133,3 +3133,53 @@ i.date-rg-icon {
 }
 
 
+.kt-quick-Project_edit_form--on{
+  width: 58%;
+}
+.Project_type_DW {
+  min-width: 160px;
+}
+label.pe-label {
+  font-size: 13px;
+  color: #8f8f8f;
+  margin-bottom: 4px;
+}
+.input-icon.project-name_ed input {
+  color: #181818;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+
+.input-icon.project_des_ed textarea {
+  margin: 0;
+  color: #999999;
+  font-weight: 400;
+  padding: 5px;
+}
+.kt-info-body {
+  margin: 1.3rem;
+  border: 1px solid #ededed;
+  min-height: calc(100vh - 4vh);
+  height: auto;
+}
+.kt-info-box_en{
+  padding: 10px 10px;
+  border-bottom: 1px solid #ededed;
+}
+.Ic_ed span svg {
+  height: 17px;
+  width: 17px;
+  position: relative;
+  top: -2px;
+}
+.Ic_ed input, textarea {
+  padding: 5px 5px !important;
+}
+.Ic_ed input {
+  height: 29px;
+  margin-top: 5px;
+}
+.Ic_ed {
+  margin-bottom: 18px !important;
+}
