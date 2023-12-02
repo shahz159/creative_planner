@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, inject, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -24,11 +24,16 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { map, startWith } from 'rxjs/operators';
+import { MatChipInput } from '@angular/material/chips';
 
-
-
-
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 
 declare var FusionCharts: any;
@@ -39,8 +44,10 @@ declare var FusionCharts: any;
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
+  
 })
+
 export class DetailsComponent implements OnInit,AfterViewInit{
 
   projectInfo:any;
@@ -99,12 +106,15 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   ObjSubTaskDTO: SubTaskDTO;
   Activity_List:any
   Project_List:any;
+  filteredEmployees: any= [];
 
+  @ViewChild('auto') autoComplete: MatAutocomplete;
+  @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
 
-  
+  // @ViewChild('fruitInput') fruitInput: MatChipInput;
+  @ViewChild('fruitInput') fruitInput: ElementRef;
 
-
- 
 
 
 
@@ -122,7 +132,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      
       this.ObjSubTaskDTO = new SubTaskDTO();
       this.objProjectDto = new ProjectDetailsDTO();
-      this.objPortfolioDto = new PortfolioDTO()
+      this.objPortfolioDto = new PortfolioDTO();     
      }
   charts() { }
   
@@ -146,8 +156,9 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
     this.getapproval_actiondetails();      // get main project approval state.
-    this.getholdate();                     // get project hold date.
-   
+    this.getholdate();      
+    this.GetPeopleDatils();
+    
   
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -274,15 +285,24 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     });
   }
 
-
+  nonRacisList:any;
 
   GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data)=>{
       if(data !=null && data !=undefined){       
-        this.Project_List=JSON.parse(data[0]['RacisList'])     
+        this.Project_List=JSON.parse(data[0]['RacisList']);
+        console.log(this.Project_List,"wsa")    
       }
-    })
+    });
+
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+        // console.log(data,"RACIS");
+        this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+      });
+
+    this.filteredEmployees = this.nonRacisList;
   }
 
 
@@ -442,6 +462,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.workdes = "";
     this.starttime = null;
     this.endtime = null;
+    this.isSelection=false;
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -2476,4 +2497,100 @@ notachieveStandard() {
 
 //  $('#_file1').val('');
 // Task submission section code End here
+fruitCtrl = new FormControl();
+selectedEmployees: any=[];
+selectedEmpIds:any = [];
+
+
+remove(employee: any): void {
+  const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === employee.Emp_No);
+  this.isSelection=false;
+  if (index !== -1) {
+    // Remove the employee from the selectedEmployees array
+    this.selectedEmployees.splice(index, 1);
+    this.selectedEmpIds.splice(index, 1); 
+
+    console.log(this.selectedEmpIds,"selected supprem")
+  }
+
+  // Optionally, you can uncheck the checkbox in the Project_List array
+  employee.checked = false;
+  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+
+}
+
+isSelection: boolean =false;
+
+
+selected(event: MatAutocompleteSelectedEvent): void {
+  const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
+  this._keeppanelopen();
+  if (selectedEmployee) {
+    const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
+
+    if (index === -1) {
+      // Employee not found in the selected array, add it
+      this.selectedEmployees.push(selectedEmployee);
+      this.selectedEmpIds.push(selectedEmployee.Emp_No);
+    } else {
+      // Employee found in the selected array, remove it
+      this.selectedEmployees.splice(index, 1);
+      this.selectedEmpIds.splice(index, 1);
+    }
+  }
+
+  this.fruitInput.nativeElement.value = '';
+  this.filteredEmployees = this.nonRacisList;
+  console.log(this.selectedEmpIds, "selected")
+}
+
+isSelected(employee: any): boolean {
+  return this.selectedEmployees.some((emp) => emp.Emp_No === employee.Emp_No);
+}
+
+filterEmployees(input: string): void {
+  this.isSelection=true;
+  this.filteredEmployees = this.nonRacisList.filter((employee) =>
+    employee.NonRACIS.toLowerCase().includes(input.toLowerCase())
+  );
+}
+
+
+_keeppanelopen(){
+  this.filteredEmployees = this.nonRacisList;
+  this.isSelection=true;
+  requestAnimationFrame(()=>this.customTrigger.openPanel()); // open the panel
+}
+
+closePanel(){
+  this.isSelection=false;
+  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+}
+
+
+onProject_updateSupport() {
+  const commaSeparatedString =  this.selectedEmpIds.join(', ');
+
+  if (this.selectedEmployees != null) {
+    this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID,commaSeparatedString, null).subscribe(data => {
+      this._Message = data['message'];
+
+      if (this._Message == '2') {
+        this.notifyService.showError("Project Support team not updated", "Failed");
+      }
+      else if (this._Message == '1') {
+        this.notifyService.showSuccess("Project Support team updated successfully", "Success");
+     
+      }
+      this.GetPeopleDatils();
+      this.selectedEmpIds.length=0;
+      this.selectedEmployees.length=0;
+      this.closePanel();
+    });
+  }
+  else {
+    this.notifyService.showInfo("support team member cannot be empty", "Please try again with correct value");
+  }
+}
+
 }
