@@ -32,6 +32,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { map, startWith } from 'rxjs/operators';
 import { MatChipInput } from '@angular/material/chips';
+import { CalenderService } from 'src/app/_Services/calender.service';
+import { CalenderDTO } from 'src/app/_Models/calender-dto';
 
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
@@ -107,6 +109,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   Activity_List:any
   Project_List:any;
   filteredEmployees: any= [];
+  Client_List: any;
+  selectedclient: string;
+  owner_dropdown: any;
+  selectedOwnResp: any;
+  responsible_dropdown: any;
+  Category_List: any;
+  selectedcategory: any;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -128,6 +137,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      public _projectSummary: ProjectsSummaryComponent,
      private notifyService: NotificationService,
      public datepipe: DatePipe,
+     private CalenderService: CalenderService
     ) {
      
       this.ObjSubTaskDTO = new SubTaskDTO();
@@ -169,10 +179,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
+
   }
 
   ngAfterViewInit():void{
      this.drawStatistics();
+     this.timearrays();
   }
 
   getusername() {
@@ -271,15 +283,19 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+   Submission:any
+     
 
   getProjectDetails(prjCode:string) {
-      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {     
+      this.Submission=JSON.parse(res[0].submission_json); 
+      console.log( this.Submission, "testtsfs")
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
-      this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
+      this.projectActionInfo=JSON.parse(res[0].Action_Json);
       this.calculateProjectActions();    // calculate project actions details.
-     // console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+      console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
@@ -389,6 +405,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       $("#mysideInfobar1").scrollTop(0);
    }
 
+ 
    List_Of_Meetings(){
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -397,6 +414,9 @@ export class DetailsComponent implements OnInit,AfterViewInit{
    Project_details_edit(){
     document.getElementById("Project_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.getResponsibleActions();
+    this.initializeSelectedValue()
+ 
    }
 
    closeInfo() {
@@ -408,8 +428,10 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
+    document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
    
     // in case if project submission (main or action) operation cancelled.
@@ -1355,12 +1377,13 @@ closeDarSideBar(){
 
 
 
-
 getResponsibleActions() {
   this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
     (data) => {
+      this.Client_List = JSON.parse(data[0]['ClientDropdown']);
+      this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
       this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-      console.log('darArr:',this.darArr);
+      console.log('darArr:',this.Category_List);
      
       if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
         this.showaction=false;
@@ -1378,7 +1401,132 @@ getResponsibleActions() {
         this.actionCode=selectedActionOpt.Project_Code;
       }
     });
+
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+         console.log(data,"RACIS");
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+      });
 }
+
+selectedOwner: any;
+ProjectType:string
+ProjectDescription:string
+Start_Date:string;
+OGowner:any;
+OGresponsible:any;
+OGownerid:any;
+OGresponsibleid:any;
+OGclient:any;
+OGclientId:any;
+Submission_Name:string
+Allocated_Hours:any;
+Daily_array:any =[];
+Week_array:any =[];
+Month_array:any =[];
+Quarter_array:any =[];
+Halfyear_array:any =[];
+Annual_array:any =[];
+End_Date:any
+Annual_date:any
+Allocated:any
+
+
+
+generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+  const timeArray: string[] = [];
+
+  for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+          const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+          timeArray.push(timeStr);
+      } else {
+          break;  // Exit the loop once the maximum limit is reached
+      }
+  }
+
+  return timeArray;
+}
+
+timearrays(){
+this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+this.Week_array = this.generateTimeIntervals(8, 15, 2);
+this.Month_array = this.generateTimeIntervals(16, 15, 4);
+this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+this.Annual_array = this.generateTimeIntervals(64, 15, 16);
+
+console.log("Daily Array:", this.Quarter_array);
+console.log("Weekly Array:", this.Halfyear_array);
+console.log("Monthly Array:", this.Annual_array);
+}
+
+ initializeSelectedValue() {
+        this.OGownerid = this.projectInfo['OwnerEmpNo'];
+        this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
+        this.OGowner = this.projectInfo.Owner;
+        this.OGresponsible = this.projectInfo.Responsible;
+        this.selectedOwner = this.projectInfo.Owner;
+        this.selectedOwnResp = this.projectInfo.Responsible;
+        this.selectedcategory= this.projectInfo.Category;
+        this.selectedclient=this.projectInfo.Client;
+        this.ProjectType=this.projectInfo.Project_Type
+        this.ProjectName=this.projectInfo.Project_Name
+        this.ProjectDescription=this.projectInfo.Project_Description
+        this.Start_Date=this.projectInfo.StartDate
+        this.Submission_Name=this.projectInfo.SubmissionName
+        this.Allocated_Hours=this.projectInfo.StandardAllocatedHours
+        this.Allocated=this.projectInfo.AllocatedHours
+        this.End_Date =this.projectInfo.EndDate
+                      
+    }
+
+    onAction_updateProject() {  
+        //  console.log(this.selectedclient,"looping")
+
+      if(this.OGowner!=this.selectedOwner){
+        var owner=this.selectedOwner
+        this.selectedOwner=this.selectedOwner;
+      }
+      else{
+        var owner=this.OGownerid;
+        // this.selectedOwner=this.OGownerid;
+      }
+
+      if(this.OGresponsible!=this.selectedOwnResp){
+        var resp = this.selectedOwnResp;
+        this.selectedOwnResp=this.selectedOwnResp;
+      }
+      else{
+        var resp = this.OGresponsibleid;
+        // this.selectedOwnResp=this.OGresponsibleid;
+      }
+
+     const jsonobj={    
+         Project_Type:this.ProjectType, 
+         Project_Name:this.ProjectName,
+         Project_Description:this.ProjectDescription,
+         Owner:owner,
+         Responsible:resp,
+         Category:this.selectedcategory,      
+        Client:this.selectedclient,
+        StartDate:this.Start_Date,
+        SubmissionName:this.Submission_Name,
+        Allocated:this.Allocated_Hours,
+        EndDate:this.End_Date,
+        Annualdate:this.Annual_date,
+        AllocatedHours:this.Allocated
+
+     }
+     const jsonvalue=JSON.stringify(jsonobj)
+      console.log(jsonvalue ,'json');
+    }
+
 
 
 
@@ -1547,20 +1695,6 @@ submitDar() {
   // this.Clear_Feilds();
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2198,12 +2332,6 @@ GetApproval(code){
 
 
 
-
-
-
-
-
-
 // project submission code end here
 
 
@@ -2247,11 +2375,31 @@ meetingList: any = [];
 meeting_arry: any = [];
 meetinglength: any;
 
+upcomingMeetings:any=[];
+todaymeetings:any=[];
+last7dmeetings:any=[];
+lastMonthMeetings:any=[];
+olderMeetings:any=[];
+mtgFromD:string='';
+mtgUptoD:string='';
+mtgsInRange:any=[];
+mLdng:boolean=false;
+
+tdMtgCnt:number = 0;   // Today Meetings Count
+upcMtgCnt:number = 0;  // Upcoming Meetings Count
+lstMthCnt:number = 0;  // Last Month Meetings Count
+lst7dCnt:number = 0;   // Last 7 Days Meetings Count
+oldMtgCnt:number = 0;  // Older Meetings Count
+
+
+
 GetmeetingDetails() {
   this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+  this.ObjSubTaskDTO.startdate = null;
+  this.ObjSubTaskDTO.enddate = null;
+       
   this.service._GetMeetingList(this.ObjSubTaskDTO)
     .subscribe(data => {
-      // console.log(data,"meet")
       if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
         this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
         this.meeting_arry = this.meetingList;
@@ -2260,14 +2408,501 @@ GetmeetingDetails() {
         this.meeting_arry.forEach(element => {
           element.usersjson = JSON.parse(element.Addguest);
         });
+
       }
       else {
         this.meetinglength = 0;
       }
+
+
+      console.log('meeting we have:',this.meeting_arry);
+   // AFTER GETTING ALL MEETINGS DETAILS 
+
+       this.upcomingMeetings=this.getUpcomingMeeting(); 
+       this.upcomingMeetings.reverse();                                         // get upcoming meetings.
+       this.upcMtgCnt=this.upcomingMeetings.length;                           // store totalno of meetings.
+       this.upcomingMeetings=this.groupMeetingsByDate(this.upcomingMeetings);   // format them.
+       
+   
+
+       this.todaymeetings=this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
+       this.tdMtgCnt=this.todaymeetings.length;                                                        // store totalno of meetings.
+       this.todaymeetings=this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
+    
+       for(let i=1;i<=7;i++)
+       {
+           const date=new Date();                     // get the current date. 
+           date.setDate(date.getDate()-i);
+           this.last7dmeetings=this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));    
+       }                                                                                               // get last 7 days meetings.
+       this.lst7dCnt=this.last7dmeetings.length;                                                    // store totalno of meetings.
+       this.last7dmeetings=this.groupMeetingsByDate(this.last7dmeetings);                              // format them.  
+       
+
+       const date1=new Date();                 // currentdate.
+       date1.setMonth(date1.getMonth()-1);    // date1 is prev month.
+       this.meeting_arry.forEach(m=>{
+        
+           const sd=new Date(m.Schedule_date);
+           if(sd.getMonth()===date1.getMonth()&&sd.getFullYear()===date1.getFullYear())   
+           {  // when meeting held in last month
+                  this.lastMonthMeetings.push(m);
+           }
+           else if(!(sd.getTime()>date1.getTime()))
+           {   // when meeting held date is even order than last months
+               this.olderMeetings.push(m);
+           }    
+           
+            
+   
+       });
+
+       this.lstMthCnt=this.lastMonthMeetings.length;
+       this.oldMtgCnt=this.olderMeetings.length;
+
+       this.lastMonthMeetings=this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
+       this.olderMeetings=this.groupMeetingsByDate(this.olderMeetings);              // format them.
+       
+    });
+
+
+    //
+}
+
+
+openMeetingSidebar(){
+  document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
+  document.getElementById("rightbar-overlay").style.display = "block";      
+  // sidebar is open                
+  this.GetmeetingDetails(); // get all meeting details.
+ }
+
+closeMeetingSidebar(){
+  document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+} 
+
+
+getUpcomingMeeting()
+{
+    const cd=new Date();   // takes the current date.
+    const upcoming=this.meeting_arry.filter((meeting)=>{
+            const sd=new Date(meeting.Schedule_date);
+            return sd>cd;
+    });
+    return upcoming;
+}
+
+
+groupMeetingsByDate(ar)
+{
+   let result=[];
+   for(let i=0;i<ar.length;i++)
+   {
+    let date1=new Date(ar[i].Schedule_date);
+    if(!result.find((e)=>new Date(e.date).getTime()===date1.getTime())){
+        
+        let totalmeetings=[ar[i]];
+        for(let j=i+1;j<ar.length;j++){
+          
+           if(new Date(ar[j].Schedule_date).getTime()===date1.getTime())
+               totalmeetings.push(ar[j]);
+         }
+       result.push({date:date1,totalmeetings:totalmeetings})  
+    }
+   }
+   return result;
+}
+
+
+getMeetingsByDate(date){
+  const inputdate=new Date(date);
+  const meetingsfound=this.meeting_arry.filter((meeting)=>{
+           const tempd=new Date(meeting.Schedule_date);
+           return (tempd.getTime()===inputdate.getTime())
+  });
+  return meetingsfound;
+}
+
+
+getAttendeesInMeeting(people){  
+      if(Array.isArray(people))
+        {      let total=0;
+               people.forEach((pr)=>{
+                if(pr.Status==="Accepted")
+                 total=total+1;
+              });
+              return total;  
+        }
+     return "";   
+}
+   
+
+
+getMeetingsInRange(){
+    this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
+    this.ObjSubTaskDTO.startdate = this.mtgFromD;
+    this.ObjSubTaskDTO.enddate = this.mtgUptoD;
+    this.mLdng=true;     // made loading visible.
+    this.service._GetMeetingList(this.ObjSubTaskDTO).subscribe((res:any)=>{
+        this.mLdng=false;   // made loading invisible.
+      console.log("after sending meeting range:",res)
+      if(res&&res[0].MeetingFor_projects){  // if MeetingFor_projects is not '' , null , undefined
+        this.mtgsInRange=JSON.parse(res[0].MeetingFor_projects)
+        this.mtgsInRange.forEach(element => {
+          element.usersjson = JSON.parse(element.Addguest);
+        });
+        this.mtgsInRange=this.groupMeetingsByDate(this.mtgsInRange);
+        console.log("get meetings list:", this.mtgsInRange);
+      }
+      else{
+        this.mtgsInRange=[];  // when no meetings held during the range.
+      }
+             
+             
+    })
+
+}
+
+
+
+
+ScheduleType:string='';
+editTask: boolean = false;
+copyTask: boolean = false;
+create:boolean=false;
+draftid: number = 0;
+_AllEventTasksCount: number = 0;
+pending_status: boolean;
+_FutureEventTasksCount: number = 0;
+MinLastNameLength: boolean;
+MasterCode: any = [];
+
+Title_Name: any;
+Startts: any;
+Endtms: any;
+
+Projectstartdate: string = "";
+projectEnddate: string;
+Status_project: string; days
+AllocatedHours: number;
+BlockNameProject1: any;
+SubmissionName: string;
+_Exec_BlockName: string = "";
+
+
+
+Task_type(value:number){
+  this.selectedrecuvalue = "0";   
+  this._PopupConfirmedValue = 1; 
+  this.MinLastNameLength = true;
+  this._subname = false;
+  this._calenderDto = new CalenderDTO;
+  this.GetProjectAndsubtashDrpforCalender();
+  this.BlockNameProject1 = [];
+
+  // initialization
+
+  document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+  this.editTask = false;
+  this.copyTask = false;
+  this.create=true;
+  if (value===1) {
+    this.ScheduleType = "Task";
+    // document.getElementById("subtaskid").style.display = "block";
+    // document.getElementById("Guest_Name").style.display = "none";
+    // document.getElementById("Location_Name").style.display = "none";
+    // document.getElementById("Descrip_Name").style.display = "none";
+    // document.getElementById("core_viw123").style.display = "block";
+    // document.getElementById("core_viw121").style.display = "none";
+    // document.getElementById("core_viw222").style.display = "none";
+    // document.getElementById("core_Dms").style.display = "none";
+    // document.getElementById("online-add").style.display = "none";
+
+  }
+  else if(value===2){
+    this.ScheduleType = "Event";
+    // document.getElementById("subtaskid").style.display = "none";
+    // document.getElementById("Guest_Name").style.display = "block";
+    // document.getElementById("Location_Name").style.display = "block";
+    // document.getElementById("Descrip_Name").style.display = "block";
+    // document.getElementById("core_viw121").style.display = "block";
+    // document.getElementById("core_viw123").style.display = "none";
+    // document.getElementById("core_viw222").style.display = "block";
+    // document.getElementById("core_Dms").style.display = "block";
+    // document.getElementById("online-add").style.display = "block";
+
+  }
+}
+
+
+
+selectedrecuvalue: string;
+dayArr: any = [
+  {
+    "Day": "S",
+    "value": "Sun",
+    "checked": false
+  },
+  {
+    "Day": "M",
+    "value": "Mon",
+    "checked": false
+  },
+  {
+    "Day": "T",
+    "value": "Tue",
+    "checked": false
+  },
+  {
+    "Day": "W",
+    "value": "Wed",
+    "checked": false
+  },
+  {
+    "Day": "Th",
+    "value": "Thu",
+    "checked": false
+  },
+  {
+    "Day": "Fr",
+    "value": "Fri",
+    "checked": false
+  },
+  {
+    "Day": "Sa",
+    "value": "Sat",
+    "checked": false
+  }
+];
+MonthArr: any = [
+  { "Day": "01", "value": "01", "checked": false },
+  { "Day": "02", "value": "02", "checked": false },
+  { "Day": "03", "value": "03", "checked": false },
+  { "Day": "04", "value": "04", "checked": false },
+  { "Day": "05", "value": "05", "checked": false },
+  { "Day": "06", "value": "06", "checked": false },
+  { "Day": "07", "value": "07", "checked": false },
+  { "Day": "08", "value": "08", "checked": false },
+  { "Day": "09", "value": "09", "checked": false },
+  { "Day": "10", "value": "10", "checked": false },
+  { "Day": "11", "value": "11", "checked": false },
+  { "Day": "12", "value": "12", "checked": false },
+  { "Day": "13", "value": "13", "checked": false },
+  { "Day": "14", "value": "14", "checked": false },
+  { "Day": "15", "value": "15", "checked": false },
+  { "Day": "16", "value": "16", "checked": false },
+  { "Day": "17", "value": "17", "checked": false },
+  { "Day": "18", "value": "18", "checked": false },
+  { "Day": "19", "value": "19", "checked": false },
+  { "Day": "20", "value": "20", "checked": false },
+  { "Day": "21", "value": "21", "checked": false },
+  { "Day": "22", "value": "22", "checked": false },
+  { "Day": "23", "value": "23", "checked": false },
+  { "Day": "24", "value": "24", "checked": false },
+  { "Day": "25", "value": "25", "checked": false },
+  { "Day": "26", "value": "26", "checked": false },
+  { "Day": "27", "value": "27", "checked": false },
+  { "Day": "28", "value": "28", "checked": false },
+  { "Day": "29", "value": "29", "checked": false },
+  { "Day": "30", "value": "30", "checked": false },
+  { "Day": "31", "value": "31", "checked": false }
+];
+maxDate = "";
+_OldRecurranceId: string;
+_OldRecurranceValues: string;
+_PopupConfirmedValue: number;
+_subname: boolean;
+_calenderDto: CalenderDTO;
+ProjectListArray: any;
+_EmployeeListForDropdown: any[] = [];
+Portfoliolist_1: [];
+Note_deadlineexpire: boolean;
+Subtask: any;
+St_date: string = "";
+Ed_date: string;
+_status: string;
+Allocated_subtask: number;
+TM_DisplayName: string;
+Portfolio: any = [];
+SelectDms: any;
+
+viewconfirm() {
+
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+
+
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = true;
+    radio1.checked = false;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = true;
+
+    var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    radio3.disabled = false;
+    radio3.checked = false;
+    document.getElementById("div_thisevent").style.display = "none";
+
+    this._PopupConfirmedValue = 2;
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+    var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    radio3.disabled = false;
+    radio3.checked = false;
+    this._PopupConfirmedValue = 1;
+
+  }
+}
+
+LastLengthValidation11() {
+  if (this.Title_Name.trim().length < 3) {
+    this.MinLastNameLength = false;
+  }
+  else {
+    this.MinLastNameLength = true;
+  }
+}
+calculateDiff(dateSent) {
+  let currentDate = new Date();
+  dateSent = new Date(dateSent);
+  return Math.floor((Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate()) - Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())) / (1000 * 60 * 60 * 24));
+}
+
+
+GetProjectAndsubtashDrpforCalender() {
+  console.log(this._calenderDto);
+  this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+    ((data) => {
+      this.ProjectListArray = JSON.parse(data['Projectlist']);
+      this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+      this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+      console.log(this.Portfoliolist_1, "Project List Array");
+
     });
 }
 
+
+
+
+GetSubtasklistfromProject(MasterCode) {
+
+  this.ProjectListArray.forEach(element => {
+
+    if (element.Project_Code == MasterCode) {
+
+      this.Projectstartdate = element.StatDate;
+      this.projectEnddate = element.Enddate;
+      this.Status_project = element.Status;
+      this.AllocatedHours = element.Allocated;
+
+      var number = this.calculateDiff(this.projectEnddate);
+      const format2 = "YYYY-MM-DD"
+      if (number >= 90) {
+        // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+        this.Note_deadlineexpire = false;
+      }
+      else {
+        if (number < 0) {
+          if (this.ScheduleType == "Task") {
+            // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+            this.Note_deadlineexpire = true;
+          }
+          else {
+            // this.maxDate = moment(moment().add(90, 'days')).format(format2).toString();
+          }
+        }
+        else {
+          // this.maxDate = moment(this.projectEnddate).format("YYYY-MM-DD").toString();
+          this.Note_deadlineexpire = false;
+        }
+      }
+    }
+
+  });
+  if (MasterCode != undefined) {
+
+    this._calenderDto.Project_Code = MasterCode;
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+      ((data) => {
+        // console.log(data);
+        this.BlockNameProject1 = JSON.parse(data['Projectlist']);
+      });
+    this._subname = false;
+    this.ProjectListArray.forEach(element => {
+      if (element.Project_Code == MasterCode) {
+        this._Exec_BlockName = element.Exec_BlockName;
+        this.SubmissionName = element.Submission;
+      }
+    });
+    if (this._Exec_BlockName == "Standard Tasks" || this._Exec_BlockName == "To do List" || this._Exec_BlockName == "Routine Tasks") {
+      (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "none";
+
+    }
+    else {
+      (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
+    }
+  }
+}
+
+
+getChangeSubtaskDetais(Project_Code) {
+  this.BlockNameProject1.forEach(element => {
+
+    if (element.Project_Code == Project_Code) {
+      this.St_date = element.StatDate;
+      this.Ed_date = element.Enddate;
+      this._status = element.Status;
+      this.Allocated_subtask = element.Allocated
+      this.TM_DisplayName = element.TM_DisplayName
+    }
+  });
+
+
+}
+
+
 // meeting section code end here
+
+
+
+
+
+
+
+
+
 
 // project hold section and release section start
 hold_remarks: string;
@@ -2288,9 +2923,7 @@ onProject_Hold(id, Pcode) {
       this._Message = data['message'];
       if (this._Message == 'Project Hold Updated') {
         this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
-        // this.getReasonforholdandRejected();
-        // this.getRejectType();
-        this.closeTab();
+        this.closePrjHoldSideBar();
         this.getProjectDetails(Pcode);
         this.getholdate();
       }
@@ -2301,17 +2934,7 @@ onProject_Hold(id, Pcode) {
   }
 }
 
-closeTab(){
- 
-        this.hold_remarks='';
-        this.Holddate=null;
-        $('#kt_tab_pane_3').removeClass('active show');
-        $('#kt_tab_pane_1').removeClass('active show');
-        $('#hold-Prj-cancel-btn').removeClass('active');
-        $('#release-Prj-tab-btn').removeClass('active');
-        $('#kt_tab_pane_2').removeClass('active show');
-        $('#hold-Prj-tab-btn').removeClass('active');
-}
+
 
 orgValueChange1(val) {
   this.release_date = moment(val.value).format("MM/DD/YYYY");
@@ -2326,27 +2949,23 @@ holdreleaseProject(){
     this.approvalObj.Request_type = 'Project Release';
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Remarks = this.hold_remarks;
-
     this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-      this.closeTab();
+      this.closePrjReleaseSideBar();
       this._Message = (data['message']);
       if (this._Message == '1') {
         this.notifyService.showSuccess("Project released by "+this._fullname, "Success");
         this.getProjectDetails(this.URL_ProjectCode);
-        // this.getRejectType();
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release failed", "Failed");
-      }
-     
+      } 
     });
-  // this.Clear_Feilds();
   console.log(this.approvalObj,"cancel")
-}
-else{
-  this.closeTab();
+  }
+ else{
+  this.closePrjReleaseSideBar();
   this.notifyService.showError("Access denied","Failed")
-}
+  }
 }
 
 updateReleaseDate() {
@@ -2362,15 +2981,13 @@ updateReleaseDate() {
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Remarks = this.hold_remarks;
     this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
-  
-      this.closeTab();
       this._Message = (data['message']);
       if (this._Message == '1') {
         this.notifyService.showSuccess("Project release date updated", "Success");
         this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
         this.getProjectDetails(this.projectInfo.Project_Code);
         this.getholdate();
-        // this.getRejectType();
+        this.closePrjReleaseSideBar();
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release date not updated", "Failed");
@@ -2378,6 +2995,37 @@ updateReleaseDate() {
     });
   }
 
+}
+
+ 
+
+openPrjHoldSideBar(){
+  document.getElementById("prj-hold-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+closePrjHoldSideBar(){
+  this.hold_remarks='';
+  this.Holddate=null;
+  document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "none";  
+}
+
+
+
+openPrjReleaseSideBar(){
+  document.getElementById("prj-release-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+
+closePrjReleaseSideBar(){
+  this.hold_remarks='';
+  this.Holddate=null;
+  document.getElementById("prj-release-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";  
+  document.getElementById("newdetails").classList.remove("position-fixed");
 }
 
 // project hold section and release section end
@@ -2405,6 +3053,98 @@ changeStandard() {
   this.selectedFile = null;
   this._remarks = "";
 }
+
+
+// project cancel section  start
+
+openPrjCancelSb(){
+  document.getElementById("prj-cancel-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";  
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+
+closePrjCancelSb(){
+  this.hold_remarks='';
+  document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";  
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}
+
+
+updateProjectCancel(){
+
+  Swal.fire({
+    title: 'Project Cancel',
+    html: 'Are you sure to cancel the project "<strong>' + this.projectInfo.Project_Name +'</strong>"?<br>Note: The cancelled project will be deactivated.',
+    // icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+      if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = 'Project Cancel';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          this.closePrjCancelSb();
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.getapproval_actiondetails();
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project cancel failed", "Failed");
+          }
+        });
+      // this.Clear_Feilds();
+      console.log(this.approvalObj,"cancel")
+    }
+    else if(this.Current_user_ID==this.projectInfo.OwnerEmpNo || this.isHierarchy==true){
+        this.approvalObj.Project_Code = this.URL_ProjectCode;
+        this.approvalObj.Request_type = 'Project Cancel';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        this.closePrjCancelSb();
+          this._Message = (data['message']);
+          if (this._Message == '1') { 
+            this.notifyService.showSuccess("Project cancelled by "+this._fullname, "Success");
+            this.getProjectDetails(this.URL_ProjectCode);
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project cancel failed", "Failed");
+          }
+        });
+      // this.Clear_Feilds();
+      console.log(this.approvalObj,"cancel")
+    }
+    else{
+      this.closePrjCancelSb();
+      this.notifyService.showError("Access denied","Failed")
+    }
+      
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Project not canceled',
+        'error'
+      )
+      this.closePrjCancelSb();
+    }
+  });
+
+  
+}
+
+// project cancel section end
+
+
+
 
 
 achieveStandard() {

@@ -2834,11 +2834,14 @@ color:#9b9999;
 }
 
 
+div#prj-hold-sidebar {
+  background: #f2f6f6 !important;
+}
 /*------meetings css ----------*/
 .mt-date {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  text-align: center; 
   box-sizing: border-box;
   background-color: white;
   line-height: 1.5em;
@@ -2900,7 +2903,7 @@ color:#9b9999;
   font-size: 13px;
 }
 .kt-met-tlt-in h4 {
-  font-size: 20px;
+  font-size: 15px;
   text-transform: capitalize;
   color: #5e5f63;
 }
@@ -3111,12 +3114,57 @@ i.date-rg-icon {
   transform:rotate(360deg);
 }
 
+
+
+
+.total-meeting-count{
+ 
+    background-color: rgb(0, 0, 0,0.7);
+    color:white;
+    border-radius:70%;
+    padding:0.1em;
+    padding-left:0.5em; 
+    padding-right:0.5em;
+    position:relative;
+    right:10%;
+    font-family: 'Lucida Sans Unicode';
+    font-weight:bold;
+}
+
+
+
+
+
+.create-btm {
+
+  border-radius:10px;
+  opacity: 1;
+  animation: kt-scrolltop-show-animation .4s ease-out 1;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all .3s;
+  background: #fff;
+}
+
+
+.open_sidebar {
+  width: 50%;
+}
+
+
 .kt-quick-Project_edit_form--on{
   width: 58%;
 }
 .Project_type_DW {
   min-width: 160px;
 }
+#calender{
+  height: 1px;
+ 
+}
+
 label.pe-label {
   font-size: 13px;
   color: #8f8f8f;

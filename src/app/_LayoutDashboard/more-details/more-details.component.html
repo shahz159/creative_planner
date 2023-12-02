@@ -6973,7 +6973,7 @@
                                     *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks')">
                                     {{StartDate|date:'dd-MM-yyyy'}}/{{SubmissionName}} </h6>
                             </div>
-                            <div class="px-1"
+                            <div class="px-1" 
                                 *ngIf="Status=='Deadline Extend Under Approval' || Status=='Project Hold' || Status=='Project Hold Under Approval'">
                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                             </div>
@@ -7666,7 +7666,7 @@
         <div class="">
             <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
-                    <div><b>Edit category</b></div>
+                    <div><b>Edit category </b></div>
                 </li>
                 <li class="kt-nav__separator"></li>
                 <div class="height-scroll h-scr">
@@ -7710,7 +7710,7 @@
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
                         <div class="form-group">
-                            <label> Set new client <span class="text-danger">*</span> : <strong></strong></label>
+                            <label> Set new client<span class="text-danger">*</span> : <strong></strong></label>
                             <ng-select [(ngModel)]="selectedclient" placeholder="Select client">
                                 <ng-option [value]="item.Com_No" *ngFor="let item of Client_List"
                                     [disabled]="Client==item.Com_Name">
@@ -7786,7 +7786,7 @@
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
                         <div class="form-group">
-                            <label> Select new owner <span class="text-danger">*</span> : <strong></strong></label>
+                            <label> Select new owner<span class="text-danger">*</span> : <strong></strong></label>
                             <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new owner">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                     <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a>
@@ -7913,7 +7913,7 @@
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
                         <div class="form-group">
-                            <label> Select new owner <span class="text-danger">*</span> : <strong></strong></label>
+                            <label> Select new owner<span class="text-danger">*</span> : <strong></strong></label>
                             <ng-select [(ngModel)]="selectedOwnResp" placeholder=" Select new owner ">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                     <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a>
