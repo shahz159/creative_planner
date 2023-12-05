@@ -943,7 +943,7 @@
                             <ng-template #noProjectActionFound>
                                 <div class="no-prjact-found">
                                     <img class="no-prjact-found-img"
-                                        src="../../../../assets/images/noActionPresent.png" />
+                                        src="./assets/images/noActionPresent.png" />
                                     <h3 class="blank-txt fs-5 no-prjact-found-label">No Actions Created.</h3>
                                 </div>
                             </ng-template>
@@ -2648,7 +2648,7 @@
 
             <ng-template #noDMSFound>
                 <div class="no-DMS-found">
-                    <img src="../../../../assets/images/noDMSFound.png" class="no-DMS-found-image" />
+                    <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
                     <div class="bnk-txt mt-2 d-flex justify-content-center">
                         <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
                     </div>
@@ -3194,7 +3194,7 @@
             </div>
             <ng-template #noTimelinePresent>
                 <div class="notimeline-present">
-                    <img src="../../../../assets/images/noTimelinePresent.png" class="notimeline-present-img" />
+                    <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
                     <div class="bnk-txt mt-3 d-flex justify-content-center">
                         <h3 class="blank-txt fs-3 notimeline-present-label">Timeline not found.</h3>
                     </div>
@@ -3974,27 +3974,29 @@
                 </div>
             </div>
             <div class="kt-Attachament__body">
-                <div class="position-relative w-100 mb-2">
-                    <input type="text" autocomplete="off" name="search" placeholder="Search..."
-                        class="form-control right-flter-bd ng-untouched ng-pristine ng-valid" [(ngModel)]="SearchItem">
-                    <span class="cancl-icon curser-pointer" *ngIf="SearchItem" (click)="filterSearch()">
-                        <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                            </path>
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                        </svg>
-                    </span>
-
-                </div>
+                
                 <div class="kt-card-custom">
 
                     <div class="">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
                                 aria-labelledby="kt_tab_pane_1_4">
+                                
                                 <ng-container *ngIf="Project_List">
+                                    <div class="position-relative w-100 mb-2">
+                                        <input type="text" autocomplete="off" name="search" placeholder="Search..."
+                                            class="form-control right-flter-bd ng-untouched ng-pristine ng-valid" [(ngModel)]="SearchItem">
+                                        <span class="cancl-icon curser-pointer" *ngIf="SearchItem" (click)="filterSearch()">
+                                            <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                                                </path>
+                                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                            </svg>
+                                        </span>
+                    
+                                    </div>
                                 <ng-container *ngIf="(Project_List | filter:SearchItem).length>0 ; else searchPeople">
                                 <div class="user-list-card" *ngFor="let Data of Project_List | filter :SearchItem ;let i=index">
                                     <div class="mvc-vb">
@@ -4120,7 +4122,42 @@
                             </div>
                             <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel"
                                 aria-labelledby="kt_tab_pane_2_4">
-                                <div class="">
+                                <form>
+                                    <mat-form-field class="example-chip-list">
+                                      <mat-label>Add Support team</mat-label>
+                                      <mat-chip-list #chipList aria-label="Fruit selection">
+                                        <mat-chip *ngFor="let item of selectedEmployees;" (removed)="remove(item)">
+                                            <!-- <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/> -->
+                                          {{item.NonRACIS}}
+                                          <button matChipRemove [attr.aria-label]="'remove ' + item.NonRACIS">
+                                            <mat-icon>cancel</mat-icon>
+                                          </button>
+                                        </mat-chip>
+                                      </mat-chip-list>
+                                      <div class="d-flex">
+                                                <input
+                                                placeholder="Select employee from here"
+                                                #fruitInput
+                                                [formControl]="fruitCtrl"
+                                                [matChipInputFor]="chipList"
+                                                [matAutocomplete]="auto"
+                                                (input)="filterEmployees($event.target.value)" 
+                                            />
+                                            <mat-icon class="curser-pointer" (click)="_keeppanelopen()" *ngIf="isSelection==false">add_circle_outline</mat-icon>
+                                            <mat-icon class="curser-pointer" (click)="closePanel()" *ngIf="isSelection==true" >clear</mat-icon>
+                                      </div>
+                                        
+                                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                        <mat-option class="mat-font" *ngFor="let item of filteredEmployees" [value]="item.Emp_No" >
+                                            <mat-checkbox color="primary"  name="item" [checked]="isSelected(item)" (change)="selected($event)">{{item.NonRACIS}}</mat-checkbox>
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                    </mat-form-field>
+                                    <button class="Ct-btn" *ngIf="selectedEmployees.length>0" (click)="onProject_updateSupport(0)">Submit</button>
+                                </form>
+                                 
+
+                                <!-- <div class="">
                                     <div class="list-new-sp-team">
                                         <div class="user-list-card">
                                             <div class="add-check-box">
@@ -4188,7 +4225,7 @@
 
 
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -5840,7 +5877,7 @@
 
                            <ng-template #no_meetings_Present >
                             <div  *ngIf="todaymeetings.length===0"  style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;" >
-                                <img width="20%" height="20%"  src="../../../../assets/images/nomeeting.png"/>
+                                <img width="20%" height="20%"  src="./assets/images/nomeeting.png"/>
                                 <h3 class="blank-txt fs-3 notimeline-present-label">No meetings scheduled.</h3>
                               </div>
                            </ng-template>
