@@ -162,12 +162,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-
+    this.timearrays();
   }
 
   ngAfterViewInit():void{
      this.drawStatistics();
-     this.timearrays();
   }
 
   getusername() {
@@ -270,15 +269,18 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      
 
   getProjectDetails(prjCode:string) {
-      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {     
+      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
       this.Submission=JSON.parse(res[0].submission_json); 
-      console.log( this.Submission, "testtsfs")
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
+      this.type_list=this.projectInfo.typelist;
+      // console.log( this.type_list, "testtsfs")
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
       this.projectActionInfo=JSON.parse(res[0].Action_Json);
       this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+      this.type_list=JSON.parse(this.projectInfo['typelist'])          
+      this.ProjectType=this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
@@ -387,13 +389,23 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
    Project_details_edit(){
     document.getElementById("Project_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValue()
- 
+   }
+
+   Action_details_edit(){
+    document.getElementById("Action_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("newdetails").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    this.getResponsibleActions();
+    this.initializeSelectedValues()
+   
    }
 
    closeInfo() {
+    document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -807,7 +819,7 @@ getapprovalStats() {
       }
  } 
 });
-    console.log(this.requestDetails, 'transfer'); 
+   // console.log(this.requestDetails, 'transfer'); 
 }
 
 approvalClick(actionType) {
@@ -1232,7 +1244,7 @@ actionCompleted(){
                 fd.append("Remarks", this._remarks);
                 fd.append('file', this.selectedFile);
                 fd.append("Project_Name", this._Subtaskname);
-console.log(this.selectedFile,"action file")
+                console.log(this.selectedFile,"action file")
 
                 this.service._UpdateSubtaskByProjectCode(fd) 
                 .subscribe(data => {
@@ -1391,7 +1403,6 @@ OGowner:any;
 OGresponsible:any;
 OGownerid:any;
 OGresponsibleid:any;
-OGclient:any;
 OGclientId:any;
 Submission_Name:string
 Allocated_Hours:any;
@@ -1404,7 +1415,13 @@ Annual_array:any =[];
 End_Date:any
 Annual_date:any
 Allocated:any
-
+OGselectedcategoryid:any
+OGcategory:any
+OGselectedclientid:any
+OGclient:any;
+OGSubmission_Nameid:any
+OGSubmission:any;
+OGProjectType: any;
 
 
 generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
@@ -1434,41 +1451,57 @@ this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
 this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
 this.Annual_array = this.generateTimeIntervals(64, 15, 16);
 
-console.log("Daily Array:", this.Quarter_array);
-console.log("Weekly Array:", this.Halfyear_array);
-console.log("Monthly Array:", this.Annual_array);
+// console.log("Daily Array:", this.Quarter_array);
+// console.log("Weekly Array:", this.Halfyear_array);
+// console.log("Monthly Array:", this.Annual_array);
 }
+
+type_list:any
+OGProjectTypeid:any
+ActionName:any
 
  initializeSelectedValue() {
         this.OGownerid = this.projectInfo['OwnerEmpNo'];
         this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
-        this.OGowner = this.projectInfo.Owner;
-        this.OGresponsible = this.projectInfo.Responsible;
+        this.OGselectedcategoryid= this.projectInfo['Reportid'];
+        this.OGselectedclientid=this.projectInfo['ClientNo'];
+        this.OGSubmission_Nameid=this.projectInfo['SubmissionId'];
+        this.OGProjectTypeid=this.projectInfo['Project_Block'];
+        // console.log("test",this.OGProjectTypeid)
+        this.OGProjectType=this.projectInfo.Project_Type;
         this.selectedOwner = this.projectInfo.Owner;
+        this.OGowner = this.projectInfo.Owner;
         this.selectedOwnResp = this.projectInfo.Responsible;
+        this.OGresponsible = this.projectInfo.Responsible;
         this.selectedcategory= this.projectInfo.Category;
+        this.OGcategory= this.projectInfo.Category;    
         this.selectedclient=this.projectInfo.Client;
-        this.ProjectType=this.projectInfo.Project_Type
+        this.OGclient=this.projectInfo.Client 
+        this.Submission_Name=this.projectInfo.SubmissionName
+        this.OGSubmission=this.projectInfo.SubmissionName
         this.ProjectName=this.projectInfo.Project_Name
         this.ProjectDescription=this.projectInfo.Project_Description
         this.Start_Date=this.projectInfo.StartDate
-        this.Submission_Name=this.projectInfo.SubmissionName
         this.Allocated_Hours=this.projectInfo.StandardAllocatedHours
         this.Allocated=this.projectInfo.AllocatedHours
-        this.End_Date =this.projectInfo.EndDate
-                      
+        this.End_Date =this.projectInfo.EndDate;  
     }
 
     onAction_updateProject() {  
-        //  console.log(this.selectedclient,"looping")
-
+      if(this.OGProjectType!=this.ProjectType){
+        var type=this.ProjectType
+        this.ProjectType=this.ProjectType;
+      }
+      else{
+        var type: string=this.OGProjectTypeid;
+      }
+         
       if(this.OGowner!=this.selectedOwner){
         var owner=this.selectedOwner
         this.selectedOwner=this.selectedOwner;
       }
       else{
         var owner=this.OGownerid;
-        // this.selectedOwner=this.OGownerid;
       }
 
       if(this.OGresponsible!=this.selectedOwnResp){
@@ -1476,30 +1509,164 @@ console.log("Monthly Array:", this.Annual_array);
         this.selectedOwnResp=this.selectedOwnResp;
       }
       else{
-        var resp = this.OGresponsibleid;
-        // this.selectedOwnResp=this.OGresponsibleid;
+        var resp = this.OGresponsibleid;    
+      }
+
+      if(this.OGcategory!=this.selectedcategory){
+        var category = this.selectedcategory;
+        this.selectedcategory=this.selectedcategory;
+      }
+      else{
+        var category = this.OGselectedcategoryid;    
+      }
+
+      if(this.OGclient!=this.selectedclient){
+        var client = this.selectedclient;
+        this.selectedclient=this.selectedclient;
+      }
+      else{
+        var client:string = this.OGselectedclientid;    
+      }
+
+      if(this.OGSubmission!=this.Submission_Name){
+        var Submission = this.Submission_Name;
+        this.Submission_Name=this.Submission_Name;
+      }
+      else{
+        var Submission:string = this.OGSubmission_Nameid;    
+      }
+
+      if(this.OGSubmission!=this.Submission_Name){
+        var Submission = this.Submission_Name;
+        this.Submission_Name=this.Submission_Name;
+      }
+      else{
+        var Submission:string = this.OGSubmission_Nameid;    
       }
 
      const jsonobj={    
-         Project_Type:this.ProjectType, 
+         Project_Type:type, 
          Project_Name:this.ProjectName,
          Project_Description:this.ProjectDescription,
          Owner:owner,
          Responsible:resp,
-         Category:this.selectedcategory,      
-        Client:this.selectedclient,
-        StartDate:this.Start_Date,
-        SubmissionName:this.Submission_Name,
-        Allocated:this.Allocated_Hours,
-        EndDate:this.End_Date,
-        Annualdate:this.Annual_date,
-        AllocatedHours:this.Allocated
-
+         Category:category,      
+         Client:client,
+         StartDate:this.Start_Date,
+         EndDate:this.End_Date,
+         SubmissionName:Submission,
+         Allocated:this.Allocated_Hours["$ngOptionLabel"],   
+         AllocatedHours:this.Allocated,
+         Recurrence:this.Annual_date,
      }
      const jsonvalue=JSON.stringify(jsonobj)
       console.log(jsonvalue ,'json');
     }
 
+
+    ActionDescription:any
+    ActionOwner:any
+    ActionResponsible:any
+    Actioncategory:any
+    ActionClient:any
+    ActionstartDate:any
+    ActionendDate:any
+    ActionDuration:any
+    ActionAllocatedHours:any
+    ActionOwnerid:any
+    OGActionOwner:any
+    OGActionResponsible:any
+    ActionResponsibleid:any
+    ActionClientid:any
+    OGActionClient:any
+   
+
+    /// Action Edits start
+    initializeSelectedValues() {
+      this.ActionOwnerid=this.projectActionInfo[this.currentActionView].Project_Owner;
+      this.ActionResponsibleid=this.projectActionInfo[this.currentActionView].Team_Res;
+      this.ActionClientid=this.projectActionInfo[this.currentActionView].ClientNo;
+      this.OGselectedcategoryid= this.projectInfo['Reportid']
+       this.OGProjectTypeid=this.projectInfo['Project_Block'];    
+      this.OGProjectType=this.projectInfo.Project_Type;
+      this.OGActionOwner=this.projectActionInfo[this.currentActionView].Owner;  
+      this.ActionOwner=this.projectActionInfo[this.currentActionView].Owner;
+      this.ActionResponsible=this.projectActionInfo[this.currentActionView].Responsible;
+      this.OGActionResponsible=this.projectActionInfo[this.currentActionView].Responsible;
+      this.ActionClient=this.projectActionInfo[this.currentActionView].Client;
+      this.OGActionClient=this.projectActionInfo[this.currentActionView].Client;
+
+      this.selectedcategory= this.projectInfo.Category;
+      this.OGcategory= this.projectInfo.Category; 
+      this.ActionName=this.projectActionInfo[this.currentActionView].Project_Name;
+      this.ActionDescription=this.projectActionInfo[this.currentActionView].Project_Description;
+      this.ActionstartDate=this.projectActionInfo[this.currentActionView].StartDate
+      this.ActionendDate=this.projectActionInfo[this.currentActionView].EndDate
+      this.ActionDuration=this.projectActionInfo[this.currentActionView].Duration
+      this.ActionAllocatedHours=this.projectActionInfo[this.currentActionView].AllocatedHours
+  }
+
+  onAction_update() {  
+    if(this.OGProjectType!=this.ProjectType){
+      var type=this.ProjectType
+      this.ProjectType=this.ProjectType;
+    }
+    else{
+      var type: string=this.OGProjectTypeid;
+    }
+
+       if(this.OGActionOwner!=this.ActionOwner){
+      var actionowner=this.ActionOwner
+      this.ActionOwner=this.ActionOwner;
+     }
+     else{
+      var actionowner =this.ActionOwnerid;
+     }
+
+
+    if(this.OGActionResponsible!=this.ActionResponsible){
+      var actionresp = this.ActionResponsible;
+      this.ActionResponsible=this.ActionResponsible;
+    }
+    else{
+      var actionresp = this.ActionResponsibleid;    
+    }
+
+    if(this.OGActionClient!=this.ActionClient){
+      var Actionclient = this.ActionClient;
+      this.ActionClient=this.ActionClient;
+    }
+    else{
+      var Actionclient = this.ActionClientid;    
+    }
+
+
+    if(this.OGcategory!=this.selectedcategory){
+      var category = this.selectedcategory;
+      this.selectedcategory=this.selectedcategory;
+    }
+    else{
+      var category = this.OGselectedcategoryid;    
+    }
+
+  
+   const jsonobj={    
+    Project_Type:type,  
+    Project_Name:this.ActionName,
+    Project_Description:this.ActionDescription,
+    Owner:actionowner,
+    Responsible:actionresp,
+    Category:category,
+    Client:Actionclient,
+    StartDate: this.ActionstartDate,
+    EndDate:this.ActionendDate,
+    Allocated:this.ActionAllocatedHours, 
+
+   }
+   const jsonvalues=JSON.stringify(jsonobj)
+    console.log(jsonvalues ,'json');
+  }
+    /// Action Edits End
 
 
 
@@ -3167,11 +3334,6 @@ achieveStandard() {
       //   this.notifyService.showSuccess(this._Message, 'Success');
       // }
       this.closeInfo();
-      
-      
-      //59 this.GetSubtask_Details();
-      //59 this.GetProjectDetails();
-
 
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
@@ -3201,8 +3363,6 @@ notachieveStandard() {
         this.notifyService.showSuccess(this._Message, 'Success');
       }
       this.closeInfo();
-    //59  this.GetSubtask_Details();
-    //59  this.GetProjectDetails();
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
     });
