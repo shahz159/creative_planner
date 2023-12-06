@@ -168,7 +168,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.getapproval_actiondetails();      // get main project approval state.
     this.getholdate();      
     this.GetPeopleDatils();
-    
+    this.timearrays();
   
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -179,7 +179,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-    this.timearrays();
   }
 
   ngAfterViewInit():void{
@@ -345,13 +344,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
-
+  actionCost:any='';
 
   showActionDetails(index:number|undefined)
   {
   
     this.currentActionView=index;
-      
+    this.actionCost=index&&this.projectActionInfo[this.currentActionView].Project_Cost;
     if(index&&this.projectActionInfo[index].Status==="Under Approval")
     this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
@@ -431,6 +430,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
    }
 
    closeInfo() {
+    this._remarks=''
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1478,9 +1478,9 @@ this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
 this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
 this.Annual_array = this.generateTimeIntervals(64, 15, 16);
 
-// console.log("Daily Array:", this.Quarter_array);
-// console.log("Weekly Array:", this.Halfyear_array);
-// console.log("Monthly Array:", this.Annual_array);
+console.log("Daily Array:", this.Daily_array);
+console.log("Weekly Array:", this.Week_array);
+console.log("Monthly Array:", this.Month_array);
 }
 
 type_list:any
@@ -1514,7 +1514,8 @@ ActionName:any
         this.End_Date =this.projectInfo.EndDate;  
     }
 
-    onAction_updateProject() {  
+    onAction_updateProject(val) {  
+      this._remarks='';
       if(this.OGProjectType!=this.ProjectType){
         var type=this.ProjectType
         this.ProjectType=this.ProjectType;
@@ -1571,6 +1572,13 @@ ActionName:any
         var Submission:string = this.OGSubmission_Nameid;    
       }
 
+      if(type=='003' || type=='008'){
+        var allocation = this.Allocated_Hours["$ngOptionLabel"];
+      }
+      else{
+        var allocation = this.Allocated;
+      }
+
      const jsonobj={    
          Project_Type:type, 
          Project_Name:this.ProjectName,
@@ -1582,13 +1590,56 @@ ActionName:any
          StartDate:this.Start_Date,
          EndDate:this.End_Date,
          SubmissionName:Submission,
-         Allocated:this.Allocated_Hours["$ngOptionLabel"],   
-         AllocatedHours:this.Allocated,
-         Recurrence:this.Annual_date,
+         AllocatedHours:allocation
      }
      const jsonvalue=JSON.stringify(jsonobj)
       console.log(jsonvalue ,'json');
+
+     if(val==0){
+          this.approvalObj.Emp_no=this.Current_user_ID;
+          this.approvalObj.Project_Code=this.URL_ProjectCode;
+          this.approvalObj.json=jsonvalue;
+          this.approvalObj.Remarks=this._remarks;
+          this.approvalObj.isApproval=val;
+
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+            console.log(data['message'],"edit response");
+            if(data['message']=='1'){
+              this.notifyService.showSuccess("Updated successfully","Success");
+            }
+            else if(data['message']=='2'){
+              this.notifyService.showError("Not updated","Failed");
+            }
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.closeInfo();
+        });
+     }
+     else if(val==1){
+      this.approvalObj.Emp_no=this.Current_user_ID;
+      this.approvalObj.Project_Code=this.URL_ProjectCode;
+      this.approvalObj.json=jsonvalue;
+      this.approvalObj.Remarks=this._remarks;
+      this.approvalObj.isApproval=val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+        console.log(data['message'],"edit response");
+        if(data['message']=='3'){
+          this.notifyService.showSuccess("Project updated and Approved successfully","Success");
+        }
+        else if(data['message']=='2'){
+          this.notifyService.showError("Not updated","Failed");
+        }
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.getapprovalStats();
+        this.closeInfo();
+    });
+ }
+
+    
+
+
     }
+    // Recurrence:this.Annual_date,
 
 
     ActionDescription:any
@@ -1634,6 +1685,7 @@ ActionName:any
   }
 
   onAction_update() {  
+    this._remarks='';
     if(this.OGProjectType!=this.ProjectType){
       var type=this.ProjectType
       this.ProjectType=this.ProjectType;
@@ -1688,10 +1740,37 @@ ActionName:any
     StartDate: this.ActionstartDate,
     EndDate:this.ActionendDate,
     Allocated:this.ActionAllocatedHours, 
-
    }
    const jsonvalues=JSON.stringify(jsonobj)
     console.log(jsonvalues ,'json');
+
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.Project_Code=this.URL_ProjectCode;
+    this.approvalObj.json=jsonvalues;
+    this.approvalObj.Remarks=this._remarks;
+
+  this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+      console.log(data['message'],"edit response");
+      if(data['message']=='1'){
+        this.notifyService.showSuccess("Updated successfully","Success");
+      }
+      else if(data['message']=='2'){
+        this.notifyService.showError("Not updated","Failed");
+      }
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.closeInfo();
+  });
+  }
+
+
+
+
+content = 'Your long text goes here...';
+  limit = 200; // Set the initial limit
+  isExpanded = false;
+  toggleReadMore() {
+   
+    this.isExpanded = !this.isExpanded;
   }
     /// Action Edits End
 
@@ -3360,8 +3439,7 @@ achieveStandard() {
       //   this._Message = (JSON.parse(myJSON).body).Message;
       //   this.notifyService.showSuccess(this._Message, 'Success');
       // }
-      this.closeInfo();
-
+      this.closeInfo();  
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
     });

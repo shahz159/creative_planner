@@ -3203,7 +3203,7 @@ label.pe-label {
   padding: 5px 5px !important;
 }
 .Ic_ed input {
-  height: 29px;
+  height: 36px;
   margin-top: 5px;
 }
 .Ic_ed {
@@ -3217,4 +3217,37 @@ label.pe-label {
 mat-icon:hover {
   color: blue;
   transform: scale(1.2);
+}
+span.Wd_text_kt {
+  font-size: 12px;
+}
+.kt-info-lable-v.mb-off {
+  margin-bottom: 4px;
+}
+.input-icon.Sub_In_ed input {
+  border: 1px solid #ccc;
+}
+
+.date-border-v {
+  height: 36px;
+  margin-top: 5px;
+  border: 1px solid #e2e5ec;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.date-border-v input {
+  margin: 0px !important;
+  padding-bottom: 0px !important;
+}
+.date-border-v input {
+  margin: 0px !important;
+  padding: 0px 5px;
+  height: auto;
+}
+.input-icon.Sub_In_ed.date-border-v.d-flex .input-group-append.h-2 {
+  margin-top: -2px;
+  margin-right: -4px;
+}
+.readonly{
+  color: #ccc!important;
 }
