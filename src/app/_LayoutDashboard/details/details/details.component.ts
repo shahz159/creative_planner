@@ -3542,6 +3542,7 @@ _keeppanelopen(){
 
 closePanel(){
   this.isSelection=false;
+  this.fruitInput.nativeElement.value = '';
   requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
 }
 
