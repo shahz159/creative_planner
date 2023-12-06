@@ -4131,7 +4131,7 @@
                                     <mat-form-field class="example-chip-list">
                                       <mat-label>Add Support team</mat-label>
                                       <mat-chip-list #chipList aria-label="Fruit selection">
-                                        <mat-chip *ngFor="let item of selectedEmployees;" (removed)="remove(item)">
+                                        <mat-chip *ngFor="let item of selectedEmployees;" class="Data_chip_kt" (removed)="remove(item)">
                                             <!-- <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/> -->
                                           {{item.NonRACIS}}
                                           <button matChipRemove [attr.aria-label]="'remove ' + item.NonRACIS">
@@ -6684,9 +6684,15 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="Project_type_DW col-lg-6">
+                        <div class="input-icon Sub_In_ed" style="max-width: 140px;" *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
+                            <input type="text" class="form-control readonly" [(ngModel)]="ProjectType"
+                                readonly />
+                        </div>
+                        <div class="Project_type_DW" *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
                             <ng-select [(ngModel)]="ProjectType" placeholder="Change task type">
-                                <ng-option [value]="item.typeid" *ngFor="let item of type_list">{{item.typename}}</ng-option>           
+                                <ng-option [value]="item.typeid" *ngFor="let item of type_list">{{item.typename}}
+                                    <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
+                                </ng-option>           
                             </ng-select>
                         </div>
                     </div>
@@ -6721,7 +6727,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Project description</label>
                             <div class="input-icon project_des_ed">
-                                <textarea type="text" class="form-control" placeholder="Search..."
+                                <textarea type="text" class="form-control" placeholder="Search..." height="60px"
                                     [(ngModel)]="ProjectDescription"></textarea>
                             </div>
                         </div>
@@ -6941,12 +6947,11 @@
                         </div>
                     </div>
                 </div>   
-                <!-- <div class="col-lg-4 text-left"  *ngIf="projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')" > -->        
                 <div class="col-lg-4 text-left"  *ngIf="ProjectType == '001' || ProjectType =='Core Tasks' || ProjectType=='002' || ProjectType =='Secondary Tasks' ||ProjectType=='011' || ProjectType =='To do List'">
                     <div class="form-group mb-2 Ic_ed">
                         <div class="kt-info-lable-v"> Allocated hours
                             <div class="input-icon Sub_In_ed">
-                                <input type="text" class="form-control" [(ngModel)]="Allocated" />
+                                <input type="text" class="form-control readonly" [(ngModel)]="Allocated" readonly/>
                             </div>
                         </div>
                     </div>
@@ -7022,40 +7027,6 @@
                                 </ng-select>
                             </div>
                     </div>
-                        <!-- <div class="col-lg-4 text-left">
-                            <div class="form-group mb-2 Ic_ed">
-                                <div class="kt-info-lable-v"> RACIS</div>
-                                <div class="input-icon Sub_In_ed">
-                                    <div class="kt-support-view">
-                                        <div class="symbol-group symbol-hover flex-nowrap">
-                                            <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
-                                                data-bs-original-title="Michael Eberon" data-kt-initialized="1"
-                                                class="symbol symbol-35px symbol-circle">
-                                                <img alt="Pic"
-                                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg">
-                                            </div>
-                                            <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
-                                                data-bs-original-title="Michael Eberon" data-kt-initialized="1"
-                                                class="symbol symbol-35px symbol-circle">
-                                                <img alt="Pic"
-                                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
-                                            </div>
-                                            <div data-bs-toggle="tooltip" aria-label="Barry Walter"
-                                                data-bs-original-title="Barry Walter" data-kt-initialized="1"
-                                                class="symbol symbol-35px symbol-circle">
-                                                <img alt="Pic"
-                                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-12.jpg">
-                                            </div>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users"
-                                                class="symbol symbol-35px symbol-circle">
-                                                <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                       
                     </div>
                    
                 </ng-container>           
@@ -7136,7 +7107,11 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="Project_type_DW">
+                        <!-- <div class="Project_type_DW">
+                            <input type="text" class="form-control readonly" [(ngModel)]="ProjectType"
+                                readonly />
+                        </div> -->
+                        <div class="input-icon Sub_In_ed" style="max-width: 140px;">
                             <input type="text" class="form-control readonly" [(ngModel)]="ProjectType"
                                 readonly />
                         </div>
@@ -7172,7 +7147,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Action description</label>
                             <div class="input-icon project_des_ed">
-                                <textarea type="text" class="form-control" placeholder="Search..."
+                                <textarea type="text" class="form-control" placeholder="Search..." height="60px"
                                     [(ngModel)]="ActionDescription"></textarea>
                             </div>
                         </div>
@@ -7389,7 +7364,7 @@
                     <div class="form-group mb-2 Ic_ed">
                         <div class="kt-info-lable-v"> Allocated hours
                             <div class="input-icon Sub_In_ed">
-                                <input type="text" class="form-control" [(ngModel)]="ActionAllocatedHours" />
+                                <input type="text" class="form-control readonly" [(ngModel)]="ActionAllocatedHours" readonly/>
                             </div>
                         </div>
                     </div>
@@ -7400,7 +7375,7 @@
                     <div class="form-group ">
                         <label for="exampleFormControlFile1">Remarks</label>
                         <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
-                        [(ngModel)]="_remarks"    style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
+                        [(ngModel)]="_remarks" style="height: 100px;"></textarea>
                     </div>
                 </div>
             </div>   
