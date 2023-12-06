@@ -2069,10 +2069,12 @@
                                         </p>
                                     </div> -->
                                     <div class="kt-project-desc w-80">
-                                        <p>{{projectActionInfo[currentActionView].Project_Description | slice:0:limit}} 
+                                        <p>{{projectActionInfo[currentActionView].Project_Description | slice:0:limit}}
+                                         {{ isExpanded ? (projectActionInfo[currentActionView].Project_Description | slice:limit): ' ' }}
                                         </p>
+                                        <ng-container *ngIf="projectActionInfo[currentActionView].Project_Description.length>180">
                                         <button (click)="toggleReadMore()">{{ isExpanded ? 'Read Less' : 'Read More' }}</button>
-   
+                                    </ng-container>
                                     </div>
 
 
