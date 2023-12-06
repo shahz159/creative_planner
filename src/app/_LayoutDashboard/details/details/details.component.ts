@@ -1765,7 +1765,7 @@ ActionName:any
 
 
 
-content = 'Your long text goes here...';
+
   limit = 200; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
