@@ -21,5 +21,8 @@ export class ApprovalDTO {
     sendFrom:any;
     responselist:any;
     standardid:any;
+    json:any;
+    isApproval:any;
+
 
 }

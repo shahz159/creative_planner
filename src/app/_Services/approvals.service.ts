@@ -209,4 +209,15 @@ export class ApprovalsService {
 
   }
 
+
+  NewUpdateNewProjectDetails(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Project_Code = obj.Project_Code;
+    this.obj_approvalDTO.json = obj.json;
+    this.obj_approvalDTO.Remarks = obj.Remarks;
+    this.obj_approvalDTO.isApproval = obj.isApproval;
+
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateNewProjectDetails", this.obj_approvalDTO);
+
+  }
 }
