@@ -47,7 +47,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     HeaderComponent,
     SidebarComponent,
     ConfirmDialogComponent,
-    TimelineComponent
+    TimelineComponent,
     // MeetingReportComponent
    
     // NotificationComponent    

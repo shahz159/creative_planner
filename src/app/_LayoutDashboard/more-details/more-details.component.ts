@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am5 from "@amcharts/amcharts5";
@@ -402,6 +402,7 @@ export class MoreDetailsComponent implements OnInit {
   approve_details: any;
   _fullname: any;
   isAction:boolean = false;
+  showContent = false;
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -413,15 +414,16 @@ export class MoreDetailsComponent implements OnInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
-    this.getusername();
+
+    this.getRACISandNonRACIS();
     this.gethierarchy();
+    this.getusername();
     this.getholdate();
     this.getRejectType();
     this.getReasonforholdandRejected();
     this.GetProjectDetails();
     this.GetSubtask_Details();
     this.getapproval_actiondetails();
-    this.getRACISandNonRACIS();
     this.dar_details();
     this.getResponsibleActions();
     this.getapprovalStats();
@@ -633,6 +635,7 @@ export class MoreDetailsComponent implements OnInit {
       else {
         this.isHierarchy = false;
       }
+      this.showContent = true;
     });
   }
 
@@ -1531,16 +1534,30 @@ export class MoreDetailsComponent implements OnInit {
     this._inputAttachments = e.target.files[0].name;
   }
 
-
+  userFound:boolean=false;
   getRACISandNonRACIS() {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        // console.log(data,"RACIS");
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+
         this.RACISList = (JSON.parse(data[0]['RacisList']));
+        console.log(this.RACISList,"RACIS");
+
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+        if (this.RACISList && this.RACISList.length > 0) {
+          // Extract Emp_No values from this.RACISList array
+          const racisUserIds = this.RACISList.map((user: any) => user.Emp_No);
+          // Check if currentUserId is in the racisUserIds array
+          this.userFound = racisUserIds.includes(this.Current_user_ID);
+        
+          console.log(this.userFound, this.isHierarchy, "pagett"); // true or false
+        } else {
+          console.log('this.RACISList is either undefined or empty.');
+        }
       });
+
+      
 
     // this.service.GetHierarchydropdownforMoredetails(this.Current_user_ID).subscribe(
     //   (data) => {
@@ -1696,6 +1713,11 @@ export class MoreDetailsComponent implements OnInit {
         let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
         this.standardDuration = (data2[0]['DurationTime']);
       });
+
+  }
+
+  ngOnDestroy(){
+
   }
 
   isExpanded: boolean = false;

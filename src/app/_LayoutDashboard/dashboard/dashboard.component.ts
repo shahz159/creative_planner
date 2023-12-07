@@ -3637,7 +3637,7 @@ export class DashboardComponent implements OnInit {
   }
 
   customizeEvent(info) {
-    const eventDate = info.event.start;
+    const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
     if (eventDate < currentDate) {

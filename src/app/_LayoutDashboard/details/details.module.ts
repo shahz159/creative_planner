@@ -1,14 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+
 import { DetailsRoutingModule } from './details-routing.module';
-import { DetailsComponent, MY_FORMATS } from './details/details.component';
+import { DetailsComponent} from './details/details.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
@@ -18,15 +19,21 @@ import { MatCardModule } from '@angular/material/card';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+
 
 //import { FilterPipe } from 'path-to-filter-pipe';
 
 @NgModule({
   declarations: [
     // FilterPipe,
-    DetailsComponent,
-   
-    
+    DetailsComponent
   ],
   imports: [
     AngularEditorModule,
@@ -38,13 +45,18 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
     MatDatepickerModule,Ng2SearchPipeModule,
     MatSelectModule,
     MatCardModule,
-    GooglePlaceModule
-    
-  ],
+    GooglePlaceModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+    MatCheckboxModule
+    ],
   providers: [ 
-    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent,
-    ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}
-   ]
+    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent
+   ],
+   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DetailsModule { }

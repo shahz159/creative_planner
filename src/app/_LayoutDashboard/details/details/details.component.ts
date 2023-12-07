@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, inject, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -24,37 +24,81 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { map, startWith } from 'rxjs/operators';
+import { MatChipInput } from '@angular/material/chips';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
+
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 
 
 declare var FusionCharts: any;
+ 
 
 declare var $: any;
-export const MY_FORMATS = {
+// export const MY_FORMATS = {
+//   parse: {
+//     dateInput: "YYYY-MM-DD"
+//   },
+//   display: {
+//     dateInput: "dddd, MMMM D YYYY",
+//     monthYearLabel: "MMM YYYY",
+//     dateA11yLabel: "YYYY-MM-DD HH:mm:ss",
+//     monthYearA11yLabel: "MMMM YYYY"
+//   }
+// };
+export const MY_DATE_FORMATS = {
   parse: {
-    dateInput: "YYYY-MM-DD"
+    dateInput: 'DD-MM-YYYY',
   },
   display: {
-    dateInput: "dddd, MMMM D YYYY",
-    monthYearLabel: "MMM YYYY",
-    dateA11yLabel: "YYYY-MM-DD HH:mm:ss",
-    monthYearA11yLabel: "MMMM YYYY"
-  }
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
 };
+
 
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
-  template: `{{ myTime | date: 'h:mm a' }}`
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
+
 export class DetailsComponent implements OnInit,AfterViewInit{
   myTime = new Date();
   projectInfo:any;
@@ -113,12 +157,23 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   ObjSubTaskDTO: SubTaskDTO;
   Activity_List:any
   Project_List:any;
+  filteredEmployees: any= [];
+  Client_List: any;
+  selectedclient: string;
+  owner_dropdown: any;
+  selectedOwnResp: any;
+  responsible_dropdown: any;
+  Category_List: any;
+  selectedcategory: any;
+  EndDate1: any = new Date();
 
+  @ViewChild('auto') autoComplete: MatAutocomplete;
+  @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
 
-  
+  // @ViewChild('fruitInput') fruitInput: MatChipInput;
+  @ViewChild('fruitInput') fruitInput: ElementRef;
 
-
- 
 
 
 
@@ -137,14 +192,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      
       this.ObjSubTaskDTO = new SubTaskDTO();
       this.objProjectDto = new ProjectDetailsDTO();
-      this.objPortfolioDto = new PortfolioDTO()
+      this.objPortfolioDto = new PortfolioDTO();  
+      this.approvalObj=new ApprovalDTO();              
      }
+
   charts() { }
   
   
   ngOnInit(): void {
-
-
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -153,7 +208,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.Current_user_ID=localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
-    this.approvalObj=new ApprovalDTO();              
     this.getapprovalStats();       
     this.getusername(); 
     
@@ -161,9 +215,10 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
     this.getapproval_actiondetails();      // get main project approval state.
-    this.getholdate();                     // get project hold date.
-   
-  
+    this.getholdate();      
+    this.GetPeopleDatils();
+    this.timearrays();
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
@@ -172,6 +227,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.minhold.setDate(this.minhold.getDate() + 1);     
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     //
   }
 
@@ -275,29 +331,45 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
+   Submission:any
+     
 
   getProjectDetails(prjCode:string) {
-      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+      this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
+      this.Submission=JSON.parse(res[0].submission_json); 
       this.projectInfo=JSON.parse(res[0].ProjectInfo_Json)[0];  
+      this.type_list=this.projectInfo.typelist;
+      // console.log( this.type_list, "testtsfs")
       this.Pid=JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode=this.projectInfo.Project_Code;
-      this.projectActionInfo=JSON.parse(res[0].Action_Json);     // projectActionInfo is an Array of obj.
+      this.projectActionInfo=JSON.parse(res[0].Action_Json);
       this.calculateProjectActions();    // calculate project actions details.
-     console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+      console.log("projectInfo:",this.projectInfo,"projectActionInfo:",this.projectActionInfo)
+      this.type_list=JSON.parse(this.projectInfo['typelist'])          
+      this.ProjectType=this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
     });
   }
 
-
+  nonRacisList:any;
 
   GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data)=>{
       if(data !=null && data !=undefined){       
-        this.Project_List=JSON.parse(data[0]['RacisList'])     
+        this.Project_List=JSON.parse(data[0]['RacisList']);
+        console.log(this.Project_List,"wsa")    
       }
-    })
+    });
+
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+        // console.log(data,"RACIS");
+        this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+      });
+
+    this.filteredEmployees = this.nonRacisList;
   }
 
 
@@ -322,13 +394,13 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 
 
-
+  actionCost:any='';
 
   showActionDetails(index:number|undefined)
   {
   
     this.currentActionView=index;
-      
+    this.actionCost=index&&this.projectActionInfo[this.currentActionView].Project_Cost;
     if(index&&this.projectActionInfo[index].Status==="Under Approval")
     this.GetApproval(this.projectActionInfo[index].Project_Code);
   }
@@ -392,10 +464,24 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
    Project_details_edit(){
     document.getElementById("Project_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.getResponsibleActions();
+    this.initializeSelectedValue()
+   }
+
+   Action_details_edit(){
+    document.getElementById("Action_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("newdetails").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    this.getResponsibleActions();
+    this.initializeSelectedValues()
+   
    }
 
    closeInfo() {
+    this._remarks=''
+    document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -461,6 +547,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.workdes = "";
     this.starttime = null;
     this.endtime = null;
+    this.isSelection=false;
+    this.dateF=new FormControl(new Date());
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -810,7 +898,7 @@ getapprovalStats() {
       }
  } 
 });
-    console.log(this.requestDetails, 'transfer'); 
+   // console.log(this.requestDetails, 'transfer'); 
 }
 
 approvalClick(actionType) {
@@ -1235,7 +1323,7 @@ actionCompleted(){
                 fd.append("Remarks", this._remarks);
                 fd.append('file', this.selectedFile);
                 fd.append("Project_Name", this._Subtaskname);
-console.log(this.selectedFile,"action file")
+                console.log(this.selectedFile,"action file")
 
                 this.service._UpdateSubtaskByProjectCode(fd) 
                 .subscribe(data => {
@@ -1353,12 +1441,13 @@ closeDarSideBar(){
 
 
 
-
 getResponsibleActions() {
   this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
     (data) => {
+      this.Client_List = JSON.parse(data[0]['ClientDropdown']);
+      this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
       this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-      console.log('darArr:',this.darArr);
+      console.log('darArr:',this.Category_List);
      
       if(this.darArr.length==0 && (this.projectInfo.OwnerEmpNo==this.Current_user_ID || this.Responsible_EmpNo==this.Current_user_ID)){
         this.showaction=false;
@@ -1376,7 +1465,420 @@ getResponsibleActions() {
         this.actionCode=selectedActionOpt.Project_Code;
       }
     });
+
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+      (data) => {
+         console.log(data,"RACIS");
+        this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+        this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+      });
 }
+
+selectedOwner: any;
+ProjectType:string
+ProjectDescription:string
+Start_Date:string;
+OGowner:any;
+OGresponsible:any;
+OGownerid:any;
+OGresponsibleid:any;
+OGclientId:any;
+Submission_Name:string
+Allocated_Hours:any;
+Daily_array:any =[];
+Week_array:any =[];
+Month_array:any =[];
+Quarter_array:any =[];
+Halfyear_array:any =[];
+Annual_array:any =[];
+End_Date:any
+Annual_date:any
+Allocated:any
+OGselectedcategoryid:any
+OGcategory:any
+OGselectedclientid:any
+OGclient:any;
+OGSubmission_Nameid:any
+OGSubmission:any;
+OGProjectType: any;
+
+
+generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+  const timeArray: string[] = [];
+
+  for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+          const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+          timeArray.push(timeStr);
+      } else {
+          break;  // Exit the loop once the maximum limit is reached
+      }
+  }
+
+  return timeArray;
+}
+
+timearrays(){
+this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+this.Week_array = this.generateTimeIntervals(8, 15, 2);
+this.Month_array = this.generateTimeIntervals(16, 15, 4);
+this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+this.Annual_array = this.generateTimeIntervals(64, 15, 16);
+
+console.log("Daily Array:", this.Daily_array);
+console.log("Weekly Array:", this.Week_array);
+console.log("Monthly Array:", this.Month_array);
+}
+
+type_list:any
+OGProjectTypeid:any
+ActionName:any
+
+ initializeSelectedValue() {
+        this.OGownerid = this.projectInfo['OwnerEmpNo'];
+        this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
+        this.OGselectedcategoryid= this.projectInfo['Reportid'];
+        this.OGselectedclientid=this.projectInfo['ClientNo'];
+        this.OGSubmission_Nameid=this.projectInfo['SubmissionId'];
+        this.OGProjectTypeid=this.projectInfo['Project_Block'];
+        // console.log("test",this.OGProjectTypeid)
+        this.OGProjectType=this.projectInfo.Project_Type;
+        this.selectedOwner = this.projectInfo.Owner;
+        this.OGowner = this.projectInfo.Owner;
+        this.selectedOwnResp = this.projectInfo.Responsible;
+        this.OGresponsible = this.projectInfo.Responsible;
+        this.selectedcategory= this.projectInfo.Category;
+        this.OGcategory= this.projectInfo.Category;    
+        this.selectedclient=this.projectInfo.Client;
+        this.OGclient=this.projectInfo.Client 
+        this.Submission_Name=this.projectInfo.SubmissionName
+        this.OGSubmission=this.projectInfo.SubmissionName
+        this.ProjectName=this.projectInfo.Project_Name
+        this.ProjectDescription=this.projectInfo.Project_Description
+        this.Start_Date=this.projectInfo.StartDate
+        this.Allocated_Hours=this.projectInfo.StandardAllocatedHours
+        this.Allocated=this.projectInfo.AllocatedHours
+        this.End_Date =this.projectInfo.EndDate;  
+    }
+
+ onAction_updateProject(val) {  
+      this._remarks='';
+      if(this.OGProjectType!=this.ProjectType){
+        var type=this.ProjectType
+        this.ProjectType=this.ProjectType;
+      }
+      else{
+        var type: string=this.OGProjectTypeid;
+      }
+         
+      if(this.OGowner!=this.selectedOwner){
+        var owner=this.selectedOwner
+        this.selectedOwner=this.selectedOwner;
+      }
+      else{
+        var owner=this.OGownerid;
+      }
+
+      if(this.OGresponsible!=this.selectedOwnResp){
+        var resp = this.selectedOwnResp;
+        this.selectedOwnResp=this.selectedOwnResp;
+      }
+      else{
+        var resp = this.OGresponsibleid;    
+      }
+
+      if(this.OGcategory!=this.selectedcategory){
+        var category = this.selectedcategory;
+        this.selectedcategory=this.selectedcategory;
+      }
+      else{
+        var category = this.OGselectedcategoryid;    
+      }
+
+      if(this.OGclient!=this.selectedclient){
+        var client = this.selectedclient;
+        this.selectedclient=this.selectedclient;
+      }
+      else{
+        var client:string = this.OGselectedclientid;    
+      }
+
+      if(this.OGSubmission!=this.Submission_Name){
+        var Submission = this.Submission_Name;
+        this.Submission_Name=this.Submission_Name;
+      }
+      else{
+        var Submission:string = this.OGSubmission_Nameid;    
+      }
+
+      if(this.OGSubmission!=this.Submission_Name){
+        var Submission = this.Submission_Name;
+        this.Submission_Name=this.Submission_Name;
+      }
+      else{
+        var Submission:string = this.OGSubmission_Nameid;    
+      }
+
+      if(type=='003' || type=='008'){
+        var allocation = this.Allocated_Hours["$ngOptionLabel"];
+      }
+      else{
+        var allocation = this.Allocated;
+      }
+
+      var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
+      var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
+
+     const jsonobj={    
+         Project_Type:type, 
+         Project_Name:this.ProjectName,
+         Project_Description:this.ProjectDescription,
+         Owner:owner,
+         Responsible:resp,
+         Category:category,      
+         Client:client,
+         StartDate:datestrStart,
+         EndDate:datestrEnd,
+         SubmissionName:Submission,
+         AllocatedHours:allocation
+     }
+     const jsonvalue=JSON.stringify(jsonobj)
+      console.log(jsonvalue ,'json');
+
+     if(val==0){
+          this.approvalObj.Emp_no=this.Current_user_ID;
+          this.approvalObj.Project_Code=this.URL_ProjectCode;
+          this.approvalObj.json=jsonvalue;
+          this.approvalObj.Remarks=this._remarks;
+          this.approvalObj.isApproval=val;
+
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+            console.log(data['message'],"edit response");
+            if(data['message']=='1'){
+              this.notifyService.showSuccess("Updated successfully","Success");
+            }
+            else if(data['message']=='2'){
+              this.notifyService.showError("Not updated","Failed");
+            }
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.closeInfo();
+        });
+     }
+     else if(val==1){
+      this.approvalObj.Emp_no=this.Current_user_ID;
+      this.approvalObj.Project_Code=this.URL_ProjectCode;
+      this.approvalObj.json=jsonvalue;
+      this.approvalObj.Remarks=this._remarks;
+      this.approvalObj.isApproval=val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+        console.log(data['message'],"edit response");
+        if(data['message']=='3'){
+          this.notifyService.showSuccess("Project updated and Approved successfully","Success");
+        }
+        else if(data['message']=='2'){
+          this.notifyService.showError("Not updated","Failed");
+        }
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.getapprovalStats();
+        this.closeInfo();
+    });
+ }
+
+    
+
+
+    }
+    // Recurrence:this.Annual_date,
+
+    ActionCode:any
+    ActionDescription:any
+    ActionOwner:any
+    ActionResponsible:any
+    Actioncategory:any
+    ActionClient:any
+    ActionstartDate:any
+    ActionendDate:any
+    ActionDuration:any
+    ActionAllocatedHours:any
+    ActionOwnerid:any
+    OGActionOwner:any
+    OGActionResponsible:any
+    ActionResponsibleid:any
+    ActionClientid:any
+    OGActionClient:any
+   
+
+    /// Action Edits start
+    initializeSelectedValues() {
+      this.ActionOwnerid=this.projectActionInfo[this.currentActionView].Project_Owner;
+      this.ActionResponsibleid=this.projectActionInfo[this.currentActionView].Team_Res;
+      this.ActionClientid=this.projectActionInfo[this.currentActionView].ClientNo;
+      this.OGselectedcategoryid= this.projectInfo['Reportid']
+       this.OGProjectTypeid=this.projectInfo['Project_Block'];    
+      this.OGProjectType=this.projectInfo.Project_Type;
+      this.OGActionOwner=this.projectActionInfo[this.currentActionView].Owner;  
+      this.ActionOwner=this.projectActionInfo[this.currentActionView].Owner;
+      this.ActionResponsible=this.projectActionInfo[this.currentActionView].Responsible;
+      this.OGActionResponsible=this.projectActionInfo[this.currentActionView].Responsible;
+      this.ActionClient=this.projectActionInfo[this.currentActionView].Client;
+      this.OGActionClient=this.projectActionInfo[this.currentActionView].Client;
+
+      this.selectedcategory= this.projectInfo.Category;
+      this.OGcategory= this.projectInfo.Category; 
+      this.ActionCode=this.projectActionInfo[this.currentActionView].Project_Code;
+      this.ActionName=this.projectActionInfo[this.currentActionView].Project_Name;
+      this.ActionDescription=this.projectActionInfo[this.currentActionView].Project_Description;
+      this.ActionstartDate=this.projectActionInfo[this.currentActionView].StartDate
+      this.ActionendDate=this.projectActionInfo[this.currentActionView].EndDate
+      this.ActionDuration=this.projectActionInfo[this.currentActionView].Duration
+      this.ActionAllocatedHours=this.projectActionInfo[this.currentActionView].AllocatedHours
+  }
+
+  onAction_update() {  
+    this._remarks='';
+    if(this.OGProjectType!=this.ProjectType){
+      var type=this.ProjectType
+      this.ProjectType=this.ProjectType;
+    }
+    else{
+      var type: string=this.OGProjectTypeid;
+    }
+
+       if(this.OGActionOwner!=this.ActionOwner){
+      var actionowner=this.ActionOwner
+      this.ActionOwner=this.ActionOwner;
+     }
+     else{
+      var actionowner =this.ActionOwnerid;
+     }
+
+
+    if(this.OGActionResponsible!=this.ActionResponsible){
+      var actionresp = this.ActionResponsible;
+      this.ActionResponsible=this.ActionResponsible;
+    }
+    else{
+      var actionresp = this.ActionResponsibleid;    
+    }
+
+    if(this.OGActionClient!=this.ActionClient){
+      var Actionclient = this.ActionClient;
+      this.ActionClient=this.ActionClient;
+    }
+    else{
+      var Actionclient = this.ActionClientid;    
+    }
+
+
+    if(this.OGcategory!=this.selectedcategory){
+      var category = this.selectedcategory;
+      this.selectedcategory=this.selectedcategory;
+    }
+    else{
+      var category = this.OGselectedcategoryid;    
+    }
+
+    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
+
+   const jsonobj={    
+    Project_Type:type,  
+    Project_Name:this.ActionName,
+    Project_Description:this.ActionDescription,
+    Owner:actionowner,
+    Responsible:actionresp,
+    Category:category,
+    Client:Actionclient,
+    StartDate: datestrStart,
+    EndDate: datestrEnd,
+    Allocated: this.ActionAllocatedHours, 
+   }
+   const jsonvalues=JSON.stringify(jsonobj)
+    console.log(jsonvalues ,'json');
+
+
+    const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+      const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
+      console.log(dateOne, dateTwo, "dates")
+      if ((dateOne < dateTwo) && ((this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.AuthorityEmpNo))) {
+        Swal.fire({
+          title: 'Action deadLine is greater than main project deadLine ?',
+          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((response: any) => {
+          if (response.value) {
+            this.approvalObj.Emp_no=this.Current_user_ID;
+            this.approvalObj.Project_Code=this.ActionCode;
+            this.approvalObj.json=jsonvalues;
+            this.approvalObj.Remarks=this._remarks;
+        
+          this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+              console.log(data['message'],"edit response");
+              if(data['message']=='1'){
+                this.notifyService.showSuccess("Updated successfully","Success");
+              }
+              else if(data['message']=='2'){
+                this.notifyService.showError("Not updated","Failed");
+              }
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.closeInfo();
+          });
+          } else if (response.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+              'Cancelled',
+              'Action end date not updated',
+              'error'
+            )
+          }
+        });
+      }
+      else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.projectInfo.ResponsibleEmpNo && this.Current_user_ID != this.projectInfo.AuthorityEmpNo  )) {
+        Swal.fire({
+          title: 'Unable to extend end date for this action.',
+          text: 'You have selected the action end date greater than project deadline. Please contact the main project responsible to extend main project end date and try again.',
+        });
+      }
+      else{
+        this.approvalObj.Emp_no=this.Current_user_ID;
+        this.approvalObj.Project_Code=this.ActionCode;
+        this.approvalObj.json=jsonvalues;
+        this.approvalObj.Remarks=this._remarks;
+    
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+          console.log(data['message'],"edit response");
+          if(data['message']=='1'){
+            this.notifyService.showSuccess("Updated successfully","Success");
+          }
+          else if(data['message']=='2'){
+            this.notifyService.showError("Not updated","Failed");
+          }
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.closeInfo();
+      });
+      }
+
+   
+  }
+
+
+
+
+
+  limit = 200; // Set the initial limit
+  isExpanded = false;
+  toggleReadMore() {
+   
+    this.isExpanded = !this.isExpanded;
+  }
+    /// Action Edits End
 
 
 
@@ -1543,6 +2045,8 @@ submitDar() {
   // this.Clear_Feilds();
   
 }
+
+
 
 
 onActionChanged(e){
@@ -4348,13 +4852,7 @@ achieveStandard() {
       //   this._Message = (JSON.parse(myJSON).body).Message;
       //   this.notifyService.showSuccess(this._Message, 'Success');
       // }
-      this.closeInfo();
-      
-      
-      //59 this.GetSubtask_Details();
-      //59 this.GetProjectDetails();
-
-
+      this.closeInfo();  
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
     });
@@ -4383,8 +4881,6 @@ notachieveStandard() {
         this.notifyService.showSuccess(this._Message, 'Success');
       }
       this.closeInfo();
-    //59  this.GetSubtask_Details();
-    //59  this.GetProjectDetails();
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
     });
@@ -4392,4 +4888,101 @@ notachieveStandard() {
 
 //  $('#_file1').val('');
 // Task submission section code End here
+fruitCtrl = new FormControl();
+selectedEmployees: any=[];
+selectedEmpIds:any = [];
+
+
+remove(employee: any): void {
+  const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === employee.Emp_No);
+  this.isSelection=false;
+  if (index !== -1) {
+    // Remove the employee from the selectedEmployees array
+    this.selectedEmployees.splice(index, 1);
+    this.selectedEmpIds.splice(index, 1); 
+
+    console.log(this.selectedEmpIds,"selected supprem")
+  }
+
+  // Optionally, you can uncheck the checkbox in the Project_List array
+  employee.checked = false;
+  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+
+}
+
+isSelection: boolean =false;
+
+
+selectedChip(event: MatAutocompleteSelectedEvent): void {
+  const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
+  this._keeppanelopen();
+  if (selectedEmployee) {
+    const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
+
+    if (index === -1) {
+      // Employee not found in the selected array, add it
+      this.selectedEmployees.push(selectedEmployee);
+      this.selectedEmpIds.push(selectedEmployee.Emp_No);
+    } else {
+      // Employee found in the selected array, remove it
+      this.selectedEmployees.splice(index, 1);
+      this.selectedEmpIds.splice(index, 1);
+    }
+  }
+
+  this.fruitInput.nativeElement.value = '';
+  this.filteredEmployees = this.nonRacisList;
+  console.log(this.selectedEmpIds, "selected")
+}
+
+isSelectedChip(employee: any): boolean {
+  return this.selectedEmployees.some((emp) => emp.Emp_No === employee.Emp_No);
+}
+
+filterEmployees(input: string): void {
+  this.isSelection=true;
+  this.filteredEmployees = this.nonRacisList.filter((employee) =>
+    employee.NonRACIS.toLowerCase().includes(input.toLowerCase())
+  );
+}
+
+
+_keeppanelopen(){
+  this.filteredEmployees = this.nonRacisList;
+  this.isSelection=true;
+  requestAnimationFrame(()=>this.customTrigger.openPanel()); // open the panel
+}
+
+closePanel(){
+  this.isSelection=false;
+  this.fruitInput.nativeElement.value = '';
+  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+}
+
+
+onProject_updateSupport() {
+  const commaSeparatedString =  this.selectedEmpIds.join(', ');
+
+  if (this.selectedEmployees != null) {
+    this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID,commaSeparatedString, null).subscribe(data => {
+      this._Message = data['message'];
+
+      if (this._Message == '2') {
+        this.notifyService.showError("Project Support team not updated", "Failed");
+      }
+      else if (this._Message == '1') {
+        this.notifyService.showSuccess("Project Support team updated successfully", "Success");
+     
+      }
+      this.GetPeopleDatils();
+      this.selectedEmpIds.length=0;
+      this.selectedEmployees.length=0;
+      this.closePanel();
+    });
+  }
+  else {
+    this.notifyService.showInfo("support team member cannot be empty", "Please try again with correct value");
+  }
+}
+
 }

@@ -61,7 +61,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ng-select/ng-select */ 90413);
 /* harmony import */ var _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/datepicker */ 42298);
 /* harmony import */ var ng2_search_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-search-filter */ 9991);
+/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/form-field */ 75074);
+/* harmony import */ var _angular_material_chips__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/chips */ 11169);
+/* harmony import */ var _angular_material_autocomplete__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/autocomplete */ 88550);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/icon */ 57822);
+/* harmony import */ var _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material/checkbox */ 44792);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 22560);
+
+
+
+
+
 
 
 
@@ -88,7 +98,13 @@ DetailsModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["
         ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_10__.NgMultiSelectDropDownModule,
         _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_11__.NgSelectModule,
         _angular_forms__WEBPACK_IMPORTED_MODULE_12__.FormsModule,
-        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_13__.MatDatepickerModule, ng2_search_filter__WEBPACK_IMPORTED_MODULE_7__.Ng2SearchPipeModule] });
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_13__.MatDatepickerModule, ng2_search_filter__WEBPACK_IMPORTED_MODULE_7__.Ng2SearchPipeModule,
+        _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__.MatFormFieldModule,
+        _angular_material_chips__WEBPACK_IMPORTED_MODULE_15__.MatChipsModule,
+        _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__.MatIconModule,
+        _angular_material_autocomplete__WEBPACK_IMPORTED_MODULE_17__.MatAutocompleteModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_12__.ReactiveFormsModule,
+        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_18__.MatCheckboxModule] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsetNgModuleScope"](DetailsModule, { declarations: [
         // FilterPipe,
         _details_details_component__WEBPACK_IMPORTED_MODULE_1__.DetailsComponent], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_9__.CommonModule,
@@ -96,7 +112,14 @@ DetailsModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["
         ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_10__.NgMultiSelectDropDownModule,
         _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_11__.NgSelectModule,
         _angular_forms__WEBPACK_IMPORTED_MODULE_12__.FormsModule,
-        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_13__.MatDatepickerModule, ng2_search_filter__WEBPACK_IMPORTED_MODULE_7__.Ng2SearchPipeModule] }); })();
+        _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_13__.MatDatepickerModule, ng2_search_filter__WEBPACK_IMPORTED_MODULE_7__.Ng2SearchPipeModule,
+        _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__.MatFormFieldModule,
+        _angular_material_chips__WEBPACK_IMPORTED_MODULE_15__.MatChipsModule,
+        _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__.MatIconModule,
+        _angular_material_autocomplete__WEBPACK_IMPORTED_MODULE_17__.MatAutocompleteModule,
+        _angular_forms__WEBPACK_IMPORTED_MODULE_12__.ReactiveFormsModule,
+        _angular_common__WEBPACK_IMPORTED_MODULE_9__.AsyncPipe,
+        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_18__.MatCheckboxModule] }); })();
 
 
 /***/ })

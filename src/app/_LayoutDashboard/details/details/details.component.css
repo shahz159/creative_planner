@@ -1047,7 +1047,28 @@ span.Status-Delay {
   transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
 
 }
-
+.example-chip-list {
+  width: 100%;
+}
+.pdv{
+  position: relative;
+}
+      span.add-icon {
+  position: absolute;
+  right: 3px;
+  top: 6px;
+  z-index: 0;
+}span.add-icon svg {
+  height: 23px;
+  width: 25px;
+  fill: #a7a7a7;
+}
+      span.add-icon {
+  position: absolute;
+  right: 3px;
+  top: 9px;
+  z-index: 0;
+}
 
 
 
@@ -1951,6 +1972,9 @@ a.kt-inbox__icon:hover svg path {
 
 .txtm-def {
   color: #646c9a;
+}
+.fs-6 {
+  font-size: 1.075rem!important;
 }
 .symbol.symbol-22px > img{
   width: 22px;
@@ -3139,6 +3163,11 @@ i.date-rg-icon {
 .Project_type_DW {
   min-width: 160px;
 }
+#calender{
+  height: 1px;
+ 
+}
+
 label.pe-label {
   font-size: 13px;
   color: #8f8f8f;
@@ -3177,7 +3206,7 @@ label.pe-label {
   padding: 5px 5px !important;
 }
 .Ic_ed input {
-  height: 29px;
+  height: 36px;
   margin-top: 5px;
 }
 .Ic_ed {
@@ -3246,3 +3275,80 @@ label.pe-label {
 }
 
 
+.mat-font{
+  font-size: small;
+}
+mat-icon:hover {
+  color: blue;
+  transform: scale(1.2);
+}
+span.Wd_text_kt {
+  font-size: 12px;
+}
+.kt-info-lable-v.mb-off {
+  margin-bottom: 4px;
+}
+.input-icon.Sub_In_ed input {
+  border: 1px solid #ccc;
+}
+
+.date-border-v {
+  height: 36px;
+  margin-top: 5px;
+  border: 1px solid #e2e5ec;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.date-border-v input {
+  margin: 0px !important;
+  padding-bottom: 0px !important;
+}
+.date-border-v input {
+  margin: 0px !important;
+  padding: 0px 5px;
+  height: auto;
+}
+.input-icon.Sub_In_ed.date-border-v.d-flex .input-group-append.h-2 {
+  margin-top: -2px;
+  margin-right: -4px;
+}
+.readonly{
+  color: #ccc!important;
+  font-size: inherit;
+}
+
+.Data_chip_kt {
+  padding: 6px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: #60626D !important;
+  padding-right: 2px !important;
+  border-radius: 5px !important;
+  min-height: 22px;
+  background-color: #E6EAFF !important;
+  line-height: 10px;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+input.mat-chip-input {
+  width: 150px;
+  margin: 0px;
+  width: 100%;
+  flex: unset;
+  height: 30px;
+  line-height: 30px;
+  padding-bottom: 5px;
+}
+.mat-form-field-underline {
+  height: 1px;
+  background-color: #CACACA !important;
+}
+input.mat-chip-input::placeholder {
+  font-size: 13px;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
+mat-icon.mat-icon.notranslate.curser-pointer {
+  /* height: 20px; */
+  width: 20px;
+  font-size: 20px;
+}
