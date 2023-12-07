@@ -1973,6 +1973,9 @@ a.kt-inbox__icon:hover svg path {
 .txtm-def {
   color: #646c9a;
 }
+.fs-6 {
+  font-size: 1.075rem!important;
+}
 .symbol.symbol-22px > img{
   width: 22px;
   height: 22px;

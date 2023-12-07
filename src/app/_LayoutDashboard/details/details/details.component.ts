@@ -36,10 +36,30 @@ import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 
 
 declare var FusionCharts: any;
+ 
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 
 
@@ -47,7 +67,20 @@ declare var FusionCharts: any;
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
-  
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 
 export class DetailsComponent implements OnInit,AfterViewInit{
@@ -142,14 +175,14 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      
       this.ObjSubTaskDTO = new SubTaskDTO();
       this.objProjectDto = new ProjectDetailsDTO();
-      this.objPortfolioDto = new PortfolioDTO();     
+      this.objPortfolioDto = new PortfolioDTO();  
+      this.approvalObj=new ApprovalDTO();              
      }
+
   charts() { }
   
   
   ngOnInit(): void {
-
-
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -158,7 +191,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.Current_user_ID=localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params=>this.URL_ProjectCode=params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
-    this.approvalObj=new ApprovalDTO();              
     this.getapprovalStats();       
     this.getusername(); 
     
@@ -169,7 +201,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.getholdate();      
     this.GetPeopleDatils();
     this.timearrays();
-  
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
@@ -497,6 +529,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.starttime = null;
     this.endtime = null;
     this.isSelection=false;
+    this.dateF=new FormControl(new Date());
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -1514,7 +1547,7 @@ ActionName:any
         this.End_Date =this.projectInfo.EndDate;  
     }
 
-    onAction_updateProject(val) {  
+ onAction_updateProject(val) {  
       this._remarks='';
       if(this.OGProjectType!=this.ProjectType){
         var type=this.ProjectType
@@ -1579,6 +1612,9 @@ ActionName:any
         var allocation = this.Allocated;
       }
 
+      var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
+      var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
+
      const jsonobj={    
          Project_Type:type, 
          Project_Name:this.ProjectName,
@@ -1587,8 +1623,8 @@ ActionName:any
          Responsible:resp,
          Category:category,      
          Client:client,
-         StartDate:this.Start_Date,
-         EndDate:this.End_Date,
+         StartDate:datestrStart,
+         EndDate:datestrEnd,
          SubmissionName:Submission,
          AllocatedHours:allocation
      }
@@ -1641,7 +1677,7 @@ ActionName:any
     }
     // Recurrence:this.Annual_date,
 
-
+    ActionCode:any
     ActionDescription:any
     ActionOwner:any
     ActionResponsible:any
@@ -1676,6 +1712,7 @@ ActionName:any
 
       this.selectedcategory= this.projectInfo.Category;
       this.OGcategory= this.projectInfo.Category; 
+      this.ActionCode=this.projectActionInfo[this.currentActionView].Project_Code;
       this.ActionName=this.projectActionInfo[this.currentActionView].Project_Name;
       this.ActionDescription=this.projectActionInfo[this.currentActionView].Project_Description;
       this.ActionstartDate=this.projectActionInfo[this.currentActionView].StartDate
@@ -1745,7 +1782,7 @@ ActionName:any
     console.log(jsonvalues ,'json');
 
     this.approvalObj.Emp_no=this.Current_user_ID;
-    this.approvalObj.Project_Code=this.URL_ProjectCode;
+    this.approvalObj.Project_Code=this.ActionCode;
     this.approvalObj.json=jsonvalues;
     this.approvalObj.Remarks=this._remarks;
 
