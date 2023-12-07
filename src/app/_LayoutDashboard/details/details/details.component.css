@@ -3183,3 +3183,66 @@ label.pe-label {
 .Ic_ed {
   margin-bottom: 18px !important;
 }
+
+
+
+
+
+
+.wc-cus {
+  width: 49.5%;
+}
+
+.repeat-day,
+.repeat-month {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    font-weight: 500;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #f1f3f4;
+    color: #80868b;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    text-transform: capitalize;
+    position: relative;
+}
+
+.repeat-day.active,
+.repeat-month.active {
+    color: white;
+    background-color: #1a73e8;
+}
+
+.rep-chk {
+  position: absolute;
+  opacity: 0;
+}
+
+
+.back-mtg-btn{
+    border:0;
+    background-color: transparent;
+    border-radius: 50%;
+}
+.back-mtg-btn:hover {
+    background-color: #8cabfa55;
+}
+
+.back-mtg-btn:active{
+  background-color: #5680e9;
+  transition-duration:0.3s;
+}
+
+

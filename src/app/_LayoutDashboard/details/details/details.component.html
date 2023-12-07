@@ -4907,7 +4907,7 @@
                 </div>
             </div>
         </div>
-        <div class="kt-portlet__body flex-row">
+        <div class="kt-portlet__body flex-row" *ngIf="meetingsViewOn; else mysideInfobar_schd">
             <div class="w-100">
 
                 <div class="m-2 tabs-iconic"     > 
@@ -5056,7 +5056,7 @@
                                 </div>
                             </div>
 
-                        </ng-container>
+                           </ng-container>
                            </ng-container>
                     
                         </div>
@@ -5208,7 +5208,7 @@
                                 </div>
                             </div>
                            
-                          </ng-container>
+                             </ng-container>
                               </ng-container>
                             
 
@@ -5358,9 +5358,9 @@
                                         </div>
                                     </div>
                                 </div>
-                        </div> 
+                            </div> 
                        
-                        </ng-container>
+                           </ng-container>
                            </ng-container>
 
                         </div>
@@ -5510,10 +5510,7 @@
                                 </div>
                             </div>
                            </ng-container>
-                               </ng-container>
-                        
-                        
-                        
+                           </ng-container>
                         </div>
                 
                         <div class="tab-pane fade" id="older_meetings_tabpanel" role="tabpanel" aria-labelledby="older_meetings_tabpanel">
@@ -5827,24 +5824,646 @@
 
 
                            <ng-template #no_meetings_Present >
-                            <div  *ngIf="todaymeetings.length===0"  style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;" >
+                            <div style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;" >
                                 <img width="20%" height="20%"  src="../../../../assets/images/nomeeting.png"/>
                                 <h3 class="blank-txt fs-3 notimeline-present-label">No meetings scheduled.</h3>
                               </div>
                            </ng-template>
 
 
-
+ 
 
                     </div>
                 </div>
 
-
-
-          
-
             </div>
         </div>
+        <ng-template #mysideInfobar_schd>
+            <div class="kt-portlet mb-0 m-2">
+                <div class="offcanvas-header d-flex align-items-center  p-1 mt-2" *ngIf="editTask==false && copyTask==false">
+                    <button class="back-mtg-btn mr-1 p-2"   (click)="this.meetingsViewOn=true;  " >
+                        <svg width="26px" height="26px" viewBox="-163.84 -163.84 1351.68 1351.68" fill="#ff0000" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="33.792"><g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)"><rect x="-163.84" y="-163.84" width="1351.68" height="1351.68" rx="675.84" fill="#00000000" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="16.384"></g><g id="SVGRepo_iconCarrier"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill=""></path></g></svg>
+                    </button>
+                    <h4 class="m-0 ml-2">Schedule {{ScheduleType}}</h4>
+                </div>
+             
+                 <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+                    <div class="">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="">
+                                    <div class="d-none align-items-start form-cusom-check">
+                                        <label class="form-check-label mr-2" for="customSwitch1">Task</label>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input" id="customSwitch1">
+                                            <label class="form-check-label" for="customSwitch1">Event</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
+                            <input class="form-control Title" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
+                                minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
+                            <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
+                         </div>
+        
+                        <div class="form-group" id="core_viw123">
+                            <label class="cus-lbl">Select Project <span class="text-danger"
+                                    *ngIf="ScheduleType=='Task'">*</span>
+                            </label>
+                            <ng-select placeholder="Select Project" [(ngModel)]="MasterCode"
+                                (change)="GetSubtasklistfromProject($event)">
+                                <ng-option [value]="car.Project_Code"  *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
+                            </ng-select>
+                            <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
+                                <span class="d-inline-flex align-items-center"><i
+                                        class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-calendar-alt mr-2"></i>{{projectEnddate | date:'dd-MM-yyyy'}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-clock mr-2"></i>{{AllocatedHours}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-star mr-2"></i>{{Status_project}}</span>
+                            </div>
+                            <span *ngIf="_subname == true" style="color:red">Please select project!</span>
+                        </div>
+        
+                        <div class="form-group" id="core_viw121" style="display:none">
+                            <label class="cus-lbl">Select Project </label>
+                            <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select Project"
+                                [(ngModel)]="MasterCode">
+                                <ng-option *ngFor="let item of  ProjectListArray" [value]="item.Project_Code">
+                                    {{item.BlockNameProject}}</ng-option>
+                            </ng-select>
+                        </div>
+         
+                        <div class="content-main show pt-0" id="core_viw">
+                            <div class="form-group" id="subtaskid">
+                                <label class="cus-lbl">Select Action</label>
+                                <ng-select class="kt-input form-control p-0 border-0" placeholder="Select Action" [(ngModel)]="Subtask"
+                                    (change)="getChangeSubtaskDetais($event)">
+                                    <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">
+                                        {{item.Project_Name}}</ng-option>
+                                </ng-select>
+                                <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">
+                                    <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-2"></i>
+                                        {{St_date | date:'dd-MM-yyyy'}}</span>
+                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                            class="fas fa-calendar-alt mr-2"></i>{{Ed_date | date:'dd-MM-yyyy'}}</span>
+                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                            class="fas fa-clock mr-2"></i>{{Allocated_subtask}}</span>
+                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                            class="fas fa-star mr-2"></i>{{_status}}</span>
+                                </div>
+                            </div>
+                             
+                            <div class="form-group" id="core_viw222" style="display:none">
+                                <label class="cus-lbl">Add Portfolio </label>
+                                <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select Portfolio"
+                                    [(ngModel)]="Portfolio">
+                                    <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
+                                        {{item.Portfolio_Name}}</ng-option>
+                                </ng-select>
+                            </div>
+                           
+                            <div class="form-group" id="core_Dms" style="display:none">
+                                <label class="cus-lbl">Add DMS </label>
+                                <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select DMS"
+                                    [(ngModel)]="SelectDms">
+                                    <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
+                                        {{item.Subject}} </ng-option>
+                                </ng-select>
+                            </div>
+                            
+                            <div class="form-group" id="Guest_Name" style="display:none">
+                                <label class="cus-lbl">Add Participants </label>
+                                <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" name="ngEmployeeDropdown"
+                                    placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
+                                    <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
+                                        {{item.DisplayName}} </ng-option>
+                                </ng-select>
+                            </div> 
+                            <div>
+                                <div>
+                                    <div class="form-group" id="online-add">
+                                        <div class="form-check form-check-custom form-check-solid pl-4">
+                                            <input class="form-check-input" [(ngModel)]="_onlinelink"
+                                                (click)="Online_method($event)" type="checkbox" value="" id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked">Online </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="Descrip_Name12" style="display:none">
+                                        <label class="cus-lbl">Link Description </label>
+                                        <!-- <textarea class="form-control" [(ngModel)]="Link_Details" height="40px"></textarea> -->
+                                        <angular-editor [(ngModel)]="Link_Details" [config]="config"></angular-editor>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                            <div class="form-group section-1" id="Location_Name" style="display:none">
+                                <label class="cus-lbl">Location </label>
+                                <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
+                                    (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
+                            </div>
+                            <div class="form-group" id="Descrip_Name">
+                                <label class="cus-lbl">Description </label>
+                                <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
+                            </div>
+                             
+                            <div class="form-group mb-0">
+                                <label class="cus-lbl">Attachment </label>
+                                <div class="custom-file pl-1">
+                                    <input type="file" id="uploadFile_" accept="application/pdf" class="form-control-file"
+                                        (change)="onFileChange_($event)" multiple>
+        
+                                </div>
+                            </div>
+        
+        
+                            <div class="dropzone dropzone-multi form-group" id="">
+                                <div id="div_exixtingfiles" class="dropzone-items">
+                                    <div *ngFor='let url of _lstMultipleFiales'>
+                                        <div class="dropzone-item p-3 m-0 border br-0">
+                                            <div class="dropzone-file">
+                                                <div class="dropzone-filename">
+                                                    <span>{{url.FileName}}</span>
+                                                    <strong>(<span>{{url.Size}}kb</span>)</strong>
+                                                    <span (click)="RemoveSelectedFile(url.UniqueId)" class="dropzone-delete">
+                                                        <i class="flaticon2-cross"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div *ngFor='let url of Attachment12_ary'>
+                                        <div class="dropzone-item p-3 m-0 border br-0">
+                                            <div id="url_{{url.file_id}}" class="dropzone-file">
+                                                <div class="dropzone-filename">
+                                                    <span>{{url.File_Name}}</span>
+        
+                                                    <span (click)="RemoveExistingFile(url.file_id)" class="dropzone-delete">
+                                                        <i class="flaticon2-cross"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="form-group mb-0">
+                                <div class="d-flex gap-1">
+                                    <div class="form-group flex-1">
+                                        <label>{{_labelName}} <span class="text-danger">*</span></label>
+                                        <div class="input-group p-0 border-0">
+                                            <input matInput [matDatepicker]="picker1_m_date" (click)="picker1_m_date.open()"
+                                            (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                            <div class="input-group-append">
+        
+                                                <div class="input-group-text p-0">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker1_m_date"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1_m_date></mat-datepicker>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group flex-1"> 
+                                        <label class="cus-lbl">Start Time </label>
+                                        <ng-select class="kt-input form-control p-0 border-0" id="startid"
+                                            placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                            <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                                {{item}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                   
+                                    <div class="form-group flex-1">
+                                        <label class="cus-lbl">End Time</label>
+                                        <ng-select class="kt-input form-control p-0"  placeholder="End Time"
+                                            [(ngModel)]="Endtms">
+                                            <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                {{item1}}</ng-option>
+                                        </ng-select>
+                                    </div>
+        
+                                    <div class="form-group flex-1" id="Schenddate">
+                                        <label>Schedule End Date <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input matInput [matDatepicker]="picker_SED" (click)="picker_SED.open()"
+                                                [min]="_StartDate" [(ngModel)]="_SEndDate" placeholder="End Date"
+                                                class="form-control">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text p-0">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker_SED"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker_SED></mat-datepicker>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
+                                    Note:Selected Project is Expired,Please Extend your Project Deadline date
+                                </div>
+           
+                                <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
+                                    <div class="wc-cus">
+        
+                                        <div class="form-group d-none" id="Recurrence_hide">
+        
+                                            <div class="card text-dark shadow-sm">
+                                                <div class="card-header bg-white">
+                                                    <div class="card-title mb-0">Recurrence Details</div>
+                                                </div>
+                                                <div class="card-body p-3">
+                                                    <div class="" *ngFor="let test of EventScheduledjson">
+                                                        <h5>{{test.Recurrence}}</h5>
+                                                        <div class="d-flex">
+                                                            <div class="repeat-day">{{test.Recurrence_values}}</div>
+        
+                                                        </div>
+                                                    </div>
+        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+        
+                                    <div class="d-flex gap-1 flex-1">
+                                        <div class="wc-cus">
+                                            <div class="form-group flex-1" id="div_recurrence">
+                                                <label class="">Repeat</label>
+                                                <mat-select name="Select Type" placeholder="Do not repeat"
+                                                    [(value)]="selectedrecuvalue" class="form-control"
+                                                    (selectionChange)="SelectDropDown($event)">
+                                                    <mat-option value="0">Do not repeat</mat-option>
+                                                    <mat-option value="1">Daily</mat-option>
+                                                    <mat-option value="2">Weekly</mat-option>
+                                                    <mat-option value="3">Monthly</mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </div>
+        
+        
+        
+                                    </div>
+        
+                                    <div class="wc-cus">
+                                        <div>
+                                            <div class="ml-0 form-group" style="display: none;" id="weekly_121">
+                                                <label class="">Days</label>
+                                                <div class="pt-1">
+                                                    <div class="d-flex">
+                                                        <ng-container *ngFor="let item of dayArr">
+                                                            <div
+                                                                [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                                    type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                                    class="rep-chk" />
+                                                                {{item.Day}}
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
+                                                <label class="">Day</label>
+                                                <div class="pt-1">
+                                                    <div class="d-flex flex-wrap">
+                                                        <ng-container *ngFor="let item of MonthArr">
+                                                            <div
+                                                                [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                                    type="checkbox" name="monthChk" value="{{item.value}}"
+                                                                    class="rep-chk" />
+                                                                {{item.Day}}
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group flex-1" id="div_endDate">
+                                    <label>End till <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input matInput [matDatepicker]="EndTillPicker" (click)="EndTillPicker.open()" [min]="_StartDate"
+                                            [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)" placeholder="End Date"
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text p-0">
+                                                <mat-datepicker-toggle matSuffix [for]="EndTillPicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #EndTillPicker></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="d-flex align-items-start gap-1 flex-nowrap">
+                                    <div class="wc-cus" style="display:none" id="calender_1">
+                                        <mat-card class="demo-inline-calendar-card ">
+                                            <div>
+                                                <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)"
+                                                    [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate">
+                                                </mat-calendar>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                   
+                                    <div *ngIf="preventSingleClick==true"
+                                        class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">
+                                        <input type="hidden" id="hdnSelectedId" value="{{this._selectedId}}">
+                                        <input type="hidden" id="hdnSecondSelectedId" value="{{this._SecondSelectedId}}">
+                                        <input type="hidden" id="hdntotal" value="{{this._total}}">
+                                        <div class="d-flex align-items-center justify-content-between w-100 px-3 mb-2">
+                                            <span class="badge badge-light-primary">{{doubleclickdate}}</span>
+                                            <select (change)="getavltime($event)" class="form-control w-maxc">
+                                                <option>select</option>
+                                                <option [id]="time.count" [value]="time.count"
+                                                    *ngFor="let time of Avaliabletime">
+                                                    {{time.StartTime}} - {{time.EndTime}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <ng-container *ngFor="let sin of timeslotsavl;">
+                                            <div class="table-time">
+                                                <table id="tbl_times" class="">
+                                                    <tr class="d-flex flex-wrap justify-content-between">
+                                                        <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i+1"
+                                                            (click)="TimeClick(i+1,sick.SlotTime)">
+                                                            <div id="div_{{i+1}}" class="wp-100">
+                                                                <div class="time-slt-card">
+                                                                    <p class="time-slt-time">{{sick.SlotTime}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                               
+                            <div *ngIf="isChecked == '1'">
+                                <div class="form-group align-items-start  mb-3 d-none">
+                                    <div class="calendar-wrap mr-3">
+                                        <h5 class="month-year">January 2020</h5>
+                                        <table class="calendar">
+                                            <thead>
+                                                <tr>
+                                                    <th class="day-title" scope="col">S</th>
+                                                    <th class="day-title" scope="col">M</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">W</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">F</th>
+                                                    <th class="day-title" scope="col">S</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="week">
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                    </td>
+                                                    <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                    <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                    <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+        
+                                        <a class="resetbtn">Clear date-range</a>
+                                    </div>
+                                    <div class="calendar-wrap mr-3">
+                                        <h5 class="month-year">January 2020</h5>
+        
+                                        <table class="calendar">
+                                            <thead>
+                                                <tr>
+                                                    <th class="day-title" scope="col">S</th>
+                                                    <th class="day-title" scope="col">M</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">W</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">F</th>
+                                                    <th class="day-title" scope="col">S</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="week">
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                    </td>
+                                                    <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                    <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                    <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+        
+                                        <a class="resetbtn">Clear date-range</a>
+                                    </div>
+                                    <div class="calendar-wrap">
+                                        <h5 class="month-year">January 2020</h5>
+        
+                                        <table class="calendar">
+                                            <thead>
+                                                <tr>
+                                                    <th class="day-title" scope="col">S</th>
+                                                    <th class="day-title" scope="col">M</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">W</th>
+                                                    <th class="day-title" scope="col">T</th>
+                                                    <th class="day-title" scope="col">F</th>
+                                                    <th class="day-title" scope="col">S</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="week">
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                    </td>
+                                                    <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                    </td>
+                                                    <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                    <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                                </tr>
+                                                <tr class="week">
+                                                    <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                    <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                    <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+        
+                                        <a class="resetbtn">Clear date-range</a>
+                                    </div>
+                                </div>
+        
+                                <div>
+                                    <h2>{{SubmissionName}} </h2>
+                                </div>
+                                <div class="form-group" id="dayrep">
+                                    <label class="">Repeat on</label>
+                                    <div class="pt-1">
+                                        <div class="">
+                                            <div class="repeat-month" *ngFor="let item of MonthArr">
+                                                {{item}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group "
+                                    *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Monthly'">
+                                    <div class="dropfocus dropdown w-200 ml-0">
+                                        <input class="kt-input form-control" type="text" placeholder="Select Repeat Weekday"
+                                            data-toggle="dropdown">
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a>
+                                            </ng-container>
+        
+                                        </div>
+                                    </div>
+                                </div>
+        
+                            </div> 
+                        </div>
+        
+                  </div>
+                </div> 
+                
+                <div class="kt-portlet__foot py-3">
+                    <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
+                        <button type="submit" class="btn w-110 Bt-Submit ml-2" [disabled]="!Endtms ||!Startts || !Title_Name "
+                        (click)="OnSubmitSchedule()" >Submit</button>
+                    </div>
+                </div> 
+        
+            </div>
+        </ng-template>
     </div>
 </div>
 
@@ -5852,15 +6471,14 @@
 
 
 
-
-
 <!--create event sidebar start here-->
+<!--
 <div id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
     <div class="kt-portlet mb-0">
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
         *ngIf="editTask==false && copyTask==false">
             <h4 class="m-0">Schedule {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()"     >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -5872,7 +6490,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
         *ngIf="editTask==true && copyTask==false">
             <h4 class="m-0">Edit {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" >
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"  (click)="closeschd()"   >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -5884,7 +6502,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="copyTask==true ">
             <h4 class="m-0">Copy {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"   (click)="closeschd()"   >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -5893,7 +6511,7 @@
                 </svg>
             </a>
         </div>
-        
+
          <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
             <div class="">
                 <div class="d-flex align-items-center justify-content-between">
@@ -5909,13 +6527,12 @@
                         </div>
                     </div>
                 </div>
-
                  <div class="form-group">
                     <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
                     <input class="form-control Title" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
                         minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                     <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
-                </div>
+                 </div>
 
                 <div class="form-group" id="core_viw123">
                     <label class="cus-lbl">Select Project <span class="text-danger"
@@ -5923,8 +6540,7 @@
                     </label>
                     <ng-select placeholder="Select Project" [(ngModel)]="MasterCode"
                         (change)="GetSubtasklistfromProject($event)">
-                        <ng-option [value]="car.Project_Code"
-                            *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
+                        <ng-option [value]="car.Project_Code"  *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
                     </ng-select>
                     <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
                         <span class="d-inline-flex align-items-center"><i
@@ -5938,21 +6554,20 @@
                     </div>
                     <span *ngIf="_subname == true" style="color:red">Please select project!</span>
                 </div>
+
                 <div class="form-group" id="core_viw121" style="display:none">
                     <label class="cus-lbl">Select Project </label>
-                    <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project"
-                        [(ngModel)]="MasterCode">
+                    <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select Project"
+                        [(ngModel)]="MasterCode"    >
                         <ng-option *ngFor="let item of  ProjectListArray" [value]="item.Project_Code">
                             {{item.BlockNameProject}}</ng-option>
                     </ng-select>
                 </div>
-
-
-                
+ 
                 <div class="content-main show pt-0" id="core_viw">
                     <div class="form-group" id="subtaskid">
                         <label class="cus-lbl">Select Action</label>
-                        <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask"
+                        <ng-select class="kt-input form-control p-0 border-0" placeholder="Select Action" [(ngModel)]="Subtask"
                             (change)="getChangeSubtaskDetais($event)">
                             <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">
                                 {{item.Project_Name}}</ng-option>
@@ -5971,7 +6586,7 @@
                      
                     <div class="form-group" id="core_viw222" style="display:none">
                         <label class="cus-lbl">Add Portfolio </label>
-                        <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio"
+                        <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select Portfolio"
                             [(ngModel)]="Portfolio">
                             <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
                                 {{item.Portfolio_Name}}</ng-option>
@@ -5980,35 +6595,37 @@
                    
                     <div class="form-group" id="core_Dms" style="display:none">
                         <label class="cus-lbl">Add DMS </label>
-                        <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select DMS"
+                        <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" placeholder="Select DMS"
                             [(ngModel)]="SelectDms">
                             <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
                                 {{item.Subject}} </ng-option>
                         </ng-select>
                     </div>
-                     <!--
+                    
                     <div class="form-group" id="Guest_Name" style="display:none">
                         <label class="cus-lbl">Add Participants </label>
-                        <ng-select [multiple]="true" class="kt-input form-control" name="ngEmployeeDropdown"
+                        <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" name="ngEmployeeDropdown"
                             placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
                             <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                                 {{item.DisplayName}} </ng-option>
                         </ng-select>
-                    </div>
+                    </div> 
                     <div>
-                        <div class="form-group" id="online-add">
-                            <div class="form-check form-check-custom form-check-solid pl-4">
-                                <input class="form-check-input" [(ngModel)]="_onlinelink"
-                                    (click)="Online_method($event)" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">Online </label>
+                        <div>
+                            <div class="form-group" id="online-add">
+                                <div class="form-check form-check-custom form-check-solid pl-4">
+                                    <input class="form-check-input" [(ngModel)]="_onlinelink"
+                                        (click)="Online_method($event)" type="checkbox" value="" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">Online </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="Descrip_Name12" style="display:none">
+                                <label class="cus-lbl">Link Description </label>
+                                <angular-editor [(ngModel)]="Link_Details" [config]="config"></angular-editor>
                             </div>
                         </div>
-                        <div class="form-group" id="Descrip_Name12" style="display:none">
-                            <label class="cus-lbl">Link Description </label>
-
-                            <angular-editor [(ngModel)]="Link_Details" [config]="config"></angular-editor>
-                        </div>
                     </div>
+                  
                     <div class="form-group section-1" id="Location_Name" style="display:none">
                         <label class="cus-lbl">Location </label>
                         <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
@@ -6018,11 +6635,12 @@
                         <label class="cus-lbl">Description </label>
                         <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
                     </div>
+                     
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
                         <div class="custom-file pl-1">
-                            <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file"
-                                (change)="onFileChange($event)" multiple>
+                            <input type="file" id="uploadFile_" accept="application/pdf" class="form-control-file"
+                                (change)="onFileChange_($event)" multiple>
 
                         </div>
                     </div>
@@ -6064,30 +6682,32 @@
                         <div class="d-flex gap-1">
                             <div class="form-group flex-1">
                                 <label>{{_labelName}} <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
-                                        (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                        [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                <div class="input-group p-0 border-0">
+                                    <input matInput [matDatepicker]="picker1_m_date" (click)="picker1_m_date.open()"
+                                    (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                    [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
                                     <div class="input-group-append">
 
                                         <div class="input-group-text p-0">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1_m_date"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1_m_date></mat-datepicker>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group flex-1">
+                           
+                            <div class="form-group flex-1"> 
                                 <label class="cus-lbl">Start Time </label>
-                                <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
+                                <ng-select class="kt-input form-control p-0 border-0" id="startid"
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>
                                 </ng-select>
                             </div>
+                           
                             <div class="form-group flex-1">
                                 <label class="cus-lbl">End Time</label>
-                                <ng-select class="kt-input form-control" (open)="onfocus($event)" placeholder="End Time"
+                                <ng-select class="kt-input form-control p-0"  placeholder="End Time"
                                     [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                         {{item1}}</ng-option>
@@ -6097,13 +6717,13 @@
                             <div class="form-group flex-1" id="Schenddate">
                                 <label>Schedule End Date <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input matInput [matDatepicker]="picker6" (click)="picker6.open()"
+                                    <input matInput [matDatepicker]="picker_SED" (click)="picker_SED.open()"
                                         [min]="_StartDate" [(ngModel)]="_SEndDate" placeholder="End Date"
                                         class="form-control">
                                     <div class="input-group-append">
                                         <div class="input-group-text p-0">
-                                            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker6></mat-datepicker>
+                                            <mat-datepicker-toggle matSuffix [for]="picker_SED"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker_SED></mat-datepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -6113,7 +6733,7 @@
                         <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                             Note:Selected Project is Expired,Please Extend your Project Deadline date
                         </div>
-
+   
                         <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                             <div class="wc-cus">
 
@@ -6175,6 +6795,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                  
                                     <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
                                         <label class="">Day</label>
                                         <div class="pt-1">
@@ -6192,21 +6813,19 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
+                       
                         <div class="form-group flex-1" id="div_endDate">
                             <label>End till <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate"
+                                <input matInput [matDatepicker]="EndTillPicker" (click)="EndTillPicker.open()" [min]="_StartDate"
                                     [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)" placeholder="End Date"
                                     class="form-control">
                                 <div class="input-group-append">
                                     <div class="input-group-text p-0">
-                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker2></mat-datepicker>
+                                        <mat-datepicker-toggle matSuffix [for]="EndTillPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #EndTillPicker></mat-datepicker>
                                     </div>
                                 </div>
                             </div>
@@ -6222,6 +6841,7 @@
                                     </div>
                                 </mat-card>
                             </div>
+                           
                             <div *ngIf="preventSingleClick==true"
                                 class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">
                                 <input type="hidden" id="hdnSelectedId" value="{{this._selectedId}}">
@@ -6256,6 +6876,7 @@
                             </div>
                         </div>
                     </div>
+                       
                     <div *ngIf="isChecked == '1'">
                         <div class="form-group align-items-start  mb-3 d-none">
                             <div class="calendar-wrap mr-3">
@@ -6492,55 +7113,25 @@
                             </div>
                         </div>
 
-                    </div> -->
+                    </div> 
                 </div>
+
         </div>
         </div> 
         
-        
-        
-        
         <div class="kt-portlet__foot py-3">
-
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
-                    >Submit</button>
-                <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
-                    >Save Draft</button>
-                <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
-                    >Update Draft</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
+                <button type="submit" class="btn w-110 Bt-Submit ml-2" [disabled]="!Endtms ||!Startts || !Title_Name "
+                (click)="OnSubmitSchedule()" >Submit</button>
+                <button type="cancel" class="btn w-110 btn-dull ml-3 btn-secondary" (click)="closeschd()" >Close</button>
+            </div>
+        </div> 
 
-            </div>
-
-
-            <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
-                class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts " data-toggle="modal"
-                    data-target="#confirmpopup"   (click)="viewconfirm()"   >Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-            </div>
-            <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
-                class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-            </div>
-            <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule(2)">Update and Release</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-            </div>
-        </div>  
     </div>
 </div>
+-->
 
-<!--create event sidebar start here-->
-
-
-
+<!--create event sidebar end here-->
 
 
 
@@ -6578,7 +7169,13 @@
         </div>
     </div>
 </div>
-<!-------- meetings view end--------------->
+<!-------- meetings view end---------------> 
+
+
+
+
+
+
 <!-------- Project Details edit view Start --------->
 
 <div class="sideInfobar animate-right" id="Project_Details_Edit_form">

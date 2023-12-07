@@ -191,7 +191,6 @@ NewPending_table(obj:CalenderDTO){
 }
 
   NewInsertCalender(obj: CalenderDTO){
-    
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
