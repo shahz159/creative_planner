@@ -149,6 +149,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   responsible_dropdown: any;
   Category_List: any;
   selectedcategory: any;
+  EndDate1: any = new Date();
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -210,6 +211,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.minhold.setDate(this.minhold.getDate() + 1);     
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     //
   }
 
@@ -1765,7 +1767,9 @@ ActionName:any
       var category = this.OGselectedcategoryid;    
     }
 
-  
+    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
+
    const jsonobj={    
     Project_Type:type,  
     Project_Name:this.ActionName,
@@ -1774,29 +1778,77 @@ ActionName:any
     Responsible:actionresp,
     Category:category,
     Client:Actionclient,
-    StartDate: this.ActionstartDate,
-    EndDate:this.ActionendDate,
-    Allocated:this.ActionAllocatedHours, 
+    StartDate: datestrStart,
+    EndDate: datestrEnd,
+    Allocated: this.ActionAllocatedHours, 
    }
    const jsonvalues=JSON.stringify(jsonobj)
     console.log(jsonvalues ,'json');
 
-    this.approvalObj.Emp_no=this.Current_user_ID;
-    this.approvalObj.Project_Code=this.ActionCode;
-    this.approvalObj.json=jsonvalues;
-    this.approvalObj.Remarks=this._remarks;
 
-  this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
-      console.log(data['message'],"edit response");
-      if(data['message']=='1'){
-        this.notifyService.showSuccess("Updated successfully","Success");
+    const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+      const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
+      console.log(dateOne, dateTwo, "dates")
+      if ((dateOne < dateTwo) && ((this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.AuthorityEmpNo))) {
+        Swal.fire({
+          title: 'Action deadLine is greater than main project deadLine ?',
+          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((response: any) => {
+          if (response.value) {
+            this.approvalObj.Emp_no=this.Current_user_ID;
+            this.approvalObj.Project_Code=this.ActionCode;
+            this.approvalObj.json=jsonvalues;
+            this.approvalObj.Remarks=this._remarks;
+        
+          this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+              console.log(data['message'],"edit response");
+              if(data['message']=='1'){
+                this.notifyService.showSuccess("Updated successfully","Success");
+              }
+              else if(data['message']=='2'){
+                this.notifyService.showError("Not updated","Failed");
+              }
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.closeInfo();
+          });
+          } else if (response.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+              'Cancelled',
+              'Action end date not updated',
+              'error'
+            )
+          }
+        });
       }
-      else if(data['message']=='2'){
-        this.notifyService.showError("Not updated","Failed");
+      else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.projectInfo.ResponsibleEmpNo && this.Current_user_ID != this.projectInfo.AuthorityEmpNo  )) {
+        Swal.fire({
+          title: 'Unable to extend end date for this action.',
+          text: 'You have selected the action end date greater than project deadline. Please contact the main project responsible to extend main project end date and try again.',
+        });
       }
-      this.getProjectDetails(this.URL_ProjectCode);
-      this.closeInfo();
-  });
+      else{
+        this.approvalObj.Emp_no=this.Current_user_ID;
+        this.approvalObj.Project_Code=this.ActionCode;
+        this.approvalObj.json=jsonvalues;
+        this.approvalObj.Remarks=this._remarks;
+    
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+          console.log(data['message'],"edit response");
+          if(data['message']=='1'){
+            this.notifyService.showSuccess("Updated successfully","Success");
+          }
+          else if(data['message']=='2'){
+            this.notifyService.showError("Not updated","Failed");
+          }
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.closeInfo();
+      });
+      }
+
+   
   }
 
 
