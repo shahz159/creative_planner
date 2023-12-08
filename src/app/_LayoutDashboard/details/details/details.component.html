@@ -1795,7 +1795,7 @@
 
                                 <div class="Dividing-line"></div>
 
-                                <div class="row">
+                                <div class="row">        
                                     <div class="col-lg-6">
                                         <div class="kt-over-pd-in bd-right-x">
                                             <div class="kt-ct-project">
@@ -1803,12 +1803,12 @@
                                                     <h6>Recent activity</h6>
                                                 </div>
                                             </div>
-                                            <div class="timeline-label">
+                                            <div class="timeline-label" >
                                                 <!--begin::Item-->
-                                                <div class="timeline-item">
+                                                <div class="timeline-item"  *ngFor="let item of firstFiveRecords">
                                                     <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br>
-                                                        <span class="kt-dt-l">08:42 AM</span>
+                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">{{item.ModifiedDate |date:'dd MMM'}}<br>
+                                                        <span class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
                                                     </div>
                                                     <!--end::Label-->
 
@@ -1820,91 +1820,25 @@
 
                                                     <!--begin::Text-->
                                                     <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
-                                                            Created</p>
-                                                        Outlines keep you honest. And keep structure
+                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">{{item.Value}}</p>
+                                                        <span *ngIf="item.oldValue !==''">From : {{item.oldValue}}</span>  <br> 
+                                                        <span  *ngIf="item.oldValue !==''; else newActivity">To : {{item.NewValue}}</span>     
+                                                        <ng-template #newActivity>
+                                                            {{item.NewValue}}
+                                                        </ng-template>
                                                     </div>
                                                     <!--end::Text-->
                                                 </div>
+                                               <ng-container *ngIf="firstFiveRecords.length>4">
+                                                <a href="javascript:void(0)" (click)="View_Activity()">More view...</a>
+                                            </ng-container>
                                                 <!--end::Item-->
-
-                                                <!--begin::Item-->
-                                                <div class="timeline-item">
-                                                    <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br>
-                                                        <span class="kt-dt-l">11:42 PM</span>
-                                                    </div>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Badge-->
-                                                    <div class="timeline-badge">
-                                                        <i class="fa fa-genderless text-success fs-1"></i>
-                                                    </div>
-                                                    <!--end::Badge-->
-
-                                                    <!--begin::Content-->
-                                                    <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
-                                                        </p>
-                                                        Rebrand strategy planning
-                                                    </div>
-                                                    <!--end::Content-->
-                                                </div>
-                                                <!--end::Item-->
-
-                                                <!--begin::Item-->
-                                                <div class="timeline-item">
-                                                    <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br>
-                                                        <span class="kt-dt-l">10:42 PM</span>
-                                                    </div>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Badge-->
-                                                    <div class="timeline-badge">
-                                                        <i class="fa fa-genderless text-warning fs-1"></i>
-                                                    </div>
-                                                    <!--end::Badge-->
-
-                                                    <!--begin::Content-->
-                                                    <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
-                                                        </p>
-                                                        Navigation optimization
-                                                    </div>
-                                                    <!--end::Content-->
-                                                </div>
-                                                <!--end::Item-->
-                                                <!--begin::Item-->
-                                                <div class="timeline-item">
-                                                    <!--begin::Label-->
-                                                    <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br>
-                                                        <span class="kt-dt-l">01:42 AM</span>
-                                                    </div>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Badge-->
-                                                    <div class="timeline-badge">
-                                                        <i class="fa fa-genderless text-warning fs-1"></i>
-                                                    </div>
-                                                    <!--end::Badge-->
-
-                                                    <!--begin::Content-->
-                                                    <div class="fw-mormal timeline-content text-muted ps-3">
-                                                        <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
-                                                        </p>
-                                                        Indulging in poorly driving and keep structure keep great
-                                                    </div>
-                                                    <!--end::Content-->
-                                                </div>
-                                                <!--end::Item-->
-
                                             </div>
 
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
+                                    <!-- <div class="col-lg-6 " >
                                         <div class="kt-over-pd-in">
                                             <div class="kt-ct-project">
                                                 <div class="kt-ct-sub-ttl">
@@ -1912,12 +1846,78 @@
                                                 </div>
                                             </div>
                                             <div class="chart" id="chart-container"></div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+
+
+
+
+
+
+
+
+
+
+                        <div class="col-lg-6 " >
+                            <div class="kt-over-pd-in">
+                                <div class="kt-ct-project">
+                                    <div class="kt-ct-sub-ttl">
+                                        <h6>Statistics</h6>
+                                    </div>
+                                </div>
+                                <div class="chart" id="chart-container"></div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     </ng-container>
@@ -2582,7 +2582,10 @@
 <div id="LinkSideBar" class="sideInfobar animate-right">
     <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-            <h4 class="font-weight-600 m-0"><i class="fa fa-link mr-2"></i>Link DMS</h4>
+            <h4 class="font-weight-600 m-0 d-flex">
+                <a class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
+                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
+                </a> Link DMS</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeLinkSideBar() ">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -2676,7 +2679,24 @@
 <div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
+            <h4 class="font-weight-bold m-0 d-flex"> 
+                <a class="kt-inbox__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                        fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M10.8448 8.73376C10.542 8.73376 10.1143 8.77561 9.66899 8.83659C9.46096 8.86508 9.30234 9.02371 9.27385 9.23174C9.21286 9.67703 9.17102 10.1048 9.17102 10.4075C9.17102 10.7102 9.21286 11.138 9.27385 11.5833C9.30234 11.7913 9.46096 11.9499 9.66899 11.9784C10.1143 12.0394 10.542 12.0812 10.8448 12.0812C11.1475 12.0812 11.5752 12.0394 12.0205 11.9784C12.2285 11.9499 12.3872 11.7913 12.4157 11.5833C12.4766 11.138 12.5185 10.7102 12.5185 10.4075C12.5185 10.1048 12.4766 9.67703 12.4157 9.23174C12.3872 9.02371 12.2285 8.86508 12.0205 8.83659C11.5752 8.77561 11.1475 8.73376 10.8448 8.73376ZM9.48731 7.50999C8.68398 7.62001 8.05726 8.24673 7.94725 9.05005C7.88414 9.51081 7.83203 10.0113 7.83203 10.4075C7.83203 10.8037 7.88414 11.3042 7.94725 11.7649C8.05726 12.5683 8.68398 13.195 9.48731 13.305C9.94806 13.3681 10.4485 13.4202 10.8448 13.4202C11.241 13.4202 11.7414 13.3681 12.2022 13.305C13.0055 13.195 13.6322 12.5683 13.7423 11.7649C13.8054 11.3042 13.8575 10.8037 13.8575 10.4075C13.8575 10.0113 13.8054 9.51081 13.7423 9.05005C13.6322 8.24673 13.0055 7.62001 12.2022 7.50999C11.7414 7.44689 11.241 7.39478 10.8448 7.39478C10.4485 7.39478 9.94806 7.44689 9.48731 7.50999Z"
+                            fill="#a3a3a3" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M3.48025 8.73376C3.17752 8.73376 2.74978 8.77561 2.30449 8.83659C2.09646 8.86508 1.93784 9.02371 1.90935 9.23174C1.84836 9.67703 1.80652 10.1048 1.80652 10.4075C1.80652 10.7102 1.84836 11.138 1.90935 11.5833C1.93784 11.7913 2.09646 11.9499 2.30449 11.9784C2.74978 12.0394 3.17752 12.0812 3.48025 12.0812C3.78298 12.0812 4.21072 12.0394 4.65601 11.9784C4.86404 11.9499 5.02266 11.7913 5.05115 11.5833C5.11214 11.138 5.15398 10.7102 5.15398 10.4075C5.15398 10.1048 5.11214 9.67703 5.05115 9.23174C5.02266 9.02371 4.86404 8.86508 4.65601 8.83659C4.21072 8.77561 3.78298 8.73376 3.48025 8.73376ZM2.12281 7.50999C1.31948 7.62001 0.692762 8.24673 0.582744 9.05005C0.519642 9.51081 0.467529 10.0113 0.467529 10.4075C0.467529 10.8037 0.519642 11.3042 0.582744 11.7649C0.692762 12.5683 1.31948 13.195 2.12281 13.305C2.58356 13.3681 3.08402 13.4202 3.48025 13.4202C3.87648 13.4202 4.37694 13.3681 4.83769 13.305C5.64102 13.195 6.26774 12.5683 6.37776 11.7649C6.44086 11.3042 6.49297 10.8037 6.49297 10.4075C6.49297 10.0113 6.44086 9.51081 6.37776 9.05005C6.26774 8.24673 5.64102 7.62001 4.83769 7.50999C4.37694 7.44689 3.87648 7.39478 3.48025 7.39478C3.08402 7.39478 2.58356 7.44689 2.12281 7.50999Z"
+                            fill="#a3a3a3" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M10.8445 1.36926C10.5418 1.36926 10.114 1.41111 9.66875 1.47209C9.46072 1.50058 9.3021 1.65921 9.2736 1.86724C9.21262 2.31253 9.17077 2.74026 9.17077 3.04299C9.17077 3.34573 9.21262 3.77346 9.2736 4.21875C9.3021 4.42678 9.46072 4.58541 9.66875 4.6139C10.114 4.67488 10.5418 4.71673 10.8445 4.71673C11.1472 4.71673 11.575 4.67488 12.0203 4.6139C12.2283 4.58541 12.3869 4.42678 12.4154 4.21875C12.4764 3.77346 12.5182 3.34573 12.5182 3.04299C12.5182 2.74026 12.4764 2.31253 12.4154 1.86724C12.3869 1.65921 12.2283 1.50058 12.0203 1.47209C11.575 1.41111 11.1472 1.36926 10.8445 1.36926ZM9.48707 0.145488C8.68374 0.255507 8.05702 0.882227 7.947 1.68555C7.8839 2.1463 7.83179 2.64676 7.83179 3.04299C7.83179 3.43923 7.8839 3.93968 7.947 4.40043C8.05702 5.20376 8.68374 5.83048 9.48707 5.9405C9.94782 6.0036 10.4483 6.05571 10.8445 6.05571C11.2407 6.05571 11.7412 6.0036 12.2019 5.9405C13.0053 5.83048 13.632 5.20376 13.742 4.40043C13.8051 3.93968 13.8572 3.43923 13.8572 3.04299C13.8572 2.64676 13.8051 2.1463 13.742 1.68555C13.632 0.882227 13.0053 0.255507 12.2019 0.145488C11.7412 0.0823858 11.2407 0.0302734 10.8445 0.0302734C10.4483 0.0302734 9.94782 0.0823858 9.48707 0.145488Z"
+                            fill="#a3a3a3" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M3.48001 1.36926C3.17727 1.36926 2.74954 1.41111 2.30425 1.47209C2.09622 1.50058 1.93759 1.65921 1.9091 1.86724C1.84812 2.31253 1.80627 2.74026 1.80627 3.04299C1.80627 3.34573 1.84812 3.77346 1.9091 4.21875C1.93759 4.42678 2.09622 4.58541 2.30425 4.6139C2.74954 4.67488 3.17727 4.71673 3.48001 4.71673C3.78274 4.71673 4.21047 4.67488 4.65576 4.6139C4.86379 4.58541 5.02242 4.42678 5.05091 4.21875C5.11189 3.77346 5.15374 3.34573 5.15374 3.04299C5.15374 2.74026 5.11189 2.31253 5.05091 1.86724C5.02242 1.65921 4.86379 1.50058 4.65576 1.47209C4.21047 1.41111 3.78274 1.36926 3.48001 1.36926ZM2.12256 0.145488C1.31924 0.255507 0.692518 0.882227 0.582499 1.68555C0.519398 2.1463 0.467285 2.64676 0.467285 3.04299C0.467285 3.43923 0.519398 3.93968 0.582499 4.40043C0.692518 5.20376 1.31924 5.83048 2.12256 5.9405C2.58332 6.0036 3.08377 6.05571 3.48001 6.05571C3.87624 6.05571 4.37669 6.0036 4.83745 5.9405C5.64077 5.83048 6.26749 5.20376 6.37751 4.40043C6.44061 3.93968 6.49273 3.43923 6.49273 3.04299C6.49273 2.64676 6.44061 2.1463 6.37751 1.68555C6.26749 0.882227 5.64077 0.255507 4.83745 0.145488C4.37669 0.0823858 3.87624 0.0302734 3.48001 0.0302734C3.08377 0.0302734 2.58332 0.0823858 2.12256 0.145488Z"
+                            fill="#a3a3a3" />
+                    </svg>
+                </a>    Link Portfolio</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeLinkSideBar()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -3228,7 +3248,7 @@
                                         fill="#a3a3a3"></path>
                                 </g>
                             </svg> </span>Activity Log</h4>
-                    <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                         (click)="closedarBar()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                             fill="currentColor">
@@ -3331,10 +3351,10 @@
                                     <div class="fs-6 mb-2">
                                         {{data.Value}}<br>
 
-                                        <span *ngIf="data.oldValue !==''">From: {{data.oldValue}}</span>
+                                        <span *ngIf="data.oldValue !==''">From : {{data.oldValue}}</span>
 
 
-                                        <br> <span *ngIf="data.oldValue !==''; else newvalue">To: {{data.NewValue}}</span>
+                                        <br> <span *ngIf="data.oldValue !==''; else newvalue">To : {{data.NewValue}}</span>
 
                                         <ng-template #newvalue>
                                             {{data.NewValue}}
@@ -4014,7 +4034,7 @@
                                 <div class="user-list-card" *ngFor="let Data of Project_List | filter :SearchItem ;let i=index">
                                     <div class="mvc-vb">
                                         <div class="user-icon-round">
-                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold">R</span>
+                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold">{{Data.RACIS[0]}}</span>
                                             <!-- <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg"> -->
                                         </div>
                                     </div>
