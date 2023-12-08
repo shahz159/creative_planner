@@ -904,7 +904,7 @@
                                                         By {{action&&action.Responsible}}
                                                     </div>
                                                     <div class="kt-info-lable-v">
-                                                        {{action&&action.EndDate|date:'dd-MM-YYYY'}}
+                                                        {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -6914,7 +6914,14 @@
             </div>
             <div class="row pt-2">
                 <div class="col-lg-4 text-left">
-                    <div class="form-group">
+                    <div class="form-group mb-2 Ic_ed">
+                        <div class="kt-info-lable-v"> Start date</div>
+                        <div class="input-icon Sub_In_ed">
+                            <input type="text" class="form-control readonly" [value]="Start_Date | date : 'dd-MM-yyyy'"
+                                placeholder="Start date"  readonly/>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
                         <div class="kt-info-lable-v"> Start date </div>
                         <div class="input-icon  Sub_In_ed  date-border-v d-flex">
                             <input class="form-control " [(ngModel)]="Start_Date" placeholder="Start Date..."
@@ -6928,7 +6935,7 @@
                                 <mat-datepicker class="form-group " #strtEditPicker></mat-datepicker>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-4 text-left">
                 <div class="form-group mb-2">
@@ -7330,19 +7337,28 @@
             <div class="row pt-2">
                 <div class="col-lg-4 text-left">
                     <div class="form-group Ic_ed">
-                        <div class="kt-info-lable-v"> Start date </div>
-                        <div class="input-icon  Sub_In_ed rounded-2 date-border-v d-flex">
-                            <input class="form-control " [(ngModel)]="ActionstartDate" placeholder="Start Date..."
-                                [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="actionEditPicker"
-                                (click)="actionEditPicker.open();" placeholder="Select Start Date"
-                                class="form-control border-0 " name="date" />
-                            <div class="input-group-append h-2">
-                                <mat-datepicker-toggle matSuffix [for]="actionEditPicker"
-                                    class="btn-secondary border-0">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker class="form-group " #actionEditPicker></mat-datepicker>
+                        <!-- <ng-container *ngIf="ActionstartDate > EndDate1">
+                            <div class="kt-info-lable-v"> Start date </div>
+                            <div class="input-icon  Sub_In_ed rounded-2 date-border-v d-flex">
+                                <input class="form-control " [(ngModel)]="ActionstartDate" placeholder="Start Date..."
+                                    [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="actionEditPicker"
+                                    (click)="actionEditPicker.open();" placeholder="Select Start Date"
+                                    class="form-control border-0 " name="date" />
+                                <div class="input-group-append h-2">
+                                    <mat-datepicker-toggle matSuffix [for]="actionEditPicker"
+                                        class="btn-secondary border-0">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker class="form-group " #actionEditPicker></mat-datepicker>
+                                </div>
                             </div>
-                        </div>
+                        </ng-container> -->
+                        <!-- <ng-container *ngIf="ActionstartDate < EndDate1"> -->
+                            <div class="kt-info-lable-v"> Start date</div>
+                            <div class="input-icon Sub_In_ed">
+                                <input type="text" class="form-control readonly" [value]="ActionstartDate | date : 'dd-MM-yyyy'"
+                                    placeholder="Start date"  readonly/>
+                            </div>
+                        <!-- </ng-container> -->
                     </div>
                 </div>
                 <div class="col-lg-4 text-left"
