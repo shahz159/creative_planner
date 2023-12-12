@@ -172,7 +172,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   responsible_dropdown: any;
   Category_List: any;
   selectedcategory: any;
-  EndDate1: any = new Date();
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -207,7 +206,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   
   
   ngOnInit(): void {
-   
+
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -235,29 +234,12 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.minhold.setDate(this.minhold.getDate() + 1);     
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
-    this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     //
-
-
-
-
-
-
-    this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-      .subscribe(data => {
-        let projectType: any = (data[0]['ProjectType']);
-        this.IsData = (data[0]['DARGraphCalculations_Json']);
-        if (projectType == '001' || projectType == '002') {
-          this.CoreSecodaryCharts();
-        }
-        else if (projectType != '001' || projectType != '002') {
-        //  this.OtherCharts();
-        }
-      });
+    setTimeout(()=>this.drawStatistics(),500); 
   }
 
   ngAfterViewInit():void{
-     this.drawStatistics();
+     this.getResponsibleActions()
   }
 
   getusername() {
@@ -272,218 +254,72 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
 maxDuration: any;
 IsData: string;
+RemainingHours:any;
+UsedInDAR:any;
 
-
-CoreSecodaryCharts() {
-  this.drawStatistics()
- // this.DARSummaryChart();
-//  this.ProjectCompletionChart();
-  if (this.IsData != null) {
-  //  this.HybridDrillChart();
-   // this.SubtaskSummaryChart();
-  }
- // this.ProjectTrendChart();
-}
-
-
-
-
-
-
-
-DARSummaryChart() {
-  this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-    .subscribe(data1 => {
-      this.maxDuration = (data1[0]['ProjectMaxDuration']);
-      let chart = am4core.create("DARSummary", am4charts.PieChart3D);
-      chart.hiddenState.properties.opacity = 0; 
-      chart.legend = new am4charts.Legend();
-      chart.data =
-        [
-          {
-            name: "Remaining Hours",
-            value: (data1[0]['RemainingHours']),
-          },
-          {
-            name: "Total Hours Used In DAR",
-            value: (data1[0]['TotalHoursUsedInDAR']),
-          },
-        ];
-
-      let series = chart.series.push(new am4charts.PieSeries3D(
-
-      ));
-      series.dataFields.value = "value";
-      series.dataFields.category = "name";
-      series.autoDispose = true;
-    });
-}
-
-
-
-  
 drawStatistics(){
   this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
     .subscribe(data1 => {
-
-  this.maxDuration = (data1[0]['ProjectMaxDuration']);
-  let chart = am4core.create("DARSummary", am4charts.PieChart3D);
-  chart.hiddenState.properties.opacity = 0; 
-      chart.legend = new am4charts.Legend();
-
-
-
-
-
-
-
-      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-      .subscribe(data1 => {
-        let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
-        let chart = am4core.create('SummaryChart', am4charts.XYChart)
-        chart.colors.step = 2;
-  
-        chart.legend = new am4charts.Legend()
-        chart.legend.position = 'top'
-        chart.legend.paddingBottom = 20
-        chart.legend.labels.template.maxWidth = 95
-  
-        let xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
-        xAxis.dataFields.category = 'category'
-        xAxis.renderer.cellStartLocation = 0.1
-        xAxis.renderer.cellEndLocation = 0.9
-        xAxis.renderer.grid.template.location = 0;
-  
-        let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        yAxis.min = 0;
-  
-        function createSeries(value, name) {
-          let series = chart.series.push(new am4charts.ColumnSeries())
-          series.dataFields.valueY = value
-          series.dataFields.categoryX = 'category'
-          series.name = name
-  
-          series.events.on("hidden", arrangeColumns);
-          series.events.on("shown", arrangeColumns);
-  
-          let bullet = series.bullets.push(new am4charts.LabelBullet())
-          bullet.interactionsEnabled = false
-          bullet.dy = 30;
-          bullet.label.text = '{valueY}'
-          bullet.label.fill = am4core.color('#ffffff')
-  
-          return series;
-        }
-  
-        chart.data = data;
+    //  console.log(data1, "DAR")
+      this.maxDuration = (data1[0]['ProjectMaxDuration']);
+      this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+      this.RemainingHours = (data1[0]['RemainingHours']);
       
+      this.maxDuration=(this.maxDuration/this.maxDuration) * 100;
+      this.RemainingHours=(this.RemainingHours/this.maxDuration) * 100;
+      this.UsedInDAR=(this.UsedInDAR/this.maxDuration) * 100;
+      // console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
+
+    new FusionCharts({
+    
+      type: "radialbar",
+      width: "100%",
+      height: "100%",
+      renderAt: "chart-container",
+      dataSource: {
+       chart: {
+          theme: "fusion",
+          // caption: "7Hr 32M",
+          // subCaption: "January 2021",
+          showLegend: 1,
+          innerRadius: 30,
+          outerRadius: 105,
+          showLabels: 1,
+          labelText: "$label"
+        },
+        data: [
+          {
+            label: "Remaining hous",
+            value: this.RemainingHours,
+            color: "#5867dd" //Custom Color
+          },
   
-        createSeries('RemainingHours', 'Remaining Hours');
-        createSeries('DARUsedHours', 'Used Hours');
-        createSeries('TotalDARHours', 'Total Hours');
-  
-        function arrangeColumns() {
-          let series = chart.series.getIndex(0);
-  
-          let w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
-          if (series.dataItems.length > 1) {
-            let x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
-            let x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
-            let delta = ((x1 - x0) / chart.series.length) * w;
-            if (am4core.isNumber(delta)) {
-              let middle = chart.series.length / 2;
-  
-              let newIndex = 0;
-              chart.series.each(function (series) {
-                if (!series.isHidden && !series.isHiding) {
-                  series.dummyData = newIndex;
-                  newIndex++;
-                }
-                else {
-                  series.dummyData = chart.series.indexOf(series);
-                }
-              })
-              let visibleCount = newIndex;
-              let newMiddle = visibleCount / 2;
-  
-              chart.series.each(function (series) {
-                let trueIndex = chart.series.indexOf(series);
-                let newIndex = series.dummyData;
-  
-                let dx = (newIndex - trueIndex + middle - newMiddle) * delta
-  
-                series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-                series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-              })
-            }
+          {
+            label: "Used hours",
+            value: this.UsedInDAR,
+            color: "#b2beff" //Custom Color
+          },
+          {
+            label: "Total hours",
+            value: this.maxDuration,
+            color: "#985eff" //Custom Color
           }
-        }
-      });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  new FusionCharts({
-    type: "radialbar",
-    width: "100%",
-    height: "100%",
-    renderAt: "chart-container",
-    dataSource: {
-     chart: {
-        theme: "fusion",
-        // caption: "7Hr 32M",
-        // subCaption: "January 2021",
-        showLegend: 1,
-        innerRadius: 30,
-        outerRadius: 105,
-        showLabels: 1,
-        labelText: "$label"
-      },
-      data: [
-        {
-          label: "Design",
-          value: 94.09,
-          color: "#5867dd" //Custom Color
-        },
-
-        {
-          label: "Develoment",
-          value: 59.89,
-          color: "#b2beff" //Custom Color
-        },
-        {
-          label: "Testing",
-          value: 91.53,
-          color: "#985eff" //Custom Color
-        }
-      ]
-    }
-  }).render();
-  // chart js end ----------------
-  var lang = {
-    "javascript": "70%", 
-  };
-  var multiply = 4;
-  $.each(lang, function (language, pourcent) { 
-    var delay = 700;
-    setTimeout(function () {
-      $('#' + language + '-pourcent').html(pourcent);
-    }, delay * multiply);
-    multiply++;
-  });
-
-
-})
+        ]
+      }
+    }).render();
+    // chart js end ----------------
+    var lang = {
+      "javascript": "70%", 
+    };
+    var multiply = 4;
+    $.each(lang, function (language, pourcent) { 
+      var delay = 700;
+      setTimeout(function () {
+        $('#' + language + '-pourcent').html(pourcent);
+      }, delay * multiply);
+      multiply++;
+    });
+    });
   }
 
 
@@ -531,7 +367,7 @@ drawStatistics(){
 
 
    Submission:any
-     
+
 
   getProjectDetails(prjCode:string) {
       this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
@@ -564,10 +400,11 @@ drawStatistics(){
       (data) => {
         // console.log(data,"RACIS");
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+        console.log(this.nonRacisList,'sahils' );
       });
 
     this.filteredEmployees = this.nonRacisList;
-
+   
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
     .subscribe(data1 => {
@@ -1349,7 +1186,7 @@ _portfolioLength: any;
 totalPortfolios: number;
 _portfoliosList: any;
 dropdownSettings_Portfolio: IDropdownSettings = {};
-ngDropdwonPort: any;
+ngDropdwonPort: any=[];
 Empty_portDropdown: any;
 _SelectedPorts: any;
 selectedportID: any;
@@ -1649,11 +1486,17 @@ closeDarSideBar(){
   document.getElementById("rightbar-overlay").style.display = "none";
 }
 
-
+ProjectPercentage: any;
+ProjectStatus: string;
 
 getResponsibleActions() {
+ 
   this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
     (data) => {
+      this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
+      console.log( data,'ppppppppppppp')
+      this.ProjectStatus = data[0]['ProjectStatus'];
+      console.log( this.ProjectStatus,'ttttttttttt')
       this.Client_List = JSON.parse(data[0]['ClientDropdown']);
       this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
       this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
@@ -1994,9 +1837,7 @@ ActionName:any
       var category = this.OGselectedcategoryid;    
     }
 
-    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
-    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
-
+  
    const jsonobj={    
     Project_Type:type,  
     Project_Name:this.ActionName,
@@ -2005,77 +1846,29 @@ ActionName:any
     Responsible:actionresp,
     Category:category,
     Client:Actionclient,
-    StartDate: datestrStart,
-    EndDate: datestrEnd,
-    Allocated: this.ActionAllocatedHours, 
+    StartDate: this.ActionstartDate,
+    EndDate:this.ActionendDate,
+    Allocated:this.ActionAllocatedHours, 
    }
    const jsonvalues=JSON.stringify(jsonobj)
     console.log(jsonvalues ,'json');
 
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.Project_Code=this.ActionCode;
+    this.approvalObj.json=jsonvalues;
+    this.approvalObj.Remarks=this._remarks;
 
-    const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
-      const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
-      console.log(dateOne, dateTwo, "dates")
-      if ((dateOne < dateTwo) && ((this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.AuthorityEmpNo))) {
-        Swal.fire({
-          title: 'Action deadLine is greater than main project deadLine ?',
-          text: 'Do you want to continue for selection of date after main project deadLine!!',
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No'
-        }).then((response: any) => {
-          if (response.value) {
-            this.approvalObj.Emp_no=this.Current_user_ID;
-            this.approvalObj.Project_Code=this.ActionCode;
-            this.approvalObj.json=jsonvalues;
-            this.approvalObj.Remarks=this._remarks;
-        
-          this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
-              console.log(data['message'],"edit response");
-              if(data['message']=='1'){
-                this.notifyService.showSuccess("Updated successfully","Success");
-              }
-              else if(data['message']=='2'){
-                this.notifyService.showError("Not updated","Failed");
-              }
-              this.getProjectDetails(this.URL_ProjectCode);
-              this.closeInfo();
-          });
-          } else if (response.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire(
-              'Cancelled',
-              'Action end date not updated',
-              'error'
-            )
-          }
-        });
+  this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
+      console.log(data['message'],"edit response");
+      if(data['message']=='1'){
+        this.notifyService.showSuccess("Updated successfully","Success");
       }
-      else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.projectInfo.ResponsibleEmpNo && this.Current_user_ID != this.projectInfo.AuthorityEmpNo  )) {
-        Swal.fire({
-          title: 'Unable to extend end date for this action.',
-          text: 'You have selected the action end date greater than project deadline. Please contact the main project responsible to extend main project end date and try again.',
-        });
+      else if(data['message']=='2'){
+        this.notifyService.showError("Not updated","Failed");
       }
-      else{
-        this.approvalObj.Emp_no=this.Current_user_ID;
-        this.approvalObj.Project_Code=this.ActionCode;
-        this.approvalObj.json=jsonvalues;
-        this.approvalObj.Remarks=this._remarks;
-    
-      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data)=>{
-          console.log(data['message'],"edit response");
-          if(data['message']=='1'){
-            this.notifyService.showSuccess("Updated successfully","Success");
-          }
-          else if(data['message']=='2'){
-            this.notifyService.showError("Not updated","Failed");
-          }
-          this.getProjectDetails(this.URL_ProjectCode);
-          this.closeInfo();
-      });
-      }
-
-   
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.closeInfo();
+  });
   }
 
 
@@ -2272,12 +2065,6 @@ onActionChanged(e){
 
 
 
-
-
-
-
-
-
 // timeline code end here
 
 
@@ -2332,7 +2119,7 @@ getPortfolios() {
   this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
     ((data) => {
       this._portfoliosList = data as [];
-
+    // console.log(data ,'raohan')
       this.dropdownSettings_Portfolio = {
         singleSelection: false,
         idField: 'Portfolio_ID',
@@ -2367,7 +2154,7 @@ Portfolio_Select(selecteditems) {
 Portfolio_SelectAll(selecteditems) {
   let arr = [];
   this.Empty_portDropdown = selecteditems;
-  // console.log("Before ForEach data Selected Memos---->",this.Empty_MemoDropdown,)
+   console.log("Before ForEach data Selected Memos---->",this.Empty_portDropdown)
   this.Empty_portDropdown.forEach(element => {
     arr.push({ Port_Id: element.Portfolio_ID })
     this._SelectedPorts = arr;
@@ -2399,6 +2186,7 @@ Portfolio_Deselect(selecteditems) {
 
 
 addProjectToPortfolio() {
+  alert('raohan')
   this.selectedportID = JSON.stringify(this._SelectedPorts);
   // console.log(this.selectedportID,"portids");
   if (this.selectedportID != null) {
@@ -2463,13 +2251,6 @@ DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string
 
 
 
-
-
-
-
-
-
-
 // this is main project submission code start here
 isAction:boolean = false;  
 
@@ -2502,18 +2283,6 @@ getapproval_actiondetails() {
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3459,13 +3228,6 @@ getChangeSubtaskDetais(Project_Code) {
 
 
 
-
-
-
-
-
-
-
 // project hold section and release section start
 hold_remarks: string;
 Holddate: string;
@@ -3706,9 +3468,6 @@ updateProjectCancel(){
 // project cancel section end
 
 
-
-
-
 achieveStandard() {
   const fd = new FormData();
   fd.append("Project_Code", this._MasterCode);
@@ -3820,12 +3579,12 @@ selected(event: MatAutocompleteSelectedEvent): void {
   const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
   this._keeppanelopen();
   if (selectedEmployee) {
-    const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
+    const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Portfolio_ID);
 
     if (index === -1) {
       // Employee not found in the selected array, add it
       this.selectedEmployees.push(selectedEmployee);
-      this.selectedEmpIds.push(selectedEmployee.Emp_No);
+      this.selectedEmpIds.push(selectedEmployee.Portfolio_ID);
     } else {
       // Employee found in the selected array, remove it
       this.selectedEmployees.splice(index, 1);
@@ -3864,6 +3623,7 @@ closePanel(){
 
 
 onProject_updateSupport() {
+  debugger
   const commaSeparatedString =  this.selectedEmpIds.join(', ');
 
   if (this.selectedEmployees != null) {
@@ -3887,5 +3647,52 @@ onProject_updateSupport() {
     this.notifyService.showInfo("support team member cannot be empty", "Please try again with correct value");
   }
 }
+
+
+
+
+
+
+
+
+//////49
+isPortDrpDwnOpen:any
+
+onPrtClicked(e:any){
+  const prtChoosed=this._portfoliosList.find((p)=>p.Portfolio_ID===e.option.value)
+  if(prtChoosed){
+     const index=this.ngDropdwonPort.indexOf(prtChoosed)
+     if(index===-1){
+      this.ngDropdwonPort.push(prtChoosed)
+     }else{
+      this.ngDropdwonPort.splice(index,1);
+    }
+  }
+  requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+
+removeSelectedPrt(item){
+  const index=this.ngDropdwonPort.indexOf(item);
+  if(index!==-1){
+    this.ngDropdwonPort.splice(index,1);
+  }
+}
+
+
+
+closePortDrpDwn(){
+  this.isPortDrpDwnOpen=false;
+  requestAnimationFrame(()=>this.customTrigger.closePanel())
+}
+
+openPortDrpDwn(){
+  this.isPortDrpDwnOpen=true;
+  requestAnimationFrame(()=>this.customTrigger.openPanel())
+}
+
+
+//////49
+
 
 }
