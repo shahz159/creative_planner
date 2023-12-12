@@ -403,6 +403,7 @@ export class MoreDetailsComponent implements OnInit {
   _fullname: any;
   isAction:boolean = false;
   showContent = false;
+  
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');

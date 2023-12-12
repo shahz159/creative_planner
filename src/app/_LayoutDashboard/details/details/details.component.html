@@ -1864,12 +1864,25 @@
                                 </div>
                             </div>
                         </div> -->
+
                                     <div class="col-lg-6 ">
                                         <div class="kt-over-pd-in">
                                             <div class="kt-ct-project">
                                                 <div class="kt-ct-sub-ttl">
                                                     <h6>Statistics</h6>
                                                     <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
+
+                                                
+                                                        <!-- <ng-container
+                                                            *ngIf="(projectInfo.Project_Type == 'Standard Tasks' || projectInfo.Project_Type == 'Routine Tasks')">
+                                                            <label data-toggle="tooltip" title="Project Status!"
+                                                                class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
+                                                                [ngClass]="{'bg-info':projectInfo.Status=='Under Approval',
+                                                'bg-cancel':projectInfo.Status=='Cancellation Under Approval' || projectInfo.Status=='Cancelled',
+                                                'bg-warning':projectInfo.Status=='InProcess'  || projectInfo.Status=='Forward Under Approval',
+                                                'bg-danger':projectInfo.Status == 'Project Hold' || projectInfo.Status=='Standardtask Enactive Hold' }">
+                                                                {{projectInfo.Status}}</label>
+                                                        </ng-container> -->
                                                         <div class="d-flex flex-column ml-3"
                                                         *ngIf="projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
                         
@@ -2685,11 +2698,11 @@
             <li class="kt-nav__item px-4">
                 <div class="d-flex input-group">
                     <!-- Working... -->
-                    <ng-multiselect-dropdown [placeholder]="'Select Memo' " [settings]="dropdownSettings_Memo"
+                    <!-- <ng-multiselect-dropdown [placeholder]="'Select Memo' " [settings]="dropdownSettings_Memo"
                         [data]="memosOptions" [(ngModel)]="selectedMemos" (onSelect)="onMemoSelected($event)"
                         (onDeSelect)="onMemoDeselected($event)" class="mutlidropdown-set mutlidropdown-full mr-1"
                         style="flex: 3;">
-                    </ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown> -->
 
                     <!-- <ng-select [multiple]="false"     (onSelect)="onMemoSelected($event)"
                 (onDeSelect)="onMemoDeselected($event)">
@@ -2822,10 +2835,10 @@
                         {{prt.Portfolio_Name}}
                     </mat-option>
                 </mat-autocomplete>
-              
             </mat-form-field>
             <button class="btn btn-label-primary btn-upper btn-sm btn-bold"
-            [disabled]="_SelectedPorts==' '|| _SelectedPorts==null" (click)="addProjectToPortfolio()">Link</button>
+                [disabled]="_SelectedPorts==' '|| _SelectedPorts==null" (click)="addProjectToPortfolio()">Link</button>
+
 
 
 
@@ -4292,7 +4305,6 @@
                                             <mat-chip-list #chipList aria-label="Fruit selection">
                                                 <mat-chip *ngFor="let item of selectedEmployees;" class="Data_chip_kt"
                                                     (removed)="remove(item)">
-                                                    <!-- <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/> -->
                                                     {{item.NonRACIS}}
                                                     <button matChipRemove [attr.aria-label]="'remove ' + item.NonRACIS">
                                                         <mat-icon>cancel</mat-icon>
@@ -4311,12 +4323,12 @@
                                             </div>
 
                                             <mat-autocomplete #auto="matAutocomplete"
-                                                (optionSelected)="selected($event)">
+                                                (optionSelected)="selectedChip($event)">
                                                 <mat-option class="mat-font" *ngFor="let item of filteredEmployees"
                                                     [value]="item.Emp_No">
                                                     <mat-checkbox color="primary" name="item"
                                                         [checked]="isSelected(item)"
-                                                        (change)="selected($event)">{{item.NonRACIS}}</mat-checkbox>
+                                                        (change)="selectedChip($event)">{{item.NonRACIS}}</mat-checkbox>
                                                 </mat-option>
                                             </mat-autocomplete>
 

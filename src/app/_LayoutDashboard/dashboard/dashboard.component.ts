@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
   _ActualProjectList = [];
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
-  _calenderDto: CalenderDTO;
+  _calenderDto: CalenderDTO; 
   ProjectListArray: any;
   BlockNameProject1: any;
   Timeslab: any;
@@ -1011,7 +1011,7 @@ export class DashboardComponent implements OnInit {
   // }
 
   DublicateTaskandEvent() {
-    debugger
+    
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     this.copyTask = true;
@@ -1489,7 +1489,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
-
+   
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1514,7 +1514,6 @@ export class DashboardComponent implements OnInit {
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
     }
     else if (this.selectedrecuvalue == "1") {
-      // debugger
       this.daysSelectedII = this.AllDatesSDandED;
     }
     else if (this.selectedrecuvalue == "2") {
@@ -1663,8 +1662,13 @@ export class DashboardComponent implements OnInit {
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
+    
+     
+      console.log('_calenderDto obj:',JSON.parse(this._calenderDto.ScheduleJson));
+
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+          
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
@@ -2196,6 +2200,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
     document.getElementById("div_endDate").style.display = "none";
@@ -2204,6 +2209,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
+
     this.clearallfields();
     this.daysSelected = [];
     this.singleselectarry = [];
@@ -2259,10 +2265,7 @@ export class DashboardComponent implements OnInit {
       var IsActive = "IsActive";
       jsonData[IsActive] = 1;
     }
-
-
     this.daysSelectedII.push(jsonData);
-
     console.log(this.daysSelectedII, "default")
     // this.Project_Code = "4001176";
 
@@ -2355,10 +2358,9 @@ export class DashboardComponent implements OnInit {
   pendingavailability:boolean = true;
 
   selectStartDate(event) {
-    this._StartDate = event.value;
-    
-    let sd = event.value.format("YYYY-MM-DD").toString();
 
+    this._StartDate = event.value;
+    let sd = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID=this.Schedule_ID;
@@ -2652,7 +2654,7 @@ export class DashboardComponent implements OnInit {
   }
 
   addstarttime() {
-    debugger
+  
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
