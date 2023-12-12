@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 
 import { DetailsRoutingModule } from './details-routing.module';
-import { DetailsComponent } from './details/details.component';
+import { DetailsComponent} from './details/details.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
@@ -13,6 +13,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
@@ -30,12 +36,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     DetailsComponent
   ],
   imports: [
+    AngularEditorModule,
     CommonModule,
     DetailsRoutingModule,
     NgMultiSelectDropDownModule,
     NgSelectModule,
     FormsModule,
     MatDatepickerModule,Ng2SearchPipeModule,
+    MatSelectModule,
+    MatCardModule,
+    GooglePlaceModule,
     MatFormFieldModule,
     MatChipsModule,
     MatIconModule,
