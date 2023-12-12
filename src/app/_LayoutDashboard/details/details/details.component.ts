@@ -519,9 +519,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
-
-
   // ADDING NEW ACTIONS 
   addNewAction() {
 
@@ -1561,9 +1558,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
-        console.log(data, 'ppppppppppppp')
-        this.ProjectStatus = data[0]['ProjectStatus'];
-        console.log(this.ProjectStatus, 'ttttttttttt')
+        this.ProjectStatus = data[0]['ProjectStatus'];  
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
@@ -2250,7 +2245,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   addProjectToPortfolio() {
-    alert('raohan')
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
     if (this.selectedportID != null) {
