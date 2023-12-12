@@ -4724,8 +4724,8 @@ export class MoreDetailsComponent implements OnInit {
       console.log(dateOne, dateTwo, "dates")
       if ((dateOne < dateTwo) && ((this.Current_user_ID == this.mainowner || this.Current_user_ID == this.mainResp || this.Current_user_ID == this.mainAutho))) {
         Swal.fire({
-          title: 'Action deadLine is greater than main project deadLine ?',
-          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          title: 'Action deadline is greater than main project deadline ?',
+          text: 'Do you want to continue for selection of date after main project deadline!!',
           showCancelButton: true,
           confirmButtonText: 'Yes',
           cancelButtonText: 'No'
@@ -4764,8 +4764,8 @@ export class MoreDetailsComponent implements OnInit {
     console.log(dateOne, dateTwo, "dates")
     if ((dateOne < dateTwo) && ((this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true))) {
       Swal.fire({
-        title: 'Action deadLine is greater than main project deadLine ?',
-        text: 'Do you want to continue for selection of date after main project deadLine!!',
+        title: 'Action deadline is greater than main project deadline ?',
+        text: 'Do you want to continue for selection of date after main project deadline!!',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
