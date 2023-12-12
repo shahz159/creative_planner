@@ -511,7 +511,7 @@ export class ProjectTypeService {
     localStorage.clear();
   }
   DeleteProject(proj_Id, port_id, PrjCode, proj_Name, createdBy, deletedBy) {
-    debugger
+    // debugger
     this.objPortfolioDTO.Portfolio_ID = port_id;
     this.objPortfolioDTO.Project_ID = proj_Id;
 

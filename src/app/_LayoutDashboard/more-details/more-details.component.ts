@@ -1605,6 +1605,7 @@ export class MoreDetailsComponent implements OnInit {
 
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
+          //console.log("Test---->", this.ProjectBlockName);
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
@@ -3773,6 +3774,7 @@ export class MoreDetailsComponent implements OnInit {
 
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
+           //console.log(this.raciPeople,"RACIS");
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this.RACIS = JSON.parse(data[0]['RACIS_Count']);
