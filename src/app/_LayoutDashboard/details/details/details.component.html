@@ -830,8 +830,11 @@
                         </div>
                     </ng-container>
 
-                    <div class="kt-info-box pb-0 mt-2"
-                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'))">
+
+
+                    <ng-container *ngIf="projectInfo">
+                  
+                        <div class="kt-info-box pb-0 mt-2" *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'); else SRT">
                         <div class="d-flex justify-content-between">
                             <div class="kt-info-box-tittle">
                                 <div class="kt-title-icon">
@@ -949,6 +952,85 @@
                             </ng-template>
                         </div>
                     </div>
+
+
+
+                    <ng-template #SRT>
+                        <div class="kt-info-box pb-0 mt-2">
+                        <div class="d-flex justify-content-between">
+                            <div class="kt-info-box-tittle">
+                                <div class="kt-title-icon">
+                                    <svg width="20px" height="20px" viewBox="0 0 512 512" id="svg2793"
+                                        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+                                        version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:cc="http://creativecommons.org/ns#"
+                                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                                        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                        xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg"
+                                        fill="#ffffff" stroke="#ffffff">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <defs id="defs2797"></defs>
+                                            <g id="_09-Round-Chart" style="display:inline"
+                                                transform="translate(-3072,-1024)">
+                                                <g id="g2606" transform="translate(3282.77,1327.86)">
+                                                    <path
+                                                        d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348"
+                                                        id="path2604" style="fill-rule:nonzero"></path>
+                                                </g>
+                                                <g id="g2610" transform="translate(3373.23,1327.86)">
+                                                    <path
+                                                        d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071"
+                                                        id="path2608" style="fill-rule:nonzero"></path>
+                                                </g>
+                                                <g id="g2614" transform="translate(3282.77,1140.29)">
+                                                    <path
+                                                        d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242"
+                                                        id="path2612" style="fill-rule:nonzero"></path>
+                                                </g>
+                                                <g id="g2618" transform="translate(3373.23,1231.74)">
+                                                    <path
+                                                        d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553"
+                                                        id="path2616" style="fill-rule:nonzero"></path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                Project Action
+                            </div>
+                            <!-- <div class="kt-project-type curser-pointer">
+                                <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
+                                    <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                            height="16" fill="currentColor" class="bi bi-plus" viewBox="4 3 8 12">
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                        </svg></span> Add Action
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="kt-project-action-list-view">
+                            <div class="no-prjact-found">
+                                <img class="no-prjact-found-img" src="./assets/images/noActionPresent.png" />
+                                <h3 class="blank-txt fs-5 no-prjact-found-label">No Actions Created.</h3>
+                            </div>
+                        </div>
+                       </div>
+                    </ng-template>
+
+
+
+                    </ng-container>
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>
@@ -959,7 +1041,7 @@
                         <div class="kt-project-tool-bar">
                             <div class="d-flex flex-grow-1 align-items-center gap_ic">
                                 <a class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
-                                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
+                                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"  [ngClass]="{'black-white':projectInfo&&projectInfo.isDMS==0}"  title="Linked DMS"   >
                                 </a>
 
                                 <div class="br-line"></div>
@@ -1979,6 +2061,7 @@
                                             </button>
                                        </div>
                                 </div>
+
                                 <div class="kt-project-info-body">
                                     <div class="d-flex justify-content-between">
                                         <div class="kt-project-name d-flex align-items-center gap-2">
@@ -2545,13 +2628,156 @@
 
                                     </div>
 
+                                    <div class="Dividing-line"></div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="kt-over-pd-in bd-right-x">
+                                                <div class="kt-ct-project">
+                                                    <div class="kt-ct-sub-ttl">
+                                                        <h6>Recent activity</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-label">
+                                                    <!--begin::Item-->
+                                                    <div class="timeline-item">
+                                                        <!--begin::Label-->
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br>
+                                                            <span class="kt-dt-l">08:42 AM</span>
+                                                        </div>
+                                                        <!--end::Label-->
+    
+                                                        <!--begin::Badge-->
+                                                        <div class="timeline-badge">
+                                                            <i class="fa fa-genderless text-primary fs-1"></i>
+                                                        </div>
+                                                        <!--end::Badge-->
+    
+                                                        <!--begin::Text-->
+                                                        <div class="fw-mormal timeline-content text-muted ps-3">
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
+                                                                Created</p>
+                                                            Outlines keep you honest. And keep structure
+                                                        </div>
+                                                        <!--end::Text-->
+                                                    </div>
+                                                    <!--end::Item-->
+    
+                                                    <!--begin::Item-->
+                                                    <div class="timeline-item">
+                                                        <!--begin::Label-->
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br>
+                                                            <span class="kt-dt-l">11:42 PM</span>
+                                                        </div>
+                                                        <!--end::Label-->
+    
+                                                        <!--begin::Badge-->
+                                                        <div class="timeline-badge">
+                                                            <i class="fa fa-genderless text-success fs-1"></i>
+                                                        </div>
+                                                        <!--end::Badge-->
+    
+                                                        <!--begin::Content-->
+                                                        <div class="fw-mormal timeline-content text-muted ps-3">
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
+                                                            </p>
+                                                            Rebrand strategy planning
+                                                        </div>
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Item-->
+    
+                                                    <!--begin::Item-->
+                                                    <div class="timeline-item">
+                                                        <!--begin::Label-->
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br>
+                                                            <span class="kt-dt-l">10:42 PM</span>
+                                                        </div>
+                                                        <!--end::Label-->
+    
+                                                        <!--begin::Badge-->
+                                                        <div class="timeline-badge">
+                                                            <i class="fa fa-genderless text-warning fs-1"></i>
+                                                        </div>
+                                                        <!--end::Badge-->
+    
+                                                        <!--begin::Content-->
+                                                        <div class="fw-mormal timeline-content text-muted ps-3">
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
+                                                            </p>
+                                                            Navigation optimization
+                                                        </div>
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Item-->
+                                                    <!--begin::Item-->
+                                                    <div class="timeline-item">
+                                                        <!--begin::Label-->
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br>
+                                                            <span class="kt-dt-l">01:42 AM</span>
+                                                        </div>
+                                                        <!--end::Label-->
+    
+                                                        <!--begin::Badge-->
+                                                        <div class="timeline-badge">
+                                                            <i class="fa fa-genderless text-warning fs-1"></i>
+                                                        </div>
+                                                        <!--end::Badge-->
+    
+                                                        <!--begin::Content-->
+                                                        <div class="fw-mormal timeline-content text-muted ps-3">
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
+                                                            </p>
+                                                            Indulging in poorly driving and keep structure keep great
+                                                        </div>
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Item-->
+    
+                                                </div>
+    
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-lg-6">
+                                            <div class="kt-over-pd-in">
+                                                <div class="kt-ct-project">
+                                                    <div class="kt-ct-sub-ttl">
+                                                        <h6>Statistics</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="chart" id="chart-container1"></div>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
                                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
                             </div>
                         </ng-container>
+
                     </ng-template>
                     <!-- <button (click)="openDarSideBar()">click</button> -->
                 </div>
@@ -2610,24 +2836,34 @@
             <div class="kt-nav__separator"></div>
         </li>
         <li class="kt-nav__item px-4">
-            <div class="d-flex input-group">
-                <!-- Working... -->
-                <ng-multiselect-dropdown [placeholder]="'Select Memo' " [settings]="dropdownSettings_Memo"
-                    [data]="memosOptions" [(ngModel)]="selectedMemos" (onSelect)="onMemoSelected($event)"
-                    (onDeSelect)="onMemoDeselected($event)" class="mutlidropdown-set mutlidropdown-full mr-1"
-                    style="flex: 3;">
-                </ng-multiselect-dropdown>
-
-                <!-- <ng-select [multiple]="false"     (onSelect)="onMemoSelected($event)"
-                (onDeSelect)="onMemoDeselected($event)">
-                    <ng-option *ngFor="let item of memosOptions" [values]="item.MailId">{{item.Subject}}</ng-option>
-                </ng-select> -->
-
-
-                <div class="input-group-append">
-                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text"
-                        (click)="addDMSToTheProject()">Link</button>
-                </div>
+            <div  class="matchip-drp-dwn"     >
+            
+                  <mat-form-field class="drp-dwn-field">
+                     <mat-label>Select DMS</mat-label>
+                     <mat-chip-list #selectedmemoslist >
+                         <mat-chip *ngFor="let memo of selectedMemos"  class="Data_chip_kt"  (removed)="removeSelectedMemo(memo)">
+                            {{memo.Subject}}
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                     </mat-chip-list>
+                       <div class="d-flex">
+                        <input class="border-gray" [matChipInputFor]="selectedmemoslist"  [matAutocomplete]="memoDrpDown"  #dmsSelectTF  />
+                        <button  *ngIf="isDMSDrpDwnOpen"      class="bg-transparent border-0 "><mat-icon class="close-icon" (click)="closeMemoDrpDwn()" >cancel</mat-icon></button>
+                        <button  *ngIf="!isDMSDrpDwnOpen"     class="bg-transparent border-0"><mat-icon class="add-icon" (click)="openMemoDrpDwn()">add</mat-icon></button>
+                       </div>
+                     <mat-autocomplete #memoDrpDown="matAutocomplete" (optionSelected)="onMemoClicked($event); dmsSelectTF.value=''; "  (closed)="isDMSDrpDwnOpen=false;"  (opened)="isDMSDrpDwnOpen=true"   >
+                           <mat-option *ngFor="let memo of memosOptions|filter:dmsSelectTF.value" [value]="memo.MailId">
+                           <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
+                            {{memo.Subject}}
+                           </mat-option>
+                     </mat-autocomplete>
+                  </mat-form-field>
+              
+                   
+            
+              <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "   (click)="addDMSToTheProject()">Link</button>
 
             </div>
         </li>
@@ -4948,7 +5184,7 @@
                         <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
                     </svg>
                 </a>
-                <div class="dropdown no-after btm-btn ml-2 mt-2" >
+                <div class="dropdown no-after btm-btn ml-2 mt-2"  *ngIf="projectInfo&&projectInfo.Status!=='Completed'"     >
                     <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
                         aria-expanded="false">
                         <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
@@ -5017,7 +5253,7 @@
                                             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                         </path>
                                     </svg>
-                                    <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} 11:46AM</span>
+                                    <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}}</span>
                                 </div>
                             </div>
                 
@@ -5084,7 +5320,7 @@
                                                     </div>
                                                     <div class="kt-met-info">
                                                         <div class="org-name">
-                                                            <span class="user-ft-ltr">A</span>
+                                                            <span class="user-ft-ltr">{{meeting.TM_DisplayName[0]}}</span>
                                                             <div class="org-name-email">
                                                                 <p>{{meeting.TM_DisplayName}}</p>
                                                                 <span>{{meeting.email}}</span>
@@ -5138,7 +5374,7 @@
                                             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                         </path>
                                     </svg>
-                                    <span _ngcontent-efp-c426="" class="date-anc">{{tmeetings.date| date:'MMM d y'}} 3:46PM</span>
+                                    <span _ngcontent-efp-c426="" class="date-anc">{{tmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                             </div>
                    
@@ -5237,7 +5473,7 @@
                                                     </div>
                                                     <div class="kt-met-info">
                                                         <div class="org-name">
-                                                            <span class="user-ft-ltr">S</span>
+                                                            <span class="user-ft-ltr">{{meeting.TM_DisplayName[0]}}</span>
                                                             <div class="org-name-email">
                                                                 <p>{{meeting.TM_DisplayName}}</p>
                                                                 <span>{{meeting.email}}</span>
@@ -5290,7 +5526,7 @@
                                             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                         </path>
                                     </svg>
-                                    <span _ngcontent-efp-c426="" class="date-anc">{{lmeetings.date| date:'MMM d y'}} 11:46AM</span>
+                                    <span _ngcontent-efp-c426="" class="date-anc">{{lmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                         </div>
                 
@@ -5389,7 +5625,7 @@
                                                     </div>
                                                     <div class="kt-met-info">
                                                         <div class="org-name">
-                                                            <span class="user-ft-ltr">A</span>
+                                                            <span class="user-ft-ltr">{{lmeeting.TM_DisplayName[0]}}</span>
                                                             <div class="org-name-email">
                                                                 <p>{{lmeeting.TM_DisplayName}}</p>
                                                                 <span>{{lmeeting.email}}</span>
@@ -5440,7 +5676,7 @@
                                             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                         </path>
                                     </svg>
-                                    <span _ngcontent-efp-c426="" class="date-anc">{{lmmeetings.date| date:'MMM d y'}}  09:46AM</span>
+                                    <span _ngcontent-efp-c426="" class="date-anc">{{lmmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                             </div>
                 
@@ -5539,7 +5775,7 @@
                                                     </div>
                                                     <div class="kt-met-info">
                                                         <div class="org-name">
-                                                            <span class="user-ft-ltr">A</span>
+                                                            <span class="user-ft-ltr">{{lmmeeting.TM_DisplayName[0]}}</span>
                                                             <div class="org-name-email">
                                                                 <p>{{lmmeeting.TM_DisplayName}}</p>
                                                                 <span>{{lmmeeting.email}}</span>
@@ -5585,7 +5821,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dat-icn">
                                         <path _ngcontent-efp-c426="" stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"></path>
                                     </svg>
-                                    <span _ngcontent-efp-c426="" class="date-anc">{{omeetings.date| date:'MMM d y'}}  09:46AM</span></div>
+                                    <span _ngcontent-efp-c426="" class="date-anc">{{omeetings.date| date:'MMM d y'}} </span></div>
                             </div>
                         
                             <div class="met-card mb-3"  *ngFor="let omeeting of omeetings.totalmeetings"   >
@@ -5668,7 +5904,7 @@
                                                     </div>
                                                     <div class="kt-met-info">
                                                        <div class="org-name">
-                                                        <span class="user-ft-ltr">A</span>
+                                                        <span class="user-ft-ltr">{{omeeting.TM_DisplayName[0]}}</span>
                                                         <div class="org-name-email">
                                                             <p>{{omeeting.TM_DisplayName}}</p>
                                                             <span>{{omeeting.email}}</span>
@@ -5774,7 +6010,7 @@
                                                 d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                             </path>
                                         </svg>
-                                        <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} 11:46AM</span>
+                                        <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
                                     </div>
                                 </div>
                     
@@ -5841,7 +6077,7 @@
                                                         </div>
                                                         <div class="kt-met-info">
                                                             <div class="org-name">
-                                                                <span class="user-ft-ltr">A</span>
+                                                                <span class="user-ft-ltr">{{meeting.TM_DisplayName[0]}}</span>
                                                                 <div class="org-name-email">
                                                                     <p>{{meeting.TM_DisplayName}}</p>
                                                                     <span>{{meeting.email}}</span>
@@ -6000,14 +6236,41 @@
                                 </ng-select>
                             </div>
                             
+
+
                             <div class="form-group" id="Guest_Name" style="display:none">
-                                <label class="cus-lbl">Add Participants </label>
-                                <ng-select [multiple]="true" class="kt-input form-control p-0 border-0" name="ngEmployeeDropdown"
-                                    placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
-                                    <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
-                                        {{item.DisplayName}} </ng-option>
-                                </ng-select>
+                                 <div class="d-flex">
+                                 <mat-form-field  class="drp-dwn-field"   >
+                                    <mat-label>Select Participants</mat-label>
+                                    <mat-chip-list #selectedParticipants  >
+                                        <mat-chip *ngFor="let p of ngEmployeeDropdown"  class="Data_chip_kt" (removed)="removeSelectedParticipant(p)"     >
+                                            {{p.DisplayName}} 
+                                            <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                           </button>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                    <div class="d-flex">
+                                        <input  class="flex-1" [matChipInputFor]="selectedParticipants" [matAutocomplete]="participantsDrpDwn"    #ParticipantTF />
+                                        <button  *ngIf="isParticipantDrpDwnOpen"      class="bg-transparent border-0 "><mat-icon class="close-icon"  (click)="closeParticipantDrpDwn()" >cancel</mat-icon></button>
+                                        <button  *ngIf="!isParticipantDrpDwnOpen"     class="bg-transparent border-0"><mat-icon class="add-icon" (click)="openParticipantDrpDwn()" >add</mat-icon></button>
+                                    </div>
+                                    <mat-autocomplete  aria-label="ParticipantDrpDwn"  #participantsDrpDwn="matAutocomplete" (optionSelected)="onParticipantSelected($event)"  (opened)="isParticipantDrpDwnOpen=true"  (closed)="isParticipantDrpDwnOpen=false;"   >
+                                          <mat-option *ngFor="let p of _EmployeeListForDropdown" [value]="p.Emp_No">
+                                            <mat-checkbox  color="primary"  [checked]="ngEmployeeDropdown.indexOf(p)!==-1"></mat-checkbox>
+                                            {{p.DisplayName}}
+                                          </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+
+
+                               </div>
                             </div> 
+
+
+
+
                             <div>
                                 <div>
                                     <div class="form-group" id="online-add">

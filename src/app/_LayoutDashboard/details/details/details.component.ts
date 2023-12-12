@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild, inject, } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, QueryList, Renderer2, ViewChild, ViewChildren, inject, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -166,12 +166,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   Category_List: any;
   selectedcategory: any;
   EndDate1: any = new Date();
+   
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
-
-  // @ViewChild('fruitInput') fruitInput: MatChipInput;
   @ViewChild('fruitInput') fruitInput: ElementRef;
 
 
@@ -187,7 +186,8 @@ export class DetailsComponent implements OnInit,AfterViewInit{
      public _projectSummary: ProjectsSummaryComponent,
      private notifyService: NotificationService,
      public datepipe: DatePipe,
-     private CalenderService: CalenderService
+     private CalenderService: CalenderService,
+     private renderer2:Renderer2
     ) {
      
       this.ObjSubTaskDTO = new SubTaskDTO();
@@ -233,6 +233,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
 
   ngAfterViewInit():void{
      this.drawStatistics();
+    
   }
 
   getusername() {
@@ -403,14 +404,77 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.actionCost=index&&this.projectActionInfo[this.currentActionView].Project_Cost;
     if(index&&this.projectActionInfo[index].Status==="Under Approval")
     this.GetApproval(this.projectActionInfo[index].Project_Code);
+    $(document).ready(()=>this.drawStatistics1());
+
+
   }
     
   showProjectDetails(){
     this.showActionDetails(undefined);
-    setTimeout(()=>this.drawStatistics(),100);  // because the view that holds the statistics graph must be available before drawStatistics() is get called.
+   $(document).ready(()=>this.drawStatistics());
   }
   
    
+
+
+  drawStatistics1(){
+    //  chart js ---------------------
+    new FusionCharts({
+      type: "radialbar",
+      width: "100%",
+      height: "100%",
+      renderAt: "chart-container1",
+      dataSource: {
+        chart: {
+          theme: "fusion",
+          // caption: "7Hr 32M",
+          // subCaption: "January 2021",
+          showLegend: 1,
+          innerRadius: 30,
+          outerRadius: 105,
+          showLabels: 1,
+          labelText: "$label"
+        },
+        data: [
+          {
+            label: "Design",
+            value: 94.09,
+            color: "#5867dd" //Custom Color
+          },
+
+          {
+            label: "Develoment",
+            value: 59.89,
+            color: "#b2beff" //Custom Color
+          },
+          {
+            label: "Testing",
+            value: 91.53,
+            color: "#985eff" //Custom Color
+          }
+        ]
+      }
+    }).render();
+    // chart js end ----------------
+    var lang = {
+      "javascript": "70%", 
+    };
+    var multiply = 4;
+    $.each(lang, function (language, pourcent) { 
+      var delay = 700;
+      setTimeout(function () {
+        $('#' + language + '-pourcent').html(pourcent);
+      }, delay * multiply);
+      multiply++;
+    });
+    }
+
+
+
+
+
+
+
 
   // ADDING NEW ACTIONS 
    addNewAction() {
@@ -654,6 +718,7 @@ GetDMS_Memos() {
                    }
                    return selectornot;
               });
+              
               // now only unselected memos will be visible.
               
              console.log("this memosOptions:",this.memosOptions)
@@ -678,22 +743,39 @@ GetDMS_Memos() {
 
 
 
-   onMemoSelected(e:{MailId:number,Subject:string}){ 
-    // when single selection 
-      this.selectedMemos=new Array({MailId:e.MailId,Subject:e.Subject});
-    //
-       console.log("selectedMemos:",this.selectedMemos);
-   }
+  //  onMemoSelected(e:{MailId:number,Subject:string}){ 
+  //   // when single selection 
+  //     this.selectedMemos=new Array({MailId:e.MailId,Subject:e.Subject});
+  //   //
+  //      console.log("selectedMemos:",this.selectedMemos);
+  //  }
   
 
 
-   onMemoDeselected(e:{MailId:number,Subject:string}){ 
-       const index=this.selectedMemos.indexOf({MailId:e.MailId,Subject:e.Subject});
-       if(index!==-1){
-        this.selectedMemos.splice(index,1);
-       } 
-       console.log("selectedMemos:",this.selectedMemos);
-    }
+  //  onMemoDeselected(e:{MailId:number,Subject:string}){ 
+  //      const index=this.selectedMemos.indexOf({MailId:e.MailId,Subject:e.Subject});
+  //      if(index!==-1){
+  //       this.selectedMemos.splice(index,1);
+  //      } 
+  //      console.log("selectedMemos:",this.selectedMemos);
+  //   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ADD DMS STARTS HERE
@@ -2838,6 +2920,10 @@ GetmeetingDetails() {
 
     //
 }
+  
+
+
+
 
 
 
@@ -2987,7 +3073,7 @@ AllocatedHours: number;
 BlockNameProject1: any;
 SubmissionName: string;
 _Exec_BlockName: string = "";
-ngEmployeeDropdown: any;
+ngEmployeeDropdown: any=[];
 RemovedAttach: any = [];
 
 
@@ -3304,10 +3390,6 @@ Task_type(value:number){
   
   
 }
-
-
-
-
 
 
 
@@ -4099,7 +4181,7 @@ selectmonthlydays(day) {
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
-    this.ngEmployeeDropdown = null;
+    this.ngEmployeeDropdown = [];
     this.Description_Type = null;
     this.SelectDms = null;
     this.MasterCode = null;
@@ -4203,7 +4285,7 @@ selectmonthlydays(day) {
   }
 
   OnSubmitSchedule() {
- 
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -4439,7 +4521,7 @@ selectmonthlydays(day) {
           
           this.GetScheduledJson();
           this.Title_Name = null;
-          this.ngEmployeeDropdown = null;
+          this.ngEmployeeDropdown = [];
           this.Description_Type = null;
           this.MasterCode = null;
           this.Subtask = null;
@@ -4506,13 +4588,6 @@ selectmonthlydays(day) {
   this.lst7dCnt= 0;   // Last 7 Days Meetings Count
   this.oldMtgCnt= 0;  // Older Meetings Count
 
-
-
-
-
-
-
-
       this.GetmeetingDetails(); 
      
       
@@ -4550,6 +4625,53 @@ selectmonthlydays(day) {
 
 
 
+
+
+isParticipantDrpDwnOpen:boolean=false;
+
+
+onParticipantSelected(e:any){
+    const participantChoosed=this._EmployeeListForDropdown.find((c)=>c.Emp_No===e.option.value);
+    if(participantChoosed){
+         const index=this.ngEmployeeDropdown.indexOf(participantChoosed);
+         if(index===-1){
+            // if not present then add it
+            this.ngEmployeeDropdown.push(participantChoosed);
+         }
+         else{ //  if item choosed is already selected then remove it.
+          this.ngEmployeeDropdown.splice(index,1);
+         }
+    }
+    requestAnimationFrame(()=>this.autocompletes.get(2).openPanel());
+}
+
+
+removeSelectedParticipant(item){
+    const index=this.ngEmployeeDropdown.indexOf(item);
+    if(index!==-1){
+      this.ngEmployeeDropdown.splice(index,1);
+    } 
+}
+
+
+
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+
+
+
+openAutoCompleteDrpDwn(autocompleteName:string){
+  this.isParticipantDrpDwnOpen=true;
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===autocompleteName);
+  setTimeout(()=>autoCompleteDrpDwn.openPanel(),0);
+
+}
+
+closeAutoCompleteDrpDwn(autocompleteName:string){
+  this.isParticipantDrpDwnOpen=false;
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===autocompleteName);
+  setTimeout(()=>autoCompleteDrpDwn.closePanel(),0);
+}
+ 
 
 
 // meeting section code end here
@@ -4914,8 +5036,8 @@ isSelection: boolean =false;
 
 
 selectedChip(event: MatAutocompleteSelectedEvent): void {
-  const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
   this._keeppanelopen();
+  const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
   if (selectedEmployee) {
     const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
 
@@ -4984,5 +5106,68 @@ onProject_updateSupport() {
     this.notifyService.showInfo("support team member cannot be empty", "Please try again with correct value");
   }
 }
+
+
+
+
+
+
+
+
+
+
+// new dms section code:
+
+isDMSDrpDwnOpen:boolean=false;    // initially dms dropdown is in closed state.
+
+
+onMemoClicked(e:any){
+   const memoChoosed=this.memosOptions.find((c)=>c.MailId===e.option.value)
+   if(memoChoosed)
+   {
+      const index=this.selectedMemos.indexOf(memoChoosed)
+       if(index===-1){
+        // if not present in the selectedcourses then add it
+           this.selectedMemos.push(memoChoosed);
+       }  
+       else{ //  if course choosed is already selected then remove it.
+           this.selectedMemos.splice(index,1);
+       }
+   }
+   requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+
+
+removeSelectedMemo(item){
+    const index=this.selectedMemos.indexOf(item);
+    if(index!==-1){
+      this.selectedMemos.splice(index,1);
+    } 
+}
+
+
+
+closeMemoDrpDwn(){
+  this.isDMSDrpDwnOpen=false;
+  requestAnimationFrame(()=>this.customTrigger.closePanel()); // close the panel
+}
+
+
+openMemoDrpDwn(){
+  this.isDMSDrpDwnOpen=true;
+  requestAnimationFrame(()=>this.customTrigger.openPanel()); // open the panel
+}
+
+
+
+//
+
+
+
+
+
+
+
 
 }
