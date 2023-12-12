@@ -50,6 +50,29 @@ import 'moment/locale/ja';
 import 'moment/locale/fr';
 
 
+import * as am4core from "@amcharts/amcharts4/core";
+am4core.useTheme(am4themes_animated);
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import * as am4charts from "@amcharts/amcharts4/charts";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 declare var FusionCharts: any;
  
 
@@ -200,6 +223,7 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   
   
   ngOnInit(): void {
+   
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -229,6 +253,23 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     this.EndDate1 = moment(new Date()).format("YYYY/MM/DD");
     //
+
+
+
+
+
+
+    this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data => {
+        let projectType: any = (data[0]['ProjectType']);
+        this.IsData = (data[0]['DARGraphCalculations_Json']);
+        if (projectType == '001' || projectType == '002') {
+          this.CoreSecodaryCharts();
+        }
+        else if (projectType != '001' || projectType != '002') {
+        //  this.OtherCharts();
+        }
+      });
   }
 
   ngAfterViewInit():void{
@@ -241,57 +282,231 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     });
   }
  
-  drawStatistics(){
-    //  chart js ---------------------
-    new FusionCharts({
-      type: "radialbar",
-      width: "100%",
-      height: "100%",
-      renderAt: "chart-container",
-      dataSource: {
-        chart: {
-          theme: "fusion",
-          // caption: "7Hr 32M",
-          // subCaption: "January 2021",
-          showLegend: 1,
-          innerRadius: 30,
-          outerRadius: 105,
-          showLabels: 1,
-          labelText: "$label"
-        },
-        data: [
-          {
-            label: "Design",
-            value: 94.09,
-            color: "#5867dd" //Custom Color
-          },
 
+// SummaryChart start 
+
+
+maxDuration: any;
+IsData: string;
+
+
+CoreSecodaryCharts() {
+  this.drawStatistics()
+ // this.DARSummaryChart();
+//  this.ProjectCompletionChart();
+  if (this.IsData != null) {
+  //  this.HybridDrillChart();
+   // this.SubtaskSummaryChart();
+  }
+ // this.ProjectTrendChart();
+}
+
+
+
+
+
+
+
+DARSummaryChart() {
+  this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+    .subscribe(data1 => {
+      this.maxDuration = (data1[0]['ProjectMaxDuration']);
+      let chart = am4core.create("DARSummary", am4charts.PieChart3D);
+      chart.hiddenState.properties.opacity = 0; 
+      chart.legend = new am4charts.Legend();
+      chart.data =
+        [
           {
-            label: "Develoment",
-            value: 59.89,
-            color: "#b2beff" //Custom Color
+            name: "Remaining Hours",
+            value: (data1[0]['RemainingHours']),
           },
           {
-            label: "Testing",
-            value: 91.53,
-            color: "#985eff" //Custom Color
-          }
-        ]
-      }
-    }).render();
-    // chart js end ----------------
-    var lang = {
-      "javascript": "70%", 
-    };
-    var multiply = 4;
-    $.each(lang, function (language, pourcent) { 
-      var delay = 700;
-      setTimeout(function () {
-        $('#' + language + '-pourcent').html(pourcent);
-      }, delay * multiply);
-      multiply++;
+            name: "Total Hours Used In DAR",
+            value: (data1[0]['TotalHoursUsedInDAR']),
+          },
+        ];
+
+      let series = chart.series.push(new am4charts.PieSeries3D(
+
+      ));
+      series.dataFields.value = "value";
+      series.dataFields.category = "name";
+      series.autoDispose = true;
     });
+}
+
+
+
+  
+drawStatistics(){
+  this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+    .subscribe(data1 => {
+
+  this.maxDuration = (data1[0]['ProjectMaxDuration']);
+  let chart = am4core.create("DARSummary", am4charts.PieChart3D);
+  chart.hiddenState.properties.opacity = 0; 
+      chart.legend = new am4charts.Legend();
+
+
+
+
+
+
+
+      this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data1 => {
+        let data = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+        let chart = am4core.create('SummaryChart', am4charts.XYChart)
+        chart.colors.step = 2;
+  
+        chart.legend = new am4charts.Legend()
+        chart.legend.position = 'top'
+        chart.legend.paddingBottom = 20
+        chart.legend.labels.template.maxWidth = 95
+  
+        let xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+        xAxis.dataFields.category = 'category'
+        xAxis.renderer.cellStartLocation = 0.1
+        xAxis.renderer.cellEndLocation = 0.9
+        xAxis.renderer.grid.template.location = 0;
+  
+        let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        yAxis.min = 0;
+  
+        function createSeries(value, name) {
+          let series = chart.series.push(new am4charts.ColumnSeries())
+          series.dataFields.valueY = value
+          series.dataFields.categoryX = 'category'
+          series.name = name
+  
+          series.events.on("hidden", arrangeColumns);
+          series.events.on("shown", arrangeColumns);
+  
+          let bullet = series.bullets.push(new am4charts.LabelBullet())
+          bullet.interactionsEnabled = false
+          bullet.dy = 30;
+          bullet.label.text = '{valueY}'
+          bullet.label.fill = am4core.color('#ffffff')
+  
+          return series;
+        }
+  
+        chart.data = data;
+      
+  
+        createSeries('RemainingHours', 'Remaining Hours');
+        createSeries('DARUsedHours', 'Used Hours');
+        createSeries('TotalDARHours', 'Total Hours');
+  
+        function arrangeColumns() {
+          let series = chart.series.getIndex(0);
+  
+          let w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+          if (series.dataItems.length > 1) {
+            let x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+            let x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+            let delta = ((x1 - x0) / chart.series.length) * w;
+            if (am4core.isNumber(delta)) {
+              let middle = chart.series.length / 2;
+  
+              let newIndex = 0;
+              chart.series.each(function (series) {
+                if (!series.isHidden && !series.isHiding) {
+                  series.dummyData = newIndex;
+                  newIndex++;
+                }
+                else {
+                  series.dummyData = chart.series.indexOf(series);
+                }
+              })
+              let visibleCount = newIndex;
+              let newMiddle = visibleCount / 2;
+  
+              chart.series.each(function (series) {
+                let trueIndex = chart.series.indexOf(series);
+                let newIndex = series.dummyData;
+  
+                let dx = (newIndex - trueIndex + middle - newMiddle) * delta
+  
+                series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+              })
+            }
+          }
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  new FusionCharts({
+    type: "radialbar",
+    width: "100%",
+    height: "100%",
+    renderAt: "chart-container",
+    dataSource: {
+     chart: {
+        theme: "fusion",
+        // caption: "7Hr 32M",
+        // subCaption: "January 2021",
+        showLegend: 1,
+        innerRadius: 30,
+        outerRadius: 105,
+        showLabels: 1,
+        labelText: "$label"
+      },
+      data: [
+        {
+          label: "Design",
+          value: 94.09,
+          color: "#5867dd" //Custom Color
+        },
+
+        {
+          label: "Develoment",
+          value: 59.89,
+          color: "#b2beff" //Custom Color
+        },
+        {
+          label: "Testing",
+          value: 91.53,
+          color: "#985eff" //Custom Color
+        }
+      ]
     }
+  }).render();
+  // chart js end ----------------
+  var lang = {
+    "javascript": "70%", 
+  };
+  var multiply = 4;
+  $.each(lang, function (language, pourcent) { 
+    var delay = 700;
+    setTimeout(function () {
+      $('#' + language + '-pourcent').html(pourcent);
+    }, delay * multiply);
+    multiply++;
+  });
+
+
+})
+  }
+
+
+
+
+
+// SummaryChart End
 
 
     Pid:any;
@@ -353,13 +568,11 @@ export class DetailsComponent implements OnInit,AfterViewInit{
   }
 
   nonRacisList:any;
-
   GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data)=>{
       if(data !=null && data !=undefined){       
         this.Project_List=JSON.parse(data[0]['RacisList']);
-        console.log(this.Project_List,"wsa")    
       }
     });
 
@@ -370,22 +583,36 @@ export class DetailsComponent implements OnInit,AfterViewInit{
       });
 
     this.filteredEmployees = this.nonRacisList;
+
+
+    this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+    .subscribe(data1 => {
+    ///  this.DarGraphDataList = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+      //  console.log(data[0]['RemainingHours']);
+      // console.log("MaxDu....", data1);
+      this.maxDuration = (data1[0]['ProjectMaxDuration']);
+      let data2 = JSON.parse(data1[0]['DARGraphCalculations_Json']);
+     /// this.standardDuration = (data2[0]['DurationTime']);
+    });
+
+
   }
 
 
 
-
+  firstFiveRecords:any[] = [];
    GetActivityDetails(){
       this.service.NewActivityService(this.URL_ProjectCode).subscribe(
         (data)=>{
         if(data !==null && data !==undefined){
            this.Activity_List=JSON.parse(data[0]['ActivityList']) 
-           // console.log(this.Activity_List,"testing Api")
+           this.firstFiveRecords = this.Activity_List.slice(0, 5);
+            console.log(this.Activity_List,"testing Api")
         }     
       })
    }
 
-
+ 
    formatTime(time: string): string {
     const parsedTime = new Date(`1970-01-01T${time}`);
     return this.datepipe.transform(parsedTime, 'HH:mm');
@@ -1530,9 +1757,9 @@ this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
 this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
 this.Annual_array = this.generateTimeIntervals(64, 15, 16);
 
-console.log("Daily Array:", this.Daily_array);
-console.log("Weekly Array:", this.Week_array);
-console.log("Monthly Array:", this.Month_array);
+// console.log("Daily Array:", this.Daily_array);
+// console.log("Weekly Array:", this.Week_array);
+// console.log("Monthly Array:", this.Month_array);
 }
 
 type_list:any
