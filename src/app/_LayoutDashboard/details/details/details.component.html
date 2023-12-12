@@ -1878,13 +1878,13 @@
                                                             <label data-toggle="tooltip" title="Project Status!"
                                                                 class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                                                 [ngClass]="{'bg-info':projectInfo.Status=='Under Approval',
-                                                'bg-cancel':projectInfo.Status=='Cancellation Under Approval' || projectInfo.Status=='Cancelled',
-                                                'bg-warning':projectInfo.Status=='InProcess'  || projectInfo.Status=='Forward Under Approval',
-                                                'bg-danger':projectInfo.Status == 'Project Hold' || projectInfo.Status=='Standardtask Enactive Hold' }">
+                                                                'bg-cancel':projectInfo.Status=='Cancellation Under Approval' || projectInfo.Status=='Cancelled',
+                                                                'bg-warning':projectInfo.Status=='InProcess'  || projectInfo.Status=='Forward Under Approval',
+                                                                'bg-danger':projectInfo.Status == 'Project Hold' || projectInfo.Status=='Standardtask Enactive Hold' }">
                                                                 {{projectInfo.Status}}</label>
                                                         </ng-container> -->
                                                         <div class="d-flex flex-column ml-3"
-                                                        *ngIf="projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
+                                                        *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
                         
                                                         <div *ngIf="ProjectStatus=='Not Started'">
                                                             <div class="d-flex align-items-center w-200px">
@@ -2836,7 +2836,7 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <button class="btn btn-label-primary btn-upper btn-sm btn-bold"
+            <button class="btn btn-label-primary btn-upper "
                 [disabled]="_SelectedPorts==' '|| _SelectedPorts==null" (click)="addProjectToPortfolio()">Link</button>
 
 
@@ -6182,7 +6182,7 @@
 
 
                                 <ng-template #no_meetings_Present>
-                                    <div *ngIf="todaymeetings.length===0"
+                                    <div *ngIf="todaymeetings&&todaymeetings.length===0"
                                         style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;">
                                         <img width="20%" height="20%" src="./assets/images/nomeeting.png" />
                                         <h3 class="blank-txt fs-3 notimeline-present-label">No meetings scheduled.</h3>
