@@ -433,7 +433,7 @@ export class ActionToProjectComponent implements OnInit {
       this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
       this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
       this.ObjSubTaskDTO.Remarks = this._remarks;
-      this.ObjSubTaskDTO.Duration = this._allocated;
+      this.ObjSubTaskDTO.Duration = this._allocated; 
       // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
 
       if (this._inputAttachments.length > 0) {
