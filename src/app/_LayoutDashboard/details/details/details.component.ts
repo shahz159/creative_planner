@@ -366,8 +366,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  Submission: any
-
+  Submission: any;
+  filterstatus: any;
+  filteremployee: any;
 
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
@@ -378,6 +379,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+      this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       this.type_list = JSON.parse(this.projectInfo['typelist'])

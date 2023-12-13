@@ -917,7 +917,7 @@
 
                                                 <ul class="drop-ul">
                                                     <li class="dropdown-header">Filter By</li>
-                                                    <li>
+                                                    <li *ngFor="let item of filterstatus">
                                                         <button class="btn btn-filtr active2">
                                                             <div class="d-flex align-items-center">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -925,7 +925,7 @@
                                                                     <path xmlns="http://www.w3.org/2000/svg"
                                                                         d="M10,1 C14.9682329,1.00562018 18.9943798,5.03176707 19,10 C19,14.9705627 14.9705627,19 10,19 C5.02943725,19 1,14.9705627 1,10 C1,5.02943725 5.02943725,1 10,1 Z M9.99773756,2.99999872 C6.13400675,2.99999872 3,6.13400675 3,9.99999872 C3,13.8659932 6.13400675,16.9999987 10,16.9999987 C13.8659932,16.9999987 17,13.8659932 17,10.0022624 C16.9957197,6.21736145 13.9923299,3.13520869 10.2383509,3.00432339 L9.99773756,2.99999872 Z M14.7071311,6.79289322 C15.067615,7.15337718 15.0953446,7.72060824 14.7903197,8.11289944 L14.7071311,8.20710678 L8.98000123,13.9342366 L5.73275407,10.0492796 C5.37856063,9.62552792 5.43494869,8.99487882 5.85870033,8.64068538 C6.24985569,8.31373759 6.81730237,8.3366344 7.18087006,8.67538372 L7.2672945,8.76663165 L9.11102428,10.973056 L13.2929175,6.79289322 C13.6834418,6.40236893 14.3166068,6.40236893 14.7071311,6.79289322 Z" />
                                                                 </svg>
-                                                                <div class="fil-lbl">Completed</div>
+                                                                <div class="fil-lbl">{{item.Status}}</div>
                                                                 <span class="chck-icn ng-star-inserted">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                         height="16" fill="currentColor"
@@ -938,7 +938,7 @@
                                                             </div>
                                                         </button>
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <button class="btn btn-filtr">
                                                             <div class="d-flex align-items-center">
                                                                 <svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
@@ -996,13 +996,13 @@
                                                                 <div class="fil-lbl">Delay</div>
                                                             </div>
                                                         </button>
-                                                    </li>
+                                                    </li> -->
                                                     <li role="separator" class="divider"></li>
-                                                    <li class="dropdown-header">Sort by</li>
+                                                    <li class="dropdown-header">Sort by employee</li>
 
                                                     
                                                        
-                                                        <li><button class="btn btn-filtr active2"
+                                                        <!-- <li><button class="btn btn-filtr active2"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div class="d-flex align-items-center"><svg
                                                                         xmlns="http://www.w3.org/2000/svg" width="16"
@@ -1041,8 +1041,9 @@
                                                                     </svg>
                                                                     <div class="fil-lbl">Project</div>
                                                                 </div>
-                                                            </button></li>
-                                                        <li><button class="btn btn-filtr"
+                                                            </button></li> -->
+                                                        <li *ngFor="let item of filteremployee">
+                                                            <button class="btn btn-filtr active2" *ngIf="item.Team_Res==Current_user_ID"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div class="d-flex align-items-center"><svg
                                                                         xmlns="http://www.w3.org/2000/svg" width="16"
@@ -1052,9 +1053,40 @@
                                                                             d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
                                                                         </path>
                                                                     </svg>
-                                                                    <div class="fil-lbl">Employee</div>
+                                                                    <div class="fil-lbl">My actions</div>
+                                                                    <span
+                                                                        class="chck-icn ng-star-inserted"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            viewBox="0 0 16 16" class="bi bi-check2">
+                                                                            <path
+                                                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                            </path>
+                                                                        </svg></span>
                                                                 </div>
-                                                            </button></li>
+                                                            </button>
+                                                            <button class="btn btn-filtr" *ngIf="item.Team_Res!=Current_user_ID">
+                                                                <div class="d-flex align-items-center"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                        height="16" fill="currentColor"
+                                                                        viewBox="0 0 16 16" class="bi bi-people">
+                                                                        <path
+                                                                            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                    <div class="fil-lbl">{{item.Responsible}}</div>
+                                                                    <!-- <span
+                                                                        class="chck-icn ng-star-inserted"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            viewBox="0 0 16 16" class="bi bi-check2">
+                                                                            <path
+                                                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                            </path>
+                                                                        </svg></span> -->
+                                                                </div>
+                                                            </button>
+                                                        </li>
                                                         <li><button class="btn btn-filtr"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div class="d-flex align-items-center"
@@ -1066,7 +1098,7 @@
                                                                             d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z">
                                                                         </path>
                                                                     </svg>
-                                                                    <div class="fil-lbl ml-1">By me</div>
+                                                                    <div class="fil-lbl ml-1">Assigned By me</div>
                                                                 </div>
                                                             </button>
                                                         </li>
@@ -2305,7 +2337,7 @@
                                                 type="checkbox"
                                                 style="transform:scale(1.5); accent-color:green; font-weight: bolder; cursor:pointer; "
                                                 (change)="markCompleted(projectActionInfo[currentActionView])" /> -->
-                                            <ng-container
+                                            <!-- <ng-container
                                                 *ngIf="projectActionInfo[currentActionView].Status==='Completed'">
                                                 <svg width="25px" height="25px" viewBox="0 -0.5 17 17" version="1.1"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -2325,7 +2357,7 @@
                                                         </g>
                                                     </g>
                                                 </svg>
-                                            </ng-container>
+                                            </ng-container> -->
                                             <h4>{{projectActionInfo[currentActionView].Project_Name}}</h4>
                                         </div>
 
@@ -2779,7 +2811,7 @@
                                     <div class="row mt-5 px-3">
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
-                                                Starting date
+                                                Start date
                                             </div>
                                             <div class="kt-info-data-v">
                                                 {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
@@ -2818,6 +2850,15 @@
 
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
+                                                Assigned by
+                                            </div>
+                                            <div class="kt-info-data-v">
+                                                {{projectActionInfo[currentActionView].Assignedby}}
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="col text-center">
+                                            <div class="kt-info-lable-v">
                                                 RACIS
                                             </div>
                                             <div class="kt-project-sts-data">
@@ -2849,7 +2890,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
 
@@ -5541,7 +5582,7 @@
                     </svg>
                 </a>
                 <div class="dropdown no-after btm-btn ml-2 mt-2"  *ngIf="projectInfo&&projectInfo.Status!=='Completed'"     >
-                    <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
+                    <!-- <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
                         aria-expanded="false">
                         <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
                             <svg width="26" height="26" viewBox="0 0 36 36">
@@ -5552,13 +5593,12 @@
                                 <path fill="none" d="M0 0h36v36H0z"></path>
                             </svg>
                         </span>
-                        <!-- {{ScheduleType}} -->
                         <span class="tsk">Create</span>
                     </button>
                     <div class="dropdown-menu drop-cus btm-dropdn">
                         <a class="dropdown-item"  (click)="Task_type(1)" >Task</a>
                         <a class="dropdown-item"  (click)="Task_type(2)" >Event</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
