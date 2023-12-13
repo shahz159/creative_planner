@@ -13,7 +13,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent implements OnInit {
-  
+  autocompleteOptions: string[] = ['One', 'Two', 'Three'];
   Current_user_ID: any;
   _NotificationActivityList: NotificationActivityDTO[];
   _RequestActivity: [];

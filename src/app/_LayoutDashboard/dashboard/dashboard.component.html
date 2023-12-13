@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div class="action-count" role="button" (click)="UnderApproval_Click()">
+                        <div class="action-count" role="button" (click)="notification()">
                             <div class="d-flex align-items-center">
                                 <div class="symbol me-5">
                                     <span class="symbol-label  bg-warning">
@@ -1268,7 +1268,22 @@
                             </div>
                         </div>
                     </div>
-
+                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                        <div class="left-icon">
+                            <span class="side-icns" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                    class="svg-icn">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="rgt-des">
+                            <div class="">
+                                <div class="main-s" [innerHTML]="item.Description"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="userlength" class="eve-area" *ngIf="User_Scheduledjson.length > 0">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
@@ -1471,22 +1486,7 @@
                         </div>
                     </div>
 
-                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
-                        <div class="left-icon">
-                            <span class="side-icns" aria-hidden="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                    class="svg-icn">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="rgt-des">
-                            <div class="">
-                                <div class="main-s" [innerHTML]="item.Description"></div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <div id="" class="eve-area py-2" *ngIf="Attachments_ary.length>0">
                         <div class="left-icon">
