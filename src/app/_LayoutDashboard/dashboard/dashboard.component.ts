@@ -1489,7 +1489,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
-   
+  
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
