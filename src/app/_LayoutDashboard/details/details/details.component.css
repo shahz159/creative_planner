@@ -3434,17 +3434,22 @@ color:white;
 }
 
 
-.add-icon{
-   color:white;
+.add-icon{ 
+   color: #7d8ea3;
    border-radius: 50%;
-   background-color: #646c9a;
+   border:1px solid #7d8ea3;
+   background-color: #e2e8f0c9;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 
 .add-icon:hover{
- background-color: #3d4991;
+ background-color: #7080da;
  transform: none;
  color:white;
+ transition-duration:0.4s;
 }
 
 span.kt-user-list-ic {
