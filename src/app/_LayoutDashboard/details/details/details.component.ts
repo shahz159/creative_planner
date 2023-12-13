@@ -239,7 +239,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getResponsibleActions()
     this.drawStatistics();
-
+    this.GetActivityDetails();
   }
 
   getusername() {
@@ -260,7 +260,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   drawStatistics() {
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        //  console.log(data1, "DAR")
+        console.log(data1, "DAR")
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         this.RemainingHours = (data1[0]['RemainingHours']);
@@ -268,7 +268,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
         this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
         this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-        // console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
+        console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
 
         new FusionCharts({
 
@@ -624,7 +624,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
-    this.GetActivityDetails();
+    // this.GetActivityDetails();
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
