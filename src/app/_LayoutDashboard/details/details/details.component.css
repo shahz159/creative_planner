@@ -3356,17 +3356,48 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 }
 
 
+/* portfolio start*/
+.matchip-drp-dwn{
+  display:flex;
+  column-gap:15px;
+  align-items: flex-end;
+}
+.drp-dwn-field{
+ margin: 0;
+ padding: 0;
+ flex-grow:1;
+}
+.drp-dwn-field input{
+border:0;
+}
+.drp-dwn-submitbtn {
+margin-bottom:15px;
+}
+.close-icon{
+color:#f4f3f3;
+background-color: gray;
+border-radius: 50%;
+}
+.close-icon:hover{
+color:#e0e0e0;
+transform: none;
+}
+.add-icon{
+color:white;
+border-radius: 50%;
+background-color: #646C9A;
+}
+.add-icon:hover{
+background-color: #3D4991;
+transform: none;
+color:white;
+}
+/* portfolio End*/
 
 
 .black-white {
   filter: grayscale(100%);
 }
-
-
-
-
-
-
 
 
 .matchip-drp-dwn{

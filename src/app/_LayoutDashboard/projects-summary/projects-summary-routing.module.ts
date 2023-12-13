@@ -10,6 +10,10 @@ const routes: Routes = [{
     {
       path: 'projectinfo/:projectcode/:id',
       loadChildren: () => import('../project-info/project-info.module').then(m => m.ProjectInfoModule)
+    },
+    {
+      path: 'createproject',
+      loadChildren: () => import('../create-project/create-project.module').then(m => m.CreateProjectModule)
     }
   ]
   

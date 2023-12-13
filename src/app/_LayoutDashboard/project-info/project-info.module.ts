@@ -21,6 +21,7 @@ import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { NotificationComponent } from '../notification/notification.component';
 import { TruncatePipe } from './truncate.pipe';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -44,7 +45,7 @@ import { TruncatePipe } from './truncate.pipe';
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective, TruncatePipe],
   providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
-             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent],
+             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent,CreateProjectComponent],
  exports:[TruncatePipe]
   
 })
