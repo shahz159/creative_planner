@@ -433,7 +433,7 @@ export class ActionToProjectComponent implements OnInit {
       this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
       this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
       this.ObjSubTaskDTO.Remarks = this._remarks;
-      this.ObjSubTaskDTO.Duration = this._allocated;
+      this.ObjSubTaskDTO.Duration = this._allocated; 
       // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
 
       if (this._inputAttachments.length > 0) {
@@ -563,8 +563,8 @@ export class ActionToProjectComponent implements OnInit {
     // console.log(dateTwo)
     if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
       Swal.fire({
-        title: 'Action deadLine is greater than main project deadLine ?',
-        text: 'Do you want to continue for selection of date after main project deadLine!!',
+        title: 'Action deadine is greater than main project deadline ?',
+        text: 'Do you want to continue for selection of date after main project deadline!!',
         // icon: 'warning',
         // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
         showCancelButton: true,

@@ -403,6 +403,7 @@ export class MoreDetailsComponent implements OnInit {
   _fullname: any;
   isAction:boolean = false;
   showContent = false;
+  
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -1604,6 +1605,7 @@ export class MoreDetailsComponent implements OnInit {
 
           this.ProjectBlock = this.ProjectInfo_List[0]['Project_Block'];
           this.ProjectBlockName = this.ProjectInfo_List[0]['Exec_BlockName'];
+          //console.log("Test---->", this.ProjectBlockName);
           this.Authority_EmpNo = this.ProjectInfo_List[0]['Authority'];
           this.Responsible_EmpNo = this.ProjectInfo_List[0]['Responsible'];
           this.Owner_EmpNo = this.ProjectInfo_List[0]['OwnerEmpNo'];
@@ -3772,6 +3774,7 @@ export class MoreDetailsComponent implements OnInit {
 
           this.Subtask_Res_List = JSON.parse(data[0]['SubTaskResponsibe_Json']);
           this.ProjectStatus = data[0]['ProjectStatus'];
+           //console.log(this.raciPeople,"RACIS");
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this.RACIS = JSON.parse(data[0]['RACIS_Count']);
@@ -4723,8 +4726,8 @@ export class MoreDetailsComponent implements OnInit {
       console.log(dateOne, dateTwo, "dates")
       if ((dateOne < dateTwo) && ((this.Current_user_ID == this.mainowner || this.Current_user_ID == this.mainResp || this.Current_user_ID == this.mainAutho))) {
         Swal.fire({
-          title: 'Action deadLine is greater than main project deadLine ?',
-          text: 'Do you want to continue for selection of date after main project deadLine!!',
+          title: 'Action deadline is greater than main project deadline ?',
+          text: 'Do you want to continue for selection of date after main project deadline!!',
           showCancelButton: true,
           confirmButtonText: 'Yes',
           cancelButtonText: 'No'
@@ -4763,8 +4766,8 @@ export class MoreDetailsComponent implements OnInit {
     console.log(dateOne, dateTwo, "dates")
     if ((dateOne < dateTwo) && ((this.Current_user_ID == this.Owner_EmpNo || this.Current_user_ID == this.Responsible_EmpNo || this.Current_user_ID == this.Authority_EmpNo || this.isHierarchy == true))) {
       Swal.fire({
-        title: 'Action deadLine is greater than main project deadLine ?',
-        text: 'Do you want to continue for selection of date after main project deadLine!!',
+        title: 'Action deadline is greater than main project deadline ?',
+        text: 'Do you want to continue for selection of date after main project deadline!!',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
