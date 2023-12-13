@@ -568,7 +568,7 @@ drawStatistics(){
     });
   }
 
-  nonRacisList:any;
+  nonRacisList:any=[];
   GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data)=>{
@@ -579,12 +579,13 @@ drawStatistics(){
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        // console.log(data,"RACIS");
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
+        console.log("all people:",this.nonRacisList);
+        this.filteredEmployees = this.nonRacisList;
       });
 
-    this.filteredEmployees = this.nonRacisList;
 
+   
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
     .subscribe(data1 => {
@@ -785,8 +786,17 @@ drawStatistics(){
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
+    
+    // if the add support sidebar had opened and close , by default tab1 is on.
+    document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
+    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+     //  add support close end here.
+
     document.getElementById("newdetails").classList.remove("position-fixed");
-   
+    
+    this.selectedEmployees=[];    //this will empty the add support selection's field in add people sidebar if its was open and selection done.
     // in case if project submission (main or action) operation cancelled.
     $('#mainPrjCheckbox').prop('checked',false);
     $('#project-action-Checkbox').prop('checked',false);
@@ -839,6 +849,7 @@ drawStatistics(){
     this.starttime = null;
     this.endtime = null;
     this.isSelection=false;
+    this.selectedEmployees=[];
     this.dateF=new FormControl(new Date());
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
@@ -847,6 +858,16 @@ drawStatistics(){
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+
+
+
+    document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
+    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+    // back to 1st 'People on the project' tab.
+
+
   }
 
 
@@ -3288,7 +3309,7 @@ _AllEventTasksCount: number = 0;
 pending_status: boolean;
 _FutureEventTasksCount: number = 0;
 MinLastNameLength: boolean;
-MasterCode: any = [];
+MasterCode: any=null;
 
 Title_Name: any;
 Startts: any;
@@ -3382,7 +3403,7 @@ _OldRecurranceValues: string;
 _PopupConfirmedValue: number;
 _subname: boolean;
 _calenderDto: CalenderDTO;
-ProjectListArray: any;
+ProjectListArray: any=[];
 _EmployeeListForDropdown: any[] = [];
 Portfoliolist_1: [];
 Note_deadlineexpire: boolean;
@@ -3393,7 +3414,7 @@ _status: string;
 Allocated_subtask: number;
 TM_DisplayName: string;
 Portfolio: any = [];
-SelectDms: any;
+SelectDms: any=[];
 _onlinelink: boolean = false;
 Link_Details: string;
 config: AngularEditorConfig = {
@@ -3503,8 +3524,10 @@ meetingsViewOn:boolean=true;
 
 
 Task_type(value:number){
+
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
-  this.MasterCode=[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
+  this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
+  this.Portfolio=[];                                  // by default no portfolio is selected
   this.selectedrecuvalue = "0";   
   this._PopupConfirmedValue = 1; 
   this.MinLastNameLength = true;
@@ -3584,7 +3607,7 @@ Task_type(value:number){
       $('#core_Dms').css('display','none');
       $('#online-add').css('display','none');
     });
-
+    this.GetSubtasklistfromProject(this.MasterCode);
   }
   else{
     this.ScheduleType = "Event";
@@ -3785,7 +3808,7 @@ GetProjectAndsubtashDrpforCalender() {
 
 
 GetSubtasklistfromProject(MasterCode) {
-    console.log("asdf:",MasterCode);
+
   this.ProjectListArray.forEach(element => {
 
     if (element.Project_Code == MasterCode) {
@@ -3842,10 +3865,14 @@ GetSubtasklistfromProject(MasterCode) {
       (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
     }
   }
+
+
+
 }
 
 
 getChangeSubtaskDetais(Project_Code) {
+  
   this.BlockNameProject1.forEach(element => {
 
     if (element.Project_Code == Project_Code) {
@@ -4409,7 +4436,7 @@ selectmonthlydays(day) {
     this.Title_Name = null;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
-    this.SelectDms = null;
+    this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
     this.Startts = null;
@@ -4423,7 +4450,7 @@ selectmonthlydays(day) {
     this.draftid=0;
     // this.Recurr_arr = [];
     this._status = null;
-    this.Portfolio = null;
+    this.Portfolio = [];
     this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
@@ -4511,6 +4538,7 @@ selectmonthlydays(day) {
   }
 
   OnSubmitSchedule() {
+    debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -4624,8 +4652,8 @@ selectmonthlydays(day) {
 
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+        var vUser_Name = "User_Name";     
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
@@ -4652,10 +4680,10 @@ selectmonthlydays(day) {
         element[vEventNumber] = this.EventNumber;
 
         var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
 
         var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
       });
 
@@ -4748,7 +4776,7 @@ selectmonthlydays(day) {
           this.Title_Name = null;
           this.ngEmployeeDropdown = [];
           this.Description_Type = null;
-          this.MasterCode = null;
+          this.MasterCode = [];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -4758,7 +4786,7 @@ selectmonthlydays(day) {
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Locationfulladd = null;
           this._status = null;
-          this.SelectDms = null;
+          this.SelectDms = [];
           this.Location_Type = null;
           this.Link_Details = null;
           this._onlinelink = false;
@@ -4852,7 +4880,83 @@ selectmonthlydays(day) {
 
 
 
+
+
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;  
 isParticipantDrpDwnOpen:boolean=false;
+isDMSMemoDrpDwnOpen:boolean=false;
+isPortfolioDrpDwnOpen:boolean=false;
+isProjectDrpDwnOpen:boolean=false;
+openAutocompleteDrpDwn(Acomp:string){  
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+}
+
+closeAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+}
+
+
+onPrjSelected(e:any){
+
+  const prjChoosed=this.ProjectListArray.find((p:any)=>p.Project_Code===e.option.value);
+  if(prjChoosed){
+       const index=this.MasterCode.indexOf(prjChoosed.Project_Code);
+       if(index===-1){
+          // if not present then add it
+          this.MasterCode.push(prjChoosed.Project_Code);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.MasterCode.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('ProjectDrpDwn');
+}
+removeSelectedPrj(item){
+  const index=this.MasterCode.indexOf(item);
+  if(index!==-1){
+    this.MasterCode.splice(index,1);
+  } 
+}
+
+getPrjName(projectCode:string){
+  if(this.ProjectListArray){
+   const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
+   return P?P.BlockNameProject:'';
+  }
+   return [];
+}
+
+
+
+
+
+
+
+
+onPortfolioSelected(e:any){
+  const portfolioChoosed=this.Portfoliolist_1.find((p:any)=>p.portfolio_id===e.option.value);
+  if(portfolioChoosed){
+       const index=this.Portfolio.indexOf(portfolioChoosed);
+       if(index===-1){
+          // if not present then add it
+          this.Portfolio.push(portfolioChoosed);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+}
+removeSelectedPortfolio(item){
+  const index=this.Portfolio.indexOf(item);
+  if(index!==-1){
+    this.Portfolio.splice(index,1);
+  } 
+}
+
+
 
 
 onParticipantSelected(e:any){
@@ -4867,10 +4971,8 @@ onParticipantSelected(e:any){
           this.ngEmployeeDropdown.splice(index,1);
          }
     }
-    requestAnimationFrame(()=>this.autocompletes.get(2).openPanel());
+    this.openAutocompleteDrpDwn('ParticipantDrpDwn');
 }
-
-
 removeSelectedParticipant(item){
     const index=this.ngEmployeeDropdown.indexOf(item);
     if(index!==-1){
@@ -4879,24 +4981,37 @@ removeSelectedParticipant(item){
 }
 
 
-
-@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
-
-
-
-openAutoCompleteDrpDwn(autocompleteName:string){
-  this.isParticipantDrpDwnOpen=true;
-  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===autocompleteName);
-  setTimeout(()=>autoCompleteDrpDwn.openPanel(),0);
-
-}
-
-closeAutoCompleteDrpDwn(autocompleteName:string){
-  this.isParticipantDrpDwnOpen=false;
-  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===autocompleteName);
-  setTimeout(()=>autoCompleteDrpDwn.closePanel(),0);
-}
  
+
+onDMSMemoSelected(e){
+  const memoChoosed=this.Memos_List.find((c)=>c.MailId===e.option.value);
+  if(memoChoosed){
+       const index=this.SelectDms.indexOf(memoChoosed);
+       if(index===-1){
+          // if not present then add it
+          this.SelectDms.push(memoChoosed);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.SelectDms.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('MemoDrpDwn');
+}
+removeSelectedDMSMemo(item){
+  const index=this.SelectDms.indexOf(item);
+  if(index!==-1){
+    this.SelectDms.splice(index,1);
+  } 
+}
+
+
+
+
+
+
+
+
+
 
 
 // meeting section code end here
@@ -5253,12 +5368,12 @@ remove(employee: any): void {
 
   // Optionally, you can uncheck the checkbox in the Project_List array
   employee.checked = false;
-  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+  this.closeAutocompleteDrpDwn('supportDrpDwn'); // close the panel
 
 }
 
 isSelection: boolean =false;
-
+isSupportDrpDwnOpen:boolean=false;
 
 selectedChip(event: MatAutocompleteSelectedEvent): void {
   this._keeppanelopen();
@@ -5297,13 +5412,13 @@ filterEmployees(input: string): void {
 _keeppanelopen(){
   this.filteredEmployees = this.nonRacisList;
   this.isSelection=true;
-  requestAnimationFrame(()=>this.customTrigger.openPanel()); // open the panel
+  this.openAutocompleteDrpDwn('supportDrpDwn');// open the panel
 }
 
 closePanel(){
   this.isSelection=false;
   this.fruitInput.nativeElement.value = '';
-  requestAnimationFrame(()=>this.autoCompleteTrigger.closePanel()); // close the panel
+  this.closeAutocompleteDrpDwn('supportDrpDwn'); // close the panel
 }
 
 
@@ -5371,8 +5486,6 @@ removeSelectedMemo(item){
     } 
 }
 
-
-
 closeMemoDrpDwn(){
   this.isDMSDrpDwnOpen=false;
   requestAnimationFrame(()=>this.customTrigger.closePanel()); // close the panel
@@ -5383,12 +5496,6 @@ openMemoDrpDwn(){
   this.isDMSDrpDwnOpen=true;
   requestAnimationFrame(()=>this.customTrigger.openPanel()); // open the panel
 }
-
-
-
-//
-
-
 
 
 
