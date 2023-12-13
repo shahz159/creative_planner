@@ -363,9 +363,9 @@
 
                                         </div>
                                     </div>
-                                    <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
+                                    <div id="userlist" class="avar-div mb-2" *ngIf="User_Scheduledjson.length > 0">
 
-                                        <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
+                                        <div class="d-flex align-items-center hver-d" *ngFor="let _user of User_Scheduledjson">
                                             <div class="form-check form-check-custom form-check-solid">
                                                 <input type="checkbox" [disabled]="isCheckboxDisabled"
                                                     id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval"
@@ -462,6 +462,15 @@
                                                 </div>
 
                                             </div>
+
+                                            <div class="admin-check curser-pointer -hide-x">
+                                            <span _ngcontent-hko-c392="" aria-hidden="true"
+                                                class="admin-check-svg">
+                                               
+                                            </span>
+                                            <span>Mark as admin</span>
+                                        </div>
+
                                         </div>
 
                                     </div>
