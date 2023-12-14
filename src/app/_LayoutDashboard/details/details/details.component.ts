@@ -648,6 +648,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetprojectComments()
    }
 
   View_Activity() {
@@ -2246,6 +2247,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       arr.push({ Port_Id: element.Portfolio_ID })
       this._SelectedPorts = arr;
     });
+    this.openAutocompleteDrpDwn('PORTFOLIOdrpdwn')
     // console.log("Selected Ports In Array--->", this._SelectedPorts);
     // console.log(this.ngDropdwonPort,"ports");
 
@@ -2269,9 +2271,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   Portfolio_Deselect(selecteditems) {
+    const index = this.ngDropdwonPort.indexOf(selecteditems);
+    if (index !== -1) {
+      this.ngDropdwonPort.splice(index, 1);
+    }
+
     let arr = [];
 
-    this.Empty_portDropdown = selecteditems;
+    this.Empty_portDropdown = this.ngDropdwonPort;
     if (this.Empty_portDropdown != '') {
       this.Empty_portDropdown.forEach(element => {
         arr.push({ Port_Id: element.Portfolio_ID })
@@ -2286,6 +2293,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   addProjectToPortfolio() {
+    debugger
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
     if (this.selectedportID != null) {
@@ -4642,6 +4650,7 @@ openAutocompleteDrpDwn(Acomp:string){
 }
 
 closeAutocompleteDrpDwn(Acomp:string){
+  debugger
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
@@ -5241,10 +5250,7 @@ removeSelectedMemo(item){
 
 
 
-  //
-
-
-
+  
   removeSelectedPrt(item) {
     const index = this.ngDropdwonPort.indexOf(item);
     if (index !== -1) {
@@ -5284,5 +5290,17 @@ removeSelectedMemo(item){
     window.open(Url);
   }
 
- 
+/////////////////////////////////////////
+_CommentsList: any;
+commentsLength: number;
+GetprojectComments() {
+  this.service._GetDARAchievements(this.URL_ProjectCode).
+    subscribe((data) => {
+      // console.log("Comments data----------->",data)
+      this._CommentsList = JSON.parse(data[0]['CommentsJson']);
+      this.commentsLength = this._CommentsList.length;
+      // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
+       console.log("Comments-List--------->",this._CommentsList)
+    });
+}
 }

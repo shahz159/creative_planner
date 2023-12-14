@@ -3195,10 +3195,11 @@
             </div>
             <div class="kt-nav__separator"></div>
         </li>
+        <div class="d-flex align-items-end p-3" style="column-gap:10px">
         <mat-form-field class="drp-dwn-field w-100">
             <mat-label>Select Portfolios</mat-label>
             <mat-chip-list #selectedportfolioslist>
-                <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt" (removed)="removeSelectedPrt(prt)">
+                <mat-chip *ngFor="let prt of ngDropdwonPort"  class="Data_chip_kt" (removed)="Portfolio_Deselect(prt)">
                     {{prt.Portfolio_Name}}
                     <button matChipRemove>
                         <mat-icon>cancel</mat-icon>
@@ -3209,11 +3210,11 @@
                 <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
                     [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                 <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                        (click)="closePortDrpDwn()">cancel</mat-icon> </button>
+                        (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
                 <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
-                        (click)="openPortDrpDwn()">add</mat-icon> </button>
+                        (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
             </div>
-            <mat-autocomplete #prtDrpDown="matAutocomplete" (optionSelected)="onPrtClicked($event)"
+            <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"  (optionSelected)="onPrtClicked($event)"
                 (closed)="isPortDrpDwnOpen=false" (opened)="isPortDrpDwnOpen=true">
                 <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
                     (click)="Portfolio_Select(ngDropdwonPort)">
@@ -3222,10 +3223,10 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-        <button class="btn btn-label-primary btn-upper " [disabled]="_SelectedPorts==' '|| _SelectedPorts==null"
+        <button class="btn btn-label-primary btn-upper mb-4" [disabled]="_SelectedPorts==' '|| _SelectedPorts==null"
             (click)="addProjectToPortfolio()">Link</button>
 
-
+        </div>
 
 
         <!-- 
@@ -8094,58 +8095,53 @@
                 </a>
             </div>
         </div>
-
         <div class="kt-portlet__body flex-row">
-            <div class="kt_all_commnets_view">
-
-                <div class="d-flex justify-content-start mb-10 ">
+        <ng-container *ngFor="let item of _CommentsList">
+            <div *ngIf="(item.Send_From == 'WS') then even;">
+            </div>
+            <div *ngIf="(item.Send_From !='WS') then odd;"> 
+            </div>
+            <div class="kt_all_commnets_view" >      
+                <ng-template #even>
+              <div class="d-flex justify-content-start mb-10 ">
                       <div class="d-flex flex-column align-items-start">
                             <div class="d-flex align-items-center mb-2">
                                 <div class="symbol  symbol-35px symbol-circle ">
                                     <img alt="Pic" src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-25.jpg">
                                 </div>
-
                                 <div class="ms-3">
-                                    <a href="#" class="Kt_cmt_user_name me-2">Brian Cox</a>
-                                    <span class="Kt_cmt_date">12 May 2023</span>
+                                    <a href="#" class="Kt_cmt_user_name me-2">{{item.Emp_name}}</a>
+                                    <span class="Kt_cmt_date">{{item.Req_DL | date:'dd-MM-yyyy'}} | {{item.Req_Type}}</span>
                                 </div>
-                            </div>
-                       
+                            </div>                    
                         <div class="Kt_cmt_user_message bg-light-orange mw-lg-400px text-start" data-kt-element="message-text">
-                            How likely are you to recommend our company to your friends and family ?       
-                        </div>
-                       
-                    </div>
-                   
+                            {{item.Req_Coments}}  
+                        </div>           
+                    </div>    
                 </div>
+            </ng-template>
+            <ng-template #odd>
                 <div class="d-flex justify-content-end mb-10 ">
                     <div class="d-flex flex-column align-items-end">
                           <div class="d-flex align-items-center mb-2">
                             <div class="me-3">
-                                <span class="Kt_cmt_date">12 May 2023</span>
-                                <a href="#" class="Kt_cmt_user_name ms-2">Brian Cox</a>
+                                    <span class="Kt_cmt_date">{{item.Req_Type}} | {{item.Req_DL | date:'dd-MM-yyyy'}}</span>
+                                <a href="#" class="Kt_cmt_user_name ms-2">{{item.Emp_name}}</a>
                             </div> 
-
                             <div class="symbol  symbol-35px symbol-circle ">
                                 <img alt="Pic" src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-1.jpg">
                             </div>
-
-
-                          </div>
-                     
+                          </div>                   
                       <div class="Kt_cmt_user_message bg-light-blue mw-lg-400px text-end" data-kt-element="message-text">
-                          How likely are you to recommend our company to your friends and family ?       
-                      </div>
-                     
+                        {{item.Req_Coments}}     
+                      </div>   
+                             
                   </div>
-                 
               </div>
-
+            </ng-template>
             </div>
+        </ng-container>
         </div>
-
     </div>
-
-
 </div>
 <!--------- view comments end-->
