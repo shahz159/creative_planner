@@ -76,7 +76,8 @@ h5.card-ttle{
     align-items: center;
     outline: none;
     -webkit-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;    flex-wrap: wrap;
+    transition: background-color 100ms linear;   
+    /* flex-wrap: wrap; */
 }
 .eve-modal .scrolly{
     overflow: auto;
@@ -1308,3 +1309,21 @@ small.kt-mt-sm {
   letter-spacing: 0.5px;
 }
 
+.-hide-x {
+  opacity: 0;
+  transition: all .5s;
+  
+}
+.hver-d{
+  transition: all 1s;  /* lets make it smooth */
+}
+.hver-d:hover {
+  transform : translateX(-10px);
+  transition: all .5s;border-radius: 5px;
+  box-shadow: 3px 5px 6px #0000001c;
+  
+}
+
+.hver-d:hover .-hide-x{
+  opacity: 1;transition: all 1s;
+}

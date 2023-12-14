@@ -4,7 +4,7 @@
         <div class="card meet-card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <div class="">
-                    <h5 class="mb-0 card-title" *ngIf="Meetingstatuscom==Completed">Meeting Report</h5>
+                    <h5 class="mb-0 card-title" *ngIf="Meetingstatuscom==Completed">Meeting Board</h5>
                     <h5 class="mb-0 card-title text-Success" *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</h5>
                     <!-- <span *ngIf="Meetingstatuscom==Completed && Isadmin==true && display=='00:00'">Please click in Start <i class="fas fa-play curser-pointer relse-act">
                         <small>sec</small> class="blink"
@@ -165,8 +165,6 @@
 
                             <div class="card-body px-0 pt-0">
                                 <div class="meetdt">
-
-
                                     <div id="location" class="eve-area" *ngIf="item.Location">
                                         <div class="left-icon">
                                             <span class="side-icns" aria-hidden="true">
@@ -185,11 +183,9 @@
                                                     <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}</a>
                                                     <div class="main-s">{{item.FullAddress_loc}}</div>
                                                 </div>
-                                                <!-- <div class="main-s">{{}}</div> -->
-                                                <!-- <div class="sub-s text-ellp">2nd Floor, KUB Towers, Rd Number 3, Sri Shyam Nagar, Telecom
-                                        Nagar, Gachibowli, Hyderabad, Telangana 500032, India</div> -->
                                             </div>
                                         </div>
+                                        
                                     </div>
 
                                     <div id="" class="eve-area" *ngIf="item.Onlinelink.length > 0">
@@ -223,8 +219,26 @@
                                         </div>
                                         <div class="rgt-des">
                                             <div class="">
-                                                <div class="main-s">Offline</div>
+                                                <div class="main-s">Meeting room</div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
+                                                    height="22" class="svg-icn">
+                                                    <path fill="none" d="M0 0h24v24H0z" />
+                                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <!-- <div class="main-s pro-nm">Agenda</div> -->
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                
+                                                <div class="main-s" [innerHTML]="item.Description"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -363,9 +377,9 @@
 
                                         </div>
                                     </div>
-                                    <div id="userlist" class="avar-div" *ngIf="User_Scheduledjson.length > 0">
+                                    <div id="userlist" class="avar-div mb-2" *ngIf="User_Scheduledjson.length > 0">
 
-                                        <div class="d-flex align-items-center" *ngFor="let _user of User_Scheduledjson">
+                                        <div class="d-flex align-items-center hver-d" *ngFor="let _user of User_Scheduledjson">
                                             <div class="form-check form-check-custom form-check-solid">
                                                 <input type="checkbox" [disabled]="isCheckboxDisabled"
                                                     id="flexCheckChecked5_{{_user.stringval}}" [value]="_user.stringval"
@@ -462,6 +476,15 @@
                                                 </div>
 
                                             </div>
+
+                                            <div class="admin-check curser-pointer -hide-x">
+                                            <span _ngcontent-hko-c392="" aria-hidden="true"
+                                                class="admin-check-svg">
+                                               
+                                            </span>
+                                            <span>Mark as admin</span>
+                                        </div>
+
                                         </div>
 
                                     </div>
@@ -583,22 +606,7 @@
 
                                     </div>
 
-                                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
-                                        <div class="left-icon">
-                                            <span class="side-icns" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-                                                    height="24" class="svg-icn">
-                                                    <path fill="none" d="M0 0h24v24H0z" />
-                                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <div class="rgt-des">
-                                            <div class="">
-                                                <div class="main-s" [innerHTML]="item.Description"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div id="" class="eve-area py-2" *ngIf="Attachments_ary.length>0">
                                         <div class="left-icon">
