@@ -1937,7 +1937,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  limit = 200; // Set the initial limit
+  limit = 55; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
 
@@ -5126,5 +5126,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   openPortDrpDwn() {
     this.isPortDrpDwnOpen = true;
     requestAnimationFrame(() => this.customTrigger.openPanel())
+  }
+  
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
   }
 }

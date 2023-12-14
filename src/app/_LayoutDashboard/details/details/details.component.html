@@ -1834,16 +1834,26 @@
                                                         <span *ngIf="item.oldValue !==''">From :
                                                             {{item.oldValue}}</span> <br>
                                                         <span *ngIf="item.oldValue !==''; else newActivity">To :
-                                                            {{item.NewValue}}</span>
+                                                            <!-- {{item.NewValue}}  -->
+                                                            {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                            <ng-container
+                                                            *ngIf="item.NewValue.length>55">
+                                                            <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                        </ng-container>>
+                                                      </span>
                                                         <ng-template #newActivity>
-                                                            {{item.NewValue}}
+                                                            <!-- {{item.NewValue}}  -->
+                                                            {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                            <ng-container
+                                                            *ngIf="item.NewValue.length>55">
+                                                            <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                        </ng-container>
                                                         </ng-template>
                                                     </div>
                                                     <!--end::Text-->
                                                 </div>
                                                 <ng-container *ngIf="firstFiveRecords.length>4">
-                                                    <a href="javascript:void(0)" (click)="View_Activity()">View
-                                                        more...</a>
+                                                    <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
                                                 </ng-container>
                                                 <!--end::Item-->
                                             </div>
