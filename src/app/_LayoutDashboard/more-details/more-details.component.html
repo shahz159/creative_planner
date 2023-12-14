@@ -115,12 +115,12 @@
                                     *ngIf="Status != 'Project Hold' && Status != 'Delay'"
                                     class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill"
                                     [ngClass]="{'bg-success':Status=='Completed',
-                    'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' || Status == 'New TodoProject',
-                    'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved',
-                    'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
-                    'bg-cancel':Status=='Cancellation Under Approval' || Status=='Cancelled',
-                    'bg-rejected': Status=='New Project Rejected', 'bg-success-1' : Status=='ToDo Completed',
-                    'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold'  ||  Status == 'Project Complete Rejected'}">
+                                     'bg-info':Status=='Under Approval' || Status=='New Project' || Status== 'New Todo' || Status == 'New TodoProject',
+                                     'bg-primary':Status=='Completion Under Approval' || Status=='Deadline Extend Under Approval' || Status=='Project Hold Under Approval' ||  Status =='ToDo Achieved',
+                                     'bg-warning':Status=='InProcess' || Status=='Forward Under Approval',
+                                     'bg-cancel':Status=='Cancellation Under Approval' || Status=='Cancelled',
+                                     'bg-rejected': Status=='New Project Rejected', 'bg-success-1' : Status=='ToDo Completed',
+                                     'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold'  ||  Status == 'Project Complete Rejected'}">
                                     {{Status}}</label>
                                 <label data-toggle="tooltip" title="Project Status!"
                                     class="kt-badge kt-badge--inline  cus-btn text-white px-3 py-1 kt-badge--pill bg-danger"
