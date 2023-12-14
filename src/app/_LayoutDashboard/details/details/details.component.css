@@ -3469,3 +3469,49 @@ span.kt-user-list-ic {
 .divider{
   border-bottom: 1px solid #dee2e6!important;
 }
+
+/*------- view comments ---------*/
+.kt-portlet .kt-portlet__body {
+  flex-direction: column!important;
+}
+.kt-quick-View_comments--on{
+  width: 30%;
+}
+a.Kt_cmt_user_name {
+  font-size: 1.15rem;
+  color: #000;
+  font-weight: 600;
+}
+.Kt_cmt_date {
+  font-size: 0.85rem;
+  color: #99a1b7;
+}
+.ms-3 {
+  margin-left: 0.75rem!important;
+}
+.me-3 {
+  margin-right: 0.75rem!important;
+}
+.ms-2 {
+  margin-left: 0.65rem!important;
+}
+.me-2 {
+  margin-right: 0.65rem!important;
+}
+.Kt_cmt_user_message{
+  padding: 1.25rem;
+  color: #071437;
+  border-radius: 0.475rem;
+  font-weight: 500;
+}
+.bg-light-orange{
+  background-color: #f8f5ff;
+}
+.bg-light-blue{
+  background-color: #e9f3ff;
+}
+@media (min-width: 992px){
+.mw-lg-400px {
+  max-width: 400px!important;
+}
+}

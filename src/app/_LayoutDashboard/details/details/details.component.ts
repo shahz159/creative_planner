@@ -593,6 +593,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("View_comments").classList.remove("kt-quick-View_comments--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
@@ -627,11 +628,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
+  View_Comments(){
+    document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+   }
 
-  // darcreate() {
-  //   document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
-  //   document.getElementById("rightbar-overlay").style.display = "block";
-  // }
   View_Activity() {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -5250,4 +5252,6 @@ removeSelectedMemo(item){
     const Url = memo_Url;
     window.open(Url);
   }
+
+ 
 }

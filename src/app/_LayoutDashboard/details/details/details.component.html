@@ -1,4 +1,4 @@
-<div class="kt-container kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3" id="newdetails">
+<div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3" id="newdetails">
     <div class="card mb-6 mb-xl-9 d-none">
         <div class="card-body pt-9 pb-0">
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
@@ -660,7 +660,7 @@
 
                             </div>
                             <div class="row mt-3 align-items-center px-3">
-                                <div class="col-lg-11">
+                                <div class="col">
                                     <div class="row">
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
@@ -679,7 +679,7 @@
                                                 Deadline
                                             </div>
                                             <div class="kt-project-sts-data">
-                                                {{projectInfo.EndDate | date : 'dd-MM-yyyy'}}
+                                                {{projectInfo.EndDate|date:'dd-MM-YYYY'}}
                                             </div>
                                         </div>
                                         <ng-template #submission>
@@ -793,32 +793,9 @@
                                             </div>
                                         </div>
 
-
-
-
-                                        <!-- <div class="col-lg-6 text-center mt-4"
-                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
-                                        <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_IN_PROCESS"  >
-                                            <b>{{TOTAL_ACTIONS_IN_PROCESS}}</b> in Process
-                                        </div>
-                                    </div>
-                                    <div class="col text-center mt-4"
-                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
-                                        <div class="kt-prg-bar-info"  *ngIf="TOTAL_ACTIONS_IN_DELAY"    >
-                                            <b>{{TOTAL_ACTIONS_IN_DELAY}}</b> Delay
-                                        </div>
-                                    </div>
-                                    <div class="col text-center mt-4"
-                                        *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks')">
-                                        <div class="kt-prg-bar-info" *ngIf="TOTAL_ACTIONS_DONE"   >
-                                            <b>{{TOTAL_ACTIONS_DONE}}</b> Done
-                                        </div>
-                                    </div> -->
-
-
                                     </div>
                                 </div>
-                                <div class="col-lg-1  p-1 text-center"
+                                <div class="CmP-wd  p-1 text-center"
                                     *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
                                     <div class="kt-prg-bar-info kt-total-prg-vl mt-4" title="Completed/All actions">
                                         <b>{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
@@ -1337,7 +1314,7 @@
                                     </svg>
                                 </a>
 
-                                <a class="kt-inbox__icon">
+                                <a class="kt-inbox__icon kt_Comments" (click)="View_Comments()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 15 15"
                                         fill="none">
                                         <path
@@ -8090,3 +8067,75 @@
             </div>
 
             <!-------- Action edit view End --------->
+
+
+
+
+            <!-------- view comments start-->
+<div class="sideInfobar animate-right" id="View_comments"> 
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
+                <h4 class="m-0">Comments</h4>
+                <a href="javascript:void(0)" class="abs-btn closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="kt-portlet__body flex-row">
+            <div class="kt_all_commnets_view">
+
+                <div class="d-flex justify-content-start mb-10 ">
+                      <div class="d-flex flex-column align-items-start">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="symbol  symbol-35px symbol-circle ">
+                                    <img alt="Pic" src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-25.jpg">
+                                </div>
+
+                                <div class="ms-3">
+                                    <a href="#" class="Kt_cmt_user_name me-2">Brian Cox</a>
+                                    <span class="Kt_cmt_date">12 May 2023</span>
+                                </div>
+                            </div>
+                       
+                        <div class="Kt_cmt_user_message bg-light-orange mw-lg-400px text-start" data-kt-element="message-text">
+                            How likely are you to recommend our company to your friends and family ?       
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+                <div class="d-flex justify-content-end mb-10 ">
+                    <div class="d-flex flex-column align-items-end">
+                          <div class="d-flex align-items-center mb-2">
+                            <div class="me-3">
+                                <span class="Kt_cmt_date">12 May 2023</span>
+                                <a href="#" class="Kt_cmt_user_name ms-2">Brian Cox</a>
+                            </div> 
+
+                            <div class="symbol  symbol-35px symbol-circle ">
+                                <img alt="Pic" src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-1.jpg">
+                            </div>
+
+
+                          </div>
+                     
+                      <div class="Kt_cmt_user_message bg-light-blue mw-lg-400px text-end" data-kt-element="message-text">
+                          How likely are you to recommend our company to your friends and family ?       
+                      </div>
+                     
+                  </div>
+                 
+              </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<!--------- view comments end-->
