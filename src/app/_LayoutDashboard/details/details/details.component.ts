@@ -323,8 +323,71 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  drawStatisticsOfAction(actioncode:any) {
+ 
+    this.service.DARGraphCalculations_Json(actioncode)
+      .subscribe(data1 => {
+        console.log(data1, "DAR")
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);
+        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+        this.RemainingHours = (data1[0]['RemainingHours']);
 
+        this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+        this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+        this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+        console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
 
+        new FusionCharts({
+
+          type: "radialbar",
+          width: "100%",
+          height: "100%",
+          renderAt: "chart-container1",
+          dataSource: {
+            chart: {
+              theme: "fusion",
+              // caption: "7Hr 32M", 
+              // subCaption: "January 2021",
+              showLegend: 1,
+              innerRadius: 30,
+              outerRadius: 105,
+              showLabels: 1,
+              labelText: "$label"
+            },
+            data: [
+              {
+                label: "Remaining hous",
+                value: this.RemainingHours,
+                color: "#5867dd" //Custom Color
+              },
+
+              {
+                label: "Used hours",
+                value: this.UsedInDAR,
+                color: "#b2beff" //Custom Color
+              },
+              {
+                label: "Total hours",
+                value: this.maxDuration,
+                color: "#985eff" //Custom Color
+              }
+            ]
+          }
+        }).render();
+        // chart js end ----------------
+        var lang = {
+          "javascript": "70%",
+        };
+        var multiply = 4;
+        $.each(lang, function (language, pourcent) {
+          var delay = 700;
+          setTimeout(function () {
+            $('#' + language + '-pourcent').html(pourcent);
+          }, delay * multiply);
+          multiply++;
+        });
+      });
+  }
 
   // SummaryChart End
 
@@ -450,7 +513,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && this.projectActionInfo[index].Status === "Under Approval")
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    $(document).ready(() => this.drawStatistics1());
+   
+   
+      $(document).ready(() =>{
+        if(index!==undefined)
+        this.drawStatisticsOfAction(this.projectActionInfo[index].Project_Code);
+      });
 
 
   }
@@ -462,58 +530,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
-  drawStatistics1() {
-    //  chart js ---------------------
-    new FusionCharts({
-      type: "radialbar",
-      width: "100%",
-      height: "100%",
-      renderAt: "chart-container1",
-      dataSource: {
-        chart: {
-          theme: "fusion",
-          // caption: "7Hr 32M",
-          // subCaption: "January 2021",
-          showLegend: 1,
-          innerRadius: 30,
-          outerRadius: 105,
-          showLabels: 1,
-          labelText: "$label"
-        },
-        data: [
-          {
-            label: "Design",
-            value: 94.09,
-            color: "#5867dd" //Custom Color
-          },
-
-          {
-            label: "Develoment",
-            value: 59.89,
-            color: "#b2beff" //Custom Color
-          },
-          {
-            label: "Testing",
-            value: 91.53,
-            color: "#985eff" //Custom Color
-          }
-        ]
-      }
-    }).render();
-    // chart js end ----------------
-    var lang = {
-      "javascript": "70%",
-    };
-    var multiply = 4;
-    $.each(lang, function (language, pourcent) {
-      var delay = 700;
-      setTimeout(function () {
-        $('#' + language + '-pourcent').html(pourcent);
-      }, delay * multiply);
-      multiply++;
-    });
-  }
 
 
 
