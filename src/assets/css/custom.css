@@ -1541,10 +1541,4 @@ margin-bottom: 0;
         outline: 0;
         box-shadow: none !important;
     }
-    tr.odd.project-list_AC.active{
-      background-color: #4377ff;
-        color: #fff !important;
-    }
-    tr.odd.project-list_AC.active * {
-        color: #fff;
-    }
+   

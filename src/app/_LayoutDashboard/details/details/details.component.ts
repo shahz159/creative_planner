@@ -239,7 +239,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getResponsibleActions()
     this.drawStatistics();
-
+    this.GetActivityDetails();
   }
 
   getusername() {
@@ -260,7 +260,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   drawStatistics() {
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        //  console.log(data1, "DAR")
+        console.log(data1, "DAR")
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         this.RemainingHours = (data1[0]['RemainingHours']);
@@ -268,7 +268,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
         this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
         this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-        // console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
+        console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
 
         new FusionCharts({
 
@@ -323,8 +323,71 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  drawStatisticsOfAction(actioncode:any) {
+ 
+    this.service.DARGraphCalculations_Json(actioncode)
+      .subscribe(data1 => {
+        console.log(data1, "DAR")
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);
+        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+        this.RemainingHours = (data1[0]['RemainingHours']);
 
+        this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+        this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+        this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+        console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
 
+        new FusionCharts({
+
+          type: "radialbar",
+          width: "100%",
+          height: "100%",
+          renderAt: "chart-container1",
+          dataSource: {
+            chart: {
+              theme: "fusion",
+              // caption: "7Hr 32M", 
+              // subCaption: "January 2021",
+              showLegend: 1,
+              innerRadius: 30,
+              outerRadius: 105,
+              showLabels: 1,
+              labelText: "$label"
+            },
+            data: [
+              {
+                label: "Remaining hous",
+                value: this.RemainingHours,
+                color: "#5867dd" //Custom Color
+              },
+
+              {
+                label: "Used hours",
+                value: this.UsedInDAR,
+                color: "#b2beff" //Custom Color
+              },
+              {
+                label: "Total hours",
+                value: this.maxDuration,
+                color: "#985eff" //Custom Color
+              }
+            ]
+          }
+        }).render();
+        // chart js end ----------------
+        var lang = {
+          "javascript": "70%",
+        };
+        var multiply = 4;
+        $.each(lang, function (language, pourcent) {
+          var delay = 700;
+          setTimeout(function () {
+            $('#' + language + '-pourcent').html(pourcent);
+          }, delay * multiply);
+          multiply++;
+        });
+      });
+  }
 
   // SummaryChart End
 
@@ -366,8 +429,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  Submission: any
-
+  Submission: any;
+  filterstatus: any;
+  filteremployee: any;
 
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
@@ -378,6 +442,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+      this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       this.type_list = JSON.parse(this.projectInfo['typelist'])
@@ -387,8 +453,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  nonRacisList: any;
-  GetPeopleDatils() {
+  nonRacisList:any=[];
+  GetPeopleDatils(){
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data != null && data != undefined) {
@@ -398,13 +464,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-        // console.log(data,"RACIS");
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
-        console.log(this.nonRacisList, 'sahils');
+        console.log("all people:",this.nonRacisList);
+        this.filteredEmployees = this.nonRacisList;
       });
 
-    this.filteredEmployees = this.nonRacisList;
 
+   
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
@@ -450,7 +516,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && this.projectActionInfo[index].Status === "Under Approval")
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    $(document).ready(() => this.drawStatistics1());
+   
+   
+      $(document).ready(() =>{
+        if(index!==undefined)
+        this.drawStatisticsOfAction(this.projectActionInfo[index].Project_Code);
+      });
 
 
   }
@@ -462,58 +533,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
-  drawStatistics1() {
-    //  chart js ---------------------
-    new FusionCharts({
-      type: "radialbar",
-      width: "100%",
-      height: "100%",
-      renderAt: "chart-container1",
-      dataSource: {
-        chart: {
-          theme: "fusion",
-          // caption: "7Hr 32M",
-          // subCaption: "January 2021",
-          showLegend: 1,
-          innerRadius: 30,
-          outerRadius: 105,
-          showLabels: 1,
-          labelText: "$label"
-        },
-        data: [
-          {
-            label: "Design",
-            value: 94.09,
-            color: "#5867dd" //Custom Color
-          },
-
-          {
-            label: "Develoment",
-            value: 59.89,
-            color: "#b2beff" //Custom Color
-          },
-          {
-            label: "Testing",
-            value: 91.53,
-            color: "#985eff" //Custom Color
-          }
-        ]
-      }
-    }).render();
-    // chart js end ----------------
-    var lang = {
-      "javascript": "70%",
-    };
-    var multiply = 4;
-    $.each(lang, function (language, pourcent) {
-      var delay = 700;
-      setTimeout(function () {
-        $('#' + language + '-pourcent').html(pourcent);
-      }, delay * multiply);
-      multiply++;
-    });
-  }
 
 
 
@@ -590,6 +609,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("View_comments").classList.remove("kt-quick-View_comments--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
@@ -599,8 +619,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
-    document.getElementById("newdetails").classList.remove("position-fixed");
+    
+    // if the add support sidebar had opened and close , by default tab1 is on.
+    document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
+    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+     //  add support close end here.
 
+    document.getElementById("newdetails").classList.remove("position-fixed");
+    
+    this.selectedEmployees=[];    //this will empty the add support selection's field in add people sidebar if its was open and selection done.
     // in case if project submission (main or action) operation cancelled.
     $('#mainPrjCheckbox').prop('checked', false);
     $('#project-action-Checkbox').prop('checked', false);
@@ -615,11 +644,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
+  View_Comments(){
+    document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+   }
 
-  // darcreate() {
-  //   document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
-  //   document.getElementById("rightbar-overlay").style.display = "block";
-  // }
   View_Activity() {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -652,8 +682,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.workdes = "";
     this.starttime = null;
     this.endtime = null;
-    this.isSelection = false;
-    this.dateF = new FormControl(new Date());
+    this.isSelection=false;
+    this.selectedEmployees=[];
+    this.dateF=new FormControl(new Date());
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -661,6 +692,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+
+
+
+    document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
+    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+    // back to 1st 'People on the project' tab.
+
+
   }
 
 
@@ -3008,16 +3049,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  ScheduleType: string = '';
-  editTask: boolean = false;
-  copyTask: boolean = false;
-  create: boolean = false;
-  draftid: number = 0;
-  _AllEventTasksCount: number = 0;
-  pending_status: boolean;
-  _FutureEventTasksCount: number = 0;
-  MinLastNameLength: boolean;
-  MasterCode: any = [];
+ScheduleType:string='';
+editTask: boolean = false;
+copyTask: boolean = false;
+create:boolean=false;
+draftid: number = 0;
+_AllEventTasksCount: number = 0;
+pending_status: boolean;
+_FutureEventTasksCount: number = 0;
+MinLastNameLength: boolean;
+MasterCode: any=null;
 
   Title_Name: any;
   Startts: any;
@@ -3034,98 +3075,98 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   RemovedAttach: any = [];
 
 
-  selectedrecuvalue: string;
-  dayArr: any = [
-    {
-      "Day": "S",
-      "value": "Sun",
-      "checked": false
-    },
-    {
-      "Day": "M",
-      "value": "Mon",
-      "checked": false
-    },
-    {
-      "Day": "T",
-      "value": "Tue",
-      "checked": false
-    },
-    {
-      "Day": "W",
-      "value": "Wed",
-      "checked": false
-    },
-    {
-      "Day": "Th",
-      "value": "Thu",
-      "checked": false
-    },
-    {
-      "Day": "Fr",
-      "value": "Fri",
-      "checked": false
-    },
-    {
-      "Day": "Sa",
-      "value": "Sat",
-      "checked": false
-    }
-  ];
-  MonthArr: any = [
-    { "Day": "01", "value": "01", "checked": false },
-    { "Day": "02", "value": "02", "checked": false },
-    { "Day": "03", "value": "03", "checked": false },
-    { "Day": "04", "value": "04", "checked": false },
-    { "Day": "05", "value": "05", "checked": false },
-    { "Day": "06", "value": "06", "checked": false },
-    { "Day": "07", "value": "07", "checked": false },
-    { "Day": "08", "value": "08", "checked": false },
-    { "Day": "09", "value": "09", "checked": false },
-    { "Day": "10", "value": "10", "checked": false },
-    { "Day": "11", "value": "11", "checked": false },
-    { "Day": "12", "value": "12", "checked": false },
-    { "Day": "13", "value": "13", "checked": false },
-    { "Day": "14", "value": "14", "checked": false },
-    { "Day": "15", "value": "15", "checked": false },
-    { "Day": "16", "value": "16", "checked": false },
-    { "Day": "17", "value": "17", "checked": false },
-    { "Day": "18", "value": "18", "checked": false },
-    { "Day": "19", "value": "19", "checked": false },
-    { "Day": "20", "value": "20", "checked": false },
-    { "Day": "21", "value": "21", "checked": false },
-    { "Day": "22", "value": "22", "checked": false },
-    { "Day": "23", "value": "23", "checked": false },
-    { "Day": "24", "value": "24", "checked": false },
-    { "Day": "25", "value": "25", "checked": false },
-    { "Day": "26", "value": "26", "checked": false },
-    { "Day": "27", "value": "27", "checked": false },
-    { "Day": "28", "value": "28", "checked": false },
-    { "Day": "29", "value": "29", "checked": false },
-    { "Day": "30", "value": "30", "checked": false },
-    { "Day": "31", "value": "31", "checked": false }
-  ];
-  maxDate = "";
-  _OldRecurranceId: string;
-  _OldRecurranceValues: string;
-  _PopupConfirmedValue: number;
-  _subname: boolean;
-  _calenderDto: CalenderDTO;
-  ProjectListArray: any;
-  _EmployeeListForDropdown: any[] = [];
-  Portfoliolist_1: [];
-  Note_deadlineexpire: boolean;
-  Subtask: any;
-  St_date: string = "";
-  Ed_date: string;
-  _status: string;
-  Allocated_subtask: number;
-  TM_DisplayName: string;
-  Portfolio: any = [];
-  SelectDms: any;
-  _onlinelink: boolean = false;
-  Link_Details: string;
-  config: AngularEditorConfig = {
+selectedrecuvalue: string;
+dayArr: any = [
+  {
+    "Day": "S",
+    "value": "Sun",
+    "checked": false
+  },
+  {
+    "Day": "M",
+    "value": "Mon",
+    "checked": false
+  },
+  {
+    "Day": "T",
+    "value": "Tue",
+    "checked": false
+  },
+  {
+    "Day": "W",
+    "value": "Wed",
+    "checked": false
+  },
+  {
+    "Day": "Th",
+    "value": "Thu",
+    "checked": false
+  },
+  {
+    "Day": "Fr",
+    "value": "Fri",
+    "checked": false
+  },
+  {
+    "Day": "Sa",
+    "value": "Sat",
+    "checked": false
+  }
+];
+MonthArr: any = [
+  { "Day": "01", "value": "01", "checked": false },
+  { "Day": "02", "value": "02", "checked": false },
+  { "Day": "03", "value": "03", "checked": false },
+  { "Day": "04", "value": "04", "checked": false },
+  { "Day": "05", "value": "05", "checked": false },
+  { "Day": "06", "value": "06", "checked": false },
+  { "Day": "07", "value": "07", "checked": false },
+  { "Day": "08", "value": "08", "checked": false },
+  { "Day": "09", "value": "09", "checked": false },
+  { "Day": "10", "value": "10", "checked": false },
+  { "Day": "11", "value": "11", "checked": false },
+  { "Day": "12", "value": "12", "checked": false },
+  { "Day": "13", "value": "13", "checked": false },
+  { "Day": "14", "value": "14", "checked": false },
+  { "Day": "15", "value": "15", "checked": false },
+  { "Day": "16", "value": "16", "checked": false },
+  { "Day": "17", "value": "17", "checked": false },
+  { "Day": "18", "value": "18", "checked": false },
+  { "Day": "19", "value": "19", "checked": false },
+  { "Day": "20", "value": "20", "checked": false },
+  { "Day": "21", "value": "21", "checked": false },
+  { "Day": "22", "value": "22", "checked": false },
+  { "Day": "23", "value": "23", "checked": false },
+  { "Day": "24", "value": "24", "checked": false },
+  { "Day": "25", "value": "25", "checked": false },
+  { "Day": "26", "value": "26", "checked": false },
+  { "Day": "27", "value": "27", "checked": false },
+  { "Day": "28", "value": "28", "checked": false },
+  { "Day": "29", "value": "29", "checked": false },
+  { "Day": "30", "value": "30", "checked": false },
+  { "Day": "31", "value": "31", "checked": false }
+];
+maxDate = "";
+_OldRecurranceId: string;
+_OldRecurranceValues: string;
+_PopupConfirmedValue: number;
+_subname: boolean;
+_calenderDto: CalenderDTO;
+ProjectListArray: any=[];
+_EmployeeListForDropdown: any[] = [];
+Portfoliolist_1: [];
+Note_deadlineexpire: boolean;
+Subtask: any;
+St_date: string = "";
+Ed_date: string;
+_status: string;
+Allocated_subtask: number;
+TM_DisplayName: string;
+Portfolio: any = [];
+SelectDms: any=[];
+_onlinelink: boolean = false;
+Link_Details: string;
+config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: 'auto',
@@ -3231,35 +3272,37 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  Task_type(value: number) {
-    this.meetingsViewOn = false;      // opens the meeting event task section and closes the meeting view section.
-    this.MasterCode = [this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
-    this.selectedrecuvalue = "0";
-    this._PopupConfirmedValue = 1;
-    this.MinLastNameLength = true;
-    this._subname = false;
-    this._calenderDto = new CalenderDTO;
-    this.BlockNameProject1 = [];
-    this._lstMultipleFiales = [];
-    this._labelName = "Schedule Date :";
-    this._StartDate = moment().format("YYYY-MM-DD").toString();
-    this._subname1 = false;
+Task_type(value:number){
 
-    this.AllDatesSDandED = [];
-    var jsonData = {};
-    var columnName = "Date";
-    jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
-    var IsActive = "IsActive";
-    jsonData[IsActive] = 1;
-    var Day = "Day";
-    jsonData[Day] = moment().format('dddd').substring(0, 3);
-    var DayNum1 = "DayNum";
-    jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
-    this.AllDatesSDandED.push(jsonData);
-    this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-
-
-
+  this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
+  this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
+  this.Portfolio=[];                                  // by default no portfolio is selected
+  this.selectedrecuvalue = "0";   
+  this._PopupConfirmedValue = 1; 
+  this.MinLastNameLength = true;
+  this._subname = false;
+  this._calenderDto = new CalenderDTO;
+  this.BlockNameProject1 = [];
+  this._lstMultipleFiales = [];
+  this._labelName = "Schedule Date :";
+  this._StartDate = moment().format("YYYY-MM-DD").toString();
+  this._subname1 = false;
+ 
+  this.AllDatesSDandED = [];
+  var jsonData = {};
+  var columnName = "Date";
+  jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+  var IsActive = "IsActive";
+  jsonData[IsActive] = 1;
+  var Day = "Day";
+  jsonData[Day] = moment().format('dddd').substring(0, 3);
+  var DayNum1 = "DayNum";
+  jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
+  this.AllDatesSDandED.push(jsonData);
+  this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+ 
+  
+ 
 
 
     // initialization
@@ -3300,36 +3343,36 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.copyTask = false;
     this.create = true;
 
-    if (value === 1) {
-      this.ScheduleType = "Task";
-      $(document).ready(() => {
-        $('#subtaskid').css('display', 'block');
-        $('#Guest_Name').css('display', 'none');
-        $('#Location_Name').css('display', 'none');
-        $('#Descrip_Name').css('display', 'none');
-        $('#core_viw123').css('display', 'block');
-        $('#core_viw121').css('display', 'none');
-        $('#core_viw222').css('display', 'none');
-        $('#core_Dms').css('display', 'none');
-        $('#online-add').css('display', 'none');
-      });
-
-    }
-    else {
-      this.ScheduleType = "Event";
-      $(document).ready(() => {
-        $('#subtaskid').css('display', 'none');
-        $('#Guest_Name').css('display', 'block');
-        $('#Location_Name').css('display', 'block');
-        $('#Descrip_Name').css('display', 'block');
-        $('#core_viw121').css('display', 'block');
-        $('#core_viw123').css('display', 'none');
-        $('#core_viw222').css('display', 'block');
-        $('#core_Dms').css('display', 'block');
-        $('#online-add').css('display', 'block');
-      })
-
-    }
+  if (value===1) {
+    this.ScheduleType = "Task";
+    $(document).ready(()=>{
+      $('#subtaskid').css('display','block');
+      $('#Guest_Name').css('display','none');
+      $('#Location_Name').css('display','none');
+      $('#Descrip_Name').css('display','none');
+      $('#core_viw123').css('display','block');
+      $('#core_viw121').css('display','none');
+      $('#core_viw222').css('display','none');
+      $('#core_Dms').css('display','none');
+      $('#online-add').css('display','none');
+    });
+    this.GetSubtasklistfromProject(this.MasterCode);
+  }
+  else{
+    this.ScheduleType = "Event";
+   $(document).ready(()=>{
+     $('#subtaskid').css('display','none');
+        $('#Guest_Name').css('display','block');
+        $('#Location_Name').css('display','block');
+        $('#Descrip_Name').css('display','block');
+        $('#core_viw121').css('display','block');
+        $('#core_viw123').css('display','none');
+        $('#core_viw222').css('display','block');
+        $('#core_Dms').css('display','block');
+       $('#online-add').css('display','block');
+    })
+   
+  }
 
     const format2 = "YYYY-MM-DD";
     var jsonData = {};
@@ -3513,9 +3556,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  GetSubtasklistfromProject(MasterCode) {
-    console.log("asdf:", MasterCode);
-    this.ProjectListArray.forEach(element => {
+GetSubtasklistfromProject(MasterCode) {
+
+  this.ProjectListArray.forEach(element => {
 
       if (element.Project_Code == MasterCode) {
 
@@ -3566,16 +3609,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       if (this._Exec_BlockName == "Standard Tasks" || this._Exec_BlockName == "To do List" || this._Exec_BlockName == "Routine Tasks") {
         (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "none";
 
-      }
-      else {
-        (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
-      }
+    }
+    else {
+      (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "block";
     }
   }
 
 
-  getChangeSubtaskDetais(Project_Code) {
-    this.BlockNameProject1.forEach(element => {
+
+}
+
+
+getChangeSubtaskDetais(Project_Code) {
+  
+  this.BlockNameProject1.forEach(element => {
 
       if (element.Project_Code == Project_Code) {
         this.St_date = element.StatDate;
@@ -4138,7 +4185,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Title_Name = null;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
-    this.SelectDms = null;
+    this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
     this.Startts = null;
@@ -4152,7 +4199,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.draftid = 0;
     // this.Recurr_arr = [];
     this._status = null;
-    this.Portfolio = null;
+    this.Portfolio = [];
     this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
@@ -4240,6 +4287,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   OnSubmitSchedule() {
+    debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -4353,8 +4401,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+        var vUser_Name = "User_Name";     
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
@@ -4381,10 +4429,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         element[vEventNumber] = this.EventNumber;
 
         var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
 
         var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
       });
 
@@ -4477,7 +4525,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Title_Name = null;
           this.ngEmployeeDropdown = [];
           this.Description_Type = null;
-          this.MasterCode = null;
+          this.MasterCode = [];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -4487,7 +4535,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Locationfulladd = null;
           this._status = null;
-          this.SelectDms = null;
+          this.SelectDms = [];
           this.Location_Type = null;
           this.Link_Details = null;
           this._onlinelink = false;
@@ -4581,7 +4629,83 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  isParticipantDrpDwnOpen: boolean = false;
+
+
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;  
+isParticipantDrpDwnOpen:boolean=false;
+isDMSMemoDrpDwnOpen:boolean=false;
+isPortfolioDrpDwnOpen:boolean=false;
+isProjectDrpDwnOpen:boolean=false;
+openAutocompleteDrpDwn(Acomp:string){  
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+}
+
+closeAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+}
+
+
+onPrjSelected(e:any){
+
+  const prjChoosed=this.ProjectListArray.find((p:any)=>p.Project_Code===e.option.value);
+  if(prjChoosed){
+       const index=this.MasterCode.indexOf(prjChoosed.Project_Code);
+       if(index===-1){
+          // if not present then add it
+          this.MasterCode.push(prjChoosed.Project_Code);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.MasterCode.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('ProjectDrpDwn');
+}
+removeSelectedPrj(item){
+  const index=this.MasterCode.indexOf(item);
+  if(index!==-1){
+    this.MasterCode.splice(index,1);
+  } 
+}
+
+getPrjName(projectCode:string){
+  if(this.ProjectListArray){
+   const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
+   return P?P.BlockNameProject:'';
+  }
+   return [];
+}
+
+
+
+
+
+
+
+
+onPortfolioSelected(e:any){
+  const portfolioChoosed=this.Portfoliolist_1.find((p:any)=>p.portfolio_id===e.option.value);
+  if(portfolioChoosed){
+       const index=this.Portfolio.indexOf(portfolioChoosed);
+       if(index===-1){
+          // if not present then add it
+          this.Portfolio.push(portfolioChoosed);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+}
+removeSelectedPortfolio(item){
+  const index=this.Portfolio.indexOf(item);
+  if(index!==-1){
+    this.Portfolio.splice(index,1);
+  } 
+}
+
+
 
 
   onParticipantSelected(e: any) {
@@ -4596,35 +4720,46 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.ngEmployeeDropdown.splice(index, 1);
       }
     }
-    requestAnimationFrame(() => this.autocompletes.get(2).openPanel());
+    this.openAutocompleteDrpDwn('ParticipantDrpDwn');
+}
+removeSelectedParticipant(item){
+    const index=this.ngEmployeeDropdown.indexOf(item);
+    if(index!==-1){
+      this.ngEmployeeDropdown.splice(index,1);
+    } 
+}
+
+
+ 
+
+onDMSMemoSelected(e){
+  const memoChoosed=this.Memos_List.find((c)=>c.MailId===e.option.value);
+  if(memoChoosed){
+       const index=this.SelectDms.indexOf(memoChoosed);
+       if(index===-1){
+          // if not present then add it
+          this.SelectDms.push(memoChoosed);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.SelectDms.splice(index,1);
+       }
   }
-
-
-  removeSelectedParticipant(item) {
-    const index = this.ngEmployeeDropdown.indexOf(item);
-    if (index !== -1) {
-      this.ngEmployeeDropdown.splice(index, 1);
-    }
-  }
-
-
-
-  @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
+  this.openAutocompleteDrpDwn('MemoDrpDwn');
+}
+removeSelectedDMSMemo(item){
+  const index=this.SelectDms.indexOf(item);
+  if(index!==-1){
+    this.SelectDms.splice(index,1);
+  } 
+}
 
 
 
-  openAutoCompleteDrpDwn(autocompleteName: string) {
-    this.isParticipantDrpDwnOpen = true;
-    const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === autocompleteName);
-    setTimeout(() => autoCompleteDrpDwn.openPanel(), 0);
 
-  }
 
-  closeAutoCompleteDrpDwn(autocompleteName: string) {
-    this.isParticipantDrpDwnOpen = false;
-    const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === autocompleteName);
-    setTimeout(() => autoCompleteDrpDwn.closePanel(), 0);
-  }
+
+
+
 
 
 
@@ -4970,25 +5105,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       console.log(this.selectedEmpIds, "selected supprem")
     }
 
-    // Optionally, you can uncheck the checkbox in the Project_List array
-    employee.checked = false;
-    requestAnimationFrame(() => this.autoCompleteTrigger.closePanel()); // close the panel
+  // Optionally, you can uncheck the checkbox in the Project_List array
+  employee.checked = false;
+  this.closeAutocompleteDrpDwn('supportDrpDwn'); // close the panel
 
   }
 
-  isSelection: boolean = false;
-
+isSelection: boolean =false;
+isSupportDrpDwnOpen:boolean=false;
 
   selectedChip(event: MatAutocompleteSelectedEvent): void {
     this._keeppanelopen();
     const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
     if (selectedEmployee) {
-      const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Portfolio_ID);
+      const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
 
       if (index === -1) {
         // Employee not found in the selected array, add it
         this.selectedEmployees.push(selectedEmployee);
-        this.selectedEmpIds.push(selectedEmployee.Portfolio_ID);
+        this.selectedEmpIds.push(selectedEmployee.Emp_No);
       } else {
         // Employee found in the selected array, remove it
         this.selectedEmployees.splice(index, 1);
@@ -5013,17 +5148,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  _keeppanelopen() {
-    this.filteredEmployees = this.nonRacisList;
-    this.isSelection = true;
-    requestAnimationFrame(() => this.customTrigger.openPanel()); // open the panel
-  }
+_keeppanelopen(){
+  this.filteredEmployees = this.nonRacisList;
+  this.isSelection=true;
+  this.openAutocompleteDrpDwn('supportDrpDwn');// open the panel
+}
 
-  closePanel() {
-    this.isSelection = false;
-    this.fruitInput.nativeElement.value = '';
-    requestAnimationFrame(() => this.autoCompleteTrigger.closePanel()); // close the panel
-  }
+closePanel(){
+  this.isSelection=false;
+  this.fruitInput.nativeElement.value = '';
+  this.closeAutocompleteDrpDwn('supportDrpDwn'); // close the panel
+}
 
 
   onProject_updateSupport() {
@@ -5075,22 +5210,23 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       const index = this.selectedMemos.indexOf(memoChoosed)
       if (index === -1) {
         // if not present in the selectedcourses then add it
-        this.selectedMemos.push(memoChoosed);
-      }
-      else { //  if course choosed is already selected then remove it.
-        this.selectedMemos.splice(index, 1);
-      }
-    }
-    requestAnimationFrame(() => this.customTrigger.openPanel());
-  }
-  removeSelectedMemo(item) {
-    const index = this.selectedMemos.indexOf(item);
-    if (index !== -1) {
-      this.selectedMemos.splice(index, 1);
-    }
-  }
+           this.selectedMemos.push(memoChoosed);
+       }  
+       else{ //  if course choosed is already selected then remove it.
+           this.selectedMemos.splice(index,1);
+       }
+   }
+   requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
 
 
+
+removeSelectedMemo(item){
+    const index=this.selectedMemos.indexOf(item);
+    if(index!==-1){
+      this.selectedMemos.splice(index,1);
+    } 
+}
 
   closeMemoDrpDwn() {
     this.isDMSDrpDwnOpen = false;
@@ -5142,4 +5278,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
+  openUrl(memo_Url) {
+    const Url = memo_Url;
+    window.open(Url);
+  }
+
+ 
 }

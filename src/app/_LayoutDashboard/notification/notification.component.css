@@ -905,3 +905,6 @@ span.count2 {
   font-weight: 400;
   color: #979797;
 }
+tr.odd.project-list_AC.active{
+  background-color: #e0f1ff;
+}

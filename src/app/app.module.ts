@@ -24,10 +24,14 @@ import { MeetingReportComponent } from './_LayoutDashboard/meeting-report/meetin
 import { FileviewComponent } from './_LayoutDashboard/fileview/fileview.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { CreateProjectComponent } from './_LayoutDashboard/create-project/create-project.component';
+// import { AutosearchComponent } from './Shared/components/autosearch/autosearch.component';
 // import { MoreinfoComponent } from './_LayoutDashboard/moreinfo/moreinfo.component';
 // import { MoreinfoModule } from './_LayoutDashboard/moreinfo/moreinfo.module';
 
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -48,7 +52,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     SidebarComponent,
     ConfirmDialogComponent,
     TimelineComponent,
-    // MeetingReportComponent
+     // MeetingReportComponent
    
     // NotificationComponent    
     
@@ -77,7 +81,10 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     NgbModule,
     NgMultiSelectDropDownModule,
     PdfViewerModule,
-    NgxDocViewerModule
+    NgxDocViewerModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule
     
   ],
   providers:

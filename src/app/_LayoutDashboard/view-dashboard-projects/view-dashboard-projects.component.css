@@ -1107,3 +1107,6 @@ span.count2 {
   justify-content: center;
   font-weight: 600;
 }
+tr.odd.project-list_AC.active{
+  background-color: #e0f1ff;
+}
