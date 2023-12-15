@@ -902,8 +902,13 @@ button.Kt-Approval-btns {
   background-color: #fff;
   color: #4f4f4f;
   border: 2px solid #fff;
+  min-width: 110px;
+  margin: 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0;
   font-weight: 500;
-  font-size: 14px;
+  border-radius: 3px; 
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .Btn_Accpet {
@@ -913,13 +918,18 @@ button.Kt-Approval-btns {
   background-color: #8ab991 !important;
   color: #fff;
   }
-
-.Btn_Conditional_Accept {
-  border-color: #407f4c !important;
-}
+  .Btn_Accpet:hover {
+    background-color: #8ab991 !important;color: #fff !important;
+  }
+  .Btn_Conditional_Accept {
+    border-color: #407f4c !important;
+    }
 .Btn_Conditional_Accept.active {
   background-color: #407f4c !important;
   color: #fff;
+}
+.Btn_Conditional_Accept:hover {
+  background-color: #407f4c !important;color: #fff !important;
 }
 
 .Btn_Reject {
@@ -930,6 +940,9 @@ button.Kt-Approval-btns {
   background-color: #cf8e66 !important;
   color: #fff;
 } 
+.Btn_Reject:hover {
+  background-color: #cf8e66 !important;color: #fff !important;
+}
 
 .kt-approval-msg {
   background-color: #f0f0f0;
@@ -1527,7 +1540,7 @@ div#DemoList-table div.demo i {
 
 
 /* ////////////////////////// Approval section Start ////////////////////////////////////// */
-button.Kt-Approval-btns{
+/* button.Kt-Approval-btns{
   width: 100%;
   padding: 3px 5px;
   border-radius: 50px;
@@ -1537,14 +1550,14 @@ button.Kt-Approval-btns{
   font-weight: 500;
   font-size: 14px;
   min-width: 110px;
-}
+} */
 .kt-info-box {
   padding: 10px 10px;
   border-bottom: 1px solid #ededed;
 }
-.Btn_Conditional_Accept {
+/* .Btn_Conditional_Accept {
   border-color: #407f4c !important;
-  }
+  } */
   /*----- attachement css ---------*/
   .attachment-view svg {
     width: 20px;
@@ -1845,6 +1858,7 @@ a.kt-inbox__icon:hover svg path {
 }
 
 .Bt-Submit{
+  padding: 4px 1px;
   background-color: transparent;
   color: #2786fb;
   font-size: 14px;
@@ -1860,6 +1874,7 @@ a.kt-inbox__icon:hover svg path {
 .Bt-Close{
   background-color: transparent !important;
   border: 2px solid #e7e7e7;
+  padding: 4px 1px;
 }
 .Bt-Close:hover {
   background-color: #e7e7e7 !important;

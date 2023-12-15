@@ -243,7 +243,7 @@ export class HeaderComponent implements OnInit {
       this.ObjSubTaskDTO.End_Date = this.timeTo;
 
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data => {
+        (data => {    
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration = (data[0]['TotalTime']);
           if (this.timelineList.length == 0) {
