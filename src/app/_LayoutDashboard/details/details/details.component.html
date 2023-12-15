@@ -1604,7 +1604,7 @@
                                                 </div> -->
                                                     <div>
                                                         <button
-                                                            [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active ':'Kt-Approval-btns Btn_Accpet'"
+                                                            [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
                                                             (click)="approvalClick('ACCEPT')">Accept</button>
                                                     </div>
                                                     <!-- <div class="col" id="editaccept">
@@ -1767,7 +1767,14 @@
                                                                 </path>
                                                             </svg>
                                                         </span>
-                                                        <span (click)="openPDF(iscloud,url)" data-toggle="tooltip"
+                                                       
+                                                        <!--//// old attachement /// <span (click)="openPDF(iscloud,url)" data-toggle="tooltip"
+                                                            title="{{completedoc}}">
+                                                            {{completedoc}}</span> -->
+
+                                                        <span 
+                                                       (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                            data-toggle="tooltip"
                                                             title="{{completedoc}}">
                                                             {{completedoc}}</span>
                                                     </div>
@@ -2040,7 +2047,7 @@
 
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
-                                            RACIS
+                                            RACIS 
                                         </div>
                                         <div class="kt-project-sts-data">
                                             <div class="kt-support-view">
@@ -8003,7 +8010,6 @@
                                 <div class="kt-info-lable-v"> Deadline</div>
                                 <div class="input-icon Sub_In_ed  rounded-2 date-border-v d-flex">
                                     <input class="form-control" [(ngModel)]="ActionendDate"
-                                        [value]="projectInfo.EndDate | date : 'dd-MM-yyyy'"
                                         [min]="todayDate|date:'YYYY-MM-dd'" matInput
                                         [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
                                         placeholder="Deadline Date..." class="form-control border-0 " name="date" />

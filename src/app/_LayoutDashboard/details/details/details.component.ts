@@ -238,7 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.getResponsibleActions()
-    this.drawStatistics();
+    // this.drawStatistics();
     this.GetActivityDetails();
   }
 
@@ -1258,22 +1258,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   _day: any;
   _month: any;
 
-  openPDF(cloud, docName) {
-    let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
-    if (cloud == false) {
-      if (this.EmpNo_Autho == this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
-      }
-      else if (this.EmpNo_Autho != this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
-      }
-    }
-    else if (cloud == true) {
-      window.open(docName);
-    }
-  }
 
   _portfoliolist: any;
   _portfolioLength: any;
@@ -1924,7 +1909,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     else {
       var category = this.OGselectedcategoryid;
     }
-
+    
+    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
 
     const jsonobj = {
       Project_Type: type,
@@ -1934,18 +1921,62 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Responsible: actionresp,
       Category: category,
       Client: Actionclient,
-      StartDate: this.ActionstartDate,
-      EndDate: this.ActionendDate,
+      StartDate: datestrStart,
+      EndDate: datestrEnd,
       Allocated: this.ActionAllocatedHours,
     }
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
-    this.approvalObj.Emp_no = this.Current_user_ID;
-    this.approvalObj.Project_Code = this.ActionCode;
-    this.approvalObj.json = jsonvalues;
-    this.approvalObj.Remarks = this._remarks;
+  const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+  const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
 
+  
+  this.approvalObj.Emp_no = this.Current_user_ID;
+  this.approvalObj.Project_Code = this.ActionCode;
+  this.approvalObj.json = jsonvalues;
+  this.approvalObj.Remarks = this._remarks;
+
+ 
+
+  console.log(dateOne, dateTwo, "dates")
+  if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
+    Swal.fire({
+      title: 'Action deadline is greater than main project deadline ?',
+      text: 'Do you want to continue for selection of date after main project deadline!!',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+          console.log(data['message'], "edit response");
+          if (data['message'] == '1') {
+            this.notifyService.showSuccess("Updated successfully", "Success");
+          }
+          else if (data['message'] == '2') {
+            this.notifyService.showError("Not updated", "Failed");
+          }
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.closeInfo();
+        });
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //    this.close_space();
+        Swal.fire(
+          'Cancelled',
+          'Action end date not updated',
+          'error'
+        )
+      }
+    });
+  }
+  else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
+    Swal.fire({
+      title: 'Unable to extend end date for this action.',
+      text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+    });
+  }
+  else {
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
@@ -1959,6 +1990,27 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  }
+
+
+///////////////////duration Edit start//////////////////////
+
+
+allocation: boolean = false;
+check_allocation() {
+  const newenddate = new Date(this.ActionendDate);
+  const oldendate = new Date(this.projectInfo.EndDate);
+
+  if (newenddate > oldendate) {
+    this.allocation = true;
+  }
+  else {
+    this.allocation = false;
+  }
+
+}
+
+///////////////////duration Edit end//////////////////////
 
 
 
@@ -5259,7 +5311,7 @@ removeSelectedMemo(item){
     window.open(Url);
   }
 
-/////////////////////////////////////////
+///////////////////Comments start//////////////////////
 _CommentsList: any;
 commentsLength: number;
 GetprojectComments() {
@@ -5272,4 +5324,73 @@ GetprojectComments() {
        console.log("Comments-List--------->",this._CommentsList)
     });
 }
+
+
+/////////////////Comments end////////////////////////
+
+///////////////////attchement start//////////////////////
+
+/////////////////////
+// openPDF(cloud, docName) {
+//   let FileUrl: string;
+//   FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+//   if (cloud == false) {
+//     if (this.EmpNo_Autho == this.EmpNo_Res) {
+//       window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
+//     }
+//     else if (this.EmpNo_Autho != this.EmpNo_Res) {
+//       window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
+//     }
+//   }
+//   else if (cloud == true) {
+//     window.open(docName);
+//   }
+// }
+//////////////////////////////////
+
+
+LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+  if (iscloud == false) {
+    if (this.EmpNo_Autho == this.EmpNo_Res) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+    else if (this.EmpNo_Autho !=  this.EmpNo_Res) {
+      FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+///////////////////attchement end//////////////////////
+
 }
