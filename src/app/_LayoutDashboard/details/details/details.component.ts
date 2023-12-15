@@ -442,6 +442,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.getFilteredPrjActions();
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
@@ -5268,6 +5269,91 @@ removeSelectedMemo(item){
     const Url = memo_Url;
     window.open(Url);
   }
+
+
+
+
+
+
+
+
+// project action search and filter start here
+actionsNotFound:boolean=false;
+filteredPrjAction:any=[];
+filterConfigChanged:boolean=false;
+filterConfig:{filterby:string,sortby:string}={
+         filterby:'All',
+         sortby:'All'
+};
+onFilterConfigChanged({filterBy,sortBy}){
+  this.filterConfig.filterby=filterBy; 
+  this.filterConfig.sortby=sortBy;
+  this.filterConfigChanged=true; 
+  this.getFilteredPrjActions();
+}
+
+clearFilterConfigs(){
+  this.filterConfig.filterby='All';
+  this.filterConfig.sortby='All';
+  this.getFilteredPrjActions();
+  this.filterConfigChanged=false;
+}
+
+getFilteredPrjActions(){
+  let arr=this.projectActionInfo;
+  if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
+  { 
+    if(this.filterConfig.sortby!=='All'){
+     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....   
+      arr=arr.filter((action)=>{
+        return action.Responsible===this.filterConfig.sortby;
+       });  
+     }
+     else{  // when sortby is 'Assigned By me'
+        
+     }
+     
+    }
+
+    if(this.filterConfig.filterby!=='All'){
+      arr=arr.filter((action)=>{
+         return action.Status===this.filterConfig.filterby;
+       })
+    }      
+  }
+  this.filteredPrjAction=arr;
+}
+
+isActionAvailable(e){
+   this.actionsNotFound=!(this.filteredPrjAction.some((action)=>{
+            return action.Project_Name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim());
+   }));
+}
+
+
+
+
+// project action search and filter end here. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// project action search and filter end here
 
  
 }
