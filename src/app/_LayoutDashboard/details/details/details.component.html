@@ -855,6 +855,7 @@
                                 Project Action
                             </div>
                             <div class="kt-project-type curser-pointer">
+                                <!-- *ngIf="(projectInfo&&projectInfo.Status!='Completed')" -->
                                 <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                                             height="16" fill="currentColor" class="bi bi-plus" viewBox="4 3 8 12">
@@ -1562,7 +1563,7 @@
                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                     <div class="PA_title">
                                         <span>Project</span> <a href="javascript:void(0)">
-                                            <div class="PA_Edit_btn" (click)="Project_details_edit()">
+                                            <div class="PA_Edit_btn" (click)="Project_details_edit()" *ngIf="(projectInfo&&projectInfo.Status!='Completed')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
                                                     width="15" height="15">
                                                     <path
@@ -1578,7 +1579,10 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="Action_btn_all">
+                                    <div class="Action_btn_all" 
+                                        *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo || 
+                                        Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo 
+                                        || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
                                         <button class="Ct-btn Bt-cancel ml-2" (click)="openPrjCancelSb()">Project
                                             Cancel</button>
                                         <button *ngIf="projectInfo&&projectInfo.Status==='Project Hold';else prHbtn"
@@ -1591,7 +1595,8 @@
                                                 Task Submission
                                             </button>
                                         </ng-container>
-                                        <button class="Ct-btn Bt-Submit ml-2" (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
+                                        <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'" 
+                                            (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
                                         <button (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
                                     </div>
                                 </div>
@@ -2395,7 +2400,7 @@
                                     <div class="PA_title">
                                         <span>Action {{projectActionInfo[currentActionView].IndexId}}</span>
                                         <a href="javascript:void(0)">
-                                            <div class="PA_Edit_btn" (click)="Action_details_edit()">
+                                            <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
                                                     width="15" height="15">
                                                     <path
