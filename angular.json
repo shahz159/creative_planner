@@ -82,10 +82,10 @@
                                 "styles": false,
                                 "fonts": false
                             },
-                            "vendorChunk": false,
+                            "vendorChunk": true,
                             "extractLicenses": false,
                             "sourceMap": true,
-                            "namedChunks": false
+                            "namedChunks": true
                         }
                     },
                     "defaultConfiguration": "development"
