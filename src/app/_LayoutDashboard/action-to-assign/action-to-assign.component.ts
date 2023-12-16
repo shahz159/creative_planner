@@ -24,7 +24,7 @@ export class ActionToAssignComponent implements OnInit {
   ProjectTypelist: any;
   _description: string = "";
   _StartDate: Date = null;
-  _EndDate: Date = null;
+  _EndDate: Date = null;   
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
@@ -72,7 +72,7 @@ export class ActionToAssignComponent implements OnInit {
         this.txtdisabled = true;
       }
     });
-    
+
     this._inputAttachments = [];
   }
 
@@ -103,7 +103,7 @@ export class ActionToAssignComponent implements OnInit {
       });
   }
 
-  
+
   selectedEmployee: string = "";
 
   EmployeeOnSelect(obj) {
@@ -169,7 +169,7 @@ export class ActionToAssignComponent implements OnInit {
 
         datestrStart = moment(new Date()).format();
         datestrEnd = moment(new Date()).format();
-        
+
         this._ObjAssigntaskDTO.StartDate = datestrStart;
         this._ObjAssigntaskDTO.EndDate = datestrEnd;
       }
@@ -233,16 +233,16 @@ export class ActionToAssignComponent implements OnInit {
         this.port_id=0;
       }
       fd.append("Portfolio_Id", this.port_id);
-     
+
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
-            
+
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
-  
+
             this.clearFeilds();
             this.closeInfo();
             this._inputAttachments = [];
@@ -252,12 +252,12 @@ export class ActionToAssignComponent implements OnInit {
             this._meetingreport.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
-  
+
             this.clearFeilds();
             this.closeInfo();
             this._inputAttachments = [];
           }
-          
+
         });
     }
   }
@@ -268,7 +268,7 @@ export class ActionToAssignComponent implements OnInit {
   closeInfo() {
     this.clearFeilds();
     if(this._Urlid==1){
-      this.router.navigate(["UnplannedTask/"]); 
+      this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
     }

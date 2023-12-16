@@ -261,14 +261,7 @@ a.ordr-a {
     display: flex;
     align-items: flex-start;
 }
-.timeline .timeline-item {
-    background: #ffff;
-    box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%);
-    margin-bottom: 1.5rem;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgb(111 107 107 / 8%) 0px 0px 0px 1px;
-}
+
 .timeline .timeline-line {
     display: block;
     content: " ";
@@ -284,9 +277,7 @@ a.ordr-a {
     border-left-color: #d2d5e5;
 }
 
-.timeline .timeline-item:last-child .timeline-line {
-    bottom: 100%;
-}
+
 .timeline-media{
     color: #2786fb!important;
 }
@@ -349,11 +340,7 @@ a.ordr-a {
     margin-right: 1rem;
 }
 
-.timeline .timeline-icon {
-    z-index: 1;
-    flex-shrink: 0;
-    margin-right: 1rem;
-}
+
 .timeline .timeline-content {
     width: 100%;
     overflow: auto;
@@ -439,3 +426,205 @@ a.ordr-a {
     height: 25px;
     width: 25px;
 }
+
+
+
+/*------timeline start-----------*/
+
+  .timeline-label .timeline-content {
+    flex-grow: 1;
+  }
+  .time-line-cnt {
+    padding: 10px;
+    background-color: #f5f6fc;
+    border-radius: 5px;
+    margin-top: 1px;
+    margin-bottom: 0px;
+  }
+
+  
+.symbol.symbol-circle,
+.symbol.symbol-circle .symbol-label,
+.symbol.symbol-circle>img {
+  border-radius: 50%;
+}
+
+.symbol.symbol-circle, .symbol.symbol-circle .symbol-label, .symbol.symbol-circle > img{
+    border-radius: 50%;
+  }
+
+  .symbol.symbol-22px > img{
+    width: 22px;
+    height: 22px;
+  }
+  .user-kt-n{
+    margin-left: 10px;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #4f4f4f;
+  }
+
+  .kt-task-head {
+    display: flex;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #797979;
+  }
+
+  span.svg-time-icon svg path {
+    color: #939393;
+  }
+  span.svg-time-icon {
+    margin-right: 6px;
+  }
+  span.tmv-tm {
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #a3a3a3;
+  }
+  span.mdl-line-h {
+    display: inline-block;
+    width: 10px;
+    background-color: #ccc;
+    height: 2px;
+    position: relative;
+    margin-right: 6px;
+    top: -3px;
+  }
+  span.total-time-kt {
+    margin-left: 10px;
+  }
+
+  .time-line-date{
+    background-color: #e0f1ff;
+    padding: 2px 10px;
+    border-radius: 5px;
+    display: flex;
+    width: -moz-fit-content;
+    /* width: fit-content; */
+    /* margin-bottom: 10px; */
+    margin-left: 27px;
+  }
+  .time-line-date h4 {
+    margin-bottom: 0px;
+    font-size: 13px;
+  }
+  .kt-task-cnt {
+    background-color: #fff;
+    padding: 5px 5px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+  .action-name {
+    color: #51667d;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .action-info-achivement {
+    margin-top: 5px;
+  }
+  .action-info-achivement * {
+    font-size: 13px;
+    color: #818181;
+    margin-bottom: 4px;
+  }
+
+  .kt-bg-light-primary {
+    background-color: #5867dd1a!important;
+  }
+
+  .svg-icon{
+    line-height: 1;
+  }
+  .svg-icon.svg-icon-2 svg{
+    height: 1.5rem!important;
+    width: 1.5rem!important;
+  }
+  .svg-icon.svg-icon-info svg {
+    fill: #2786fb!important;
+  }
+  .svg-icon.svg-icon-info svg :not(.permanent):not(g) {
+    fill: #2786fb!important;
+  }
+
+  .symbol .symbol-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #252f4a;
+    background-color: #f9f9f9;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 0.475rem;
+  }
+  .symbol .symbol-label {
+    width: 50px;
+    height: 50px;
+  }
+
+  
+.symbol-group .symbol-label {
+    position: relative;
+  }
+
+
+  .symbol.symbol-35px .symbol-label {
+    width: 35px;
+    height: 35px;
+  }
+
+
+  .symbol .symbol-label:after {
+    border-radius: 0.475rem;
+  }
+
+
+
+
+
+  .symbol-group .symbol-label:after {
+    display: block;
+    content: " ";
+    border-radius: inherit;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border: 2px solid #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+  }
+
+
+  .symbol.symbol-40px .symbol-label {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .symbol .symbol-label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #3f4254;
+    background-color: #f5f8fa;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 0.475rem;
+  }
+
+
+
+
+
+
+
+  /*------timeline End-----------*/

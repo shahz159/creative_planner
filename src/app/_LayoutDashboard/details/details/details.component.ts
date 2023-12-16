@@ -238,7 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.getResponsibleActions()
-    this.drawStatistics();
+    // this.drawStatistics();
     this.GetActivityDetails();
   }
 
@@ -249,7 +249,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  // SummaryChart start 
+  // SummaryChart start
 
 
   maxDuration: any;
@@ -343,7 +343,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.TOTAL_ACTIONS_IN_PROCESS = 0;
       this.TOTAL_ACTIONS_REJECTED = 0;
       this.TOTAL_ACTIONS_UNDER_APPROVAL = 0;
-      // 
+      //
       this.projectActionInfo.forEach(action => {
         switch (action.Status) {
           case 'Completed': this.TOTAL_ACTIONS_DONE += 1; break;
@@ -379,6 +379,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.getFilteredPrjActions();
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
@@ -407,7 +408,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       });
 
 
-   
+
 
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
@@ -522,7 +523,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  // ADDING NEW ACTIONS 
+  // ADDING NEW ACTIONS
   addNewAction() {
 
     if (this.projectInfo.Status === 'Completed') {
@@ -538,7 +539,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.showSideBar();
           }
           else {
-            // when the user said no 
+            // when the user said no
             Swal.fire(
               'Cancelled',
               'Action not created',
@@ -603,21 +604,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
-    
+
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
      //  add support close end here.
 
     document.getElementById("newdetails").classList.remove("position-fixed");
-    
+
     this.selectedEmployees=[];    //this will empty the add support selection's field in add people sidebar if its was open and selection done.
     // in case if project submission (main or action) operation cancelled.
     $('#mainPrjCheckbox').prop('checked', false);
     $('#project-action-Checkbox').prop('checked', false);
-    //   
+    //
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details", this.URL_ProjectCode]);
     this.getProjectDetails(this.URL_ProjectCode);
@@ -632,6 +633,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetprojectComments()
    }
 
   View_Activity() {
@@ -682,7 +684,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
     // back to 1st 'People on the project' tab.
 
 
@@ -709,7 +711,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("add_new_team_sp").classList.add("d-none");
   }
 
-  ///  
+  ///
 
   //  ADD NEW DMS
 
@@ -807,8 +809,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-   onMemoSelected(e:{MailId:number,Subject:string}){ 
-    // when single selection 
+   onMemoSelected(e:{MailId:number,Subject:string}){
+    // when single selection
       this.selectedMemos=new Array({MailId:e.MailId,Subject:e.Subject});
     //
        console.log("selectedMemos:",this.selectedMemos);
@@ -816,11 +818,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-   onMemoDeselected(e:{MailId:number,Subject:string}){ 
+   onMemoDeselected(e:{MailId:number,Subject:string}){
        const index=this.selectedMemos.indexOf({MailId:e.MailId,Subject:e.Subject});
        if(index!==-1){
         this.selectedMemos.splice(index,1);
-       } 
+       }
        console.log("selectedMemos:",this.selectedMemos);
     }
 
@@ -1038,7 +1040,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         }
       }
     });
-    // console.log(this.requestDetails, 'transfer'); 
+    // console.log(this.requestDetails, 'transfer');
   }
 
   approvalClick(actionType) {
@@ -1250,29 +1252,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   //         this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
   //         this.EmpNo_Res = this.ProjectNameJson[0]['Responsible'];
   //         this.ProjectName = this.ProjectNameJson[0]['Project_Name'];
-  //       }    
+  //       }
   //     })
   // }
 
   _day: any;
   _month: any;
 
-  openPDF(cloud, docName) {
-    let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
-    if (cloud == false) {
-      if (this.EmpNo_Autho == this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
-      }
-      else if (this.EmpNo_Autho != this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
-      }
-    }
-    else if (cloud == true) {
-      window.open(docName);
-    }
-  }
 
   _portfoliolist: any;
   _portfolioLength: any;
@@ -1467,7 +1454,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
-              this.calculateProjectActions();     // recalculate the project actions. 
+              this.calculateProjectActions();     // recalculate the project actions.
               this.closeActCompSideBar();         // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -1499,7 +1486,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
-          this.calculateProjectActions();     // recalculate the project actions. 
+          this.calculateProjectActions();     // recalculate the project actions.
           this.closeActCompSideBar();        // close action completion sidebar.
 
         });
@@ -1557,7 +1544,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   openDarSideBar() {
-    // opens the dar side bar 
+    // opens the dar side bar
 
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -1583,7 +1570,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
-        this.ProjectStatus = data[0]['ProjectStatus'];  
+        this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
@@ -1923,7 +1910,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     else {
       var category = this.OGselectedcategoryid;
     }
-
+    
+    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
 
     const jsonobj = {
       Project_Type: type,
@@ -1933,18 +1922,62 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Responsible: actionresp,
       Category: category,
       Client: Actionclient,
-      StartDate: this.ActionstartDate,
-      EndDate: this.ActionendDate,
+      StartDate: datestrStart,
+      EndDate: datestrEnd,
       Allocated: this.ActionAllocatedHours,
     }
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
-    this.approvalObj.Emp_no = this.Current_user_ID;
-    this.approvalObj.Project_Code = this.ActionCode;
-    this.approvalObj.json = jsonvalues;
-    this.approvalObj.Remarks = this._remarks;
+  const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+  const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
 
+  
+  this.approvalObj.Emp_no = this.Current_user_ID;
+  this.approvalObj.Project_Code = this.ActionCode;
+  this.approvalObj.json = jsonvalues;
+  this.approvalObj.Remarks = this._remarks;
+
+ 
+
+  console.log(dateOne, dateTwo, "dates")
+  if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
+    Swal.fire({
+      title: 'Action deadline is greater than main project deadline ?',
+      text: 'Do you want to continue for selection of date after main project deadline!!',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+          console.log(data['message'], "edit response");
+          if (data['message'] == '1') {
+            this.notifyService.showSuccess("Updated successfully", "Success");
+          }
+          else if (data['message'] == '2') {
+            this.notifyService.showError("Not updated", "Failed");
+          }
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.closeInfo();
+        });
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //    this.close_space();
+        Swal.fire(
+          'Cancelled',
+          'Action end date not updated',
+          'error'
+        )
+      }
+    });
+  }
+  else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
+    Swal.fire({
+      title: 'Unable to extend end date for this action.',
+      text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+    });
+  }
+  else {
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
@@ -1958,6 +1991,27 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  }
+
+
+///////////////////duration Edit start//////////////////////
+
+
+allocation: boolean = false;
+check_allocation() {
+  const newenddate = new Date(this.ActionendDate);
+  const oldendate = new Date(this.projectInfo.EndDate);
+
+  if (newenddate > oldendate) {
+    this.allocation = true;
+  }
+  else {
+    this.allocation = false;
+  }
+
+}
+
+///////////////////duration Edit end//////////////////////
 
 
 
@@ -2230,6 +2284,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       arr.push({ Port_Id: element.Portfolio_ID })
       this._SelectedPorts = arr;
     });
+    this.openAutocompleteDrpDwn('PORTFOLIOdrpdwn')
     // console.log("Selected Ports In Array--->", this._SelectedPorts);
     // console.log(this.ngDropdwonPort,"ports");
 
@@ -2253,9 +2308,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   Portfolio_Deselect(selecteditems) {
+    const index = this.ngDropdwonPort.indexOf(selecteditems);
+    if (index !== -1) {
+      this.ngDropdwonPort.splice(index, 1);
+    }
+
     let arr = [];
 
-    this.Empty_portDropdown = selecteditems;
+    this.Empty_portDropdown = this.ngDropdwonPort;
     if (this.Empty_portDropdown != '') {
       this.Empty_portDropdown.forEach(element => {
         arr.push({ Port_Id: element.Portfolio_ID })
@@ -2270,6 +2330,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   addProjectToPortfolio() {
+    debugger
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
     if (this.selectedportID != null) {
@@ -2828,7 +2889,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.lstMthCnt = 0;  // Last Month Meetings Count
     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
     this.oldMtgCnt = 0;  // Older Meetings Count
-    // 
+    //
 
 
 
@@ -2855,7 +2916,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
         console.log('meeting we have:', this.meeting_arry);
-        // AFTER GETTING ALL MEETINGS DETAILS 
+        // AFTER GETTING ALL MEETINGS DETAILS
 
         this.upcomingMeetings = this.getUpcomingMeeting();
         this.upcomingMeetings.reverse();                                         // get upcoming meetings.
@@ -2869,12 +2930,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
 
         for (let i = 1; i <= 7; i++) {
-          const date = new Date();                     // get the current date. 
+          const date = new Date();                     // get the current date.
           date.setDate(date.getDate() - i);
           this.last7dmeetings = this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));
         }                                                                                               // get last 7 days meetings.
         this.lst7dCnt = this.last7dmeetings.length;                                                    // store totalno of meetings.
-        this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);                              // format them.  
+        this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);                              // format them.
 
 
         const date1 = new Date();                 // currentdate.
@@ -2916,7 +2977,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
-    // sidebar is open                
+    // sidebar is open
     this.GetmeetingDetails(); // get all meeting details.
   }
 
@@ -3261,8 +3322,8 @@ Task_type(value:number){
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
-  this.selectedrecuvalue = "0";   
-  this._PopupConfirmedValue = 1; 
+  this.selectedrecuvalue = "0";
+  this._PopupConfirmedValue = 1;
   this.MinLastNameLength = true;
   this._subname = false;
   this._calenderDto = new CalenderDTO;
@@ -3271,7 +3332,7 @@ Task_type(value:number){
   this._labelName = "Schedule Date :";
   this._StartDate = moment().format("YYYY-MM-DD").toString();
   this._subname1 = false;
- 
+
   this.AllDatesSDandED = [];
   var jsonData = {};
   var columnName = "Date";
@@ -3284,18 +3345,18 @@ Task_type(value:number){
   jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
   this.AllDatesSDandED.push(jsonData);
   this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
- 
-  
- 
+
+
+
 
 
     // initialization
 
     this.GetProjectAndsubtashDrpforCalender();   // GET PROJECT LIST,PORTFOLIOS LIST and PAERTICIPANTS
     this.GetMemosByEmployeeId();                 // GET THE DMS MEMOS LIST.
-    this.GetTimeslabfordate();                   // GET timing       
+    this.GetTimeslabfordate();                   // GET timing
     this.TImetable();                            // GET start time and end time.
-    this.GetScheduledJson();                     // GET Scheduledjson 
+    this.GetScheduledJson();                     // GET Scheduledjson
     this.Getdraft_datalistmeeting();
 
     // opens the sidebar
@@ -3303,7 +3364,7 @@ Task_type(value:number){
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("newdetails").classList.add("position-fixed");
 
-    // 
+    //
     $(document).ready(function () {
       $("#div_recurrence").css("display", "block");
       $("#weekly_121").css("display", "none");
@@ -3355,7 +3416,7 @@ Task_type(value:number){
         $('#core_Dms').css('display','block');
        $('#online-add').css('display','block');
     })
-   
+
   }
 
     const format2 = "YYYY-MM-DD";
@@ -3605,7 +3666,7 @@ GetSubtasklistfromProject(MasterCode) {
 
 
 getChangeSubtaskDetais(Project_Code) {
-  
+
   this.BlockNameProject1.forEach(element => {
 
       if (element.Project_Code == Project_Code) {
@@ -4385,7 +4446,7 @@ getChangeSubtaskDetais(Project_Code) {
 
         // var columnName = "Link_Type";
         // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";     
+        var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
         var vLocation_Type = "Location_Type";
@@ -4615,17 +4676,18 @@ getChangeSubtaskDetais(Project_Code) {
 
 
 
-@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;  
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
 isParticipantDrpDwnOpen:boolean=false;
 isDMSMemoDrpDwnOpen:boolean=false;
 isPortfolioDrpDwnOpen:boolean=false;
 isProjectDrpDwnOpen:boolean=false;
-openAutocompleteDrpDwn(Acomp:string){  
+openAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
 }
 
 closeAutocompleteDrpDwn(Acomp:string){
+  debugger
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
@@ -4650,7 +4712,7 @@ removeSelectedPrj(item){
   const index=this.MasterCode.indexOf(item);
   if(index!==-1){
     this.MasterCode.splice(index,1);
-  } 
+  }
 }
 
 getPrjName(projectCode:string){
@@ -4686,7 +4748,7 @@ removeSelectedPortfolio(item){
   const index=this.Portfolio.indexOf(item);
   if(index!==-1){
     this.Portfolio.splice(index,1);
-  } 
+  }
 }
 
 
@@ -4710,11 +4772,11 @@ removeSelectedParticipant(item){
     const index=this.ngEmployeeDropdown.indexOf(item);
     if(index!==-1){
       this.ngEmployeeDropdown.splice(index,1);
-    } 
+    }
 }
 
 
- 
+
 
 onDMSMemoSelected(e){
   const memoChoosed=this.Memos_List.find((c)=>c.MailId===e.option.value);
@@ -4734,7 +4796,7 @@ removeSelectedDMSMemo(item){
   const index=this.SelectDms.indexOf(item);
   if(index!==-1){
     this.SelectDms.splice(index,1);
-  } 
+  }
 }
 
 
@@ -5195,7 +5257,7 @@ closePanel(){
       if (index === -1) {
         // if not present in the selectedcourses then add it
            this.selectedMemos.push(memoChoosed);
-       }  
+       }
        else{ //  if course choosed is already selected then remove it.
            this.selectedMemos.splice(index,1);
        }
@@ -5209,7 +5271,7 @@ removeSelectedMemo(item){
     const index=this.selectedMemos.indexOf(item);
     if(index!==-1){
       this.selectedMemos.splice(index,1);
-    } 
+    }
 }
 
   closeMemoDrpDwn() {
@@ -5225,10 +5287,7 @@ removeSelectedMemo(item){
 
 
 
-  //
-
-
-
+  
   removeSelectedPrt(item) {
     const index = this.ngDropdwonPort.indexOf(item);
     if (index !== -1) {
@@ -5253,5 +5312,151 @@ removeSelectedMemo(item){
     window.open(Url);
   }
 
+
+
+
+
+
+
+
+// project action search and filter start here
+actionsNotFound:boolean=false;
+filteredPrjAction:any=[];
+filterConfigChanged:boolean=false;
+filterConfig:{filterby:string,sortby:string}={
+         filterby:'All',
+         sortby:'All'
+};
+onFilterConfigChanged({filterBy,sortBy}){
+  this.filterConfig.filterby=filterBy; 
+  this.filterConfig.sortby=sortBy;
+  this.filterConfigChanged=true; 
+  this.getFilteredPrjActions();
+}
+
+clearFilterConfigs(){
+  this.filterConfig.filterby='All';
+  this.filterConfig.sortby='All';
+  this.getFilteredPrjActions();
+  this.filterConfigChanged=false;
+}
+
+getFilteredPrjActions(){
+  let arr=this.projectActionInfo;
+  if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
+  { 
+    if(this.filterConfig.sortby!=='All'){
+     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....   
+      arr=arr.filter((action)=>{
+        return action.Responsible===this.filterConfig.sortby;
+       });  
+     }
+     else{  // when sortby is 'Assigned By me'
+        
+     }
+     
+    }
+
+    if(this.filterConfig.filterby!=='All'){
+      arr=arr.filter((action)=>{
+         return action.Status===this.filterConfig.filterby;
+       })
+    }      
+  }
+  this.filteredPrjAction=arr;
+}
+
+isActionAvailable(e){
+   this.actionsNotFound=!(this.filteredPrjAction.some((action)=>{
+            return action.Project_Name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim());
+   }));
+}
+
+
+
+
+// project action search and filter end here. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// project action search and filter end here
+
  
+///////////////////Comments start//////////////////////
+_CommentsList: any;
+commentsLength: number;
+GetprojectComments() {
+  this.service._GetDARAchievements(this.URL_ProjectCode).
+    subscribe((data) => {
+      // console.log("Comments data----------->",data)
+      this._CommentsList = JSON.parse(data[0]['CommentsJson']);
+      this.commentsLength = this._CommentsList.length;
+      // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
+       console.log("Comments-List--------->",this._CommentsList)
+    });
+}
+
+
+/////////////////Comments end////////////////////////
+
+
+LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+  if (iscloud == false) {
+    if (this.EmpNo_Autho == this.EmpNo_Res) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+    else if (this.EmpNo_Autho !=  this.EmpNo_Res) {
+      FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+///////////////////attchement end//////////////////////
+
 }
