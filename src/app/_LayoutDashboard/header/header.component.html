@@ -582,7 +582,105 @@
                     <div class="text-center py-4" style="color: lightgrey" *ngIf="showtimeline==false">
                         <h5>No timeline found for '{{selectedSort}}' filter.</h5>
                     </div>
-                    <div class="timeline" *ngFor="let item of timelineList;let i=index">
+
+                    <div >
+                       
+                            <ng-container *ngFor="let timeline of timelineList; let i=index">
+                                <div class="timeline-header sticky-header">
+                                    <span class="header-text header-date">
+                                        {{timeline.SubmissionDate | date: 'fullDate'}}
+                                    </span>
+                                </div>
+                         <div class="timeline" *ngFor="let item of timeline.Dardata">
+                                        <div class="timeline-item">
+                                            <div class="timeline-line w-40px">
+                                            </div>
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px ng-star-inserted">
+                                                <div class="symbol-label kt-bg-light-primary">
+                                                    <span class="svg-icon svg-icon-2 svg-icon-info">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none">
+                                                            <path opacity="0.3"
+                                                                d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z"
+                                                                fill="black"></path>
+                                                            <path
+                                                                d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z"
+                                                                fill="black"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-content time-line-cnt">
+        
+                                                <div class="kt-tm-user">
+                                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                                        <div class="user-vw d-flex align-items-center ">
+                                                            <div class="symbol symbol-circle symbol-22px">
+                                                                <img alt="img"
+                                                                    src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/672189_anounce1.jpg"
+                                                                    class="ng-star-inserted">
+        
+                                                            </div>
+                                                            <div class="user-kt-n">{{item.EmpName}}</div>
+                                                        </div>
+        
+        
+                                                        <div class="kt-task-head">
+        
+                                                            <div class="user-kt-time"> <span class="svg-time-icon"> <svg
+                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                        width="16px" height="16px" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
+                                                                        style="vertical-align: sub; color: #848c93;">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                        </path>
+                                                                    </svg> </span> <span class="tmv-tm">{{item.starttime}}
+                                                                    AM</span>
+                                                                <span class="mdl-line-h"></span><span
+                                                                    class="tmv-tm">{{item.endtime}} PM</span> <span
+                                                                    class="total-time-kt">{{item.Duration}} Hrs</span>
+                                                            </div>
+                                                            <div class="date-view-rt">
+                                                                <div class="time-line-date">
+                                                                    <h4>{{item.date|date:'dd-MM-YYYY'}}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                                <div class="kt-task-cnt">
+                                                    <div class="action-name">
+                                                        {{item.ActionName}}
+                                                    </div>
+                                                    <div class="action-info-achivement">
+                                                        <p>{{item.WorkAchieved}}</p>
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+        
+                            </ng-container>
+        
+                      
+                        <ng-template #noTimelinePresent>
+                            <div class="notimeline-present">
+                                <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
+                                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                    <h3 class="blank-txt fs-3 notimeline-present-label">Timeline not found.</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    
+                    <!--  old timeline Start
+
+                        <div class="timeline" *ngFor="let item of timelineList;let i=index">
                         <div class="timeline-header sticky-header">
                             <span class="header-text header-date">
                                 {{item.SubmissionDate | date: 'fullDate'}}
@@ -595,12 +693,10 @@
                                         {{item1.Initial}}
                                     </span>
                                 </div>
-                            </div>
-                            <!--end::Timeline icon-->
+                            </div>         
                             <div class="timeline-content mb-10 mt-n2">
                                 <div class="overflow-auto pt-2">
                                     <div class="d-flex-between">
-
                                         <div class="timeline-text fs-6">
                                             {{item1.EmpName}}
                                             <span class="desp-txt fs-7">Logged</span> '{{item1.Duration}} hrs'
@@ -618,7 +714,6 @@
                                         <label
                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline mb-2"><i
                                                 class="fa fa-clone mr-2"></i> {{item1.Tasktype}} </label>
-
                                     </div>
                                     <div class="timeline-text fs-6"
                                         *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">
@@ -640,14 +735,13 @@
                                     <div class="timeline-text fs-6"
                                         *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span
                                             class="desp-txt fs-7">Action</span>{{item1.ActionName | titlecase}}</div>
-                                    <!-- <div class="timeline-text fs-6"><span class="desp-txt fs-7"> Date</span>{{item1.date | date:'dd-MM-yyyy'}}</div> -->
-                                    <div class="timeline-text fs-6 achv-txt"><span
+                                  <div class="timeline-text fs-6 achv-txt"><span
                                             class="desp-txt fs-7 d-none">Achievement</span>{{item1.WorkAchieved}}</div>
                                 </div>
                             </div>
-                            <!--end::Timeline content-->
-                        </div>
+                       </div>
                     </div>
+                old timeline End --->
                 </div>
 
                 <div class="tab-pane fade" id="racis_1" role="tabpanel" aria-labelledby="racis_1">

@@ -5,6 +5,7 @@ import { CreateProjectRoutingModule } from './create-project-routing.module';
 import { CreateProjectComponent} from './create-project.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ProjectInfoComponent } from '../project-info/project-info.component';
 
 
 
@@ -16,6 +17,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CreateProjectRoutingModule,
     NgSelectModule
   ],
-  providers: [ProjectsSummaryComponent]
+  providers: [ProjectInfoComponent]
 })
 export class CreateProjectModule { }

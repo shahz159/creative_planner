@@ -3418,7 +3418,7 @@ export class MoreDetailsComponent implements OnInit {
         this._CommentsList = JSON.parse(data[0]['CommentsJson']);
         this.commentsLength = this._CommentsList.length;
         // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
-        // console.log("Comments-List--------->",this._CommentsList)
+         console.log("Comments-List--------->",this._CommentsList)
       });
   }
 

@@ -1404,7 +1404,7 @@ span.count2 {
 }
 
 .open_sidebar{
-  width: 100%;
+  width: 100% !important;
 }
 
 .step-line {
