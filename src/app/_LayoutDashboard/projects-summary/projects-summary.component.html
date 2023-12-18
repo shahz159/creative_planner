@@ -6,7 +6,7 @@
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <div class="dropdown">                            
+                        <div class="dropdown">
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                {{Type}} Summary
                             </h3>
@@ -19,7 +19,7 @@
                     <div class="kt-portlet__head-label mr-2">
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                         data-trigger="focus" data-toggle="tooltip" title="Project Info!">
-                       
+
                         <i class="fa fa-info-circle info-icon-cir"
                             (click)="Open_project_info()"></i>
                          </a> -->
@@ -28,7 +28,7 @@
                                 <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
                          </a>
                         <!-- <div class="dropdown">
-                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
@@ -53,7 +53,7 @@
                                 <a class="dropdown-item">Category</a>
                             </div>
                         </div> -->
-                        
+
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
                             <div class="kt-header__topbar-wrapper">
                                 <div class="kt-quick-search kt-quick-search--inline">
@@ -66,17 +66,17 @@
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()" type="submit">
                                                     <i class="flaticon2-search-1"></i>
-                                                    
+
                                                 </button>
-                                                
+
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mr-3">
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
@@ -103,7 +103,7 @@
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"                             
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
                             (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
                             [disabled]="_CurrentpageRecords<30">
                             <i class="fas fa-angle-right mr-0"></i></button>
@@ -211,10 +211,10 @@
                                                 </div>
                                             </div>
                                             <br>
-                                            
+
                                             <hr>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <button
@@ -244,7 +244,7 @@
                         </button> -->
                         <div class="btn-group d-none">
                             <!-- <button class="btn-act btn btn-hvr filter-dot1" data-toggle="dropdown">
-                                
+
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" role="img"
                                     font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
                                     viewBox="0 -1 17 17">
@@ -257,7 +257,7 @@
                             <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
                                 <i class="fas fa-ellipsis-v mr-0 "></i>
                             </a>
-                            
+
                             <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
                                 <ul  class="kt-nav">
                                     <li class="kt-nav__head d-flex justify-content-between">
@@ -271,7 +271,7 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Project Type</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -279,7 +279,7 @@
                                                         Core Tasks
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Routine Tasks
@@ -298,8 +298,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -318,7 +318,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -338,11 +338,11 @@
 
                                                 </div>
                                             </div>
-    
-    
+
+
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Status</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -350,7 +350,7 @@
                                                         Completed
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Completion Under Approval
@@ -369,8 +369,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -389,7 +389,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -419,7 +419,7 @@
                                                         User 1
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         User 2
@@ -438,8 +438,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -458,7 +458,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -507,7 +507,7 @@
                                 <span class="example_icon" style="opacity: 1; transform: none;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                      </svg>                                      
+                                      </svg>
                                 </span>
                             </div>
                             <div class="">
@@ -516,7 +516,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -532,8 +532,8 @@
                             </div>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -550,9 +550,9 @@
                             </div>
                         </div>
                     </div>
-        
-        
-        
+
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -583,7 +583,7 @@
                             </div>
                         </div>
                     </div> -->
-        
+
                 </div>
             </div>
             <!--begin::Portlet-->
@@ -608,7 +608,7 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        
+
                                         <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
                                         <div class="table-responsive">
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
@@ -684,7 +684,7 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd project-list_AC" 
+                                                <tr role="row" class="odd project-list_AC"
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <!-- Information Icon -->
                                                     <td align="center">
@@ -693,7 +693,7 @@
                                                             <i class="fa fa-info-circle info-icon-cir"
                                                                 (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
-                                                       
+
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
@@ -757,7 +757,7 @@
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
                                                                 <!-- href="javascript:void(0)"
-                                                            
+
                                                             (click)="OpenDARinfo(item.Project_Code)"
                                                                       <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
@@ -931,7 +931,7 @@
                                                         <a><i class="fa fa-link text-primary"></i></a>
                                                     </td> -->
                                                     <!-- <td>
-                                                        
+
                                                         <a tabindex="0" role="button" placement="right" data-trigger="focus" class="btn px-0 mr-2"
                                                             *ngIf="item.ApprovalEmpID!=0" (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)"
                                                             data-toggle="tooltip" title="Project Actions!">
@@ -941,7 +941,7 @@
                                                               <i class="fas fa-ellipsis-v mr-0" style="color: red"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr" 
+                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr"
                                                                     (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)">Accept</a>
                                                               <a href="javascript:void(0);" class="dropdown-item dan-hvr">Reject</a>
                                                             </div>
@@ -961,7 +961,7 @@
                         </div>
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -1139,7 +1139,7 @@
                 <div class="kt-project-desc">
                     <p>This report solidifies the current available candidates for the final interview session to be conducted by the Chairman</p>
                 </div>
-               
+
             </div>
 
         </div>
@@ -1171,13 +1171,13 @@
                 <div class="col text-center">
                     <div class="kt-info-lable-v">
                         <span class="kt-info-lable-icon">
-                            <svg  width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg> 
+                            <svg  width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg>
                          </span> Responsible
                     </div>
                     <div class="kt-info-data-v bg-light-shade">
                        Allen Steve
                     </div>
-                </div> 
+                </div>
 
                 <div class="col text-center">
                     <div class="kt-info-lable-v">
@@ -1210,9 +1210,9 @@
                        </div>
                     </div>
                 </div>
-               
+
             </div>
-            
+
         </div>
 
         <div class="kt-info-box mt-2">
@@ -1291,17 +1291,17 @@
                             <b>2</b> Done
                         </div>
                     </div>
-                    
+
 
                 </div>
-               </div> 
+               </div>
                <div class="col-lg-1 text-center">
                 <div class="kt-prg-bar-info kt-total-prg-vl mt-4">
-                    <b>2/8</b> 
+                    <b>2/8</b>
                 </div>
                </div>
             </div>
-            
+
         </div>
 
         <div class="kt-info-box mt-2 border-0">
@@ -1348,14 +1348,14 @@
                 </div>
 
                 <div class="col-lg-12 mt-3">
-                    
+
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"></textarea>
-                    
+
                 </div>
             </div>
 
             <div class="clearfix"></div>
-           
+
         </div>
 
         <div class="kt-info-pg-footer">
@@ -1367,16 +1367,16 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
     </div>
 </div> -->
 <!-----------Project info html-  end--------------->
 <!-----------Mew Project Crate- and actions-------------->
 <div id="New_project_Add" class="add_new_project_slide  animate-right">
-   
+
    <router-outlet></router-outlet>
-  
+
 
 </div>
 <!-----------Mew Project Crate--- end------------>

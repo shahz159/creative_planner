@@ -1846,12 +1846,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ActionendDate: any
   ActionDuration: any
   ActionAllocatedHours: any
+  editAllocatedhours: any=0;
   ActionOwnerid: any
   OGActionOwner: any
   OGActionResponsible: any
   ActionResponsibleid: any
   ActionClientid: any
   OGActionClient: any
+
 
 
   /// Action Edits start
@@ -1877,7 +1879,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.ActionstartDate = this.projectActionInfo[this.currentActionView].StartDate
     this.ActionendDate = this.projectActionInfo[this.currentActionView].EndDate
     this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
-    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours
+    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
+    this.editAllocatedhours = this.ActionAllocatedHours;
   }
 
   onAction_update() {
@@ -1924,6 +1927,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       var category = this.OGselectedcategoryid;
     }
 
+    if(this.editAllocatedhours==0){
+      this.editAllocatedhours = this.ActionAllocatedHours;
+    }
 
     const jsonobj = {
       Project_Type: type,
@@ -1935,8 +1941,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Client: Actionclient,
       StartDate: this.ActionstartDate,
       EndDate: this.ActionendDate,
-      Allocated: this.ActionAllocatedHours,
+      Allocated: this.editAllocatedhours,
+
     }
+
+
+
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
