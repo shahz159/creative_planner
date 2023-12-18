@@ -2526,7 +2526,7 @@ check_allocation() {
           // this.getapproval_actiondetails();
           // this.GetSubtask_Details();
           // this.GetProjectDetails();
-          // this.getapprovalStats();
+          this.getapprovalStats();
           // this._projectSummary.GetProjectsByUserName('RACIS Projects');
         });
     }

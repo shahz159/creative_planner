@@ -621,29 +621,42 @@
                                         </div>
 
                                     </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="kt-project-type">
+                                            <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
+                                         
+                                                            'Delay':projectInfo.Status==='Delay',
+                                                            'Inprocess':projectInfo.Status==='InProcess',
+                                                            'Done':projectInfo.Status==='Completed',
+                                                            'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
+                                                            'CompletionUnderApproval':projectInfo.Status==='Forward Under Approval',
+                                                            'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
+                                                            'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                                            'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
+                                                            'NewProjectRejected':projectInfo.Status==='Cancelled',
+                                                            'Hold':projectInfo.Status==='Project Hold'
+                                                            
+                                                            }">
+                                                {{
+                                                (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
+                                                (projectInfo.Status==='Delay')?'Delay '+projectInfo.Delaydays+' days':
+                                                projectInfo.Status
+                                                }}
+                                            </div>
+                                            <div class="Requested_user_info">
+                                                <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
+                                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="12" cy="7" r="4"></circle>
+                                                    </svg></span> <span class="Requested_user_name"
+                                                    title="Requested by">{{projectInfo.requestBy}}</span><span class="Rq_date_V"
+                                                    title="Requested Date">{{projectInfo.requestDate|date:'dd-MM-yyyy'}}</span>
+                                            </div>
 
-                                    <div class="kt-project-type">
-                                        <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
-                                     
-                                     'Delay':projectInfo.Status==='Delay',
-                                     'Inprocess':projectInfo.Status==='InProcess',
-                                     'Done':projectInfo.Status==='Completed',
-                                     'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
-                                     'CompletionUnderApproval':projectInfo.Status==='Forward Under Approval',
-                                     'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
-                                     'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
-                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
-                                     'NewProjectRejected':projectInfo.Status==='Cancelled',
-                                     'Hold':projectInfo.Status==='Project Hold'
-                                    
-                                    }">
-                                            {{
-                                            (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
-                                            (projectInfo.Status==='Delay')?'Delay '+projectInfo.Delaydays+' days':
-                                            projectInfo.Status
-                                            }}
                                         </div>
                                     </div>
+                                    
                                 </div>
 
                                 <div class="pending_approval_form" *ngIf="requestType&&projectInfo.ApproverName">
@@ -6772,7 +6785,7 @@
                                     <mat-autocomplete  aria-label="PortfolioDrpDwn"  #PortfolioDrpDwn="matAutocomplete" (optionSelected)="onPortfolioSelected($event); portfolioTF.value=''; "  (opened)="isPortfolioDrpDwnOpen=true"  (closed)="isPortfolioDrpDwnOpen=false; "   >
                                           <mat-option *ngFor="let pt of Portfoliolist_1|filter:portfolioTF.value" [value]="pt.portfolio_id">
                                             <mat-checkbox  color="primary"  [checked]="Portfolio.indexOf(pt)!==-1"></mat-checkbox>
-                                            {{pt.Portfolio_Name}}
+                                            {{pt.Portfolio_Name}} - {{pt.DisplayName}}
                                           </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
