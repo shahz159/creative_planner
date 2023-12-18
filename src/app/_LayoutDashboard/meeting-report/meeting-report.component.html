@@ -224,24 +224,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
-                                        <div class="left-icon">
-                                            <span class="side-icns" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
-                                                    height="22" class="svg-icn">
-                                                    <path fill="none" d="M0 0h24v24H0z" />
-                                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <!-- <div class="main-s pro-nm">Agenda</div> -->
-                                        <div class="rgt-des">
-                                            <div class="">
-                                                
-                                                <div class="main-s" [innerHTML]="item.Description"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="kt-organizer-dt eve-area">
 
@@ -315,6 +298,13 @@
                                                 </span>
                                                 <span>Mark as admin</span>
                                             </div>
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="sched_admin == false && Isadmin==false"
+                                                (click)=" Updating_Adminmeeting(Emp_No)">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                </span>
+                                                <span>Back to admin</span>
+                                            </div>
 
                                         </div>
 
@@ -377,6 +367,7 @@
 
                                         </div>
                                     </div>
+                                    
                                     <div id="userlist" class="avar-div mb-2" *ngIf="User_Scheduledjson.length > 0">
 
                                         <div class="d-flex align-items-center hver-d" *ngFor="let _user of User_Scheduledjson">
@@ -456,28 +447,20 @@
                                                         </span>
                                                         <span>Admin</span>
                                                     </div>
-                                                    <div class="admin-check curser-pointer"
+                                                    <!-- <div class="admin-check curser-pointer"
                                                         *ngIf="_user.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false"
                                                         (click)=" Updating_Adminmeeting(_user.stringval)">
                                                         <span _ngcontent-hko-c392="" aria-hidden="true"
                                                             class="admin-check-svg">
-                                                            <!-- <svg _ngcontent-hko-c392=""
-                                                                xmlns="https://www.w3.org/2000/svg" width="14"
-                                                                height="14">
-                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
-                                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
-                                                                </path>
-                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#5867dd"
-                                                                    stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
-                                                            </svg> -->
                                                         </span>
                                                         <span>Mark as admin</span>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
 
                                             </div>
 
-                                            <div class="admin-check curser-pointer -hide-x">
+                                            <div class="admin-check curser-pointer -hide-x" *ngIf="_user.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false"
+                                            (click)=" Updating_Adminmeeting(_user.stringval)">
                                             <span _ngcontent-hko-c392="" aria-hidden="true"
                                                 class="admin-check-svg">
                                                
@@ -487,6 +470,24 @@
 
                                         </div>
 
+                                    </div>
+
+                                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                                        <div class="left-icon">
+                                            <span class="side-icns" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
+                                                    height="22" class="svg-icn">
+                                                    <path fill="none" d="M0 0h24v24H0z" />
+                                                    <path d="M13 6v15h-2V6H5V4h14v2z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="rgt-des">
+                                            <div class="">
+                                                
+                                                <div class="main-s" [innerHTML]="item.Description"></div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div id="project" class="eve-area"

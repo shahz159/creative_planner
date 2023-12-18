@@ -16,7 +16,7 @@ export class CreateProjectComponent implements OnInit {
 
     
   }
-
+ 
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");
     document.getElementsByClassName("Adv-option")[1].classList.add("d-none");
@@ -88,24 +88,43 @@ export class CreateProjectComponent implements OnInit {
     this.router.navigate(["/backend/ProjectsSummary/"]);
   }
 
+  Scratech_btn(){
+    $('.np-step-2').removeClass('d-none');
+    $('.np-step-1').addClass('d-none');
+  }
+  back_to_options(){
+    $('.np-step-1').removeClass('d-none');
+    $('.np-step-2').addClass('d-none');
+    $('.Assigned-projects-list').addClass('d-none');
+  }
+
+  Assigned_projects(){
+    $('.Assigned-projects-list').removeClass('d-none');
+    $('.np-step-1').addClass('d-none');
+  }
+
+
   Move_to_add_team(){
+    $('.right-side-dv').removeClass('d-none');
     $('.add_tema_tab').show();
     $('.Project_details_tab').hide();
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(2)').addClass('active');
   }
-  Back_to_project_details_tab(){
-    $('.add_tema_tab').hide();
-    $('.Project_details_tab').show();
-    $('.sbs--basic .active').removeClass('finished');
-    $('.sbs--basic li').addClass('active');
-    $('.sbs--basic li:nth-child(2)').removeClass('active');
-    $('.sbs--basic li:nth-child(3)').removeClass('active');
-  }
+
+  // Back_to_project_details_tab(){
+  //   $('.add_tema_tab').hide();
+  //   $('.Project_details_tab').show();
+  //   $('.sbs--basic .active').removeClass('finished');
+  //   $('.sbs--basic li').addClass('active');
+  //   $('.sbs--basic li:nth-child(2)').removeClass('active');
+  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
+  // }
 
 
   Move_to_Add_action_tab(){
+    $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
     $('.Project_details_tab,.add_tema_tab').hide();
     $('.sbs--basic .active').addClass('finished');
@@ -113,15 +132,15 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic li:nth-child(3)').addClass('active');
   }
 
-  back_to_add_team(){
-    $('.add_tema_tab').show();
-    $('.Project_details_tab,.Add_action_tab').hide();
-    $('.sbs--basic .active').remove('finished');
-    $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(2)').removeClass('finished');
-    $('.sbs--basic li:nth-child(2)').addClass('active');
-    $('.sbs--basic li:nth-child(3)').removeClass('active');
-  }
+  // back_to_add_team(){
+  //   $('.add_tema_tab').show();
+  //   $('.Project_details_tab,.Add_action_tab').hide();
+  //   $('.sbs--basic .active').remove('finished');
+  //   $('.sbs--basic li').removeClass('active');
+  //   $('.sbs--basic li:nth-child(2)').removeClass('finished');
+  //   $('.sbs--basic li:nth-child(2)').addClass('active');
+  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
+  // }
 
 
 }

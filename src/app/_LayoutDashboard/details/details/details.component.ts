@@ -238,7 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.getResponsibleActions()
-    this.drawStatistics();
+    // this.drawStatistics();
     this.GetActivityDetails();
   }
 
@@ -379,6 +379,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.getFilteredPrjActions();
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
@@ -632,6 +633,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.GetprojectComments()
    }
 
   View_Activity() {
@@ -1257,22 +1259,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   _day: any;
   _month: any;
 
-  openPDF(cloud, docName) {
-    let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
 
-    if (cloud == false) {
-      if (this.EmpNo_Autho == this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
-      }
-      else if (this.EmpNo_Autho != this.EmpNo_Res) {
-        window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
-      }
-    }
-    else if (cloud == true) {
-      window.open(docName);
-    }
-  }
 
   _portfoliolist: any;
   _portfolioLength: any;
@@ -1931,6 +1918,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.editAllocatedhours = this.ActionAllocatedHours;
     }
 
+    var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
+
     const jsonobj = {
       Project_Type: type,
       Project_Name: this.ActionName,
@@ -1939,10 +1929,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Responsible: actionresp,
       Category: category,
       Client: Actionclient,
-      StartDate: this.ActionstartDate,
-      EndDate: this.ActionendDate,
+      StartDate: datestrStart,
+      EndDate: datestrEnd,
       Allocated: this.editAllocatedhours,
-
     }
 
 
@@ -1950,11 +1939,55 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
-    this.approvalObj.Emp_no = this.Current_user_ID;
-    this.approvalObj.Project_Code = this.ActionCode;
-    this.approvalObj.json = jsonvalues;
-    this.approvalObj.Remarks = this._remarks;
+  const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+  const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
 
+
+  this.approvalObj.Emp_no = this.Current_user_ID;
+  this.approvalObj.Project_Code = this.ActionCode;
+  this.approvalObj.json = jsonvalues;
+  this.approvalObj.Remarks = this._remarks;
+
+
+
+  console.log(dateOne, dateTwo, "dates")
+  if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
+    Swal.fire({
+      title: 'Action deadline is greater than main project deadline ?',
+      text: 'Do you want to continue for selection of date after main project deadline!!',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+          console.log(data['message'], "edit response");
+          if (data['message'] == '1') {
+            this.notifyService.showSuccess("Updated successfully", "Success");
+          }
+          else if (data['message'] == '2') {
+            this.notifyService.showError("Not updated", "Failed");
+          }
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.closeInfo();
+        });
+      } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //    this.close_space();
+        Swal.fire(
+          'Cancelled',
+          'Action end date not updated',
+          'error'
+        )
+      }
+    });
+  }
+  else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
+    Swal.fire({
+      title: 'Unable to extend end date for this action.',
+      text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+    });
+  }
+  else {
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
@@ -1968,6 +2001,27 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  }
+
+
+///////////////////duration Edit start//////////////////////
+
+
+allocation: boolean = false;
+check_allocation() {
+  const newenddate = new Date(this.ActionendDate);
+  const oldendate = new Date(this.projectInfo.EndDate);
+
+  if (newenddate > oldendate) {
+    this.allocation = true;
+  }
+  else {
+    this.allocation = false;
+  }
+
+}
+
+///////////////////duration Edit end//////////////////////
 
 
 
@@ -2240,6 +2294,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       arr.push({ Port_Id: element.Portfolio_ID })
       this._SelectedPorts = arr;
     });
+    this.openAutocompleteDrpDwn('PORTFOLIOdrpdwn')
     // console.log("Selected Ports In Array--->", this._SelectedPorts);
     // console.log(this.ngDropdwonPort,"ports");
 
@@ -2263,9 +2318,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   Portfolio_Deselect(selecteditems) {
+    const index = this.ngDropdwonPort.indexOf(selecteditems);
+    if (index !== -1) {
+      this.ngDropdwonPort.splice(index, 1);
+    }
+
     let arr = [];
 
-    this.Empty_portDropdown = selecteditems;
+    this.Empty_portDropdown = this.ngDropdwonPort;
     if (this.Empty_portDropdown != '') {
       this.Empty_portDropdown.forEach(element => {
         arr.push({ Port_Id: element.Portfolio_ID })
@@ -2280,6 +2340,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   addProjectToPortfolio() {
+    debugger
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
     if (this.selectedportID != null) {
@@ -2475,7 +2536,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           // this.getapproval_actiondetails();
           // this.GetSubtask_Details();
           // this.GetProjectDetails();
-          // this.getapprovalStats();
+          this.getapprovalStats();
           // this._projectSummary.GetProjectsByUserName('RACIS Projects');
         });
     }
@@ -4636,6 +4697,7 @@ openAutocompleteDrpDwn(Acomp:string){
 }
 
 closeAutocompleteDrpDwn(Acomp:string){
+  debugger
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
@@ -5235,9 +5297,6 @@ removeSelectedMemo(item){
 
 
 
-  //
-
-
 
   removeSelectedPrt(item) {
     const index = this.ngDropdwonPort.indexOf(item);
@@ -5263,5 +5322,151 @@ removeSelectedMemo(item){
     window.open(Url);
   }
 
+
+
+
+
+
+
+
+// project action search and filter start here
+actionsNotFound:boolean=false;
+filteredPrjAction:any=[];
+filterConfigChanged:boolean=false;
+filterConfig:{filterby:string,sortby:string}={
+         filterby:'All',
+         sortby:'All'
+};
+onFilterConfigChanged({filterBy,sortBy}){
+  this.filterConfig.filterby=filterBy;
+  this.filterConfig.sortby=sortBy;
+  this.filterConfigChanged=true;
+  this.getFilteredPrjActions();
+}
+
+clearFilterConfigs(){
+  this.filterConfig.filterby='All';
+  this.filterConfig.sortby='All';
+  this.getFilteredPrjActions();
+  this.filterConfigChanged=false;
+}
+
+getFilteredPrjActions(){
+  let arr=this.projectActionInfo;
+  if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
+  {
+    if(this.filterConfig.sortby!=='All'){
+     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
+      arr=arr.filter((action)=>{
+        return action.Responsible===this.filterConfig.sortby;
+       });
+     }
+     else{  // when sortby is 'Assigned By me'
+
+     }
+
+    }
+
+    if(this.filterConfig.filterby!=='All'){
+      arr=arr.filter((action)=>{
+         return action.Status===this.filterConfig.filterby;
+       })
+    }
+  }
+  this.filteredPrjAction=arr;
+}
+
+isActionAvailable(e){
+   this.actionsNotFound=!(this.filteredPrjAction.some((action)=>{
+            return action.Project_Name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim());
+   }));
+}
+
+
+
+
+// project action search and filter end here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// project action search and filter end here
+
+
+///////////////////Comments start//////////////////////
+_CommentsList: any;
+commentsLength: number;
+GetprojectComments() {
+  this.service._GetDARAchievements(this.URL_ProjectCode).
+    subscribe((data) => {
+      // console.log("Comments data----------->",data)
+      this._CommentsList = JSON.parse(data[0]['CommentsJson']);
+      this.commentsLength = this._CommentsList.length;
+      // this._EvenRecordsList = JSON.parse(data[0]['EvenRecordsJson']);
+       console.log("Comments-List--------->",this._CommentsList)
+    });
+}
+
+
+/////////////////Comments end////////////////////////
+
+
+LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+  if (iscloud == false) {
+    if (this.EmpNo_Autho == this.EmpNo_Res) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+    else if (this.EmpNo_Autho !=  this.EmpNo_Res) {
+      FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+///////////////////attchement end//////////////////////
 
 }
