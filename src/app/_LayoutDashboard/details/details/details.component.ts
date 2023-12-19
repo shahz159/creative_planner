@@ -380,6 +380,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.getFilteredPrjActions();
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
@@ -1870,12 +1871,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ActionendDate: any
   ActionDuration: any
   ActionAllocatedHours: any
+  editAllocatedhours: any=0;
   ActionOwnerid: any
   OGActionOwner: any
   OGActionResponsible: any
   ActionResponsibleid: any
   ActionClientid: any
   OGActionClient: any
+
 
 
   /// Action Edits start
@@ -1901,7 +1904,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.ActionstartDate = this.projectActionInfo[this.currentActionView].StartDate
     this.ActionendDate = this.projectActionInfo[this.currentActionView].EndDate
     this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
-    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours
+    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
+    this.editAllocatedhours = this.ActionAllocatedHours;
   }
 
   onAction_update() {
@@ -1947,7 +1951,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     else {
       var category = this.OGselectedcategoryid;
     }
-    
+
+    if(this.editAllocatedhours==0){
+      this.editAllocatedhours = this.ActionAllocatedHours;
+    }
+
     var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
     var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
 
@@ -1961,21 +1969,24 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Client: Actionclient,
       StartDate: datestrStart,
       EndDate: datestrEnd,
-      Allocated: this.ActionAllocatedHours,
+      AllocatedHours: this.editAllocatedhours,
     }
+
+
+
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
   const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
   const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
 
-  
+
   this.approvalObj.Emp_no = this.Current_user_ID;
   this.approvalObj.Project_Code = this.ActionCode;
   this.approvalObj.json = jsonvalues;
   this.approvalObj.Remarks = this._remarks;
 
- 
+
 
   console.log(dateOne, dateTwo, "dates")
   if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
@@ -2547,23 +2558,27 @@ check_allocation() {
             case HttpEventType.UploadProgress:
               this.progress = Math.round(event.loaded / event.total * 100);
               console.log(this.progress, "progress");
-              if (this.progress == 100) {
-                this.notifyService.showInfo("File uploaded successfully", "Project Updated");
-
-              }
               break;
             case HttpEventType.Response:
               console.log('File upload done!', event.body);
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).Message;
-              this.notifyService.showSuccess(this._Message, 'Success');
+              if(this._Message=='Actions are in Under Approval'){
+                this.notifyService.showError(this._Message, 'Failed');
+              }
+              else{
+                if (this.progress == 100) {
+                  this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                }
+                this.notifyService.showSuccess(this._Message, 'Success');
+              }
           }
           this.closeInfoProject();
           this.getProjectDetails(this.URL_ProjectCode);
           // this.getapproval_actiondetails();
           // this.GetSubtask_Details();
           // this.GetProjectDetails();
-          // this.getapprovalStats();
+          this.getapprovalStats();
           // this._projectSummary.GetProjectsByUserName('RACIS Projects');
         });
     }
@@ -5324,7 +5339,7 @@ removeSelectedMemo(item){
 
 
 
-  
+
   removeSelectedPrt(item) {
     const index = this.ngDropdwonPort.indexOf(item);
     if (index !== -1) {
@@ -5349,6 +5364,92 @@ removeSelectedMemo(item){
     window.open(Url);
   }
 
+
+
+
+
+
+
+
+// project action search and filter start here
+actionsNotFound:boolean=false;
+filteredPrjAction:any=[];
+filterConfigChanged:boolean=false;
+filterConfig:{filterby:string,sortby:string}={
+         filterby:'All',
+         sortby:'All'
+};
+onFilterConfigChanged({filterBy,sortBy}){
+  this.filterConfig.filterby=filterBy;
+  this.filterConfig.sortby=sortBy;
+  this.filterConfigChanged=true;
+  this.getFilteredPrjActions();
+}
+
+clearFilterConfigs(){
+  this.filterConfig.filterby='All';
+  this.filterConfig.sortby='All';
+  this.getFilteredPrjActions();
+  this.filterConfigChanged=false;
+}
+
+getFilteredPrjActions(){
+  let arr=this.projectActionInfo;
+  if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
+  {
+    if(this.filterConfig.sortby!=='All'){
+     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
+      arr=arr.filter((action)=>{
+        return action.Responsible===this.filterConfig.sortby;
+       });
+     }
+     else{  // when sortby is 'Assigned By me'
+
+     }
+
+    }
+
+    if(this.filterConfig.filterby!=='All'){
+      arr=arr.filter((action)=>{
+         return action.Status===this.filterConfig.filterby;
+       })
+    }
+  }
+  this.filteredPrjAction=arr;
+}
+
+isActionAvailable(e){
+   this.actionsNotFound=!(this.filteredPrjAction.some((action)=>{
+            return action.Project_Name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim());
+   }));
+}
+
+
+
+
+// project action search and filter end here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// project action search and filter end here
+
+
 ///////////////////Comments start//////////////////////
 _CommentsList: any;
 commentsLength: number;
@@ -5365,27 +5466,6 @@ GetprojectComments() {
 
 
 /////////////////Comments end////////////////////////
-
-///////////////////attchement start//////////////////////
-
-/////////////////////
-// openPDF(cloud, docName) {
-//   let FileUrl: string;
-//   FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-
-//   if (cloud == false) {
-//     if (this.EmpNo_Autho == this.EmpNo_Res) {
-//       window.open(FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + docName);
-//     }
-//     else if (this.EmpNo_Autho != this.EmpNo_Res) {
-//       window.open(FileUrl + this.EmpNo_Autho + "/" + this.projectCode + "/" + docName);
-//     }
-//   }
-//   else if (cloud == true) {
-//     window.open(docName);
-//   }
-// }
-//////////////////////////////////
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {

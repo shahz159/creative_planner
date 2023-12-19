@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjectsSummaryRoutingModule } from './projects-summary-routing.module';
@@ -32,7 +32,6 @@ import { SortDirective } from './sort.directive';
     NgMultiSelectDropDownModule,
     VirtualScrollerModule
   ],
-  exports: [SortDirective],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  exports: [SortDirective] 
 })
 export class ProjectsSummaryModule { }
