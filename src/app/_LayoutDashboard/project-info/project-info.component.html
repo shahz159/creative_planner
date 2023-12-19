@@ -158,8 +158,19 @@
                                 <ng-container *ngIf="item.Status!='Project Hold'">{{item.Status}}</ng-container>
                                 <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
                             </div>
+                            <div class="Requested_user_info">
+                                <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg></span> <span class="Requested_user_name"
+                                    title="Requested by">{{item.requestby}}</span><span class="Rq_date_V"
+                                    title="Requested Date">{{item.requestDate|date:'dd-MM-yyyy'}}</span>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="pending_approval_form">
                         <div class="Paf_info">
                             <label>Pending Approval</label>

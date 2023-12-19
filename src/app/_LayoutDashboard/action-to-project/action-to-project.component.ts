@@ -71,13 +71,14 @@ export class ActionToProjectComponent implements OnInit {
   Resp_empno:string;
   Autho_empno:string;
   pcode:any;
-  
+
+
   CurrentUser_ID: string;
   _EmployeeListForDropdown = [];
   selectedProjectCodelist:any;
   ownerName:string;
   RespName:string;
-  ownerArr:any =[];
+  ownerArr:any = []
   nonRacis:any = [];
   allUsers:any=[];
 
@@ -112,7 +113,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
-    
+
   }
 
   ngOnInit() {
@@ -122,18 +123,20 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
+
+
     this._Urlid = this.route.snapshot.params['id'];
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.GetAllEmployeesForAssignDropdown();
-    
+
     this.gethierarchy();
     this.getRACISandNonRACIS();
     const input = document.getElementById("hour-input");
 
-    
+
       //And disable the wheel default functionality:
       input.addEventListener("wheel", function(event) {
         event.preventDefault();
@@ -148,7 +151,7 @@ export class ActionToProjectComponent implements OnInit {
     }
 
     this.BsService.bs_projectCode.subscribe(p => {
-      
+
       if (p == null) {
         this.ProjectsDropdownBoolean = false;
         this.GetProjectsByUserName();
@@ -161,8 +164,8 @@ export class ActionToProjectComponent implements OnInit {
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
+          this.owner=data["Owner_empno"];
           this.Owner_Empno = data['Owner_empno'];
-          this.owner=data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
           const dateOne = new Date(this.disablePreviousDate);
@@ -179,7 +182,7 @@ export class ActionToProjectComponent implements OnInit {
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
-        
+
 
         //console.log(this.EmployeeList);
         this.dropdownSettings_EMP = {
@@ -199,7 +202,7 @@ export class ActionToProjectComponent implements OnInit {
   getRACISandNonRACIS(){
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
-     
+
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
@@ -247,7 +250,7 @@ export class ActionToProjectComponent implements OnInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
       (data) => {
-     
+
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
@@ -349,7 +352,7 @@ export class ActionToProjectComponent implements OnInit {
       this.end_dt=new Date(this._EndDate);
 
       console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
-      
+
       var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       if(Difference_In_Days==0){
@@ -362,11 +365,11 @@ export class ActionToProjectComponent implements OnInit {
       console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
     }
   }
-  
-  
+
+
 
   ownerNo:string;
-  
+
   OnSubmit() {
 
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
@@ -408,6 +411,9 @@ export class ActionToProjectComponent implements OnInit {
     else {
       this.ObjSubTaskDTO.MasterCode = this._MasterCode;
     }
+
+    // console.log(this.owner,"selected owner")
+
     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
       this.EmpNo_Autho = data['Team_Autho'];
@@ -434,13 +440,13 @@ export class ActionToProjectComponent implements OnInit {
       this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
       this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
       this.ObjSubTaskDTO.Remarks = this._remarks;
-      this.ObjSubTaskDTO.Duration = this._allocated; 
-      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;      
+      this.ObjSubTaskDTO.Duration = this._allocated;
+      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
 
       if (this._inputAttachments.length > 0) {
         this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
       }
-    
+
       var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
       var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
       // alert(datestrStart)
@@ -478,7 +484,7 @@ export class ActionToProjectComponent implements OnInit {
       else {
         this.ObjSubTaskDTO.Duration = 0;
       }
-      
+
       this.service._InsertNewSubtask(fd).subscribe(event => {
 
         if (event.type === HttpEventType.Response){
@@ -498,7 +504,7 @@ export class ActionToProjectComponent implements OnInit {
             this.notifyService.showError("Something went wrong", "Action not created");
           }
         }
-        
+
         if (this._Urlid == 1) {
           this._Todoproject.CallOnSubmitAction();
           this.Clear_Feilds();
@@ -519,7 +525,7 @@ export class ActionToProjectComponent implements OnInit {
           this._inputAttachments = [];
         }
         else if(this._Urlid == 4){
-       
+
           this._details.getProjectDetails(this.selectedProjectCode);
           this.closeInfo();
         }
@@ -536,7 +542,7 @@ export class ActionToProjectComponent implements OnInit {
       });
     });
   }
-   
+
   convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -589,7 +595,7 @@ export class ActionToProjectComponent implements OnInit {
         text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
         // showCancelButton: true
       });
-    
+
     }
     else {
       this.OnSubmit();
@@ -614,7 +620,7 @@ export class ActionToProjectComponent implements OnInit {
 
     }
     else if(this._Urlid==4){
-     
+
       this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
 
@@ -631,7 +637,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   Clear_Feilds() {
-    this.selectedProjectCodelist = [];  
+    this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
     this._Description = null;
@@ -642,18 +648,18 @@ export class ActionToProjectComponent implements OnInit {
     this._edate = false;
     this._selectemp = false;
     this._StartDate = null;
-    this._EndDate = null; 
+    this._EndDate = null;
     this._remarks = "";
     this._allocated = null;
     this._inputAttachments = [];
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
-   
-  
+
+
     if((<HTMLInputElement>document.getElementById("uploadFile")))
     (<HTMLInputElement>document.getElementById("uploadFile")).files=null;
-    
+
   }
 
   startdatechecker(){

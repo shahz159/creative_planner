@@ -45,7 +45,7 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective, TruncatePipe],
   providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
-             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent,CreateProjectComponent],
+             ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent],
  exports:[TruncatePipe]
   
 })

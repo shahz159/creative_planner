@@ -17,6 +17,6 @@ import { ProjectInfoComponent } from '../project-info/project-info.component';
     CreateProjectRoutingModule,
     NgSelectModule
   ],
-  providers: [ProjectsSummaryComponent,ProjectInfoComponent]
+  providers: [ProjectsSummaryComponent]
 })
 export class CreateProjectModule { }
