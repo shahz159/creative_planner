@@ -532,7 +532,7 @@
                                More info
                             </div>
                         </div>
-        
+
                     </div>
                     <div class="row mt-3 px-3">
                         <div class="col text-center">
@@ -543,18 +543,18 @@
                                 Mohammed Asif
                             </div>
                         </div>
-        
+
                         <div class="col text-center">
                             <div class="kt-info-lable-v">
                                 <span class="kt-info-lable-icon">
-                                    <svg  width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg> 
+                                    <svg  width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg>
                                  </span> Responsible
                             </div>
                             <div class="kt-info-data-v bg-light-shade">
                                Allen Steve
                             </div>
-                        </div> 
-        
+                        </div>
+
                         <div class="col text-center">
                             <div class="kt-info-lable-v">
                                 <span class="kt-info-lable-icon">
@@ -586,9 +586,9 @@
                                </div>
                             </div>
                         </div>
-                       
+
                     </div>
-                    
+
                 </div>
          -->
                     <ng-container *ngIf="projectInfo">
@@ -624,7 +624,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="kt-project-type">
                                             <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
-                                         
+
                                                             'Delay':projectInfo.Status==='Delay',
                                                             'Inprocess':projectInfo.Status==='InProcess',
                                                             'Done':projectInfo.Status==='Completed',
@@ -635,7 +635,7 @@
                                                             'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                             'NewProjectRejected':projectInfo.Status==='Cancelled',
                                                             'Hold':projectInfo.Status==='Project Hold'
-                                                            
+
                                                             }">
                                                 {{
                                                 (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
@@ -656,7 +656,7 @@
 
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                                 <div class="pending_approval_form" *ngIf="requestType&&projectInfo.ApproverName">
@@ -821,7 +821,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="projectInfo">
-                  
+
                         <div class="kt-info-box pb-0 mt-2" *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'); else SRT">
                         <div class="d-flex justify-content-between">
                             <div class="kt-info-box-tittle">
@@ -933,9 +933,9 @@
                                                     <li *ngFor="let item of filterstatus">
                                                         <button class="btn btn-filtr" (click)="onFilterConfigChanged({filterBy:item.Status,sortBy:filterConfig.sortby})"            [ngClass]="{'active2':filterConfig.filterby===item.Status}"                        >
                                                             <div class="d-flex align-items-center">
-                                                                
+
                                                                 <ng-container [ngSwitch]="item.Status" >
-                                                                
+
                                                                 <svg *ngSwitchCase="'Completed'" xmlns="http://www.w3.org/2000/svg" width="16"
                                                                     height="16" fill="currentColor" viewBox="0 0 19 19">
                                                                     <path xmlns="http://www.w3.org/2000/svg"
@@ -956,7 +956,7 @@
                                                               </svg>
 
 
-                                                              <svg *ngSwitchCase="'Cancelled'"  class="bi bi-border-all" 
+                                                              <svg *ngSwitchCase="'Cancelled'"  class="bi bi-border-all"
                                                               fill="currentColor" width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style> .cls-1 { fill-rule: evenodd; } </style> </defs> <path id="cancel" class="cls-1" d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z" transform="translate(-924 -96)"></path> </g>
                                                               </svg>
 
@@ -1084,7 +1084,7 @@
                                                     </li> -->
                                                     <li role="separator" class="divider"></li>
                                                     <li class="dropdown-header">Sort by employee</li>
-                                         
+
                                                         <li>
                                                             <button class="btn btn-filtr"   (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'All'}) "   [ngClass]="{'active2':filterConfig.sortby==='All'}"
                                                                 ng-reflect-ng-class="[object Object]">
@@ -1109,8 +1109,8 @@
                                                         </li>
 
                                                         <li *ngFor="let item of filteremployee">
-                                                           
-                                                           
+
+
                                                             <button class="btn btn-filtr"  (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Responsible})"      [ngClass]="{'active2':filterConfig.sortby===item.Responsible}"   *ngIf="item.Team_Res==Current_user_ID"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div class="d-flex align-items-center"><svg
@@ -1121,7 +1121,7 @@
                                                                             d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
                                                                         </path>
                                                                     </svg>
-                                                                    <div class="fil-lbl">My actions</div>   
+                                                                    <div class="fil-lbl">My actions</div>
                                                                     <span class="chck-icn ng-star-inserted"  *ngIf="filterConfig.sortby===item.Responsible" >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                               height="16" fill="currentColor"
@@ -1129,7 +1129,7 @@
                                                                               <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
                                                                                 </path>
                                                                          </svg>
-                                                                    </span>           
+                                                                    </span>
                                                                 </div>
                                                             </button>
 
@@ -1150,7 +1150,7 @@
                                                                               <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
                                                                                 </path>
                                                                          </svg>
-                                                                    </span> 
+                                                                    </span>
                                                                 </div>
                                                             </button>
 
@@ -1178,7 +1178,7 @@
                                                                 </div>
                                                             </button>
                                                         </li>
-                                                   
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -1201,7 +1201,7 @@
 
                             <ng-container *ngIf="projectActionInfo;else noProjectActionFound">
                                 <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
-                          
+
                                 <ng-container *ngFor="let action of filteredPrjAction; let i=index;">
                                 <div *ngIf="action.Project_Name.toLowerCase().trim().includes(ActionSearchTF.value.toLowerCase().trim());" class="kt-projcect-act-list"
                                     (click)="showActionDetails(action.IndexId-1)" [ngClass]="{'Active':currentActionView===action.IndexId-1}">
@@ -1217,7 +1217,7 @@
                                                     </div>
                                                     <div class="kt-info-lable-v">
                                                         {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1253,12 +1253,12 @@
                                 </div>
                                </ng-container>
                                <div class="no-prjact-found  "   *ngIf="actionsNotFound || filteredPrjAction.length===0">
-                               
+
                             <div style="  display:flex; flex-direction:column;   align-items: center;  justify-content:center;      " >
                                 <svg  xmlns:svg="http://www.w3.org/2000/svg"   width="50%" height="50%" version="1.1" x="0px" y="0px" viewBox="0 0 100 125"><g  xmlns="http://www.w3.org/2000/svg" transform="translate(0,-952.36218)"><path d="M 15.8125 6 A 2.0001999 2.0001999 0 0 0 14 8 L 14 78 A 2.0001999 2.0001999 0 0 0 16 80 L 41.8125 80 C 45.315901 88.237691 53.501014 94 63 94 C 72.157117 94 80.087984 88.61635 83.78125 80.84375 A 2.0059224 2.0059224 0 1 0 80.15625 79.125 C 77.107988 85.5402 70.595823 90 63 90 C 52.482909 90 44 81.5171 44 71 C 44 60.4829 52.482909 52 63 52 C 73.517102 52 82 60.4829 82 71 A 2.0001999 2.0001999 0 1 0 86 71 C 86 60.038034 78.283596 50.853014 68 48.5625 L 68 24 A 2.0001999 2.0001999 0 0 0 67.40625 22.5625 L 51.40625 6.5625 A 2.0001999 2.0001999 0 0 0 50 6 L 16 6 A 2.0001999 2.0001999 0 0 0 15.8125 6 z M 18 10 L 48 10 L 48 24 A 2.0001999 2.0001999 0 0 0 50 26 L 64 26 L 64 48.03125 C 63.669714 48.017096 63.333697 48 63 48 C 60.657104 48 58.381633 48.376638 56.25 49.03125 A 2.0001999 2.0001999 0 0 0 56 49 L 25 49 A 2.0001999 2.0001999 0 0 0 24.8125 49 A 2.0021961 2.0021961 0 1 0 25 53 L 48.71875 53 C 46.919488 54.428914 45.335787 56.103478 44.03125 58 L 25 58 A 2.0001999 2.0001999 0 0 0 24.8125 58 A 2.0021961 2.0021961 0 1 0 25 62 L 41.84375 62 C 41.16589 63.585758 40.651128 65.256302 40.34375 67 L 25 67 A 2.0001999 2.0001999 0 0 0 24.8125 67 A 2.0021961 2.0021961 0 1 0 25 71 L 40 71 C 40 72.710582 40.20632 74.394809 40.5625 76 L 18 76 L 18 10 z M 52 12.8125 L 61.1875 22 L 52 22 L 52 12.8125 z M 24.8125 40 A 2.0021961 2.0021961 0 1 0 25 44 L 57 44 A 2.0001999 2.0001999 0 1 0 57 40 L 25 40 A 2.0001999 2.0001999 0 0 0 24.8125 40 z M 62.78125 57.96875 A 2.0001999 2.0001999 0 0 0 61 60 L 61 62 A 2.0001999 2.0001999 0 1 0 65 62 L 65 60 A 2.0001999 2.0001999 0 0 0 62.78125 57.96875 z M 62.78125 66.96875 A 2.0001999 2.0001999 0 0 0 61 69 L 61 82 A 2.0001999 2.0001999 0 1 0 65 82 L 65 69 A 2.0001999 2.0001999 0 0 0 62.78125 66.96875 z " transform="translate(0,952.36218)"></path></g>
                                 </svg>
                                 <div  class="bnk-txt"><a  class="kt-blank-msg">Sorry, that filter combination has no results.<br ><u>Clear filters</u></a></div></div>
-                            
+
                             </div>
                             </ng-container>
                             <ng-template #noProjectActionFound>
@@ -1592,9 +1592,9 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="Action_btn_all" 
-                                        *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo || 
-                                        Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo 
+                                    <div class="Action_btn_all"
+                                        *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                        Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
                                         || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
                                         <button class="Ct-btn Bt-cancel ml-2" (click)="openPrjCancelSb()">Project
                                             Cancel</button>
@@ -1608,7 +1608,7 @@
                                                 Task Submission
                                             </button>
                                         </ng-container>
-                                        <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'" 
+                                        <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'"
                                             (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
                                         <button (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
                                     </div>
@@ -1619,7 +1619,7 @@
                                     <div class="kt-project-name d-flex d-flex align-items-center gap-2">
                                         <!-- <ng-container *ngIf="projectInfo">
                                             <input id="mainPrjCheckbox"
-                                                *ngIf="(projectInfo.Status == 'InProcess' || projectInfo.Status == 'Delay' ||projectInfo.Status=='Project Complete Rejected') && (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks') 
+                                                *ngIf="(projectInfo.Status == 'InProcess' || projectInfo.Status == 'Delay' ||projectInfo.Status=='Project Complete Rejected') && (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')
                                                   && (Current_user_ID=='2000' || Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo.AuthorityEmpNo || isHierarchy==true)"
                                                 title="Mark it as Completed" type="checkbox"
                                                 style="transform:scale(1.5); accent-color:green; font-weight: bolder; cursor:pointer;"
@@ -1840,7 +1840,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- <div  *ngIf="selectedType=='1' || selectedType=='2'||selectedType=='3'">
-                                                           <button type="submit" 
+                                                           <button type="submit"
                                                             (click)="submitApproval()" [disabled]="!comments || !selectedType"
                                                             primary="true">Submit</button>
                                                 </div> -->
@@ -1881,12 +1881,12 @@
                                                                 </path>
                                                             </svg>
                                                         </span>
-                                                       
+
                                                         <!--//// old attachement /// <span (click)="openPDF(iscloud,url)" data-toggle="tooltip"
                                                             title="{{completedoc}}">
                                                             {{completedoc}}</span> -->
 
-                                                        <span 
+                                                        <span
                                                        (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
                                                             data-toggle="tooltip"
                                                             title="{{completedoc}}">
@@ -1946,7 +1946,7 @@
                                                 <div class="col-lg-4" *ngIf="requestType=='Project Forward'">
                                                     <div class="kt-info-lable-v">Forward to</div>
                                                     <div class="kt-info-data-v bg-light-shade text-center">{{forwardto}}</div>
-                                                </div> 
+                                                </div>
                                             </div>-->
                                     </div>
                                 </ng-container>
@@ -2161,7 +2161,7 @@
 
                                     <div class="col text-center">
                                         <div class="kt-info-lable-v">
-                                            RACIS 
+                                            RACIS
                                         </div>
                                         <div class="kt-project-sts-data">
                                             <div class="kt-support-view">
@@ -2428,7 +2428,7 @@
                                         </a>
                                     </div>
                                     <div>
-                                        <button class="Ct-btn Bt-Submit ml-2" 
+                                        <button class="Ct-btn Bt-Submit ml-2"
                                             *ngIf="(projectActionInfo[currentActionView].Team_Res==Current_user_ID || isHierarchy==true) && (projectActionInfo[currentActionView].Status!='Under Approval' && projectActionInfo[currentActionView].Status!='Completed' && projectInfo.Status!='Cancelled' && projectActionInfo[currentActionView].Status!='New Project Rejected' && projectActionInfo[currentActionView].Status!='Completion Under Approval')"
                                             (click)="markCompleted(projectActionInfo[currentActionView])">Action Submission</button>
                                         <button
@@ -3020,13 +3020,13 @@
                                                             <span class="kt-dt-l">08:42 AM</span>
                                                         </div>
                                                         <!--end::Label-->
-    
+
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-primary fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-    
+
                                                         <!--begin::Text-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
                                                             <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
@@ -3036,7 +3036,7 @@
                                                         <!--end::Text-->
                                                     </div>
                                                     <!--end::Item-->
-    
+
                                                     <!--begin::Item-->
                                                     <div class="timeline-item">
                                                         <!--begin::Label-->
@@ -3044,13 +3044,13 @@
                                                             <span class="kt-dt-l">11:42 PM</span>
                                                         </div>
                                                         <!--end::Label-->
-    
+
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-success fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-    
+
                                                         <!--begin::Content-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
                                                             <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
@@ -3060,7 +3060,7 @@
                                                         <!--end::Content-->
                                                     </div>
                                                     <!--end::Item-->
-    
+
                                                     <!--begin::Item-->
                                                     <div class="timeline-item">
                                                         <!--begin::Label-->
@@ -3068,13 +3068,13 @@
                                                             <span class="kt-dt-l">10:42 PM</span>
                                                         </div>
                                                         <!--end::Label-->
-    
+
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-warning fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-    
+
                                                         <!--begin::Content-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
                                                             <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
@@ -3091,13 +3091,13 @@
                                                             <span class="kt-dt-l">01:42 AM</span>
                                                         </div>
                                                         <!--end::Label-->
-    
+
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-warning fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-    
+
                                                         <!--begin::Content-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
                                                             <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
@@ -3107,12 +3107,12 @@
                                                         <!--end::Content-->
                                                     </div>
                                                     <!--end::Item-->
-    
+
                                                 </div>
-    
+
                                             </div>
                                         </div>
-    
+
                                         <div class="col-lg-6">
                                             <div class="kt-over-pd-in">
                                                 <div class="kt-ct-project">
@@ -3121,7 +3121,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="chart" id="chart-container1"></div>
-    
+
                                             </div>
                                         </div>
                                     </div>
@@ -3196,7 +3196,7 @@
         </li>
         <li class="kt-nav__item px-4">
             <div  class="matchip-drp-dwn"     >
-            
+
                   <mat-form-field class="drp-dwn-field">
                      <mat-label>Select DMS</mat-label>
                      <mat-chip-list #selectedmemoslist >
@@ -3219,9 +3219,9 @@
                            </mat-option>
                      </mat-autocomplete>
                   </mat-form-field>
-              
-                   
-            
+
+
+
               <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "   (click)="addDMSToTheProject()">Link</button>
 
             </div>
@@ -3240,8 +3240,8 @@
                 </tr>
             </tbody>
         </table> -->
- 
- 
+
+
             <div id="DemoList-table" *ngIf="projectMemos&&_linkedMemos;else noDMSFound">
 
                 <div class="demo" *ngFor="let memo of projectMemos">
@@ -3350,7 +3350,7 @@
         </div>
 
 
-        <!-- 
+        <!--
         <li class="kt-nav__foot"></li>
         <li class="kt-nav__item px-4">
             <div class="d-flex">
@@ -3366,7 +3366,7 @@
             </div>
         </li> -->
 
-    </ul> 
+    </ul>
 
 
 
@@ -4564,7 +4564,7 @@
 
     <!-------- User list view and add user -->
     <div id="User_list_View" class="sideInfobar animate-right bg-slide-br">
-        
+
         <div class="kt-portlet" id="Team_view_pr">
             <div class="kt-portlet__head">
                 <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
@@ -4716,12 +4716,12 @@
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Mohammed Mateen</h6>
                                                 <p>Responsible</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div>
                                         <div class="user-list-card">
@@ -4730,12 +4730,12 @@
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-4.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Mohammed Mateen</h6>
                                                 <p>Authority</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div>
                                         <div class="user-list-card">
@@ -4744,12 +4744,12 @@
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-5.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Ravi Nadendla</h6>
                                                 <p>Coordinator</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div>
                                         <div class="user-list-card">
@@ -4758,12 +4758,12 @@
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-6.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Md Waseem Akram</h6>
                                                 <p>Support</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div>
                                         <div class="user-list-card">
@@ -4772,27 +4772,27 @@
                                                     <img src="https://modernize-nextjs.adminmart.com/images/profile/user-7.jpg">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Mohammed Mateen</h6>
                                                 <p>Support</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div>
-                        
+
                                         <div class="user-list-card">
                                             <div class="mvc-vb">
                                                 <div class="user-icon-round">
                                                     <span class="user-Ltr bg-warning text-inverse-warning fw-bold">M</span>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="user-icc-info">
                                                 <h6>Mohammed Mateen</h6>
                                                 <p>Support</p>
                                             </div>
-                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div> -->
                             </div>
@@ -4809,7 +4809,7 @@
                                        <mat-label>Add Support team</mat-label>
                                        <mat-chip-list #selectedTeamMember  >
                                            <mat-chip *ngFor="let s of selectedEmployees"  class="Data_chip_kt" (removed)="remove(s)"     >
-                                               {{s.NonRACIS}} 
+                                               {{s.NonRACIS}}
                                                <button matChipRemove>
                                                <mat-icon>cancel</mat-icon>
                                               </button>
@@ -4859,9 +4859,9 @@
 
 
 
-<!-- 
+<!--
                                 <form>
-                                   
+
                                     <mat-form-field class="example-chip-list">
                                       <mat-label>Add Support team</mat-label>
                                       <mat-chip-list #chipList aria-label="Fruit selection">
@@ -4897,10 +4897,10 @@
 
                                     </mat-form-field>
                                     <button class="Ct-btn" *ngIf="selectedEmployees.length>0" (click)="onProject_updateSupport()">Submit</button>
-                               
-                            
+
+
                                 </form> -->
-                                 
+
 
                                 <!-- <div class="">
                                     <div class="list-new-sp-team">
@@ -5714,7 +5714,7 @@
         <div class="kt-portlet__body flex-row" *ngIf="meetingsViewOn; else mysideInfobar_schd">
             <div class="w-100">
 
-                <div class="d-flex justify-content-between m-2 tabs-iconic"> 
+                <div class="d-flex justify-content-between m-2 tabs-iconic">
                     <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab" href="#upcoming_meetings_tabpanel"><span
@@ -5733,7 +5733,7 @@
                                     Month </span></a><sup class="total-meeting-count" *ngIf="lstMthCnt" >{{lstMthCnt}}</sup>
                         </li>
                         <li class="nav-item">
-                              <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#older_meetings_tabpanel"><span class="lbl-hdn"> older         
+                              <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#older_meetings_tabpanel"><span class="lbl-hdn"> older
                               </span></a><sup class="total-meeting-count" *ngIf="oldMtgCnt"  >{{oldMtgCnt}}</sup>
                         </li>
                         <li class="nav-item">
@@ -5759,14 +5759,14 @@
                             <a class="dropdown-item"  (click)="Task_type(2)" >Event</a>
                         </div>
                     </div>
-                </div>  
-               
+                </div>
+
                 <div class="mt-2 p-3"   >
                     <div class="tab-content" id="myTabContent">
-                       
-                  
+
+
                         <div class="tab-pane fade active show" id="upcoming_meetings_tabpanel" role="tabpanel" aria-labelledby="upcoming_meetings_tabpanel">
-                           
+
                            <ng-container *ngIf="upcomingMeetings&&upcomingMeetings.length>0; else no_meetings_Present">
                         <ng-container *ngFor="let meetings of upcomingMeetings">
                             <div class="date-mt-v">
@@ -5780,7 +5780,7 @@
                                     <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}}</span>
                                 </div>
                             </div>
-                
+
                             <div class="met-card mb-3"  *ngFor="let meeting of meetings.totalmeetings" >
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -5791,10 +5791,10 @@
                                                 <div class="mt-date-footer met-day">{{meeting.ScheduleDatTime|date:'EEEE'}}</div>
                                             </div>
                                             <div class="mt-link-v">
-                
+
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-kt">
                                             <div class="kt-met-tlt">
                                                 <div class="kt-met-tlt-in">
@@ -5821,21 +5821,21 @@
                                                 </div>
                                             </div>
                                             <div class="kt-met-dtl">
-                                           
+
                                                 <div class="kt-met-label">
-                                                     Location: 
+                                                     Location:
                                                 </div>
                                                 <div class="kt-met-info">
                                                     {{ meeting.Location!==''?meeting.Location:'online'}}
                                                 </div>
-                                                
+
                                                 <div class="kt-met-app">
                                                         <img  alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 20px;">
                                                         <span>Join In Stream Planner</span>
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-right">
                                             <div class="Organizer-name">
                                                 <div class="kt-met-dtl">
@@ -5853,12 +5853,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="Organizer-name mt-5">
                                                 <div class="kt-met-dtl">
                                                     <div class="kt-met-label">
                                                         Attendees:
-                                                    </div> 
+                                                    </div>
                                                     <div class="kt-met-info">
                                                         <div class="attens-total">
                                                             <div class="att-tv-kt">
@@ -5872,24 +5872,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                         </div>
-                                  
+
                                   </div>
                                 </div>
                             </div>
 
                            </ng-container>
                            </ng-container>
-                    
+
                         </div>
 
 
                         <div class="tab-pane fade" id="today_meetings_tabpanel" role="tabpanel" aria-labelledby="today_meetings_tabpanel"     >
-                           
+
                                <ng-container *ngIf="todaymeetings&&todaymeetings.length>0;else no_meetings_Present">
                            <ng-container *ngFor="let tmeetings of todaymeetings">
-                           
+
                             <div class="date-mt-v">
                                 <div class="date-d">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -5901,7 +5901,7 @@
                                     <span _ngcontent-efp-c426="" class="date-anc">{{tmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                             </div>
-                   
+
                             <div class="met-card mb-3"  *ngFor="let meeting of tmeetings.totalmeetings"  >
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -5912,10 +5912,10 @@
                                                 <div class="mt-date-footer met-day">{{meeting.ScheduleDatTime|date:'EEEE'}}</div>
                                             </div>
                                             <div class="mt-link-v">
-                
+
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-kt">
                                             <div class="kt-met-tlt">
                                                 <div class="kt-met-tlt-in">
@@ -5943,7 +5943,7 @@
                                             </div>
                                             <div class="kt-met-dtl">
                                                 <div class="kt-met-label">
-                                                    Location: 
+                                                    Location:
                                                </div>
                                                <div class="kt-met-info">
                                                    {{ meeting.Location!==''?meeting.Location:'online'}}
@@ -5988,7 +5988,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-right">
                                             <div class="Organizer-name">
                                                 <div class="kt-met-dtl">
@@ -6006,7 +6006,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="Organizer-name mt-5">
                                                 <div class="kt-met-dtl">
                                                     <div class="kt-met-label">
@@ -6025,21 +6025,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                           
+
                              </ng-container>
                               </ng-container>
-                            
+
 
                         </div>
 
 
                         <div class="tab-pane fade" id="last_7_days_meetings_tabpanel" role="tabpanel" aria-labelledby="last_7_days_meetings_tabpanel">
-                          
+
                             <ng-container *ngIf="last7dmeetings&&last7dmeetings.length>0; else no_meetings_Present">
                          <ng-container *ngFor="let lmeetings of last7dmeetings">
                         <div class="date-mt-v">
@@ -6053,7 +6053,7 @@
                                     <span _ngcontent-efp-c426="" class="date-anc">{{lmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                         </div>
-                
+
                         <div class="met-card mb-3"  *ngFor="let lmeeting of lmeetings.totalmeetings"   >
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -6064,10 +6064,10 @@
                                                 <div class="mt-date-footer met-day">{{lmeeting.ScheduleDatTime|date:'EEEE'}}</div>
                                             </div>
                                             <div class="mt-link-v">
-                
+
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-kt">
                                             <div class="kt-met-tlt">
                                                 <div class="kt-met-tlt-in">
@@ -6095,7 +6095,7 @@
                                             </div>
                                             <div class="kt-met-dtl">
                                                 <div class="kt-met-label">
-                                                    Location: 
+                                                    Location:
                                                </div>
                                                <div class="kt-met-info">
                                                    {{ lmeeting.Location!==''?lmeeting.Location:'online'}}
@@ -6140,7 +6140,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-right">
                                             <div class="Organizer-name">
                                                 <div class="kt-met-dtl">
@@ -6158,7 +6158,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="Organizer-name mt-5">
                                                 <div class="kt-met-dtl">
                                                     <div class="kt-met-label">
@@ -6177,20 +6177,20 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
-                       
+                            </div>
+
                            </ng-container>
                            </ng-container>
 
                         </div>
-        
+
 
                         <div class="tab-pane fade" id="last_month_meetings_tabpanel" role="tabpanel" aria-labelledby="last_month_meetings_tabpanel">
-                                <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present"> 
+                                <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present">
                             <ng-container *ngFor="let lmmeetings of lastMonthMeetings">
                             <div class="date-mt-v">
                                 <div class="date-d">
@@ -6203,7 +6203,7 @@
                                     <span _ngcontent-efp-c426="" class="date-anc">{{lmmeetings.date| date:'MMM d y'}} </span>
                                 </div>
                             </div>
-                
+
                             <div class="met-card mb-3"    *ngFor="let lmmeeting of lmmeetings.totalmeetings"    >
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -6214,10 +6214,10 @@
                                                 <div class="mt-date-footer met-day">{{lmmeeting.ScheduleDatTime|date:'EEEE'}}</div>
                                             </div>
                                             <div class="mt-link-v">
-                
+
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-kt">
                                             <div class="kt-met-tlt">
                                                 <div class="kt-met-tlt-in">
@@ -6245,7 +6245,7 @@
                                             </div>
                                             <div class="kt-met-dtl">
                                                 <div class="kt-met-label">
-                                                    Location: 
+                                                    Location:
                                                </div>
                                                <div class="kt-met-info">
                                                    {{ lmmeeting.Location!==''?lmmeeting.Location:'online'}}
@@ -6290,7 +6290,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="mt-dtl-right">
                                             <div class="Organizer-name">
                                                 <div class="kt-met-dtl">
@@ -6308,7 +6308,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="Organizer-name mt-5">
                                                 <div class="kt-met-dtl">
                                                     <div class="kt-met-label">
@@ -6327,7 +6327,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                         </div>
                                     </div>
                                 </div>
@@ -6335,11 +6335,11 @@
                            </ng-container>
                            </ng-container>
                         </div>
-                
+
                         <div class="tab-pane fade" id="older_meetings_tabpanel" role="tabpanel" aria-labelledby="older_meetings_tabpanel">
                             <ng-container *ngIf="olderMeetings&&olderMeetings.length>0; else no_meetings_Present">
                              <ng-container  *ngFor="let omeetings of olderMeetings"  >
-                            
+
                             <div class="date-mt-v">
                                 <div class="date-d">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dat-icn">
@@ -6347,7 +6347,7 @@
                                     </svg>
                                     <span _ngcontent-efp-c426="" class="date-anc">{{omeetings.date| date:'MMM d y'}} </span></div>
                             </div>
-                        
+
                             <div class="met-card mb-3"  *ngFor="let omeeting of omeetings.totalmeetings"   >
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -6358,10 +6358,10 @@
                                                 <div class="mt-date-footer met-day">{{omeeting.ScheduleDatTime|date:'EEEE'}}</div>
                                             </div>
                                             <div class="mt-link-v">
-                                                
+
                                             </div>
                                         </div>
-                                       
+
                                         <div class="mt-dtl-kt">
                                             <div class="kt-met-tlt">
                                                 <div class="kt-met-tlt-in">
@@ -6389,7 +6389,7 @@
                                             </div>
                                             <div class="kt-met-dtl">
                                                 <div class="kt-met-label">
-                                                    Location: 
+                                                    Location:
                                                </div>
                                                <div class="kt-met-info">
                                                    {{ omeeting.Location!==''?omeeting.Location:'online'}}
@@ -6419,7 +6419,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                        
+
                                         <div class="mt-dtl-right">
                                             <div class="Organizer-name">
                                                 <div class="kt-met-dtl">
@@ -6437,7 +6437,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <div class="Organizer-name mt-5">
                                                 <div class="kt-met-dtl">
                                                     <div class="kt-met-label">
@@ -6456,27 +6456,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                         
+
                              </ng-container>
                             </ng-container>
 
-                        </div> 
-                        
+                        </div>
+
                         <div class="tab-pane fade"     id="custom_meetings_tabpanel" role="tabpanel" aria-labelledby="custom_meetings_tabpanel">
-                           
+
                             <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
                                 <div (click)="$event.stopPropagation();">
-                                  
+
                                     <div class="mt-1">
                                         <label class="cus-lbl">Date range</label>
                                         <div class="d-flex-cen">
                                             <div class="">
-                                                
+
                                                 <div class="input-group  border border-gray rounded-2" >
                                                     <input
                                                        type="date"
@@ -6484,7 +6484,7 @@
                                                         name="date"
                                                         [(ngModel)]="mtgFromD"
                                                         />
-                                                 
+
                                                 </div>
 
 
@@ -6492,16 +6492,16 @@
                                             <div class="px-2">to</div>
 
                                             <div class="">
-                                                
+
                                                 <div class="input-group  border border-gray rounded-2  ">
-                                                    <input 
+                                                    <input
                                                         type="date"
                                                         placeholder="Select Start Date" class="form-control  border-0"
-                                                        name="date" 
+                                                        name="date"
                                                         [min]="mtgFromD|date:'yyyy-MM-dd'"
                                                         [(ngModel)]="mtgUptoD"
                                                         />
-                                                  
+
                                                 </div>
 
                                             </div>
@@ -6523,7 +6523,7 @@
                                 </div>
 
                             </div>
-                            
+
                             <ng-container *ngIf="mtgsInRange&&mtgsInRange.length>0; else no_meetings_Present">
                               <ng-container *ngFor="let meetings of mtgsInRange">
                                 <div class="date-mt-v">
@@ -6537,7 +6537,7 @@
                                         <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
                                     </div>
                                 </div>
-                    
+
                                 <div class="met-card mb-3"  *ngFor="let meeting of meetings.totalmeetings" >
                                     <div class="card-body">
                                         <div class="d-flex">
@@ -6548,10 +6548,10 @@
                                                     <div class="mt-date-footer met-day">{{meeting.ScheduleDatTime|date:'EEEE'}}</div>
                                                 </div>
                                                 <div class="mt-link-v">
-                    
+
                                                 </div>
                                             </div>
-                    
+
                                             <div class="mt-dtl-kt">
                                                 <div class="kt-met-tlt">
                                                     <div class="kt-met-tlt-in">
@@ -6578,21 +6578,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="kt-met-dtl">
-                                               
+
                                                     <div class="kt-met-label">
-                                                         Location: 
+                                                         Location:
                                                     </div>
                                                     <div class="kt-met-info">
                                                         {{ meeting.Location!==''?meeting.Location:'online'}}
                                                     </div>
-                                                    
+
                                                     <div class="kt-met-app">
                                                             <img  alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 20px;">
                                                             <span>Join In Stream Planner</span>
                                                     </div>
                                                 </div>
                                             </div>
-                    
+
                                             <div class="mt-dtl-right">
                                                 <div class="Organizer-name">
                                                     <div class="kt-met-dtl">
@@ -6610,12 +6610,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                    
+
                                                 <div class="Organizer-name mt-5">
                                                     <div class="kt-met-dtl">
                                                         <div class="kt-met-label">
                                                             Attendees:
-                                                        </div> 
+                                                        </div>
                                                         <div class="kt-met-info">
                                                             <div class="attens-total">
                                                                 <div class="att-tv-kt">
@@ -6629,19 +6629,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                    
+
                                             </div>
-                                      
+
                                       </div>
                                     </div>
                                 </div>
-    
+
                               </ng-container>
                             </ng-container>
-                        
-                        
-                        
-                        </div> 
+
+
+
+                        </div>
 
 
 
@@ -6654,7 +6654,7 @@
                            </ng-template>
 
 
- 
+
 
                     </div>
                 </div>
@@ -6669,7 +6669,7 @@
                     </button>
                     <h4 class="m-0 ml-2">Schedule {{ScheduleType}}</h4>
                 </div>
-             
+
                  <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
                     <div class="">
                         <div class="d-flex align-items-center justify-content-between">
@@ -6690,9 +6690,9 @@
                             <input class="form-control Title"    placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
                                 minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                             <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
-                            
+
                          </div>
-        
+
                         <div class="form-group" id="core_viw123">
                             <label class="cus-lbl">Select Project <span class="text-danger"
                                     *ngIf="ScheduleType=='Task'">*</span>
@@ -6701,8 +6701,8 @@
                                 (change)="GetSubtasklistfromProject($event)">
                                 <ng-option [value]="car.Project_Code"  *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
                             </ng-select>
-                            
-                            
+
+
                             <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
                                 <span class="d-inline-flex align-items-center"><i
                                         class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
@@ -6715,9 +6715,9 @@
                             </div>
                             <span *ngIf="_subname == true" style="color:red">Please select project!</span>
                         </div>
-        
+
                         <div class="form-group" id="core_viw121" style="display:none">
-                        
+
                             <mat-form-field  class="drp-dwn-field w-100">
                                 <mat-label>Select Project </mat-label>
                                 <mat-chip-list #selectedProjectDrpDwn  >
@@ -6744,7 +6744,7 @@
                             </mat-form-field>
 
                         </div>
-         
+
                         <div class="content-main show pt-0" id="core_viw">
                             <div class="form-group" id="subtaskid">
                                 <label class="cus-lbl">Select Action</label>
@@ -6764,9 +6764,9 @@
                                             class="fas fa-star mr-2"></i>{{_status}}</span>
                                 </div>
                             </div>
-                             
+
                             <div class="form-group" id="core_viw222" style="display:none">
-                                
+
                                 <mat-form-field  class="drp-dwn-field w-100">
                                     <mat-label>Select Portfolio</mat-label>
                                     <mat-chip-list #selectedPortfolioDrpDwn  >
@@ -6791,14 +6791,14 @@
                                 </mat-form-field>
 
                             </div>
-                           
+
                             <div class="form-group" id="core_Dms" style="display:none">
-                               
+
                                 <mat-form-field  class="drp-dwn-field w-100">
                                     <mat-label>Add DMS</mat-label>
                                     <mat-chip-list #selectedDmsMemoDrpDwn  >
-                                        <mat-chip *ngFor="let d of SelectDms"  class="Data_chip_kt" (removed)="removeSelectedDMSMemo(d)"     >
-                                            {{d.Subject}} 
+                                        <mat-chip *ngFor="let d of SelectDms"  class="Data_chip_kt" (removed)="removeSelectedDMSMemo(d)" >
+                                            {{d.Subject}}
                                             <button matChipRemove>
                                             <mat-icon>cancel</mat-icon>
                                            </button>
@@ -6812,13 +6812,13 @@
                                     <mat-autocomplete  aria-label="MemoDrpDwn"  #MemoDrpDwn="matAutocomplete" (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "  (opened)="isDMSMemoDrpDwnOpen=true"  (closed)="isDMSMemoDrpDwnOpen=false; "   >
                                           <mat-option *ngFor="let m of Memos_List|filter:dmsMemoTF.value" [value]="m.MailId">
                                             <mat-checkbox  color="primary"  [checked]="SelectDms.indexOf(m)!==-1"></mat-checkbox>
-                                            {{m.Subject}}
+                                            {{m.Subject}} - {{m.DisplayName}}
                                           </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
 
                             </div>
-                            
+
 
 
                             <div class="form-group" id="Guest_Name" style="display:none">
@@ -6827,7 +6827,7 @@
                                     <mat-label>Select Participants</mat-label>
                                     <mat-chip-list #selectedParticipants  >
                                         <mat-chip *ngFor="let p of ngEmployeeDropdown"  class="Data_chip_kt" (removed)="removeSelectedParticipant(p)"     >
-                                            {{p.DisplayName}} 
+                                            {{p.DisplayName}}
                                             <button matChipRemove>
                                             <mat-icon>cancel</mat-icon>
                                            </button>
@@ -6846,7 +6846,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                                </div>
-                            </div> 
+                            </div>
 
 
 
@@ -6867,7 +6867,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div class="form-group section-1" id="Location_Name" style="display:none">
                                 <label class="cus-lbl">Location </label>
                                 <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
@@ -6877,17 +6877,17 @@
                                 <label class="cus-lbl">Description </label>
                                 <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
                             </div>
-                             
+
                             <div class="form-group mb-0">
                                 <label class="cus-lbl">Attachment </label>
                                 <div class="custom-file pl-1">
                                     <input type="file" id="uploadFile_" accept="application/pdf" class="form-control-file"
                                         (change)="onFileChange_($event)" multiple>
-        
+
                                 </div>
                             </div>
-        
-        
+
+
                             <div class="dropzone dropzone-multi form-group" id="">
                                 <div id="div_exixtingfiles" class="dropzone-items">
                                     <div *ngFor='let url of _lstMultipleFiales'>
@@ -6903,13 +6903,13 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <div *ngFor='let url of Attachment12_ary'>
                                         <div class="dropzone-item p-3 m-0 border br-0">
                                             <div id="url_{{url.file_id}}" class="dropzone-file">
                                                 <div class="dropzone-filename">
                                                     <span>{{url.File_Name}}</span>
-        
+
                                                     <span (click)="RemoveExistingFile(url.file_id)" class="dropzone-delete">
                                                         <i class="flaticon2-cross"></i>
                                                     </span>
@@ -6919,7 +6919,7 @@
                                     </div>
                                 </div>
                             </div>
-        
+
                             <div class="form-group mb-0">
                                 <div class="d-flex gap-1">
                                     <div class="form-group flex-1">
@@ -6929,7 +6929,7 @@
                                             (dateChange)="selectStartDate($event)" [min]="todayDate"
                                             [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
                                             <div class="input-group-append">
-        
+
                                                 <div class="input-group-text p-0">
                                                     <mat-datepicker-toggle matSuffix [for]="picker1_m_date"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker1_m_date></mat-datepicker>
@@ -6937,8 +6937,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
-                                    <div class="form-group flex-1"> 
+
+                                    <div class="form-group flex-1">
                                         <label class="cus-lbl">Start Time </label>
                                         <ng-select class="kt-input form-control p-0 border-0" id="startid"
                                             placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
@@ -6946,7 +6946,7 @@
                                                 {{item}}</ng-option>
                                         </ng-select>
                                     </div>
-                                   
+
                                     <div class="form-group flex-1">
                                         <label class="cus-lbl">End Time</label>
                                         <ng-select class="kt-input form-control p-0"  placeholder="End Time"
@@ -6955,7 +6955,7 @@
                                                 {{item1}}</ng-option>
                                         </ng-select>
                                     </div>
-        
+
                                     <div class="form-group flex-1" id="Schenddate">
                                         <label>Schedule End Date <span class="text-danger">*</span></label>
                                         <div class="input-group">
@@ -6971,16 +6971,16 @@
                                         </div>
                                     </div>
                                 </div>
-        
+
                                 <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                                     Note:Selected Project is Expired,Please Extend your Project Deadline date
                                 </div>
-           
+
                                 <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
                                     <div class="wc-cus">
-        
+
                                         <div class="form-group d-none" id="Recurrence_hide">
-        
+
                                             <div class="card text-dark shadow-sm">
                                                 <div class="card-header bg-white">
                                                     <div class="card-title mb-0">Recurrence Details</div>
@@ -6990,16 +6990,16 @@
                                                         <h5>{{test.Recurrence}}</h5>
                                                         <div class="d-flex">
                                                             <div class="repeat-day">{{test.Recurrence_values}}</div>
-        
+
                                                         </div>
                                                     </div>
-        
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-        
-        
+
+
                                     <div class="d-flex gap-1 flex-1">
                                         <div class="wc-cus">
                                             <div class="form-group flex-1" id="div_recurrence">
@@ -7014,11 +7014,11 @@
                                                 </mat-select>
                                             </div>
                                         </div>
-        
-        
-        
+
+
+
                                     </div>
-        
+
                                     <div class="wc-cus">
                                         <div>
                                             <div class="ml-0 form-group" style="display: none;" id="weekly_121">
@@ -7037,7 +7037,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
                                             <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
                                                 <label class="">Day</label>
                                                 <div class="pt-1">
@@ -7057,7 +7057,7 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="form-group flex-1" id="div_endDate">
                                     <label>End till <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -7072,7 +7072,7 @@
                                         </div>
                                     </div>
                                 </div>
-        
+
                                 <div class="d-flex align-items-start gap-1 flex-nowrap">
                                     <div class="wc-cus" style="display:none" id="calender_1">
                                         <mat-card class="demo-inline-calendar-card ">
@@ -7083,7 +7083,7 @@
                                             </div>
                                         </mat-card>
                                     </div>
-                                   
+
                                     <div *ngIf="preventSingleClick==true"
                                         class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">
                                         <input type="hidden" id="hdnSelectedId" value="{{_selectedId}}">
@@ -7118,7 +7118,7 @@
                                     </div>
                                 </div>
                             </div>
-                               
+
                             <div *ngIf="isChecked == '1'">
                                 <div class="form-group align-items-start  mb-3 d-none">
                                     <div class="calendar-wrap mr-3">
@@ -7186,12 +7186,12 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-        
+
                                         <a class="resetbtn">Clear date-range</a>
                                     </div>
                                     <div class="calendar-wrap mr-3">
                                         <h5 class="month-year">January 2020</h5>
-        
+
                                         <table class="calendar">
                                             <thead>
                                                 <tr>
@@ -7255,12 +7255,12 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-        
+
                                         <a class="resetbtn">Clear date-range</a>
                                     </div>
                                     <div class="calendar-wrap">
                                         <h5 class="month-year">January 2020</h5>
-        
+
                                         <table class="calendar">
                                             <thead>
                                                 <tr>
@@ -7324,11 +7324,11 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-        
+
                                         <a class="resetbtn">Clear date-range</a>
                                     </div>
                                 </div>
-        
+
                                 <div>
                                     <h2>{{SubmissionName}} </h2>
                                 </div>
@@ -7350,24 +7350,24 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a>
                                             </ng-container>
-        
+
                                         </div>
                                     </div>
                                 </div>
-        
-                            </div> 
+
+                            </div>
                         </div>
-        
+
                   </div>
-                </div> 
-                
+                </div>
+
                 <div class="kt-portlet__foot py-3">
                     <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                         <button type="submit" class="btn w-110 Bt-Submit ml-2" [disabled]="!Endtms ||!Startts || !Title_Name "
                         (click)="OnSubmitSchedule()" >Submit</button>
                     </div>
-                </div> 
-        
+                </div>
+
             </div>
         </ng-template>
     </div>
@@ -8163,11 +8163,13 @@
                         <div class="col-lg-4 text-left"
                             *ngIf="projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')">
                             <div class="form-group mb-2 Ic_ed">
-                                <div class="kt-info-lable-v"> Allocated hours 
+                                <div class="kt-info-lable-v"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <input type="text" class="form-control readonly"
-                                            [(ngModel)]="ActionAllocatedHours" readonly />
-                                    </div>
+                                        <input type="text" id="myInput" class="form-control readonly" *ngIf="ActionAllocatedHours>0"
+                                            [(ngModel)]="ActionAllocatedHours" readonly/>
+                                        <input type="text" id="myInput" class="form-control" *ngIf="ActionAllocatedHours==0"
+                                            [(ngModel)]="editAllocatedhours"/>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -8203,7 +8205,7 @@
 
 
             <!-------- view comments start-->
-<div class="sideInfobar animate-right" id="View_comments"> 
+<div class="sideInfobar animate-right" id="View_comments">
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
@@ -8219,9 +8221,9 @@
         <ng-container *ngFor="let item of _CommentsList">
             <div *ngIf="(item.Send_From == 'WS') then even;">
             </div>
-            <div *ngIf="(item.Send_From !='WS') then odd;"> 
+            <div *ngIf="(item.Send_From !='WS') then odd;">
             </div>
-            <div class="kt_all_commnets_view" >      
+            <div class="kt_all_commnets_view" >
                 <ng-template #even>
               <div class="d-flex justify-content-start mb-10 ">
                       <div class="d-flex flex-column align-items-start">
@@ -8233,11 +8235,11 @@
                                     <a href="#" class="Kt_cmt_user_name me-2">{{item.Emp_name}}</a>
                                     <span class="Kt_cmt_date">{{item.Req_DL | date:'dd-MM-yyyy'}} | {{item.Req_Type}}</span>
                                 </div>
-                            </div>                    
+                            </div>
                         <div class="Kt_cmt_user_message bg-light-orange mw-lg-400px text-start" data-kt-element="message-text">
-                            {{item.Req_Coments}}  
-                        </div>           
-                    </div>    
+                            {{item.Req_Coments}}
+                        </div>
+                    </div>
                 </div>
             </ng-template>
             <ng-template #odd>
@@ -8247,15 +8249,15 @@
                             <div class="me-3">
                                     <span class="Kt_cmt_date">{{item.Req_Type}} | {{item.Req_DL | date:'dd-MM-yyyy'}}</span>
                                 <a href="#" class="Kt_cmt_user_name ms-2">{{item.Emp_name}}</a>
-                            </div> 
+                            </div>
                             <div class="symbol  symbol-35px symbol-circle ">
                                 <img alt="Pic" src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-1.jpg">
                             </div>
-                          </div>                   
+                          </div>
                       <div class="Kt_cmt_user_message bg-light-blue mw-lg-400px text-end" data-kt-element="message-text">
-                        {{item.Req_Coments}}     
-                      </div>   
-                             
+                        {{item.Req_Coments}}
+                      </div>
+
                   </div>
               </div>
             </ng-template>

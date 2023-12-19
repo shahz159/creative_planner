@@ -51,7 +51,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-    
+
   }
 
   _subtaskDiv: boolean;
@@ -67,7 +67,7 @@ export class ProjectsSummaryComponent implements OnInit {
 $(document).ready(function() {
   // Action next
   $('.btn-next').on('click', function() {
-    // Get value from data-to in button next 
+    // Get value from data-to in button next
     const n = $(this).attr('data-to');
     // Action trigger click for tag a with id in value n
     $(n).trigger('click');
@@ -103,7 +103,7 @@ $(document).ready(function(){
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
 
- 
+
 
   Memos_List: any;
   _ActualMemoslist: any;
@@ -151,7 +151,7 @@ $(document).ready(function(){
           // console.log("Actula Memo List On Row Click--->", this._ActualMemoslist);
           let arr2: any = this._dbMemoIdList;
           this._SelectedIdsfromDb = _.map(arr2, (d) => { return d.MailId });
-          //Rejecting Same Ids 
+          //Rejecting Same Ids
           this.Memos_List = _.reject(arr1, (d) => {
             var findId = _.find(this._SelectedIdsfromDb, (sId) => { return sId === d.MailId });
             if (findId) {
@@ -234,11 +234,11 @@ $(document).ready(function(){
   }
 
   SearchMemo: string;
-  // search(value: string) { 
+  // search(value: string) {
   //   let filter = value.toLowerCase();
   //   return this.Memos_List.filter(option => option.toLowerCase().startsWith(filter));
   // }
-  // onKey(value) { 
+  // onKey(value) {
   //   this.Memos_List = this.search(value);
   //   }
 
@@ -408,7 +408,7 @@ $(document).ready(function(){
     else{
       this.ObjUserDetails.ActiveStatus = "Active";
     }
-    
+
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
         console.log("Summary Data---->", this._ProjectDataList);
@@ -444,7 +444,7 @@ $(document).ready(function(){
       else{
         this.ObjUserDetails.ActiveStatus = "Active";
       }
-      
+
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
          console.log("Summary Data---->", this._ProjectDataList);
@@ -471,7 +471,7 @@ $(document).ready(function(){
       this.getDropdownsDataFromDB();
       });
     }
-    
+
 
   }
 
@@ -573,7 +573,7 @@ $(document).ready(function(){
           this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
           this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
           this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
-  
+
           let _vl = this._totalProjectsCount / 30;
           let _vl1 = _vl % 1;
           if (_vl1 > 0.000) {
@@ -582,7 +582,7 @@ $(document).ready(function(){
           else {
             this.LastPage = Math.trunc(_vl);
           }
-  
+
           if(this.CurrentPageNo == this.LastPage){
             this.lastPagerecords=30;
           }
@@ -654,7 +654,7 @@ $(document).ready(function(){
       }
     });
     this.selectedItem_Type.push(arr2);
-    this.TypeContInFilter.forEach(element => {      
+    this.TypeContInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
@@ -671,11 +671,11 @@ $(document).ready(function(){
 
   selectedItem_Emp = [];
 
-  isEmpChecked(item) {  
+  isEmpChecked(item) {
     let arr = [];
     this.edited = true;
     this.canceledit = true;
-    this.EmpCountInFilter.forEach(element => {     
+    this.EmpCountInFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Emp_No: element.Emp_No });
         return this.checkedItems_Emp = arr;
@@ -689,7 +689,7 @@ $(document).ready(function(){
       }
     });
     this.selectedItem_Emp.push(arr2);
-    this.EmpCountInFilter.forEach(element => {     
+    this.EmpCountInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
         this.resetFilters();
@@ -715,7 +715,7 @@ $(document).ready(function(){
       this.searchResult = true;
       this.CurrentPageNo = 1;
       this.applyFilters();
-    }    
+    }
   }
 
   applyFilters() {
@@ -777,7 +777,7 @@ $(document).ready(function(){
       else{
         this.ObjUserDetails.ActiveStatus = "Active";
       }
-      
+
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
@@ -852,7 +852,7 @@ $(document).ready(function(){
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    
+
   }
   selectedIndex: number | null = null;
 
@@ -868,7 +868,7 @@ $(document).ready(function(){
       });
     }
   }
-  
+
   OpenProject(){
     $('#New_project_Add').addClass('open_sidebar');
     // document.getElementById("New_project_Add").classList.add("open_sidebar");
@@ -877,7 +877,7 @@ $(document).ready(function(){
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-  
+
   closeInfo() {
     // $('.project-list_AC').removeClass('active');
     this._ProjectDataList.forEach(item => item.isActive = false);
@@ -892,7 +892,7 @@ $(document).ready(function(){
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
   }
 
-  
+
 
   // project info js -------------------------------------
   Open_project_info(){
@@ -901,8 +901,8 @@ $(document).ready(function(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
- 
-  
+
+
   //----------------------project info js end ------------
   _totalMemos: number;
   _mappedMemos: number;
@@ -942,7 +942,7 @@ $(document).ready(function(){
           this._MemosNotFound = "No memos linked";
         }
       });
-    //Displaying Right Side Bar... 
+    //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
   }
 
@@ -1032,7 +1032,7 @@ $(document).ready(function(){
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-   
+
     var myWindow = window.open(myurl,"_");
     myWindow.focus();
   }
@@ -1041,7 +1041,7 @@ $(document).ready(function(){
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
-   
+
     var myWindow = window.open(myurl,"_");
     myWindow.focus();
   }
@@ -1059,7 +1059,7 @@ $(document).ready(function(){
       this.searchResult = true;
       this.SearchbyText();
     }
-    
+
     //console.log("Searh Text---->",event)
   }
 
@@ -1091,7 +1091,7 @@ $(document).ready(function(){
     });
   }
 
- 
+
   comments:string;
   commentSelected:string;
 

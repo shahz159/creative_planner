@@ -6,7 +6,7 @@
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <div class="dropdown">                            
+                        <div class="dropdown">
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                {{Type}} Summary
                             </h3>
@@ -19,7 +19,7 @@
                     <div class="kt-portlet__head-label mr-2">
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                         data-trigger="focus" data-toggle="tooltip" title="Project Info!">
-                       
+
                         <i class="fa fa-info-circle info-icon-cir"
                             (click)="Open_project_info()"></i>
                          </a> -->
@@ -28,7 +28,7 @@
                                 <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
                          </a>
                         <!-- <div class="dropdown">
-                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
@@ -53,7 +53,7 @@
                                 <a class="dropdown-item">Category</a>
                             </div>
                         </div> -->
-                        
+
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
                             <div class="kt-header__topbar-wrapper">
                                 <div class="kt-quick-search kt-quick-search--inline">
@@ -66,17 +66,17 @@
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()" type="submit">
                                                     <i class="flaticon2-search-1"></i>
-                                                    
+
                                                 </button>
-                                                
+
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mr-3">
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
@@ -103,7 +103,7 @@
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"                             
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
                             (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
                             [disabled]="_CurrentpageRecords<30">
                             <i class="fas fa-angle-right mr-0"></i></button>
@@ -211,10 +211,10 @@
                                                 </div>
                                             </div>
                                             <br>
-                                            
+
                                             <hr>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <button
@@ -244,7 +244,7 @@
                         </button> -->
                         <div class="btn-group d-none">
                             <!-- <button class="btn-act btn btn-hvr filter-dot1" data-toggle="dropdown">
-                                
+
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" role="img"
                                     font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
                                     viewBox="0 -1 17 17">
@@ -257,7 +257,7 @@
                             <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
                                 <i class="fas fa-ellipsis-v mr-0 "></i>
                             </a>
-                            
+
                             <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
                                 <ul  class="kt-nav">
                                     <li class="kt-nav__head d-flex justify-content-between">
@@ -271,7 +271,7 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Project Type</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -279,7 +279,7 @@
                                                         Core Tasks
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Routine Tasks
@@ -298,8 +298,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -318,7 +318,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -338,11 +338,11 @@
 
                                                 </div>
                                             </div>
-    
-    
+
+
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Status</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -350,7 +350,7 @@
                                                         Completed
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Completion Under Approval
@@ -369,8 +369,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -389,7 +389,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -419,7 +419,7 @@
                                                         User 1
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         User 2
@@ -438,8 +438,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -458,7 +458,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -507,7 +507,7 @@
                                 <span class="example_icon" style="opacity: 1; transform: none;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                      </svg>                                      
+                                      </svg>
                                 </span>
                             </div>
                             <div class="">
@@ -516,7 +516,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -532,8 +532,8 @@
                             </div>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -550,9 +550,9 @@
                             </div>
                         </div>
                     </div>
-        
-        
-        
+
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -583,7 +583,7 @@
                             </div>
                         </div>
                     </div> -->
-        
+
                 </div>
             </div>
             <!--begin::Portlet-->
@@ -608,7 +608,7 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        
+
                                         <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
                                         <div class="table-responsive">
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
@@ -684,7 +684,7 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd project-list_AC" 
+                                                <tr role="row" class="odd project-list_AC"
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <!-- Information Icon -->
                                                     <td align="center">
@@ -693,7 +693,7 @@
                                                             <i class="fa fa-info-circle info-icon-cir"
                                                                 (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
-                                                       
+
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
@@ -757,7 +757,7 @@
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
                                                                 <!-- href="javascript:void(0)"
-                                                            
+
                                                             (click)="OpenDARinfo(item.Project_Code)"
                                                                       <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
@@ -931,7 +931,7 @@
                                                         <a><i class="fa fa-link text-primary"></i></a>
                                                     </td> -->
                                                     <!-- <td>
-                                                        
+
                                                         <a tabindex="0" role="button" placement="right" data-trigger="focus" class="btn px-0 mr-2"
                                                             *ngIf="item.ApprovalEmpID!=0" (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)"
                                                             data-toggle="tooltip" title="Project Actions!">
@@ -941,7 +941,7 @@
                                                               <i class="fas fa-ellipsis-v mr-0" style="color: red"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr" 
+                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr"
                                                                     (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)">Accept</a>
                                                               <a href="javascript:void(0);" class="dropdown-item dan-hvr">Reject</a>
                                                             </div>
@@ -961,7 +961,7 @@
                         </div>
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -1117,9 +1117,9 @@
 
 <!-----------Mew Project Crate- and actions-------------->
 <div id="New_project_Add" class="add_new_project_slide  animate-right">
-   
+
    <router-outlet></router-outlet>
-  
+
    <div class="modal  fade" id="Guideline_view" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -1131,9 +1131,9 @@
             </span>
           </button>
        </div>
-          
+
         <div class="modal-body pt-2 px-2">
-        
+
             <div class="accordion accordion-light  accordion-toggle-arrow" id="accordionExample5">
                 <div class="card dvx-cd">
                     <div class="card-header" id="coretasks_t">
@@ -1215,7 +1215,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1248,7 +1248,7 @@
                 <div class="card dvx-cd">
                     <div class="card-header" id="Secondary_t">
                         <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Secondary">
-                            <i class="flaticon-list-3"></i> Secondary Tasks 
+                            <i class="flaticon-list-3"></i> Secondary Tasks
                         </div>
                     </div>
                     <div id="Secondary" class="collapse" data-parent="#accordionExample5">
@@ -1326,7 +1326,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1346,9 +1346,6 @@
                                 </div>
 
                                 <div class="Guidelines_info_text">
-                                    <h4>Do you want to save as Template :</h4>
-                                    <p>If you select then this project will add in templates list.</p>
-                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Template :</h4>
@@ -1376,7 +1373,6 @@
                                     <h4>Client:</h4>
                                     <p>The team member has to select the client’s name to whom the project belongs to.</p>
                                 </div>
-                                <div class="Guidelines_info_text">
                                     <h4>Project Name:</h4>
                                     <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                     <p>Ex: Globus Business Plan and Sales Target Analysis</p>
@@ -1440,7 +1436,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1502,7 +1498,7 @@
                                     </div>
                                 </div>
 
-                              
+
                                 <div class="Guidelines_info_text">
                                     <h4>Do you want to save as Template :</h4>
                                     <p>If you select then this project will add in templates list.</p>
@@ -1519,7 +1515,7 @@
                 <div class="card dvx-cd">
                     <div class="card-header" id="Revenue_t">
                         <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Revenue">
-                            <i class="flaticon-diagram"></i> Revenue Generation 
+                            <i class="flaticon-diagram"></i> Revenue Generation
                         </div>
                     </div>
                     <div id="Revenue" class="collapse" data-parent="#accordionExample5">
@@ -1597,7 +1593,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1620,7 +1616,7 @@
                 <div class="card dvx-cd">
                     <div class="card-header" id="Cost_t">
                         <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Cost">
-                            <i class="flaticon-clock"></i> Cost Reduction 
+                            <i class="flaticon-clock"></i> Cost Reduction
                         </div>
                     </div>
                     <div id="Cost" class="collapse" data-parent="#accordionExample5">
@@ -1698,7 +1694,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1721,12 +1717,12 @@
                 <div class="card dvx-cd">
                     <div class="card-header" id="KPI_t">
                         <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#KPI">
-                            <i class="flaticon-tool-1"></i> KPI 
+                            <i class="flaticon-tool-1"></i> KPI
                         </div>
                     </div>
                     <div id="KPI" class="collapse" data-parent="#accordionExample5">
                         <div class="card-body">
-                           
+
                             <div class="Guidelines_info-view">
                                 <h4>KPI</h4>
                                 <p>Key Performance Indicator  KPI is a Bench Mark Assigned by a Company or Created by you to Judge Your Performance.  </p>
@@ -1799,7 +1795,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1956,7 +1952,7 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
@@ -1985,7 +1981,7 @@
                     </div>
                     <div id="Routine_task" class="collapse" data-parent="#accordionExample5">
                         <div class="card-body">
-                            
+
                             <div class="Guidelines_info-view">
                                 <h4>Routine Task</h4>
                                 <p>A Routine task is linked to the position of the team member, it is the activity assigned to the team member by his/her position and it does not require any report submission, such as “Email checking, calls, chatting etc.”. Routine task is the same copy of standard task but doesn’t need the report submission, likewise the standard task the routine task also comes with different types “Daily, Weekly, Monthly, Quarterly, Half yearly and Annually” and has time budget.
@@ -2059,11 +2055,11 @@
                                         </div>
                                     </div>
 
-                                </div>     
+                                </div>
 
                                 <div class="Guidelines_info_text">
                                     <h4>Sub Section:</h4>
-                                
+
                                     <div class="table-scrollable">
                                         <table class="table table-striped table-bordered table-hover">
                                             <thead>
@@ -2134,7 +2130,7 @@
 
 
         </div>
-        
+
       </div>
     </div>
   </div>

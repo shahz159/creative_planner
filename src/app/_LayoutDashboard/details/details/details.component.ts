@@ -1833,12 +1833,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ActionendDate: any
   ActionDuration: any
   ActionAllocatedHours: any
+  editAllocatedhours: any=0;
   ActionOwnerid: any
   OGActionOwner: any
   OGActionResponsible: any
   ActionResponsibleid: any
   ActionClientid: any
   OGActionClient: any
+
 
 
   /// Action Edits start
@@ -1864,7 +1866,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.ActionstartDate = this.projectActionInfo[this.currentActionView].StartDate
     this.ActionendDate = this.projectActionInfo[this.currentActionView].EndDate
     this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
-    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours
+    this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
+    this.editAllocatedhours = this.ActionAllocatedHours;
   }
 
   onAction_update() {
@@ -1910,7 +1913,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     else {
       var category = this.OGselectedcategoryid;
     }
-    
+
+    if(this.editAllocatedhours==0){
+      this.editAllocatedhours = this.ActionAllocatedHours;
+    }
+
     var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
     var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
 
@@ -1924,21 +1931,24 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Client: Actionclient,
       StartDate: datestrStart,
       EndDate: datestrEnd,
-      Allocated: this.ActionAllocatedHours,
+      Allocated: this.editAllocatedhours,
     }
+
+
+
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
 
   const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
   const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
 
-  
+
   this.approvalObj.Emp_no = this.Current_user_ID;
   this.approvalObj.Project_Code = this.ActionCode;
   this.approvalObj.json = jsonvalues;
   this.approvalObj.Remarks = this._remarks;
 
- 
+
 
   console.log(dateOne, dateTwo, "dates")
   if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
@@ -5291,7 +5301,7 @@ removeSelectedMemo(item){
 
 
 
-  
+
   removeSelectedPrt(item) {
     const index = this.ngDropdwonPort.indexOf(item);
     if (index !== -1) {
@@ -5332,9 +5342,9 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
-  this.filterConfig.filterby=filterBy; 
+  this.filterConfig.filterby=filterBy;
   this.filterConfig.sortby=sortBy;
-  this.filterConfigChanged=true; 
+  this.filterConfigChanged=true;
   this.getFilteredPrjActions();
 }
 
@@ -5348,24 +5358,24 @@ clearFilterConfigs(){
 getFilteredPrjActions(){
   let arr=this.projectActionInfo;
   if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
-  { 
+  {
     if(this.filterConfig.sortby!=='All'){
-     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....   
+     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
       arr=arr.filter((action)=>{
         return action.Responsible===this.filterConfig.sortby;
-       });  
+       });
      }
      else{  // when sortby is 'Assigned By me'
-        
+
      }
-     
+
     }
 
     if(this.filterConfig.filterby!=='All'){
       arr=arr.filter((action)=>{
          return action.Status===this.filterConfig.filterby;
        })
-    }      
+    }
   }
   this.filteredPrjAction=arr;
 }
@@ -5379,7 +5389,7 @@ isActionAvailable(e){
 
 
 
-// project action search and filter end here. 
+// project action search and filter end here.
 
 
 
@@ -5401,7 +5411,7 @@ isActionAvailable(e){
 
 // project action search and filter end here
 
- 
+
 ///////////////////Comments start//////////////////////
 _CommentsList: any;
 commentsLength: number;

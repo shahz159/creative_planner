@@ -59,10 +59,10 @@
             bindValue="Emp_No" groupBy="usergroup"
             (change)="EmployeeOnSelect($event)" placeholder="Select employee"
             [searchable]="true" name="RACIS"
-            [(ngModel)]="selectedEmpNo" 
+            [(ngModel)]="selectedEmpNo"
             required>
             <!-- <ng-template ng-option-tmp let-item="item">
-                <ng-container *ngIf="item.Emp_No === Owner_Empno"> 
+                <ng-container *ngIf="item.Emp_No === Owner_Empno">
                   <ng-option [value]="item.Emp_No">
                     <p  >{{ item.RACIS }} </p>
                 </ng-option>
@@ -81,12 +81,16 @@
         <span *ngIf ="_selectemp == true" style="color:red">Assign To required!</span>
     </div>
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-        <label>Action Owner : <strong></strong></label>
+        <label>Action Owner : <strong >
+</strong></label>
         <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
             <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
-                <span>{{item.RACIS}}</span> 
+                <span>{{item.RACIS}} </span>
             </ng-option>
         </ng-select>
+
+
+
     </div>
     <div class="d-flex gap-1">
         <div class="form-group flex-1">
@@ -94,7 +98,7 @@
             <div class="input-group" (click)="startdatechecker()">
                 <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
                     [(ngModel)]="_StartDate" placeholder="Start date" class="form-control">
-                   
+
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
                     <mat-datepicker #picker1 ></mat-datepicker>
@@ -118,7 +122,7 @@
             <label>End Date :<span class="text-danger">*</span></label>
             <div class="input-group" (click)="enddateChecker()">
                 <input matInput [matDatepicker]="picker2"  [matDatepickerFilter]="myFilter"
-                required #Enddate="ngModel" (click)="picker2.open()" 
+                required #Enddate="ngModel" (click)="picker2.open()"
                     [(ngModel)]="_EndDate" placeholder="End Date" class="form-control">
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -139,7 +143,7 @@
         <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a value.</span>
         <span *ngIf="this._StartDate == null || this._EndDate == null" style="color:red">{{_message}}</span>
     </div>
-    
+
     <div class="form-group">
         <label for="exampleFormControlFile1">Remarks</label>
         <textarea class="form-control" aria-label="With textarea" placeholder="Enter action remarks if any" [(ngModel)]="_remarks"
@@ -154,7 +158,7 @@
     </div>
     </div>
     <div class="kt-portlet__foot py-3">
-        
+
         <div class="form-group mb-0">
             <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" *ngIf="selectedEmpNo == Current_user_ID"
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
