@@ -1931,7 +1931,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Client: Actionclient,
       StartDate: datestrStart,
       EndDate: datestrEnd,
-      Allocated: this.editAllocatedhours,
+      AllocatedHours: this.editAllocatedhours,
     }
 
 
