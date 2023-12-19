@@ -848,12 +848,6 @@ $(document).ready(function(){
   _MainProjectStatus: string;
 
   openInfo(pcode, pName) {
-    // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
-    // this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
-    // document.getElementById("rightbar-overlay").style.display = "block";
-    // // document.getElementById("sumdet").classList.add("position-fixed");
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -876,12 +870,11 @@ $(document).ready(function(){
   }
   
   OpenProject(){
-
-
-    document.getElementById("New_project_Add").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    this.router.navigate(["../backend/ProjectsSummary/createproject"]);
+    $('#New_project_Add').addClass('open_sidebar');
+    // document.getElementById("New_project_Add").classList.add("open_sidebar");
+    return this.router.navigate(["../backend/ProjectsSummary/createproject"]);
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
   
