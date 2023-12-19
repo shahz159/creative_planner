@@ -672,7 +672,7 @@
 
 
                             </div>
-                            <div class="row mt-3 align-items-center px-3">
+                            <div class="row mt-3 px-3">
                                 <div class="col">
                                     <div class="row">
                                         <div class="col text-center">
@@ -810,8 +810,8 @@
                                 </div>
                                 <div class="CmP-wd  p-1 text-center"
                                     *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
-                                    <div class="kt-prg-bar-info kt-total-prg-vl mt-4" title="Completed/All actions">
-                                        <b>{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
+                                    <div class="kt-prg-bar-info kt-total-prg-vl" title="Completed/All actions">
+                                        <b class="pt-2">{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
                                     </div>
                                 </div>
                             </div>
@@ -1333,7 +1333,7 @@
             </div>
         </div>
         <div class="col-lg-7 pl-1">
-            <div class="card scroller">
+            <div class="card scroller h-100">
                 <div class="card-body p-3">
                     <div class="kt-info-box pr-2">
                         <div class="kt-project-tool-bar">
@@ -2182,10 +2182,35 @@
                                                         data-bs-original-title="Barry Walter" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle"><img alt="Pic"
                                                             src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-12.jpg">
-                                                    </div><a href="#" data-bs-toggle="modal"
+                                                    </div>
+                                                    <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#kt_modal_view_users"
                                                         class="symbol symbol-35px symbol-circle"><span
-                                                            class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span></a>
+                                                            class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span>
+                                                        </a>
+
+
+                                                </div>
+
+                                                <div class="symbol-group symbol-hover flex-nowrap">
+                                                    <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
+                                                        data-kt-initialized="1">
+                                                        <span class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
+                                                    </div>
+                                                
+                                                    <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood"
+                                                        data-kt-initialized="1">
+                                                        <span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
+                                                    </div>
+                                                
+                                                    <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew"
+                                                        data-kt-initialized="1">
+                                                        <span class="symbol-label bg-danger text-inverse-danger fw-bold">P</span>
+                                                    </div>
+                                                
+                                                    <a href="#" class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
+                                                        <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -2244,9 +2269,12 @@
                                                     </div>
                                                     <!--end::Text-->
                                                 </div>
-                                                <ng-container *ngIf="firstFiveRecords.length>4">
-                                                    <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
-                                                </ng-container>
+                                                <div class="View_more_act">
+                                                    <ng-container *ngIf="firstFiveRecords.length>4">
+                                                        <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
+                                                    </ng-container>
+                                                </div>
+                                              
                                                 <!--end::Item-->
                                             </div>
 
@@ -2273,11 +2301,16 @@
                                                 <div>
                                                     <h6>Statistics</h6>
                                                 </div>
-                                                <div class="d-flex flex-column ml-3"
-                                                    *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
+                                                
+                                            </div>
 
+                                            <div class="d-flex flex-column ml-3 w-100"
+                                                    *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
+                                                    <div class="lable-dv">
+                                                        <lable>Overall Performance </lable>
+                                                    </div>
                                                     <div *ngIf="ProjectStatus=='Not Started'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center">
 
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
@@ -2292,7 +2325,7 @@
                                                     </div>
 
                                                     <div *ngIf="ProjectStatus=='Just Started'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center">
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
                                                                     [ngStyle]='{ width : ProjectPercentage }'
@@ -2305,7 +2338,7 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="ProjectStatus=='InProcess'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center">
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
                                                                     [ngStyle]='{ width : ProjectPercentage }'
@@ -2318,7 +2351,7 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="ProjectStatus=='UnderCompletion'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center">
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
                                                                     [ngStyle]='{ width : ProjectPercentage }'
@@ -2331,7 +2364,7 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="ProjectStatus=='Completed'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center">
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
                                                                     [ngStyle]='{ width : ProjectPercentage }'
@@ -2344,7 +2377,7 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="ProjectStatus=='Continuos-InProcess'">
-                                                        <div class="d-flex align-items-center w-200px">
+                                                        <div class="d-flex align-items-center ">
                                                             <div class="progress h-6px w-100 bg-light-warning">
                                                                 <div class="progress-bar bg-warning" role="progressbar"
                                                                     [ngStyle]='{ width : ProjectPercentage }'
@@ -2357,7 +2390,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
                                             <!-- <div class="kt-ct-project">
 

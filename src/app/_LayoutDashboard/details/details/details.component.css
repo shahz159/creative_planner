@@ -992,6 +992,7 @@ button.Kt-Approval-btns {
 .kt-p-box {
   padding: 10px 10px;
   background-color: #f6f6f6;
+  height: 100%;
 }
 
 .kt-action-p-tittle h4 {
@@ -3531,11 +3532,30 @@ a.Kt_cmt_user_name {
 }
 }
 
-
-
 .filtr-config-option li button:hover {
   background-color: #f2f4f7;
   transition-duration:0.27s;
+}
+
+.fw-mormal.timeline-content.text-muted.ps-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.View_more_act {
+  position: absolute;
+  bottom: -36px;
+  right: 0;
+}
+.lable-dv lable {
+  font-size: 12px;
+  color: #999;
+}
+.kt-total-prg-vl {
+  margin-top: 5.2rem;
 }
 span.svg-Rq-icon {
   display: inline-flex;
