@@ -162,6 +162,7 @@ export class ActionToProjectComponent implements OnInit {
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.Owner_Empno = data['Owner_empno'];
+          this.owner=data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
           const dateOne = new Date(this.disablePreviousDate);
