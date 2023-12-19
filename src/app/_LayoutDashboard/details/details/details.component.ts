@@ -26,7 +26,7 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, X } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -223,6 +223,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.getholdate();
     this.GetPeopleDatils();
     this.timearrays();
+    
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -390,19 +391,35 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  uniqueName:any
+  uniqueNamesArray:any
+  firstthreeRecords:any
+  firstRecords:any
+  secondRecords:any
+  thirdRecords:any
+  newArray:any
+  uniqueSet :any
   nonRacisList:any=[];
   GetPeopleDatils(){
-    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe( 
       (data) => {
+ 
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+          const uniqueNamesArray = [...this.uniqueName];
+           this.newArray = uniqueNamesArray.slice(3);      
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
+          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
         }
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
-        console.log("all people:",this.nonRacisList);
+        // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
       });
 
@@ -979,7 +996,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.comments = "";
   }
 
-
+  sidno:any;
+  emp:any;
+  repdate:any;
+  contenttype: any;
+  submitby:any;
 
   getapprovalStats() {
     // this.approvalEmpId = null;
@@ -1031,12 +1052,26 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);      
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
-          console.log(this.complete_List, 'complete');
+         
         }
+        if (this.requestType == 'Task Complete') {
+          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+          this.completedoc = (this.complete_List[0]['Proofdoc']);
+          console.log(this.complete_List,"fahan")
+         this.sidno = (this.complete_List[0]['StandardId']);
+         this.emp = (this.complete_List[0]['Emp_No']);
+         this.repdate = (this.complete_List[0]['Reportdate']);
+         this.submitby = (this.complete_List[0]['SubmittedBy']);
+         this.contenttype = (this.complete_List[0]['contenttype']);
+         this.iscloud = (this.complete_List[0]['IsCloud']);
+        }
+       
+
+
       }
     });
     // console.log(this.requestDetails, 'transfer');
@@ -1076,7 +1111,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   removeCommit() {
-    this.isTextAreaVisible = false
+    this.isTextAreaVisible = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
   }
 
 
@@ -2015,7 +2053,7 @@ check_allocation() {
 
 
 
-  limit = 200; // Set the initial limit
+  limit = 60; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
 
@@ -5392,5 +5430,95 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 
 ///////////////////attchement end//////////////////////
+
+/////////////////////task attachemnets start///////////////////////////////////////
+openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
+debugger
+  repDate = new Date(repDate);
+  let FileUrl: string;
+  FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+  let Day = repDate.getDate();
+  let Month = repDate.getMonth() + 1;
+  let Year = repDate.getFullYear();
+  if (Month < 10) {
+    this._month = '0' + Month;
+  }
+  else {
+    this._month = Month;
+  }
+  if (Day < 10) {
+    this._day = '0' + Day;
+  }
+  else {
+    this._day = Day;
+  }
+  var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+  if (cloud == false) {
+    FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+
+  }
+
+  else if (cloud == true) {
+
+    let FileUrl: string;
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (proofDoc.includes(FileUrl)) {
+      FileUrl = proofDoc
+    }
+    else {
+      let Day = repDate.getDate();
+      let Month = repDate.getMonth() + 1;
+      let Year = repDate.getFullYear();
+      if (Month < 10) {
+        this._month = '0' + Month;
+      }
+      else {
+        this._month = Month;
+      }
+      if (Day < 10) {
+        this._day = Day;
+      }
+      else {
+        this._day = Day;
+      }
+      var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+      FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." + type);
+    }
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+
+}
+
+/////////////////////task attachemnets start///////////////////////////////////////
+
+
 
 }
