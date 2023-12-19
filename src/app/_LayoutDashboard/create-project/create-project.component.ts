@@ -9,12 +9,10 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class CreateProjectComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+  }
 
   ngOnInit(): void {
-
-
-    
   }
  
   Action_view(){

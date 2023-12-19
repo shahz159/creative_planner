@@ -284,7 +284,7 @@
                                                 </span>
                                                 <span>Admin</span>
                                             </div>
-                                            <div class="admin-check curser-pointer -hide-x"
+                                            <div class="admin-check curser-pointer"
                                                 *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==false"
                                                 (click)=" Updating_Adminmeeting(Emp_No)">
                                                 <span aria-hidden="true" class="admin-check-svg">
@@ -297,6 +297,13 @@
                                                     </svg> -->
                                                 </span>
                                                 <span>Mark as admin</span>
+                                            </div>
+                                            <div class="admin-check curser-pointer"
+                                                *ngIf="sched_admin == false && Isadmin==false"
+                                                (click)=" Updating_Adminmeeting(Emp_No)">
+                                                <span aria-hidden="true" class="admin-check-svg">
+                                                </span>
+                                                <span>Back to admin</span>
                                             </div>
 
                                         </div>
