@@ -643,7 +643,7 @@
                                                 projectInfo.Status
                                                 }}
                                             </div>
-                                            <div class="Requested_user_info" *ngIf="requestType">
+                                            <div class="Requested_user_info" *ngIf="requestType&&projectInfo.ApproverName">
                                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
@@ -2338,7 +2338,7 @@
                                                 <div class="timeline-item" *ngFor="let item of firstFiveRecords">
                                                     <!--begin::Label-->
                                                     <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                                        {{item.ModifiedDate |date:'dd MMM'}}<br>
+                                                        {{item.ModifiedDate |date:'dd MMM'}}
                                                         <span class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
                                                     </div>
                                                     <!--end::Label-->
@@ -2358,10 +2358,9 @@
                                                         <span *ngIf="item.oldValue !==''; else newActivity">To :
                                                             <!-- {{item.NewValue}}  -->
                                                             {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
-                                                            <ng-container
-                                                            *ngIf="item.NewValue.length>60">
+                                                            <ng-container *ngIf="item.NewValue.length>60">
                                                             <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
-                                                        </ng-container>>
+                                                        </ng-container>
                                                       </span>
                                                         <ng-template #newActivity>
                                                             <!-- {{item.NewValue}}  -->

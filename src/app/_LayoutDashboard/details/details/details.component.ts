@@ -388,17 +388,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       // console.log( this.type_list, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
+      this.ProjectType = this.projectInfo.Project_Type
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.filteredPrjAction=this.getFilteredPrjActions('All','All');
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
-      this.type_list = JSON.parse(this.projectInfo['typelist'])
-      this.ProjectType = this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
-
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
@@ -497,7 +496,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    if (index && this.projectActionInfo[index].Status === "Under Approval")
+    if (this.projectActionInfo[index].Status.includes('Under Approval'))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
     $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
 
@@ -1879,6 +1878,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         else if (data['message'] == '2') {
           this.notifyService.showError("Not updated", "Failed");
         }
+        else if (data['message'] == '5') {
+          this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+        }
+        else if (data['message'] == '6') {
+          this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
       });
@@ -2055,6 +2060,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
           }
+          else if (data['message'] == '5') {
+            this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+          }
+          else if (data['message'] == '6') {
+            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
         });
@@ -2082,6 +2093,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
+      }
+      else if (data['message'] == '5') {
+        this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+      }
+      else if (data['message'] == '6') {
+        this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
       }
       this.getProjectDetails(this.URL_ProjectCode);
       this.closeInfo();
@@ -2857,6 +2874,7 @@ check_allocation() {
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+        // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
