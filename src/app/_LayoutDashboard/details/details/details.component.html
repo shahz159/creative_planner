@@ -1,3 +1,4 @@
+<ng-container *ngIf="userFound||isHierarchy;else accessdenied">
 <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3" id="newdetails">
     <div class="card mb-6 mb-xl-9 d-none">
         <div class="card-body pt-9 pb-0">
@@ -1578,11 +1579,11 @@
 
                          <div>
 
-                            <div  *ngIf="myUnderApprvActions.length>0"  class="kt-note-text curser-pointer  "  (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)" >
+                            <div  *ngIf="myUnderApprvActions.length>0"  class="kt-note-text curser-pointer under-apprvl "  (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)" >
                                 You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+' actions'):(myUnderApprvActions.length+' action') }} Under Approval.
                               </div>
 
-                             <div *ngIf="myDelayPrjActions.length>0"  class="kt-note-text " >
+                             <div *ngIf="myDelayPrjActions.length>0"  class="kt-note-text" >
                                 You have {{myDelayPrjActions.length}}   {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+' days'):(myDelayPrjActions[0].Delaydays+' day') }}
                              </div>
 
@@ -1591,8 +1592,6 @@
                          </div>
 
                          </div>
-
-
 
                          <div class="kt-Note-msg d-flex align-items-center" *ngIf="projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length">
                             <div class="kt-note-icon">
@@ -1622,7 +1621,8 @@
                                 <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
                                     {{action.name}} ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?' days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                            </div>
-                        </div>
+                         </div>
+
 
                          <!-- Notification end-->
 
@@ -2397,7 +2397,7 @@
                                                         <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">
                                                             {{item.Value}}</p>
                                                         <span *ngIf="item.oldValue !==''">From :
-                                                            {{item.oldValue}}</span> <br>
+                                                            {{item.oldValue}}</span>
                                                         <span *ngIf="item.oldValue !==''; else newActivity">To :
                                                             <!-- {{item.NewValue}}  -->
                                                             {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
@@ -2427,30 +2427,9 @@
 
                                         </div>
                                     </div>
-
-                                    <!-- <div class="col-lg-6 " >
-                                        <div class="kt-over-pd-in">
-                                            <div class="kt-ct-project">
-                                                <div class="kt-ct-sub-ttl">
-                                                    <h6>Statistics</h6>
-                                                </div>
-                                            </div>
-                                            <div class="chart" id="chart-container"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                                    <div class="col-lg-6 ">
-                                        <div class="kt-over-pd-in">
-                                            <div class="d-flex justify-content-between kt-ct-sub-ttl">
-                                                <div>
-                                                    <h6>Statistics</h6>
-                                                </div>
-
-                                            </div>
-
+                                    <div class="col-lg-6 Statistics">
+                                        <div class="kt-ct-sub-ttl">
+                                            <h6>Statistics</h6>
                                             <div class="d-flex flex-column ml-3 w-100"
                                                     *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
                                                     <div class="lable-dv">
@@ -2536,14 +2515,9 @@
                                                                 class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                            <!-- <div class="kt-ct-project">
-
-                                                <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
-                                                </div>
-                                            </div> -->
-                                            <div class="chart" id="chart-container"></div>
+                                            </div>
+                                        </div>
+                                        <div  id="chart-container"  class="Chart">
                                         </div>
                                     </div>
                                 </div>
@@ -3003,7 +2977,7 @@
                                                                 d="M13.877 37.529a1 1 0 0 1-.564-.175l-2.623-1.8a1 1 0 0 1 1.13-1.651l2.623 1.8a1 1 0 0 1-.566 1.826Z">
                                                             </path>
                                                         </g>
-                                                    </svg></span> Owner
+                                                    </svg></span> Ownerw
                                             </div>
                                             <div class="kt-info-data-v">
                                                 {{projectActionInfo[currentActionView].Owner}}
@@ -3350,10 +3324,46 @@
 
 
 </div>
+</ng-container>
+<ng-template #accessdenied>
+  <ng-container *ngIf="userFound===false||isHierarchy===false;else pleasewait">
+
+    <div class="container">
+     <div class="d-flex align-items-md-center flex-column">
+
+
+        <div class="text-center acc-section">
+            <h1 class="text-primary main_acc">Access denied 503 !</h1>
+            <h5 class="acc-desc">
+                Unfortunately, we did not find you in this Project.
+            </h5>
+        </div>
+
+        <div class="acc-img_sec">
+            <div class="acc-denied_img">
+                <img class="img-fluid" src="/assets/images/AccessDenied503.png" alt="image">
+            </div>
+        </div>
+
+
+
+
+     </div>
+    </div>
+
+
+  </ng-container>
+  <ng-template #pleasewait>
+    <div class=" d-flex align-items-center  justify-content-center "   style="height:100vh">
+        <div class="spinner-border  w-100px    h-100px          "  style="color:#6388e3;" role="status">
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-template>
+
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
-
-
-
 <!-- Action-To-Project-New_Subtask -->
 <div id="mysideInfobar1" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
