@@ -104,6 +104,8 @@ export const MY_DATE_FORMATS = {
 })
 
 export class DetailsComponent implements OnInit, AfterViewInit {
+ 
+  userFound:boolean|undefined;     // initially undefined.
   myTime = new Date();
   projectInfo: any;
   projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
@@ -205,7 +207,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-
+   
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -216,27 +218,22 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
-
-    // this.router.navigate(["./Details", this.URL_ProjectCode]);
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
     this.getapproval_actiondetails();      // get main project approval state.
     this.getholdate();
     this.GetPeopleDatils();
     this.timearrays();
-    
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
-
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-    setTimeout(() => this.drawStatistics(), 500);
-   
+    setTimeout(() => this.drawStatistics(), 500); 
   }
 
   ngAfterViewInit(): void {
@@ -311,22 +308,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         }).render();
         // chart js end ----------------
         
-        
-        
-        // var lang = {
-        //   "javascript": "70%",
-        // };
-        // var multiply = 4;
-        // $.each(lang, function (language, pourcent) {
-        //   var delay = 700;
-        //   setTimeout(function () {
-        //     $('#' + language + '-pourcent').html(pourcent);
-        //   }, delay * multiply);
-        //   multiply++;
-        // });
-
-
-
+         
+        var lang = {
+          "javascript": "70%",
+        };
+        var multiply = 4;
+        $.each(lang, function (language, pourcent) {
+          var delay = 700;
+          setTimeout(function () {
+            $('#' + language + '-pourcent').html(pourcent);
+          }, delay * multiply);
+          multiply++;
+        });
 
 
       });
@@ -446,6 +439,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
         // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
+
+        const RACISList = (JSON.parse(data[0]['RacisList']));
+        if (RACISList && RACISList.length > 0) {
+          const racisUserIds = RACISList.map((user: any) => user.Emp_No);
+          this.userFound = racisUserIds.includes(this.Current_user_ID);
+        }
+
       });
 
 
@@ -499,6 +499,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && this.projectActionInfo[index].Status === "Under Approval")
       this.GetApproval(this.projectActionInfo[index].Project_Code);
+    if(index)
     $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
 
 
@@ -1375,7 +1376,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   // Action completion sidebar code starts from here
-  isHierarchy: boolean = false;
+  isHierarchy: boolean|undefined;
   _MasterCode: string;
 
 
@@ -1653,7 +1654,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ProjectStatus: string;
 
   getResponsibleActions() {
-
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';

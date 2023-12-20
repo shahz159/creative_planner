@@ -3506,7 +3506,7 @@ a.Kt_cmt_user_name {
   margin-left: 0.75rem!important;
 }
 .me-3 {
-  margin-right: 0.75rem!important;
+  margin-right: 0.75rem!important; 
 }
 .ms-2 {
   margin-left: 0.65rem!important;
@@ -3589,3 +3589,51 @@ span.Rq_date_V {
   margin-left: 5px;
   padding-left: 3px;
 }
+
+
+
+.Chart{
+  height:350px;
+}
+
+
+
+.Statistics{
+   display:grid;
+   grid-template-columns: 1fr;
+   grid-template-rows:1fr 320px;
+   overflow: hidden;
+}
+
+.under-apprvl{
+  color:#6388e3;
+}
+
+
+
+.acc-section {
+  padding: 50px 0 20px 0;
+}
+
+.main_acc {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.acc-desc {
+  color: #2F3539;
+}
+
+
+.acc-denied_img {
+  width: 100%;
+  margin: auto;
+}
+
+
+
+.acc-denied_img img {
+  width: 100%;
+  margin-top: 0%;
+}
+
