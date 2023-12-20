@@ -113,6 +113,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   */
 
   ngOnInit() {
+   
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this._Urlid = this.route.snapshot.params['id'];
     // alert(this._Urlid);
@@ -121,6 +122,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.projectCode = Pcode;
       this.getusername();
       this.LoadProjectDetails();
+      this.GetRacisPeople()
       // this.getapprovalStats();
       
       // this.getdeadlinecount();
@@ -288,7 +290,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
-        debugger
+      
         console.log(data, "data")
         if (data != null && data != undefined) {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
@@ -1911,7 +1913,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
 
   openPDF_Standard(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
-    debugger
+    
     repDate = new Date(repDate);
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -2054,8 +2056,65 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.router.navigate(["Notifications"]);
     }
   }
+//////////////////////// RACIS start ////////////////////////////////////////////////////////
+// uniqueName:any
+// uniqueNamesArray:any
+// firstthreeRecords:any
+// firstRecords:any
+// secondRecords:any
+// thirdRecords:any
+// newArray:any
+// uniqueSet :any
+// nonRacisList:any=[];
+// GetPeopleDatils(){
+//   this.service.NewProjectService(this.URL_ProjectCode).subscribe( 
+//     (data) => {
+
+//       if (data != null && data != undefined) {
+//         this.Project_List = JSON.parse(data[0]['RacisList']);
+//         this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+//         const uniqueNamesArray = [...this.uniqueName];
+//          this.newArray = uniqueNamesArray.slice(3);      
+//         this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
+//         this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+//         this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+//         this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
+//       }
+//     });
 
 
+
+Project_List:any
+uniqueName_List:any
+uniqueName_array:any
+newArray:any
+three_Records:any
+firstRecord:any
+secondRecord:any
+thirdRecord:any
+
+GetRacisPeople(){
+  this.service.NewProjectService(this.projectCode).subscribe(
+    (data)=>{
+      this.Project_List=JSON.parse(data[0]['RacisList'])
+      this.uniqueName_List=new Set(this.Project_List.map(record=>record.RACIS))
+      this.uniqueName_array=[...this.uniqueName_List]
+      this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ")
+      this.three_Records=this.uniqueName_array.slice(0,3)
+
+      this.firstRecord=this.three_Records[0][0]
+      this.secondRecord=this.three_Records[1][0]
+      this.thirdRecord=this.three_Records[2][0]
+      console.log(this.thirdRecord,'==============>')
+    }
+  )
+}
+
+
+
+
+
+///////////////////////////////////// RACIS end /////////////////////////
   
 
 }

@@ -644,7 +644,7 @@
                                                 projectInfo.Status
                                                 }}
                                             </div>
-                                            <div class="Requested_user_info" *ngIf="requestType">
+                                            <div class="Requested_user_info" *ngIf="requestType&&projectInfo.ApproverName">
                                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
@@ -1650,7 +1650,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="Action_btn_all"
+                                    <div class="Action_btn_all d-none"
                                         *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
                                         Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
                                         || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
@@ -1669,6 +1669,39 @@
                                         <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'"
                                             (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
                                         <button (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
+                                    </div>
+
+                                    <div class="project_more_Action_options" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                    Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
+                                    || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
+                                        
+                                    <div class="btn-group dropleft">
+                                        <div type="button" class=" dropdown-toggle svrft" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 48 60" style="enable-background:new 0 0 48 48;" xml:space="preserve"><g>
+                                                <circle cx="24" cy="6.72" r="5.59"/>
+                                                <circle cx="24" cy="24" r="5.59"/>
+                                                <circle cx="24" cy="41.28" r="5.59"/></g>
+                                            </svg>
+                                        </div>
+                                        <div class="dropdown-menu mbt-btn">
+                                            <button class="Ct-btn Bt-cancel ml-2" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                            Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
+                                            || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')" (click)="openPrjCancelSb()">
+                                                Project Cancel</button>
+
+                                                <button class="Ct-btn Bt-hold ml-2" *ngIf="projectInfo&&projectInfo.Status==='Project Hold';else prHbtn" (click)="openPrjReleaseSideBar()">Project Release</button>
+                                                <ng-template #prHbtn>
+                                                    <button class="Ct-btn Bt-hold ml-2" (click)="openPrjHoldSideBar()">Project Hold</button>
+                                                </ng-template>
+                                                
+                                                <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type == 'Standard Tasks'">
+                                                    Task Submission
+                                                </button>
+                                                <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'"
+                                                (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
+                                            <button  (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
 
@@ -1958,16 +1991,16 @@
 
 
                                             <div class="col-lg-4">
-                                                <div class="kt-info-lable-v">Request Type</div>
-                                                <div class="kt-info-data-v">{{requestType}}</div>
+                                                <div class="kt-info-lable-v text-center">Request Type</div>
+                                                <div class="kt-info-data-v text-center">{{requestType}}</div>
                                             </div>
                                             <div class="col-lg-4">
-                                                <div class="kt-info-lable-v">Requested by</div>
-                                                <div class="kt-info-data-v">{{Submitted_By}}</div>
+                                                <div class="kt-info-lable-v text-center">Requested by</div>
+                                                <div class="kt-info-data-v text-center">{{Submitted_By}}</div>
                                             </div>
                                             <div class="col-lg-4">
-                                                <div class="kt-info-lable-v">Request Date</div>
-                                                <div class="kt-info-data-v">
+                                                <div class="kt-info-lable-v text-center">Request Date</div>
+                                                <div class="kt-info-data-v text-center">
                                                     {{requestDate|date:'dd-MM-yyyy'}}</div>
                                             </div>
                                             <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
@@ -2192,6 +2225,7 @@
                                             Start date
                                         </div>
                                         <div class="kt-info-data-v">
+                                          <!-- StartDate|date:'dd-MM-YYYY' -->
                                             {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
@@ -2322,7 +2356,16 @@
                                         </div>
                                     </div>
 
-                                </div>
+
+
+                        </div>
+
+
+
+              <!-- <div  *ngFor="let data of projectActionInfo">
+               {{data.Remarks}}
+              </div> -->
+
 
                                 <div class="Dividing-line"></div>
                                 <div class="row">
@@ -2338,7 +2381,7 @@
                                                 <div class="timeline-item" *ngFor="let item of firstFiveRecords">
                                                     <!--begin::Label-->
                                                     <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                                        {{item.ModifiedDate |date:'dd MMM'}}<br>
+                                                        {{item.ModifiedDate |date:'dd MMM'}}
                                                         <span class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
                                                     </div>
                                                     <!--end::Label-->
@@ -2358,10 +2401,9 @@
                                                         <span *ngIf="item.oldValue !==''; else newActivity">To :
                                                             <!-- {{item.NewValue}}  -->
                                                             {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
-                                                            <ng-container
-                                                            *ngIf="item.NewValue.length>60">
+                                                            <ng-container *ngIf="item.NewValue.length>60">
                                                             <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
-                                                        </ng-container>>
+                                                        </ng-container>
                                                       </span>
                                                         <ng-template #newActivity>
                                                             <!-- {{item.NewValue}}  -->
@@ -2385,21 +2427,6 @@
 
                                         </div>
                                     </div>
-
-                                    <!-- <div class="col-lg-6 " >
-                                        <div class="kt-over-pd-in">
-                                            <div class="kt-ct-project">
-                                                <div class="kt-ct-sub-ttl">
-                                                    <h6>Statistics</h6>
-                                                </div>
-                                            </div>
-                                            <div class="chart" id="chart-container"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
                                     <div class="col-lg-6 Statistics">
                                         <div class="kt-ct-sub-ttl">
                                             <h6>Statistics</h6>
@@ -2491,9 +2518,7 @@
                                             </div>
                                         </div>
                                         <div  id="chart-container"  class="Chart">
-
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -2672,9 +2697,9 @@
                                         </ng-container>
                                     </div>
 
-
+                                
                                     <ng-container
-                                        *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval')">
+                                        *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
                                         <div class="kt-info-box mt-2 border-0">
                                             <div class="d-flex justify-content-between align-items-center">
 
@@ -2829,18 +2854,18 @@
                                                         title="{{requestComments}}">{{requestComments}}</div>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <div class="kt-info-lable-v">Request Type</div>
-                                                    <div class="kt-info-data-v bg-light-shade ">{{requestType}}
+                                                    <div class="kt-info-lable-v text-center ">Request Type</div>
+                                                    <div class="kt-info-data-v text-center ">{{requestType}}
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <div class="kt-info-lable-v">Requested by</div>
-                                                    <div class="kt-info-data-v bg-light-shade ">{{Submitted_By}}
+                                                    <div class="kt-info-lable-v text-center ">Requested by </div>
+                                                    <div class="kt-info-data-v  text-center ">{{Submitted_By}}
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <div class="kt-info-lable-v">Request Date</div>
-                                                    <div class="kt-info-data-v bg-light-shade ">
+                                                    <div class="kt-info-lable-v text-center ">Request Date</div>
+                                                    <div class="kt-info-data-v text-center ">
                                                         {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                 </div>
                                                 <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
@@ -3050,6 +3075,7 @@
                                                 Start date
                                             </div>
                                             <div class="kt-info-data-v">
+
                                                 {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
                                             </div>
                                         </div>
@@ -3064,6 +3090,7 @@
 
                                             </div>
                                         </div>
+
 
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
@@ -3127,6 +3154,30 @@
                                                 </div>
                                             </div>
                                         </div> -->
+
+                                    </div>
+                                    <div class="row mt-5 px-3">
+                                      <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col text-center" style="max-width: 195px;">
+                                          <div class="kt-info-lable-v">
+                                              Attachment
+                                          </div>
+                                          <div class="kt-info-data-v" (click)="LoadDocument1(projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Team_Res)">
+
+                                         <b   class="word-break text-info curser-pointer">  {{projectActionInfo[currentActionView].Sourcefile}}</b>
+                                          </div>
+                                      </div>
+
+                                      <div class="col text-center" style="max-width: 195px;">
+                                          <div class="kt-info-lable-v">
+                                            Remarks
+                                          </div>
+                                          <div class="kt-info-data-v">
+
+                                            {{projectActionInfo[currentActionView].Remarks}}
+                                          </div>
+                                      </div>
+
+
 
                                     </div>
 

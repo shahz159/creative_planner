@@ -131,7 +131,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   TOTAL_ACTIONS_IN_FUA: number = 0;
   TOTAL_ACTIONS_IN_HOLD: number = 0;
   TOTAL_ACTIONS: number = 0;
-  
+
 
 
 
@@ -215,7 +215,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-    this.getProjectDetails(this.URL_ProjectCode);   // get all project details from the api.
+    this.getProjectDetails(this.URL_ProjectCode); 
+    setTimeout(() => this.drawStatistics(), 500); 
+      // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
     this.gethierarchy();
@@ -233,7 +235,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-    setTimeout(() => this.drawStatistics(), 500); 
   }
 
   ngAfterViewInit(): void {
@@ -257,7 +258,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   UsedInDAR: any;
 
   drawStatistics() {
-  
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
@@ -267,8 +267,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
         this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
         this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-       
-       
+
+
         new FusionCharts({
 
           type: "radialbar",
@@ -368,11 +368,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-
+  sourceFile:any
   Submission: any;
   filterstatus: any;
   filteremployee: any;
-
+  remark:any
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
@@ -381,31 +381,30 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       // console.log( this.type_list, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
+      this.ProjectType = this.projectInfo.Project_Type
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.filteredPrjAction=this.getFilteredPrjActions('All','All');
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
-      this.type_list = JSON.parse(this.projectInfo['typelist'])
-      this.ProjectType = this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
-
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
-      
+
       this.filteremployee.forEach((emp)=>{
        let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
         if(delayActionsOfEmp.length>0){
           delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
-        } 
+        }
       })
-     
+
     });
   }
 
@@ -419,14 +418,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   uniqueSet :any
   nonRacisList:any=[];
   GetPeopleDatils(){
-    this.service.NewProjectService(this.URL_ProjectCode).subscribe( 
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
- 
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
-           this.newArray = uniqueNamesArray.slice(3);      
+           this.newArray = uniqueNamesArray.slice(3);
+
+           console.log(this.newArray,'-------------->')
+
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -493,29 +495,30 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   actionCost: any = '';
 
+  showProjectDetails() {
+    $(document).ready(() => this.drawStatistics());
+    this.showActionDetails(undefined);
+  }
+
   showActionDetails(index: number | undefined) {
 
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    if (index && this.projectActionInfo[index].Status === "Under Approval")
+    if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    if(index)
     $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
 
 
   }
 
-  showProjectDetails() {
-    this.showActionDetails(undefined);
-    $(document).ready(() => this.drawStatistics());
-  }
 
 
 
 
- 
+
+
   drawStatistics1(actionCode:string) {
-   
+
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
 
@@ -526,8 +529,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
         this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
         this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-       
-       
+
+
         new FusionCharts({
 
           type: "radialbar",
@@ -566,7 +569,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           }
         }).render();
         // chart js end ----------------
-        
+
         var lang = {
           "javascript": "70%",
         };
@@ -1099,11 +1102,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);      
+            this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
-         
+
         }
         if (this.requestType == 'Task Complete') {
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
@@ -1116,7 +1119,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
         }
-       
+
 
 
       }
@@ -1879,6 +1882,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         else if (data['message'] == '2') {
           this.notifyService.showError("Not updated", "Failed");
         }
+        else if (data['message'] == '5') {
+          this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+        }
+        else if (data['message'] == '6') {
+          this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
       });
@@ -2055,6 +2064,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
           }
+          else if (data['message'] == '5') {
+            this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+          }
+          else if (data['message'] == '6') {
+            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
         });
@@ -2082,6 +2097,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
+      }
+      else if (data['message'] == '5') {
+        this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+      }
+      else if (data['message'] == '6') {
+        this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
       }
       this.getProjectDetails(this.URL_ProjectCode);
       this.closeInfo();
@@ -2850,13 +2871,14 @@ check_allocation() {
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-
+console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+        // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
@@ -5431,7 +5453,7 @@ filterConfig:{filterby:string,sortby:string}={
 onFilterConfigChanged({filterBy,sortBy}){
   this.filterConfig.filterby=filterBy;
   this.filterConfig.sortby=sortBy;
-  this.filterConfigChanged=true; 
+  this.filterConfigChanged=true;
   this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
 }
 
@@ -5443,21 +5465,21 @@ clearFilterConfigs(){
 }
 
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
-  
+
   let arr=this.projectActionInfo;
   if(!(filterby==='All'&&sortby==='All'))
-  { 
+  {
     if(sortby!=='All'){
-     if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....   
+     if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
       arr=arr.filter((action)=>{
         return action.Team_Res===sortby;
-       });  
+       });
      }
      else{  // when sortby is 'Assigned By me'
         arr=arr.filter((action)=>{
               return action.AssignedbyEmpno===this.Current_user_ID;
         });
-     }  
+     }
     }
 
     if(filterby!=='All'){
@@ -5476,7 +5498,7 @@ isActionAvailable(e){
 }
 
 
-// project action search and filter end here. 
+// project action search and filter end here.
 
 
 

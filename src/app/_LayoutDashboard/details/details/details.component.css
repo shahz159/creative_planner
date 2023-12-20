@@ -877,12 +877,12 @@ span.kt-dt-l {
 
 .kt-prg-bar-info {
   font-size: 15px;
-  font-weight: 600; 
+  font-weight: 600;
   color: #3d3d3d;
 }
 
 .kt-prg-bar-info b {
-  font-size: 20px; 
+  font-size: 20px;
   margin-right: 5px;
 }
 
@@ -907,7 +907,7 @@ button.Kt-Approval-btns {
   font-size: 13px;
   letter-spacing: 0;
   font-weight: 500;
-  border-radius: 3px; 
+  border-radius: 3px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -935,11 +935,11 @@ button.Kt-Approval-btns {
 .Btn_Reject {
   border-color: #cf8e66 !important;
 }
- 
+
 .Btn_Reject.active {
   background-color: #cf8e66 !important;
   color: #fff;
-} 
+}
 .Btn_Reject:hover {
   background-color: #cf8e66 !important;color: #fff !important;
 }
@@ -1574,7 +1574,7 @@ div#DemoList-table div.demo i {
     text-overflow: ellipsis;
   }
   .attachment-view span {
-    font-weight: 600;  
+    font-weight: 600;
   }
   .attachment-view:hover{
     box-shadow: 0px 1px 6px #ccc;
@@ -1584,7 +1584,7 @@ div#DemoList-table div.demo i {
     margin: 0;
     flex: 1;
   }
-  .exs-cmts .crd-bdy{  
+  .exs-cmts .crd-bdy{
     overflow: auto;
     max-height: 200px;
   }
@@ -2734,7 +2734,7 @@ div#add_new_team_sp .kt-portlet__head {
 
 
 .bounce-effect{
-  transition-duration:0.5s; 
+  transition-duration:0.5s;
   transition-timing-function:cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
@@ -2862,7 +2862,7 @@ div#prj-hold-sidebar {
 .mt-date {
   display: flex;
   flex-direction: column;
-  text-align: center; 
+  text-align: center;
   box-sizing: border-box;
   background-color: white;
   line-height: 1.5em;
@@ -2952,7 +2952,7 @@ span.user-ft-ltr {
   border-radius: 100px;
 }
 .org-name {
- 
+
       display: flex;
       align-items: flex-end;
       /* justify-content: flex-start; */
@@ -3139,12 +3139,12 @@ i.date-rg-icon {
 
 
 .total-meeting-count{
- 
+
     background-color: rgb(0, 0, 0,0.7);
     color:white;
     border-radius:70%;
     padding:0.1em;
-    padding-left:0.5em; 
+    padding-left:0.5em;
     padding-right:0.5em;
     position:relative;
     right:10%;
@@ -3164,7 +3164,7 @@ i.date-rg-icon {
   cursor: pointer;
   transition: all .3s;
   background: #fff;
-  padding: 3px 10px;  
+  padding: 3px 10px;
 }
 
 
@@ -3181,7 +3181,7 @@ i.date-rg-icon {
 }
 #calender{
   height: 1px;
- 
+
 }
 
 label.pe-label {
@@ -3440,17 +3440,17 @@ color:white;
   color:#f4f3f3;
   background-color: gray;
   border-radius: 50%;
- 
+
 }
 
 .close-icon:hover{
   color:#e0e0e0;
   transform: none;
-  
+
 }
 
 
-.add-icon{ 
+.add-icon{
    color: #7d8ea3;
    border-radius: 50%;
    border:1px solid #7d8ea3;
@@ -3472,7 +3472,7 @@ span.kt-user-list-ic {
   background-color: #fff;
   padding: 4px;
   height: calc(1.5em + 1.3rem + 2px);
-  
+
   line-height: 25px;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
@@ -3637,3 +3637,74 @@ span.Rq_date_V {
   margin-top: 0%;
 }
 
+/* .kts{
+  width:150px;
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  text-align: center;
+  padding-left: 5px;
+} */
+
+ .remarks{
+      margin-top: 20px;
+}
+.remark{
+
+  padding: 5px;
+  color: #939393;
+  letter-spacing: 0.3px;
+  font-size: 14px;
+}
+.mark{
+  font-weight: 500;
+  color: #4f4f4f;
+  text-align: center;
+  width: 170px;
+  height: 30px;
+  background-color: #f0f0f0;
+  border-radius: 35px;
+  padding: 5px 4px;
+}
+
+
+.text-info {
+  color: #2786fb !important;
+}
+.svrft svg {
+  height: 20px;
+  width: auto;
+  fill: #858585;transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mbt-btn button {
+  width: 100%;
+  margin: 0px 0px !important;
+  margin-bottom: 10px !important;
+}
+.mbt-btn button:last-child{
+  margin-bottom: 0px !important;
+}
+.mbt-btn {
+  padding: 10px;
+}
+.dropdown-toggle.svrft::before {
+  content: "";
+  border-top: 8px solid transparent;
+  border-right: 8px solid;
+  border-bottom: 8px solid transparent;
+  position: relative;
+  bottom: -2px;
+  right: -7px;
+  color: #ccc;
+  visibility: hidden;
+}
+.dropleft.show .dropdown-toggle.svrft::before {
+  visibility: visible !important;
+}
+.btn-group.dropleft:hover svg {
+  fill: #567edf;
+}
+.mbt-btn {
+  padding: 10px;
+  box-shadow: -7px 7px 20px 5px #00000014;
+}
