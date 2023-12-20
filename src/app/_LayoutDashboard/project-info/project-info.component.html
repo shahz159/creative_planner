@@ -755,7 +755,7 @@
                     {{item.StandardAllocatedHours}}
                 </div>
             </div>
-            <div class="col text-center">
+            <!-- <div class="col text-center">
                 <div class="kt-info-lable-v">
                     RACIS 
                 </div>
@@ -785,7 +785,63 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+                    
+            <div class="col text-center">
+                <div class="kt-info-lable-v">
+                    RACIS
+                </div>
+                <div class="kt-project-sts-data">
+                    <div class="kt-support-view">
+                        <div class="symbol-group symbol-hover flex-nowrap">
+                            <div class="symbol symbol-35px symbol-circle"  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
+                            data-kt-initialized="1"  *ngIf="firstRecord&&firstRecord != ''">
+                            <span class="symbol-label bg-warning text-inverse-warning fw-bold" title="{{three_Records[0]}}" >
+                                {{firstRecord}}
+                            </span>
+                        </div>
+                    
+                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood"
+                            data-kt-initialized="1"  *ngIf="secondRecord&&secondRecord != ''">
+                            <span class="symbol-label bg-primary text-inverse-primary fw-bold" title="{{three_Records[1]}}">
+                                {{secondRecord}} 
+                            </span>
+                        </div>
+                    
+                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew"
+                            data-kt-initialized="1" *ngIf="thirdRecord&&thirdRecord != '' ">
+                            <span class="symbol-label bg-danger text-inverse-danger fw-bold" title="{{three_Records[2]}}" >
+                                {{thirdRecord}}
+                            </span>
+                        </div>                   
+                        <a class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users" *ngIf="newArray&&newArray.length !=''" >
+                            <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold" title="{{newArray}}" >+{{newArray&&newArray.length}}</span>
+                        </a>               
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
     </div>

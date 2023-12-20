@@ -5374,16 +5374,20 @@ export class MoreDetailsComponent implements OnInit {
           case HttpEventType.UploadProgress:
             this.progress = Math.round(event.loaded / event.total * 100);
             console.log(this.progress, "progress");
-            if (this.progress == 100) {
-              this.notifyService.showInfo("File uploaded successfully", "Project Updated");
-              
-            }
             break;
           case HttpEventType.Response:
             console.log('File upload done!', event.body);
             var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).Message;
-              this.notifyService.showSuccess(this._Message, 'Success');
+              if(this._Message=='Actions are in Under Approval'){
+                this.notifyService.showError(this._Message, 'Failed');
+              }
+              else{
+                if (this.progress == 100) {
+                  this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                }
+                this.notifyService.showSuccess(this._Message, 'Success');
+              }
         }
         this.closeInfo();
         this.getapproval_actiondetails();

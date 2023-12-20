@@ -2403,9 +2403,6 @@ tr.odd.project-list_AC.active{
 ::ng-deep .modal-backdrop.fade.show {
   display: none !important;
 }
-div#rightbar-overlay {
-  display: none !important;
-}
 
 div#Guideline_view {
   background-color: #0000004a;

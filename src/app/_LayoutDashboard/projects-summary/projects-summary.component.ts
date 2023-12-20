@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -42,6 +42,7 @@ export class ProjectsSummaryComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private ShareParameter: ParameterService,
+    private cdr: ChangeDetectorRef,
     // private loadingBar: LoadingBarService,
     private router: Router,
     public BsService: BsServiceService,
@@ -846,18 +847,18 @@ $(document).ready(function(){
   standardDuration: any;
   days: any;
   _MainProjectStatus: string;
+  showCreateProject: boolean = false;
+  showProjectInfo: boolean = false;
 
   openInfo(pcode, pName) {
-    // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
-    // this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
-    // document.getElementById("rightbar-overlay").style.display = "block";
-    // // document.getElementById("sumdet").classList.add("position-fixed");
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
+    this.showProjectInfo = true;
+    this.showCreateProject = true;
+    this.showCreateProject = false;
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("sumdet").classList.add("position-fixed");
+    document.getElementsByClassName("kt_wrapper")[0].classList.add("position-fixed");
 
   }
   selectedIndex: number | null = null;
@@ -876,16 +877,21 @@ $(document).ready(function(){
   }
 
   OpenProject(){
-
-
+    this.showCreateProject = true;
+    this.showProjectInfo = false;
+    this.router.navigate(["../backend/ProjectsSummary/createproject"]);
     document.getElementById("New_project_Add").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("sumdet").classList.add("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    this.router.navigate(["../backend/ProjectsSummary/createproject"]);
-
   }
 
   closeInfo() {
+
+      // Close/Create Project Component
+      this.showCreateProject = false;
+      // Close Project Info Component
+      this.showProjectInfo = false;
     // $('.project-list_AC').removeClass('active');
     this._ProjectDataList.forEach(item => item.isActive = false);
     this.Clear_Feilds();
@@ -893,7 +899,7 @@ $(document).ready(function(){
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
-    //document.getElementById("sumdet").classList.remove("position-fixed");
+    document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
