@@ -1671,7 +1671,9 @@
                                         <button (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
                                     </div>
 
-                                    <div class="project_more_Action_options">
+                                    <div class="project_more_Action_options" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                    Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
+                                    || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
                                         
                                     <div class="btn-group dropleft">
                                         <div type="button" class=" dropdown-toggle svrft" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1682,18 +1684,22 @@
                                             </svg>
                                         </div>
                                         <div class="dropdown-menu mbt-btn">
-                                            <button class="Ct-btn Bt-cancel ml-2" (click)="openPrjCancelSb()">Project
-                                                Cancel</button>
+                                            <button class="Ct-btn Bt-cancel ml-2" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                            Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
+                                            || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')" (click)="openPrjCancelSb()">
+                                                Project Cancel</button>
 
-                                                <button class="Ct-btn Bt-hold ml-2" (click)="openPrjReleaseSideBar()">Project
-                                                Release</button>
-
-                                                <button class="Ct-btn Bt-hold ml-2">Project Hold</button>
-                                                <button class="Ct-btn Bt-Submit ml-2">
+                                                <button class="Ct-btn Bt-hold ml-2" *ngIf="projectInfo&&projectInfo.Status==='Project Hold';else prHbtn" (click)="openPrjReleaseSideBar()">Project Release</button>
+                                                <ng-template #prHbtn>
+                                                    <button class="Ct-btn Bt-hold ml-2" (click)="openPrjHoldSideBar()">Project Hold</button>
+                                                </ng-template>
+                                                
+                                                <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type == 'Standard Tasks'">
                                                     Task Submission
                                                 </button>
-                                                <button class="Ct-btn Bt-Submit ml-2">Project Submission</button>
-                                            <button  class="Ct-btn ml-2">Add Timeline</button>
+                                                <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type != 'Standard Tasks' && projectInfo&&projectInfo.Project_Type != 'Routine Tasks'"
+                                                (click)="OnClickCheckboxProjectUpdate()">Project Submission</button>
+                                            <button  (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline</button>
                                         </div>
                                     </div>
                                     </div>
