@@ -2088,6 +2088,7 @@
                                             Start date
                                         </div>
                                         <div class="kt-info-data-v">
+                                          <!-- StartDate|date:'dd-MM-YYYY' -->
                                             {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
@@ -2191,7 +2192,16 @@
                                         </div>
                                     </div>
 
-                                </div>
+
+
+                        </div>
+
+
+
+              <!-- <div  *ngFor="let data of projectActionInfo">
+               {{data.Remarks}}
+              </div> -->
+
 
                                 <div class="Dividing-line"></div>
 
@@ -2922,6 +2932,7 @@
                                                 Start date
                                             </div>
                                             <div class="kt-info-data-v">
+
                                                 {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
                                             </div>
                                         </div>
@@ -2936,6 +2947,7 @@
 
                                             </div>
                                         </div>
+
 
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
@@ -2999,6 +3011,30 @@
                                                 </div>
                                             </div>
                                         </div> -->
+
+                                    </div>
+                                    <div class="row mt-5 px-3">
+                                      <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col text-center" style="max-width: 195px;">
+                                          <div class="kt-info-lable-v">
+                                              Attachment
+                                          </div>
+                                          <div class="kt-info-data-v" (click)="LoadDocument1(projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Team_Res)">
+
+                                         <b   class="word-break text-info curser-pointer">  {{projectActionInfo[currentActionView].Sourcefile}}</b>
+                                          </div>
+                                      </div>
+
+                                      <div class="col text-center" style="max-width: 195px;">
+                                          <div class="kt-info-lable-v">
+                                            Remarks
+                                          </div>
+                                          <div class="kt-info-data-v">
+
+                                            {{projectActionInfo[currentActionView].Remarks}}
+                                          </div>
+                                      </div>
+
+
 
                                     </div>
 

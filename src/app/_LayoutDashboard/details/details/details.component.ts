@@ -365,11 +365,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-
+  sourceFile:any
   Submission: any;
   filterstatus: any;
   filteremployee: any;
-
+  remark:any
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
@@ -388,6 +388,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.ProjectType = this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+
     });
   }
 

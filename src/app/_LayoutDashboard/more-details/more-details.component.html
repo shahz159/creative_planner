@@ -4,7 +4,7 @@
     <ng-container *ngIf="isHierarchy== true || userFound==true; else accessdenied">
         <ng-container
             *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
-        (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') || 
+        (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') ||
         activity=='Project Complete Rejected'  || activity=='Rejected' || (activity=='New Action Rejected') || (activity=='Project Release' && send_from=='WR')
         || (activity=='Project Hold' && send_from=='WR') || (activity=='Project Cancel' && send_from=='WR') || (activity=='Task Complete' && send_from=='WS') || (activity=='StandardTask Completed' && send_from=='WR')">
             <div class="desc-msg rejct-msg" data-toggle="tooltip" title="Latest activity">
@@ -231,7 +231,7 @@
 
                             </div>
 
-                            <!--progress bar end 
+                            <!--progress bar end
              <a class="text-info relse-act">
                 <span> <i class="fas fa-play mx-1 curser-pointer"></i></span> Click here to release Project.</a>-->
 
@@ -267,7 +267,7 @@
                                             placeholder="Select Employee">
                                             <ng-option [value]="item.Emp_No"
                                                 *ngFor="let item of Employee_List">
-                                                <a 
+                                                <a
                                                     *ngIf="(Responsible_EmpNo!=item.Emp_No && Owner_EmpNo!=item.Emp_No)">{{item.DisplayName}}</a>
                                             </ng-option>
                                         </ng-select>
@@ -317,7 +317,7 @@
                                 Project cancel
                             </button>
                         </div>
-                        <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks') 
+                        <div *ngIf="(Status == 'InProcess' || Status == 'Delay' || Status=='Project Complete Rejected') && (ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks')
                 && (Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo || isHierarchy==true)"
                             class=" pro-act ml-2">
                             <button class="btn  btn22 " (click)="OnClickCheckboxProjectUpdate()" data-toggle="tooltip"
@@ -1414,7 +1414,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                     fs-5 mb-0 flex-hdv"
                                                                         *ngIf="item.SubProject_Status!='Completed'  && Status!='Cancelled' ">
                                                                         <span class="mr-2" id="SpanProjName_{{item.id}}"
@@ -1664,7 +1664,7 @@
                                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                            
+
                                                             'text-underApp':item.SubProject_Status=='New Project',
                                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -2033,7 +2033,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                     fs-5 mb-0 flex-hdv">
                                                                         <span class="mr-2"
                                                                             id="underapprovalName_{{item.id}}"
@@ -2105,7 +2105,7 @@
                                                     'text-info':item.SubProject_Status=='Completion Under Approval',
                                                     'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                    
+
                                                     'text-underApp':item.SubProject_Status=='New Project',
                                                     'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                     'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -2274,7 +2274,7 @@
                                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                            
+
                                                             'text-underApp':item.SubProject_Status=='New Project',
                                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -2625,7 +2625,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                     fs-5 mb-0 flex-hdv">
                                                                         <span class="mr-2"
                                                                             id="InprocessProjName_{{item.id}}"
@@ -2697,7 +2697,7 @@
                                                     'text-info':item.SubProject_Status=='Completion Under Approval',
                                                     'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                    
+
                                                     'text-underApp':item.SubProject_Status=='New Project',
                                                     'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                     'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -2862,7 +2862,7 @@
                                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                            
+
                                                             'text-underApp':item.SubProject_Status=='New Project',
                                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -3209,7 +3209,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                     fs-5 mb-0 flex-hdv">
                                                                         <span class="mr-2"
                                                                             id="DelayProjName_{{item.id}}"
@@ -3281,7 +3281,7 @@
                                                     'text-info':item.SubProject_Status=='Completion Under Approval',
                                                     'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                    
+
                                                     'text-underApp':item.SubProject_Status=='New Project',
                                                     'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                     'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -3446,7 +3446,7 @@
                                                             'text-info':item.SubProject_Status=='Completion Under Approval',
                                                             'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                             'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                            
+
                                                             'text-underApp':item.SubProject_Status=='New Project',
                                                             'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                             'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -3770,7 +3770,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                 fs-5 mb-0 flex-hdv">
                                                                         <span class="mr-2"
                                                                             id="DelayProjName_{{item.id}}"
@@ -3842,7 +3842,7 @@
                                                 'text-info':item.SubProject_Status=='Completion Under Approval',
                                                 'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                 'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                
+
                                                 'text-underApp':item.SubProject_Status=='New Project',
                                                 'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                 'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -4316,7 +4316,7 @@
                                                                 data-toggle="collapse" href="#colp_{{item.IndexId+1}}"
                                                                 role="button" aria-expanded="false" aria-controls="">
                                                                 <div class="d-flex-cen">
-                                                                    <div class="subtask-list-title text-hover-primary 
+                                                                    <div class="subtask-list-title text-hover-primary
                                                 fs-5 mb-0 flex-hdv">
                                                                         <span class="mr-2"
                                                                             id="DelayProjName_{{item.id}}"
@@ -4927,7 +4927,7 @@
                                                 'text-info':item.SubProject_Status=='Completion Under Approval',
                                                 'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                 'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                
+
                                                 'text-underApp':item.SubProject_Status=='New Project',
                                                 'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                 'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -5028,7 +5028,7 @@
                                                     'text-info':item.SubProject_Status=='Completion Under Approval',
                                                     'text-Rejected':item.SubProject_Status=='New Project Rejected',
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
-                                                    
+
                                                     'text-underApp':item.SubProject_Status=='New Project',
                                                     'text-completed':item.SubProject_Status=='Completion Under Approval',
                                                     'text-completeRejected':item.SubProject_Status=='Project Complete Rejected',
@@ -5467,7 +5467,7 @@
                                     <ng-container *ngFor="let item of AttachmentList; let i=index">
                                         <div class="card mb-3 kt-project-md kt-files-card" *ngIf="item.Proofdoc">
                                             <!-- <div class=" card-body">
-                        
+
                             <div class="kt-widget__files">
                                 <a class="d-flex-cen">
                                     <div class="flex-1">
@@ -5486,12 +5486,12 @@
                                             (click)="openPDF_Standard(item.IsCloud,item.Reportdate,item.Proofdoc,item.contenttype)"><span class="text-info">{{item.Proofdoc}}</span>
                                             </h6>
                                         </div>
-                                    
+
                                         <div class="d-flex">
                                             <div class="kt-md-icon">
                                                 <span class="detail-icn">
                                                     <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-text"><path _ngcontent-qqt-c391="" d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path><path _ngcontent-qqt-c391="" d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"></path></svg>
-                                                </span> 
+                                                </span>
                                             </div>
                                             <h6 class="kt-widget__other pt-1" *ngIf="item.Remarks!='undefined'">
                                                 <span data-toggle="tooltip" title="remarks">{{item.Remarks}}</span>
@@ -5499,7 +5499,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-column-end">
-                                        
+
                                         <h6 class="" title="Submitted By {{item.SubmittedBy}}">
                                             <span><i class="far fa-user"></i> {{item.SubmittedBy}}</span>
                                         </h6>
@@ -6183,7 +6183,7 @@
                                         </div>
                                     </div>
                                     <!-- <div class="show1 more">Show More </div>
-                <div class="show1 less">Show Less </div> 
+                <div class="show1 less">Show Less </div>
              (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                     [disabled]="_CurrentpageRecords<10" -->
                                     <div style="text-align:center"> <button class="btn btn-info loadMore"
@@ -6973,7 +6973,7 @@
                                     *ngIf="(ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks')">
                                     {{StartDate|date:'dd-MM-yyyy'}}/{{SubmissionName}} </h6>
                             </div>
-                            <div class="px-1" 
+                            <div class="px-1"
                                 *ngIf="Status=='Deadline Extend Under Approval' || Status=='Project Hold' || Status=='Project Hold Under Approval'">
                                 <i class="la la-arrow-right mx-3 fs-4 font-weight-bold"></i>
                             </div>
@@ -7523,7 +7523,7 @@
     <!-- <div class="spacer--body" *ngIf="editDeadline==false">
         <div class="">
 
-            <ul class="kt-nav pb-0"> 
+            <ul class="kt-nav pb-0">
                 <li class="kt-nav__head py-0">
                 <div>New End Date<br>Action: <b>Project_Name</b></div>
                 </li>
