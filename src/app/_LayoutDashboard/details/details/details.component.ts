@@ -409,7 +409,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
-           this.newArray = uniqueNamesArray.slice(3);      
+           this.newArray = uniqueNamesArray.slice(3); 
+           
+           console.log(this.newArray,'-------------->')
+           
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -469,7 +472,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    if (index && this.projectActionInfo[index].Status === "Under Approval")
+    if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval" )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
     $(document).ready(() => this.drawStatistics1());
 
@@ -2801,7 +2804,7 @@ check_allocation() {
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-
+console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
