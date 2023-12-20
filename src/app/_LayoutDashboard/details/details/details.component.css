@@ -1098,7 +1098,7 @@ span.Status-Delay {
 
 .kt-project-action-list-view {
   margin-top: 10px;
-  height: 55vh;
+  max-height: 69vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 10px;

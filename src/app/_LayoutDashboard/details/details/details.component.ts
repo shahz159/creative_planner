@@ -26,7 +26,7 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, X } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -106,15 +106,16 @@ export const MY_DATE_FORMATS = {
 export class DetailsComponent implements OnInit, AfterViewInit {
   myTime = new Date();
   projectInfo: any;
-  projectActionInfo: any;
+  projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
   projectMemos: any;
   _totalMemos: number = 0;
   _linkedMemos: number = 0;
   Memos_List: any;
   memosOptions: any;
   approvalObj: ApprovalDTO;
-
-
+  myUnderApprvActions:any=[];
+  myDelayPrjActions:any=[];
+  delayActionsOfEmps:any=[];
 
 
 
@@ -128,7 +129,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   TOTAL_ACTIONS_IN_FUA: number = 0;
   TOTAL_ACTIONS_IN_HOLD: number = 0;
   TOTAL_ACTIONS: number = 0;
-
+  
 
 
 
@@ -223,6 +224,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.getholdate();
     this.GetPeopleDatils();
     this.timearrays();
+    
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -234,11 +236,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
     setTimeout(() => this.drawStatistics(), 500);
+   
   }
 
   ngAfterViewInit(): void {
     this.getResponsibleActions()
-    // this.drawStatistics();
     this.GetActivityDetails();
   }
 
@@ -258,9 +260,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   UsedInDAR: any;
 
   drawStatistics() {
+  
     this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data1 => {
-        console.log(data1, "DAR")
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         this.RemainingHours = (data1[0]['RemainingHours']);
@@ -268,8 +270,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
         this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
         this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-        console.log(this.maxDuration,this.RemainingHours,this.UsedInDAR)
-
+       
+       
         new FusionCharts({
 
           type: "radialbar",
@@ -308,17 +310,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           }
         }).render();
         // chart js end ----------------
-        var lang = {
-          "javascript": "70%",
-        };
-        var multiply = 4;
-        $.each(lang, function (language, pourcent) {
-          var delay = 700;
-          setTimeout(function () {
-            $('#' + language + '-pourcent').html(pourcent);
-          }, delay * multiply);
-          multiply++;
-        });
+        
+        
+        
+        // var lang = {
+        //   "javascript": "70%",
+        // };
+        // var multiply = 4;
+        // $.each(lang, function (language, pourcent) {
+        //   var delay = 700;
+        //   setTimeout(function () {
+        //     $('#' + language + '-pourcent').html(pourcent);
+        //   }, delay * multiply);
+        //   multiply++;
+        // });
+
+
+
+
+
       });
   }
 
@@ -379,7 +389,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
-      this.getFilteredPrjActions();
+      this.filteredPrjAction=this.getFilteredPrjActions('All','All');
       this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
       this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       this.calculateProjectActions();    // calculate project actions details.
@@ -388,22 +398,53 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.ProjectType = this.projectInfo.Project_Type
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+
+      this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
+      this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
+      this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
+            return b.Delaydays-a.Delaydays;
+      });
+      
+      this.filteremployee.forEach((emp)=>{
+       let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
+        if(delayActionsOfEmp.length>0){
+          delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
+          this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
+        } 
+      })
+     
     });
   }
 
+  uniqueName:any
+  uniqueNamesArray:any
+  firstthreeRecords:any
+  firstRecords:any
+  secondRecords:any
+  thirdRecords:any
+  newArray:any
+  uniqueSet :any
   nonRacisList:any=[];
   GetPeopleDatils(){
-    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe( 
       (data) => {
+ 
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+          const uniqueNamesArray = [...this.uniqueName];
+           this.newArray = uniqueNamesArray.slice(3);      
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
+          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
         }
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
-        console.log("all people:",this.nonRacisList);
+        // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
       });
 
@@ -439,8 +480,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   formatTime(time: string): string {
+   try{
     const parsedTime = new Date(`1970-01-01T${time}`);
     return this.datepipe.transform(parsedTime, 'HH:mm');
+   }catch(e){
+      return '';
+   }
   }
 
 
@@ -454,7 +499,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && this.projectActionInfo[index].Status === "Under Approval")
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    $(document).ready(() => this.drawStatistics1());
+    $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
 
 
   }
@@ -467,56 +512,73 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-  drawStatistics1() {
-    //  chart js ---------------------
-    new FusionCharts({
-      type: "radialbar",
-      width: "100%",
-      height: "100%",
-      renderAt: "chart-container1",
-      dataSource: {
-        chart: {
-          theme: "fusion",
-          // caption: "7Hr 32M",
-          // subCaption: "January 2021",
-          showLegend: 1,
-          innerRadius: 30,
-          outerRadius: 105,
-          showLabels: 1,
-          labelText: "$label"
-        },
-        data: [
-          {
-            label: "Design",
-            value: 94.09,
-            color: "#5867dd" //Custom Color
-          },
+ 
+  drawStatistics1(actionCode:string) {
+   
+    this.service.DARGraphCalculations_Json(actionCode)
+      .subscribe(data1 => {
 
-          {
-            label: "Develoment",
-            value: 59.89,
-            color: "#b2beff" //Custom Color
-          },
-          {
-            label: "Testing",
-            value: 91.53,
-            color: "#985eff" //Custom Color
+        this.maxDuration = (data1[0]['ProjectMaxDuration']);
+        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+        this.RemainingHours = (data1[0]['RemainingHours']);
+
+        this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+        this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+        this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+       
+       
+        new FusionCharts({
+
+          type: "radialbar",
+          width: "100%",
+          height: "100%",
+          renderAt: "chart-container1",
+          dataSource: {
+            chart: {
+              theme: "fusion",
+              // caption: "7Hr 32M",
+              // subCaption: "January 2021",
+              showLegend: 1,
+              innerRadius: 30,
+              outerRadius: 105,
+              showLabels: 1,
+              labelText: "$label"
+            },
+            data: [
+              {
+                label: "Remaining hous",
+                value: this.RemainingHours,
+                color: "#5867dd" //Custom Color
+              },
+
+              {
+                label: "Used hours",
+                value: this.UsedInDAR,
+                color: "#b2beff" //Custom Color
+              },
+              {
+                label: "Total hours",
+                value: this.maxDuration,
+                color: "#985eff" //Custom Color
+              }
+            ]
           }
-        ]
-      }
-    }).render();
-    // chart js end ----------------
-    var lang = {
-      "javascript": "70%",
-    };
-    var multiply = 4;
-    $.each(lang, function (language, pourcent) {
-      var delay = 700;
-      setTimeout(function () {
-        $('#' + language + '-pourcent').html(pourcent);
-      }, delay * multiply);
-      multiply++;
-    });
+        }).render();
+        // chart js end ----------------
+        
+        var lang = {
+          "javascript": "70%",
+        };
+        var multiply = 4;
+        $.each(lang, function (language, pourcent) {
+          var delay = 700;
+          setTimeout(function () {
+            $('#' + language + '-pourcent').html(pourcent);
+          }, delay * multiply);
+          multiply++;
+        });
+
+      });
   }
 
 
@@ -980,7 +1042,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.comments = "";
   }
 
-
+  sidno:any;
+  emp:any;
+  repdate:any;
+  contenttype: any;
+  submitby:any;
 
   getapprovalStats() {
     // this.approvalEmpId = null;
@@ -1032,12 +1098,26 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);      
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
-          console.log(this.complete_List, 'complete');
+         
         }
+        if (this.requestType == 'Task Complete') {
+          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+          this.completedoc = (this.complete_List[0]['Proofdoc']);
+          console.log(this.complete_List,"fahan")
+         this.sidno = (this.complete_List[0]['StandardId']);
+         this.emp = (this.complete_List[0]['Emp_No']);
+         this.repdate = (this.complete_List[0]['Reportdate']);
+         this.submitby = (this.complete_List[0]['SubmittedBy']);
+         this.contenttype = (this.complete_List[0]['contenttype']);
+         this.iscloud = (this.complete_List[0]['IsCloud']);
+        }
+       
+
+
       }
     });
     // console.log(this.requestDetails, 'transfer');
@@ -1077,7 +1157,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   removeCommit() {
-    this.isTextAreaVisible = false
+    this.isTextAreaVisible = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
   }
 
 
@@ -1146,13 +1229,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           element.Remarks = this.comments;
         });
       }
+      debugger
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
           this.GetApproval(1);
           this.getProjectDetails(this.URL_ProjectCode);
-
         });
       console.log(this.singleapporval_json, "accept")
     }
@@ -1176,6 +1259,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.notifyService.showSuccess("Project Approved Successfully", this._Message);
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
+
+
           }
         });
     }
@@ -1195,6 +1280,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
+
+
           });
       }
     }
@@ -1931,7 +2018,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       Client: Actionclient,
       StartDate: datestrStart,
       EndDate: datestrEnd,
-      Allocated: this.editAllocatedhours,
+      AllocatedHours: this.editAllocatedhours,
     }
 
 
@@ -2026,7 +2113,7 @@ check_allocation() {
 
 
 
-  limit = 200; // Set the initial limit
+  limit = 60; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
 
@@ -5344,40 +5431,42 @@ filterConfig:{filterby:string,sortby:string}={
 onFilterConfigChanged({filterBy,sortBy}){
   this.filterConfig.filterby=filterBy;
   this.filterConfig.sortby=sortBy;
-  this.filterConfigChanged=true;
-  this.getFilteredPrjActions();
+  this.filterConfigChanged=true; 
+  this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
 }
 
 clearFilterConfigs(){
   this.filterConfig.filterby='All';
   this.filterConfig.sortby='All';
-  this.getFilteredPrjActions();
+  this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   this.filterConfigChanged=false;
 }
 
-getFilteredPrjActions(){
+getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+  
   let arr=this.projectActionInfo;
-  if(!(this.filterConfig.filterby==='All'&&this.filterConfig.sortby==='All'))
-  {
-    if(this.filterConfig.sortby!=='All'){
-     if(this.filterConfig.sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
+  if(!(filterby==='All'&&sortby==='All'))
+  { 
+    if(sortby!=='All'){
+     if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....   
       arr=arr.filter((action)=>{
-        return action.Responsible===this.filterConfig.sortby;
-       });
+        return action.Team_Res===sortby;
+       });  
      }
      else{  // when sortby is 'Assigned By me'
-
-     }
-
+        arr=arr.filter((action)=>{
+              return action.AssignedbyEmpno===this.Current_user_ID;
+        });
+     }  
     }
 
-    if(this.filterConfig.filterby!=='All'){
+    if(filterby!=='All'){
       arr=arr.filter((action)=>{
-         return action.Status===this.filterConfig.filterby;
+         return action.Status===filterby;
        })
     }
   }
-  this.filteredPrjAction=arr;
+  return arr;
 }
 
 isActionAvailable(e){
@@ -5387,29 +5476,9 @@ isActionAvailable(e){
 }
 
 
+// project action search and filter end here. 
 
 
-// project action search and filter end here.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// project action search and filter end here
 
 
 ///////////////////Comments start//////////////////////
@@ -5472,5 +5541,95 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 
 ///////////////////attchement end//////////////////////
+
+/////////////////////task attachemnets start///////////////////////////////////////
+openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
+debugger
+  repDate = new Date(repDate);
+  let FileUrl: string;
+  FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+
+  let Day = repDate.getDate();
+  let Month = repDate.getMonth() + 1;
+  let Year = repDate.getFullYear();
+  if (Month < 10) {
+    this._month = '0' + Month;
+  }
+  else {
+    this._month = Month;
+  }
+  if (Day < 10) {
+    this._day = '0' + Day;
+  }
+  else {
+    this._day = Day;
+  }
+  var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+  if (cloud == false) {
+    FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc);
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&"+ "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+
+  }
+
+  else if (cloud == true) {
+
+    let FileUrl: string;
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (proofDoc.includes(FileUrl)) {
+      FileUrl = proofDoc
+    }
+    else {
+      let Day = repDate.getDate();
+      let Month = repDate.getMonth() + 1;
+      let Year = repDate.getFullYear();
+      if (Month < 10) {
+        this._month = '0' + Month;
+      }
+      else {
+        this._month = Month;
+      }
+      if (Day < 10) {
+        this._day = Day;
+      }
+      else {
+        this._day = Day;
+      }
+      var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+      FileUrl = (FileUrl + emp_no + "/" + this.URL_ProjectCode + "/" + date + "/" + proofDoc + "." + type);
+    }
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&"+ "submitby=" + submitby + "&"+  "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+
+}
+
+/////////////////////task attachemnets start///////////////////////////////////////
+
+
 
 }
