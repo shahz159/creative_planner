@@ -1632,9 +1632,11 @@
 
                             <div class="kt-project-info-body" >
                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed" >
-                                    <div class="PA_title" *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo || Current_user_ID === projectInfo.ResponsibleEmpNo)">
-                                        <span>Project </span> <a href="javascript:void(0)">
-                                            <div class="PA_Edit_btn" (click)="Project_details_edit()" *ngIf="(projectInfo&&projectInfo.Status!='Completed')">
+                                    <div class="PA_title">
+                                        <span>Project </span> 
+                                        <a href="javascript:void(0)" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
+                                            Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || isHierarchy==true)">
+                                            <div class="PA_Edit_btn" (click)="Project_details_edit()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
                                                     width="15" height="15">
                                                     <path
@@ -2563,9 +2565,9 @@
 
                             <div class="kt-info-box mt-3 border-0 p-0">
                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
-                                    <div class="PA_title" *ngIf="projectActionInfo[currentActionView].Project_Owner===Current_user_ID||projectActionInfo[currentActionView].Team_Res===Current_user_ID">
+                                    <div class="PA_title">
                                         <span>Action  {{projectActionInfo[currentActionView].IndexId}}</span>
-                                        <a href="javascript:void(0)">
+                                        <a href="javascript:void(0)"  *ngIf="projectActionInfo[currentActionView].Project_Owner===Current_user_ID||projectActionInfo[currentActionView].Team_Res===Current_user_ID">
                                             <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
                                                     width="15" height="15">
@@ -2580,14 +2582,28 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div>
-                                        <button class="Ct-btn Bt-Submit ml-2"
-                                            *ngIf="(projectActionInfo[currentActionView].Team_Res==Current_user_ID || isHierarchy==true) && (projectActionInfo[currentActionView].Status!='Under Approval' && projectActionInfo[currentActionView].Status!='Completed' && projectInfo.Status!='Cancelled' && projectActionInfo[currentActionView].Status!='New Project Rejected' && projectActionInfo[currentActionView].Status!='Completion Under Approval')"
-                                            (click)="markCompleted(projectActionInfo[currentActionView])">Action Submission</button>
-                                        <button
-                                            *ngIf="(projectActionInfo[currentActionView].Status!=='Completed'&&projectActionInfo[currentActionView].Team_Res===Current_user_ID)"
-                                            (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
-                                        </button>
+
+                                    <div class="project_more_Action_options" *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner ||
+                                            Current_user_ID == projectActionInfo[currentActionView].Team_Res || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
+
+                                            <div class="btn-group dropleft">
+                                                <div type="button" class=" dropdown-toggle svrft" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 48 60" style="enable-background:new 0 0 48 48;" xml:space="preserve"><g>
+                                                        <circle cx="24" cy="6.72" r="5.59"/>
+                                                        <circle cx="24" cy="24" r="5.59"/>
+                                                        <circle cx="24" cy="41.28" r="5.59"/></g>
+                                                    </svg>
+                                                </div>
+                                                <div class="dropdown-menu mbt-btn">
+                                                    <button class="Ct-btn Bt-Submit ml-2"
+                                                    *ngIf="(projectActionInfo[currentActionView].Team_Res==Current_user_ID || isHierarchy==true) && (projectActionInfo[currentActionView].Status!='Under Approval' && projectActionInfo[currentActionView].Status!='Completed' && projectInfo.Status!='Cancelled' && projectActionInfo[currentActionView].Status!='New Project Rejected' && projectActionInfo[currentActionView].Status!='Completion Under Approval')"
+                                                    (click)="markCompleted(projectActionInfo[currentActionView])">Action Submission</button>
+                                                    <button
+                                                    *ngIf="(projectActionInfo[currentActionView].Status!=='Completed'&&projectActionInfo[currentActionView].Team_Res===Current_user_ID)"
+                                                    (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
+                                                    </button>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="kt-project-info-body">
@@ -2977,7 +2993,7 @@
                                                                 d="M13.877 37.529a1 1 0 0 1-.564-.175l-2.623-1.8a1 1 0 0 1 1.13-1.651l2.623 1.8a1 1 0 0 1-.566 1.826Z">
                                                             </path>
                                                         </g>
-                                                    </svg></span> Ownerw
+                                                    </svg></span> Owner
                                             </div>
                                             <div class="kt-info-data-v">
                                                 {{projectActionInfo[currentActionView].Owner}}
@@ -8161,14 +8177,13 @@
                                             </g>
                                         </svg>
                                     </span> Owner</div>
-                                <div class="input-icon Sub_In_ed"  *ngIf="projectActionInfo"  >
-                                    
-                                    <ng-container *ngIf="(Current_user_ID===projectActionInfo[currentActionView].Project_Owner); else ActionEdit" >
-                                    <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
-                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
-                                            {{item.RACIS}}
-                                        </ng-option>
-                                    </ng-select>
+                                <div class="input-icon Sub_In_ed" *ngIf="currentActionView&&projectActionInfo[currentActionView]">
+                                    <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
+                                        <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
+                                            <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                                {{item.RACIS}}
+                                            </ng-option>
+                                        </ng-select>
                                  </ng-container>
                                  <ng-template #ActionEdit>
                                     <input type="text" class="form-control readonly"
