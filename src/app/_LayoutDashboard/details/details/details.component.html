@@ -3326,7 +3326,7 @@
 </div>
 </ng-container>
 <ng-template #accessdenied>
-  <ng-container *ngIf="userFound===false||isHierarchy===false;else pleasewait">
+  <ng-container *ngIf="userFound===false&&isHierarchy===false;else pleasewait">
    
     <div class="container">
      <div class="d-flex align-items-md-center flex-column">
@@ -3368,7 +3368,7 @@
 <div id="mysideInfobar1" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
 </div>
-
+ 
 
 
 

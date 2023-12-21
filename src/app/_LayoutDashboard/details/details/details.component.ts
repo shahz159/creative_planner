@@ -238,7 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getResponsibleActions()
+    // this.getResponsibleActions()
     this.GetActivityDetails();
   }
 
@@ -502,13 +502,23 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   showActionDetails(index: number | undefined) {
 
-    this.currentActionView = index;
-    this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
-      this.GetApproval(this.projectActionInfo[index].Project_Code);
-    $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+    // this.currentActionView = index;
+    // this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
+    // if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
+    //   this.GetApproval(this.projectActionInfo[index].Project_Code);
+    // $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
 
 
+    if(index!==undefined){
+      this.currentActionView = index;
+      this.actionCost=this.projectActionInfo[this.currentActionView].Project_Cost;
+      if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") 
+        this.GetApproval(this.projectActionInfo[index].Project_Code);
+      $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+    }
+    else{
+      this.currentActionView = undefined;  
+    }
   }
 
 
