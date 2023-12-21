@@ -5882,26 +5882,80 @@
                     <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab" href="#upcoming_meetings_tabpanel"><span
-                                    class="lbl-hdn">upcoming </span></a><sup class="total-meeting-count" *ngIf="upcMtgCnt"  >{{upcMtgCnt}}</sup>
+                                    class="lbl-hdn">upcoming </span><span class="total-meeting-count" *ngIf="upcMtgCnt"  >{{upcMtgCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#today_meetings_tabpanel"><span class="lbl-hdn"> Today
-                                </span></a><sup class="total-meeting-count" *ngIf="tdMtgCnt"  >{{tdMtgCnt}}</sup>
+                                </span><span class="total-meeting-count" *ngIf="tdMtgCnt"  >{{tdMtgCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#last_7_days_meetings_tabpanel"><span class="lbl-hdn"> last
-                                    7 Days </span></a><sup class="total-meeting-count" *ngIf="lst7dCnt"  >{{lst7dCnt}}</sup>
+                                    7 Days </span><span class="total-meeting-count" *ngIf="lst7dCnt"  >{{lst7dCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#last_month_meetings_tabpanel"><span class="lbl-hdn"> last
-                                    Month </span></a><sup class="total-meeting-count" *ngIf="lstMthCnt" >{{lstMthCnt}}</sup>
+                                    Month </span><span class="total-meeting-count" *ngIf="lstMthCnt" >{{lstMthCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                               <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#older_meetings_tabpanel"><span class="lbl-hdn"> older
-                              </span></a><sup class="total-meeting-count" *ngIf="oldMtgCnt"  >{{oldMtgCnt}}</sup>
+                              </span><span class="total-meeting-count" *ngIf="oldMtgCnt"  >{{oldMtgCnt}}</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#custom_meetings_tabpanel"><span class="lbl-hdn"> custom </span></a>
+                        <li class="nav-item dropdown-toggle icv-tog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn icon-btn icn-hvr fav-btn"  data-toggle="tab" href="#custom_meetings_tabpanel"><span class="lbl-hdn"> custom </span></a>
+                            <div class="dropdown-menu pt-1 mt-2 dropdown_left_fix">
+                                <div class="px-2 pt-0  d-inline-block"  id="range-picker_header">
+                                    <div (click)="$event.stopPropagation();">
+    
+                                        <div class="mt-1">
+                                            <label class="cus-lbl form-label">Date range</label>
+                                           <div class="d-flex-cen">
+                                                <div class="">
+    
+                                                    <div class="input-group input-date-dw border border-gray rounded-2" >
+                                                        <input
+                                                           type="date"
+                                                            placeholder="Select Start Date" class="form-control border-0"
+                                                            name="date"
+                                                            [(ngModel)]="mtgFromD"
+                                                            />
+    
+                                                    </div>
+    
+    
+                                                </div>
+                                                <div class="px-2">to</div>
+    
+                                                <div class="">
+    
+                                                    <div class="input-group input-date-dw border border-gray rounded-2  ">
+                                                        <input
+                                                            type="date"
+                                                            placeholder="Select Start Date" class="form-control  border-0"
+                                                            name="date"
+                                                            [min]="mtgFromD|date:'yyyy-MM-dd'"
+                                                            [(ngModel)]="mtgUptoD"
+                                                            />
+    
+                                                    </div>
+    
+                                                </div>
+
+                                                <div class="form-group  mb-0 text-end ml-3">
+    
+                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="  mtgFromD=''; mtgUptoD='';  "  >RESET</button>
+                                                    <button  [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" type="submit" class="btn w-110 Bt-Submit ml-2"  (click)="getMeetingsInRange()">
+                                                          <div *ngIf="mLdng"   class="spinner-border p-0 m-0 mr-1 dropdown-toggle" role="status" style="height:15px; width:15px;">
+                                                            <span class="visually-hidden"></span>
+                                                          </div>
+                                                    GET</button>
+            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                       </li>
                     </ul>
                     <div class="dropdown no-after btm-btn ml-2 nav-item" *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
@@ -6633,7 +6687,7 @@
 
                         <div class="tab-pane fade"     id="custom_meetings_tabpanel" role="tabpanel" aria-labelledby="custom_meetings_tabpanel">
 
-                            <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
+                            <!-- <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
                                 <div (click)="$event.stopPropagation();">
 
                                     <div class="mt-1">
@@ -6686,7 +6740,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> -->
 
                             <ng-container *ngIf="mtgsInRange&&mtgsInRange.length>0; else no_meetings_Present">
                               <ng-container *ngFor="let meetings of mtgsInRange">
