@@ -81,8 +81,6 @@ export const MY_DATE_FORMATS = {
   },
 };
 
-
-
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -3214,6 +3212,16 @@ check_allocation() {
 
 
   getMeetingsInRange() {
+    /*---------- set time out for hide the dropdown --------*/
+    setTimeout(function () {
+      loadSelect()
+    },
+      1500);
+    function loadSelect() {
+      $(".dropdown_left_fix").removeClass("show");
+    }
+    /*---------- set time out for hide the dropdown end --------*/
+
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = this.mtgFromD;
     this.ObjSubTaskDTO.enddate = this.mtgUptoD;
