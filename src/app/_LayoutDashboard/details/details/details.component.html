@@ -1,3 +1,4 @@
+<ng-container *ngIf="userFound||isHierarchy;else accessdenied">
 <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3" id="newdetails">
     <div class="card mb-6 mb-xl-9 d-none">
         <div class="card-body pt-9 pb-0">
@@ -1109,8 +1110,8 @@
                                                         </li>
 
                                                         <li *ngFor="let item of filteremployee">
-                                                           
-                                                           
+
+
                                                             <button class="btn btn-filtr"  (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Team_Res})"      [ngClass]="{'active2':filterConfig.sortby===item.Team_Res}"   *ngIf="item.Team_Res==Current_user_ID"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div class="d-flex align-items-center"><svg
@@ -1269,10 +1270,10 @@
                                 <div class="d-flex flex-column align-items-center justify-content-center"     style="   width:30%; height:30%; " >
                                  <svg viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 11.493C5.50364 8.39226 7.69698 5.72579 10.7388 5.12416C13.7807 4.52253 16.8239 6.15327 18.0077 9.0192C19.1915 11.8851 18.186 15.1881 15.6063 16.9085C13.0265 18.6288 9.59077 18.2874 7.4 16.093C6.18148 14.8725 5.49799 13.2177 5.5 11.493Z" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16.062 16.568L19.5 19.993" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.5303 8.96271C10.2374 8.66982 9.76256 8.66982 9.46967 8.96271C9.17678 9.25561 9.17678 9.73048 9.46967 10.0234L10.5303 8.96271ZM11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627L11.4697 12.0234ZM12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234L12.5303 10.9627ZM13.4697 14.0234C13.7626 14.3163 14.2374 14.3163 14.5303 14.0234C14.8232 13.7305 14.8232 13.2556 14.5303 12.9627L13.4697 14.0234ZM12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627L12.5303 12.0234ZM9.46967 12.9627C9.17678 13.2556 9.17678 13.7305 9.46967 14.0234C9.76256 14.3163 10.2374 14.3163 10.5303 14.0234L9.46967 12.9627ZM11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234L11.4697 10.9627ZM14.5303 10.0234C14.8232 9.73048 14.8232 9.25561 14.5303 8.96271C14.2374 8.66982 13.7626 8.66982 13.4697 8.96271L14.5303 10.0234ZM9.46967 10.0234L11.4697 12.0234L12.5303 10.9627L10.5303 8.96271L9.46967 10.0234ZM11.4697 12.0234L13.4697 14.0234L14.5303 12.9627L12.5303 10.9627L11.4697 12.0234ZM11.4697 10.9627L9.46967 12.9627L10.5303 14.0234L12.5303 12.0234L11.4697 10.9627ZM12.5303 12.0234L14.5303 10.0234L13.4697 8.96271L11.4697 10.9627L12.5303 12.0234Z" fill="#b2bcc4"></path> </g></svg>
                                  <a  class="kt-blank-msg text-gray-400">Search Result Not Found<br ></a></div>
-                                
-                                </div>   
+
+                                </div>
                                </ng-container>
-                              
+
                             </ng-container>
                             <ng-template #noProjectActionFound>
                                 <div class="no-prjact-found">
@@ -1577,22 +1578,20 @@
                          </div>
 
                          <div>
-                            
-                            <div  *ngIf="myUnderApprvActions.length>0"  class="kt-note-text curser-pointer  "  (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)" >
+
+                            <div  *ngIf="myUnderApprvActions.length>0"  class="kt-note-text curser-pointer under-apprvl "  (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)" >
                                 You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+' actions'):(myUnderApprvActions.length+' action') }} Under Approval.
                               </div>
-             
-                             <div *ngIf="myDelayPrjActions.length>0"  class="kt-note-text " >
+
+                             <div *ngIf="myDelayPrjActions.length>0"  class="kt-note-text" >
                                 You have {{myDelayPrjActions.length}}   {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+' days'):(myDelayPrjActions[0].Delaydays+' day') }}
                              </div>
 
-                          
-                    
+
+
                          </div>
 
-                         </div> 
-
-
+                         </div>
 
                          <div class="kt-Note-msg d-flex align-items-center" *ngIf="projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length">
                             <div class="kt-note-icon">
@@ -1619,10 +1618,11 @@
                             </div>
                             <div class="kt-note-text curser-pointer " *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
                                 Project has  {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
-                                <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;"> 
+                                <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
                                     {{action.name}} ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?' days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
-                           </div>  
-                        </div>
+                           </div>
+                         </div>
+
 
                          <!-- Notification end-->
 
@@ -1674,7 +1674,7 @@
                                     <div class="project_more_Action_options" *ngIf="(Current_user_ID == projectInfo&&projectInfo.OwnerEmpNo ||
                                     Current_user_ID == projectInfo&&projectInfo.ResponsibleEmpNo || Current_user_ID== projectInfo&&projectInfo.AuthorityEmpNo
                                     || isHierarchy==true) && (projectInfo&&projectInfo.Status!='Completed')">
-                                        
+
                                     <div class="btn-group dropleft">
                                         <div type="button" class=" dropdown-toggle svrft" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 48 60" style="enable-background:new 0 0 48 48;" xml:space="preserve"><g>
@@ -1693,7 +1693,7 @@
                                                 <ng-template #prHbtn>
                                                     <button class="Ct-btn Bt-hold ml-2" (click)="openPrjHoldSideBar()">Project Hold</button>
                                                 </ng-template>
-                                                
+
                                                 <button class="Ct-btn Bt-Submit ml-2" *ngIf="projectInfo&&projectInfo.Project_Type == 'Standard Tasks'">
                                                     Task Submission
                                                 </button>
@@ -1944,7 +1944,7 @@
                                                 <div class="kt-info-data-v p-2" data-toggle="tooltip"
                                                     title="{{requestComments}}">{{requestComments}}</div>
                                             </div>
-                                           
+
 
 
 
@@ -1953,7 +1953,7 @@
 
                                             <div class="col-lg-12 mb-2" *ngIf="requestType=='Task Complete' && completedoc">
                                                 <div class="kt-info-lable-v">Task Attachment</div>
-                            
+
                                                 <div class="curser-pointer">
                                                     <div class="attachment-view">
                                                         <span>
@@ -2225,6 +2225,7 @@
                                             Start date
                                         </div>
                                         <div class="kt-info-data-v">
+                                          <!-- StartDate|date:'dd-MM-YYYY' -->
                                             {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                         </div>
                                     </div>
@@ -2298,12 +2299,12 @@
                                         <div class="kt-project-sts-data">
                                             <div class="kt-support-view">
                                                 <!-- <div class="symbol-group symbol-hover flex-nowrap " >
-                                                    
+
                                                     <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                         data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                                         class="symbol symbol-35px symbol-circle">
                                                         <img alt="Pic"
-                                                            src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg">  
+                                                            src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg">
                                                     </div>
                                                     <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                         data-bs-original-title="Michael Eberon" data-kt-initialized="1"
@@ -2332,21 +2333,21 @@
                                                             {{firstRecords}}
                                                         </span>
                                                     </div>
-                                                
+
                                                     <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood"
                                                         data-kt-initialized="1" *ngIf="secondRecords&&secondRecords != ''">
                                                         <span class="symbol-label bg-primary text-inverse-primary fw-bold" title="{{firstthreeRecords[1]}}" (click)="View_User_list()">
-                                                            {{secondRecords}} 
+                                                            {{secondRecords}}
                                                         </span>
                                                     </div>
-                                                
+
                                                     <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew"
                                                         data-kt-initialized="1" *ngIf="thirdRecords&&thirdRecords != '' ">
                                                         <span class="symbol-label bg-danger text-inverse-danger fw-bold" title="{{firstthreeRecords[2]}}" (click)="View_User_list()">
                                                             {{thirdRecords}}
                                                         </span>
                                                     </div>
-                                                
+
                                                     <a class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users" *ngIf="newArray&&newArray.length !=''">
                                                         <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold"  (click)="View_User_list()">+{{newArray&&newArray.length}}</span>
                                                     </a>
@@ -2355,7 +2356,16 @@
                                         </div>
                                     </div>
 
-                                </div>
+
+
+                        </div>
+
+
+
+              <!-- <div  *ngFor="let data of projectActionInfo">
+               {{data.Remarks}}
+              </div> -->
+
 
                                 <div class="Dividing-line"></div>
                                 <div class="row">
@@ -2387,7 +2397,7 @@
                                                         <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">
                                                             {{item.Value}}</p>
                                                         <span *ngIf="item.oldValue !==''">From :
-                                                            {{item.oldValue}}</span> <br>
+                                                            {{item.oldValue}}</span>
                                                         <span *ngIf="item.oldValue !==''; else newActivity">To :
                                                             <!-- {{item.NewValue}}  -->
                                                             {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
@@ -2411,36 +2421,15 @@
                                                         <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
                                                     </ng-container>
                                                 </div>
-                                              
+
                                                 <!--end::Item-->
                                             </div>
 
                                         </div>
                                     </div>
-
-                                    <!-- <div class="col-lg-6 " >
-                                        <div class="kt-over-pd-in">
-                                            <div class="kt-ct-project">
-                                                <div class="kt-ct-sub-ttl">
-                                                    <h6>Statistics</h6>
-                                                </div>
-                                            </div>
-                                            <div class="chart" id="chart-container"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                                    <div class="col-lg-6 ">
-                                        <div class="kt-over-pd-in">
-                                            <div class="d-flex justify-content-between kt-ct-sub-ttl">
-                                                <div>
-                                                    <h6>Statistics</h6>
-                                                </div>
-                                                
-                                            </div>
-
+                                    <div class="col-lg-6 Statistics">
+                                        <div class="kt-ct-sub-ttl">
+                                            <h6>Statistics</h6>
                                             <div class="d-flex flex-column ml-3 w-100"
                                                     *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
                                                     <div class="lable-dv">
@@ -2526,14 +2515,9 @@
                                                                 class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                            <!-- <div class="kt-ct-project">
-
-                                                <div class="flex-1 d-flex align-items-center mb-2 cir-icon">
-                                                </div>
-                                            </div> -->
-                                            <div class="chart" id="chart-container"></div>
+                                            </div>
+                                        </div>
+                                        <div  id="chart-container"  class="Chart">
                                         </div>
                                     </div>
                                 </div>
@@ -2713,7 +2697,7 @@
                                         </ng-container>
                                     </div>
 
-                                
+
                                     <ng-container
                                         *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
                                         <div class="kt-info-box mt-2 border-0">
@@ -2993,7 +2977,7 @@
                                                                 d="M13.877 37.529a1 1 0 0 1-.564-.175l-2.623-1.8a1 1 0 0 1 1.13-1.651l2.623 1.8a1 1 0 0 1-.566 1.826Z">
                                                             </path>
                                                         </g>
-                                                    </svg></span> Owner
+                                                    </svg></span> Ownerw
                                             </div>
                                             <div class="kt-info-data-v">
                                                 {{projectActionInfo[currentActionView].Owner}}
@@ -3091,6 +3075,7 @@
                                                 Start date
                                             </div>
                                             <div class="kt-info-data-v">
+
                                                 {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
                                             </div>
                                         </div>
@@ -3105,6 +3090,7 @@
 
                                             </div>
                                         </div>
+
 
                                         <div class="col text-center">
                                             <div class="kt-info-lable-v">
@@ -3170,6 +3156,30 @@
                                         </div> -->
 
                                     </div>
+                                    <div class="row mt-5 px-3">
+                                      <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-4  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
+                                          <div class="kt-info-lable-v">
+                                              Attachment
+                                          </div>
+                                          <div class="kt-info-data-v" (click)="LoadDocument1(projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Responsible)">
+
+                                         <b   class="word-break text-info curser-pointer">  {{projectActionInfo[currentActionView].Sourcefile}}</b>
+                                          </div>
+                                      </div>
+
+                                      <div class="col-lg-4  text-center">
+                                          <div class="kt-info-lable-v">
+                                            Remarks
+                                          </div>
+                                          <div class="kt-info-data-v" title="{{projectActionInfo[currentActionView].Remarks}}">
+
+                                            {{projectActionInfo[currentActionView].Remarks}}
+                                          </div>
+                                      </div>
+
+
+
+                                    </div>
 
                                     <div class="Dividing-line"></div>
 
@@ -3183,100 +3193,51 @@
                                                 </div>
                                                 <div class="timeline-label">
                                                     <!--begin::Item-->
-                                                    <div class="timeline-item">
+                                                    <div class="timeline-item" *ngFor="let item of ActionfirstFiveRecords">
                                                         <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br>
-                                                            <span class="kt-dt-l">08:42 AM</span>
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
+                                                            {{item.ModifiedDate |date:'dd MMM'}}
+                                                            <span class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
                                                         </div>
                                                         <!--end::Label-->
-
+    
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-primary fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-
+    
                                                         <!--begin::Text-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
-                                                                Created</p>
-                                                            Outlines keep you honest. And keep structure
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">
+                                                                {{item.Value}}</p>
+                                                            <span *ngIf="item.oldValue !==''">From :
+                                                                {{item.oldValue}}</span>
+                                                            <span *ngIf="item.oldValue !==''; else newActivity">To :
+                                                                <!-- {{item.NewValue}}  -->
+                                                                {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                                <ng-container *ngIf="item.NewValue.length>60">
+                                                                <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                            </ng-container>
+                                                          </span>
+                                                            <ng-template #newActivity>
+                                                                <!-- {{item.NewValue}}  -->
+                                                                {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                                <ng-container
+                                                                *ngIf="item.NewValue.length>60">
+                                                                <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                            </ng-container>
+                                                            </ng-template>
                                                         </div>
                                                         <!--end::Text-->
                                                     </div>
-                                                    <!--end::Item-->
-
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br>
-                                                            <span class="kt-dt-l">11:42 PM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-success fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
-                                                            </p>
-                                                            Rebrand strategy planning
-                                                        </div>
-                                                        <!--end::Content-->
+                                                    <div class="View_more_act">
+                                                        <ng-container *ngIf="ActionfirstFiveRecords.length>4">
+                                                            <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
+                                                        </ng-container>
                                                     </div>
+    
                                                     <!--end::Item-->
-
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br>
-                                                            <span class="kt-dt-l">10:42 PM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-warning fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
-                                                            </p>
-                                                            Navigation optimization
-                                                        </div>
-                                                        <!--end::Content-->
-                                                    </div>
-                                                    <!--end::Item-->
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br>
-                                                            <span class="kt-dt-l">01:42 AM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-warning fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
-                                                            </p>
-                                                            Indulging in poorly driving and keep structure keep great
-                                                        </div>
-                                                        <!--end::Content-->
-                                                    </div>
-                                                    <!--end::Item-->
-
                                                 </div>
 
                                             </div>
@@ -3314,10 +3275,46 @@
 
 
 </div>
+</ng-container>
+<ng-template #accessdenied>
+  <ng-container *ngIf="userFound===false||isHierarchy===false;else pleasewait">
+
+    <div class="container">
+     <div class="d-flex align-items-md-center flex-column">
+
+
+        <div class="text-center acc-section">
+            <h1 class="text-primary main_acc">Access denied 503 !</h1>
+            <h5 class="acc-desc">
+                Unfortunately, we did not find you in this Project.
+            </h5>
+        </div>
+
+        <div class="acc-img_sec">
+            <div class="acc-denied_img">
+                <img class="img-fluid" src="/assets/images/AccessDenied503.png" alt="image">
+            </div>
+        </div>
+
+
+
+
+     </div>
+    </div>
+
+
+  </ng-container>
+  <ng-template #pleasewait>
+    <div class=" d-flex align-items-center  justify-content-center "   style="height:100vh">
+        <div class="spinner-border  w-100px    h-100px          "  style="color:#6388e3;" role="status">
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-template>
+
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
-
-
-
 <!-- Action-To-Project-New_Subtask -->
 <div id="mysideInfobar1" class="sideInfobar animate-right">
     <router-outlet></router-outlet>
