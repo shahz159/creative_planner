@@ -238,7 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.getResponsibleActions()
+    this.getResponsibleActions(); 
     this.GetActivityDetails();
   }
 
@@ -475,7 +475,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (data !== null && data !== undefined) {
           this.Activity_List = JSON.parse(data[0]['ActivityList'])
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-          console.log(this.Activity_List, "testing Api")
+        }
+      })
+  }
+
+  ActionActivity_List:any;
+  ActionfirstFiveRecords: any[] = [];
+  GetActionActivityDetails(code) {
+    this.service.NewActivityService(code).subscribe(
+      (data) => {
+        if (data !== null && data !== undefined) {
+          this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
+          this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
+          console.log(this.ActionActivity_List, "testing action activity")
         }
       })
   }
@@ -502,28 +514,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   showActionDetails(index: number | undefined) {
 
-    // this.currentActionView = index;
-    // this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    // if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
-    //   this.GetApproval(this.projectActionInfo[index].Project_Code);
-    // $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-
-
-    if(index!==undefined){
-      this.currentActionView = index;
-      this.actionCost=this.projectActionInfo[this.currentActionView].Project_Cost;
-      if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") 
-        this.GetApproval(this.projectActionInfo[index].Project_Code);
+    this.currentActionView = index;
+    this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
+    if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
+      this.GetApproval(this.projectActionInfo[index].Project_Code);
+    
+    if(index!=undefined){
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-    }
-    else{
-      this.currentActionView = undefined;  
-    }
+    } 
   }
-
-
-
-
 
 
 
@@ -1898,6 +1898,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         else if (data['message'] == '6') {
           this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
         }
+        else if (data['message'] == '8') {
+          this.notifyService.showError("Selected Project owner cannot be updated", "Not updated");
+        }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
       });
@@ -2078,7 +2081,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          }
+          else if (data['message'] == '8') {
+            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
@@ -2113,6 +2119,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
       else if (data['message'] == '6') {
         this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+      }
+      else if (data['message'] == '8') {
+        this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
       this.getProjectDetails(this.URL_ProjectCode);
       this.closeInfo();
