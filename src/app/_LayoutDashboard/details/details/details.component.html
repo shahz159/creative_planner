@@ -3157,7 +3157,7 @@
 
                                     </div>
                                     <div class="row mt-5 px-3">
-                                      <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col text-center" style="max-width: 195px;">
+                                      <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-4  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                           <div class="kt-info-lable-v">
                                               Attachment
                                           </div>
@@ -3167,11 +3167,11 @@
                                           </div>
                                       </div>
 
-                                      <div class="col text-center" style="max-width: 195px;">
+                                      <div class="col-lg-4  text-center">
                                           <div class="kt-info-lable-v">
                                             Remarks
                                           </div>
-                                          <div class="kt-info-data-v">
+                                          <div class="kt-info-data-v" title="{{projectActionInfo[currentActionView].Remarks}}">
 
                                             {{projectActionInfo[currentActionView].Remarks}}
                                           </div>
@@ -3193,100 +3193,51 @@
                                                 </div>
                                                 <div class="timeline-label">
                                                     <!--begin::Item-->
-                                                    <div class="timeline-item">
+                                                    <div class="timeline-item" *ngFor="let item of ActionfirstFiveRecords">
                                                         <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">17 Jul <br>
-                                                            <span class="kt-dt-l">08:42 AM</span>
+                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
+                                                            {{item.ModifiedDate |date:'dd MMM'}}
+                                                            <span class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
                                                         </div>
                                                         <!--end::Label-->
-
+    
                                                         <!--begin::Badge-->
                                                         <div class="timeline-badge">
                                                             <i class="fa fa-genderless text-primary fs-1"></i>
                                                         </div>
                                                         <!--end::Badge-->
-
+    
                                                         <!--begin::Text-->
                                                         <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Project
-                                                                Created</p>
-                                                            Outlines keep you honest. And keep structure
+                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">
+                                                                {{item.Value}}</p>
+                                                            <span *ngIf="item.oldValue !==''">From :
+                                                                {{item.oldValue}}</span>
+                                                            <span *ngIf="item.oldValue !==''; else newActivity">To :
+                                                                <!-- {{item.NewValue}}  -->
+                                                                {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                                <ng-container *ngIf="item.NewValue.length>60">
+                                                                <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                            </ng-container>
+                                                          </span>
+                                                            <ng-template #newActivity>
+                                                                <!-- {{item.NewValue}}  -->
+                                                                {{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): ' ' }}
+                                                                <ng-container
+                                                                *ngIf="item.NewValue.length>60">
+                                                                <a href="javascript:void(0)" (click)="View_Activity()">more...</a>
+                                                            </ng-container>
+                                                            </ng-template>
                                                         </div>
                                                         <!--end::Text-->
                                                     </div>
-                                                    <!--end::Item-->
-
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">22 Jul <br>
-                                                            <span class="kt-dt-l">11:42 PM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-success fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 01
-                                                            </p>
-                                                            Rebrand strategy planning
-                                                        </div>
-                                                        <!--end::Content-->
+                                                    <div class="View_more_act">
+                                                        <ng-container *ngIf="ActionfirstFiveRecords.length>4">
+                                                            <a href="javascript:void(0)" (click)="View_Activity()">View more...</a>
+                                                        </ng-container>
                                                     </div>
+    
                                                     <!--end::Item-->
-
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">02 Aug <br>
-                                                            <span class="kt-dt-l">10:42 PM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-warning fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 02
-                                                            </p>
-                                                            Navigation optimization
-                                                        </div>
-                                                        <!--end::Content-->
-                                                    </div>
-                                                    <!--end::Item-->
-                                                    <!--begin::Item-->
-                                                    <div class="timeline-item">
-                                                        <!--begin::Label-->
-                                                        <div class="timeline-label fw-bold text-gray-800 fs-6">08 Aug <br>
-                                                            <span class="kt-dt-l">01:42 AM</span>
-                                                        </div>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Badge-->
-                                                        <div class="timeline-badge">
-                                                            <i class="fa fa-genderless text-warning fs-1"></i>
-                                                        </div>
-                                                        <!--end::Badge-->
-
-                                                        <!--begin::Content-->
-                                                        <div class="fw-mormal timeline-content text-muted ps-3">
-                                                            <p class="kt-timeline-tl fw-bold text-gray-800 mb-0">Sub task 03
-                                                            </p>
-                                                            Indulging in poorly driving and keep structure keep great
-                                                        </div>
-                                                        <!--end::Content-->
-                                                    </div>
-                                                    <!--end::Item-->
-
                                                 </div>
 
                                             </div>
