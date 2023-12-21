@@ -1006,6 +1006,14 @@ span.Rq_date_V {
   align-items: center;
   margin-left: 10px;
 }
+
+.symbol {
+  display: inline-block;
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 0.475rem;
+}
+
 .symbol-group.symbol-hover .symbol {
   cursor: pointer;
 }
@@ -1015,13 +1023,46 @@ span.Rq_date_V {
   margin-left: -10px;
   transition: all .3s ease;
 }
+
+.symbol.symbol-circle,
+.symbol.symbol-circle .symbol-label,
+.symbol.symbol-circle>img {
+  border-radius: 50%;
+}
+
+.symbol .symbol-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #252f4a;
+  background-color: #f9f9f9;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 0.475rem;
+}
+.symbol .symbol-label {
+  width: 50px;
+  height: 50px;
+}
 .symbol-group .symbol-label {
   position: relative;
+}
+
+.symbol.symbol-35px .symbol-label {
+  width: 35px;
+  height: 35px;
 }
 
 .symbol-group.symbol-hover .symbol {
   cursor: pointer;
 }
+.symbol .symbol-label:after {
+  border-radius: 0.475rem;
+}
+
+
 .symbol-group .symbol-label:after {
   display: block;
   content: " ";
@@ -1035,29 +1076,70 @@ span.Rq_date_V {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
+
+.symbol.symbol-35px>img {
+  width: 35px;
+  height: 35px;
+}
+
+.symbol img {
+  border: 1px solid #e1e1e1!important;
+  background-color: #ccc;
+}
 .flex-nowrap {
   flex-wrap: nowrap !important;
 }
-.symbol.symbol-circle,
-.symbol.symbol-circle .symbol-label,
-.symbol.symbol-circle>img {
-  border-radius: 50%;
-}
+
 .symbol.symbol-circle, .symbol.symbol-circle .symbol-label, .symbol.symbol-circle > img{
   border-radius: 50%;
 }
+
+.symbol.symbol-40px .symbol-label {
+  width: 40px;
+  height: 40px;
+}
+
+.symbol>img {
+  width: 100%;
+  flex-shrink: 0;
+  display: inline-block;
+  border-radius: 0.475rem;
+}
+
+.symbol.symbol-22px > img{
+  width: 22px;
+  height: 22px;
+}
+
+.text-inverse-warning {
+  color: #ffffff !important;
+}
+
+.bg-warning {
+  --bs-bg-rgb-color: rgba(255, 199, 0);
+  background-color: #ffc700 !important;
+}
+
 
 .symbol.symbol-35px .symbol-label {
   width: 35px;
   height: 35px;
 }
-.symbol.symbol-35px>img {
-  width: 35px;
-  height: 35px;
-}
+
 .text-gray-300 {
   color: #dbdfe9 !important;
 }
 .fw-bold {
   font-weight: 600 !important;
+}
+
+.text-inverse-primary {
+  color: #ffffff !important;
+}
+.text-inverse-danger {
+  color: #ffffff !important;
+}
+.bg-primary {
+  --bs-bg-rgb-color: rgba(62, 151, 255);
+  background-color: #3e97ff !important;
 }

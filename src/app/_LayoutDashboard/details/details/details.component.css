@@ -877,12 +877,12 @@ span.kt-dt-l {
 
 .kt-prg-bar-info {
   font-size: 15px;
-  font-weight: 600; 
+  font-weight: 600;
   color: #3d3d3d;
 }
 
 .kt-prg-bar-info b {
-  font-size: 20px; 
+  font-size: 20px;
   margin-right: 5px;
 }
 
@@ -907,7 +907,7 @@ button.Kt-Approval-btns {
   font-size: 13px;
   letter-spacing: 0;
   font-weight: 500;
-  border-radius: 3px; 
+  border-radius: 3px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -935,11 +935,11 @@ button.Kt-Approval-btns {
 .Btn_Reject {
   border-color: #cf8e66 !important;
 }
- 
+
 .Btn_Reject.active {
   background-color: #cf8e66 !important;
   color: #fff;
-} 
+}
 .Btn_Reject:hover {
   background-color: #cf8e66 !important;color: #fff !important;
 }
@@ -1574,7 +1574,7 @@ div#DemoList-table div.demo i {
     text-overflow: ellipsis;
   }
   .attachment-view span {
-    font-weight: 600;  
+    font-weight: 600;
   }
   .attachment-view:hover{
     box-shadow: 0px 1px 6px #ccc;
@@ -1584,7 +1584,7 @@ div#DemoList-table div.demo i {
     margin: 0;
     flex: 1;
   }
-  .exs-cmts .crd-bdy{  
+  .exs-cmts .crd-bdy{
     overflow: auto;
     max-height: 200px;
   }
@@ -2734,7 +2734,7 @@ div#add_new_team_sp .kt-portlet__head {
 
 
 .bounce-effect{
-  transition-duration:0.5s; 
+  transition-duration:0.5s;
   transition-timing-function:cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
@@ -2862,7 +2862,7 @@ div#prj-hold-sidebar {
 .mt-date {
   display: flex;
   flex-direction: column;
-  text-align: center; 
+  text-align: center;
   box-sizing: border-box;
   background-color: white;
   line-height: 1.5em;
@@ -2952,7 +2952,7 @@ span.user-ft-ltr {
   border-radius: 100px;
 }
 .org-name {
- 
+
       display: flex;
       align-items: flex-end;
       /* justify-content: flex-start; */
@@ -3168,7 +3168,7 @@ span.total-meeting-count {
   cursor: pointer;
   transition: all .3s;
   background: #fff;
-  padding: 3px 10px;  
+  padding: 3px 10px;
 }
 
 
@@ -3185,7 +3185,7 @@ span.total-meeting-count {
 }
 #calender{
   height: 1px;
- 
+
 }
 
 label.pe-label {
@@ -3444,17 +3444,17 @@ color:white;
   color:#f4f3f3;
   background-color: gray;
   border-radius: 50%;
- 
+
 }
 
 .close-icon:hover{
   color:#e0e0e0;
   transform: none;
-  
+
 }
 
 
-.add-icon{ 
+.add-icon{
    color: #7d8ea3;
    border-radius: 50%;
    border:1px solid #7d8ea3;
@@ -3476,7 +3476,7 @@ span.kt-user-list-ic {
   background-color: #fff;
   padding: 4px;
   height: calc(1.5em + 1.3rem + 2px);
-  
+
   line-height: 25px;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
@@ -3510,7 +3510,7 @@ a.Kt_cmt_user_name {
   margin-left: 0.75rem!important;
 }
 .me-3 {
-  margin-right: 0.75rem!important;
+  margin-right: 0.75rem!important; 
 }
 .ms-2 {
   margin-left: 0.65rem!important;
@@ -3594,6 +3594,87 @@ span.Rq_date_V {
   padding-left: 3px;
 }
 
+
+
+.Chart{
+  height:350px;
+}
+
+
+
+.Statistics{
+   display:grid;
+   grid-template-columns: 1fr;
+   grid-template-rows:1fr 320px;
+   overflow: hidden;
+}
+
+.under-apprvl{
+  color:#6388e3;
+}
+
+
+
+.acc-section {
+  padding: 50px 0 20px 0;
+}
+
+.main_acc {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.acc-desc {
+  color: #2F3539;
+}
+
+
+.acc-denied_img {
+  width: 100%;
+  margin: auto;
+}
+
+
+
+.acc-denied_img img {
+  width: 100%;
+  margin-top: 0%;
+}
+
+/* .kts{
+  width:150px;
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  text-align: center;
+  padding-left: 5px;
+} */
+
+ .remarks{
+      margin-top: 20px;
+}
+.remark{
+
+  padding: 5px;
+  color: #939393;
+  letter-spacing: 0.3px;
+  font-size: 14px;
+}
+.mark{
+  font-weight: 500;
+  color: #4f4f4f;
+  text-align: center;
+  width: 170px;
+  height: 30px;
+  background-color: #f0f0f0;
+  border-radius: 35px;
+  padding: 5px 4px;
+}
+
+
+.text-info {
+  color: #2786fb !important;
+}
 .svrft svg {
   height: 20px;
   width: auto;
