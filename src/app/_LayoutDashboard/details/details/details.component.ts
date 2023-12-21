@@ -426,9 +426,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
            this.newArray = uniqueNamesArray.slice(3);
-
-           console.log(this.newArray,'-------------->')
-
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -1230,6 +1227,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  isApprovalSection: boolean = true;
+
+  Close_Approval() {
+    this.isApprovalSection = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
+  }
+
+
+  
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -2890,7 +2898,6 @@ check_allocation() {
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -4504,7 +4511,7 @@ getChangeSubtaskDetais(Project_Code) {
     }
     else if (this.selectedrecuvalue == "2") {
       if (this.dayArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
+       alert('Please select day');
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
