@@ -108,7 +108,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   userFound:boolean|undefined;     // initially undefined.
   myTime = new Date();
   projectInfo: any;
-  projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
+  projectActionInfo: any=[];         // contain all prj actions which are in  Delay,In Process,Complete....
   projectMemos: any;
   _totalMemos: number = 0;
   _linkedMemos: number = 0;
