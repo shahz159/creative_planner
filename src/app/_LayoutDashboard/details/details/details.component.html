@@ -2021,7 +2021,7 @@
                                                         {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                 </div>
                                                 <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                    <div class="kt-info-lable-v">Complete attachment</div>
+                                                    <div class="kt-info-lable-v">Attachment</div>
     
                                                     <div class="">
                                                         <div class="attachment-view">
@@ -2653,7 +2653,63 @@
                                                 <h4>{{projectActionInfo[currentActionView].Project_Name}}</h4>
                                             </div>
     
-                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status">
+                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status" *ngIf="!requestType && Current_user_ID  != approval_Emp">
+    
+                                                <div *ngSwitchCase="'Delay'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Delay">Delay
+                                                        {{projectActionInfo[currentActionView].Delaydays }} days
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Completed'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Done"> Completed </div>
+                                                </div>
+    
+    
+                                                <div *ngSwitchCase="'InProcess'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Inprocess "> In Process </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'New Project Rejected'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  NewProjectRejected"> Rejected </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status   UnderApproval">Under Approval</div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Completion Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  CompletionUnderApproval">Completion
+                                                        Under
+                                                        Approval
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Forward Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  CompletionUnderApproval">Forward Under
+                                                        Approval
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Cancelled'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  Delay">Cancelled</div>
+                                                </div>
+                                                <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  Hold">Hold</div>
+                                                </div>
+    
+    
+    
+    
+    
+                                                <div *ngSwitchDefault class="kt-project-type">
+                                                    <div class="Kt-Pd-Status bg-inprogress ">
+                                                        {{projectActionInfo[currentActionView].Status}} </div>
+                                                </div>
+    
+                                            </div>
+
+                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status" *ngIf="requestType && Current_user_ID  == approval_Emp">
     
                                                 <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                     <div class="Kt-Pd-Status Delay">Delay
@@ -2727,13 +2783,55 @@
                                                     isExpanded ? 'Read less' : 'Read more' }}</a>
                                             </ng-container>
                                         </div>
-    
-    
-                                        <ng-container
-                                            *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
+                                <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <!-- <div class="d-flex"> -->
+                                            <div class="d-flex align-items-center">
+                                                <div class="kt-project-type">
+                                                    <div *ngIf="projectActionInfo[currentActionView]" class="Kt-Pd-Status" [ngClass]="{
+                                                                    'UnderApproval': projectActionInfo[currentActionView].Status==='Under Approval',
+                                                                    'Delay':projectActionInfo[currentActionView].Status==='Delay',
+                                                                    'Inprocess':projectActionInfo[currentActionView].Status==='InProcess',
+                                                                    'Done':projectActionInfo[currentActionView].Status==='Completed',
+                                                                    'NewProjectRejected1':projectActionInfo[currentActionView].Status==='New Project Rejected',
+                                                                    'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Forward Under Approval',
+                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancellation Under Approval',
+                                                                    'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Completion Under Approval',
+                                                                    'EnactiveUnderApproval':projectActionInfo[currentActionView].Status==='Enactive Under Approval',
+                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancelled',
+                                                                    'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
+                                                                    }">
+                                                        {{projectActionInfo[currentActionView].Status}}
+                                                    </div>
+                                                    <div class="Requested_user_info">
+                                                        <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
+                                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                                <circle cx="12" cy="7" r="4"></circle>
+                                                            </svg></span> <span class="Requested_user_name"
+                                                            title="Requested by">{{action_assignedby}}</span><span class="Rq_date_V"
+                                                            title="Requested Date">{{requestDate|date:'dd-MM-yyyy'}}</span>
+                                                    </div>
+        
+                                                </div>
+                                            </div>
+        
+                                        <!-- </div> -->
+        
+                                        <div class="pending_approval_form" *ngIf="requestType">
+                                            <div class="Paf_info">
+                                                <label>Pending Approval</label>
+                                                <p><span class="Dote_red"></span> {{action_approver}}</p>
+                                            </div>
+        
+                                        </div>
+                                    </div>
+                                </ng-container>
+                              
+                                        <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
                                             <div class="kt-info-box mt-2 border-0">
                                                 <div class="d-flex justify-content-between align-items-center">
-    
                                                     <div class="kt-info-box-tittle mt-3">
                                                         <div class="kt-title-icon">
                                                             <span class="svg-icon">
@@ -2750,18 +2848,11 @@
                                                     </div>
                                                     <div class="kt-info-box border-0 w-100">
                                                         <div class="d-flex align-items-center justify-content-end g-10">
-                                                            <!-- <div class="col">
-                    <div class="kt-info-lable-v">Approval*</div>
-                </div> -->
                                                             <div>
                                                                 <button
                                                                     [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active ':'Kt-Approval-btns Btn_Accpet'"
                                                                     (click)="approvalClick('ACCEPT')">Accept</button>
                                                             </div>
-                                                            <!-- <div class="col" id="editaccept">
-                    <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
-                        (click)="approvalClick('EDIT')">Edit & Accept</button>
-                </div> -->
                                                             <div *ngIf="requestType=='Project Complete'">
                                                                 <button
                                                                     [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
@@ -2900,7 +2991,7 @@
                                                             {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                     </div>
                                                     <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                        <div class="kt-info-lable-v">Complete attachment</div>
+                                                        <div class="kt-info-lable-v">Attachment</div>
     
                                                         <div class="">
                                                             <div class="attachment-view">
@@ -3187,8 +3278,8 @@
                                             </div> -->
     
                                         </div>
-                                        <div class="row mt-5 px-3">
-                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-4  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
+                                        <div class="row mt-5 px-3" *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks !='undefined'">
+                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-3  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                               <div class="kt-info-lable-v">
                                                   Attachment
                                               </div>
@@ -3198,7 +3289,7 @@
                                               </div>
                                           </div>
     
-                                          <div class="col-lg-4  text-center">
+                                          <div class="col-lg-3  text-center" *ngIf="projectActionInfo[currentActionView].Remarks !='undefined'">
                                               <div class="kt-info-lable-v">
                                                 Remarks
                                               </div>

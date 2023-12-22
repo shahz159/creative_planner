@@ -37,8 +37,8 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
+// import 'moment/locale/ja';
+// import 'moment/locale/fr';
 
 
 export const MY_DATE_FORMATS = {
@@ -469,10 +469,10 @@ export class MoreDetailsComponent implements OnInit {
     });
   }
 
-  french() {
-    this._locale = 'fr';
-    this._adapter.setLocale(this._locale);
-  }
+  // french() {
+  //   this._locale = 'fr';
+  //   this._adapter.setLocale(this._locale);
+  // }
 
   mainDeadline:any;
   mainowner:any;

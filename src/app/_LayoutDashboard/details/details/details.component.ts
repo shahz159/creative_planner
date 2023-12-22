@@ -46,8 +46,8 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
+// import 'moment/locale/ja';
+// import 'moment/locale/fr';
 
 
 import * as am4core from "@amcharts/amcharts4/core";
@@ -286,7 +286,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -508,7 +508,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-
+    this.requestType = null;
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
@@ -555,7 +555,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -2882,7 +2882,8 @@ check_allocation() {
   filterText: string;
   approval_Emp: any
   SearchItem: string;
-
+  action_approver:any;
+  action_assignedby: any;
 
   filterSearch() {
     this.filterText = "";
@@ -2893,15 +2894,17 @@ check_allocation() {
   GetApproval(code) {
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
+      console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+        this.action_approver = (this.requestDetails[0]['Responsible']);
+        this.action_assignedby = (this.requestDetails[0]['Submitted_By']);
         // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
