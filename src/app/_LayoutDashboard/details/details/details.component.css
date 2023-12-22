@@ -3202,9 +3202,10 @@ label.pe-label {
 
 .input-icon.project_des_ed textarea {
   margin: 0;
-  color: #999999;
+  color: #000;
   font-weight: 400;
   padding: 5px;
+  
 }
 .kt-info-body {
   margin: 1.3rem;
@@ -3335,6 +3336,7 @@ span.Wd_text_kt {
 .readonly{
   color: #ccc!important;
   font-size: inherit;
+  cursor: not-allowed;
 }
 
 .Data_chip_kt {
