@@ -52,7 +52,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
-    MatCheckboxModule
+    MatCheckboxModule,
     ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent

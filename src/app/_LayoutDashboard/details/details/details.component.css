@@ -1386,6 +1386,9 @@ label.my-chosse-flv {
 .kt-over-pd-in.bd-right-x {
   position: relative;
   padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /*--------chart css ----------*/
@@ -2795,11 +2798,12 @@ color:#9b9999;
 
 
 .no-prjact-found{
-   height:100%;
+  height:100%;
    display: flex;
    flex-direction: column;
    justify-content: center;
-   align-items: center;
+   align-items: center; 
+   
 }
 
 .no-prjact-found-img{
@@ -3708,3 +3712,79 @@ span.Rq_date_V {
   padding: 10px;
   box-shadow: -7px 7px 20px 5px #00000014;
 }
+
+
+
+.access-denied-header{
+  border: 0;
+  padding: 0.2em;
+  background-color: white;
+  column-gap: 2em;
+  box-shadow: 0px 0px 5px #bfbfbf;
+
+}
+
+.kt-inbox__message {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+
+
+.no-activities-of-action{
+     
+     height:100%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+
+.Bt-newprj-release{
+  background-color: transparent;
+  color: #10b14e;
+  font-size: 14px;
+  border: 2px solid #10b14e;
+  opacity: 1;
+  font-size: 13px;
+  padding:0.3em;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+}
+.Bt-newprj-release:hover{
+  background-color:#10b14e;
+  color:white;
+}
+
+
+
+.prjact-search-field{
+   box-shadow:0 0 2px #d9d8d8;
+   display:flex;
+   align-items: center;
+   padding-left:0.5em;
+   border-radius: 3px;
+   stroke:rgb(192, 192, 192);
+   transition-duration:1s;
+}
+
+.prjact-search-field:focus-within svg{
+   stroke:#6388e3;
+   transform:scale(1.3);
+   transition-duration:0.4s;
+}
+.prjact-search-field:focus-within{
+  box-shadow:0 0 3px #cad9ff;
+}
+.prjact-search-field:not(.prjact-search-field:focus-within) svg{
+  stroke: rgb(192, 192, 192);
+  transform:scale(1);
+  transition-duration:0.2s;
+}
+
+

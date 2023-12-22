@@ -108,7 +108,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   userFound:boolean|undefined;     // initially undefined.
   myTime = new Date();
   projectInfo: any;
-  projectActionInfo: any=[];         // contain all prj actions which are in  Delay,In Process,Complete....
+  projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
   projectMemos: any;
   _totalMemos: number = 0;
   _linkedMemos: number = 0;
@@ -226,6 +226,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.getholdate();
     this.GetPeopleDatils();
     this.timearrays();
+    this.getRejectType();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -416,8 +417,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   thirdRecords:any
   newArray:any
   uniqueSet :any
-  nonRacisList:any=[];
+  nonRacisList:any=[]; 
   GetPeopleDatils(){
+
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
 
@@ -438,11 +440,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
+       
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
         // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
 
         const RACISList = (JSON.parse(data[0]['RacisList']));
+        console.log("RACISList",RACISList)
         if (RACISList && RACISList.length > 0) {
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
@@ -680,6 +684,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
+    document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
@@ -5671,6 +5676,84 @@ debugger
 
 /////////////////////task attachemnets start///////////////////////////////////////
 
+
+
+getShorterName(name:string|undefined){
+  if(name)
+   return name.split(' ').map(wrd=>wrd[0]).slice(0,2).join('')
+  return '';
+}
+
+
+
+
+
+
+// new project release code start 
+activity: any;
+lastactivity: any;
+send_from: any;
+rejectactivity: any;
+
+
+openNewPrjReleaseSideBar() {
+  document.getElementById("new-prj-release-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+
+
+closeNewPrjReleaseSideBar() {
+   this.hold_remarks = '';
+  document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}
+
+getRejectType() {
+  this.approvalObj.Project_Code = this.URL_ProjectCode;
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+    this.activity = data[0]["activity"];
+    this.send_from = data[0]["sendFrom"];
+    this.rejectactivity = data[0]["rejectactivity"];
+    this.lastactivity = JSON.parse(data[0]["lastactivity"]);
+    console.log(this.activity, this.lastactivity)
+  });
+}
+
+releasenewProject(){
+  debugger
+  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.Request_type = 'New Project Reject Release';
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Remarks = this.hold_remarks;
+
+    this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+      this.closeNewPrjReleaseSideBar();
+      this._Message = (data['message']);
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.getRejectType();
+        this.getapproval_actiondetails();
+      }
+      else if (this._Message == '2' || this._Message == '0') {
+        this.notifyService.showError("Project release failed", "Failed");
+      }
+    });
+  // this.Clear_Feilds();
+  console.log(this.approvalObj,"cancel")
+}
+else{
+  // this.close_space();
+  this.notifyService.showError("Access denied","Failed")
+}
+}
+
+
+
+// new project release end here
 
 
 }
