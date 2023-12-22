@@ -1788,7 +1788,7 @@
     
                                     <!-- Request type start  -->
                                     <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                        <div class="kt-info-box mt-2 border-0">
+                                        <div class="kt-info-box mt-2 border-0" [hidden]="!isApprovalSection">
                                             <div class="d-flex justify-content-between align-items-center">
     
                                                 <div class="kt-info-box-tittle mt-3">
@@ -1916,7 +1916,7 @@
                                                                 class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
     
                                                                     <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
-                                                                    <span>
+                                                                    <!-- <span>
                                                                         <button (click)="submitApproval()" type="button"
                                                                             *ngIf="Accept_active" data-to="#pills-3-tab"
                                                                             class="btn btn-project-stv Bt-Submit"
@@ -1927,6 +1927,20 @@
                                                                             *ngIf="Conditional_Active || Reject_active"
                                                                             data-to="#pills-3-tab"
                                                                             (click)="submitApproval()"
+                                                                            [disabled]="!comments || !selectedType "
+                                                                            primary="true">Submit </button>
+                                                                    </span> -->
+                                                                    <span>
+                                                                        <button (click)="submitApproval();Close_Approval()" type="button"
+                                                                            *ngIf="Accept_active" data-to="#pills-3-tab"
+                                                                            class="btn btn-project-stv Bt-Submit"
+                                                                            primary="true">Submit</button>
+    
+                                                                        <button type="submit"
+                                                                            class="btn btn-project-stv Bt-Submit"
+                                                                            *ngIf="Conditional_Active || Reject_active"
+                                                                            data-to="#pills-3-tab"
+                                                                            (click)="submitApproval();Close_Approval()"
                                                                             [disabled]="!comments || !selectedType "
                                                                             primary="true">Submit </button>
                                                                     </span>
@@ -2007,7 +2021,7 @@
                                                         {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                 </div>
                                                 <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                    <div class="kt-info-lable-v">Complete attachment</div>
+                                                    <div class="kt-info-lable-v">Attachment</div>
     
                                                     <div class="">
                                                         <div class="attachment-view">
@@ -2329,7 +2343,7 @@
     
                                                     </div> -->
     
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
+                                                    <div class="symbol-group symbol-hover flex-nowrap justify-content-center">
                                                         <div class="symbol symbol-35px symbol-circle"  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
                                                             data-kt-initialized="1" *ngIf="firstRecords&&firstRecords != ''">
                                                             <span class="symbol-label bg-warning text-inverse-warning fw-bold"  title="{{firstthreeRecords[0]}}" (click)="View_User_list()">
@@ -2771,7 +2785,7 @@
                                         </div>
                                 <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
                                     <div class="d-flex justify-content-between mt-3">
-                                        <div class="d-flex">
+                                        <!-- <div class="d-flex"> -->
                                             <div class="d-flex align-items-center">
                                                 <div class="kt-project-type">
                                                     <div *ngIf="projectActionInfo[currentActionView]" class="Kt-Pd-Status" [ngClass]="{
@@ -2803,7 +2817,7 @@
                                                 </div>
                                             </div>
         
-                                        </div>
+                                        <!-- </div> -->
         
                                         <div class="pending_approval_form" *ngIf="requestType">
                                             <div class="Paf_info">
@@ -2977,7 +2991,7 @@
                                                             {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                     </div>
                                                     <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                        <div class="kt-info-lable-v">Complete attachment</div>
+                                                        <div class="kt-info-lable-v">Attachment</div>
     
                                                         <div class="">
                                                             <div class="attachment-view">
@@ -3265,7 +3279,7 @@
     
                                         </div>
                                         <div class="row mt-5 px-3" *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks !='undefined'">
-                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-4  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
+                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-3  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                               <div class="kt-info-lable-v">
                                                   Attachment
                                               </div>
@@ -3275,7 +3289,7 @@
                                               </div>
                                           </div>
     
-                                          <div class="col-lg-4  text-center" *ngIf="projectActionInfo[currentActionView].Remarks !='undefined'">
+                                          <div class="col-lg-3  text-center" *ngIf="projectActionInfo[currentActionView].Remarks !='undefined'">
                                               <div class="kt-info-lable-v">
                                                 Remarks
                                               </div>
@@ -7884,8 +7898,7 @@
                                     </svg>
                                 </span> Owner</div>
                             <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
-                                <!-- <input type="text" class="form-control" value="{{projectInfo.Owner}}" placeholder="Owner Name..."/> -->
-                                <ng-container  *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo);else ownwerEdit" >
+                                <!-- <ng-container  *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo);else ownwerEdit" >
                                 <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
                                     <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                         {{item.RACIS}}
@@ -7895,7 +7908,19 @@
                              <ng-template #ownwerEdit>
                                     <input type="text" class="form-control readonly"
                                    [(ngModel)]="selectedOwner" readonly />
-                                </ng-template>
+                                </ng-template> -->
+                                <ng-container *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                     && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
+                                    <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
+                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                            {{item.RACIS}}
+                                        </ng-option>
+                                    </ng-select>
+                                </ng-container>
+                                    <ng-template #ownwerEdit>
+                                          <input type="text" class="form-control readonly"
+                                          [(ngModel)]="selectedOwner" readonly />     
+                                    </ng-template>
                             </div>
                         </div>
                     </div>
@@ -7908,14 +7933,25 @@
                                             d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                         </path>
                                     </svg></span> Responsible </div>
-                            <div class="input-icon Sub_In_ed">
+                                 <div class="input-icon Sub_In_ed"  *ngIf="projectInfo">
                                 <!-- <input type="text" class="form-control" value="{{projectInfo.Responsible}}" placeholder="Responsible Name..."/> -->
-                                <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                             
+                                <ng-container *ngIf="( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                     && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownEdit">
+                                 
+                                 <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                     <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
                                         <!-- <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a> -->
                                         {{item.RACIS}}
                                     </ng-option>
-                                </ng-select>
+                                   </ng-select>
+                                </ng-container>
+
+
+                                <ng-template #ownEdit>
+                                    <input type="text" class="form-control readonly"
+                                          [(ngModel)]="selectedOwnResp" readonly />   
+                                </ng-template>
                             </div>
                         </div>
                     </div>
@@ -8322,7 +8358,20 @@
                                         </svg>
                                     </span> Owner</div>
                                 <div class="input-icon Sub_In_ed" *ngIf="currentActionView&&projectActionInfo[currentActionView]">
-                                    <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
+                                    <!-- <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
+                                        <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
+                                            <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                                {{item.RACIS}}
+                                            </ng-option>
+                                        </ng-select>
+                                 </ng-container>
+                                 <ng-template #ActionEdit>
+                                    <input type="text" class="form-control readonly"
+                                    [(ngModel)]="ActionOwner" readonly />
+                                </ng-template> -->
+                                <ng-container  *ngIf="Current_user_ID == projectActionInfo[currentActionView].Project_Owner && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
+                                projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' 
+                                 &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
                                         <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                                 {{item.RACIS}}
@@ -8345,12 +8394,26 @@
                                                 d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                             </path>
                                         </svg></span> Responsible </div>
-                                <div class="input-icon Sub_In_ed">
-                                    <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
+                                <div class="input-icon Sub_In_ed"  *ngIf="currentActionView&&projectActionInfo[currentActionView]">
+                                    <!-- <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
                                             {{item.RACIS}}
                                         </ng-option>
-                                    </ng-select>
+                                    </ng-select> -->
+
+                                    <ng-container  *ngIf="(projectActionInfo[currentActionView].Status !=='Under Approval' && projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval'
+                                     && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActEdit">
+                                           <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
+                                            <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
+                                                {{item.RACIS}}
+                                            </ng-option>
+                                        </ng-select>
+                                     </ng-container>                              
+                                     <ng-template #ActEdit>
+                                        <input type="text" class="form-control readonly"
+                                        [(ngModel)]="ActionResponsible" readonly />
+                                    </ng-template>
+           
                                 </div>
                             </div>
                         </div>
