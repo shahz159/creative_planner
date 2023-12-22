@@ -375,20 +375,22 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.bsService.SetNewPojectCode(this.URL_ProjectCode);
+      this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
-      // console.log( this.type_list, "testtsfs")
+      console.log( res, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
-      this.filteredPrjAction=this.getFilteredPrjActions('All','All');
-      this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
-      this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
-      this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
-      this.bsService.SetNewPojectCode(this.URL_ProjectCode);
-      this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+      if(this.projectActionInfo!=null || this.projectActionInfo.length>0){
+        this.filteredPrjAction=this.getFilteredPrjActions('All','All');
+        this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+        this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+      }
+      this.calculateProjectActions();    // calculate project actions details.
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
@@ -1494,7 +1496,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             fd.append("Project_Name", this._Subtaskname);
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
-
+                this.closeInfo();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
               });
             this.notifyService.showSuccess("Successfully Updated", 'Action completed');
             // ACTION SUBMITTED.
@@ -1538,6 +1543,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                 this._remarks = '';
                 this.closeInfo();
                 this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
                 // this.GetSubtask_Details();
                 // this.GetProjectDetails();
                 // this.getapprovalStats();
@@ -1561,8 +1568,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
+              this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();         // close action completion sidebar.
+              this.closeActCompSideBar();   
+              this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
         }
@@ -1593,8 +1602,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
+          this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
-          this.closeActCompSideBar();        // close action completion sidebar.
+          this.closeActCompSideBar();
+          this.getAttachments(1);        // close action completion sidebar.
 
         });
       this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -1986,6 +1997,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
+    debugger
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2079,6 +2091,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
             this.notifyService.showSuccess("Updated successfully", "Success");
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
@@ -2092,7 +2105,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
+          
           this.getProjectDetails(this.URL_ProjectCode);
+
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2116,6 +2131,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
         this.notifyService.showSuccess("Updated successfully", "Success");
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
