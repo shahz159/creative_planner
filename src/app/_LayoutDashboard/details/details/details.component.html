@@ -1791,7 +1791,7 @@
     
                                     <!-- Request type start  -->
                                     <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                        <div class="kt-info-box mt-2 border-0">
+                                        <div class="kt-info-box mt-2 border-0" [hidden]="!isApprovalSection">
                                             <div class="d-flex justify-content-between align-items-center">
     
                                                 <div class="kt-info-box-tittle mt-3">
@@ -1919,7 +1919,7 @@
                                                                 class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
     
                                                                     <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
-                                                                    <span>
+                                                                    <!-- <span>
                                                                         <button (click)="submitApproval()" type="button"
                                                                             *ngIf="Accept_active" data-to="#pills-3-tab"
                                                                             class="btn btn-project-stv Bt-Submit"
@@ -1930,6 +1930,20 @@
                                                                             *ngIf="Conditional_Active || Reject_active"
                                                                             data-to="#pills-3-tab"
                                                                             (click)="submitApproval()"
+                                                                            [disabled]="!comments || !selectedType "
+                                                                            primary="true">Submit </button>
+                                                                    </span> -->
+                                                                    <span>
+                                                                        <button (click)="submitApproval();Close_Approval()" type="button"
+                                                                            *ngIf="Accept_active" data-to="#pills-3-tab"
+                                                                            class="btn btn-project-stv Bt-Submit"
+                                                                            primary="true">Submit</button>
+    
+                                                                        <button type="submit"
+                                                                            class="btn btn-project-stv Bt-Submit"
+                                                                            *ngIf="Conditional_Active || Reject_active"
+                                                                            data-to="#pills-3-tab"
+                                                                            (click)="submitApproval();Close_Approval()"
                                                                             [disabled]="!comments || !selectedType "
                                                                             primary="true">Submit </button>
                                                                     </span>
@@ -2010,7 +2024,7 @@
                                                         {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                 </div>
                                                 <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                    <div class="kt-info-lable-v">Complete attachment</div>
+                                                    <div class="kt-info-lable-v">Attachment</div>
     
                                                     <div class="">
                                                         <div class="attachment-view">
@@ -2332,7 +2346,7 @@
     
                                                     </div> -->
     
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
+                                                    <div class="symbol-group symbol-hover flex-nowrap justify-content-center">
                                                         <div class="symbol symbol-35px symbol-circle"  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
                                                             data-kt-initialized="1" *ngIf="firstRecords&&firstRecords != ''">
                                                             <span class="symbol-label bg-warning text-inverse-warning fw-bold"  title="{{firstthreeRecords[0]}}" (click)="View_User_list()">
@@ -2571,20 +2585,22 @@
                                     <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                         <div class="PA_title">
                                             <span>Action  {{projectActionInfo[currentActionView].IndexId}}</span>
-                                            <a href="javascript:void(0)"  *ngIf="projectActionInfo[currentActionView].Project_Owner===Current_user_ID||projectActionInfo[currentActionView].Team_Res===Current_user_ID">
-                                                <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
-                                                        width="15" height="15">
-                                                        <path
-                                                            d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"
-                                                            style="fill: #527ce2;" />
-                                                        <path
-                                                            d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"
-                                                            style="fill:#616161" />
-                                                    </svg>
-                                                    <span class="lbl-hdn">Edit</span>
-                                                </div>
-                                            </a>
+                                            <ng-conatiner   *ngIf="Current_user_ID==projectActionInfo[currentActionView].Project_Owner || Current_user_ID==projectActionInfo[currentActionView].Team_Res">
+                                                <a href="javascript:void(0)">
+                                                    <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                                                            width="15" height="15">
+                                                            <path
+                                                                d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"
+                                                                style="fill: #527ce2;" />
+                                                            <path
+                                                                d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"
+                                                                style="fill:#616161" />
+                                                        </svg>
+                                                        <span class="lbl-hdn">Edit</span>
+                                                    </div>
+                                                </a>
+                                            </ng-conatiner>
                                         </div>
     
                                         <div class="project_more_Action_options" *ngIf="
@@ -2662,7 +2678,63 @@
                                                 <h4>{{projectActionInfo[currentActionView].Project_Name}}</h4>
                                             </div>
     
-                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status">
+                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status" *ngIf="!requestType && Current_user_ID  != approval_Emp">
+    
+                                                <div *ngSwitchCase="'Delay'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Delay">Delay
+                                                        {{projectActionInfo[currentActionView].Delaydays }} days
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Completed'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Done"> Completed </div>
+                                                </div>
+    
+    
+                                                <div *ngSwitchCase="'InProcess'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status Inprocess "> In Process </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'New Project Rejected'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  NewProjectRejected"> Rejected </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status   UnderApproval">Under Approval</div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Completion Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  CompletionUnderApproval">Completion
+                                                        Under
+                                                        Approval
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Forward Under Approval'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  CompletionUnderApproval">Forward Under
+                                                        Approval
+                                                    </div>
+                                                </div>
+    
+                                                <div *ngSwitchCase="'Cancelled'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  Delay">Cancelled</div>
+                                                </div>
+                                                <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
+                                                    <div class="Kt-Pd-Status  Hold">Hold</div>
+                                                </div>
+    
+    
+    
+    
+    
+                                                <div *ngSwitchDefault class="kt-project-type">
+                                                    <div class="Kt-Pd-Status bg-inprogress ">
+                                                        {{projectActionInfo[currentActionView].Status}} </div>
+                                                </div>
+    
+                                            </div>
+
+                                            <div [ngSwitch]="projectActionInfo[currentActionView].Status" *ngIf="requestType && Current_user_ID  == approval_Emp">
     
                                                 <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                     <div class="Kt-Pd-Status Delay">Delay
@@ -2736,13 +2808,55 @@
                                                     isExpanded ? 'Read less' : 'Read more' }}</a>
                                             </ng-container>
                                         </div>
-    
-    
-                                        <ng-container
-                                            *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
+                                <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <!-- <div class="d-flex"> -->
+                                            <div class="d-flex align-items-center">
+                                                <div class="kt-project-type">
+                                                    <div *ngIf="projectActionInfo[currentActionView]" class="Kt-Pd-Status" [ngClass]="{
+                                                                    'UnderApproval': projectActionInfo[currentActionView].Status==='Under Approval',
+                                                                    'Delay':projectActionInfo[currentActionView].Status==='Delay',
+                                                                    'Inprocess':projectActionInfo[currentActionView].Status==='InProcess',
+                                                                    'Done':projectActionInfo[currentActionView].Status==='Completed',
+                                                                    'NewProjectRejected1':projectActionInfo[currentActionView].Status==='New Project Rejected',
+                                                                    'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Forward Under Approval',
+                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancellation Under Approval',
+                                                                    'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Completion Under Approval',
+                                                                    'EnactiveUnderApproval':projectActionInfo[currentActionView].Status==='Enactive Under Approval',
+                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancelled',
+                                                                    'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
+                                                                    }">
+                                                        {{projectActionInfo[currentActionView].Status}}
+                                                    </div>
+                                                    <div class="Requested_user_info">
+                                                        <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
+                                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                                <circle cx="12" cy="7" r="4"></circle>
+                                                            </svg></span> <span class="Requested_user_name"
+                                                            title="Requested by">{{action_assignedby}}</span><span class="Rq_date_V"
+                                                            title="Requested Date">{{requestDate|date:'dd-MM-yyyy'}}</span>
+                                                    </div>
+        
+                                                </div>
+                                            </div>
+        
+                                        <!-- </div> -->
+        
+                                        <div class="pending_approval_form" *ngIf="requestType">
+                                            <div class="Paf_info">
+                                                <label>Pending Approval</label>
+                                                <p><span class="Dote_red"></span> {{action_approver}}</p>
+                                            </div>
+        
+                                        </div>
+                                    </div>
+                                </ng-container>
+                              
+                                        <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
                                             <div class="kt-info-box mt-2 border-0">
                                                 <div class="d-flex justify-content-between align-items-center">
-    
                                                     <div class="kt-info-box-tittle mt-3">
                                                         <div class="kt-title-icon">
                                                             <span class="svg-icon">
@@ -2759,18 +2873,11 @@
                                                     </div>
                                                     <div class="kt-info-box border-0 w-100">
                                                         <div class="d-flex align-items-center justify-content-end g-10">
-                                                            <!-- <div class="col">
-                    <div class="kt-info-lable-v">Approval*</div>
-                </div> -->
                                                             <div>
                                                                 <button
                                                                     [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active ':'Kt-Approval-btns Btn_Accpet'"
                                                                     (click)="approvalClick('ACCEPT')">Accept</button>
                                                             </div>
-                                                            <!-- <div class="col" id="editaccept">
-                    <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
-                        (click)="approvalClick('EDIT')">Edit & Accept</button>
-                </div> -->
                                                             <div *ngIf="requestType=='Project Complete'">
                                                                 <button
                                                                     [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
@@ -2909,7 +3016,7 @@
                                                             {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                     </div>
                                                     <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                        <div class="kt-info-lable-v">Complete attachment</div>
+                                                        <div class="kt-info-lable-v">Attachment</div>
     
                                                         <div class="">
                                                             <div class="attachment-view">
@@ -3196,8 +3303,8 @@
                                             </div> -->
     
                                         </div>
-                                        <div class="row mt-5 px-3">
-                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-4  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
+                                        <div class="row mt-5 px-3" *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks !='undefined'">
+                                          <div *ngIf="projectActionInfo[currentActionView].Sourcefile"   class="col-lg-3  text-center" title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                               <div class="kt-info-lable-v">
                                                   Attachment
                                               </div>
@@ -3207,7 +3314,7 @@
                                               </div>
                                           </div>
     
-                                          <div class="col-lg-4  text-center">
+                                          <div class="col-lg-3  text-center" *ngIf="projectActionInfo[currentActionView].Remarks !='undefined'">
                                               <div class="kt-info-lable-v">
                                                 Remarks
                                               </div>
@@ -5947,26 +6054,80 @@
                     <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab" href="#upcoming_meetings_tabpanel"><span
-                                    class="lbl-hdn">upcoming </span></a><sup class="total-meeting-count" *ngIf="upcMtgCnt"  >{{upcMtgCnt}}</sup>
+                                    class="lbl-hdn">upcoming </span><span class="total-meeting-count" *ngIf="upcMtgCnt"  >{{upcMtgCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#today_meetings_tabpanel"><span class="lbl-hdn"> Today
-                                </span></a><sup class="total-meeting-count" *ngIf="tdMtgCnt"  >{{tdMtgCnt}}</sup>
+                                </span><span class="total-meeting-count" *ngIf="tdMtgCnt"  >{{tdMtgCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#last_7_days_meetings_tabpanel"><span class="lbl-hdn"> last
-                                    7 Days </span></a><sup class="total-meeting-count" *ngIf="lst7dCnt"  >{{lst7dCnt}}</sup>
+                                    7 Days </span><span class="total-meeting-count" *ngIf="lst7dCnt"  >{{lst7dCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#last_month_meetings_tabpanel"><span class="lbl-hdn"> last
-                                    Month </span></a><sup class="total-meeting-count" *ngIf="lstMthCnt" >{{lstMthCnt}}</sup>
+                                    Month </span><span class="total-meeting-count" *ngIf="lstMthCnt" >{{lstMthCnt}}</span></a>
                         </li>
                         <li class="nav-item">
                               <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#older_meetings_tabpanel"><span class="lbl-hdn"> older
-                              </span></a><sup class="total-meeting-count" *ngIf="oldMtgCnt"  >{{oldMtgCnt}}</sup>
+                              </span><span class="total-meeting-count" *ngIf="oldMtgCnt"  >{{oldMtgCnt}}</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" href="#custom_meetings_tabpanel"><span class="lbl-hdn"> custom </span></a>
+                        <li class="nav-item dropdown-toggle icv-tog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn icon-btn icn-hvr fav-btn"  data-toggle="tab" href="#custom_meetings_tabpanel"><span class="lbl-hdn"> custom </span></a>
+                            <div class="dropdown-menu pt-1 mt-2 dropdown_left_fix">
+                                <div class="px-2 pt-0  d-inline-block"  id="range-picker_header">
+                                    <div (click)="$event.stopPropagation();">
+    
+                                        <div class="mt-1">
+                                            <label class="cus-lbl form-label">Date range</label>
+                                           <div class="d-flex-cen">
+                                                <div class="">
+    
+                                                    <div class="input-group input-date-dw border border-gray rounded-2" >
+                                                        <input
+                                                           type="date"
+                                                            placeholder="Select Start Date" class="form-control border-0"
+                                                            name="date"
+                                                            [(ngModel)]="mtgFromD"
+                                                            />
+    
+                                                    </div>
+    
+    
+                                                </div>
+                                                <div class="px-2">to</div>
+    
+                                                <div class="">
+    
+                                                    <div class="input-group input-date-dw border border-gray rounded-2  ">
+                                                        <input
+                                                            type="date"
+                                                            placeholder="Select Start Date" class="form-control  border-0"
+                                                            name="date"
+                                                            [min]="mtgFromD|date:'yyyy-MM-dd'"
+                                                            [(ngModel)]="mtgUptoD"
+                                                            />
+    
+                                                    </div>
+    
+                                                </div>
+
+                                                <div class="form-group  mb-0 text-end ml-3">
+    
+                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="  mtgFromD=''; mtgUptoD='';  "  >RESET</button>
+                                                    <button  [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" type="submit" class="btn w-110 Bt-Submit ml-2"  (click)="getMeetingsInRange()">
+                                                          <div *ngIf="mLdng"   class="spinner-border p-0 m-0 mr-1 dropdown-toggle" role="status" style="height:15px; width:15px;">
+                                                            <span class="visually-hidden"></span>
+                                                          </div>
+                                                    GET</button>
+            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                       </li>
                     </ul>
                     <div class="dropdown no-after btm-btn ml-2 nav-item" *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
@@ -6698,7 +6859,7 @@
 
                         <div class="tab-pane fade"     id="custom_meetings_tabpanel" role="tabpanel" aria-labelledby="custom_meetings_tabpanel">
 
-                            <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
+                            <!-- <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
                                 <div (click)="$event.stopPropagation();">
 
                                     <div class="mt-1">
@@ -6751,7 +6912,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> -->
 
                             <ng-container *ngIf="mtgsInRange&&mtgsInRange.length>0; else no_meetings_Present">
                               <ng-container *ngFor="let meetings of mtgsInRange">
@@ -7694,7 +7855,7 @@
                                 *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
                                 <input type="text" class="form-control readonly" [(ngModel)]="ProjectType" readonly />
                             </div>
-                            <div class="Project_type_DW"
+                            <div class="Project_type_DW curser-pointer"
                                 *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
                                 <ng-select [(ngModel)]="ProjectType" placeholder="Change task type">
                                     <ng-option [value]="item.typeid" *ngFor="let item of type_list">{{item.typename}}
@@ -7724,7 +7885,7 @@
                         <div class="col-lg-12">
                             <div class="form-group mb-2">
                                 <label class="pe-label">Project Name</label>
-                                <div class="input-icon project-name_ed">
+                                <div class="input-icon project-name_ed curser-pointer">
                                     <input type="text" class="form-control" [(ngModel)]="ProjectName"
                                         placeholder="Search..." />
                                 </div>
@@ -7733,8 +7894,9 @@
                         <div class="col-lg-12">
                             <div class="form-group mb-2">
                                 <label class="pe-label">Project description</label>
-                                <div class="input-icon project_des_ed">
-                                    <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                                <div class="input-icon project_des_ed curser-pointer">
+                                    <textarea 
+                                    type="text" class="form-control" placeholder="Search..." height="60px"
                                         [(ngModel)]="ProjectDescription"></textarea>
                                 </div>
                             </div>
@@ -7787,8 +7949,7 @@
                                     </svg>
                                 </span> Owner</div>
                             <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
-                                <!-- <input type="text" class="form-control" value="{{projectInfo.Owner}}" placeholder="Owner Name..."/> -->
-                                <ng-container  *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo);else ownwerEdit" >
+                                <!-- <ng-container  *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo);else ownwerEdit" >
                                 <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
                                     <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                         {{item.RACIS}}
@@ -7798,7 +7959,19 @@
                              <ng-template #ownwerEdit>
                                     <input type="text" class="form-control readonly"
                                    [(ngModel)]="selectedOwner" readonly />
-                                </ng-template>
+                                </ng-template> -->
+                                <ng-container *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                     && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
+                                    <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
+                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" [disabled]="item.Emp_No==selectedOwnResp">
+                                            {{item.RACIS}}
+                                        </ng-option>
+                                    </ng-select>
+                                </ng-container>
+                                    <ng-template #ownwerEdit>
+                                          <input type="text" class="form-control readonly"
+                                          [(ngModel)]="selectedOwner" readonly />     
+                                    </ng-template>
                             </div>
                         </div>
                     </div>
@@ -7811,14 +7984,25 @@
                                             d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                         </path>
                                     </svg></span> Responsible </div>
-                            <div class="input-icon Sub_In_ed">
+                                 <div class="input-icon Sub_In_ed"  *ngIf="projectInfo">
                                 <!-- <input type="text" class="form-control" value="{{projectInfo.Responsible}}" placeholder="Responsible Name..."/> -->
-                                <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
-                                    <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
+                             
+                                <ng-container *ngIf="( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                     && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownEdit">
+                                 
+                                 <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                    <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown" [disabled]="item.Emp_No==selectedOwner">
                                         <!-- <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a> -->
                                         {{item.RACIS}}
                                     </ng-option>
-                                </ng-select>
+                                   </ng-select>
+                                </ng-container>
+
+
+                                <ng-template #ownEdit>
+                                    <input type="text" class="form-control readonly"
+                                          [(ngModel)]="selectedOwnResp" readonly />   
+                                </ng-template>
                             </div>
                         </div>
                     </div>
@@ -7834,7 +8018,7 @@
                                     </svg>
                                 </span> Category </div>
                             <div class="input-icon Sub_In_ed">
-                                <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category">
+                                <ng-select class="curser-pointer" [(ngModel)]="selectedcategory" placeholder="Select Category">
                                     <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
                                         [disabled]="Category==item.ReportType">
                                         {{item.ReportType}}
@@ -7886,7 +8070,7 @@
                                 </span> Client </div>
                             <div class="input-icon Sub_In_ed">
                                 <!-- <input type="text" class="form-control" value="{{projectInfo.Client}}" placeholder="Enter Client Name..."/> -->
-                                <ng-select [(ngModel)]="selectedclient" placeholder="Select client">
+                                <ng-select class="curser-pointer" [(ngModel)]="selectedclient" placeholder="Select client">
                                     <ng-option [value]="item.Com_No" *ngFor="let item of Client_List"
                                         [disabled]="Client==item.Com_Name">
                                         <a>{{item.Com_Name}}</a>
@@ -7925,7 +8109,7 @@
                         <div class="form-group mb-2">
                             <div class="kt-info-lable-v"> Deadline</div>
                             <div class="input-icon Sub_In_ed date-border-v d-flex">
-                                <input class="form-control" [(ngModel)]="End_Date" [min]="todayDate|date:'YYYY-MM-dd'"
+                                <input class="form-control curser-pointer" [(ngModel)]="End_Date" [min]="todayDate|date:'YYYY-MM-dd'"
                                     matInput [matDatepicker]="strtEditsPicker" (click)="strtEditsPicker.open();"
                                     placeholder="Deadline Date..." class="form-control border-0 " name="date" />
                                 <div class="input-group-append h-2">
@@ -7958,7 +8142,7 @@
                         <div class="form-group mb-2 Ic_ed">
                             <div class="kt-info-lable-v">Submission</div>
                             <div class="input-icon Sub_In_ed">
-                                <ng-select [(ngModel)]="Submission_Name" placeholder="Select Submission Type">
+                                <ng-select class="curser-pointer" [(ngModel)]="Submission_Name" placeholder="Select Submission Type">
                                     <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">
                                         {{item.SubmissionName}}
                                     </ng-option>
@@ -7983,7 +8167,7 @@
                             <div class="form-group row  Ic_ed" [ngSwitch]="Submission_Name">
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchDefault> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Daily_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt"> Max Duration limit is 60 Minutes only.</span>
@@ -7991,7 +8175,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="2"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt"> Max Duration limit is 2hrs only.</span>
@@ -7999,7 +8183,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="3"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Month_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt">Max Duration limit is 4 hrs only.</span>
@@ -8008,7 +8192,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="4"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Quarter_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt"> Max Duration limit is 8 hrs only.</span>
@@ -8016,7 +8200,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="5"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Halfyear_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt"> Max Duration limit is 10 hrs only.</span>
@@ -8024,7 +8208,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="6"> Allocated hours
                                     <div class="input-icon Sub_In_ed">
-                                        <ng-select [(ngModel)]="Allocated_Hours">
+                                        <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                             <ng-option *ngFor="let item of Halfyear_array">{{item}}</ng-option>
                                         </ng-select>
                                         <span class="Wd_text_kt"> Max Duration limit is 16 hrs only.</span>
@@ -8032,7 +8216,7 @@
                                 </div>
                                 <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="6">
                                     Recurrence :
-                                    <ng-select [(ngModel)]="Annual_date" placeholder="Select">
+                                    <ng-select class="curser-pointer" [(ngModel)]="Annual_date" placeholder="Select">
                                         <ng-option [value]="1">January</ng-option>
                                         <ng-option [value]="2">February</ng-option>
                                         <ng-option [value]="3">March</ng-option>
@@ -8056,7 +8240,7 @@
                     <div class="col-lg-12">
                         <div class="form-group ">
                             <label for="exampleFormControlFile1">Remarks</label>
-                            <textarea class="form-control" aria-label="With textarea"
+                            <textarea class="form-control curser-pointer" aria-label="With textarea"
                                 placeholder="Define your exact reason here." [(ngModel)]="_remarks"
                                 style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
                         </div>
@@ -8224,8 +8408,8 @@
                                             </g>
                                         </svg>
                                     </span> Owner</div>
-                                <div class="input-icon Sub_In_ed" *ngIf="currentActionView&&projectActionInfo[currentActionView]">
-                                    <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
+                                <div class="input-icon Sub_In_ed" *ngIf="projectActionInfo[currentActionView]">
+                                    <!-- <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
                                         <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                                 {{item.RACIS}}
@@ -8235,7 +8419,22 @@
                                  <ng-template #ActionEdit>
                                     <input type="text" class="form-control readonly"
                                     [(ngModel)]="ActionOwner" readonly />
+                                </ng-template> -->
+                                <ng-container  *ngIf="Current_user_ID == projectActionInfo[currentActionView].Project_Owner && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
+                                projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' 
+                                 &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
+                                       <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
+                                            <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                                {{item.RACIS}}
+                                            </ng-option>
+                                        </ng-select>
+                                 </ng-container>
+
+                                 <ng-template #ActionEdit>
+                                    <input type="text" class="form-control readonly"
+                                    [(ngModel)]="ActionOwner" readonly />
                                 </ng-template>
+
                                 </div>
                             </div>
                         </div>
@@ -8248,12 +8447,26 @@
                                                 d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                             </path>
                                         </svg></span> Responsible </div>
-                                <div class="input-icon Sub_In_ed">
-                                    <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
+                                <div class="input-icon Sub_In_ed"  *ngIf="projectActionInfo[currentActionView]">
+                                    <!-- <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
                                             {{item.RACIS}}
                                         </ng-option>
-                                    </ng-select>
+                                    </ng-select> -->
+
+                                    <ng-container  *ngIf="(projectActionInfo[currentActionView].Status !=='Under Approval' && projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval'
+                                     && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActEdit">
+                                           <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
+                                            <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
+                                                {{item.RACIS}}
+                                            </ng-option>
+                                        </ng-select>
+                                     </ng-container>                              
+                                     <ng-template #ActEdit>
+                                        <input type="text" class="form-control readonly"
+                                        [(ngModel)]="ActionResponsible" readonly />
+                                    </ng-template>
+           
                                 </div>
                             </div>
                         </div>
@@ -8364,7 +8577,7 @@
                                 <div class="kt-info-lable-v"> Deadline</div>
                                 <div class="input-icon Sub_In_ed  rounded-2 date-border-v d-flex">
                                     <input class="form-control" [(ngModel)]="ActionendDate"
-                                        [min]="todayDate|date:'YYYY-MM-dd'" matInput
+                                        [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                         [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
                                         placeholder="Deadline Date..." class="form-control border-0 " name="date" />
                                     <div class="input-group-append h-2">

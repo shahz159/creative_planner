@@ -3139,24 +3139,28 @@ i.date-rg-icon {
   transform:rotate(360deg);
 }
 
-
-
-
-.total-meeting-count{
-
-    background-color: rgb(0, 0, 0,0.7);
-    color:white;
-    border-radius:70%;
-    padding:0.1em;
-    padding-left:0.5em;
-    padding-right:0.5em;
-    position:relative;
-    right:10%;
-    font-family: 'Lucida Sans Unicode';
-    font-weight:bold;
+span.total-meeting-count {
+  border-left: 1px dashed #c5cbd1;
+  padding-left: 5px;
+  margin-left: 6px;
+  font-weight: 500;
+  display: inline-block;
+  color: #7f7f7f;
+  height: 15px;
+  line-height: 13px;
+}
+.icn-hvr.active .total-meeting-count{
+  color: #518ef6 !important;
 }
 
-
+.input-date-dw {
+  border-radius: 3px;
+}
+.input-date-dw input {
+  padding: 5px 10px;
+  height: 29px;
+  border-radius: 5px !important;
+}
 .create-btm {
 
   border-radius:10px;
@@ -3202,9 +3206,10 @@ label.pe-label {
 
 .input-icon.project_des_ed textarea {
   margin: 0;
-  color: #999999;
+  color: #000;
   font-weight: 400;
   padding: 5px;
+  
 }
 .kt-info-body {
   margin: 1.3rem;
@@ -3335,6 +3340,7 @@ span.Wd_text_kt {
 .readonly{
   color: #ccc!important;
   font-size: inherit;
+  cursor: not-allowed;
 }
 
 .Data_chip_kt {
@@ -3788,3 +3794,12 @@ span.Rq_date_V {
 }
 
 
+.icv-tog::after {
+  display: none;
+}
+
+.dropdown_left_fix{
+  right: auto;
+  left: -17px !important;
+  border-radius: 5px;
+}

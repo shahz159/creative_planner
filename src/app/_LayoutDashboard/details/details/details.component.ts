@@ -46,8 +46,8 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
+// import 'moment/locale/ja';
+// import 'moment/locale/fr';
 
 
 import * as am4core from "@amcharts/amcharts4/core";
@@ -80,8 +80,6 @@ export const MY_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY'
   },
 };
-
-
 
 @Component({
   selector: 'app-details',
@@ -289,7 +287,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -378,20 +376,22 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.bsService.SetNewPojectCode(this.URL_ProjectCode);
+      this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
-      // console.log( this.type_list, "testtsfs")
+      console.log( res, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
-      this.filteredPrjAction=this.getFilteredPrjActions('All','All');
-      this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
-      this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
-      this.calculateProjectActions();    // calculate project actions details.
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
-      this.bsService.SetNewPojectCode(this.URL_ProjectCode);
-      this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+      if(this.projectActionInfo!=null || this.projectActionInfo.length>0){
+        this.filteredPrjAction=this.getFilteredPrjActions('All','All');
+        this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+        this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+      }
+      this.calculateProjectActions();    // calculate project actions details.
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
@@ -428,9 +428,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
            this.newArray = uniqueNamesArray.slice(3);
-
-           console.log(this.newArray,'-------------->')
-
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -517,7 +514,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-
+    this.requestType = null;
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
@@ -564,7 +561,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -1235,6 +1232,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  isApprovalSection: boolean = true;
+
+  Close_Approval() {
+    this.isApprovalSection = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
+  }
+
+
+  
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -1493,7 +1501,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             fd.append("Project_Name", this._Subtaskname);
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
-
+                this.closeInfo();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
               });
             this.notifyService.showSuccess("Successfully Updated", 'Action completed');
             // ACTION SUBMITTED.
@@ -1537,6 +1548,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                 this._remarks = '';
                 this.closeInfo();
                 this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
                 // this.GetSubtask_Details();
                 // this.GetProjectDetails();
                 // this.getapprovalStats();
@@ -1560,8 +1573,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
+              this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();         // close action completion sidebar.
+              this.closeActCompSideBar();   
+              this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
         }
@@ -1592,8 +1607,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
+          this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
-          this.closeActCompSideBar();        // close action completion sidebar.
+          this.closeActCompSideBar();
+          this.getAttachments(1);        // close action completion sidebar.
 
         });
       this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -1985,6 +2002,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
+    debugger
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2078,6 +2096,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
             this.notifyService.showSuccess("Updated successfully", "Success");
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
@@ -2091,7 +2110,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
+          
           this.getProjectDetails(this.URL_ProjectCode);
+
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2115,6 +2136,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
         this.notifyService.showSuccess("Updated successfully", "Success");
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
@@ -2881,7 +2903,8 @@ check_allocation() {
   filterText: string;
   approval_Emp: any
   SearchItem: string;
-
+  action_approver:any;
+  action_assignedby: any;
 
   filterSearch() {
     this.filterText = "";
@@ -2892,16 +2915,17 @@ check_allocation() {
   GetApproval(code) {
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-console.log(data,'jjj----------->')
+      console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+        this.action_approver = (this.requestDetails[0]['Responsible']);
+        this.action_assignedby = (this.requestDetails[0]['Submitted_By']);
         // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
@@ -3212,6 +3236,16 @@ console.log(data,'jjj----------->')
 
 
   getMeetingsInRange() {
+    /*---------- set time out for hide the dropdown --------*/
+    setTimeout(function () {
+      loadSelect()
+    },
+      1500);
+    function loadSelect() {
+      $(".dropdown_left_fix").removeClass("show");
+    }
+    /*---------- set time out for hide the dropdown end --------*/
+
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = this.mtgFromD;
     this.ObjSubTaskDTO.enddate = this.mtgUptoD;
@@ -4509,7 +4543,7 @@ getChangeSubtaskDetais(Project_Code) {
     }
     else if (this.selectedrecuvalue == "2") {
       if (this.dayArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
+       alert('Please select day');
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
