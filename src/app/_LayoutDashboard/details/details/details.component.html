@@ -2582,20 +2582,22 @@
                                     <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                         <div class="PA_title">
                                             <span>Action  {{projectActionInfo[currentActionView].IndexId}}</span>
-                                            <a href="javascript:void(0)"  *ngIf="projectActionInfo[currentActionView].Project_Owner===Current_user_ID||projectActionInfo[currentActionView].Team_Res===Current_user_ID">
-                                                <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
-                                                        width="15" height="15">
-                                                        <path
-                                                            d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"
-                                                            style="fill: #527ce2;" />
-                                                        <path
-                                                            d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"
-                                                            style="fill:#616161" />
-                                                    </svg>
-                                                    <span class="lbl-hdn">Edit</span>
-                                                </div>
-                                            </a>
+                                            <ng-conatiner   *ngIf="Current_user_ID==projectActionInfo[currentActionView].Project_Owner || Current_user_ID==projectActionInfo[currentActionView].Team_Res">
+                                                <a href="javascript:void(0)">
+                                                    <div class="PA_Edit_btn" (click)="Action_details_edit()" *ngIf="(projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                                                            width="15" height="15">
+                                                            <path
+                                                                d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"
+                                                                style="fill: #527ce2;" />
+                                                            <path
+                                                                d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"
+                                                                style="fill:#616161" />
+                                                        </svg>
+                                                        <span class="lbl-hdn">Edit</span>
+                                                    </div>
+                                                </a>
+                                            </ng-conatiner>
                                         </div>
     
                                         <div class="project_more_Action_options" *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner ||
@@ -7912,7 +7914,7 @@
                                 <ng-container *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                                      && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
                                     <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" [disabled]="item.Emp_No==selectedOwnResp">
                                             {{item.RACIS}}
                                         </ng-option>
                                     </ng-select>
@@ -7940,7 +7942,7 @@
                                      && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownEdit">
                                  
                                  <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
-                                    <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
+                                    <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown" [disabled]="item.Emp_No==selectedOwner">
                                         <!-- <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a> -->
                                         {{item.RACIS}}
                                     </ng-option>
@@ -8357,7 +8359,7 @@
                                             </g>
                                         </svg>
                                     </span> Owner</div>
-                                <div class="input-icon Sub_In_ed" *ngIf="currentActionView&&projectActionInfo[currentActionView]">
+                                <div class="input-icon Sub_In_ed" *ngIf="projectActionInfo[currentActionView]">
                                     <!-- <ng-container  *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner); else ActionEdit">
                                         <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
@@ -8372,16 +8374,18 @@
                                 <ng-container  *ngIf="Current_user_ID == projectActionInfo[currentActionView].Project_Owner && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
                                 projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' 
                                  &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
-                                        <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
+                                       <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                                 {{item.RACIS}}
                                             </ng-option>
                                         </ng-select>
                                  </ng-container>
+
                                  <ng-template #ActionEdit>
                                     <input type="text" class="form-control readonly"
                                     [(ngModel)]="ActionOwner" readonly />
                                 </ng-template>
+
                                 </div>
                             </div>
                         </div>
@@ -8394,7 +8398,7 @@
                                                 d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                             </path>
                                         </svg></span> Responsible </div>
-                                <div class="input-icon Sub_In_ed"  *ngIf="currentActionView&&projectActionInfo[currentActionView]">
+                                <div class="input-icon Sub_In_ed"  *ngIf="projectActionInfo[currentActionView]">
                                     <!-- <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
                                             {{item.RACIS}}
@@ -8524,7 +8528,7 @@
                                 <div class="kt-info-lable-v"> Deadline</div>
                                 <div class="input-icon Sub_In_ed  rounded-2 date-border-v d-flex">
                                     <input class="form-control" [(ngModel)]="ActionendDate"
-                                        [min]="todayDate|date:'YYYY-MM-dd'" matInput
+                                        [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                         [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
                                         placeholder="Deadline Date..." class="form-control border-0 " name="date" />
                                     <div class="input-group-append h-2">
