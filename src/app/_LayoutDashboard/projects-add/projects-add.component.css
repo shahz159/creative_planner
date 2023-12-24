@@ -1068,3 +1068,6 @@ span.count2 {
 }
 
 
+tr.odd.project-list_AC.active{
+  background-color: #e0f1ff;
+}

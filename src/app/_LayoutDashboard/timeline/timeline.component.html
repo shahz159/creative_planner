@@ -118,7 +118,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="moreDetails(item1.project_code)">{{item1.ProjectName }}</a>
+                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="newDetails(item1.project_code)">{{item1.ProjectName }}</a>
                                                         <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
                                                         <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
                                                         <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
@@ -298,7 +298,7 @@
                                 <div class="mt-3" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header">
                                         <h4 class="header-date p-0 ">
-                                            <a class="pro-link" href="javascript:void(0)" (click)="moreDetails(item.project_code)">{{item.ProjectName }}</a>
+                                            <a class="pro-link" href="javascript:void(0)" (click)="newDetails(item.project_code)">{{item.ProjectName }}</a>
                                         </h4>
                                     </div>
                                     <div class="">

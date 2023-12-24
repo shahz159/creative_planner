@@ -2184,6 +2184,12 @@ label.checkbox.kt-fnt-vd {
   padding: 0 8px;
 }
 
+.st-line {
+  font-size: 12px;
+  font-weight: 400;
+  color: #979797;
+}
+
     /*========= project info side bar css ==========*/
     .project-info-side-bar {
       height: 100%;
@@ -2392,10 +2398,9 @@ button.Kt-Approval-btns {
     outline: 0;
     box-shadow: none !important;
 }
-tr.odd.project-list_AC.active{
-  background-color: #e0f1ff;
-   
-}
+
+
+
 /*------------======== model popup ========------------*/
 ::ng-deep #staticBackdrop {
   z-index: 99999999999999999999 !important;
@@ -2489,4 +2494,8 @@ h2.prj-ttl {
   padding-right: 5px;
   color: #797979;
   font-weight: 400;
+}
+
+tr.odd.project-list_AC.active{
+  background-color: #e0f1ff;
 }

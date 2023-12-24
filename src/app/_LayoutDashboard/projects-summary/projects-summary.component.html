@@ -876,8 +876,8 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-success font-weight-400">Completed
-                                                            </span>
+                                                            <span class="text-success font-weight-400">Completed</span>
+                                                            <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="text-warning font-weight-400">Forward

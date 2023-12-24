@@ -741,6 +741,14 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     myWindow.focus();
   }
 
+  newDetails() {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${this._MasterCode}`;
+    var myWindow = window.open(myurl,this._MasterCode);
+    myWindow.focus();
+  }
+
   moreDetails1(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;

@@ -806,6 +806,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
     var myWindow = window.open(myurl, pcode);
     myWindow.focus();
   }
+  
+  newDetails(pcode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
 
   info_active_btn(item) {
     item.isActive = !item.isActive;
