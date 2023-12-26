@@ -176,10 +176,10 @@ export class MeetingReportComponent implements OnInit {
     this._calenderDto = new CalenderDTO;
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-    
+
   }
   showCustomDialog:boolean=false;
-  
+
   // public onBeforeUnload($event: Event) {
   //   this.showCustomDialog = true;
   //   Swal.fire({
@@ -201,12 +201,12 @@ export class MeetingReportComponent implements OnInit {
   //   });
 
   // }
-  
+
   _meetingNotesAry: any = [];
   _userfullname: string;
   interval = 0;
 
-  
+
   ngOnInit(): void {
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this._userfullname = localStorage.getItem('UserfullName');
@@ -406,7 +406,7 @@ export class MeetingReportComponent implements OnInit {
     else{
       this.notifyService.showInfo("Something went wrong","");
     }
-    
+
 
   }
 
@@ -486,7 +486,7 @@ export class MeetingReportComponent implements OnInit {
   timer: any;
   display:any;
   interval1: number = 0;
-  
+
   InsertstartandendTimerMeeting(_val: string) {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.CurrentUser_ID;
@@ -513,7 +513,7 @@ export class MeetingReportComponent implements OnInit {
     }
     this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
       (data => {
-     
+
         // this.startTimer();
 
       });
@@ -537,7 +537,7 @@ export class MeetingReportComponent implements OnInit {
       (data => {
         this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
         this.AdminMeeting_Status = data["AdminMeeting_Status"];
-        
+
         // if(this.AdminMeeting_Status == 'Pause'){
         //   clearInterval(this.interval1);
         //   this.interval == 0;
@@ -820,9 +820,9 @@ export class MeetingReportComponent implements OnInit {
   sched_admin: string;
   _duration: number = 0;
   durationStatus:any;
-  
 
-  
+
+
   meeting_details() {
 
     this.Schedule_ID = this.Scheduleid;
@@ -926,7 +926,7 @@ export class MeetingReportComponent implements OnInit {
         }
 
       });
-    
+
     //   this._calenderDto.Emp_No=this.CurrentUser_ID;
     //   this.CalenderService.NewGetMeetingDuration(this._calenderDto).subscribe((data)=>{
     //   console.log(data,"time");
@@ -980,7 +980,7 @@ export class MeetingReportComponent implements OnInit {
     const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
     return totalSeconds;
   }
-  
+
 
   startTimer() {
     console.log("=====>");
@@ -1031,7 +1031,7 @@ export class MeetingReportComponent implements OnInit {
     const hours = parseInt(parts[0], 10);
     const minutes = parseInt(parts[1], 10);
     const seconds = parseInt(parts[2], 10);
-  
+
     if (hours === 0) {
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     } else {
@@ -1167,7 +1167,7 @@ export class MeetingReportComponent implements OnInit {
         //  this.Notes= this.Previousdata_meeting;
 
         console.log(this.Previousdata_meeting, "wassssss1111")
-        //  console.log(this.Notes,"wassssss") 
+        //  console.log(this.Notes,"wassssss")
       });
   }
 
