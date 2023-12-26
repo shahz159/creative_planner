@@ -1583,11 +1583,17 @@
                             <div class="kt-info-box pr-2">
                                 <div class="kt-project-tool-bar">
                                     <div class="d-flex flex-grow-1 align-items-center gap_ic">
-                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()" [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"    >
-                                            <img id="dmstool" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                height="29">
-                                        </a>
-
+                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >                                             
+                                           <ng-container *ngIf="isDMS>0">
+                                                <img id="dmstool" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                 height="29">                              
+                                              </ng-container>                               
+                                              <ng-container *ngIf="isDMS==0">
+                                                <img width="22px" class="black-white"
+                                                src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
+                                                title="Not Linked">
+                                              </ng-container>  
+                                            </a>
                                         <div class="br-line"></div>
 
                                         <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  >
@@ -3960,7 +3966,18 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-600 m-0 d-flex">
                 <a class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
+                    <!-- <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"> -->
+                 <ng-container *ngIf="_linkedMemos>0">
                     <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
+                 </ng-container>
+
+                 <ng-container *ngIf="_linkedMemos==0">
+
+                    <img width="23px" class="black-white"
+                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
+                    title="Not Linked">
+                   
+                 </ng-container>
                 </a> Link DMS
             </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -4972,7 +4989,7 @@
                                 <path _ngcontent-vqh-c391=""
                                     d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                                     stroke="#a3a3a3"></path>
-                            </svg> </span><span class="kt-chat__title"> List of Attachments </span> <span
+                            </svg> </span><span class="kt-chat__title"> List of Attachments</span> <span
                             class="kt-at-count" *ngIf="_TotalDocs>0">{{_TotalDocs}}</span> </h4>
                     <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                         (click)="closedarBar()">
@@ -5081,7 +5098,7 @@
                                                                 d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z">
                                                             </path>
                                                         </svg>
-                                                        <div class="fil-lbl">Project</div>
+                                                        <div class="fil-lbl">Project / Actions</div>
                                                         <span class="chck-icn" *ngIf="flSrtOrd==='Project'">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" fill="currentColor" viewBox="0 0 16 16"
@@ -5291,8 +5308,8 @@
                                                 <div class="kt-notification__item-title fw-bold"
                                                     title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
-                                                    {{file.Sourcefile}}
-                                                </div>
+                                                    {{file.Sourcefile | slice:0:28}}...  
+                                                </div> 
                                                 <div class="kt-notification__item-title fw-bold"
                                                     *ngIf="file.Sourcefile.length<45">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->

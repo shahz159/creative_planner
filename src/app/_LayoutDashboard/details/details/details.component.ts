@@ -465,7 +465,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD;
   }
 
-
+  isDMS:any
   sourceFile:any
   Submission: any;
   filterstatus: any;
@@ -477,6 +477,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.isDMS= this.projectInfo.isDMS;
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
@@ -2313,10 +2314,9 @@ check_allocation() {
 
 
 
-  limit = 60; // Set the initial limit
+  limit =  60; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
-
     this.isExpanded = !this.isExpanded;
   }
   /// Action Edits End
@@ -2874,8 +2874,6 @@ check_allocation() {
         console.log(data, "Slider")
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
-
-
         if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
           console.log('our new AttachmentList:', data, this.AttachmentList);
@@ -2982,7 +2980,6 @@ check_allocation() {
 
 
   }
-
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
