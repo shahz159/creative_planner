@@ -38,7 +38,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
-
+import { Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -46,14 +46,15 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
+// import 'moment/locale/ja';
+// import 'moment/locale/fr';
 
 
 import * as am4core from "@amcharts/amcharts4/core";
 am4core.useTheme(am4themes_animated);
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import tippy from 'tippy.js';
 declare var FusionCharts: any;
 
 
@@ -80,8 +81,6 @@ export const MY_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY'
   },
 };
-
-
 
 @Component({
   selector: 'app-details',
@@ -194,7 +193,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private elementRef: ElementRef
   ) {
 
     this.ObjSubTaskDTO = new SubTaskDTO();
@@ -204,7 +204,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   charts() { }
-
+  private subscription: Subscription;
 
   ngOnInit(): void {
    
@@ -216,8 +216,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode); 
-    setTimeout(() => this.drawStatistics(), 500); 
-      // get all project details from the api.
+    setTimeout(() => this.drawStatistics(), 5000); 
+    // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
     this.gethierarchy();
@@ -226,6 +226,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.getholdate();
     this.GetPeopleDatils();
     this.timearrays();
+    this.getRejectType();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -235,11 +236,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
+    const targetElement = document.querySelector('#dmsasfa');
+    if (targetElement) {
+    tippy('#dmsasfa', {
+      content: "Link DMS",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right',
+      interactive: true
+    });
+  }
   }
 
   ngAfterViewInit(): void {
-    this.getResponsibleActions()
+    this.getResponsibleActions(); 
     this.GetActivityDetails();
+
   }
 
   getusername() {
@@ -248,6 +263,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   // SummaryChart start
 
@@ -288,7 +308,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -326,7 +346,79 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  private loadData() {
+    this.subscription = this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data => {
+        this.processData(data);
+        this.renderChart();
+        this.updateLabels();
+      });
+  }
 
+  private processData(data: any) {
+    this.maxDuration = data[0]['ProjectMaxDuration'];
+    this.UsedInDAR = data[0]['TotalHoursUsedInDAR'];
+    this.RemainingHours = data[0]['RemainingHours'];
+
+    this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+    this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+    this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+  }
+
+  private renderChart() {
+    new FusionCharts({
+
+      type: "radialbar",
+      width: "100%",
+      height: "100%",
+      renderAt: "chart-container",
+      dataSource: {
+        chart: {
+          theme: "fusion",
+          // caption: "7Hr 32M",
+          // subCaption: "January 2021",
+          showLegend: 1,
+          innerRadius: 30,
+          outerRadius: 105,
+          showLabels: 1,
+          labelText: "$label"
+        },
+        data: [
+          {
+            label: "Remaining hours",
+            value: this.RemainingHours,
+            color: "#5867dd" //Custom Color
+          },
+
+          {
+            label: "Used hours",
+            value: this.UsedInDAR,
+            color: "#b2beff" //Custom Color
+          },
+          {
+            label: "Total hours",
+            value: this.maxDuration,
+            color: "#985eff" //Custom Color
+          }
+        ]
+      }
+    }).render();
+  }
+
+  private updateLabels() {
+    const lang = {
+      "javascript": "70%",
+    };
+
+    let multiply = 4;
+    Object.entries(lang).forEach(([language, pourcent]) => {
+      const delay = 700;
+      setTimeout(() => {
+        document.getElementById(`${language}-pourcent`).innerHTML = pourcent;
+      }, delay * multiply);
+      multiply++;
+    });
+  }
 
 
   // SummaryChart End
@@ -372,25 +464,30 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Submission: any;
   filterstatus: any;
   filteremployee: any;
-  remark:any
+  remark:any;
+  isrespactive:boolean=true;
+
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      this.type_list = this.projectInfo.typelist;
-      // console.log( this.type_list, "testtsfs")
-      this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
-      this._MasterCode = this.projectInfo.Project_Code;
-      this.ProjectType = this.projectInfo.Project_Type
-      this.projectActionInfo = JSON.parse(res[0].Action_Json);
-      this.type_list = JSON.parse(this.projectInfo['typelist']);
-      this.filteredPrjAction=this.getFilteredPrjActions('All','All');
-      this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
-      this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
-      this.calculateProjectActions();    // calculate project actions details.
-      console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+      this.type_list = this.projectInfo.typelist;
+      console.log( res, "testtsfs")
+      this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
+      this._MasterCode = this.projectInfo.Project_Code;
+      this.ProjectType = this.projectInfo.Project_Type;
+      this.isrespactive =  this.projectInfo.isRespActive;
+      this.projectActionInfo = JSON.parse(res[0].Action_Json);
+      this.type_list = JSON.parse(this.projectInfo['typelist']);
+      console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
+      if(this.projectActionInfo!=null || this.projectActionInfo.length>0){
+        this.filteredPrjAction=this.getFilteredPrjActions('All','All');
+        this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+        this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+      }
+      this.calculateProjectActions();    // calculate project actions details.
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
@@ -416,8 +513,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   thirdRecords:any
   newArray:any
   uniqueSet :any
-  nonRacisList:any=[];
+  nonRacisList:any=[]; 
   GetPeopleDatils(){
+
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
 
@@ -426,9 +524,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
            this.newArray = uniqueNamesArray.slice(3);
-
-           console.log(this.newArray,'-------------->')
-
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -438,11 +533,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
+       
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
         // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
 
         const RACISList = (JSON.parse(data[0]['RacisList']));
+        console.log("RACISList",RACISList)
         if (RACISList && RACISList.length > 0) {
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
@@ -475,7 +572,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (data !== null && data !== undefined) {
           this.Activity_List = JSON.parse(data[0]['ActivityList'])
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-          console.log(this.Activity_List, "testing Api")
+        }
+      })
+  }
+
+  ActionActivity_List:any;
+  ActionfirstFiveRecords: any[] = [];
+  GetActionActivityDetails(code) {
+    this.service.NewActivityService(code).subscribe(
+      (data) => {
+        if (data !== null && data !== undefined) {
+          this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
+          this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
+          console.log(this.ActionActivity_List, "testing action activity")
         }
       })
   }
@@ -501,19 +610,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-
+    this.requestType = null;
     this.currentActionView = index;
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-
-
+    
+    if(index!=undefined){
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
+      $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+    } 
   }
-
-
-
-
 
 
 
@@ -550,7 +657,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             },
             data: [
               {
-                label: "Remaining hous",
+                label: "Remaining hours",
                 value: this.RemainingHours,
                 color: "#5867dd" //Custom Color
               },
@@ -670,6 +777,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
+    document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
@@ -1220,6 +1328,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  isApprovalSection: boolean = true;
+
+  Close_Approval() {
+    this.isApprovalSection = false;
+    $(".Btn_Accpet").removeClass('active');
+    $(".Btn_Conditional_Accept").removeClass('active');
+    $(".Btn_Reject").removeClass('active');
+  }
+
+
+  
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -1478,7 +1597,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             fd.append("Project_Name", this._Subtaskname);
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
-
+                this.closeInfo();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
               });
             this.notifyService.showSuccess("Successfully Updated", 'Action completed');
             // ACTION SUBMITTED.
@@ -1522,6 +1644,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                 this._remarks = '';
                 this.closeInfo();
                 this.getProjectDetails(this.URL_ProjectCode);
+                this.getAttachments(1);
+                this.calculateProjectActions();
                 // this.GetSubtask_Details();
                 // this.GetProjectDetails();
                 // this.getapprovalStats();
@@ -1545,8 +1669,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
+              this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();         // close action completion sidebar.
+              this.closeActCompSideBar();   
+              this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
         }
@@ -1577,8 +1703,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
+          this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
-          this.closeActCompSideBar();        // close action completion sidebar.
+          this.closeActCompSideBar();
+          this.getAttachments(1);        // close action completion sidebar.
 
         });
       this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -1888,6 +2016,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         else if (data['message'] == '6') {
           this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
         }
+        else if (data['message'] == '8') {
+          this.notifyService.showError("Selected Project owner cannot be updated", "Not updated");
+        }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
       });
@@ -1967,6 +2098,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
+    debugger
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2060,6 +2192,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
             this.notifyService.showSuccess("Updated successfully", "Success");
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
@@ -2068,9 +2201,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
           }
+          else if (data['message'] == '8') {
+            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+          }
+          
           this.getProjectDetails(this.URL_ProjectCode);
+
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2094,6 +2232,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
         this.notifyService.showSuccess("Updated successfully", "Success");
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
@@ -2103,6 +2242,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
       else if (data['message'] == '6') {
         this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+      }
+      else if (data['message'] == '8') {
+        this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
       this.getProjectDetails(this.URL_ProjectCode);
       this.closeInfo();
@@ -2857,7 +2999,8 @@ check_allocation() {
   filterText: string;
   approval_Emp: any
   SearchItem: string;
-
+  action_approver:any;
+  action_assignedby: any;
 
   filterSearch() {
     this.filterText = "";
@@ -2868,16 +3011,17 @@ check_allocation() {
   GetApproval(code) {
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
-console.log(data,'jjj----------->')
+      console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approval_Emp = (this.requestDetails[0]['Emp_no']);
+        this.action_approver = (this.requestDetails[0]['Responsible']);
+        this.action_assignedby = (this.requestDetails[0]['Submitted_By']);
         // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
@@ -3188,6 +3332,16 @@ console.log(data,'jjj----------->')
 
 
   getMeetingsInRange() {
+    /*---------- set time out for hide the dropdown --------*/
+    setTimeout(function () {
+      loadSelect()
+    },
+      1500);
+    function loadSelect() {
+      $(".dropdown_left_fix").removeClass("show");
+    }
+    /*---------- set time out for hide the dropdown end --------*/
+
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = this.mtgFromD;
     this.ObjSubTaskDTO.enddate = this.mtgUptoD;
@@ -4485,7 +4639,7 @@ getChangeSubtaskDetais(Project_Code) {
     }
     else if (this.selectedrecuvalue == "2") {
       if (this.dayArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
+       alert('Please select day');
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
@@ -5654,4 +5808,93 @@ debugger
 
 
 
+getShorterName(name:string|undefined){
+  if(name)
+   return name.split(' ').map(wrd=>wrd[0]).slice(0,2).join('')
+  return '';
+}
+
+
+
+
+
+
+// new project release code start 
+activity: any;
+lastactivity: any;
+send_from: any;
+rejectactivity: any;
+
+
+openNewPrjReleaseSideBar() {
+  document.getElementById("new-prj-release-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+}
+
+
+closeNewPrjReleaseSideBar() {
+   this.hold_remarks = '';
+  document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementById("newdetails").classList.remove("position-fixed");
+}
+
+getRejectType() {
+  this.approvalObj.Project_Code = this.URL_ProjectCode;
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+    this.activity = data[0]["activity"];
+    this.send_from = data[0]["sendFrom"];
+    this.rejectactivity = data[0]["rejectactivity"];
+    this.lastactivity = JSON.parse(data[0]["lastactivity"]);
+    console.log(this.activity, this.lastactivity)
+  });
+}
+
+releasenewProject(){
+  debugger
+  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.Request_type = 'New Project Reject Release';
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Remarks = this.hold_remarks;
+
+    this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+      this.closeNewPrjReleaseSideBar();
+      this._Message = (data['message']);
+      if (this._Message == '1') {
+        this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.getRejectType();
+        this.getapproval_actiondetails();
+      }
+      else if (this._Message == '2' || this._Message == '0') {
+        this.notifyService.showError("Project release failed", "Failed");
+      }
+    });
+  // this.Clear_Feilds();
+  console.log(this.approvalObj,"cancel")
+}
+else{
+  // this.close_space();
+  this.notifyService.showError("Access denied","Failed")
+}
+}
+
+
+
+// new project release end here
+
+displaymessage(){
+  if(this.projectInfo.Status=='Completion Under Approval'){
+    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval","Not editable");
+  }
+  else{
+    this.notifyService.showInfo("Please complete the approval process and change the project responsible","Not editable");
+  }
+}
+
+displaymessagemain(){
+  this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+}
 }

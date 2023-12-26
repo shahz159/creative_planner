@@ -276,6 +276,14 @@ export class NotificationComponent implements OnInit {
     myWindow.focus();
   }
 
+  newDetails(pcode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
   closeInfo() {
     this._NotificationActivity.forEach(item => item.isActive = false);
     this.resetReject();

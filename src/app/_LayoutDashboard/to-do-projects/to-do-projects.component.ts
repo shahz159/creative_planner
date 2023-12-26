@@ -817,6 +817,13 @@ export class ToDoProjectsComponent implements OnInit {
     var myWindow = window.open(myurl, this._ProjectCode);
     myWindow.focus();
   }
+  newDetails() {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${this._ProjectCode}`;
+    var myWindow = window.open(myurl,this._ProjectCode);
+    myWindow.focus();
+  }
 
   ////////////////------------------------------- Filters ------------------------------///////////////
   EmpCountInFilter = [];

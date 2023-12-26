@@ -857,8 +857,8 @@ $(document).ready(function(){
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("sumdet").classList.add("position-fixed");
-    document.getElementsByClassName("kt_wrapper")[0].classList.add("position-fixed");
+    document.getElementById("sumdet").classList.add("position-fixed");
+    // document.getElementsByClassName("kt_wrapper")[0].classList.add("position-fixed");
 
   }
   selectedIndex: number | null = null;
@@ -1055,7 +1055,7 @@ $(document).ready(function(){
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
 
-    var myWindow = window.open(myurl,"_");
+    var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
 
