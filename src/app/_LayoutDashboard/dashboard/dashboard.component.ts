@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 //import { ScriptService } from 'src/app/_Services/script.service';
@@ -35,6 +35,7 @@ import { validationLatitudeLongitude } from "validation-latitude-longitude";
 import { empty } from 'rxjs';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
+import { FormControl } from '@angular/forms';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -62,7 +63,7 @@ moment.locale('en');
 
 })
 export class DashboardComponent implements OnInit {
-
+  @ViewChild('searchInput') searchInput: ElementRef;
   myTime = new Date();
   posts = [];
   calendarOptions: CalendarOptions;
@@ -3404,6 +3405,7 @@ export class DashboardComponent implements OnInit {
   }
   clearsearch() {
     this.Searchword = null;
+    this.searchInput.nativeElement.focus();
   }
   Pending_request: any[] = [];
   pendingcount: any;
@@ -4768,6 +4770,7 @@ export class DashboardComponent implements OnInit {
 
   evesrchopn() {
     document.getElementById("drp-srch").classList.add("show");
+    this.searchInput.nativeElement.focus();
     $(".fc-header-toolbar").addClass("d-none");
   }
   evesrchclose() {

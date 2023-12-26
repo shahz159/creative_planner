@@ -394,7 +394,7 @@
                                 <div class="serch-area" id="search-area">
                                     <form class="form-search open">
                                         <div class="form-input">
-                                            <input type="text" name="search" class="form-control eve-search"
+                                            <input type="text" name="search" #searchInput class="form-control eve-search"
                                                 [(ngModel)]="Searchword" (keydown.enter)="Search_byname()">
                                         </div>
 
@@ -2898,6 +2898,7 @@
                                             <mat-option value="0">Do not repeat</mat-option>
                                             <mat-option value="1">Daily</mat-option>
                                             <mat-option value="2">Weekly</mat-option>
+                                            <!-- <mat-option value="4">Bi-Weekly</mat-option> -->
                                             <mat-option value="3">Monthly</mat-option>
                                         </mat-select>
                                     </div>

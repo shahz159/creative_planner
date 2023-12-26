@@ -1585,13 +1585,13 @@
                                     <div class="d-flex flex-grow-1 align-items-center gap_ic">
                                         <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >                                             
                                            <ng-container *ngIf="isDMS>0">
-                                                <img id="dmstool" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                 height="29">                              
+                                                <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                 height="29" title="Link DMS">                              
                                               </ng-container>                               
                                               <ng-container *ngIf="isDMS==0">
                                                 <img width="22px" class="black-white"
                                                 src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                                                title="Not Linked">
+                                                title="Link DMS">
                                               </ng-container>  
                                             </a>
                                         <div class="br-line"></div>
@@ -3749,7 +3749,7 @@
 
                                             </div>
                                             <div class="row mt-5 px-3"
-                                                *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks !='undefined'">
+                                                *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks">
                                                 <div *ngIf="projectActionInfo[currentActionView].Sourcefile"
                                                     class="col-lg-3  text-center"
                                                     title=" {{projectActionInfo[currentActionView].Sourcefile}}">
@@ -3765,7 +3765,7 @@
                                                 </div>
 
                                                 <div class="col-lg-3  text-center"
-                                                    *ngIf="projectActionInfo[currentActionView].Remarks !='undefined'">
+                                                    *ngIf="projectActionInfo[currentActionView].Remarks && projectActionInfo[currentActionView].Remarks !='undefined' && projectActionInfo[currentActionView].Remarks !=''">
                                                     <div class="kt-info-lable-v">
                                                         Remarks
                                                     </div>
@@ -5282,7 +5282,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex">
+                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
@@ -5327,7 +5327,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex">
+                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">

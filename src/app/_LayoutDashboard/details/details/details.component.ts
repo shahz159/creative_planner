@@ -242,8 +242,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-    const targetElement = document.querySelector('#dmsasfa');
-    if (targetElement) {
+
     tippy('#dmsasfa', {
       content: "Link DMS",
       arrow: true,
@@ -254,7 +253,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       placement:'right',
       interactive: true
     });
-  }
   }
 
   ngAfterViewInit(): void {
@@ -827,7 +825,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     //
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details", this.URL_ProjectCode]);
-    this.getProjectDetails(this.URL_ProjectCode);
+    // this.getProjectDetails(this.URL_ProjectCode);
     this.closeLinkSideBar();
     this.closeMeetingSidebar();
 
