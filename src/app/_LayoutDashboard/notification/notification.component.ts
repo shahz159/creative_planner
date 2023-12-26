@@ -275,14 +275,45 @@ export class NotificationComponent implements OnInit {
     var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
+ 
+  // newDetails1(prjcode,actcode) {
+  //   let name: string = 'Details';
+  //   let qparams='?actionCode='+actcode;
+  //   var url = document.baseURI + name;
+  //   var myurl = `${url}/${prjcode}${qparams}`;
+  //   var myWindow = window.open(myurl);
+  //   myWindow.focus();
+  // }
 
-  newDetails(pcode) {
+  // newDetails(prjcode) {
+
+  //   let name: string = 'Details';
+  //   var url = document.baseURI + name;
+  //   var myurl = `${url}/${prjcode}`;
+  //   var myWindow = window.open(myurl);
+  //   myWindow.focus();
+  
+  
+  // }
+
+
+  openDetails(p1,p2){
     let name: string = 'Details';
     var url = document.baseURI + name;
-    var myurl = `${url}/${pcode}`;
-    var myWindow = window.open(myurl,pcode);
+    let qparams='';
+    let myurl;
+    if(p1){
+      qparams='?actionCode='+p2;
+      myurl = `${url}/${p1}${qparams}`;
+    }
+    else{
+      myurl = `${url}/${p2}`;
+    }
+    var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
+
 
   closeInfo() {
     this._NotificationActivity.forEach(item => item.isActive = false);
