@@ -234,6 +234,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
+
+    
   }
 
   ngAfterViewInit(): void {
