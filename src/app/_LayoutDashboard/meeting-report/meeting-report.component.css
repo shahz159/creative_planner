@@ -466,7 +466,7 @@ img.dms-icn {
     }
   }
 ::ng-deep .angular-editor-textarea {
-    height: 4rem !important;
+    height: 11rem !important;
 }
 .drops{
     z-index: 95;

@@ -1767,7 +1767,6 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitReSchedule(type: number) {
-    debugger
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type=type;
     var start = moment(this.minDate);
@@ -1807,7 +1806,7 @@ export class DashboardComponent implements OnInit {
       var IsActive = "IsActive";
       jsonData[IsActive] = 1;
       var Day = "Day";
-      alert(moment(date).format('ddd').substring(0, 3));
+      // alert(moment(date).format('ddd').substring(0, 3));
       jsonData[Day] = moment(date).format('ddd').substring(0, 3);
       var DayNum = "DayNum";
       jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
