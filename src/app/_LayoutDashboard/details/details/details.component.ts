@@ -172,6 +172,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Category_List: any;
   selectedcategory: any;
   EndDate1: any = new Date();
+  currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -213,6 +214,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
+
+   
+
+
+
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode); 
@@ -501,6 +507,31 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
         }
       })
+
+
+
+
+      this.route.queryParamMap.subscribe((qparams)=>{
+        const actionCode=qparams.get('actionCode');
+        if(actionCode)
+        {   // if action Code is additional along with the project code then redirect to that action.
+          const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
+          if(Action)
+              this.showActionDetails(Action.IndexId-1);
+          else
+           this.showActionDetails(undefined);
+        }
+        else 
+          this.showActionDetails(undefined);  // opens the main project.
+    })
+
+
+
+
+
+
+
+
 
     });
   }
@@ -807,6 +838,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='COMMENTS';
     this.GetprojectComments()
    }
 
@@ -814,18 +846,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='ACTIVITY_LOG';
     this.GetActivityDetails();
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='LIST_OF_ATTACHMENTS';
     this.getAttachments(1);
   }
   View_User_list() {
     document.getElementById("User_list_View").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened="PEOPLES";
     this.GetPeopleDatils()
   }
 
@@ -871,7 +906,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
-
+    this.currentSidebarOpened='TIMELINE_VIEW';
     this.tmlSrtOrd = 'Date';   // by default.
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);
   }
@@ -896,6 +931,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.currentSidebarOpened='LINK_DMS';
     //
   }
 
@@ -906,6 +942,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    this.currentSidebarOpened='NOT_OPENED';
 
   }
 
@@ -3244,6 +3281,7 @@ check_allocation() {
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='MEETINGS';
     // sidebar is open
     this.GetmeetingDetails(); // get all meeting details.
   }
@@ -3252,6 +3290,7 @@ check_allocation() {
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+    this.currentSidebarOpened='NOT_OPENED';
 
     this.meetingsViewOn = true;
     // empty all variables
@@ -4964,7 +5003,6 @@ openAutocompleteDrpDwn(Acomp:string){
 }
 
 closeAutocompleteDrpDwn(Acomp:string){
-  debugger
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
