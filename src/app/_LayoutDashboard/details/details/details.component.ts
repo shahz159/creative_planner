@@ -38,7 +38,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
-
+import { Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -54,6 +54,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 am4core.useTheme(am4themes_animated);
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import tippy from 'tippy.js';
 declare var FusionCharts: any;
 
 
@@ -192,7 +193,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private elementRef: ElementRef
   ) {
 
     this.ObjSubTaskDTO = new SubTaskDTO();
@@ -202,7 +204,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   charts() { }
-
+  private subscription: Subscription;
 
   ngOnInit(): void {
    
@@ -214,8 +216,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode); 
-    setTimeout(() => this.drawStatistics(), 500); 
-      // get all project details from the api.
+    setTimeout(() => this.drawStatistics(), 5000); 
+    // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
     this.gethierarchy();
@@ -234,13 +236,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-
-    
+    const targetElement = document.querySelector('#dmsasfa');
+    if (targetElement) {
+    tippy('#dmsasfa', {
+      content: "Link DMS",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right',
+      interactive: true
+    });
+  }
   }
 
   ngAfterViewInit(): void {
     this.getResponsibleActions(); 
     this.GetActivityDetails();
+
   }
 
   getusername() {
@@ -249,6 +263,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   // SummaryChart start
 
@@ -327,7 +346,79 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
+  private loadData() {
+    this.subscription = this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+      .subscribe(data => {
+        this.processData(data);
+        this.renderChart();
+        this.updateLabels();
+      });
+  }
 
+  private processData(data: any) {
+    this.maxDuration = data[0]['ProjectMaxDuration'];
+    this.UsedInDAR = data[0]['TotalHoursUsedInDAR'];
+    this.RemainingHours = data[0]['RemainingHours'];
+
+    this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+    this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+    this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+  }
+
+  private renderChart() {
+    new FusionCharts({
+
+      type: "radialbar",
+      width: "100%",
+      height: "100%",
+      renderAt: "chart-container",
+      dataSource: {
+        chart: {
+          theme: "fusion",
+          // caption: "7Hr 32M",
+          // subCaption: "January 2021",
+          showLegend: 1,
+          innerRadius: 30,
+          outerRadius: 105,
+          showLabels: 1,
+          labelText: "$label"
+        },
+        data: [
+          {
+            label: "Remaining hours",
+            value: this.RemainingHours,
+            color: "#5867dd" //Custom Color
+          },
+
+          {
+            label: "Used hours",
+            value: this.UsedInDAR,
+            color: "#b2beff" //Custom Color
+          },
+          {
+            label: "Total hours",
+            value: this.maxDuration,
+            color: "#985eff" //Custom Color
+          }
+        ]
+      }
+    }).render();
+  }
+
+  private updateLabels() {
+    const lang = {
+      "javascript": "70%",
+    };
+
+    let multiply = 4;
+    Object.entries(lang).forEach(([language, pourcent]) => {
+      const delay = 700;
+      setTimeout(() => {
+        document.getElementById(`${language}-pourcent`).innerHTML = pourcent;
+      }, delay * multiply);
+      multiply++;
+    });
+  }
 
 
   // SummaryChart End
@@ -373,7 +464,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Submission: any;
   filterstatus: any;
   filteremployee: any;
-  remark:any
+  remark:any;
+  isrespactive:boolean=true;
+
   getProjectDetails(prjCode: string) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
@@ -384,7 +477,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       console.log( res, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
-      this.ProjectType = this.projectInfo.Project_Type
+      this.ProjectType = this.projectInfo.Project_Type;
+      this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
@@ -5791,5 +5885,16 @@ else{
 
 // new project release end here
 
+displaymessage(){
+  if(this.projectInfo.Status=='Completion Under Approval'){
+    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval","Not editable");
+  }
+  else{
+    this.notifyService.showInfo("Please complete the approval process and change the project responsible","Not editable");
+  }
+}
 
+displaymessagemain(){
+  this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+}
 }

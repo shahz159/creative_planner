@@ -880,6 +880,15 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     myWindow.focus();
   }
 
+  newDetails(pcode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
+
 }
   
 

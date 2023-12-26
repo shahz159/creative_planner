@@ -453,13 +453,13 @@
                             </div>
 
                             <div class="fc pend-bg" *ngIf="draftcount>0">
-                                <button type="button" (click)="penshow1()" class="draft-btn">Draft</button>
+                                <button type="button" (click)="penshow1()" class="draft-btn">draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-                            <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
+                            <!-- <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
                                 <button type="button" (click)="penshow2()" class="pend-btn">delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- <div id="kt_calendar"></div> -->
@@ -1268,7 +1268,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="desc" class="eve-area py-2" *ngIf="item.Description != ''">
+                    <div id="desc" class="eve-area py-2" *ngIf="item.Description">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"

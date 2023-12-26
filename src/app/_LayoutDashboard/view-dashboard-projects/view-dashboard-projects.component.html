@@ -251,7 +251,7 @@
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
-                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="newDetails(item.Project_Code)"></i>
                                                         </a>
                                                     </td>
                                                     <td class="kt-widget__title mb-0 text-ellipsis w-max-180px" data-toggle="tooltip" title="{{item.Task_Name}}">
@@ -376,7 +376,7 @@
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
-                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
+                                                            <i class="fa fa-chart-bar info-icon-cir" (click)="newDetails(item.Project_Code)"></i>
                                                         </a>
                                                     </td>
                                                     <td>

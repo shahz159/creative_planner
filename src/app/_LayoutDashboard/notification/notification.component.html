@@ -319,14 +319,17 @@
                                                     <a tabindex="0" class="btn px-0 mr-2" role="button"
                                                         placement="right" data-trigger="focus" data-toggle="tooltip"
                                                         title="More Info!"
-                                                        (click)="moreDetails(item.Project_Code1,item.Rec_Date,item.Req_Type)">
+                                                        (click)="newDetails(item.Project_Code1)">
                                                         <i class="fa fa-chart-bar info-icon-cir"></i>
                                                     </a>
                                                 </td>
-                                                <td><p class="kt-widget__title mb-0">
+                                                <td>
+                                                    <p class="kt-widget__title mb-0">
                                                     {{item.Project_Name}}
-                                                    <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
-                                                </p></td>
+                                                    
+                                                    </p>
+                                                    <span class="kt-widget__other d-block st-line" title="Main Project name" *ngIf="item.Master_Code">{{item.MainProjectName}}</span>
+                                                </td>
                                                 <td>
                                                     <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                                                     <span class="kt-widget__other d-block st-line" title="category" *ngIf="item.Category">{{item.Category}}</span>
