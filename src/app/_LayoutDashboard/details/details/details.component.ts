@@ -208,7 +208,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
-   
+
+
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
@@ -506,28 +507,26 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
         }
       })
-
-
-
-
       this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
         if(actionCode)
         {   // if action Code is additional along with the project code then redirect to that action.
           const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
           if(Action)
-              this.showActionDetails(Action.IndexId-1);
+             { 
+                this.showActionDetails(Action.IndexId-1);
+                setTimeout(()=>{
+                  document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
+                  window.scrollTo(0,0);
+                },2000);
+            
+            }
           else
            this.showActionDetails(undefined);
         }
         else 
           this.showActionDetails(undefined);  // opens the main project.
     })
-
-
-
-
-
 
 
 
@@ -637,6 +636,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   showProjectDetails() {
     $(document).ready(() => this.drawStatistics());
     this.showActionDetails(undefined);
+    this.getapprovalStats();
   }
 
   showActionDetails(index: number | undefined) {
@@ -647,8 +647,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.GetApproval(this.projectActionInfo[index].Project_Code);
     
     if(index!=undefined){
-      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code); 
+      $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      
     } 
   }
 
@@ -1765,7 +1766,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalHours: any;
   totalRecords: any;
   _CurrentpageRecords: any;
-  ProjectBlockName: any;
   showaction: boolean = true;
   workdes: string;
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');

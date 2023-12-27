@@ -634,7 +634,7 @@
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <div class="kt-project-type">
-                                                    <div *ngIf="projectInfo" class="Kt-Pd-Status" [ngClass]="{
+                                                    <div *ngIf="projectInfo" class="Kt-Pd-Status " style="width:fit-content" [ngClass]="{
     
                                                                 'Delay':projectInfo.Status==='Delay',
                                                                 'Inprocess':projectInfo.Status==='InProcess',
@@ -1397,7 +1397,9 @@
                                                 <div *ngIf="action.Project_Name.toLowerCase().trim().includes(ActionSearchTF.value.toLowerCase().trim());"
                                                     class="kt-projcect-act-list"
                                                     (click)="showActionDetails(action.IndexId-1)"
-                                                    [ngClass]="{'Active':currentActionView===action.IndexId-1}">
+                                                    [ngClass]="{'Active':currentActionView===action.IndexId-1}"
+                                                   
+                                                    >
                                                     <div class="row curser-pointer">
                                                         <div class="col-lg-8 pl-0 pr-1">
                                                             <div class="kt-p-box">
@@ -1409,9 +1411,10 @@
                                                                     <div class="kt-info-lable-v">
                                                                         By {{action&&action.Responsible}}
                                                                     </div>
+                                                                    <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/>
                                                                     <div class="kt-info-lable-v">
                                                                         {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
-                                                                    </div>
+                                                                    </div> 
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2013,7 +2016,7 @@
                                                 <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
                                             </div>
 
-                                            <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status">
+                                            <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                                 <div class="kt-project-type " *ngSwitchCase="'Delay'">
                                                     <div class="Kt-Pd-Status Delay">Delay
@@ -2026,7 +2029,7 @@
                                                 </div>
 
                                                 <div class="kt-project-type" *ngSwitchCase="'InProcess'">
-                                                    <div class="Kt-Pd-Status Inprocess "> In Process </div>
+                                                    <div class="Kt-Pd-Status Inprocess "> InProcess </div>
                                                 </div>
 
 
@@ -4328,7 +4331,7 @@
 
             <div>
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
-                    *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks' && ProjectBlockName != 'To do List' && showaction!=false">
+                    *ngIf="projectInfo&&((!['Standard Tasks','Routine Tasks','To do List'].includes(projectInfo.Project_Type))&& showaction!=false)">
                     <label>Action <span class="text-danger">*</span></label>
                     <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                         [(ngModel)]="actionCode" (change)="onActionChanged($event)">
