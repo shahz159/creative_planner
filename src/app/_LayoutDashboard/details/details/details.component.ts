@@ -5262,7 +5262,7 @@ removeSelectedDMSMemo(item){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
 
   }
 

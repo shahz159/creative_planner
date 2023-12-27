@@ -1976,7 +1976,7 @@
                                                                     Hold</button>
                                                             </ng-template>
                                                             <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'">Task
+                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
                                                                 Submission</button>
 
                                                             <button class="Ct-btn Bt-Submit ml-2"
