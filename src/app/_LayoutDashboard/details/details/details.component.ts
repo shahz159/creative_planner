@@ -506,10 +506,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
         }
       })
-
-
-
-
       this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
         if(actionCode)
@@ -523,11 +519,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         else 
           this.showActionDetails(undefined);  // opens the main project.
     })
-
-
-
-
-
 
 
 
