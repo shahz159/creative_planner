@@ -345,23 +345,27 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="kt-notification__item-details" (click)="moreDetails(noti.Project_Code)">
-                                        <div class="kt-notification__item-title">
-                                            {{noti.Project_Name}}
+                                    <ng-container >
+                                        <div class="kt-notification__item-details" (click)="openDetails(noti.Master_Code,noti.Project_Code)">
+                                            <div class="kt-notification__item-title">
+                                                {{noti.Project_Name}}
+                                            </div>
+                                            <div class="kt-notification__item-title">
+                                                Request Type: {{noti.Req_Type}}
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
+                                            </div>
+                                            <!-- <div class="kt-notification__item-time">
+                                                Comments: {{noti.Req_Coments}}
+                                            </div> -->
+                                            <div class="kt-notification__item-details">
+                                                By: {{noti.SubmittedBy}}
+                                            </div>
                                         </div>
-                                        <div class="kt-notification__item-title">
-                                            Request Type: {{noti.Req_Type}}
-                                        </div>
-                                        <div class="kt-notification__item-time">
-                                            Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
-                                        </div>
-                                        <!-- <div class="kt-notification__item-time">
-                                            Comments: {{noti.Req_Coments}}
-                                        </div> -->
-                                        <div class="kt-notification__item-details">
-                                            By: {{noti.SubmittedBy}}
-                                        </div>
-                                    </div>
+                                    </ng-container>
+
+                                    
                                 </a>
                             </div>
                             <div *ngIf="notilength==0" class="kt-notification kt-margin-t-10 kt-margin-b-10"

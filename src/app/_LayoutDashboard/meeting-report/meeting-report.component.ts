@@ -1245,6 +1245,7 @@ export class MeetingReportComponent implements OnInit {
     document.getElementById("cardmain").classList.remove("cards-main");
   }
   ActionedAssigned_Josn: any = [];
+  ActionedSubtask_Json: any=[];
   assigncount: number;
   GetAssigned_SubtaskProjects() {
 
@@ -1262,7 +1263,7 @@ export class MeetingReportComponent implements OnInit {
         this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
 
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
 
         this.assigncount = this.ActionedAssigned_Josn.length;
@@ -1373,6 +1374,9 @@ export class MeetingReportComponent implements OnInit {
     document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
 
   }
-
+  LoadDocument(url: string){
+    var myWindow = window.open(url);
+    myWindow.focus();
+  }
 
 }

@@ -394,7 +394,7 @@
                                 <div class="serch-area" id="search-area">
                                     <form class="form-search open">
                                         <div class="form-input">
-                                            <input type="text" name="search" class="form-control eve-search"
+                                            <input type="text" name="search" #searchInput class="form-control eve-search"
                                                 [(ngModel)]="Searchword" (keydown.enter)="Search_byname()">
                                         </div>
 
@@ -2362,12 +2362,12 @@
                                 Following Events</span>
                         </label>
                     </div>
-                    <div class="form-check">
+                    <!-- <div class="form-check">
                         <label class="form-check-label">
                             <input type="radio" (click)="AllDelete_event(3)" name="optradio"><span class="ml-2">All
                                 Events</span>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -2403,12 +2403,12 @@
                                 and Following Events</span>
                         </label>
                     </div>
-                    <div class="form-check">
+                    <!-- <div class="form-check">
                         <label class="form-check-label">
                             <input type="radio" id="r3" (click)="Select_flag(3)" name="optradio"><span class="ml-2">All
                                 Events</span>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -2898,6 +2898,7 @@
                                             <mat-option value="0">Do not repeat</mat-option>
                                             <mat-option value="1">Daily</mat-option>
                                             <mat-option value="2">Weekly</mat-option>
+                                            <!-- <mat-option value="4">Bi-Weekly</mat-option> -->
                                             <mat-option value="3">Monthly</mat-option>
                                         </mat-select>
                                     </div>

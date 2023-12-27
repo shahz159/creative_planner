@@ -316,11 +316,27 @@
                                                         title="Project Info!" (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
                                                         <i class="fa fa-info-circle info-icon-cir"></i>
                                                     </a>
+                                                    <!-- <ng-container *ngIf="item.Master_Code; else newdetails1">
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button"
+                                                            placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                            title="More Info!"
+                                                            (click)="newDetails1(item.Master_Code,item.Project_Code1)">
+                                                            <i class="fa fa-chart-bar info-icon-cir"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-template #newdetails1>
+                                                        <a tabindex="0" class="btn px-0 mr-2" role="button"
+                                                                placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                                title="More Info!"
+                                                                (click)="newDetails(item.Project_Code1)">
+                                                                <i class="fa fa-chart-bar info-icon-cir"></i>
+                                                        </a>
+                                                    </ng-template> -->
                                                     <a tabindex="0" class="btn px-0 mr-2" role="button"
-                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
-                                                        title="More Info!"
-                                                        (click)="newDetails(item.Project_Code1)">
-                                                        <i class="fa fa-chart-bar info-icon-cir"></i>
+                                                    placement="right" data-trigger="focus" data-toggle="tooltip"
+                                                    title="More Info!"
+                                                    (click)="openDetails(item.Master_Code,item.Project_Code1)">
+                                                    <i class="fa fa-chart-bar info-icon-cir"></i>
                                                     </a>
                                                 </td>
                                                 <td>

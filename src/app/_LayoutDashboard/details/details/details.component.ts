@@ -172,6 +172,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Category_List: any;
   selectedcategory: any;
   EndDate1: any = new Date();
+  currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -207,12 +208,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
-   
+
+
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
+
+   
+
+
+
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode); 
@@ -236,8 +243,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.maxhold.setDate(this.minhold.getDate() + 90);
     this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
-    const targetElement = document.querySelector('#dmsasfa');
-    if (targetElement) {
+
     tippy('#dmsasfa', {
       content: "Link DMS",
       arrow: true,
@@ -248,7 +254,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       placement:'right',
       interactive: true
     });
-  }
   }
 
   ngAfterViewInit(): void {
@@ -459,7 +464,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD;
   }
 
-
+  isDMS:any
   sourceFile:any
   Submission: any;
   filterstatus: any;
@@ -471,6 +476,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.isDMS= this.projectInfo.isDMS;
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
@@ -501,6 +507,29 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
         }
       })
+      this.route.queryParamMap.subscribe((qparams)=>{
+        const actionCode=qparams.get('actionCode');
+        if(actionCode)
+        {   // if action Code is additional along with the project code then redirect to that action.
+          const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
+          if(Action)
+             { 
+                this.showActionDetails(Action.IndexId-1);
+                setTimeout(()=>{
+                  document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
+                  window.scrollTo(0,0);
+                },2000);
+            
+            }
+          else
+           this.showActionDetails(undefined);
+        }
+        else 
+          this.showActionDetails(undefined);  // opens the main project.
+    })
+
+
+
 
     });
   }
@@ -607,6 +636,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   showProjectDetails() {
     $(document).ready(() => this.drawStatistics());
     this.showActionDetails(undefined);
+    this.getapprovalStats();
   }
 
   showActionDetails(index: number | undefined) {
@@ -617,8 +647,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.GetApproval(this.projectActionInfo[index].Project_Code);
     
     if(index!=undefined){
-      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() => this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code); 
+      $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      
     } 
   }
 
@@ -795,7 +826,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     //
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["./Details", this.URL_ProjectCode]);
-    this.getProjectDetails(this.URL_ProjectCode);
+    // this.getProjectDetails(this.URL_ProjectCode);
     this.closeLinkSideBar();
     this.closeMeetingSidebar();
 
@@ -807,6 +838,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("View_comments").classList.add("kt-quick-View_comments--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='COMMENTS';
     this.GetprojectComments()
    }
 
@@ -814,18 +846,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='ACTIVITY_LOG';
     this.GetActivityDetails();
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='LIST_OF_ATTACHMENTS';
     this.getAttachments(1);
   }
   View_User_list() {
     document.getElementById("User_list_View").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened="PEOPLES";
     this.GetPeopleDatils()
   }
 
@@ -871,7 +906,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
-
+    this.currentSidebarOpened='TIMELINE_VIEW';
     this.tmlSrtOrd = 'Date';   // by default.
     this.onTLSrtOrdrChanged(this.tmlSrtOrd);
   }
@@ -896,6 +931,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.currentSidebarOpened='LINK_DMS';
     //
   }
 
@@ -906,6 +942,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    this.currentSidebarOpened='NOT_OPENED';
 
   }
 
@@ -1729,7 +1766,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalHours: any;
   totalRecords: any;
   _CurrentpageRecords: any;
-  ProjectBlockName: any;
   showaction: boolean = true;
   workdes: string;
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
@@ -2276,10 +2312,9 @@ check_allocation() {
 
 
 
-  limit = 60; // Set the initial limit
+  limit =  60; // Set the initial limit
   isExpanded = false;
   toggleReadMore() {
-
     this.isExpanded = !this.isExpanded;
   }
   /// Action Edits End
@@ -2837,8 +2872,6 @@ check_allocation() {
         console.log(data, "Slider")
         this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
         this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
-
-
         if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
           console.log('our new AttachmentList:', data, this.AttachmentList);
@@ -2945,7 +2978,6 @@ check_allocation() {
 
 
   }
-
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
@@ -3244,6 +3276,7 @@ check_allocation() {
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    this.currentSidebarOpened='MEETINGS';
     // sidebar is open
     this.GetmeetingDetails(); // get all meeting details.
   }
@@ -3252,6 +3285,7 @@ check_allocation() {
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+    this.currentSidebarOpened='NOT_OPENED';
 
     this.meetingsViewOn = true;
     // empty all variables
@@ -4964,7 +4998,6 @@ openAutocompleteDrpDwn(Acomp:string){
 }
 
 closeAutocompleteDrpDwn(Acomp:string){
-  debugger
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
@@ -5229,7 +5262,7 @@ removeSelectedDMSMemo(item){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-    document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
+    // document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
 
   }
 

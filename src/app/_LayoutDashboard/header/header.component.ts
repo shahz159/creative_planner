@@ -105,13 +105,31 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  moreDetails(ProjectCode) {
-    let name: string = 'MoreDetails';
+  // newDetails(ProjectCode) {
+  //   let name: string = 'Details';
+  //   var url = document.baseURI + name;
+  //   var myurl = `${url}/${ProjectCode}`;
+  //   var myWindow = window.open(myurl, ProjectCode);
+  //   myWindow.focus();
+  // }
+
+
+  openDetails(p1,p2){
+    let name: string = 'Details';
     var url = document.baseURI + name;
-    var myurl = `${url}/${ProjectCode}`;
-    var myWindow = window.open(myurl, ProjectCode);
+    let qparams='';
+    let myurl;
+    if(p1){
+      qparams='?actionCode='+p2;
+      myurl = `${url}/${p1}${qparams}`;
+    }
+    else{
+      myurl = `${url}/${p2}`;
+    }
+    var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
 
   actyside() {
     document.getElementById("actyInfobar_header").classList.add("open_sidebar");
