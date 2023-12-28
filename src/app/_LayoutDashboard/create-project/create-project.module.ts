@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { CreateProjectRoutingModule } from './create-project-routing.module';
 import { CreateProjectComponent} from './create-project.component';
-import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProjectInfoComponent } from '../project-info/project-info.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -15,7 +16,9 @@ import { ProjectInfoComponent } from '../project-info/project-info.component';
   imports: [
     CommonModule,
     CreateProjectRoutingModule,
-    NgSelectModule
+    NgSelectModule,
+    FormsModule,
+
   ],
   providers: [ProjectsSummaryComponent]
 })
