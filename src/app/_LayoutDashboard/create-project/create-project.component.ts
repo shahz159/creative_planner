@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CreateprojectService } from 'src/app/_Services/createproject.service';
 
 
 @Component({
@@ -8,11 +9,37 @@ import { Router, RouterLink } from '@angular/router';
   styleUrls: ['./create-project.component.css']
 })
 export class CreateProjectComponent implements OnInit {
+  
+  Authority_json:any;
+  Category_json:any;
+  Client_json:any;
+  ProjectType_json:any;
+  Responsible_json:any;
+  Team_json:any;
+  allUser_json:any;
+  owner_json:any;
 
-  constructor(private router: Router) { 
+
+
+  constructor(private router: Router,private createProjectService:CreateprojectService) { 
   }
 
   ngOnInit(): void {
+      this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
+           console.log("NewGetProjectCreationDetails:",res);
+           if(res)
+           {
+              this.Authority_json=JSON.parse(res[0].Authority_json);
+              this.Category_json=JSON.parse(res[0].Category_json);
+              this.Client_json=JSON.parse(res[0].Client_json)
+              this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
+              this.Responsible_json=JSON.parse(res[0].Responsible_json);
+              this.Team_json=JSON.parse(res[0].Team_json);
+              this.allUser_json=JSON.parse(res[0].allUser_json);
+              this.owner_json=JSON.parse(res[0].owner_json);
+           }
+
+      }) 
   }
  
   Action_view(){
