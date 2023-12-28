@@ -18,7 +18,6 @@ import { FormsModule } from '@angular/forms';
     CreateProjectRoutingModule,
     NgSelectModule,
     FormsModule,
-
   ],
   providers: [ProjectsSummaryComponent]
 })
