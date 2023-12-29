@@ -13,11 +13,11 @@
     transition: 0.5s;
     box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
   }
-  
+
   .open_sidebar{
     width: 100%;
   }
-  
+
   .step-line {
        /* background: #e0e0e0; */
        height: 2px;
@@ -87,7 +87,7 @@
     min-height:50vh;;
     overflow-y: auto;
   }
-  
+
   .section-bottom {
     background-color: #fff;
     border-radius: 1rem;
@@ -183,14 +183,14 @@
     text-align: end;
   }
   .my-ct-v-btn {
-  
+
     margin-right: 1px;
   }
-  
+
   .kt-desc-textarea {
     min-height: 68px;
   }
-  
+
   .kt-ctv-btn-two {
     margin-top: 3rem;
     text-align: end;
@@ -202,17 +202,17 @@
     border-color: #efefef !important;
     color: #6b6b6b !important;
   }
-  
+
   .ng-select-container {
     border: 0 !important;
   }
-  
+
   .nav-pills .nav-item .nav-link:active, .nav-pills .nav-item .nav-link.active, .nav-pills .nav-item .nav-link.active:hover {
-    background-color:unset; 
-    color: unset; 
+    background-color:unset;
+    color: unset;
   }
-  
-  
+
+
   /*-------------file uploade -----------*/
   .formbold-mb-5 {
     margin-bottom: 10px;
@@ -226,7 +226,7 @@
     justify-content: center;
     padding: 48px;
   }
-  
+
   .formbold-form-wrapper {
     margin: 0 auto;
     max-width: 550px;
@@ -245,7 +245,7 @@
     font-size: 20px;
     margin-bottom: 20px;
   }
-  
+
   .formbold-form-input {
     width: 100%;
     padding: 12px 24px;
@@ -262,7 +262,7 @@
     border-color: #6a64f1;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
   }
-  
+
   .formbold-btn {
     text-align: center;
     font-size: 16px;
@@ -277,7 +277,7 @@
   .formbold-btn:hover {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
   }
-  
+
   .formbold--mx-3 {
     margin-left: -12px;
     margin-right: -12px;
@@ -295,14 +295,14 @@
   .w-full {
     width: 100%;
   }
-  
+
   .formbold-file-input input {
     opacity: 0;
     position: absolute;
     width: 100%;
     height: 100%;
   }
-  
+
   .formbold-file-input label {
     position: relative;
     border: 1px dashed #e0e0e0;
@@ -324,7 +324,7 @@
     font-size: 14px;
     margin-bottom: 1px;
   }
-  
+
   .formbold-or {
     font-weight: 400;
     font-size: 11px;
@@ -344,7 +344,7 @@
     text-transform: capitalize;
     cursor: pointer;
   }
-  
+
   .formbold-file-list {
     border-radius: 6px;
     background: #f5f7fb;
@@ -359,14 +359,14 @@
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .formbold-file-item button {
     color: #07074d;
     border: none;
     background: transparent;
     cursor: pointer;
   }
-  
+
   .formbold-file-name {
     font-weight: 400;
     font-size: 14px;
@@ -381,7 +381,7 @@
     border-radius: 8px;
     background: #e2e5ef;
   }
-  
+
   .formbold-progress {
     position: absolute;
     width: 75%;
@@ -391,7 +391,7 @@
     background: #6a64f1;
     border-radius: 8px;
   }
-  
+
   @media (min-width: 540px) {
     .sm\:w-half {
       width: 50%;
@@ -400,7 +400,7 @@
   .btn.btn-icon svg:hover {
     fill: #737373;
   }
-  
+
   /*---project shart data view ---------*/
   .card{
     border: 1px solid #F1F1F2;
@@ -524,14 +524,14 @@
     margin-bottom: 0px;
     color: #a3a3a3;
   }
-  
+
   .kt-act-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
   }
-  
+
   .kt-act-btns {
     border-left: 1px solid #ccc;
     padding: 8px;
@@ -539,7 +539,7 @@
   .kt-dl-icon.db-v {
     margin-right: 10px;
   }
-  
+
   .kt-dl-icon {
     cursor: pointer;
     opacity: 0.7;
@@ -671,7 +671,7 @@
     width: 35px;
     height: 35px;
   }
-  
+
   .text-inverse-danger {
     color: #ffffff!important;
   }
@@ -683,7 +683,7 @@
     background-color: #e1e1e1;
     cursor: pointer;
   }
-  
+
   .my-chosse-flv .formbold-drop-file {
     display: block;
     font-weight: 400;
@@ -748,13 +748,13 @@
       width: 50vw;
   }
     }
-  
+
     @media (max-width: 1280px){
       .tab-content.custom .tab-pane {
         width: 60vw;
     }
       }
-      
+
   .l-radio {
     padding: 6px;
     border-radius: 50px;
@@ -794,7 +794,7 @@
     line-height: 20px;
     padding: 0 8px;
   }
-  
+
   /*=============================== css project create ==========================*/
   .card {
     border: 1px solid #F1F1F2;
@@ -912,7 +912,7 @@
         flex: 1;
         padding: 0 1rem;
     }
-    
+
     .sbs > li {
         cursor: pointer;
     }
@@ -1012,7 +1012,7 @@ display: none;
 }
 
 .act-Submit:hover {
-  background-color: #567edf !important; 
+  background-color: #567edf !important;
   border: 2px solid #567edf !important;
   color: #fff !important;
 }
@@ -1054,7 +1054,7 @@ span.info-ic-guide svg {
 }
 .op-card {
   text-align: center;min-width: 0;
-  word-wrap: break-word;  
+  word-wrap: break-word;
   cursor: pointer;
   transition: 0.6s;
   position: relative;
@@ -1083,7 +1083,7 @@ span.info-ic-guide svg {
     grid-gap: 1rem;
     color: #fff;
     width: 60vw;
-    margin: auto;    
+    margin: auto;
     margin-top: 4rem;
 }
 .op-card:hover {
@@ -1188,4 +1188,26 @@ span.info-ic-guide svg {
 }
 ::ng-deep .modal-backdrop.fade.show {
   display: none !important;
+}
+
+
+
+
+
+.Data_chip_kt {
+  padding: 6px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: #60626D !important;
+  padding-right: 2px !important;
+  border-radius: 5px !important;
+  min-height: 22px;
+  background-color: #E6EAFF !important;
+  line-height: 10px;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.input-group-text{
+  border-radius: 1px solid red;
 }
