@@ -1,4 +1,4 @@
-<ng-container *ngIf="userFound!==undefined&&isHierarchy!==undefined;else pleasewait">
+<ng-container *ngIf="userFound!==undefined&&isHierarchy!==undefined;else pleasewait">t
     <ng-container *ngIf="(userFound===true||isHierarchy===true)else accessdenied">
         <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3"
             id="newdetails">
@@ -542,7 +542,7 @@
                                    More info
                                 </div>
                             </div>
-    
+
                         </div>
                         <div class="row mt-3 px-3">
                             <div class="col text-center">
@@ -553,7 +553,7 @@
                                     Mohammed Asif
                                 </div>
                             </div>
-    
+
                             <div class="col text-center">
                                 <div class="kt-info-lable-v">
                                     <span class="kt-info-lable-icon">
@@ -564,7 +564,7 @@
                                    Allen Steve
                                 </div>
                             </div>
-    
+
                             <div class="col text-center">
                                 <div class="kt-info-lable-v">
                                     <span class="kt-info-lable-icon">
@@ -596,9 +596,9 @@
                                    </div>
                                 </div>
                             </div>
-    
+
                         </div>
-    
+
                     </div>
              -->
                             <ng-container *ngIf="projectInfo">
@@ -635,7 +635,7 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="kt-project-type">
                                                     <div *ngIf="projectInfo" class="Kt-Pd-Status " style="width:fit-content" [ngClass]="{
-    
+
                                                                 'Delay':projectInfo.Status==='Delay',
                                                                 'Inprocess':projectInfo.Status==='InProcess',
                                                                 'Done':projectInfo.Status==='Completed',
@@ -646,7 +646,7 @@
                                                                 'NewProjectRejected':projectInfo.Status==='Cancelled',
                                                                 'Hold':projectInfo.Status==='Project Hold',
                                                                 'UnderApproval':projectInfo.Status==='Under Approval'
-                                                               
+
                                                                 }">
                                                         {{
                                                         (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
@@ -1398,7 +1398,7 @@
                                                     class="kt-projcect-act-list"
                                                     (click)="showActionDetails(action.IndexId-1)"
                                                     [ngClass]="{'Active':currentActionView===action.IndexId-1}"
-                                                   
+
                                                     >
                                                     <div class="row curser-pointer">
                                                         <div class="col-lg-8 pl-0 pr-1">
@@ -1414,7 +1414,7 @@
                                                                     <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/>
                                                                     <div class="kt-info-lable-v">
                                                                         {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
-                                                                    </div> 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1586,16 +1586,16 @@
                             <div class="kt-info-box pr-2">
                                 <div class="kt-project-tool-bar">
                                     <div class="d-flex flex-grow-1 align-items-center gap_ic">
-                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >                                             
+                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                            <ng-container *ngIf="isDMS>0">
                                                 <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                 height="29" title="Link DMS">                              
-                                              </ng-container>                               
+                                                 height="29" title="Link DMS">
+                                              </ng-container>
                                               <ng-container *ngIf="isDMS==0">
                                                 <img width="22px" class="black-white"
                                                 src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
                                                 title="Link DMS">
-                                              </ng-container>  
+                                              </ng-container>
                                             </a>
                                         <div class="br-line"></div>
 
@@ -1895,7 +1895,7 @@
                                                 <a href="javascript:void(0)" *ngIf="
                                                     (projectInfo.Status!=='Completed')&&(
                                                     Current_user_ID == projectInfo.OwnerEmpNo ||
-                                                    Current_user_ID == projectInfo.ResponsibleEmpNo || 
+                                                    Current_user_ID == projectInfo.ResponsibleEmpNo ||
                                                     isHierarchy==true
                                                     )">
                                                     <div class="PA_Edit_btn" (click)="Project_details_edit()">
@@ -1945,8 +1945,8 @@
                                                 <div class="project_more_Action_options" *ngIf="(
                                             Current_user_ID == projectInfo.OwnerEmpNo ||
                                             Current_user_ID == projectInfo.ResponsibleEmpNo ||
-                                            Current_user_ID== projectInfo.AuthorityEmpNo|| 
-                                            isHierarchy==true) && 
+                                            Current_user_ID== projectInfo.AuthorityEmpNo||
+                                            isHierarchy==true) &&
                                             (projectInfo.Status!='Completed')">
 
                                                     <div class="btn-group dropleft">
@@ -2228,7 +2228,7 @@
                                                                             *ngIf="Accept_active" data-to="#pills-3-tab"
                                                                             class="btn btn-project-stv Bt-Submit"
                                                                             primary="true">Submit</button>
-    
+
                                                                         <button type="submit"
                                                                             class="btn btn-project-stv Bt-Submit"
                                                                             *ngIf="Conditional_Active || Reject_active"
@@ -2505,7 +2505,7 @@
                                                 <div class="kt-info-data-v" *ngIf="projectInfo&&projectInfo.Category; else noCat">
                                                     {{projectInfo&&projectInfo.Category}}
                                                 </div>
-                                                <ng-template #noCat> 
+                                                <ng-template #noCat>
                                                     No category
                                                 </ng-template>
                                             </div>
@@ -2639,7 +2639,7 @@
                                                 <div class="kt-project-sts-data">
                                                     <div class="kt-support-view">
                                                         <!-- <div class="symbol-group symbol-hover flex-nowrap " >
-    
+
                                                         <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                             data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                                             class="symbol symbol-35px symbol-circle">
@@ -2651,7 +2651,7 @@
                                                             class="symbol symbol-35px symbol-circle"><img alt="Pic"
                                                                 src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
                                                         </div>
-    
+
                                                         <div data-bs-toggle="tooltip" aria-label="Barry Walter"
                                                             data-bs-original-title="Barry Walter" data-kt-initialized="1"
                                                             class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -2662,8 +2662,8 @@
                                                             class="symbol symbol-35px symbol-circle"><span
                                                                 class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span>
                                                             </a>
-    
-    
+
+
                                                     </div> -->
 
                                                         <div
@@ -2734,7 +2734,7 @@
                                                 </div>
                                             </div>
 
-                                            
+
 
                                             <div class="col  text-center" *ngIf="projectInfo&&projectInfo.Approvedby">
                                                 <div class="kt-info-lable-v">
@@ -3017,11 +3017,11 @@
                                             <div class="project_more_Action_options"
                                                 *ngIf="(
                                                 Current_user_ID == projectActionInfo[currentActionView].Project_Owner ||
-                                                Current_user_ID == projectActionInfo[currentActionView].Team_Res || 
-                                                Current_user_ID == projectInfo.Project_Owner|| 
+                                                Current_user_ID == projectActionInfo[currentActionView].Team_Res ||
+                                                Current_user_ID == projectInfo.Project_Owner||
                                                 Current_user_ID == projectInfo.ResponsibleEmpNo||
                                                 isHierarchy==true
-                                                ) && 
+                                                ) &&
                                                 (projectActionInfo&&projectActionInfo[currentActionView].Status!='Completed')">
 
                                                 <div class="btn-group dropleft">
@@ -3043,7 +3043,7 @@
                                                         <button class="Ct-btn Bt-Submit ml-2" *ngIf="
                                                         (!['Completion Under Approval','New Project Rejected','Cancelled','Completed','Under Approval'].includes(projectActionInfo[currentActionView].Status))&&
                                                         (
-                                                        projectActionInfo[currentActionView].Team_Res===Current_user_ID || 
+                                                        projectActionInfo[currentActionView].Team_Res===Current_user_ID ||
                                                         projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
                                                         projectInfo.Project_Owner===Current_user_ID||
                                                         projectInfo.ResponsibleEmpNo===Current_user_ID
@@ -3722,7 +3722,7 @@
                                                 <div class="kt-project-sts-data">
                                                     <div class="kt-support-view">
                                                         <div class="symbol-group symbol-hover flex-nowrap">
-    
+
                                                             <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                                                 data-bs-original-title="Michael Eberon"
                                                                 data-kt-initialized="1"
@@ -3735,7 +3735,7 @@
                                                                 class="symbol symbol-35px symbol-circle"><img alt="Pic"
                                                                     src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
                                                             </div>
-    
+
                                                             <div data-bs-toggle="tooltip" aria-label="Barry Walter"
                                                                 data-bs-original-title="Barry Walter"
                                                                 data-kt-initialized="1"
@@ -3886,7 +3886,7 @@
         <div class="d-flex-cen flex-1 ng-star-inserted access-denied-header " *ngIf="projectInfo">
             <div class="kt-inbox__info">
                 <div class="kt-inbox__sender">
-                    <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;   
+                    <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
                 font-weight:bold; font-family:Lucida Sans Unicode">{{getShorterName(projectInfo.Responsible)}}</span>
                 </div>
             </div>
@@ -3898,7 +3898,7 @@
                         <span
                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline  fs-7  p-1 m-1"
                             [ngClass]="{
-    
+
                             'Delay':projectInfo.Status==='Delay',
                             'Inprocess':projectInfo.Status==='InProcess',
                             'Done':projectInfo.Status==='Completed',
@@ -3909,7 +3909,7 @@
                             'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                             'NewProjectRejected':projectInfo.Status==='Cancelled',
                             'Hold':projectInfo.Status==='Project Hold',
-                            'UnderApproval':projectInfo.Status==='Under Approval' 
+                            'UnderApproval':projectInfo.Status==='Under Approval'
                             }" style="color:white">{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
                             days ':projectInfo.Status}}</span>
                         <span
@@ -3979,7 +3979,7 @@
                     <img width="23px" class="black-white"
                     src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
                     title="Not Linked">
-                   
+
                  </ng-container>
                 </a> Link DMS
             </h4>
@@ -4200,7 +4200,7 @@
                     <div class="Replied_border_left_true_primary">
 
                         <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
-                           
+
                             <div class="kt-inbox__details"
                                 (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)">
                                 <div class="kt-inbox__sender">
@@ -4350,13 +4350,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Date<span class="text-danger">*</span></label>
+                    <label>Date akheel<span class="text-danger">*</span></label>
 
                     <div class="input-group">
                         <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
                             [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
                             [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
                             name="date">
+
                         <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
@@ -5311,8 +5312,8 @@
                                                 <div class="kt-notification__item-title fw-bold"
                                                     title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
-                                                    {{file.Sourcefile | slice:0:28}}...  
-                                                </div> 
+                                                    {{file.Sourcefile | slice:0:28}}...
+                                                </div>
                                                 <div class="kt-notification__item-title fw-bold"
                                                     *ngIf="file.Sourcefile.length<45">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
@@ -7946,7 +7947,6 @@
                                     <div class="custom-file pl-1">
                                         <input type="file" id="uploadFile_" accept="application/pdf"
                                             class="form-control-file" (change)="onFileChange_($event)" multiple>
-
                                     </div>
                                 </div>
 
@@ -8750,7 +8750,7 @@
                                 </ng-select>
                              </ng-container>
                              <ng-template #ownwerEdit>
-                                    <input type="text" class="form-control readonly"   
+                                    <input type="text" class="form-control readonly"
                                    [(ngModel)]="selectedOwner" readonly />
                                 </ng-template> -->
                                 <ng-container
@@ -8817,7 +8817,7 @@
                                         </ng-template>
                                     </ng-container>
                                 </ng-container>
-                                
+
 
                             </div>
                         </div>
@@ -9243,7 +9243,7 @@
                                 </ng-template> -->
                                     <ng-container
                                         *ngIf="Current_user_ID == projectActionInfo[currentActionView].Project_Owner && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
-                                projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' 
+                                projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval'
                                  &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
                                         <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">

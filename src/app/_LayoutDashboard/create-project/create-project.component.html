@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="Assigned-projects-list d-none">
             <div class="container">
                 <div class="m-auto">
@@ -669,9 +669,9 @@
                                             <div class="row">
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                        <label >Project Type<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Core Rask</ng-option>
+                                                        <label>Project Type<span  class="text-danger">*</span></label>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.."  [(ngModel)]="Prjtype">
+                                                            <ng-option *ngFor="let item of ProjectType_json" [value]="item.Typeid">{{item.ProjectType}}  </ng-option>
                                                         </ng-select>
 
                                                         </div>
@@ -679,8 +679,8 @@
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                         <label >Select Client<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Devbox</ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjClient">
+                                                            <ng-option *ngFor="let item of Client_json"  [value]="ClientId">{{item.ClientName}}</ng-option>
                                                         </ng-select>
 
                                                         </div>
@@ -688,23 +688,23 @@
                                                 <div class="col-lg-12 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                         <label >Project Name<span  class="text-danger">*</span></label>
-                                                        <input class="form-control ng-pristine" type="text" placeholder="Give your Project Name" />
-                                                        <span  style="color: red;" class="ng-star-inserted">Please enter atleast 3 words</span>
+                                                        <input class="form-control ng-pristine" type="text" placeholder="Give your Project Name"  [(ngModel)]="PrjName"  />
+                                                        <span  style="color: red;" class="ng-star-inserted"    *ngIf="PrjName&&PrjName.trim().split(' ').length<3"   >Please enter atleast 3 words</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                         <label >Description<span  class="text-danger">*</span></label>
-                                                        <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true" placeholder="Add a Description" ngModel required #fa="ngModel" minlength="5"></textarea>
-                                                        <span *ngIf="fa.invalid && fa.touched" style="color:red">Please Enter Atleast Five Words</span>
+                                                        <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true" placeholder="Add a Description" [(ngModel)]="PrjDes"></textarea>
+                                                        <span style="color:red"  *ngIf="PrjDes&&PrjDes.trim().split(' ').length<5">Please Enter Atleast Five Words</span>
                                                       </div>
                                                 </div>
 
                                                 <div class="col-lg-4 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                         <label >Select Category<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Devbox</ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjCategory">
+                                                            <ng-option *ngFor="let item of Category_json"  [value]="item.CategoryId" >{{item.CategoryName}}</ng-option>
                                                         </ng-select>
 
                                                         </div>
@@ -712,16 +712,16 @@
 
                                                 <div class="col-lg-4 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                        <label >Project Version:<span  class="text-danger">*</span></label>
-                                                        <input class="form-control ng-pristine" type="text" placeholder="Enter Version number">
+                                                        <label >Project Version:</label>
+                                                        <input class="form-control ng-pristine" type="text" placeholder="Enter Version number" [(ngModel)]="PrjVersion">
 
                                                         </div>
                                                 </div>
 
                                                 <div class="col-lg-4 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                        <label >project location<span  class="text-danger">*</span></label>
-                                                        <input class="form-control ng-pristine" type="text" placeholder="add google map location..">
+                                                        <label >project location:</label>
+                                                        <input class="form-control ng-pristine" type="text" placeholder="add google map location.." [(ngModel)]="PrjLocation">
 
                                                         </div>
                                                 </div>
@@ -799,22 +799,40 @@
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-4 mb-3">
-                                                    <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                        <label >Start Date <span  class="text-danger">*</span></label>
-                                                        <input class="form-control ng-pristine" type="date" placeholder="Select Date">
+                                                    <div  class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                        <label >Start Date<span  class="text-danger">*</span></label>
 
+                                                        <div class="d-flex ">
+                                                        <input class="form-control ng-pristine"  [(ngModel)]="Prjstartdate"
+                                                        id="d-date" placeholder="Select Date"
+                                                        [matDatepicker]="picker2" (click)="picker2.open()">
+
+                                                        <div class="input-group-text p-0">
+                                                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                          <mat-datepicker #picker2></mat-datepicker>
+                                                         </div>
                                                         </div>
+                                                 </div>
                                                 </div>
                                                 <div class="col-lg-4 mb-3">
-                                                            <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                            <div  class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0 ">
                                                                 <label >End Date <span  class="text-danger">*</span></label>
-                                                                <input class="form-control ng-pristine" type="date" placeholder="Select Date">
+                                                                <div class="d-flex">
+                                                                 <input class="form-control ng-pristine" [(ngModel)]="Prjenddate"
+                                                                 id="end-date" placeholder="Select Date"
+                                                                  [matDatepicker]="picker3" (click)="picker3.open()">
+
+                                                         <div class="input-group-text p-0">
+                                                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                                          <mat-datepicker #picker3></mat-datepicker>
+                                                         </div>
+                                                        </div>
                                                                 </div>
-                                                </div>
+                                                       </div>
                                                 <div class="col-lg-4 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                         <label >Project Actual Duration (Hours):<span  class="text-danger">*</span></label>
-                                                        <input class="form-control ng-pristine" type="text" placeholder="enter Duration Hours">
+                                                        <input class="form-control ng-pristine" type="text" placeholder="enter Duration Hours" [(ngModel)]="Prjduration">
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-12 mb-3">
@@ -822,15 +840,41 @@
                                                                 <label >Reference Attachment</label>
 
                                                                 <div class="formbold-mb-5 formbold-file-input">
-                                                                    <input type="file" name="file" id="file">
-                                                                    <label for="file">
+
+                                                                  <input type="file" class="form-control-file" id="uploadFile"  (change)="onFileChanged($event)"   />
+                                                                  <label for="uploadFile">
+
                                                                     <div>
                                                                         <span class="formbold-drop-file"> Drop files here </span>
                                                                         <span class="formbold-or"> Or </span>
                                                                         <span class="formbold-browse"> Browse </span>
                                                                     </div>
-                                                                    </label>
+                                                                  </label>
                                                                 </div>
+
+
+                                                                <div *ngIf="_inputAttachments"  id="" class="dropzone dropzone-multi form-group">
+                                                                  <div id="div_exixtingfiles" class="dropzone-items">
+                                                                    <div class="ng-star-inserted">
+                                                                      <div class="dropzone-item p-3 m-0 border br-0">
+                                                                        <div class="dropzone-file">
+                                                                          <div class="dropzone-filename">
+                                                                            <span>{{_inputAttachments}}</span>
+                                                                            <!-- <strong>(<span>69389kb</span>)</strong> -->
+                                                                            <span class="dropzone-delete">
+                                                                              <i class="flaticon2-cross"  (click)="_inputAttachments='';     " ></i>
+                                                                            </span>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+
+
+
+
+
 
                                                                 <div class="formbold-file-list formbold-mb-5 d-none">
                                                                     <div class="formbold-file-item">

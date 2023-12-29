@@ -7,6 +7,9 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProjectInfoComponent } from '../project-info/project-info.component';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -18,7 +21,15 @@ import { FormsModule } from '@angular/forms';
     CreateProjectRoutingModule,
     NgSelectModule,
     FormsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    FormsModule
+
   ],
+
   providers: [ProjectsSummaryComponent]
 })
 export class CreateProjectModule { }
+
+
