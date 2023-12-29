@@ -2805,8 +2805,8 @@ color:#9b9999;
    display: flex;
    flex-direction: column;
    justify-content: center;
-   align-items: center; 
-   
+   align-items: center;
+
 }
 
 .no-prjact-found-img{
@@ -3212,7 +3212,7 @@ label.pe-label {
   color: #000;
   font-weight: 400;
   padding: 5px;
-  
+
 }
 .kt-info-body {
   margin: 1.3rem;
@@ -3340,6 +3340,7 @@ span.Wd_text_kt {
   margin-top: -2px;
   margin-right: -4px;
 }
+
 .readonly{
   color: #ccc!important;
   font-size: inherit;
@@ -3519,7 +3520,7 @@ a.Kt_cmt_user_name {
   margin-left: 0.75rem!important;
 }
 .me-3 {
-  margin-right: 0.75rem!important; 
+  margin-right: 0.75rem!important;
 }
 .ms-2 {
   margin-left: 0.65rem!important;
@@ -3746,7 +3747,7 @@ span.Rq_date_V {
 
 
 .no-activities-of-action{
-     
+
      height:100%;
      display: flex;
      align-items: center;
