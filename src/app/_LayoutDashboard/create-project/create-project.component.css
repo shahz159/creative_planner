@@ -1189,3 +1189,22 @@ span.info-ic-guide svg {
 ::ng-deep .modal-backdrop.fade.show {
   display: none !important;
 }
+
+
+
+
+
+.Data_chip_kt {
+  padding: 6px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: #60626D !important;
+  padding-right: 2px !important;
+  border-radius: 5px !important;
+  min-height: 22px;
+  background-color: #E6EAFF !important;
+  line-height: 10px;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+

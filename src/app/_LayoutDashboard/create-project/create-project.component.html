@@ -861,18 +861,17 @@
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Select Owner<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Waseem </ng-option>
-                                                            <ng-option>Shanhaz </ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.."  [(ngModel)]="PrjOwner" (change)="onProjectOwnerChanged()"   >
+                                                            <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo" >{{p.EmpName}}</ng-option>
                                                         </ng-select>
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Responsible<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Waseem </ng-option>
-                                                            <ng-option>Shanhaz </ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.."  [(ngModel)]="PrjResp"   (change)="onResponsibleChanged()"    >
+                                                            <ng-option [value]="Responsible_json[0].ResponsibleNo" >{{Responsible_json[0].ResponsibleName}}</ng-option>
+                                                            <ng-option [value]="Responsible_json[0].OwnerEmpNo" >{{Responsible_json[0].OwnerName}}</ng-option>
                                                         </ng-select>
                                                         
                                                         </div>
@@ -880,8 +879,8 @@
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Authority<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Devbox</ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth" >
+                                                            <ng-option *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]" [value]="p.EmpNo" >{{p.EmpName}}</ng-option>
                                                         </ng-select>
                                                         
                                                         </div>
@@ -890,8 +889,8 @@
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Coordinating<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Devbox</ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.."   [(ngModel)]="PrjCrdtr" >
+                                                            <ng-option *ngFor="let p of allUser_json"  [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                                         </ng-select>
                                                         
                                                         </div>
@@ -900,28 +899,63 @@
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Inform<span  class="text-danger">*</span></label>
-                                                        <ng-select class="kt-form-vd" placeholder="Select Type..">
-                                                            <ng-option>Devbox</ng-option>
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer" >
+                                                            <ng-option  *ngFor="let p of allUser_json" [value]="p.Emp_No" >{{ p.Emp_Name }}</ng-option>
                                                         </ng-select>
-                                                        
-                                                        </div>
+                                                        <span style="color:red" *ngIf="!PrjInformer"  >* Please select Inform</span>
+                                                    </div>
                                                 </div>
                             
                                                 <div class="col-lg-6 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                                         <label >Auditor (Optional):</label>
-                                                        <input class="form-control ng-pristine" type="text" placeholder="Select Option">
-                                                        
+                                                        <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuditor" >
+                                                            <ng-option  *ngFor="let p of allUser_json" [value]="p.Emp_No" >{{ p.Emp_Name }}</ng-option>
+                                                        </ng-select>
                                                         </div>
                                                 </div>
                             
                                                 <div class="col-lg-12 mb-3">
                                                     <div  class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
-                                                        <label >Support</label>
+                                                        <!-- <label >Support</label>
                                                         <ng-select class="kt-form-vd" placeholder="Select Type..">
                                                             <ng-option>Devbox</ng-option>
-                                                        </ng-select>
-                                                        </div>
+                                                        </ng-select> -->
+
+                                                        <mat-form-field  class="drp-dwn-field w-100"    >
+                                                            <mat-label class="text-dark-50 w-75px"   >Support</mat-label>
+                                                            <mat-chip-list  #selectedProjSprt>
+
+                                                            <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
+                                                            (removed)="removeSelectedPrjSprt(p)">
+                                                            {{ p.Emp_Name}}
+                                                            <button matChipRemove>
+                                                                <mat-icon>cancel</mat-icon>
+                                                            </button>
+                                                           </mat-chip>
+
+                                                           </mat-chip-list>
+
+                                                            <div class="d-flex">
+                                                                <input class="border-gray" [matChipInputFor]="selectedProjSprt" [matAutocomplete]="ProjSprtDrpDwn"
+                                                                    #PrjSprtSelectTF />
+                                                                <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon color="primary"     class="close-icon"
+                                                                        (click)="closePrjSprtDrpDwn()">cancel</mat-icon></button>
+                                                                <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
+                                                                        (click)="openPrjSprtDrpDwn()"   >add</mat-icon></button>
+                                                            </div>
+
+                                                            <mat-autocomplete  #ProjSprtDrpDwn="matAutocomplete" 
+                                                            (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value=''; "
+                                                            (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
+                                                                <mat-option *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value" [value]="p.Emp_No">
+                                                                    <mat-checkbox color="primary"  [checked]="PrjSupport.indexOf(p)!==-1" ></mat-checkbox>
+                                                                    {{p.Emp_Name}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                        <span style="color:red" *ngIf="PrjSupport.length===0"  >* Please select Support</span>
+                                                    </div>
                                                 </div>
                             
                                                 <div class="col-lg-12">
@@ -957,6 +991,7 @@
                                         </div>        
         
                                         <div class="kt-ctv-btn-two mt-1">
+                                            <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"  (click)="Back_to_project_details_tab()">Previous Step</button>
                                             <button  type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Save Draft</button>
                                             <button  type="button" (click)="Move_to_Add_action_tab()" class="btn btn-move-fw my-ct-v-btn btn-next">Next Step</button>
                                         </div>
@@ -1133,6 +1168,7 @@
         
                                        
                                             <div  class="kt-ctv-btn-two mt-1">
+                                                <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"  (click)="back_to_add_team()">Previous Step</button>
                                                 <button  type="button"  class="btn btn-prv-w my-ct-v-btn-back btn-prev">Save as a template </button>
                                                 <button  type="button" class="btn btn-move-fw my-ct-v-btn btn-next">Create a Project</button>
                                             </div>
