@@ -37,7 +37,7 @@ export class CreateProjectComponent implements OnInit {
   Team_json:any;
   allUser_json:any;
   owner_json:any;
-
+  SubmissionType:any
   todayDate: Date = new Date();
 
 
@@ -52,17 +52,32 @@ export class CreateProjectComponent implements OnInit {
   PrjCategory:string;
   PrjVersion:string;
   PrjLocation:string;
-  Prjstartdate:number;
-  Prjenddate:number;
+  Prjstartdate:any
+  Prjenddate:any
   Prjduration:number;
+  prjsubmission:any
   _inputAttachments:any='';
 
 
 
-
-
+  Daily_array: any = [];
+  Week_array: any = [];
+  Month_array: any = [];
+  Quarter_array: any = [];
+  Halfyear_array: any = [];
+  Annual_array: any = [];
+  Allocated_Hours:any=[]
+  Allocated:any
+  Annual_date:any
+  maxlimit: boolean = true;
+  _message: string;
+  maxAllocation: number;
+  _allocated:any
+  maxDate:any
 
   constructor(private router: Router,private createProjectService:CreateprojectService) {
+
+
   }
 
 
@@ -74,15 +89,13 @@ export class CreateProjectComponent implements OnInit {
 
               this.Authority_json=JSON.parse(res[0].Authority_json);
               this.Category_json=JSON.parse(res[0].Category_json);
-              console.log(this.Category_json,"category json");
               this.Client_json=JSON.parse(res[0].Client_json);
-              console.log( this.Client_json,"clientjson");
               this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
-              console.log(this.ProjectType_json,"ProjectType_json");
               this.Responsible_json=JSON.parse(res[0].Responsible_json);
               this.Team_json=JSON.parse(res[0].Team_json);
               this.allUser_json=JSON.parse(res[0].allUser_json);
               this.owner_json=JSON.parse(res[0].owner_json);
+              this.SubmissionType=JSON.parse(res[0].SubmissionType)
 
            }
       });
@@ -90,15 +103,77 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
+  setMaxAllocation() {
+
+    if(this.Prjstartdate&&this.Prjenddate){
+      this.Prjstartdate=new Date(this.Prjstartdate);
+      this.Prjenddate=new Date(this.Prjenddate);
+      const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime()
+      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+      this.maxAllocation=(Difference_In_Days+1)*9;
+    }
+    else
+    this._message = "Start Date/End date missing!!"
+
+  }
+
+
+  setMaxDate(){
+    const d=new Date(this.Prjstartdate);
+    d.setDate(d.getDate()+2);
+    this.maxDate=d;
+
+  }
+
+
+
+
+  generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+    const timeArray: string[] = [];
+
+    for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+        const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+        timeArray.push(timeStr);
+      } else {
+        break;  // Exit the loop once the maximum limit is reached
+      }
+    }
+
+    return timeArray;
+  }
+
+  timearrays() {
+    this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+    console.log(this.Daily_array,"daily array")
+    this.Week_array = this.generateTimeIntervals(8, 15, 2);
+    this.Month_array = this.generateTimeIntervals(16, 15, 4);
+    this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+    this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+    console.log(this.Halfyear_array,"half year")
+    this.Annual_array = this.generateTimeIntervals(64, 15, 16);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  onFileChanged(e:any){
    this._inputAttachments=e.target.files[0].name;
  }
-
-
-
-
 
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");
