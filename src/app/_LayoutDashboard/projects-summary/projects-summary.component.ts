@@ -1120,4 +1120,7 @@ $(document).ready(function(){
     this.selectedType = null;
     this.commentSelected = null;
   }
+
+  
+  limit =  35;
 }

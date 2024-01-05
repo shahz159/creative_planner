@@ -18,6 +18,10 @@ export class CreateprojectService {
      return this.http.post(this.rootUrl + "Projects/NewGetProjectCreationDetails",this.ObjSubTaskDTO);
   }
 
+  NewGetAssignedTaskDetails(){
+    this.ObjSubTaskDTO.Emp_No=localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "Projects/NewGetAssignedTaskDetails",this.ObjSubTaskDTO)
+  }
 
 
   NewInsertNewProject(prjDTO:ProjectDetailsDTO){
