@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
@@ -7,53 +7,300 @@ import Swal from 'sweetalert2';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service'
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {DatePipe} from '@angular/common';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+
+
+
+// import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+// import { CalendarOptions } from '@fullcalendar/angular';
+// import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+// import {  DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+// import { MatDatepickerModule } from '@angular/material/datepicker';
+// import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+// import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
-  styleUrls: ['./create-project.component.css']
+  styleUrls: ['./create-project.component.css'],
+
 })
 export class CreateProjectComponent implements OnInit {
-  
+  Current_user_ID:string;
+  ProjectDto:ProjectDetailsDTO|undefined;
+
+
   Authority_json:any;
   Category_json:any;
   Client_json:any;
   ProjectType_json:any;
-  Responsible_json:any;
   Team_json:any;
-  allUser_json:any;
   owner_json:any;
+  SubmissionType:any
+  Responsible_json:any;
+  allUser_json:any;
+
+
+
+
+
+
+  PrjOwner:string;
+  PrjResp:string;
+  PrjAuth:string;
+  PrjCrdtr:string;
+  PrjInformer:string;
+  PrjAuditor:string;
+  PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
+  todayDate: Date = new Date();
+
+
+
+
+
+  PrjCode:string|undefined;
+  PrjName:string='';
+  Prjtype:string;
+  PrjOfType:string;
+  PrjClient:string;
+  PrjDes:string;
+  PrjCategory:string;
+  PrjVersion:string;
+  PrjLocation:string;
+  Prjstartdate:any
+  Prjenddate:any
+  Prjduration:number;
+  PrjDurationInDays:number;
+  _remarks:string;
+  fileAttachment:any;
+  prjsubmission:any
+  _inputAttachments:any='';
+
+
+
+  Daily_array: any = [];
+  Week_array: any = [];
+  Month_array: any = [];
+  Quarter_array: any = [];
+  Halfyear_array: any = [];
+  Annual_array: any = [];
+  Allocated_Hours:any=[]
+  Allocated:any
+  Annual_date:any
+  maxlimit: boolean = true;
+  _message: string;
+  maxAllocation: number;
+  _allocated:any
+  maxDate:any
 
 
 
   constructor(private router: Router,
-    private createProjectService:CreateprojectService ,
-     private notifyService: NotificationService,
-     public BsService: BsServiceService,
-     public service: ProjectTypeService,
-     
-     ) {  }
+    private createProjectService:CreateprojectService,
+    private datepipe:DatePipe,private notification:NotificationService,
+    public BsService: BsServiceService,
+    public service: ProjectTypeService,) {
+  }
+
 
   ngOnInit(): void {
-    //console.log('assigntask_json',this.rejectm)
-    this.GetAssignedTaskDetails()
-      this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
-          // console.log("NewGetProjectCreationDetails:",res);
-           if(res)
-           {
-              this.Authority_json=JSON.parse(res[0].Authority_json);
-              this.Category_json=JSON.parse(res[0].Category_json);
-              this.Client_json=JSON.parse(res[0].Client_json)
-              this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
-              this.Responsible_json=JSON.parse(res[0].Responsible_json);
-              this.Team_json=JSON.parse(res[0].Team_json);
-              this.allUser_json=JSON.parse(res[0].allUser_json);
-              this.owner_json=JSON.parse(res[0].owner_json);
-           }
-      }) 
+    this.ProjectDto=new ProjectDetailsDTO();
+    this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.fileAttachment=null;
+    this.getProjectCreationDetails();
+    this.GetAssignedTaskDetails();
+  }
 
+
+
+
+  getProjectCreationDetails(){
+    this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
+      console.log("NewGetProjectCreationDetails:",res);
+      if(res)
+      {
+
+         this.Authority_json=JSON.parse(res[0].Authority_json);
+         this.Category_json=JSON.parse(res[0].Category_json);
+         this.Client_json=JSON.parse(res[0].Client_json);
+         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
+         this.Responsible_json=JSON.parse(res[0].Responsible_json);
+         this.Team_json=JSON.parse(res[0].Team_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json);
+         this.owner_json=JSON.parse(res[0].owner_json);
+
+          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
+          this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
+          this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
+          this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
+          this.PrjInformer=this.Team_json[0].InformerNo.trim();
+          this.SubmissionType=JSON.parse(res[0].SubmissionType);
+          const defaultvalue=this.allUser_json.find((item)=>{
+               return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
+          })
+          this.PrjSupport=defaultvalue?[defaultvalue]:[];
+
+          this.Prjtype=this.ProjectType_json[0].Typeid;  // by default prj type core is selected.
+          this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
+          this.Prjtype==='002'?'Secondary Tasks':
+          this.Prjtype==='003'?'Standard Tasks':
+          this.Prjtype==='008'?'Routine Tasks':
+          this.Prjtype==='011'?'To do List':'';
+      }
+
+     });
+  }
+
+
+  setMaxAllocation() {
+
+    if(this.Prjstartdate&&this.Prjenddate){
+      this.Prjstartdate=new Date(this.Prjstartdate);
+      this.Prjenddate=new Date(this.Prjenddate);
+      const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime()
+      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+      this.maxAllocation=(Difference_In_Days+1)*9;
     }
+    else
+    this._message = "Start Date/End date missing!!"
+
+  }
+
+
+  setMaxDate(){
+    const d=new Date(this.Prjstartdate);
+    d.setDate(d.getDate()+2);
+    this.maxDate=d;
+
+  }
+
  
+
+
+  generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+    const timeArray: string[] = [];
+
+    for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+        const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+        timeArray.push(timeStr);
+      } else {
+        break;  // Exit the loop once the maximum limit is reached
+      }
+    }
+
+    return timeArray;
+  }
+
+  timearrays() {
+    this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+    console.log(this.Daily_array,"daily array")
+    this.Week_array = this.generateTimeIntervals(8, 15, 2);
+    this.Month_array = this.generateTimeIntervals(16, 15, 4);
+    this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+    this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+    console.log(this.Halfyear_array,"half year")
+    this.Annual_array = this.generateTimeIntervals(64, 15, 16);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ createProject(){
+
+  const projectInfo={
+        ProjectType:this.Prjtype,
+        Client:this.PrjClient,
+        ProjectName:this.PrjName,
+        Description:this.PrjDes,
+        Category:this.PrjCategory,
+        StartDate:this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
+        EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+        Owner:this.PrjOwner,
+        Responsible:this.PrjResp,
+        Authority:this.PrjAuth,
+        Coordinator:this.PrjCrdtr,
+        Informer:this.PrjInformer,
+        Auditor:this.PrjAuditor,
+        Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+        SubmissionType:'0',
+        Duration:this.Prjduration,
+        DurationTime:'0',
+        Recurrence:'0',
+        Remarks:this._remarks
+  };
+  console.log("PRJ INFORMATION :",projectInfo);
+  this.ProjectDto.Status=JSON.stringify(projectInfo);
+  this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
+  //1. creating project
+  this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+        console.log("res after project creation:",res);
+
+        if(res&&res.message==='Success'){
+            this.PrjCode=res.Project_Code;
+            this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
+            //2. file attachment uploading
+            this.uploadFileAttachment()
+
+            // 3. Move to next step
+            if(this.Prjtype==='001'||this.Prjtype==='002')
+            {    // when core, secondary
+              this.Move_to_Add_action_tab();
+            }
+            else{
+                // when std, routine or to do list
+            }
+        }
+        else
+        {
+          this.notification.showError("Unable to create Project","Project Creation Failed");
+        }
+
+
+  });
+ }
+
+
+ uploadFileAttachment(){
+           const fd=new FormData();
+           fd.append('Project_Code',this.PrjCode);
+           fd.append('Project_Name',this.PrjName);
+           fd.append('Emp_No',this.Current_user_ID);
+           fd.append('file',this.fileAttachment);
+           this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
+            console.log("file attachment:",fres)
+            if(fres&&fres.Attachments){
+              this.notification.showSuccess('Successfully uploaded the File attachment.','File Attachment Uploaded.');
+            }
+            else{
+               this.notification.showError('Unable to upload the File Attachment','File Uploading Failed');
+            }
+        });
+ }
+
+
+ onFileChanged(e:any){
+   this.fileAttachment=e.target.files[0];
+   e.target.value=null;
+ }
+
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");
     document.getElementsByClassName("Adv-option")[1].classList.add("d-none");
@@ -62,7 +309,11 @@ export class CreateProjectComponent implements OnInit {
     document.getElementById("bc_pot").style.display = "block";
   }
 
+
+
+
   Back_Option(){
+
     document.getElementsByClassName("Adv-option")[0].classList.remove("d-none");
     document.getElementsByClassName("Adv-option")[1].classList.remove("d-none");
     document.getElementsByClassName("act-view-btns")[0].classList.add("d-none");
@@ -81,7 +332,7 @@ export class CreateProjectComponent implements OnInit {
     document.getElementsByClassName("kt-portlet__foot")[1].classList.remove("d-none");
     document.getElementById("Action_btn_hide").style.display = "None";
     document.getElementsByClassName("add-w9")[0].classList.add("col-lg-7");
-     document.getElementsByClassName("Add-Act-Move")[1].classList.remove("VW_60"); 
+     document.getElementsByClassName("Add-Act-Move")[1].classList.remove("VW_60");
      document.getElementsByClassName("hide-act-btns")[0].classList.remove("d-none");
      document.getElementsByClassName("Project-Ct-full")[0].classList.remove("col-lg-12");
      $('.Add-Act-Move').addClass('container-fluid');
@@ -104,6 +355,7 @@ export class CreateProjectComponent implements OnInit {
     // $('#act_bd_box').show();
     // document.getElementById("act_bd_box").style.display="block";
     $('#act_bd_box').removeClass('d-none');
+
     document.getElementById("act_bd_box").classList.remove("d-none");
     document.getElementsByClassName("Add-Act-Move")[1].classList.remove("container-fluid");
     document.getElementsByClassName("Add-Act-Move")[1].classList.add("container");
@@ -121,6 +373,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   closeInfo() {
+
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay-create").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -158,14 +411,16 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic li:nth-child(2)').addClass('active');
   }
 
-  // Back_to_project_details_tab(){
-  //   $('.add_tema_tab').hide();
-  //   $('.Project_details_tab').show();
-  //   $('.sbs--basic .active').removeClass('finished');
-  //   $('.sbs--basic li').addClass('active');
-  //   $('.sbs--basic li:nth-child(2)').removeClass('active');
-  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
-  // }
+  Back_to_project_details_tab(){
+    $('.right-side-dv').addClass('d-none');
+    $('.Project_details_tab').show();
+    $('.add_tema_tab').hide();
+
+    $('.sbs--basic .active').removeClass('finished');
+    $('.sbs--basic li').addClass('active');
+    $('.sbs--basic li:nth-child(2)').removeClass('active');
+    $('.sbs--basic li:nth-child(3)').removeClass('active');
+  }
 
 
   Move_to_Add_action_tab(){
@@ -177,15 +432,89 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic li:nth-child(3)').addClass('active');
   }
 
-  // back_to_add_team(){
-  //   $('.add_tema_tab').show();
-  //   $('.Project_details_tab,.Add_action_tab').hide();
-  //   $('.sbs--basic .active').remove('finished');
-  //   $('.sbs--basic li').removeClass('active');
-  //   $('.sbs--basic li:nth-child(2)').removeClass('finished');
-  //   $('.sbs--basic li:nth-child(2)').addClass('active');
-  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
-  // }
+  back_to_add_team(){
+    $('.action-left-view').addClass('d-none');
+    $('.right-side-dv').show();
+    $('.Project_details_tab,.Add_action_tab').hide();
+    $('.add_tema_tab').show();
+
+    $('.sbs--basic .active').remove('finished');
+    $('.sbs--basic li').removeClass('active');
+    $('.sbs--basic li:nth-child(2)').removeClass('finished');
+    $('.sbs--basic li:nth-child(2)').addClass('active');
+    $('.sbs--basic li:nth-child(3)').removeClass('active');
+  }
+
+
+
+
+// add Prj support mat autocomplete drpdwn code start here
+@ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
+isPrjSprtDrpDwnOpen:boolean=false;
+
+
+  openPrjSprtDrpDwn(){
+    this.isPrjSprtDrpDwnOpen = true;
+    requestAnimationFrame(() => this.customTrigger.openPanel()); // open the panel
+  }
+
+  closePrjSprtDrpDwn(){
+    this.isPrjSprtDrpDwnOpen = false;
+    requestAnimationFrame(() => this.customTrigger.closePanel()); // close the panel
+  }
+
+  onPrjSprtSelected(e:any){
+
+    const sprtChoosed=this.allUser_json.find((p:any)=>p.Emp_No===e.option.value);
+    if(sprtChoosed){
+         const index=this.PrjSupport.indexOf(sprtChoosed);
+         if(index===-1){
+            // if not present then add it
+            this.PrjSupport.push(sprtChoosed);
+         }
+         else{ //  if item choosed is already selected then remove it.
+          this.PrjSupport.splice(index,1);
+         }
+    }
+    this.openPrjSprtDrpDwn();
+  }
+
+  removeSelectedPrjSprt(sprt:{Emp_No:string,Emp_Name:string}){
+    const index=this.PrjSupport.indexOf(sprt);
+    if(index!==-1){
+      this.PrjSupport.splice(index,1);
+    }
+  }
+
+// add Prj support mat autocomplete drpdwn code end here
+
+
+
+
+// responsible field start
+onResponsibleChanged(){
+  if(this.PrjResp.trim()===this.PrjOwner.trim())
+  {
+    const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
+    const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
+    this.PrjOwner=newowr.EmpNo;
+  }
+  this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+
+}
+
+onProjectOwnerChanged(){
+  if(this.PrjOwner.trim()===this.PrjResp.trim())
+  {
+    this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+  }
+}
+
+// responsible field end
+
+
+
+
 
 
 
@@ -205,7 +534,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   notifyAssign(){
-    this.notifyService.showInfo("You don't have any assigned project", "Please add a project!");
+    this.notification.showInfo("You don't have any assigned project", "Please add a project!");
    
   }
 
@@ -220,17 +549,27 @@ export class CreateProjectComponent implements OnInit {
   CreateName:any
   unique_id:number
   projectType:any
+  
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
-    this.duration=this.bind_Project[0].Duration
-    this.start_Date=this.bind_Project[0].Start_Date
+    this._allocated=this.bind_Project[0].Duration
+    this.Prjstartdate=this.bind_Project[0].Start_Date
     this.date_str = moment(this.start_Date).format("MM/DD/YYYY");
-    this.end_Date=this.bind_Project[0].End_Date
+    this.Prjenddate=this.bind_Project[0].End_Date
     this.date_End = moment(this.end_Date).format("MM/DD/YYYY");
-    this.task_Name=this.bind_Project[0].Task_Name
+    this.PrjName=this.bind_Project[0].Task_Name;
+    this.PrjDes=this.bind_Project[0].Task_Description;
     this.CreateName=this.bind_Project[0].Created_Name
     this.unique_id=id
-    this.projectType=this.bind_Project[0].Project_Type
+    this.Prjtype=this.bind_Project[0].Project_Type;
+    if(this.Prjtype==''){
+      this.Prjtype='001';
+    }
+    // this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
+    //       this.Prjtype==='002'?'Secondary Tasks':
+    //       this.Prjtype==='003'?'Standard Tasks':
+    //       this.Prjtype==='008'?'Routine Tasks':
+    //       this.Prjtype==='011'?'To do List':'';
   }
 
 

@@ -475,6 +475,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+     
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
       this.isDMS= this.projectInfo.isDMS;
@@ -529,7 +530,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.showActionDetails(undefined);  // opens the main project.
     })
 
-debugger
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
@@ -2458,6 +2458,11 @@ check_allocation() {
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
     else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
+      this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    }
+    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -5144,9 +5149,13 @@ removeSelectedDMSMemo(item){
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
+            
+          if(this.currentActionView!==undefined)
+          this._Message=this._Message.replace('Project','Action')
+
           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.closePrjHoldSideBar();
-          this.getProjectDetails(Pcode);
+          this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
         }
       });
@@ -5164,30 +5173,67 @@ removeSelectedDMSMemo(item){
 
 
 
-
+// Project / Action release.
   holdreleaseProject() {
-    if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = 'Project Release';
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Remarks = this.hold_remarks;
-      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-        this.closePrjReleaseSideBar();
-        this._Message = (data['message']);
-        if (this._Message == '1') {
-          this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
-          this.getProjectDetails(this.URL_ProjectCode);
-        }
-        else if (this._Message == '2' || this._Message == '0') {
-          this.notifyService.showError("Project release failed", "Failed");
-        }
-      });
-      console.log(this.approvalObj, "cancel")
+    if(this.currentActionView===undefined){
+          // project release
+          if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+            this.approvalObj.Project_Code = this.URL_ProjectCode;
+            this.approvalObj.Request_type = 'Project Release';
+            this.approvalObj.Emp_no = this.Current_user_ID;
+            this.approvalObj.Remarks = this.hold_remarks;
+            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+              this.closePrjReleaseSideBar();
+              this._Message = (data['message']);
+              if (this._Message == '1') {
+                this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else if (this._Message == '2' || this._Message == '0') {
+                this.notifyService.showError("Project release failed", "Failed");
+              }
+            });
+            console.log(this.approvalObj, "cancel")
+          }
+          else {
+            this.closePrjReleaseSideBar();
+            this.notifyService.showError("Access denied", "Failed")
+          }
+
+
     }
-    else {
-      this.closePrjReleaseSideBar();
-      this.notifyService.showError("Access denied", "Failed")
+    else{
+        // action release
+        
+        if ([
+          this.projectInfo.OwnerEmpNo,
+          this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
+        ].includes(this.Current_user_ID)){
+          this.approvalObj.Project_Code = this.projectActionInfo[this.currentActionView].Project_Code;
+          this.approvalObj.Request_type = 'Project Release';
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Remarks = this.hold_remarks;
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        
+            this.closePrjReleaseSideBar();
+            this._Message = (data['message']);
+            if (this._Message == '1') {
+              this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
+              this.getProjectDetails(this.URL_ProjectCode);
+            }
+            else if (this._Message == '2' || this._Message == '0') {
+              this.notifyService.showError("Action release failed", "Failed");
+            }
+          });
+        }
+        else {
+          this.closePrjReleaseSideBar();
+          this.notifyService.showError("Access denied", "Failed")
+        }
     }
+
+
+  
   }
 
   updateReleaseDate() {
