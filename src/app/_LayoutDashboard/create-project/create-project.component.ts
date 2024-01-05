@@ -69,11 +69,10 @@ export class CreateProjectComponent implements OnInit {
   Prjstartdate:any
   Prjenddate:any
   Prjduration:number;
-  PrjDurationInDays:number;
   _remarks:string;
   fileAttachment:any;
   prjsubmission:any
-  _inputAttachments:any='';
+
 
 
 
@@ -103,8 +102,6 @@ export class CreateProjectComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
     this.getProjectCreationDetails();
-
-
   }
 
 
