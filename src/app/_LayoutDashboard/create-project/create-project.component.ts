@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
-
+import { NotificationService } from 'src/app/_Services/notification.service';
+import * as moment from 'moment';
+import Swal from 'sweetalert2';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { BsServiceService } from 'src/app/_Services/bs-service.service'
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 
 @Component({
   selector: 'app-create-project',
@@ -21,12 +26,19 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-  constructor(private router: Router,private createProjectService:CreateprojectService) { 
-  }
+  constructor(private router: Router,
+    private createProjectService:CreateprojectService ,
+     private notifyService: NotificationService,
+     public BsService: BsServiceService,
+     public service: ProjectTypeService,
+     
+     ) {  }
 
   ngOnInit(): void {
+    //console.log('assigntask_json',this.rejectm)
+    this.GetAssignedTaskDetails()
       this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
-           console.log("NewGetProjectCreationDetails:",res);
+          // console.log("NewGetProjectCreationDetails:",res);
            if(res)
            {
               this.Authority_json=JSON.parse(res[0].Authority_json);
@@ -38,9 +50,9 @@ export class CreateProjectComponent implements OnInit {
               this.allUser_json=JSON.parse(res[0].allUser_json);
               this.owner_json=JSON.parse(res[0].owner_json);
            }
-
       }) 
-  }
+
+    }
  
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");
@@ -104,19 +116,27 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
+  closeInfos(){
+    document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+  }
+
   closeInfo() {
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay-create").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
-    //document.getElementById("sumdet").classList.remove("position-fixed");
+    document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
+    document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
   }
 
   Scratech_btn(){
+    $('.Assigned-projects-list').addClass('d-none');
+    $('.np-step-1').removeClass('d-none');
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
   }
+ 
   back_to_options(){
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').addClass('d-none');
@@ -168,4 +188,81 @@ export class CreateProjectComponent implements OnInit {
   // }
 
 
+
+  /////////////////////////////////////////assign task start/////////////////////////////
+  rejectm:any
+
+  assigntask_json:any
+  GetAssignedTaskDetails(){
+
+    this.createProjectService.NewGetAssignedTaskDetails().subscribe
+    ((res)=>{
+      this.assigntask_json=JSON.parse(res[0].Assigntask_json)
+
+      console.log('lllooooop',this.assigntask_json)
+     
+    })
+  }
+
+  notifyAssign(){
+    this.notifyService.showInfo("You don't have any assigned project", "Please add a project!");
+   
+  }
+
+
+  bind_Project:any
+  start_Date:any
+  date_str:any
+  duration:any
+  end_Date:any
+  date_End:any
+  task_Name:any
+  CreateName:any
+  unique_id:number
+  projectType:any
+  onButtonClick(value:any,id:number){
+    this.bind_Project = [value]
+    this.duration=this.bind_Project[0].Duration
+    this.start_Date=this.bind_Project[0].Start_Date
+    this.date_str = moment(this.start_Date).format("MM/DD/YYYY");
+    this.end_Date=this.bind_Project[0].End_Date
+    this.date_End = moment(this.end_Date).format("MM/DD/YYYY");
+    this.task_Name=this.bind_Project[0].Task_Name
+    this.CreateName=this.bind_Project[0].Created_Name
+    this.unique_id=id
+    this.projectType=this.bind_Project[0].Project_Type
+  }
+
+
+   /////////////////////////////////////////assign task End/////////////////////////////
+
+  /////////////////////////////////////////add Project End/////////////////////////////
+
+
+  showSideBar() {
+   
+    // this.BsService.SetNewPojectCode('CRS184037');
+    this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
+
+    document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("rightbar-overlay-create").style.display = "block";
+    $("#mysideInfobar12").scrollTop(0);
+  }
+  /////////////////////////////////////////add Project End/////////////////////////////
+
+   ///////////////////////////////////////// Project Edit start /////////////////////////////
+  
+
+  Project_details_edit() {
+    document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+   
+    $("#mysideInfobar12").scrollTop(0);
+  //  this.getResponsibleActions();
+  //  this.initializeSelectedValue()
+  }
+
+ ///////////////////////////////////////// Project Edit End /////////////////////////////
 }

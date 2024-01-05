@@ -16,7 +16,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="kt-portlet__head-label mr-2">
+                    <div class="kt-portlet__head-label">
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                         data-trigger="focus" data-toggle="tooltip" title="Project Info!">
                        
@@ -25,7 +25,7 @@
                          </a> -->
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="New project!"> -->
-                                <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
+                                <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button>
                          <!-- </a> -->
                         <!-- <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
@@ -635,6 +635,8 @@
                                                         </a>
                                                         ProjectName
                                                     </th>
+                                                    <th>                                                                                                                                   
+                                                     </th>                                                 
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
@@ -719,11 +721,15 @@
                                                         </ng-template>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0">
-                                                            {{item.Project_Name }}
-                                                            <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                        <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
+                                                            {{item.Project_Name| slice:0:limit}} 
+                                                            <ng-container *ngIf="item.Project_Name.length>35">...                                                                                          
+                                                            </ng-container>
                                                         </p>
                                                     </td>
+                                                    <td>                                                                                                          
+                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>                                                  
+                                                    </td>                                                   
                                                     <td>
                                                         <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                                                     </td>

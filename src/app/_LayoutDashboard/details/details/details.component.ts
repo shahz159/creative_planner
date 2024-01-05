@@ -472,7 +472,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   remark:any;
   isrespactive:boolean=true;
 
-  getProjectDetails(prjCode: string) {
+  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+    
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -528,8 +529,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.showActionDetails(undefined);  // opens the main project.
     })
 
-
-
+debugger
+    if(actionIndex!==undefined){
+      this.showActionDetails(actionIndex)
+    }
+    
 
     });
   }
@@ -729,7 +733,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // ADDING NEW ACTIONS
   addNewAction() {
-
     if (this.projectInfo.Status === 'Completed') {
       Swal.fire({
         title: "Wait This Project is Already Completed",
@@ -1635,7 +1638,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
                 this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
+                this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
                 this.getAttachments(1);
                 this.calculateProjectActions();
               });
@@ -1740,7 +1743,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
-          this.getProjectDetails(this.URL_ProjectCode);
+          // this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
           this.closeActCompSideBar();
           this.getAttachments(1);        // close action completion sidebar.
@@ -2134,7 +2137,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
-    debugger
+  
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2242,9 +2245,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
-          
           this.getProjectDetails(this.URL_ProjectCode);
-
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2282,7 +2283,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
-      this.getProjectDetails(this.URL_ProjectCode);
+     
+      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+      
       this.closeInfo();
     });
   }
