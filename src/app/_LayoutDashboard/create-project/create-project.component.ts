@@ -2,25 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Router} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
-import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { CalendarOptions } from '@fullcalendar/angular';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
-import {  DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import {DatePipe} from '@angular/common';
+import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { NotificationService } from 'src/app/_Services/notification.service';
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD-MM-YYYY',
-  },
-  display: {
-    dateInput: 'DD-MM-YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
-};
+
+
+// import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+// import { CalendarOptions } from '@fullcalendar/angular';
+// import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+// import {  DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+// import { MatDatepickerModule } from '@angular/material/datepicker';
+// import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+// import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 @Component({
@@ -31,20 +25,17 @@ export const MY_DATE_FORMATS = {
 })
 export class CreateProjectComponent implements OnInit {
   Current_user_ID:string;
+  ProjectDto:ProjectDetailsDTO|undefined;
 
 
   Authority_json:any;
   Category_json:any;
   Client_json:any;
   ProjectType_json:any;
-
   Team_json:any;
-
-
   owner_json:any;
   SubmissionType:any
   Responsible_json:any;
-
   allUser_json:any;
 
 
@@ -59,17 +50,16 @@ export class CreateProjectComponent implements OnInit {
   PrjInformer:string;
   PrjAuditor:string;
   PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
-
-
   todayDate: Date = new Date();
 
 
 
 
 
-
+  PrjCode:string|undefined;
   PrjName:string='';
   Prjtype:string;
+  PrjOfType:string;
   PrjClient:string;
   PrjDes:string;
   PrjCategory:string;
@@ -78,6 +68,8 @@ export class CreateProjectComponent implements OnInit {
   Prjstartdate:any
   Prjenddate:any
   Prjduration:number;
+  _remarks:string;
+  fileAttachment:any;
   prjsubmission:any
   _inputAttachments:any='';
 
@@ -98,44 +90,60 @@ export class CreateProjectComponent implements OnInit {
   _allocated:any
   maxDate:any
 
-  constructor(private router: Router,private createProjectService:CreateprojectService) {
+
+
+  constructor(private router: Router,private createProjectService:CreateprojectService,private datepipe:DatePipe,private notification:NotificationService) {
+  }
+
+
+  ngOnInit(): void {
+    this.ProjectDto=new ProjectDetailsDTO();
+    this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.fileAttachment=null;
+    this.getProjectCreationDetails();
 
 
   }
 
 
-  ngOnInit(): void {
-
-    this.Current_user_ID = localStorage.getItem('EmpNo');
-      this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
-           console.log("NewGetProjectCreationDetails:",res);
-           if(res)
-           {
-
-              this.Authority_json=JSON.parse(res[0].Authority_json);
-              this.Category_json=JSON.parse(res[0].Category_json);
-              this.Client_json=JSON.parse(res[0].Client_json);
-              this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
-              this.Responsible_json=JSON.parse(res[0].Responsible_json);
-              this.Team_json=JSON.parse(res[0].Team_json);
-              this.allUser_json=JSON.parse(res[0].allUser_json);
-              this.owner_json=JSON.parse(res[0].owner_json);
-              this.SubmissionType=JSON.parse(res[0].SubmissionType)
 
 
-              console.log("##=>",this.Team_json);
+  getProjectCreationDetails(){
+    this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
+      console.log("NewGetProjectCreationDetails:",res);
+      if(res)
+      {
 
-               this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
-               this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
-               this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
-               this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-               this.PrjInformer=this.Team_json[0].InformerNo.trim();
-               this.PrjSupport=[{Emp_Name:this.Team_json[0].SupportName.trim(),Emp_No:this.Team_json[0].SupportNo.trim()}];
-           }
+         this.Authority_json=JSON.parse(res[0].Authority_json);
+         this.Category_json=JSON.parse(res[0].Category_json);
+         this.Client_json=JSON.parse(res[0].Client_json);
+         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
+         this.Responsible_json=JSON.parse(res[0].Responsible_json);
+         this.Team_json=JSON.parse(res[0].Team_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json);
+         this.owner_json=JSON.parse(res[0].owner_json);
 
+          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
+          this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
+          this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
+          this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
+          this.PrjInformer=this.Team_json[0].InformerNo.trim();
+          this.SubmissionType=JSON.parse(res[0].SubmissionType);
+          const defaultvalue=this.allUser_json.find((item)=>{
+               return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
+          })
+          this.PrjSupport=defaultvalue?[defaultvalue]:[];
 
-      });
+          this.Prjtype=this.ProjectType_json[0].Typeid;  // by default prj type core is selected.
+          this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
+          this.Prjtype==='002'?'Secondary Tasks':
+          this.Prjtype==='003'?'Standard Tasks':
+          this.Prjtype==='008'?'Routine Tasks':
+          this.Prjtype==='011'?'To do List':'';
 
+      }
+
+     });
   }
 
 
@@ -207,8 +215,82 @@ export class CreateProjectComponent implements OnInit {
 
 
 
+ createProject(){
+
+  const projectInfo={
+        ProjectType:this.Prjtype,
+        Client:this.PrjClient,
+        ProjectName:this.PrjName,
+        Description:this.PrjDes,
+        Category:this.PrjCategory,
+        StartDate:this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
+        EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+        Owner:this.PrjOwner,
+        Responsible:this.PrjResp,
+        Authority:this.PrjAuth,
+        Coordinator:this.PrjCrdtr,
+        Informer:this.PrjInformer,
+        Auditor:this.PrjAuditor,
+        Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+        SubmissionType:'0',
+        Duration:this.Prjduration,
+        DurationTime:'0',
+        Recurrence:'0',
+        Remarks:this._remarks
+  };
+  console.log("PRJ INFORMATION :",projectInfo);
+  this.ProjectDto.Status=JSON.stringify(projectInfo);
+  this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
+  //1. creating project
+  this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+        console.log("res after project creation:",res);
+
+        if(res&&res.message==='Success'){
+            this.PrjCode=res.Project_Code;
+            this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
+            //2. file attachment uploading
+            this.uploadFileAttachment()
+
+            // 3. Move to next step
+            if(this.Prjtype==='001'||this.Prjtype==='002')
+            {    // when core, secondary
+              this.Move_to_Add_action_tab();
+            }
+            else{
+                // when std, routine or to do list
+            }
+        }
+        else
+        {
+          this.notification.showError("Unable to create Project","Project Creation Failed");
+        }
+
+
+  });
+ }
+
+
+ uploadFileAttachment(){
+           const fd=new FormData();
+           fd.append('Project_Code',this.PrjCode);
+           fd.append('Project_Name',this.PrjName);
+           fd.append('Emp_No',this.Current_user_ID);
+           fd.append('file',this.fileAttachment);
+           this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
+            console.log("file attachment:",fres)
+            if(fres&&fres.Attachments){
+              this.notification.showSuccess('Successfully uploaded the File attachment.','File Attachment Uploaded.');
+            }
+            else{
+               this.notification.showError('Unable to upload the File Attachment','File Uploading Failed');
+            }
+        });
+ }
+
+
  onFileChanged(e:any){
-   this._inputAttachments=e.target.files[0].name;
+   this.fileAttachment=e.target.files[0];
+   e.target.value=null;
  }
 
   Action_view(){
