@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Router} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
@@ -21,6 +22,7 @@ export const MY_DATE_FORMATS = {
   },
 };
 
+
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -28,16 +30,37 @@ export const MY_DATE_FORMATS = {
 
 })
 export class CreateProjectComponent implements OnInit {
+  Current_user_ID:string;
+
 
   Authority_json:any;
   Category_json:any;
   Client_json:any;
   ProjectType_json:any;
-  Responsible_json:any;
+
   Team_json:any;
-  allUser_json:any;
+
+
   owner_json:any;
   SubmissionType:any
+  Responsible_json:any;
+
+  allUser_json:any;
+
+
+
+
+
+
+  PrjOwner:string;
+  PrjResp:string;
+  PrjAuth:string;
+  PrjCrdtr:string;
+  PrjInformer:string;
+  PrjAuditor:string;
+  PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
+
+
   todayDate: Date = new Date();
 
 
@@ -82,6 +105,8 @@ export class CreateProjectComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.Current_user_ID = localStorage.getItem('EmpNo');
       this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
            console.log("NewGetProjectCreationDetails:",res);
            if(res)
@@ -97,7 +122,18 @@ export class CreateProjectComponent implements OnInit {
               this.owner_json=JSON.parse(res[0].owner_json);
               this.SubmissionType=JSON.parse(res[0].SubmissionType)
 
+
+              console.log("##=>",this.Team_json);
+
+               this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
+               this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
+               this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
+               this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
+               this.PrjInformer=this.Team_json[0].InformerNo.trim();
+               this.PrjSupport=[{Emp_Name:this.Team_json[0].SupportName.trim(),Emp_No:this.Team_json[0].SupportNo.trim()}];
            }
+
+
       });
 
   }
@@ -276,14 +312,16 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic li:nth-child(2)').addClass('active');
   }
 
-  // Back_to_project_details_tab(){
-  //   $('.add_tema_tab').hide();
-  //   $('.Project_details_tab').show();
-  //   $('.sbs--basic .active').removeClass('finished');
-  //   $('.sbs--basic li').addClass('active');
-  //   $('.sbs--basic li:nth-child(2)').removeClass('active');
-  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
-  // }
+  Back_to_project_details_tab(){
+    $('.right-side-dv').addClass('d-none');
+    $('.Project_details_tab').show();
+    $('.add_tema_tab').hide();
+
+    $('.sbs--basic .active').removeClass('finished');
+    $('.sbs--basic li').addClass('active');
+    $('.sbs--basic li:nth-child(2)').removeClass('active');
+    $('.sbs--basic li:nth-child(3)').removeClass('active');
+  }
 
 
   Move_to_Add_action_tab(){
@@ -295,15 +333,88 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic li:nth-child(3)').addClass('active');
   }
 
-  // back_to_add_team(){
-  //   $('.add_tema_tab').show();
-  //   $('.Project_details_tab,.Add_action_tab').hide();
-  //   $('.sbs--basic .active').remove('finished');
-  //   $('.sbs--basic li').removeClass('active');
-  //   $('.sbs--basic li:nth-child(2)').removeClass('finished');
-  //   $('.sbs--basic li:nth-child(2)').addClass('active');
-  //   $('.sbs--basic li:nth-child(3)').removeClass('active');
-  // }
+  back_to_add_team(){
+    $('.action-left-view').addClass('d-none');
+    $('.right-side-dv').show();
+    $('.Project_details_tab,.Add_action_tab').hide();
+    $('.add_tema_tab').show();
+
+    $('.sbs--basic .active').remove('finished');
+    $('.sbs--basic li').removeClass('active');
+    $('.sbs--basic li:nth-child(2)').removeClass('finished');
+    $('.sbs--basic li:nth-child(2)').addClass('active');
+    $('.sbs--basic li:nth-child(3)').removeClass('active');
+  }
+
+
+
+
+// add Prj support mat autocomplete drpdwn code start here
+@ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
+isPrjSprtDrpDwnOpen:boolean=false;
+
+
+  openPrjSprtDrpDwn(){
+    this.isPrjSprtDrpDwnOpen = true;
+    requestAnimationFrame(() => this.customTrigger.openPanel()); // open the panel
+  }
+
+  closePrjSprtDrpDwn(){
+    this.isPrjSprtDrpDwnOpen = false;
+    requestAnimationFrame(() => this.customTrigger.closePanel()); // close the panel
+  }
+
+  onPrjSprtSelected(e:any){
+
+    const sprtChoosed=this.allUser_json.find((p:any)=>p.Emp_No===e.option.value);
+    if(sprtChoosed){
+         const index=this.PrjSupport.indexOf(sprtChoosed);
+         if(index===-1){
+            // if not present then add it
+            this.PrjSupport.push(sprtChoosed);
+         }
+         else{ //  if item choosed is already selected then remove it.
+          this.PrjSupport.splice(index,1);
+         }
+    }
+    this.openPrjSprtDrpDwn();
+  }
+
+  removeSelectedPrjSprt(sprt:{Emp_No:string,Emp_Name:string}){
+    const index=this.PrjSupport.indexOf(sprt);
+    if(index!==-1){
+      this.PrjSupport.splice(index,1);
+    }
+  }
+
+// add Prj support mat autocomplete drpdwn code end here
+
+
+
+
+// responsible field start
+onResponsibleChanged(){
+  if(this.PrjResp.trim()===this.PrjOwner.trim())
+  {
+    const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
+    const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
+    this.PrjOwner=newowr.EmpNo;
+  }
+  this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+
+}
+
+onProjectOwnerChanged(){
+  if(this.PrjOwner.trim()===this.PrjResp.trim())
+  {
+    this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+  }
+}
+
+// responsible field end
+
+
+
 
 
 
