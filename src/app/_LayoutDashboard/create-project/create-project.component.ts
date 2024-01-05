@@ -5,6 +5,7 @@ import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import {DatePipe} from '@angular/common';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import * as moment from 'moment';
 
 
 
@@ -67,6 +68,7 @@ export class CreateProjectComponent implements OnInit {
   Prjstartdate:number;
   Prjenddate:number;
   Prjduration:number;
+  PrjDurationInDays:number;
   _remarks:string;
   fileAttachment:any;
 
@@ -122,6 +124,8 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
           
+
+         
       }
    
      });
