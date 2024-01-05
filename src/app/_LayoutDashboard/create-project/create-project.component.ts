@@ -35,6 +35,7 @@ export class CreateProjectComponent implements OnInit {
   ProjectType_json:any;
   Team_json:any;
   owner_json:any;
+  SubmissionType:any
   Responsible_json:any;
   allUser_json:any;
 
@@ -65,13 +66,31 @@ export class CreateProjectComponent implements OnInit {
   PrjCategory:string;
   PrjVersion:string;
   PrjLocation:string;
-  Prjstartdate:number;
-  Prjenddate:number;
+  Prjstartdate:any
+  Prjenddate:any
   Prjduration:number;
   PrjDurationInDays:number;
   _remarks:string;
   fileAttachment:any;
+  prjsubmission:any
+  _inputAttachments:any='';
 
+
+
+  Daily_array: any = [];
+  Week_array: any = [];
+  Month_array: any = [];
+  Quarter_array: any = [];
+  Halfyear_array: any = [];
+  Annual_array: any = [];
+  Allocated_Hours:any=[]
+  Allocated:any
+  Annual_date:any
+  maxlimit: boolean = true;
+  _message: string;
+  maxAllocation: number;
+  _allocated:any
+  maxDate:any
 
 
 
@@ -84,11 +103,11 @@ export class CreateProjectComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
     this.getProjectCreationDetails();
-   
-  
+
+
   }
 
-  
+
 
 
   getProjectCreationDetails(){
@@ -105,17 +124,17 @@ export class CreateProjectComponent implements OnInit {
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
-          
+
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
           this.PrjInformer=this.Team_json[0].InformerNo.trim();
-          
+          this.SubmissionType=JSON.parse(res[0].SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
-          this.PrjSupport=defaultvalue?[defaultvalue]:[];  
+          this.PrjSupport=defaultvalue?[defaultvalue]:[];
 
           this.Prjtype=this.ProjectType_json[0].Typeid;  // by default prj type core is selected.
           this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
@@ -123,63 +142,126 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='003'?'Standard Tasks':
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
-          
-
-         
       }
-   
+
      });
+  }
+
+
+  setMaxAllocation() {
+
+    if(this.Prjstartdate&&this.Prjenddate){
+      this.Prjstartdate=new Date(this.Prjstartdate);
+      this.Prjenddate=new Date(this.Prjenddate);
+      const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime()
+      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+      this.maxAllocation=(Difference_In_Days+1)*9;
+    }
+    else
+    this._message = "Start Date/End date missing!!"
+
+  }
+
+
+  setMaxDate(){
+    const d=new Date(this.Prjstartdate);
+    d.setDate(d.getDate()+2);
+    this.maxDate=d;
+
+  }
+
+ 
+
+
+  generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+    const timeArray: string[] = [];
+
+    for (let i = 1; i <= duration; i++) {
+      const hours: number = Math.floor(i * interval / 60);
+      const minutes: number = i * interval % 60;
+
+      // Check if the time exceeds the specified maximum limit
+      if (hours < maxLimit || (hours === maxLimit && minutes === 0)) {
+        const timeStr: string = `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+        timeArray.push(timeStr);
+      } else {
+        break;  // Exit the loop once the maximum limit is reached
+      }
+    }
+
+    return timeArray;
+  }
+
+  timearrays() {
+    this.Daily_array = this.generateTimeIntervals(4, 15, 1);
+    console.log(this.Daily_array,"daily array")
+    this.Week_array = this.generateTimeIntervals(8, 15, 2);
+    this.Month_array = this.generateTimeIntervals(16, 15, 4);
+    this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
+    this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
+    console.log(this.Halfyear_array,"half year")
+    this.Annual_array = this.generateTimeIntervals(64, 15, 16);
   }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
  createProject(){
-    
+
   const projectInfo={
         ProjectType:this.Prjtype,
-        Client:this.PrjClient,			
-        ProjectName:this.PrjName,		
-        Description:this.PrjDes,		
-        Category:this.PrjCategory,		
-        StartDate:this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),		
-        EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),			
-        Owner:this.PrjOwner,			
-        Responsible:this.PrjResp,		
-        Authority:this.PrjAuth,		
-        Coordinator:this.PrjCrdtr,		
-        Informer:this.PrjInformer,		
-        Auditor:this.PrjAuditor,			
+        Client:this.PrjClient,
+        ProjectName:this.PrjName,
+        Description:this.PrjDes,
+        Category:this.PrjCategory,
+        StartDate:this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
+        EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+        Owner:this.PrjOwner,
+        Responsible:this.PrjResp,
+        Authority:this.PrjAuth,
+        Coordinator:this.PrjCrdtr,
+        Informer:this.PrjInformer,
+        Auditor:this.PrjAuditor,
         Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
-        SubmissionType:'0',	
-        Duration:this.Prjduration,		
-        DurationTime:'0',	
+        SubmissionType:'0',
+        Duration:this.Prjduration,
+        DurationTime:'0',
         Recurrence:'0',
         Remarks:this._remarks
   };
   console.log("PRJ INFORMATION :",projectInfo);
   this.ProjectDto.Status=JSON.stringify(projectInfo);
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
-  //1. creating project 
+  //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
         console.log("res after project creation:",res);
-        
-        if(res&&res.message==='Success'){ 
-            this.PrjCode=res.Project_Code; 
+
+        if(res&&res.message==='Success'){
+            this.PrjCode=res.Project_Code;
             this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
             //2. file attachment uploading
             this.uploadFileAttachment()
 
             // 3. Move to next step
-            if(this.Prjtype==='001'||this.Prjtype==='002') 
+            if(this.Prjtype==='001'||this.Prjtype==='002')
             {    // when core, secondary
-              this.Move_to_Add_action_tab(); 
+              this.Move_to_Add_action_tab();
             }
             else{
-                // when std, routine or to do list 
-            }  
+                // when std, routine or to do list
+            }
         }
-        else 
+        else
         {
           this.notification.showError("Unable to create Project","Project Creation Failed");
         }
@@ -211,10 +293,6 @@ export class CreateProjectComponent implements OnInit {
    this.fileAttachment=e.target.files[0];
    e.target.value=null;
  }
-
-
-
-
 
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");

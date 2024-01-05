@@ -73,7 +73,7 @@ export class PortfolioProjectsComponent implements OnInit {
   CountRejecteds: any;
   MaxDelays: any;
   snackBarRef: any;
-  
+
   //_snackBar: any;
   dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   EmpDropdwn: unknown[];
@@ -169,7 +169,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
-        
+
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject=this._ProjectsListBy_Pid.length;
         console.log("Portfolio Projects---->", data);
@@ -840,7 +840,7 @@ export class PortfolioProjectsComponent implements OnInit {
       }
     });
     }
-    
+
      //}
     //  else {
     // this.notifyService.showError("Can't delete shared projects", 'Permission Denied ');
@@ -1197,7 +1197,7 @@ export class PortfolioProjectsComponent implements OnInit {
   submissiontype: any;
   StandardDuration: any;
 
-  
+
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -1232,7 +1232,7 @@ export class PortfolioProjectsComponent implements OnInit {
     //setTimeout((this.closeInfo2),1000, "Hello", "John");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-   
+
 
   }
 
@@ -1455,16 +1455,16 @@ export class PortfolioProjectsComponent implements OnInit {
       });
   }
 
-  
 
-  
+
+
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
 // <ng-option [value]="com.Com_No" *ngFor="let com of Company_List" >
 // {{com.Com_Name}}
 // </ng-option>
 // </ng-select> -->
-// <!-- <ng-select  [placeholder]="' TM Name '" 
+// <!-- <ng-select  [placeholder]="' TM Name '"
 // multiple="true" [(ngModel)]="ngEmployeeDropdown" (change)="OnEmpSelect()">
 // <ng-option [value]="usr.Emp_No" *ngFor="let usr of EmployeeList">
 // <a *ngIf="usr.Emp_No!=Current_user_ID">{{usr.TM_DisplayName}}</a>

@@ -37,7 +37,7 @@
 
                     <div class="option-section">
 
-                        <div (click)="Scratech_btn()">
+                        <div (click)="Scratech_btn();timearrays()">
                             <div class="op-card Scratech">
 
                                 <div class="op-svg-ic">
@@ -674,7 +674,7 @@
                                                   <ng-option *ngFor="let item of ProjectType_json"
                                                     [value]="item.Typeid">{{item.ProjectType}} </ng-option>
                                                 </ng-select>
-                    
+
                                               </div>
                                             </div>
                                             <div class="col-lg-6 mb-3">
@@ -684,7 +684,7 @@
                                                   <ng-option *ngFor="let item of Client_json"
                                                     [value]="ClientId">{{item.ClientName}}</ng-option>
                                                 </ng-select>
-                    
+
                                               </div>
                                             </div>
                                             <div class="col-lg-12 mb-3">
@@ -705,7 +705,7 @@
                                                   Atleast Five Words</span>
                                               </div>
                                             </div>
-                    
+
                                             <div class="col-lg-4 mb-3">
                                               <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                 <label>Select Category<span class="text-danger">*</span></label>
@@ -713,25 +713,25 @@
                                                   <ng-option *ngFor="let item of Category_json"
                                                     [value]="item.CategoryId">{{item.CategoryName}}</ng-option>
                                                 </ng-select>
-                    
+
                                               </div>
                                             </div>
-                    
+
                                             <div class="col-lg-4 mb-3">
                                               <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                 <label>Project Version:</label>
                                                 <input class="form-control ng-pristine" type="text" placeholder="Enter Version number"
                                                   [(ngModel)]="PrjVersion">
-                    
+
                                               </div>
                                             </div>
-                    
+
                                             <div class="col-lg-4 mb-3">
                                               <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                 <label>project location:</label>
                                                 <input class="form-control ng-pristine" type="text" placeholder="add google map location.."
                                                   [(ngModel)]="PrjLocation">
-                    
+
                                               </div>
                                             </div>
                                             <div class="col-lg-12 d-none">
@@ -833,40 +833,40 @@
                                                 </div>
                                               </div>
                                             </div>
-                    
-                    
+
+
                                             <ng-container *ngIf="Prjtype !=='003' && Prjtype!=='008'">
                                               <div class="col-lg-4 mb-3">
                                                 <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                                   <label>Start Date<span class="text-danger">*</span></label>
-                    
+
                                                   <div class="d-flex ">
-                    
-                    
-                    
-                    
+
+
+
+
                                                     <input matInput (dateChange)="setMaxDate()" [(ngModel)]="Prjstartdate"
                                                       [matDatepicker]="picker2" id="d-date" (click)="picker2.open()" [min]="todayDate"
                                                       placeholder="Select Date" class="form-control ng-pristine" name="date">
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
+
+
                                                     <div class="input-group-text p-0">
                                                       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                                       <mat-datepicker #picker2></mat-datepicker>
-                    
+
                                                     </div>
                                                   </div>
-                    
+
                                                 </div>
                                                 <span *ngIf="Prjtype=='011'" style="color:red">Todo List Not More Than 3 Days </span>
                                               </div>
-                    
+
                                               <div class="col-lg-4 mb-3">
                                                 <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0 ">
                                                   <label>End Date <span class="text-danger">*</span></label>
@@ -874,7 +874,7 @@
                                                     <input class="form-control ng-pristine" [(ngModel)]="Prjenddate" id="end-date"
                                                       placeholder="Select Date" [matDatepicker]="picker3" (click)="picker3.open()"
                                                       [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" />
-                    
+
                                                     <div class="input-group-text p-0">
                                                       <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                                       <mat-datepicker #picker3></mat-datepicker>
@@ -882,10 +882,10 @@
                                                   </div>
                                                 </div>
                                               </div>
-                    
+
                                               <div class="col-lg-4 mb-3">
                                                 <label>Allocated Hours<span class="text-danger">*</span></label>
-                    
+
                                                 <input id="hour-input" #allocated="ngModel" required type="number" class="form-control"
                                                   placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0"
                                                   oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
@@ -913,8 +913,8 @@
                                                 </div>
                                               </div>
                                             </div>
-                    
-                    
+
+
                                             <ng-container
                                               *ngIf="Prjtype == '003' || Prjtype =='Standard Tasks' || Prjtype=='008' || Prjtype =='Routine Tasks'">
                                               <div class="col-lg-8 text-left">
@@ -944,7 +944,7 @@
                                                         <ng-option *ngFor="let item of Month_array">{{item}}</ng-option>
                                                       </ng-select>
                                                       <span class="text-danger">Max Duration limit is 4 hrs only.</span>
-                    
+
                                                     </div>
                                                   </div>
                                                   <div class="input-icon Sub_In_ed col-lg-6" *ngSwitchCase="4"> Allocated hours<span
@@ -993,19 +993,19 @@
                                                   </div>
                                                 </div>
                                               </div>
-                    
+
                                             </ng-container>
-                    
+
                                             <div class="col-lg-12 mb-3">
                                               <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                                 <label>Reference Attachment</label>
-                    
+
                                                 <div class="formbold-mb-5 formbold-file-input">
-                    
+
                                                   <input type="file" class="form-control-file" id="uploadFile"
                                                     (change)="onFileChanged($event)" />
                                                   <label for="uploadFile">
-                    
+
                                                     <div>
                                                       <span class="formbold-drop-file"> Drop files here </span>
                                                       <span class="formbold-or"> Or </span>
@@ -1013,8 +1013,8 @@
                                                     </div>
                                                   </label>
                                                 </div>
-                    
-                    
+
+
                                                 <div *ngIf="fileAttachment" id="" class="dropzone dropzone-multi form-group">
                                                   <div id="div_exixtingfiles" class="dropzone-items">
                                                     <div class="ng-star-inserted">
@@ -1032,12 +1032,12 @@
                                                     </div>
                                                   </div>
                                                 </div>
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                                                 <div class="formbold-file-list formbold-mb-5 d-none">
                                                   <div class="formbold-file-item">
                                                     <span class="formbold-file-name"> banner-design.png </span>
@@ -1062,10 +1062,10 @@
                                           <div class="kt-ctv-btn mt-0">
                                               <button type="button" (click)="back_to_options()" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back To options</button>
                                               <button type="button" (click)="Move_to_add_team()" class="btn btn-move-fw my-ct-v-btn btn-next"
-                    
+
                                               >Next Step</button>
                                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
-                    
+
                                           </div>
                                       </div>
                                       </div>
@@ -1161,7 +1161,7 @@
                                                                         (click)="openPrjSprtDrpDwn()"   >add</mat-icon></button>
                                                             </div>
 
-                                                            <mat-autocomplete  #ProjSprtDrpDwn="matAutocomplete" 
+                                                            <mat-autocomplete  #ProjSprtDrpDwn="matAutocomplete"
                                                             (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value=''; "
                                                             (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
                                                                 <mat-option *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value" [value]="p.Emp_No">
@@ -1173,7 +1173,7 @@
                                                         <span style="color:red" *ngIf="PrjSupport.length===0" >* Please select Support</span>
                                                     </div>
                                                 </div>
-                                                
+
                                               <div class="col-lg-12 mb-1">
                                                 <div class="form-group">
                                                     <label for="exampleFormControlFile1">Remarks </label>
@@ -1401,7 +1401,7 @@
                                             </div>
                                         </div>
                                         <ng-template #fileAttachmentFailed>
-                                       
+
                                         <div class="kt-Note-msg d-flex align-items-center">
                                         <svg fill="#ff5757" width="24px" height="34px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                             stroke="#ff5757">
@@ -1458,7 +1458,7 @@
                                          <button class="btn btn-">Upload</button>
                                         </div>
 
-                                        
+
                                         </ng-template>
 
 
