@@ -25,6 +25,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 
 
@@ -55,7 +56,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     ],
   providers: [ 
-    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent
+    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent, CreateProjectComponent
    ],
    schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
