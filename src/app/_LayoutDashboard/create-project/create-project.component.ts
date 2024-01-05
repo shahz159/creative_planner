@@ -527,10 +527,7 @@ onProjectOwnerChanged(){
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{
       this.assigntask_json=JSON.parse(res[0].Assigntask_json)
-
-      console.log('lllooooop',this.assigntask_json)
-     
-    })
+ })
   }
 
   notifyAssign(){
@@ -549,7 +546,7 @@ onProjectOwnerChanged(){
   CreateName:any
   unique_id:number
   projectType:any
-  
+
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
     this._allocated=this.bind_Project[0].Duration
