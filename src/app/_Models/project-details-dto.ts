@@ -12,7 +12,7 @@ export class ProjectDetailsDTO {
     Duration: number;
     DeadLine: Date;
 
-    Status: string;
+    Status: any;
     Emp_First_Name: string;
     Emp_No: string;
 

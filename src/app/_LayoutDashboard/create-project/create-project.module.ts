@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { CreateProjectRoutingModule } from './create-project-routing.module';
 import { CreateProjectComponent} from './create-project.component';
@@ -40,7 +40,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 
   ],
 
-  providers: [ProjectsSummaryComponent]
+  providers: [ProjectsSummaryComponent,DatePipe]
 })
 export class CreateProjectModule { }
 
