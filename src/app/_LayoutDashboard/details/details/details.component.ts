@@ -2461,6 +2461,11 @@ check_allocation() {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
+    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
+      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
+      this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    }
     else {
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.actionCode;
