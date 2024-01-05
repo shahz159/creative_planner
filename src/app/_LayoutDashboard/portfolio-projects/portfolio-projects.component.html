@@ -32,7 +32,7 @@
                                         <input type="text" class="form-control" placeholder="Enter Portfolio Name"
                                             [(ngModel)]="Rename_PortfolioName"
                                             [ngStyle]="{'border-color':Rename_PortfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)' }">
-        
+
                                     </li>
                                     <li class="kt-nav__foot">
                                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-3"
@@ -42,9 +42,9 @@
                                 </ul>
                                 <!--end:: Nav-->
                             </div>
-                            <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>                   
+                            <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>
                         </h3>
-                    
+
                     <!-- Vali Work's -->
                     <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
                         <div class="kt-quick-search__form">
@@ -54,7 +54,7 @@
                                     style="width: 170px;height:30px">
                                 <div class="input-group-prepend"><span class="input-group-text"><i
                                             class="flaticon2-search-1"></i></span></div>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <!-- <input type="text" name="search" class="form-control kt-quick-search__input pl-3" [(ngModel)]="_SearchProjects">
@@ -70,7 +70,7 @@
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
                     <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                        class="badge bdg-new kt-badge--inline mr-2 py-10px btn-sm"> <span class="count">{{TotalProjects}}</span> Total 
+                        class="badge bdg-new kt-badge--inline mr-2 py-10px btn-sm"> <span class="count">{{TotalProjects}}</span> Total
                         Projects</a>
                     <!-- End -->
                     <ng-container *ngIf="CountInprocess>0">
@@ -177,7 +177,7 @@
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
-                                        
+
                                         <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
                                             <div class="card my-1 shadow-sm brdr kt-pot-ttls">
                                                 <div class="card-body d-flex align-items-center justify-content-around">
@@ -201,9 +201,9 @@
 
                                                 </div>
                                             </div>
-                                            <ng-container 
+                                            <ng-container
                                             *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
-                                            
+
                                             <div class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
@@ -220,7 +220,7 @@
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
                                                     'NewTodo':item1.Status=='New Todo'}">
                                                 <div class="card-body d-flex align-items-center justify-content-around">
-                                                   
+
                                                     <div class="icond">
                                                         <a tabindex="0" class="p-lg-2 p-0 mr-2" role="button"
                                                             placement="right" data-trigger="focus">
@@ -247,7 +247,7 @@
                                                         </ng-template>
                                                     </div>
                                                     <div class="mx-2 p-1" style="flex: 1;">
-                                                        <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}} 
+                                                        <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}}
                                                             <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
                                                         </p>
                                                     </div>
@@ -267,7 +267,7 @@
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                     </div>
                                                     <div class="mx-2 p-1">
-                                                        <span class="kt-widget__other text-nowrap ng-star-inserted"> 
+                                                        <span class="kt-widget__other text-nowrap ng-star-inserted">
                                                             <div
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
@@ -307,7 +307,10 @@
                                                         <div *ngIf="item1.Status=='Completed'">
                                                             <span
                                                                 class="text-success font-weight-400">{{item1.Status}}
-                                                            </span>
+
+                                                                <span class="kt-widget__other d-block st-line " title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
+                                                                <span class="fa fa-paperclip"  (click)="LoadDocument(_ProjectsListBy_Pid.IsCloud,ProjectsListBy_Pid.FileUrl)">{{item1.Filename}} </span>
+                                                              </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='InProcess'">
                                                             <span
@@ -410,8 +413,8 @@
                                                             aria-hidden="true"></i>
                                                     </a>
                                                       </div>
-                                                       
-                                                    </div>                                           
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </ng-container>`
@@ -443,7 +446,7 @@
                                                 </div> -->
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                     <div style="color: lightgrey; font-size: large; text-align: center;">
                                         <span>
@@ -513,7 +516,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
     <!-- Model-Opens On Share Button  DIV FOUR-->
     <!--Begin::Row   DIV Four-->
@@ -650,7 +653,7 @@
     </div>
     <div class="kt-portlet__body p-3">
         <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
-            <div class="card-body multi">                
+            <div class="card-body multi">
                 <form>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Select Company</label>
@@ -673,11 +676,11 @@
                             </ng-multiselect-dropdown>
                              <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
                              bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
-                            
+
                                 <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
                                     {{item.TM_DisplayName}}
                                 </ng-option>
-                            
+
                             </ng-select> -->
 
                         </div>
@@ -704,7 +707,7 @@
                     </div>
                     <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
                 </form>
-                <div class="pt-3 text-right">                    
+                <div class="pt-3 text-right">
                     <button type="button" class="btn btn-secondary btn-sm mr-3"
                         (click)="_CloseshareBar()">Close</button>
                     <button type="button" class="btn btn-primary btn-sm"
