@@ -93,7 +93,7 @@ export class CreateProjectComponent implements OnInit {
   _allocated:any
   maxDate:any
   URL_ProjectCode: any;
-
+  saveAsTemplate:boolean=false;
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -328,6 +328,8 @@ export class CreateProjectComponent implements OnInit {
   console.log("PRJ INFORMATION :",projectInfo);
   this.ProjectDto.Status=JSON.stringify(projectInfo);
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
+  this.ProjectDto.isTemplate=this.saveAsTemplate;
+  
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
     debugger
