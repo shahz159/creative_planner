@@ -18,6 +18,7 @@ import { event } from 'jquery';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { DetailsComponent } from '../details/details/details.component';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -87,6 +88,7 @@ export class ActionToProjectComponent implements OnInit {
     public ProjectTypeService: ProjectTypeService,
     public router: Router,public _meetingreport: MeetingReportComponent,
     public _details: DetailsComponent,
+    public createproject: CreateProjectComponent,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
     public service: ProjectTypeService,
@@ -95,6 +97,7 @@ export class ActionToProjectComponent implements OnInit {
     public _MoreDetails: MoreDetailsComponent,
     private route: ActivatedRoute
   ) {
+
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO = new SubTaskDTO;
@@ -117,6 +120,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -200,6 +204,7 @@ export class ActionToProjectComponent implements OnInit {
 
 
   getRACISandNonRACIS(){
+
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
 
@@ -529,6 +534,11 @@ export class ActionToProjectComponent implements OnInit {
           this._details.getProjectDetails(this.selectedProjectCode);
           this.closeInfo();
         }
+        else if(this._Urlid == 5){
+      //    this.createproject.getProjectCreationDetails();
+          this.createproject.getActionsDetails();
+          this.closeInfo();
+        }
         else {
           this._MoreDetails.GetProjectDetails();
           this._MoreDetails.GetSubtask_Details();
@@ -538,6 +548,8 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
+ 
+  
 
       });
     });
@@ -623,6 +635,12 @@ export class ActionToProjectComponent implements OnInit {
 
       this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
+
+    }
+    else if(this._Urlid==5){
+
+    this.router.navigate(["./backend/ProjectsSummary/createproject"]);
+    document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
 
     }
     else{

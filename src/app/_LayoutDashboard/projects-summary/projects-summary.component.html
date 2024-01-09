@@ -6,7 +6,7 @@
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <div class="dropdown">                            
+                        <div class="dropdown">
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                {{Type}} Summary
                             </h3>
@@ -16,19 +16,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="kt-portlet__head-label mr-2">
+                    <div class="kt-portlet__head-label">
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                         data-trigger="focus" data-toggle="tooltip" title="Project Info!">
-                       
+
                         <i class="fa fa-info-circle info-icon-cir"
                             (click)="Open_project_info()"></i>
                          </a> -->
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="New project!"> -->
-                                <button type="button" class="btn btn-info btn-sm mb-0"  (click)="OpenProject()">Add New Project</button>
+                                <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button>
                          <!-- </a> -->
                         <!-- <div class="dropdown">
-                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after" 
+                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
                             id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
@@ -53,7 +53,7 @@
                                 <a class="dropdown-item">Category</a>
                             </div>
                         </div> -->
-                        
+
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
                             <div class="kt-header__topbar-wrapper">
                                 <div class="kt-quick-search kt-quick-search--inline">
@@ -66,17 +66,17 @@
                                             <div class="input-group-prepend">
                                                 <button class="input-group-text" (click)="SearchbyText()" type="submit">
                                                     <i class="flaticon2-search-1"></i>
-                                                    
+
                                                 </button>
-                                                
+
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mr-3">
                             <ng-container *ngIf="CurrentPageNo==1">
                                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
@@ -103,7 +103,7 @@
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"                             
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
                             (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
                             [disabled]="_CurrentpageRecords<30">
                             <i class="fas fa-angle-right mr-0"></i></button>
@@ -211,10 +211,10 @@
                                                 </div>
                                             </div>
                                             <br>
-                                            
+
                                             <hr>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <button
@@ -244,7 +244,7 @@
                         </button> -->
                         <div class="btn-group d-none">
                             <!-- <button class="btn-act btn btn-hvr filter-dot1" data-toggle="dropdown">
-                                
+
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" role="img"
                                     font-size="1.5rem" class="iconify iconify--mdi" width="1em" height="1em"
                                     viewBox="0 -1 17 17">
@@ -257,7 +257,7 @@
                             <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
                                 <i class="fas fa-ellipsis-v mr-0 "></i>
                             </a>
-                            
+
                             <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
                                 <ul  class="kt-nav">
                                     <li class="kt-nav__head d-flex justify-content-between">
@@ -271,7 +271,7 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Project Type</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -279,7 +279,7 @@
                                                         Core Tasks
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Routine Tasks
@@ -298,8 +298,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -318,7 +318,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -338,11 +338,11 @@
 
                                                 </div>
                                             </div>
-    
-    
+
+
                                             <div class="col-lg-4">
                                                 <h6 class="mb-0">Status</h6>
-    
+
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -350,7 +350,7 @@
                                                         Completed
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         Completion Under Approval
@@ -369,8 +369,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -389,7 +389,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -419,7 +419,7 @@
                                                         User 1
                                                         <span></span>
                                                     </label>
-                                                    
+
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
                                                         User 2
@@ -438,8 +438,8 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-    
-    
+
+
                                                 <div class="opts-flx">
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
@@ -458,7 +458,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
@@ -507,7 +507,7 @@
                                 <span class="example_icon" style="opacity: 1; transform: none;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                      </svg>                                      
+                                      </svg>
                                 </span>
                             </div>
                             <div class="">
@@ -516,7 +516,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -532,8 +532,8 @@
                             </div>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -550,9 +550,9 @@
                             </div>
                         </div>
                     </div>
-        
-        
-        
+
+
+
                     <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <div class="">
@@ -583,7 +583,7 @@
                             </div>
                         </div>
                     </div> -->
-        
+
                 </div>
             </div>
             <!--begin::Portlet-->
@@ -608,7 +608,7 @@
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        
+
                                         <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
                                         <div class="table-responsive">
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
@@ -635,6 +635,8 @@
                                                         </a>
                                                         ProjectName
                                                     </th>
+                                                    <th>
+                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
@@ -684,7 +686,7 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd project-list_AC" 
+                                                <tr role="row" class="odd project-list_AC"
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <!-- Information Icon -->
                                                     <td align="center">
@@ -693,7 +695,7 @@
                                                             <i class="fa fa-info-circle info-icon-cir"
                                                                 (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)"></i>
                                                         </a>
-                                                       
+
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
@@ -719,10 +721,14 @@
                                                         </ng-template>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0">
-                                                            {{item.Project_Name }}
-                                                            <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                        <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
+                                                            {{item.Project_Name| slice:0:limit}}
+                                                            <ng-container *ngIf="item.Project_Name.length>35">...
+                                                            </ng-container>
                                                         </p>
+                                                    </td>
+                                                    <td>
+                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
                                                     </td>
                                                     <td>
                                                         <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
@@ -757,7 +763,7 @@
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
                                                                 <!-- href="javascript:void(0)"
-                                                            
+
                                                             (click)="OpenDARinfo(item.Project_Code)"
                                                                       <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
@@ -876,7 +882,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-success font-weight-400">Completed</span>
+                                                            <span class="text-success font-weight-400 " (click)="LoadDocument(item.iscloud,item.Filename,item.FileUrl,item.ContentType)">Completed <b class="fa fa-paperclip text-info"></b></span>
                                                             <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
@@ -931,7 +937,7 @@
                                                         <a><i class="fa fa-link text-primary"></i></a>
                                                     </td> -->
                                                     <!-- <td>
-                                                        
+
                                                         <a tabindex="0" role="button" placement="right" data-trigger="focus" class="btn px-0 mr-2"
                                                             *ngIf="item.ApprovalEmpID!=0" (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)"
                                                             data-toggle="tooltip" title="Project Actions!">
@@ -941,7 +947,7 @@
                                                               <i class="fas fa-ellipsis-v mr-0" style="color: red"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr" 
+                                                              <a href="javascript:void(0);" class="dropdown-item suc-hvr"
                                                                     (click)="sideviw();getapprovalStats(item.Project_Code,item.Status)">Accept</a>
                                                               <a href="javascript:void(0);" class="dropdown-item dan-hvr">Reject</a>
                                                             </div>
@@ -961,7 +967,7 @@
                         </div>
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -1120,11 +1126,11 @@
 
     <div id="New_project_Add" class="add_new_project_slide  animate-right">
 <ng-container *ngIf="showCreateProject==true">
-   
+
         <router-outlet></router-outlet>
 </ng-container>
 
-       
+
         <div class="modal  fade" id="Guideline_view" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
          <div class="modal-dialog modal-xl">
            <div class="modal-content">
@@ -1136,9 +1142,9 @@
                  </span>
                </button>
             </div>
-               
+
              <div class="modal-body pt-2 px-2">
-             
+
                  <div class="accordion accordion-light  accordion-toggle-arrow" id="accordionExample5">
                      <div class="card dvx-cd">
                          <div class="card-header" id="coretasks_t">
@@ -1151,7 +1157,7 @@
                                  <div class="Guidelines_info-view">
                                      <h4>Core Task</h4>
                                      <p>All the major projects or tasks that contributes to the development of concerned department or organization such as new products, new store opening system development, trainings, etc.</p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
@@ -1161,22 +1167,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Enhancement of Transportation and Distribiution Division through GPS Technology</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created on the advice from the President to enhance the transportation & distribution division through GPS technology and developing transportation KPIs tracking report on weekly & monthly basis</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1210,7 +1216,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1219,29 +1225,29 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Reference:</h4>
                                          <p>Please attach any reference document of the given project.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Subtask :</h4>
                                          <p>a step by step process to complete the project. Each subtask have name , description, start Date, End Date, TotalDuration time with multiple owner selection(optional)</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1253,7 +1259,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Secondary_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Secondary">
-                                 <i class="flaticon-list-3"></i> Secondary Tasks 
+                                 <i class="flaticon-list-3"></i> Secondary Tasks
                              </div>
                          </div>
                          <div id="Secondary" class="collapse" data-parent="#accordionExample5">
@@ -1262,7 +1268,7 @@
                                      <h4>Secondary Task</h4>
                                      <p>Any contribution tasks linked with other department or external parties, or indirect related department responsibility such as; committee independent tasks and participation in other department's tasks or specific project that add value to company vision.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
@@ -1272,22 +1278,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Printing and Packaging Development for RAC</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created to co-ordinate with RAC GDC and packaging Supplier to develop all standard packaging to meet the corporate requirements</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1321,7 +1327,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1330,31 +1336,31 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project.
                                               A team member cannot select the DPG (Date of Project Given) which is less than the current date.
                                                You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Reference:</h4>
                                          <p>Please attach any reference document of the given project.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Subtask :</h4>
                                          <p>a step by step process to complete the project. Each subtask have name , description, start Date, End Date, TotalDuration time with multiple owner selection(optional)</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1376,7 +1382,7 @@
                                      <p>
                                          Standard Task is a type of task which requires report submission, such as “Sales report, Minutes of meeting, Inventory report etc.” Standard task comes with different types (daily, weekly, Monthly, Quarterly, half yearly and annually), each standard task has its time budget to be use and report submission time.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client’s name to whom the project belongs to.</p>
@@ -1386,22 +1392,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Globus Business Plan and Sales Target Analysis</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Globus business plan and target has to be analysed for Business Clients and necessary actions has to be taken to achieve the Business Plan & sales target</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1435,7 +1441,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1444,9 +1450,9 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <div class="table-scrollable">
@@ -1465,54 +1471,54 @@
                                                          <td>Daily </td>
                                                          <td>1 hour </td>
                                                          <td>Daily</td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>2 </td>
                                                          <td>Weekly </td>
                                                          <td>2 hours </td>
                                                          <td>Weekly (Every Saturday) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>3 </td>
                                                          <td>Monthly </td>
                                                          <td>4 hours </td>
                                                          <td>Monthly (Between 1 to 15th of the month) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>4 </td>
                                                          <td>Quarterly </td>
                                                          <td>8 hours </td>
                                                          <td>Every Quarter (Between 1 to 15th of the month) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>5 </td>
                                                          <td>Half Yearly </td>
                                                          <td>10 hours </td>
                                                          <td>Every six month (Between 1 to 15th of the month)</td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>6 </td>
                                                          <td>Annually</td>
                                                          <td>16 hours </td>
                                                          <td>Every year (Between 1 to 15th of the month)</td>
-     
+
                                                      </tr>
                                                  </tbody>
                                              </table>
                                          </div>
                                      </div>
-     
-                                   
+
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1524,7 +1530,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Revenue_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Revenue">
-                                 <i class="flaticon-diagram"></i> Revenue Generation 
+                                 <i class="flaticon-diagram"></i> Revenue Generation
                              </div>
                          </div>
                          <div id="Revenue" class="collapse" data-parent="#accordionExample5">
@@ -1533,7 +1539,7 @@
                                      <h4>Revenue Generation</h4>
                                      <p>Tracking and listing of revenue generating projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
@@ -1543,22 +1549,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Creat monthly 5% footprint month on month for external customer</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Bt hiring additional WH in order to be able to creat the targetted additional income by making a contract with outside client and target a min. 5% pallet spaces of the total capacity month on momnth .</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1592,7 +1598,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1601,19 +1607,19 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1625,7 +1631,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Cost_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Cost">
-                                 <i class="flaticon-clock"></i> Cost Reduction 
+                                 <i class="flaticon-clock"></i> Cost Reduction
                              </div>
                          </div>
                          <div id="Cost" class="collapse" data-parent="#accordionExample5">
@@ -1634,7 +1640,7 @@
                                      <h4>Cost Reduction</h4>
                                      <p>Tracking and listing of expenditure and cost reduction projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client’s name to whom the project belongs to.</p>
@@ -1644,22 +1650,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Globus Logistics Warehousing Rent Cost Optimisation</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Warehousing rental cost has to be optimized by 1. Re-arranging or enhancing the storage condition of stocks in warehouse and creating additional pallet positions 2. Relocating some of the assets to cheaper location (such as Qassim) to reduce the rent while Globus strategic plan.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1693,7 +1699,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1702,19 +1708,19 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1726,16 +1732,16 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="KPI_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#KPI">
-                                 <i class="flaticon-tool-1"></i> KPI 
+                                 <i class="flaticon-tool-1"></i> KPI
                              </div>
                          </div>
                          <div id="KPI" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
-                                
+
                                  <div class="Guidelines_info-view">
                                      <h4>KPI</h4>
                                      <p>Key Performance Indicator  KPI is a Bench Mark Assigned by a Company or Created by you to Judge Your Performance.  </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client' s name to whom the project belongs to.</p>
@@ -1745,22 +1751,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Achieve 100% inventory accuracy through advance inventory management system</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Implementing the controlled process in warehousing with clear & distinct KPIs of every functions 2. Introducing monthly inventory and surprise inventory checking 3. Creating awareness among the employee.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1794,7 +1800,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1803,12 +1809,12 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
-     
+
                                          <div class="table-scrollable">
                                              <table class="table table-striped table-bordered table-hover">
                                                  <thead>
@@ -1823,37 +1829,37 @@
                                                          <td>1 </td>
                                                          <td>Daily </td>
                                                          <td>Daily</td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>2 </td>
                                                          <td>Weekly </td>
                                                          <td>Weekly (Every Saturday) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>3 </td>
                                                          <td>Monthly </td>
                                                          <td>Monthly (Between 1 to 15th of the month) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>4 </td>
                                                          <td>Quarterly </td>
                                                          <td>Every Quarter (Between 1 to 15th of the month) </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>5 </td>
                                                          <td>Half Yearly </td>
                                                          <td>Every six month (Between 1 to 15th of the month)</td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>6 </td>
                                                          <td>Annually</td>
                                                          <td>Every year (Between 1 to 15th of the month)</td>
-     
+
                                                      </tr>
                                                  </tbody>
                                              </table>
@@ -1879,7 +1885,7 @@
                              </div>
                          </div>
                      </div>
-     
+
                      <div class="card dvx-cd">
                          <div class="card-header" id="To_Do_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#To_Do">
@@ -1892,7 +1898,7 @@
                                      <h4>To-do Task</h4>
                                      <p>For Unplanned task which will complete in minutes of time or which will complete in less than two to three days.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
@@ -1902,22 +1908,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Visit to Agility Logistics with Group FC and GM YRSS</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Need to visit Agility logistics to meet and discuss the ongoing issue to release the BL for the consignment came from USA and hold by Agility.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -1951,7 +1957,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -1960,19 +1966,19 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept. In ToDo list duration shouldn't more than 3 days</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
@@ -1981,7 +1987,7 @@
                              </div>
                          </div>
                      </div>
-     
+
                      <div class="card dvx-cd">
                          <div class="card-header" id="Routine_task_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Routine_task">
@@ -1990,12 +1996,12 @@
                          </div>
                          <div id="Routine_task" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
-                                 
+
                                  <div class="Guidelines_info-view">
                                      <h4>Routine Task</h4>
                                      <p>A Routine task is linked to the position of the team member, it is the activity assigned to the team member by his/her position and it does not require any report submission, such as “Email checking, calls, chatting etc.”. Routine task is the same copy of standard task but doesn’t need the report submission, likewise the standard task the routine task also comes with different types “Daily, Weekly, Monthly, Quarterly, Half yearly and Annually” and has time budget.
                                      </p>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Client:</h4>
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
@@ -2005,22 +2011,22 @@
                                          <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Checking Emails and send response</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Project Description:</h4>
                                          <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Daily Checking Emails and send response to respected customers</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Category:</h4>
                                          <p>Project belongs to which type of category.</p>
                                      </div>
-     
+
                                      <div class="Mina_Section">
                                          <h5>Team Section:</h5>
                                      </div>
-     
+
                                      <div class="mt-3 mb-3">
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
@@ -2054,7 +2060,7 @@
                                                  <p>Inform, The direct superior of the project responsible team member or the team member who continuously receives the details or the information regarding the project from the project responsible person.</p>
                                              </div>
                                          </div>
-     
+
                                          <div class="teams_s_tab">
                                              <div class="team_Ltr">
                                                  <span>S</span>
@@ -2063,12 +2069,12 @@
                                                  <p>Support, The team member who supports the project responsible team member and provides him with all kind of technical, documentation, content supports etc.</p>
                                              </div>
                                          </div>
-     
-                                     </div>     
-     
+
+                                     </div>
+
                                      <div class="Guidelines_info_text">
                                          <h4>Sub Section:</h4>
-                                     
+
                                          <div class="table-scrollable">
                                              <table class="table table-striped table-bordered table-hover">
                                                  <thead>
@@ -2083,63 +2089,63 @@
                                                          <td>1 </td>
                                                          <td>Daily </td>
                                                          <td>1 hour </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>2 </td>
                                                          <td>Weekly </td>
                                                          <td>2 hours </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>3 </td>
                                                          <td>Monthly </td>
                                                          <td>4 hours </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>4 </td>
                                                          <td>Quarterly </td>
                                                          <td>8 hours </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>5 </td>
                                                          <td>Half Yearly </td>
                                                          <td>10 hours </td>
-     
+
                                                      </tr>
                                                      <tr>
                                                          <td>6 </td>
                                                          <td>Annually</td>
                                                          <td>16 hours </td>
-     
+
                                                      </tr>
                                                  </tbody>
                                              </table>
                                          </div>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Do you want to save as Template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
-     
+
                                      <div class="Guidelines_info_text">
                                          <h4>Template :</h4>
                                          <p>You can re use previous projects structure for new projects</p>
                                      </div>
                                  </div>
-     
+
                              </div>
                          </div>
                      </div>
-     
+
                  </div>
-     
-     
+
+
              </div>
-             
+
            </div>
          </div>
        </div>

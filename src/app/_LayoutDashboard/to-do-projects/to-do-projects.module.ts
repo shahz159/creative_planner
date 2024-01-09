@@ -21,6 +21,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { DetailsComponent } from '../details/details/details.component';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 
 
@@ -44,7 +45,7 @@ import { DetailsComponent } from '../details/details/details.component';
     Ng2SearchPipeModule
   ]
 ,providers:[NotificationService,ProjectUnplannedTaskComponent,
-  MoreDetailsComponent,DatePipe,ProjectsSummaryComponent,DetailsComponent,MeetingReportComponent],
+  MoreDetailsComponent,DatePipe,ProjectsSummaryComponent,DetailsComponent,MeetingReportComponent,CreateProjectComponent],
 
 exports:[
     ToDoProjectsComponent

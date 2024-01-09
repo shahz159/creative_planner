@@ -2499,3 +2499,6 @@ h2.prj-ttl {
 tr.odd.project-list_AC.active{
   background-color: #e0f1ff;
 }
+.Add_new_project_btn {
+  font-size: 14px;
+}

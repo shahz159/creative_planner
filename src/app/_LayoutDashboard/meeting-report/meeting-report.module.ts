@@ -15,6 +15,7 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { DetailsComponent } from '../details/details/details.component';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 
 
@@ -29,7 +30,7 @@ import { DetailsComponent } from '../details/details/details.component';
     MatDatepickerModule,MatButtonModule, MatMenuModule, MatIconModule
   ],
   providers: [ 
-    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, DetailsComponent
+    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, DetailsComponent,CreateProjectComponent
 ]
 })
 export class MeetingReportModule { }

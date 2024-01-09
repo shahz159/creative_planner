@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { CreateProjectRoutingModule } from './create-project-routing.module';
 import { CreateProjectComponent} from './create-project.component';
@@ -13,13 +13,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+import { DetailsComponent } from '../details/details/details.component';
+import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
+import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
+import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
-
-
+ 
 @NgModule({
   declarations: [CreateProjectComponent],
   imports: [
@@ -39,8 +42,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     FormsModule
 
   ],
-
-  providers: [ProjectsSummaryComponent]
+  providers: [ProjectsSummaryComponent,MeetingReportComponent,DetailsComponent,DatePipe,ProjectUnplannedTaskComponent,ToDoProjectsComponent,MoreDetailsComponent   ]
 })
 export class CreateProjectModule { }
 

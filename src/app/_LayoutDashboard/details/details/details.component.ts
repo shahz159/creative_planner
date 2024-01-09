@@ -472,8 +472,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   remark:any;
   isrespactive:boolean=true;
 
-  getProjectDetails(prjCode: string) {
+  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+    
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+     
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
       this.isDMS= this.projectInfo.isDMS;
@@ -528,8 +530,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.showActionDetails(undefined);  // opens the main project.
     })
 
-
-
+    if(actionIndex!==undefined){
+      this.showActionDetails(actionIndex)
+    }
+    
 
     });
   }
@@ -729,7 +733,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // ADDING NEW ACTIONS
   addNewAction() {
-
     if (this.projectInfo.Status === 'Completed') {
       Swal.fire({
         title: "Wait This Project is Already Completed",
@@ -1635,7 +1638,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
                 this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
+                this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
                 this.getAttachments(1);
                 this.calculateProjectActions();
               });
@@ -1740,7 +1743,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
-          this.getProjectDetails(this.URL_ProjectCode);
+          // this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
           this.closeActCompSideBar();
           this.getAttachments(1);        // close action completion sidebar.
@@ -2134,7 +2137,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
-    debugger
+  
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2242,9 +2245,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
-          
           this.getProjectDetails(this.URL_ProjectCode);
-
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2282,7 +2283,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
-      this.getProjectDetails(this.URL_ProjectCode);
+     
+      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+      
       this.closeInfo();
     });
   }
@@ -5146,9 +5149,13 @@ removeSelectedDMSMemo(item){
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
+            
+          if(this.currentActionView!==undefined)
+          this._Message=this._Message.replace('Project','Action')
+
           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.closePrjHoldSideBar();
-          this.getProjectDetails(Pcode);
+          this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
         }
       });
@@ -5166,30 +5173,67 @@ removeSelectedDMSMemo(item){
 
 
 
-
+// Project / Action release.
   holdreleaseProject() {
-    if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = 'Project Release';
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Remarks = this.hold_remarks;
-      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-        this.closePrjReleaseSideBar();
-        this._Message = (data['message']);
-        if (this._Message == '1') {
-          this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
-          this.getProjectDetails(this.URL_ProjectCode);
-        }
-        else if (this._Message == '2' || this._Message == '0') {
-          this.notifyService.showError("Project release failed", "Failed");
-        }
-      });
-      console.log(this.approvalObj, "cancel")
+    if(this.currentActionView===undefined){
+          // project release
+          if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+            this.approvalObj.Project_Code = this.URL_ProjectCode;
+            this.approvalObj.Request_type = 'Project Release';
+            this.approvalObj.Emp_no = this.Current_user_ID;
+            this.approvalObj.Remarks = this.hold_remarks;
+            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+              this.closePrjReleaseSideBar();
+              this._Message = (data['message']);
+              if (this._Message == '1') {
+                this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else if (this._Message == '2' || this._Message == '0') {
+                this.notifyService.showError("Project release failed", "Failed");
+              }
+            });
+            console.log(this.approvalObj, "cancel")
+          }
+          else {
+            this.closePrjReleaseSideBar();
+            this.notifyService.showError("Access denied", "Failed")
+          }
+
+
     }
-    else {
-      this.closePrjReleaseSideBar();
-      this.notifyService.showError("Access denied", "Failed")
+    else{
+        // action release
+        
+        if ([
+          this.projectInfo.OwnerEmpNo,
+          this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
+        ].includes(this.Current_user_ID)){
+          this.approvalObj.Project_Code = this.projectActionInfo[this.currentActionView].Project_Code;
+          this.approvalObj.Request_type = 'Project Release';
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Remarks = this.hold_remarks;
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        
+            this.closePrjReleaseSideBar();
+            this._Message = (data['message']);
+            if (this._Message == '1') {
+              this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
+              this.getProjectDetails(this.URL_ProjectCode);
+            }
+            else if (this._Message == '2' || this._Message == '0') {
+              this.notifyService.showError("Action release failed", "Failed");
+            }
+          });
+        }
+        else {
+          this.closePrjReleaseSideBar();
+          this.notifyService.showError("Access denied", "Failed")
+        }
     }
+
+
+  
   }
 
   updateReleaseDate() {
