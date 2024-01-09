@@ -1330,6 +1330,12 @@ span.info-ic-guide svg {
   margin-top: -2px;
   margin-right: -4px;
 }
+.d-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .Project_type_DW {
   min-width: 160px;
 }

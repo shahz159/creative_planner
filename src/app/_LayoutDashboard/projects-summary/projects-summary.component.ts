@@ -458,6 +458,7 @@ $(document).ready(function(){
         this.un_FilteredProjects = this.ActualDataList;
         if (this._ProjectDataList) {
           this._CurrentpageRecords = this._ProjectDataList.length;
+
         }
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
@@ -512,6 +513,7 @@ $(document).ready(function(){
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+
         }
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
@@ -784,6 +786,7 @@ $(document).ready(function(){
         .subscribe(data => {
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
+          console.log("Summary Data---->", this._ProjectDataList);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
             this._filtersMessage = "No more projects matched your search";
@@ -797,6 +800,50 @@ $(document).ready(function(){
           }
         });
     this.getDropdownsDataFromDB();
+    }
+  }
+
+  Team_Autho:any
+  Team_Res:any
+  Project_Code:any
+  LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+    let FileUrl: string;
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (iscloud == false) {
+      if (this.Team_Autho == this.Team_Res) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+
+      }
+      else if (this.Team_Autho !=  this.Team_Res) {
+        FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+      }
+
+      let name = "ArchiveView/" + this.Project_Code;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (iscloud == true) {
+      let name = "ArchiveView/" + this.Project_Code;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      filename = filename.replace(/#/g, "%23");
+      filename = filename.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
     }
   }
 
@@ -1121,6 +1168,6 @@ $(document).ready(function(){
     this.commentSelected = null;
   }
 
-  
+
   limit =  35;
 }
