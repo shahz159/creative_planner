@@ -635,8 +635,8 @@
                                                         </a>
                                                         ProjectName
                                                     </th>
-                                                    <th>                                                                                                                                   
-                                                     </th>                                                 
+                                                    <th>
+                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
@@ -722,14 +722,14 @@
                                                     </td>
                                                     <td>
                                                         <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
-                                                            {{item.Project_Name| slice:0:limit}} 
-                                                            <ng-container *ngIf="item.Project_Name.length>35">...                                                                                          
+                                                            {{item.Project_Name| slice:0:limit}}
+                                                            <ng-container *ngIf="item.Project_Name.length>35">...
                                                             </ng-container>
                                                         </p>
                                                     </td>
-                                                    <td>                                                                                                          
-                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>                                                  
-                                                    </td>                                                   
+                                                    <td>
+                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                    </td>
                                                     <td>
                                                         <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                                                     </td>
@@ -882,7 +882,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-success font-weight-400">Completed</span>
+                                                            <span class="text-success font-weight-400 " (click)="LoadDocument(item.iscloud,item.Filename,item.FileUrl,item.ContentType)">Completed <b class="fa fa-paperclip text-info"></b></span>
                                                             <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">

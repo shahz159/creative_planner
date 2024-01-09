@@ -446,14 +446,16 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/Waseem%20Akram/4001286/sample.pdf10-03-2023%2016:25:05";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
   if (iscloud == false) {
     if (this.Team_Autho == this.Team_Res) {
       // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
       FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+
     }
     else if (this.Team_Autho !=  this.Team_Res) {
       FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
@@ -794,7 +796,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
             .subscribe((data) => {
               //console.log("qwerty" + data);
               this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-              console.log("dfkddddddddddddsdfsdfsdfsdfsdfsd", this._ProjectsListBy_Pid)
+
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
               this.TotalProjects = this._ProjectsListBy_Pid.length;
               var rez = {};

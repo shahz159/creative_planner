@@ -61,6 +61,7 @@ export class FileviewComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.IsCommunicarionMemoDownload = localStorage.getItem('IsCommunicationDownload');
     var decoder = new TextDecoder();
@@ -87,22 +88,22 @@ export class FileviewComponent implements OnInit {
       let type = params['type'];
             let officetext = ".ppt, .pptx, .doc, .docx, .xls, .xlsx";
             let office = officetext.includes(type.toLowerCase());
-  
+
             let googletext = ".txt,.css, .html, .php, .c, .cpp, .h, .hpp, .js, .pages, .ai, .psd, .tiff, .dxf, .svg, .eps, .ps, .ttf, .xps, .zip, .rar";
             let google = googletext.includes(type.toLowerCase());
-  
+
             let pdftext = ".pdf, .application/pdf"
             let pdf = pdftext.includes(type.toLocaleLowerCase());
-  
+
             let Imagetext = ".jpg, .jpeg, .webp, .avif, .jfif, .svg, .ico, .gif .image/jpg, .image/png, .png"
             let Image = Imagetext.includes(type.toLocaleLowerCase());
-  
+
             // let Audiotext = ".mp3, .wav, .ogg"
             // let Audio = Audiotext.includes(contenttype.toLocaleLowerCase());
-  
+
             // let Videotext = ".mp4, .mov, .wmv, .avi, .webm"
             // let Video = Videotext.includes(contenttype.toLocaleLowerCase());
-  
+
             if (office) {
               this.viewer = "office";
             }
@@ -127,8 +128,8 @@ export class FileviewComponent implements OnInit {
             }
 
 
-    
-      
+
+
       let scontenttype = '';
       this.filename = params['filename'];
       this.filename = this.filename.replace(/%26/g, "&");
@@ -141,25 +142,25 @@ export class FileviewComponent implements OnInit {
           da => {
             scontenttype = da["ContentType"];
             let contenttype = scontenttype;//decoder.decode(new Uint8Array(arrct));
-  
+
             let officetext = ".ppt, .pptx, .doc, .docx, .xls, .xlsx";
             let office = officetext.includes(contenttype.toLowerCase());
-  
+
             let googletext = ".txt,.css, .html, .php, .c, .cpp, .h, .hpp, .js, .pages, .ai, .psd, .tiff, .dxf, .svg, .eps, .ps, .ttf, .xps, .zip, .rar";
             let google = googletext.includes(contenttype.toLowerCase());
-  
+
             let pdftext = ".pdf, .application/pdf"
             let pdf = pdftext.includes(contenttype.toLocaleLowerCase());
-  
+
             let Imagetext = ".jpg, .jpeg, .webp, .avif, .jfif, .svg, .ico, .gif .image/jpg, .image/png, .png"
             let Image = Imagetext.includes(contenttype.toLocaleLowerCase());
-  
+
             // let Audiotext = ".mp3, .wav, .ogg"
             // let Audio = Audiotext.includes(contenttype.toLocaleLowerCase());
-  
+
             // let Videotext = ".mp4, .mov, .wmv, .avi, .webm"
             // let Video = Videotext.includes(contenttype.toLocaleLowerCase());
-  
+
             if (office) {
               this.viewer = "office";
             }
@@ -229,7 +230,7 @@ export class FileviewComponent implements OnInit {
     // console.log(`Uploaded! ${this.progress}%`);
 
   }
-  
+
 
   getInt(value: number): number {
     return Math.round(value);
@@ -319,7 +320,7 @@ export class FileviewComponent implements OnInit {
   datelist:any;
   // HistoryList: any;
   DownloadHistory(filename) {
-    
+
     this.objProjectDto.Project_Code=this.url_project_code;
     this.objProjectDto.filename=filename;
 

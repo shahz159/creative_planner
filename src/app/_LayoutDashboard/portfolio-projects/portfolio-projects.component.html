@@ -306,11 +306,14 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
                                                             <span
-                                                                class="text-success font-weight-400">{{item1.Status}}
+                                                                class="text-success font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b class="fa fa-paperclip text-info" ></b>
 
-                                                                <span class="kt-widget__other d-block st-line " title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                                <span class="fa fa-paperclip"  (click)="LoadDocument(_ProjectsListBy_Pid.IsCloud,ProjectsListBy_Pid.FileUrl)">{{item1.Filename}} </span>
+                                                                <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
                                                               </span>
+                                                                <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
+
+
+
                                                         </div>
                                                         <div *ngIf="item1.Status=='InProcess'">
                                                             <span
