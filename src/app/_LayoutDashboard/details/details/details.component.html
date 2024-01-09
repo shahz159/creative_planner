@@ -3619,7 +3619,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col text-center">
+                                                <div class="col text-center" >
                                                     <div class="kt-info-lable-v">
                                                         <span class="kt-info-lable-icon">
                                                             <svg width="24px" height="24px"
@@ -3633,7 +3633,7 @@
                                                         </span> Category
                                                     </div>
                                                     <div class="kt-info-data-v">
-                                                        {{projectInfo&&projectInfo.Category}}
+                                                        {{projectActionInfo[currentActionView].Category?projectActionInfo[currentActionView].Category:projectInfo.Category}}
                                                     </div>
                                                 </div>
                                                 <div class="col text-center">
@@ -3685,7 +3685,7 @@
                                                     </div>
                                                     <div class="kt-clinet-img-x">
                                                         <div class="kt-info-data-v">
-                                                            {{projectActionInfo[currentActionView].Client}}
+                                                            {{projectActionInfo[currentActionView].Client?projectActionInfo[currentActionView].Client:ProjectInfo.Client}}
                                                         </div>
                                                     </div>
                                                 </div>

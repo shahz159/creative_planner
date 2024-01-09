@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
@@ -42,8 +42,6 @@ export class CreateProjectComponent implements OnInit {
   SubmissionType:any
   Responsible_json:any;
   allUser_json:any;
-
-
 
 
 
@@ -101,7 +99,9 @@ export class CreateProjectComponent implements OnInit {
     private createProjectService:CreateprojectService,
     private datepipe:DatePipe,private notification:NotificationService,
     public BsService: BsServiceService,
-    public service: ProjectTypeService,) {
+    public service: ProjectTypeService,
+    private projectMoreDetailsService: ProjectMoreDetailsService
+    ) {
   }
 
 
@@ -109,6 +109,7 @@ export class CreateProjectComponent implements OnInit {
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
+    this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
   }
@@ -121,7 +122,6 @@ export class CreateProjectComponent implements OnInit {
       console.log("NewGetProjectCreationDetails:",res);
       if(res)
       {
-
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -223,6 +223,11 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
+   debugger
+
+   const d=new Date();
+   d.setFullYear(d.getFullYear()+2);
+   const enddateofRS=d;
 
   const projectInfo={
         ProjectType:this.Prjtype,
@@ -230,8 +235,8 @@ export class CreateProjectComponent implements OnInit {
         ProjectName:this.PrjName,
         Description:this.PrjDes,
         Category:this.PrjCategory,
-        StartDate:this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
-        EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+        StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-YYYY'):this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
+        EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-YYYY'):this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
         Owner:this.PrjOwner,
         Responsible:this.PrjResp,
         Authority:this.PrjAuth,
@@ -239,10 +244,10 @@ export class CreateProjectComponent implements OnInit {
         Informer:this.PrjInformer,
         Auditor:this.PrjAuditor,
         Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
-        SubmissionType:'0',
-        Duration:this.Prjduration,
-        DurationTime:'0',
-        Recurrence:'0',
+        SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
+        Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+        DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
+        Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
         Remarks:this._remarks
   };
   console.log("PRJ INFORMATION :",projectInfo);
@@ -250,12 +255,14 @@ export class CreateProjectComponent implements OnInit {
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+    debugger
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
             this.PrjCode=res.Project_Code;
             this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
-            //2. file attachment uploading
+            //2. file attachment uploading  if present
+            if(this.fileAttachment)
             this.uploadFileAttachment()
 
             // 3. Move to next step
@@ -263,9 +270,18 @@ export class CreateProjectComponent implements OnInit {
             {    // when core, secondary
               this.Move_to_Add_action_tab();
             }
-            else{
-                // when std, routine or to do list
-            }
+          
+        }
+        else if(res&&res.message==='Success1'){
+          this.PrjCode=res.Project_Code;
+            this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
+            //2. file attachment uploading  if present
+            if(this.fileAttachment)
+            this.uploadFileAttachment()
+
+              this.router.navigate(['./backend/ProjectsSummary']);
+              this.closeInfo()
+
         }
         else
         {
@@ -283,13 +299,16 @@ export class CreateProjectComponent implements OnInit {
            fd.append('Project_Name',this.PrjName);
            fd.append('Emp_No',this.Current_user_ID);
            fd.append('file',this.fileAttachment);
+           fd.append('Remarks',this._remarks);
            this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             console.log("file attachment:",fres)
-            if(fres&&fres.Attachments){
+            if(fres&&fres.Message==='Success'){
               this.notification.showSuccess('Successfully uploaded the File attachment.','File Attachment Uploaded.');
+              this.isFileUploaded=true;
             }
             else{
                this.notification.showError('Unable to upload the File Attachment','File Uploading Failed');
+               this.isFileUploaded=false;
             }
         });
  }
@@ -400,6 +419,11 @@ export class CreateProjectComponent implements OnInit {
     $('.np-step-1').addClass('d-none');
   }
 
+  templateProjects(){
+    $('.Templates-list').removeClass('d-none');
+    $('.np-step-1').addClass('d-none');
+  }
+
 
   Move_to_add_team(){
     $('.right-side-dv').removeClass('d-none');
@@ -428,7 +452,7 @@ export class CreateProjectComponent implements OnInit {
     $('.Project_details_tab,.add_tema_tab').hide();
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(3)').addClass('active');
+    $('.sbs--basic li:nth-child(3)').addClass('active'); 
   }
 
   back_to_add_team(){
@@ -576,9 +600,8 @@ onProjectOwnerChanged(){
 
   showSideBar() {
    
-    // this.BsService.SetNewPojectCode('CRS184037');
+    this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
-
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay-create").style.display = "block";
@@ -600,4 +623,37 @@ onProjectOwnerChanged(){
   }
 
  ///////////////////////////////////////// Project Edit End /////////////////////////////
+
+
+// file reupload start here
+isFileUploaded:boolean=false;
+openFileReupload(){
+   $('#file-reupload-section').removeClass('d-none');
+}
+
+
+// file reupload end here
+
+
+
+// action add in step3 code start
+PrjActionsInfo:any=[];
+currentActionView:number|undefined;
+getActionsDetails(){
+  this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
+    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+  });
+}
+
+
+showActionDetails(index: number | undefined) {
+  this.currentActionView = index;
+}
+
+// action add in step3 code end
+
+
+
+
+
 }

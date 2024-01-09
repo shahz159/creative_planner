@@ -535,7 +535,8 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
         }
         else if(this._Urlid == 5){
-          // this.createproject.getProjectDetails(this.selectedProjectCode);
+      //    this.createproject.getProjectCreationDetails();
+          this.createproject.getActionsDetails();
           this.closeInfo();
         }
         else {
