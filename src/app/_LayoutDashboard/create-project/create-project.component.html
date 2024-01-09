@@ -221,7 +221,7 @@
                                                                                 d="M528.7168 472.93952c0 8.9856-7.48544 16.26624-16.7168 16.26624-9.23136 0-16.7168-7.28064-16.7168-16.26624V253.35808c0-8.9856 7.48544-16.26624 16.7168-16.26624 9.23136 0 16.7168 7.28064 16.7168 16.26624v219.58144zM476.83584 532.25984c7.03488-5.82144 17.5872-4.992 23.56736 1.85344a15.96416 15.96416 0 0 1-1.90464 22.92736l-101.88288 84.3008c-7.03488 5.82144-17.5872 4.992-23.56736-1.85344a15.96416 15.96416 0 0 1 1.90464-22.92736l101.88288-84.3008z"
                                                                                 fill="#000000"></path>
                                                                         </g>
-                                                                         </svg></span><span class="kt-act-ic-info">{{record.Duration}} Hrs</span></div>
+                                                                         </svg></span><span class="kt-act-ic-info">{{record.Duration}} days</span></div>
                                                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg xmlns="http://www.w3.org/2000/svg"
                                                                         width="15px" height="15px" viewBox="0 0 1024 1024" version="1.1" class="icon">
                                                                         <path
@@ -543,7 +543,7 @@
                                         <div  class="col-lg-11">
                                             <div  class="row">
                                                 <div  class="col text-center">
-                                                    <div  class="kt-info-lable-v"> Start date </div>
+                                                    <div  class="kt-info-lable-v"> Start date</div>
                                                     <div  class="kt-project-sts-data"> {{Prjstartdate|date:'dd-MM-yyyy'}} </div>
                                                 </div>
                                                 <div  class="col text-center ng-star-inserted">
@@ -552,7 +552,7 @@
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Duration </div>
-                                                    <div  class="kt-project-sts-data ng-star-inserted"> {{Prjduration}} </div>
+                                                    <div  class="kt-project-sts-data ng-star-inserted">{{Prjduration}} </div>
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Allocated </div>
@@ -922,13 +922,13 @@
                                                 <label>Allocated Hours<span class="text-danger">*</span></label>
 
                                                 <input id="hour-input" #allocated="ngModel" required type="number" class="form-control"
-                                                  placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0"
+                                                  placeholder="Enter action duration in hrs" [(ngModel)]="Allocated" min="0"
                                                   oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
                                                 <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
                                                   required!</span>
-                                                <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 9
+                                                <span *ngIf="Allocated > maxAllocation" style="color:red">*Allocation per day limit is 9
                                                   hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                                                <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a
+                                                <span *ngIf="(Allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a
                                                   value.</span>
                                                 <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null"
                                                   style="color:red">{{_message}}</span>
@@ -1330,7 +1330,7 @@
                                                                 </path>
                                                             </g>
                                                         </svg></span> Owner </div>
-                                                <div  class="kt-info-data-v"> Aquib Shahbaz </div>
+                                                <div  class="kt-info-data-v">{{Owner_Name}}</div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"><span  class="kt-info-lable-icon"><svg
@@ -1340,7 +1340,7 @@
                                                                 d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                                             </path>
                                                         </svg></span> Responsible </div>
-                                                <div  class="kt-info-data-v"> Md Waseem Akram </div>
+                                                <div  class="kt-info-data-v">{{responsible}}</div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"><span  class="kt-info-lable-icon"><svg
@@ -1350,7 +1350,7 @@
                                                                 d="M19.5,6H16V5c-0.0014038-1.1040039-0.8959961-1.9985962-2-2h-4C8.8959961,3.0014038,8.0014038,3.8959961,8,5v1H4.5C3.119812,6.0012817,2.0012817,7.119812,2,8.5v10c0.0012817,1.380188,1.119812,2.4987183,2.5,2.5h15c1.380188-0.0012817,2.4987183-1.119812,2.5-2.5v-10C21.9987183,7.119812,20.880188,6.0012817,19.5,6z M9,5c0.0003662-0.552124,0.447876-0.9996338,1-1h4c0.552124,0.0003662,0.9996338,0.447876,1,1v1H9V5z M21,18.5c-0.0009155,0.828064-0.671936,1.4990845-1.5,1.5h-15c-0.828064-0.0009155-1.4990845-0.671936-1.5-1.5v-6.4726562l5.8417969,1.9472656C8.8928833,13.991333,8.9462891,13.999939,9,14h6c0.053772-0.000061,0.1071777-0.008667,0.1582642-0.0253906L21,12.0273438V18.5z M21,11.0059204c-0.0525513,0-0.1055908,0.0019531-0.1581421,0.0194702L14.9190063,13H9.0810547l-5.9228516-1.9746094C3.1056519,11.0078735,3.0525513,11.0059204,3,11.0059204V8.5C3.0009155,7.671936,3.671936,7.0009155,4.5,7h15c0.828064,0.0009155,1.4990845,0.671936,1.5,1.5V11.0059204z">
                                                             </path>
                                                         </svg></span> Category </div>
-                                                <div  class="kt-info-data-v"> Software Support </div>
+                                                <div  class="kt-info-data-v">{{Category_Name}}</div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"><span  class="kt-info-lable-icon"><svg
@@ -1366,7 +1366,7 @@
                                                                 d="M59.218,36h-6.48a27.909,27.909,0,0,0-8.3-12.82l-5.556-4.862a2.974,2.974,0,0,0-1.092-5.2l5.043-7.564a1,1,0,0,0-.067-1.2c-.025-.028-.057-.045-.084-.071l.008-.008A8.36,8.36,0,0,0,37,2a8.223,8.223,0,0,0-4.671,1.466C29.224,2.108,26,.747,21.4,4.2a1,1,0,0,0-.232,1.355l5.043,7.564a2.967,2.967,0,0,0-1.538,4.751L19.94,22.288l1.366,1.461L26.394,19h10.23l6.5,5.685A25.925,25.925,0,0,1,50.641,36H46.782A2.785,2.785,0,0,0,44,38.782v2.436A2.756,2.756,0,0,0,44.664,43,2.756,2.756,0,0,0,44,44.782v2.436a2.765,2.765,0,0,0,.15.861,2.783,2.783,0,0,0-2.15,2.7v2.436a2.783,2.783,0,0,0,2.15,2.7,2.765,2.765,0,0,0-.15.861v2.436a2.9,2.9,0,0,0,.035.35A10.982,10.982,0,0,1,41,60h-.126A2.74,2.74,0,0,0,41,59.218V56.782A2.756,2.756,0,0,0,40.336,55,2.756,2.756,0,0,0,41,53.218V50.782A2.785,2.785,0,0,0,38.218,48H25.782A2.785,2.785,0,0,0,23,50.782v2.436A2.756,2.756,0,0,0,23.664,55,2.756,2.756,0,0,0,23,56.782v2.436a2.74,2.74,0,0,0,.126.782H23a10.982,10.982,0,0,1-3.035-.432,2.9,2.9,0,0,0,.035-.35V56.782a2.765,2.765,0,0,0-.15-.861,2.783,2.783,0,0,0,2.15-2.7V50.782a2.783,2.783,0,0,0-2.15-2.7,2.765,2.765,0,0,0,.15-.861V44.782A2.756,2.756,0,0,0,19.336,43,2.756,2.756,0,0,0,20,41.218V38.782A2.785,2.785,0,0,0,17.218,36h-4.03A26,26,0,0,1,19.7,25.26L18.3,23.839A28.007,28.007,0,0,0,11.1,36H4.782A2.785,2.785,0,0,0,2,38.782v2.436A2.756,2.756,0,0,0,2.664,43,2.756,2.756,0,0,0,2,44.782v2.436a2.783,2.783,0,0,0,2.15,2.7,2.765,2.765,0,0,0-.15.861v2.436a2.765,2.765,0,0,0,.15.861A2.783,2.783,0,0,0,2,56.782v2.436A2.785,2.785,0,0,0,4.782,62H17.218a2.752,2.752,0,0,0,1.759-.645A12.964,12.964,0,0,0,23,62H41a12.964,12.964,0,0,0,4.023-.645A2.752,2.752,0,0,0,46.782,62H59.218A2.785,2.785,0,0,0,62,59.218V56.782a2.783,2.783,0,0,0-2.15-2.7,2.765,2.765,0,0,0,.15-.861V50.782a2.765,2.765,0,0,0-.15-.861,2.783,2.783,0,0,0,2.15-2.7V44.782A2.756,2.756,0,0,0,61.336,43,2.756,2.756,0,0,0,62,41.218V38.782A2.785,2.785,0,0,0,59.218,36ZM39.844,4.7a8.592,8.592,0,0,1-5.115-.262A6.139,6.139,0,0,1,37,4,6.492,6.492,0,0,1,39.844,4.7Zm-8.233.638c2.249.985,4.732,2.075,7.983,1.472L35.465,13h-6.93l-5.16-7.74C26.649,3.162,28.862,4.13,31.611,5.335ZM27,17a1,1,0,0,1,0-2H37a1,1,0,0,1,0,2ZM20,53.218a.783.783,0,0,1-.782.782H6.782A.783.783,0,0,1,6,53.218V50.782A.783.783,0,0,1,6.782,50H8v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782ZM4,38.782A.783.783,0,0,1,4.782,38H6v2H8V38h2v2h2V38h2v2h2V38h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,41.218Zm0,6A.783.783,0,0,1,4.782,44H6v2H8V44h2v2h2V44h2v2h2V44h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,47.218ZM18,59.218a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,59.218V56.782A.783.783,0,0,1,4.782,56H6v2H8V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782Zm7-8.436A.783.783,0,0,1,25.782,50H27v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H25.782A.783.783,0,0,1,25,53.218ZM25.782,60A.783.783,0,0,1,25,59.218V56.782A.783.783,0,0,1,25.782,56H27v2h2V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782ZM46,38.782A.783.783,0,0,1,46.782,38H48v2h2V38h2v2h2V38h2v2h2V38h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,41.218Zm-2,12A.783.783,0,0,1,44.782,50H46v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H44.782A.783.783,0,0,1,44,53.218Zm16,8.436a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,59.218V56.782A.783.783,0,0,1,46.782,56H48v2h2V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782Zm0-12a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,47.218V44.782A.783.783,0,0,1,46.782,44H48v2h2V44h2v2h2V44h2v2h2V44h1.218a.783.783,0,0,1,.782.782Z">
                                                             </path>
                                                         </svg></span> Cost </div>
-                                                <div  class="kt-info-data-v"> SAR 119.00 </div>
+                                                <div  class="kt-info-data-v"> SAR 00.00 </div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"><span  class="kt-info-lable-icon"><svg
@@ -1386,7 +1386,7 @@
                                                             </path>
                                                         </svg></span> Client </div>
                                                 <div  class="kt-clinet-img-x">
-                                                    <div  class="kt-info-data-v"> Creative Solutions </div>
+                                                    <div  class="kt-info-data-v">{{Client}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1394,19 +1394,19 @@
                                         <div  class="row mt-5 px-3">
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"> Start date </div>
-                                                <div  class="kt-info-data-v"> {{Prjstartdate|date:'EE-MM-YYYY'}} </div>
+                                                <div  class="kt-info-data-v"> {{Prjstartdate|date:'dd-MM-YYYY'}} </div>
                                             </div>
                                             <div  class="col text-center ng-star-inserted">
                                                 <div  class="kt-info-lable-v"> Deadline </div>
-                                                <div  class="kt-info-data-v"> {{Prjenddate|date:'EE-MM-YYYY'}} </div>
+                                                <div  class="kt-info-data-v"> {{Prjenddate|date:'dd-MM-YYYY'}} </div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"> Duration </div>
-                                                <div  class="kt-info-data-v ng-star-inserted"> {{Prjstartdate}} days </div>
+                                                <div  class="kt-info-data-v ng-star-inserted">{{_allocated}} days </div>
                                             </div>
                                             <div  class="col text-center">
                                                 <div  class="kt-info-lable-v"> Allocated </div>
-                                                <div  class="kt-info-data-v ng-star-inserted"> 61 hrs </div><!--bindings={
+                                                <div  class="kt-info-data-v ng-star-inserted">{{Allocated}} Hrs</div><!--bindings={
                                                                                     "ng-reflect-ng-if": "true"
                                                                                   }--><!--container-->
                                             </div>
@@ -1747,7 +1747,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Project Name</label>
                             <div class="input-icon project-name_ed curser-pointer">
-                                <input type="text" class="form-control" 
+                                <input type="text" class="form-control"  [(ngModel)]="PrjName" 
                                     placeholder="Search..." />
                             </div>
                         </div>
@@ -1756,7 +1756,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Project description</label>
                             <div class="input-icon project_des_ed curser-pointer">
-                                <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                                <textarea type="text" class="form-control" [(ngModel)]="PrjDes" placeholder="Search..." height="60px"
                                    ></textarea>
                             </div>
                         </div>
@@ -1808,25 +1808,21 @@
                                     </g>
                                 </svg>
                             </span> Owner</div>
-                        <div class="input-icon Sub_In_ed">
-                            <!-- <ng-container  *ngIf="(Current_user_ID === projectInfo.OwnerEmpNo);else ownwerEdit" >
-                            <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                                <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                        <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
+                            <ng-container
+                            *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                             && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
+                            <ng-select [(ngModel)]="Owner_Name" placeholder=" Select new owner">
+                                <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
+                                    [disabled]="item.Emp_No==selectedOwnResp">
                                     {{item.RACIS}}
                                 </ng-option>
                             </ng-select>
-                         </ng-container>
-                         <ng-template #ownwerEdit>
-                                <input type="text" class="form-control readonly"   
-                               [(ngModel)]="selectedOwner" readonly />
-                            </ng-template> -->
-                            <ng-container >
-                                <ng-select  placeholder=" Select new owner">
-                                    <ng-option >
-                                        
-                                    </ng-option>
-                                </ng-select>
-                            </ng-container>
+                        </ng-container>
+                        <ng-template #ownwerEdit>
+                            <input type="text" (click)="displaymessagemain()" class="form-control readonly"
+                                [(ngModel)]="Owner_Name" readonly />
+                        </ng-template>
                         </div>
                     </div>
                 </div>
@@ -1839,15 +1835,51 @@
                                         d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                     </path>
                                 </svg></span> Responsible</div>
-                        <div class="input-icon Sub_In_ed" >
-                            <!-- <input type="text" class="form-control" value="{{projectInfo.Responsible}}" placeholder="Responsible Name..."/> -->
+
+                                <div class="input-icon Sub_In_ed" *ngIf="projectInfo">                     
+                                    <ng-container *ngIf="projectInfo.isRespActive=='1'">
+                                        <ng-container
+                                            *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                            && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
+    
+                                            <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
+                                                <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
+                                                    [disabled]="item.Emp_No==selectedOwner">
+                                                    <!-- <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a> -->
+                                                    {{item.RACIS}}
+                                                </ng-option>
+                                            </ng-select>
+                                        </ng-container>
+                                            <ng-template #ownEdit>
+                                                <input type="text" (click)="displaymessage()" class="form-control readonly"
+                                                    [(ngModel)]="responsible" readonly />
+                                            </ng-template>
+                                    </ng-container>
+                                    
+                                    <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
+                                        <ng-container>
+                                            <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
+                                                <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
+                                                    [disabled]="item.Emp_No==selectedOwner">
+                                                    <!-- <a data-toggle="tooltip" title="{{item.RACIS}}">{{item.RACIS}}</a> -->
+                                                    {{item.RACIS}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <ng-template #respedit>
+                                                <input type="text" (click)="displaymessage()" class="form-control readonly"
+                                                    [(ngModel)]="responsible" readonly />
+                                            </ng-template>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                        <!-- <div class="input-icon Sub_In_ed" >
                             <ng-container >
-                                    <ng-select  placeholder="Select new responsible">
+                                    <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                         <ng-option >  
                                         </ng-option>
                                     </ng-select>
                             </ng-container>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -1862,11 +1894,18 @@
                                 </svg>
                             </span> Category </div>
                         <div class="input-icon Sub_In_ed">
-                            <ng-select class="curser-pointer" 
-                                placeholder="Select Category">
+
+                            <ng-select class="curser-pointer" [(ngModel)]="Category_Name"
+                            placeholder="Select Category">
+                            <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
+                                [disabled]="Category==item.ReportType">
+                                {{item.ReportType}}
+                            </ng-option>
+                        </ng-select>
+                            <!-- <ng-select class="curser-pointer" [(ngModel)]="Category_Name" placeholder="Select Category">
                                 <ng-option  >           
                                 </ng-option>
-                            </ng-select>
+                            </ng-select> -->
                         </div>
                     </div>
                 </div>
@@ -1887,8 +1926,8 @@
                                     </path>
                                 </svg></span> Cost </div>
                         <div class="input-icon Sub_In_ed">
-                            <input type="text" class="form-control readonly"
-                                />
+                            <input type="text" placeholder="SAR 00.00"  class="form-control readonly"
+                            readonly  />
                         </div>
                     </div>
                 </div>
@@ -1912,11 +1951,20 @@
                                 </svg>
                             </span> Client </div>
                         <div class="input-icon Sub_In_ed">
-                           <ng-select class="curser-pointer" 
-                                placeholder="Select client">
+
+                            <div class="input-icon Sub_In_ed">
+                               <ng-select class="curser-pointer" [(ngModel)]="Client"
+                                    placeholder="Select client">
+                                    <ng-option [value]="item.Com_No" *ngFor="let item of Client_List"
+                                        [disabled]="Client==item.Com_Name">
+                                        <a>{{item.Com_Name}}</a>
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+                           <!-- <ng-select class="curser-pointer" [(ngModel)]="Client"  placeholder="Select client">
                                 <ng-option >
                                 </ng-option>
-                            </ng-select>
+                            </ng-select> -->
                         </div>
                     </div>
                 </div>
@@ -1926,22 +1974,47 @@
                     <div class="form-group mb-2 Ic_ed">
                        <div class="kt-info-lable-v"> Start date</div>
                           <div class="input-icon Sub_In_ed">
-                             <input type="text" class="form-control readonly" />
+                             <input type="text"                  
+                             [ngModel]="Prjstartdate|date:'dd-MM-YYYY'"
+                             class="form-control readonly" readonly />
                           </div>
                         </div>  
                     </div>
                     <div class="col-lg-4 text-left">
                         <div class="form-group mb-2  Ic_ed">
                             <div class="kt-info-lable-v"> Deadline</div>
-                            <div class="input-icon Sub_In_ed date-border-v d-flex"></div>
+
+                            <div class="input-icon Sub_In_ed date-border-v d-flex">
+                                <input class="form-control curser-pointer" [ngModel]="Prjenddate|date:'dd-MM-YYYY'"
+                                    [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="strtEditsPickers"
+                                    (click)="strtEditsPickers.open();" placeholder="Deadline Date..."
+                                    class="form-control border-0 " name="date" />
+                                <div class="input-group-append h-2">
+                                    <mat-datepicker-toggle matSuffix [for]="strtEditsPickers"
+                                        class="btn-secondary border-0">
+                                    </mat-datepicker-toggle>
+                                  <mat-datepicker class="form-group " #strtEditsPickers></mat-datepicker>
+                                </div>
+                            </div>
+                            <!-- <input type="text" [ngModel]="Prjenddate|date:'dd-MM-YYYY'" class="form-control readonly" /> -->
                         </div>
                     </div>
                     <div class="col-lg-4 text-left">
                     <div class="form-group mb-2 Ic_ed">
                         <div class="kt-info-lable-v"> Duration</div>
-                           <div class="input-icon Sub_In_ed" >
-                            <input type="text" class="form-control readonly"  placeholder="Duration..."  />
-                          </div>                     
+                        <div class="input-icon Sub_In_ed"
+                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
+                        <input type="text" class="form-control readonly"  [(ngModel)]="_allocated" 
+                            placeholder="Duration..." readonly />
+                    </div>
+                    <ng-template #continue>
+                        <div class="input-icon Sub_In_ed readonly">
+                            <input type="text" class="form-control readonly" value=" Continuous" readonly>
+                        </div>
+                    </ng-template>
+
+                            <!-- <input type="text" class="form-control readonly"  [(ngModel)]="_allocated" placeholder="Duration..." readonly />
+                         -->
                        </div>
                     </div>  
             </div>
@@ -1949,7 +2022,7 @@
                     <div class="form-group mb-2 Ic_ed">
                         <div class="kt-info-lable-v"> Allocated hours
                             <div class="input-icon Sub_In_ed">
-                                <input type="text" class="form-control readonly" />
+                                <input type="text"  [(ngModel)]="Allocated" class="form-control readonly" readonly/>
                             </div>
                         </div>
                     </div>

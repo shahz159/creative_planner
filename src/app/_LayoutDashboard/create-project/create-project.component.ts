@@ -70,8 +70,8 @@ export class CreateProjectComponent implements OnInit {
   PrjCategory:string;
   PrjVersion:string;
   PrjLocation:string;
-  Prjstartdate:any
-  Prjenddate:any
+  Prjstartdate:any 
+  Prjenddate:any 
   Prjduration:number;
   PrjDurationInDays:number;
   _remarks:string;
@@ -95,14 +95,19 @@ export class CreateProjectComponent implements OnInit {
   maxAllocation: number;
   _allocated:any
   maxDate:any
-
+  URL_ProjectCode: any;
 
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
     private datepipe:DatePipe,private notification:NotificationService,
     public BsService: BsServiceService,
-    public service: ProjectTypeService,) {
+    private notifyService: NotificationService,
+    private projectMoreDetailsService: ProjectMoreDetailsService,
+    public service: ProjectTypeService,
+    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
+    ) {
   }
 
 
@@ -112,6 +117,17 @@ export class CreateProjectComponent implements OnInit {
     this.fileAttachment=null;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
+   
+
+    this.route.paramMap.subscribe(params => {
+      var pcode = params.get('projectcode');
+      this.URL_ProjectCode = pcode;
+      // this._MasterCode = pcode;
+    });
+
+      this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
+      this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
+     
   }
 
 
@@ -131,7 +147,7 @@ export class CreateProjectComponent implements OnInit {
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
-
+          
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
@@ -154,6 +170,69 @@ export class CreateProjectComponent implements OnInit {
      });
   }
 
+  Client:any
+  Category_Name:any
+  Owner_Name:any
+  responsible:any
+  projectInfo: any;
+  owner_dropdown: any;
+  responsible_dropdown: any;
+  Category_List: any;
+  Client_List: any;
+
+
+
+
+
+  getAddActionDetails(){
+   let Owner=this.owner_json.find((e)=>{
+    return e.EmpNo===this.PrjOwner
+   })
+   let Emp_Name=Owner.EmpName
+   let openParenIndex = Emp_Name.indexOf('(');
+   this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
+   
+   let res=  this.Responsible_json[0].ResponsibleName
+   let openParenIndex_res = res.indexOf('(');
+   this.responsible = res.substring(0, openParenIndex_res).trim();
+
+   let Category=this.Category_json.find((e)=>{
+    return e.CategoryId===this.PrjCategory
+   })
+   this.Category_Name=Category.CategoryName
+
+   this.Client=this.PrjClient['$ngOptionLabel']
+   this.newProjectDetails('400190693')
+
+  }
+
+  displaymessagemain(){
+    this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+  }
+
+  newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+    
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      console.log('raohan',this.projectInfo)
+  })
+
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
+    (data) => {
+      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+      this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+    });
+
+    this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
+      (data) => {
+        this.Client_List = JSON.parse(data[0]['ClientDropdown']);
+        this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
+        console.log(this.Client_List, "CategoryDropdown");
+      });
+
+
+
+}
 
   setMaxAllocation() {
 
@@ -201,12 +280,10 @@ export class CreateProjectComponent implements OnInit {
 
   timearrays() {
     this.Daily_array = this.generateTimeIntervals(4, 15, 1);
-    console.log(this.Daily_array,"daily array")
     this.Week_array = this.generateTimeIntervals(8, 15, 2);
     this.Month_array = this.generateTimeIntervals(16, 15, 4);
     this.Quarter_array = this.generateTimeIntervals(32, 15, 8);
     this.Halfyear_array = this.generateTimeIntervals(40, 15, 10);
-    console.log(this.Halfyear_array,"half year")
     this.Annual_array = this.generateTimeIntervals(64, 15, 16);
   }
 
@@ -409,6 +486,7 @@ export class CreateProjectComponent implements OnInit {
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(2)').addClass('active');
+    this.getAddActionDetails()
   }
 
   Back_to_project_details_tab(){
@@ -546,6 +624,7 @@ onProjectOwnerChanged(){
   CreateName:any
   unique_id:number
   projectType:any
+  // allocated:any
 
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
