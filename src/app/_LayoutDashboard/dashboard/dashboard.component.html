@@ -1397,7 +1397,7 @@
                             <div class="rgt-des">
                                 <div>
                                     <div class="main-s"><a href="javascript:void(0)"
-                                            (click)="moreDetails(_pro.stringval)">
+                                            (click)="newDetails(_pro.stringval)">
                                             {{_pro.Project_Name}}</a>
                                     </div>
                                     <div class="main-s" *ngIf="item.Schedule_Type=='Task'">{{item.Master_code}}</div>
@@ -1805,7 +1805,7 @@
                             <div class="rgt-des">
                                 <div>
                                     <div class="main-s"><a href="javascript:void(0)"
-                                            (click)="moreDetails(_pro.stringval)">
+                                            (click)="newDetails(_pro.stringval)">
                                             {{_pro.Project_Name}}</a>
                                     </div>
                                     <div class="main-s" *ngIf="item.Schedule_Type=='Task'">{{item.Master_code}}</div>
@@ -2194,7 +2194,7 @@
                             <div class="rgt-des">
                                 <div>
                                     <div class="main-s"><a href="javascript:void(0)"
-                                            (click)="moreDetails(delayDetails.Master_Code)">
+                                            (click)="newDetails(delayDetails.Master_Code)">
                                             {{delayDetails.Master_Name}}</a>
                                     </div>
                                     <!-- <div class="main-s">{{delayDetails.Project_Name}}</div> -->
@@ -2229,7 +2229,7 @@
                             <button class="btn btn-sm btn-light-primary btn-pill footbtns"
                                 (click)="Task_type1(1)">Schedule Task</button>
                             <button class="btn btn-sm btn-light-primary btn-pill footbtns"
-                                (click)="moreDetails(delayDetails.Project_Code)">
+                                (click)="newDetails(delayDetails.Project_Code)">
                                 More Details
                                 <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" height="1em"
                                     viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
