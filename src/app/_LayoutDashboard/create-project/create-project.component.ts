@@ -73,7 +73,6 @@ export class CreateProjectComponent implements OnInit {
   Prjstartdate:any 
   Prjenddate:any 
   Prjduration:number;
-  PrjDurationInDays:number;
   _remarks:string;
   fileAttachment:any;
   prjsubmission:any
@@ -256,7 +255,7 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
- 
+
 
 
   generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
@@ -466,7 +465,7 @@ export class CreateProjectComponent implements OnInit {
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
   }
- 
+
   back_to_options(){
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').addClass('d-none');
@@ -610,7 +609,7 @@ onProjectOwnerChanged(){
 
   notifyAssign(){
     this.notification.showInfo("You don't have any assigned project", "Please add a project!");
-   
+
   }
 
 
@@ -655,7 +654,7 @@ onProjectOwnerChanged(){
 
 
   showSideBar() {
-   
+
     // this.BsService.SetNewPojectCode('CRS184037');
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
 
@@ -667,13 +666,13 @@ onProjectOwnerChanged(){
   /////////////////////////////////////////add Project End/////////////////////////////
 
    ///////////////////////////////////////// Project Edit start /////////////////////////////
-  
+
 
   Project_details_edit() {
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-   
+
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();
   //  this.initializeSelectedValue()
