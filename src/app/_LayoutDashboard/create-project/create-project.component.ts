@@ -480,6 +480,7 @@ export class CreateProjectComponent implements OnInit {
 
   Scratech_btn(){
     $('.Assigned-projects-list').addClass('d-none');
+    $('.Templates-list').addClass('d-none');
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
@@ -489,6 +490,7 @@ export class CreateProjectComponent implements OnInit {
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').addClass('d-none');
     $('.Assigned-projects-list').addClass('d-none');
+    $('.Templates-list').addClass('d-none');
   }
 
   Assigned_projects(){
@@ -622,13 +624,15 @@ onProjectOwnerChanged(){
   /////////////////////////////////////////assign task start/////////////////////////////
   rejectm:any
 
-  assigntask_json:any
-  GetAssignedTaskDetails(){
+  assigntask_json:any;
+  template_json:any;
 
+  GetAssignedTaskDetails(){
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{
-      this.assigntask_json=JSON.parse(res[0].Assigntask_json)
- })
+      this.assigntask_json=JSON.parse(res[0].Assigntask_json);
+      this.template_json=JSON.parse(res[0].templates_json);
+    });
   }
 
   notifyAssign(){
