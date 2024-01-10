@@ -298,7 +298,7 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
-   debugger
+   
 
    const d=new Date();
    d.setFullYear(d.getFullYear()+2);
@@ -332,7 +332,7 @@ export class CreateProjectComponent implements OnInit {
   
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-    debugger
+  
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
@@ -632,6 +632,8 @@ onProjectOwnerChanged(){
     ((res)=>{
       this.assigntask_json=JSON.parse(res[0].Assigntask_json);
       this.template_json=JSON.parse(res[0].templates_json);
+      console.log("template_json:",this.template_json);
+      console.log('assigntask_json:',this.assigntask_json);
     });
   }
 
@@ -655,24 +657,41 @@ onProjectOwnerChanged(){
 
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
-    this._allocated=this.bind_Project[0].Duration
-    this.Prjstartdate=this.bind_Project[0].Start_Date
-    this.date_str = moment(this.start_Date).format("MM/DD/YYYY");
-    this.Prjenddate=this.bind_Project[0].End_Date
-    this.date_End = moment(this.end_Date).format("MM/DD/YYYY");
-    this.PrjName=this.bind_Project[0].Task_Name;
-    this.PrjDes=this.bind_Project[0].Task_Description;
-    this.CreateName=this.bind_Project[0].Created_Name
-    this.unique_id=id
+    this.duration=this.bind_Project[0].Duration;
+    this.date_str = moment(this.bind_Project[0].Start_Date).format("MM/DD/YYYY");
+    this.date_End = moment(this.bind_Project[0].End_Date).format("MM/DD/YYYY");
+    this.task_Name=this.bind_Project[0].Task_Name;
+    this.CreateName=this.bind_Project[0].Created_Name;
+    this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
-    if(this.Prjtype==''){
-      this.Prjtype='001';
-    }
-    // this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
-    //       this.Prjtype==='002'?'Secondary Tasks':
-    //       this.Prjtype==='003'?'Standard Tasks':
-    //       this.Prjtype==='008'?'Routine Tasks':
-    //       this.Prjtype==='011'?'To do List':'';
+  }
+
+   
+
+
+  openTemplate(template:any){
+      console.log("template:",template);
+      this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
+        const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
+        console.log(PInfo);
+       
+
+       this.PrjOfType=PInfo.Project_Type;
+       this.Prjtype=this.ProjectType_json.find((item)=>item.ProjectType.trim()===this.PrjOfType.trim()).Typeid;
+       this.PrjClient=PInfo.ClientNo;
+       this.PrjName=PInfo.Project_Name;
+       this.PrjDes=PInfo.Project_Description;
+       this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
+       this._allocated=PInfo.AllocatedHours;
+      //  this.fileAttachment=new File()
+       
+
+
+
+
+
+      })
+      
   }
 
 
@@ -736,6 +755,93 @@ showActionDetails(index: number | undefined) {
 // action add in step3 code end
 
 
+
+
+
+
+
+// send prj to project owner for approval start
+sendApproval(){
+  this.ProjectDto.Emp_No=this.Current_user_ID;
+  this.ProjectDto.isTemplate=this.saveAsTemplate;
+  this.ProjectDto.Project_Code=this.PrjCode;
+  this.ProjectDto.Remarks=this._remarks;
+  this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+     if(res&&res.message==='Success'){
+           this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+           this.router.navigate(['./backend/ProjectsSummary']);
+           this.closeInfo();
+      }
+     else{
+        this.notification.showError('something went wrong!','Failed');
+     }
+
+ })
+}
+// send prj to project owner for approval end
+
+
+
+// remove assigned/conditional project start
+removeACPrj(index:number){
+  // Emp_No, assignid ,Remarks
+  this.ProjectDto.Emp_No=this.Current_user_ID;
+  this.ProjectDto.assignid=+this.assigntask_json[index-1].Assign_Id;
+  this.ProjectDto.Remarks=' sample testing remarks';
+  // this.ProjectDto.assignid=
+  this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
+  
+        if(res&&res.message==='Success'){
+             this.notification.showSuccess(this.assigntask_json[index-1].Task_Name+" removed","Success");
+             this.GetAssignedTaskDetails();
+             document.getElementById('ACPrjRemovalbtn').click();
+        }
+        else{
+           this.notification.showError("Something went wrong!","Failed");
+        }
+  });
+}
+// remove assigned/conditional project end
+
+
+// delete template code start
+onTmpRmvDialogOpen(index:number){
+  Swal.fire({
+    title: this.template_json[index].Project_Name,
+    text: 'Delete template permanently?',
+    showCancelButton: true,
+    confirmButtonText: 'Delete',
+    cancelButtonText: 'Cancel'
+  })
+    .then((option) => {
+      if (option.isConfirmed) {   // user said yes to add new action into a project which is already completed.
+        this.removeTemplate(this.template_json[index].Project_Code);
+      }
+      else {
+        // when the user said no
+        Swal.fire(
+          'Cancelled',
+          'Template Undisturbed',
+          'error'
+        )
+      }
+    })
+    .catch(e => console.log(e));
+}
+
+removeTemplate(templateCode:string){
+  this.ProjectDto.Project_Code=templateCode;
+  this.createProjectService.NewDeleteProjectTemplate(this.ProjectDto).subscribe((res:any)=>{
+        if(res&&res.message==='Success'){
+               this.notification.showSuccess('Template deleted.','Success');
+               this.GetAssignedTaskDetails();
+        }
+        else{
+                this.notification.showError('Something went Wrong!','Failed');
+        }
+  });
+}
+// delete template code end
 
 
 
