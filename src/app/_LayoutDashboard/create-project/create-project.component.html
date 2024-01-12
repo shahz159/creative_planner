@@ -549,7 +549,7 @@
 
      <!-- test -->
 
-<!-- 
+<!--
      <div class="Templates-list w-100 d-none">
         <div class="container">
             <div class="m-auto">
@@ -571,8 +571,8 @@
 
 
 
-                                     
-                                        
+
+
                                       <div class="template-design">
                                         <h6 class="template-name">Building Design</h6>
                                         <p class="template-description">aims to enhance the overall user experience while incorporating innovative and environmentally conscious design elements.</p>
@@ -718,20 +718,20 @@
                                             {{PrjOfType}}
                                         </div>
                                     </div>
-    
+
                                     <div class="kt-project-info-body  pl-3 ">
                                         <div class="d-flex">
                                             <div class="kt-project-name">
                                                 <h4>{{PrjName}}</h4>
                                             </div>
-    
+
                                         </div>
                                         <div class="kt-project-desc">
                                             <p>{{PrjDes}}</p>
                                         </div>
-    
+
                                     </div>
-    
+
                                     <div class="owner_responsible_view">
                                         <div class="own_x">
                                             <div class="ow_r">
@@ -742,7 +742,7 @@
                                                 <p>{{PrjOwner}}</p>
                                             </div>
                                         </div>
-    
+
                                         <div class="own_x">
                                             <div class="ow_r">
                                                 <svg  width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path _ngcontent-afb-c397="" fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg>
@@ -753,10 +753,10 @@
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
 
-                                
+
 
 
                 <div class="kt-info-box mt-2">
@@ -888,7 +888,7 @@
 
 
                                     <ng-container *ngFor="let action of PrjActionsInfo; let i=index;">
-                                        <div 
+                                        <div
                                             class="kt-projcect-act-list"
                                             (click)="showActionDetails(action.IndexId-1)"
                                             [ngClass]="{'Active':currentActionView===action.IndexId-1}"
@@ -971,7 +971,7 @@
                                             <div class="info-dv-text-v">
                                                 <p>If you would like to create the project, please add your action .....</p>
                                             </div>
-    
+
                                         </div>
                                     </ng-container>
 
@@ -1426,7 +1426,7 @@
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Select Owner<span class="text-danger">*</span></label>
                             <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjOwner"
-                              (change)="onProjectOwnerChanged()">
+                              (change)="onProjectOwnerChanged();    setRACIS(); ">
                               <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                             </ng-select>
                           </div>
@@ -1435,7 +1435,7 @@
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Responsible<span class="text-danger">*</span></label>
                             <ng-select *ngIf="Responsible_json" class="kt-form-vd" placeholder="Select Type.."
-                              [(ngModel)]="PrjResp" (change)="onResponsibleChanged()">
+                              [(ngModel)]="PrjResp" (change)="onResponsibleChanged();  setRACIS();   ">
                               <ng-option
                                 [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
                               <ng-option
@@ -1448,7 +1448,7 @@
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Authority<span class="text-danger">*</span></label>
                             <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"
-                              *ngIf="Responsible_json">
+                              *ngIf="Responsible_json"    (change)="setRACIS(); ">
                               <ng-option
                                 *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                 [value]="p.EmpNo">{{p.EmpName}}</ng-option>
@@ -1460,8 +1460,8 @@
                         <div class="col-lg-6 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Coordinating<span class="text-danger">*</span></label>
-                            <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjCrdtr">
-                              <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
+                            <ng-select class="kt-form-vd" placeholder="Select Type.."   [(ngModel)]="PrjCrdtr"  (change)="setRACIS(); "   >
+                              <ng-option *ngFor="let p of allUser_json"   [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                             </ng-select>
 
                           </div>
@@ -1470,17 +1470,17 @@
                         <div class="col-lg-6 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Inform<span class="text-danger">*</span></label>
-                            <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer">
+                            <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer"  (change)="setRACIS() " >
                               <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name }}</ng-option>
                             </ng-select>
-                            <span style="color:red" *ngIf="!PrjInformer">* Please select Inform</span>
+                            <span style="color:red" *ngIf="!PrjInformer"   >* Please select Inform</span>
                           </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                             <label>Auditor (Optional):</label>
-                            <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuditor">
+                            <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuditor"    (change)="setRACIS()"  >
                               <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name }}</ng-option>
                             </ng-select>
                           </div>
@@ -1498,7 +1498,7 @@
                               <mat-chip-list #selectedProjSprt>
 
                                 <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
-                                  (removed)="removeSelectedPrjSprt(p)">
+                                  (removed)="removeSelectedPrjSprt(p); setRACIS();    ">
                                   {{ p.Emp_Name}}
                                   <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
@@ -1518,7 +1518,7 @@
                               </div>
 
                               <mat-autocomplete #ProjSprtDrpDwn="matAutocomplete"
-                                (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value=''; "
+                                (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value='';  setRACIS();  "
                                 (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
                                 <mat-option *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value"
                                   [value]="p.Emp_No">
@@ -1531,6 +1531,42 @@
                           </div>
                         </div>
 
+
+
+
+
+
+
+
+
+
+                        <div class="col">
+                          <div  class="kt-info-lable-v" *ngIf="RACIS.length>0"   > RACIS </div>
+                          <div  class="kt-project-sts-data">
+                            <div class="kt-support-view">
+                              <div  class="symbol-group symbol-hover flex-nowrap justify-content-start">
+
+
+
+                                <div  *ngFor="let item of RACIS;let i=index"   class="symbol symbol-35px symbol-circle"   ><span   title="{{item}}"
+                                    class="symbol-label text-inverse-warning fw-bold"
+
+                                    [ngClass]="{'bg-primary':i===0,'bg-danger':i===1,'bg-warning':i===2,'bg-dark':i>=3}"
+
+                                    > {{item[0]}} </span></div>
+
+
+
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+
                         <div class="col-lg-12 mb-1">
                           <div class="form-group">
                             <label for="exampleFormControlFile1">Remarks </label>
@@ -1540,8 +1576,8 @@
                           </div>
                         </div>
 
-
-                        <div class="col-lg-12">
+<!--
+                         <div class="col-lg-12">
 
                           <div class="kt-support-view">
                             <div class="symbol-group symbol-hover flex-nowrap">
@@ -1557,7 +1593,7 @@
                               </div>
                               <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
                                 data-bs-original-title="Susan Redwood" data-kt-initialized="1">
-                                <span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
+                                <span class="symbol-label bg-primary text-inverse-primary fw-bold">M</span>
                               </div>
                               <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
                                 aria-label="Melody Macy" data-bs-original-title="Melody Macy" data-kt-initialized="1">
@@ -1566,7 +1602,7 @@
                               </div>
                               <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
                                 data-bs-original-title="Perry Matthew" data-kt-initialized="1">
-                                <span class="symbol-label bg-danger text-inverse-danger fw-bold">P</span>
+                                <span class="symbol-label bg-danger text-inverse-danger fw-bold">M</span>
                               </div>
                               <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
                                 aria-label="Barry Walter" data-bs-original-title="Barry Walter" data-kt-initialized="1">
@@ -1582,7 +1618,7 @@
                         </div>
 
                       </div>
-                    </div>
+                    </div> -->
 
                                         <div class="kt-ctv-btn-two mt-1">
                                             <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"  (click)="Back_to_project_details_tab()">Previous Step</button>
@@ -1596,8 +1632,8 @@
 
 
                                     <div class="Add_action_tab"   *ngIf="Prjtype==='001'||Prjtype==='002'"     >
-                                      
-                                      
+
+
                                       <ng-container *ngIf="currentActionView===undefined;else ActionView">
                                         <div class="kt-prd-dtl ">
                                            <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
@@ -1615,7 +1651,7 @@
                                                     </svg>
                                                     <span class="lbl-hdn">Edit</span>
                                                 </span>
-                                           
+
                                             </div>
                                            </div>
 
@@ -1784,7 +1820,7 @@
                                         </div>
 
                                         <div class="row mt-5 px-3">
-                                        
+
                                         <ng-container *ngIf="fileAttachment">
 
                                         <div class="col-lg-3  text-center" style="max-width:20%;" *ngIf="isFileUploaded;else fileAttachmentFailed" title="">
@@ -1851,14 +1887,14 @@
                                           </div>
                                         </div>
                                          <button class="btn btn-move-fw my-ct-v-btn btn-next" (click)="uploadFileAttachment()" [disabled]="!fileAttachment"  >Upload</button>
-                                         
+
                                         </div>
 
 
                         </ng-template>
 
-                                       </ng-container> 
-                                      
+                                       </ng-container>
+
 
                                         </div>
 
@@ -1882,18 +1918,18 @@
                                                      </svg>
                                                      <span class="lbl-hdn">Edit</span>
                                                  </span>
-                                            
+
                                              </div>
                                             </div>
- 
+
                                             <div class="kt-project-name d-flex d-flex align-items-center gap-2">
                                              <h4>{{PrjActionsInfo[currentActionView].Project_Name}}</h4>
                                             </div>
                                             <div class="kt-project-desc w-80">
                                              <p>{{PrjActionsInfo[currentActionView].Project_Description}}</p>
                                           </div>
- 
- 
+
+
                                          <div  class="row mt-4 px-3">
                                              <div  class="col text-center">
                                                  <div  class="kt-info-lable-v"><span  class="kt-info-lable-icon"><svg
@@ -1995,7 +2031,7 @@
                                                  </div>
                                              </div>
                                          </div>
- 
+
                                          <div  class="row mt-5 px-3">
                                              <div  class="col text-center">
                                                  <div  class="kt-info-lable-v"> Start date </div>
@@ -2013,7 +2049,7 @@
                                                  <div  class="kt-info-lable-v"> Allocated </div>
                                                  <div  class="kt-info-data-v ng-star-inserted"> {{PrjActionsInfo[currentActionView].AllocatedHours}} hrs </div>
                                              </div>
-                                
+
                                              <div class="col-lg-3  text-center"  *ngIf="PrjActionsInfo[currentActionView].Remarks">
                                                  <div class="kt-info-lable-v">
                                                      Remarks
@@ -2023,9 +2059,9 @@
                                                  </div>
                                              </div>
                                          </div>
- 
+
                                          <div class="row mt-5 px-3">
-                                         
+
                                          <div class="col-lg-3  text-center" style="max-width:20%;"  title=""  *ngIf="PrjActionsInfo[currentActionView].Sourcefile"  >
                                              <div class="kt-info-lable-v  file-attachment ">
                                                  Attachment
@@ -2035,9 +2071,9 @@
                                                  <b class="word-break text-info curser-pointer">{{PrjActionsInfo[currentActionView].Sourcefile}}</b>
                                              </div>
                                          </div>
-                                     
+
                                          </div>
- 
+
                                          </div>
 
                                       </ng-template>
@@ -2206,10 +2242,10 @@
                                 </svg>
                             </span>
                         </div>
-                       
+
                         <div class="Project_type_DW curser-pointer">
                             <ng-select  placeholder="Change task type">
-                                <ng-option >     
+                                <ng-option >
                                 </ng-option>
                             </ng-select>
                         </div>
@@ -2236,7 +2272,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Project Name</label>
                             <div class="input-icon project-name_ed curser-pointer">
-                                <input type="text" class="form-control"  [(ngModel)]="PrjName" 
+                                <input type="text" class="form-control"  [(ngModel)]="PrjName"
                                     placeholder="Search..." />
                             </div>
                         </div>
@@ -2325,12 +2361,12 @@
                                     </path>
                                 </svg></span> Responsible</div>
 
-                                <div class="input-icon Sub_In_ed" *ngIf="projectInfo">                     
+                                <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
                                     <ng-container *ngIf="projectInfo.isRespActive=='1'">
                                         <ng-container
                                             *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                                             && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
-    
+
                                             <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                                 <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                     [disabled]="item.Emp_No==selectedOwner">
@@ -2344,7 +2380,7 @@
                                                     [(ngModel)]="responsible" readonly />
                                             </ng-template>
                                     </ng-container>
-                                    
+
                                     <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                         <ng-container>
                                             <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
@@ -2364,7 +2400,7 @@
                         <!-- <div class="input-icon Sub_In_ed" >
                             <ng-container >
                                     <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
-                                        <ng-option >  
+                                        <ng-option >
                                         </ng-option>
                                     </ng-select>
                             </ng-container>
@@ -2392,7 +2428,7 @@
                             </ng-option>
                         </ng-select>
                             <!-- <ng-select class="curser-pointer" [(ngModel)]="Category_Name" placeholder="Select Category">
-                                <ng-option  >           
+                                <ng-option  >
                                 </ng-option>
                             </ng-select> -->
                         </div>
@@ -2463,11 +2499,11 @@
                     <div class="form-group mb-2 Ic_ed">
                        <div class="kt-info-lable-v"> Start date</div>
                           <div class="input-icon Sub_In_ed">
-                             <input type="text"                  
+                             <input type="text"
                              [ngModel]="Prjstartdate|date:'dd-MM-YYYY'"
                              class="form-control readonly" readonly />
                           </div>
-                        </div>  
+                        </div>
                     </div>
                     <div class="col-lg-4 text-left">
                         <div class="form-group mb-2  Ic_ed">
@@ -2493,7 +2529,7 @@
                         <div class="kt-info-lable-v"> Duration</div>
                         <div class="input-icon Sub_In_ed"
                         *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                        <input type="text" class="form-control readonly"  [(ngModel)]="_allocated" 
+                        <input type="text" class="form-control readonly"  [(ngModel)]="_allocated"
                             placeholder="Duration..." readonly />
                     </div>
                     <ng-template #continue>
@@ -2505,7 +2541,7 @@
                             <!-- <input type="text" class="form-control readonly"  [(ngModel)]="_allocated" placeholder="Duration..." readonly />
                          -->
                        </div>
-                    </div>  
+                    </div>
             </div>
                 <div class="col-lg-4 text-left" >
                     <div class="form-group mb-2 Ic_ed">
@@ -2515,14 +2551,14 @@
                             </div>
                         </div>
                     </div>
-                </div>      
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group ">
                         <label for="exampleFormControlFile1">Remarks</label>
                         <textarea class="form-control curser-pointer" aria-label="With textarea"
-                            placeholder="Define your exact reason here." 
+                            placeholder="Define your exact reason here."
                             style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
                     </div>
                 </div>

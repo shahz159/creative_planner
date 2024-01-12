@@ -1,3 +1,4 @@
+import { object } from '@amcharts/amcharts4/core';
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
@@ -54,7 +55,7 @@ export class CreateProjectComponent implements OnInit {
   PrjAuditor:string;
   PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
   todayDate: Date = new Date();
-
+  EmpName:any
 
 
 
@@ -68,8 +69,8 @@ export class CreateProjectComponent implements OnInit {
   PrjCategory:string;
   PrjVersion:string;
   PrjLocation:string;
-  Prjstartdate:any 
-  Prjenddate:any 
+  Prjstartdate:any
+  Prjenddate:any
   Prjduration:number;
   _remarks:string;
   fileAttachment:any;
@@ -115,7 +116,7 @@ export class CreateProjectComponent implements OnInit {
     this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
-   
+
 
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -125,7 +126,7 @@ export class CreateProjectComponent implements OnInit {
 
       this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
       this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-     
+
   }
 
 
@@ -144,7 +145,7 @@ export class CreateProjectComponent implements OnInit {
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
-          
+
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
@@ -162,6 +163,10 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='003'?'Standard Tasks':
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
+
+
+          this.setRACIS();
+
       }
 
      });
@@ -188,7 +193,7 @@ export class CreateProjectComponent implements OnInit {
    let Emp_Name=Owner.EmpName
    let openParenIndex = Emp_Name.indexOf('(');
    this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
-   
+
    let res=  this.Responsible_json[0].ResponsibleName
    let openParenIndex_res = res.indexOf('(');
    this.responsible = res.substring(0, openParenIndex_res).trim();
@@ -208,7 +213,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-    
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
       console.log('raohan',this.projectInfo)
@@ -287,16 +292,6 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
  createProject(){
    debugger
 
@@ -345,7 +340,7 @@ export class CreateProjectComponent implements OnInit {
             {    // when core, secondary
               this.Move_to_Add_action_tab();
             }
-          
+
         }
         else if(res&&res.message==='Success1'){
           this.PrjCode=res.Project_Code;
@@ -528,7 +523,7 @@ export class CreateProjectComponent implements OnInit {
     $('.Project_details_tab,.add_tema_tab').hide();
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(3)').addClass('active'); 
+    $('.sbs--basic li:nth-child(3)').addClass('active');
   }
 
   back_to_add_team(){
@@ -676,7 +671,7 @@ onProjectOwnerChanged(){
 
 
   showSideBar() {
-   
+
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -730,6 +725,54 @@ showActionDetails(index: number | undefined) {
 // action add in step3 code end
 
 
+
+
+
+
+
+// RACIS CODE start
+RACIS:any=[];
+
+
+setRACIS(){
+    this.RACIS=[];
+
+     this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
+     this.RACIS.push(this.Responsible_json[0].OwnerEmpNo===this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
+     this.RACIS.push(this.Authority_json.find((item)=>item.EmpNo===this.PrjAuth).EmpName);
+      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
+      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
+
+      const au=this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor);
+      if(au)this.RACIS.push(au.Emp_Name);
+
+     const e=this.PrjSupport.map((item)=>item.Emp_Name);
+     this.RACIS=[...this.RACIS,...e];
+
+
+
+
+
+
+     let arr=[];
+     for(let i=0;i<this.RACIS.length;i++){
+      if(!arr.includes(this.RACIS[i]))
+         arr.push(this.RACIS[i]);
+     }
+     this.RACIS=arr;
+
+
+
+
+
+
+      console.log("RACIS:",this.RACIS);
+
+
+}
+
+
+// RACIS CODE end
 
 
 

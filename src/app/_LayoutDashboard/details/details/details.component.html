@@ -2812,7 +2812,7 @@
                                                             <!--begin::Text-->
                                                             <div class="fw-mormal timeline-content text-muted ps-3">
                                                                 <p class="kt-timeline-tl mb-0">
-                                                                    <span class="fw-bold text-gray-800"> {{item.Value}} </span>                                                                 
+                                                                    <span class="fw-bold text-gray-800"> {{item.Value}} </span>
                                                                     | <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> </p>
                                                                 <span *ngIf="item.oldValue !==''">From :
                                                                     {{item.oldValue}}</span>
@@ -3952,10 +3952,33 @@
 
                 <div class="text-center acc-section">
                     <h1 class="text-primary main_acc">Access denied 503 !</h1>
-                    <h5 class="acc-desc">
+                    <h5 class="acc-desc  user-not-found-msg   ">
                         Unfortunately, we did not find you in this Project.
                     </h5>
-                </div>
+
+                    <h5 class="acc-desc  request-sent-msg   d-none">The request has been sent to all members in this communication. Once it has been approved, you will
+                      be added. You can track the request in your inbox thru "Memo Request" section. Happy Communications!</h5>
+
+</div>
+<!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
+
+<div class="row w-100  Send-Request-Dialog">
+  <div class="col-lg-7 m-auto">
+      <div class="kt-card-cmt">
+          <textarea [(ngModel)]="Usercomment"
+              class="form-control form-control-solid kt-user-503-cmt" rows="4" name="application"
+              value="" placeholder="Add Your comment"></textarea>
+          <div class="text-end mb-1 mt-4">
+              <a (click)="this.Usercomment = '';" class="btn btn-sm btn-secondary mr-2">
+                  Clear</a>
+              <button (click)="sendRequest()" class="btn btn-sm btn-info mr-2"
+                  data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
+                  Send Request
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
 
                 <div class="acc-img_sec">
                     <div class="acc-denied_img">
@@ -8826,7 +8849,7 @@
                                                 [(ngModel)]="selectedOwnResp" readonly />
                                         </ng-template>
                                 </ng-container>
-                                
+
 
                                 <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                     <ng-container>
