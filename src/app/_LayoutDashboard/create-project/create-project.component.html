@@ -400,13 +400,13 @@
               <div class="card mt-3">
                 <div class="card-body p-3">
                   <div class="col-lg-12  card-Scroll">
-                    <div class="kt-action-list" *ngFor="let record of template_json ;let i = index;">
-                      <div class="kt-act-card d-flex align-items-center">
+                    <div class="kt-action-list " *ngFor="let record of template_json ;let i = index;">
+                      <div class="kt-act-card d-flex align-items-center prj-template  ">
                         <div class="kt-act-no">
                           <p>{{i+1}}</p><span>Template</span>
                         </div>
                         <div class="kt-act-info">
-                          <div class="kt-act-ttl-v">
+                          <div class="kt-act-ttl-v"  (click)="Scratech_btn();openTemplate(record);"  >
                             <h6>{{record.Project_Name }}</h6>
                             <div class="d-flex">
                               <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic">
@@ -418,20 +418,16 @@
                           </div>
                           <div class="kt-act-btns">
                             <div class="d-flex align-items-center">
-                              <div class="kt-dl-icon db-v" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic"><svg width="26px"
-                                    height="26px" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                      <circle cx="12" cy="12" r="9" fill="#FF4D4D" fill-opacity="0.24"></circle>
-                                      <path d="M9.00009 14.9997L15.0001 8.99966" stroke="#D10000" stroke-width="1.44">
-                                      </path>
-                                      <path d="M15 15L9 9" stroke="#D10000" stroke-width="1.44"></path>
-                                    </g>
-                                  </svg>
+                              <div class="kt-dl-icon db-v" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true" role="img" font-size="1.5rem" width="1.2em" height="1.2em" viewBox="0 0 24 24"
+                                class="iconify iconify--mdi">
+                                <path _ngcontent-otf-c186="" fill="gray"
+                                  d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z"></path>
+                                 </svg>
                                 </span>
                               </div>
-                              <div class="kt-dl-icon"><span class="kt-svg-ic"
+                              <!-- <div class="kt-dl-icon"><span class="kt-svg-ic"
                                   (click)="Scratech_btn();openTemplate(record);">
                                   <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -443,7 +439,7 @@
                                         d="M9.5 12L11.3939 13.8939C11.4525 13.9525 11.5475 13.9525 11.6061 13.8939L15.5 10"
                                         stroke="#0091EB" stroke-width="1.56"></path>
                                     </g>
-                                  </svg></span></div>
+                                  </svg></span></div> -->
                             </div>
                           </div>
                         </div>
@@ -594,7 +590,7 @@
                                             </div>
                                             <div class="ow_dtl">
                                                 <label>Owner</label>
-                                                <p>{{PrjOwner}}</p>
+                                                <p>{{Owner_Name}}</p>
                                             </div>
                                         </div>
     
@@ -604,7 +600,7 @@
                                               </div>
                                             <div class="ow_dtl">
                                                 <label>Responsible</label>
-                                                <p>{{PrjResp}}</p>
+                                                <p>{{responsible}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -742,6 +738,54 @@
                                     <div class="kt-project-action-list-view">
 
 
+                                      <div class="kt-projcect-act-list">
+
+                                        <div *ngFor="let tempact of PrjTemplActions;let i=index" class="row curser-pointer  mb-2  ">
+                                          <div class="col-lg-8 pl-0 pr-1" style="">
+                                            <div  class="kt-p-box" style=" background-color: #f3fbff; padding: 1.2em;">
+                                              <div  class="kt-action-p-tittle">
+                                                <h4>{{tempact.Project_Name}}</h4>
+                                              </div>
+                                              <div class="d-flex align-items-center justify-content-between">
+                                                <div class="kt-info-lable-v"></div><input type="text"
+                                                  style="height: 0; width: 0; border: 0; outline: 0; background: transparent;">
+                                                <div class="kt-info-lable-v"></div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div  class="col-lg-4 pl-2">
+                                            <div class="kt-p-box text-center" style="background-color:#f3fbff;" >
+                                              <div class="kt-p-status">
+                                                <div class="kt-p-action-No"   
+                                                 style=" color: #626262;font-family: lucida sans unicode;font-weight: bold; padding:0.8em; display:flex; justify-content: space-between;    "> Action {{i+1}}
+                                                <svg  (click)="openTemplateAction(tempact)"    class="template-pin"     height="19px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#000000"
+                                                  stroke="#000000" stroke-width="0.0051200099999999995">
+                                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                  <g id="SVGRepo_iconCarrier">
+                                                    <polygon 
+                                                      points="474.962,117.094 394.906,37.038 235.88,179.284 242.345,269.657 332.717,276.121 "></polygon>
+                                                    <path
+                                                      d="M491.743,150.658l-130.4-130.401c-4.634-4.634-4.634-12.148,0-16.781 c4.634-4.634,12.147-4.634,16.781,0l130.401,130.401c4.634,4.634,4.634,12.147,0,16.781 C503.891,155.292,496.378,155.292,491.743,150.658z">
+                                                    </path>
+                                                    <polygon  points="188.018,297.133 11.746,473.404 0,512 38.597,500.254 214.867,323.984 ">
+                                                    </polygon>
+                                                    <path 
+                                                      d="M332.717,276.121l-96.837-96.837c-59.731-22.719-129.85-10.026-177.966,38.09l236.712,236.713 C342.743,405.972,355.436,335.851,332.717,276.121z">
+                                                    </path>
+                                                  </g>
+                                                </svg>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+
+
                                     <ng-container *ngFor="let action of PrjActionsInfo; let i=index;">
                                         <div 
                                             class="kt-projcect-act-list"
@@ -799,7 +843,7 @@
                                             </div>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="PrjActionsInfo.length===0">
+                                    <ng-container *ngIf="PrjActionsInfo.length===0&&PrjTemplActions.length===0">
                                         <div class="info-action-view">
 
                                             <div class="info-act-img">
@@ -928,24 +972,24 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-4 mb-3">
+                        <!-- <div class="col-lg-4 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                             <label>Project Version:</label>
                             <input class="form-control ng-pristine" type="text" placeholder="Enter Version number"
                               [(ngModel)]="PrjVersion">
 
                           </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-lg-4 mb-3">
+                        <!-- <div class="col-lg-4 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                             <label>project location:</label>
                             <input class="form-control ng-pristine" type="text" placeholder="add google map location.."
                               [(ngModel)]="PrjLocation">
 
                           </div>
-                        </div>
-                        <div class="col-lg-12 d-none">
+                        </div> -->
+                        <!-- <div class="col-lg-12 d-none">
                           <div class="my-sub-task-tittle mt-3 mb-2">
                             <h5>Project Locations</h5>
                           </div>
@@ -1043,7 +1087,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
 
 
                         <ng-container *ngIf="Prjtype !=='003' && Prjtype!=='008'">
@@ -1053,10 +1097,15 @@
 
                               <div class="d-flex ">
 
-                          <input  class="form-control" matInput (dateChange)="setMaxDate()" [(ngModel)]="Prjstartdate"
-                                  [matDatepicker]="picker2" id="d-date" (click)="picker2.open()" [min]="todayDate"
-                                  placeholder="Select Date"  name="date">
-
+                                  <input 
+                                  class="form-control ng-pristine" 
+                                  name="date"
+                                  [(ngModel)]="Prjstartdate" id="d-date"
+                                  placeholder="Select Date" [matDatepicker]="picker2" 
+                                  (click)="picker2.open()" 
+                                  [min]="todayDate"
+                                  (dateChange)="setMaxDate()" 
+                                   />
 
 
                                 <div class="input-group-text p-0">
@@ -1086,21 +1135,19 @@
                             </div>
                           </div>
 
-                          <div class="col-lg-4 mb-3">
+                          <!-- <div class="col-lg-4 mb-3">
                             <label>Allocated Hours<span class="text-danger">*</span></label>
-
-                                                <input id="hour-input" #allocated="ngModel" required type="number" class="form-control"
-                                                  placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0"
-                                                  oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
-                                                <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
-                                                  required!</span>
-                                                <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 9
-                                                  hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                                                <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a
-                                                  value.</span>
-                                                <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null"
-                                                  style="color:red">{{_message}}</span>
-                                              </div>
+                          
+                            <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
+                              [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
+                            <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
+                              required!</span>
+                            <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 9
+                              hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                            <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a
+                              value.</span>
+                            <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:red">{{_message}}</span>
+                          </div> -->
                                             </ng-container>
 
                                             <div class="col-lg-4 text-left"
@@ -1283,7 +1330,7 @@
                             <label>Select Owner<span class="text-danger">*</span></label>
                             <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjOwner"
                               (change)="onProjectOwnerChanged()">
-                              <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
+                              <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo.trim()">{{p.EmpName}}</ng-option>
                             </ng-select>
                           </div>
                         </div>
@@ -1293,9 +1340,9 @@
                             <ng-select *ngIf="Responsible_json" class="kt-form-vd" placeholder="Select Type.."
                               [(ngModel)]="PrjResp" (change)="onResponsibleChanged()">
                               <ng-option
-                                [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
+                                [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
                               <ng-option
-                                [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
+                                [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                             </ng-select>
 
                           </div>
@@ -1457,9 +1504,7 @@
                                         </div>
                                     </div>
 
-
-
-                                    <div class="Add_action_tab"   *ngIf="Prjtype==='001'||Prjtype==='002'"     >
+                   <div class="Add_action_tab"   *ngIf="Prjtype==='001'||Prjtype==='002'"     >
                                       
                                       
                                       <ng-container *ngIf="currentActionView===undefined;else ActionView">
@@ -1957,6 +2002,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="kt-action-list">
+             
               <div class="kt-act-card d-flex align-items-center">
                 <div class="kt-act-no">
                   <p>{{unique_id}}</p><span>Project</span>
@@ -2012,7 +2058,8 @@
                   </div>
                 </div>
               </div>
-            </div>
+
+            </div> 
           </div>
         </div>
         <div class="project_reject_msg">

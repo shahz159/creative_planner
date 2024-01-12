@@ -320,7 +320,8 @@ export class CreateProjectComponent implements OnInit {
         Auditor:this.PrjAuditor,
         Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
         SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
-        Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+        // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+        Duration:'0',
         DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
         Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
         Remarks:this._remarks
@@ -347,7 +348,7 @@ export class CreateProjectComponent implements OnInit {
             {    // when core, secondary
               this.Move_to_Add_action_tab();
             }
-          
+          this.BsService.ProjectCreatedEvent.emit();
         }
         else if(res&&res.message==='Success1'){
           this.PrjCode=res.Project_Code;
@@ -358,7 +359,7 @@ export class CreateProjectComponent implements OnInit {
 
               this.router.navigate(['./backend/ProjectsSummary']);
               this.closeInfo()
-
+         this.BsService.ProjectCreatedEvent.emit();
         }
         else
         {
@@ -666,42 +667,12 @@ onProjectOwnerChanged(){
     this.Prjtype=this.bind_Project[0].Project_Type;
   }
 
-   
-
-
-  openTemplate(template:any){
-      console.log("template:",template);
-      this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
-        const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
-        console.log(PInfo);
-       
-
-       this.PrjOfType=PInfo.Project_Type;
-       this.Prjtype=this.ProjectType_json.find((item)=>item.ProjectType.trim()===this.PrjOfType.trim()).Typeid;
-       this.PrjClient=PInfo.ClientNo;
-       this.PrjName=PInfo.Project_Name;
-       this.PrjDes=PInfo.Project_Description;
-       this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
-       this._allocated=PInfo.AllocatedHours;
-      //  this.fileAttachment=new File()
-       
-
-
-
-
-
-      })
-      
-  }
-
-
    /////////////////////////////////////////assign task End/////////////////////////////
 
   /////////////////////////////////////////add Project End/////////////////////////////
 
 
   showSideBar() {
-   
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -762,6 +733,7 @@ showActionDetails(index: number | undefined) {
 
 // send prj to project owner for approval start
 sendApproval(){
+  debugger
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.isTemplate=this.saveAsTemplate;
   this.ProjectDto.Project_Code=this.PrjCode;
@@ -792,7 +764,7 @@ removeACPrj(index:number){
   this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
   
         if(res&&res.message==='Success'){
-             this.notification.showSuccess(this.assigntask_json[index].Task_Name+" removed","Success");
+             this.notification.showSuccess(this.assigntask_json[index-1].Task_Name+" removed","Success");
              this.GetAssignedTaskDetails();
              document.getElementById('ACPrjRemovalbtn').click();
         }
@@ -842,6 +814,81 @@ removeTemplate(templateCode:string){
   });
 }
 // delete template code end
+
+
+
+
+
+
+
+
+
+
+
+// template open for new project creation start
+PrjTemplActions:any=[];
+
+openTemplate(template:any){
+  console.log("template:",template);
+  this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
+
+    const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
+    console.log(res);
+   
+
+   this.PrjOfType=PInfo.Project_Type;
+   this.Prjtype=this.ProjectType_json.find((item)=>item.ProjectType.trim()===this.PrjOfType.trim()).Typeid;
+   this.PrjClient=PInfo.ClientNo;
+   this.PrjName=PInfo.Project_Name;
+   this.PrjDes=PInfo.Project_Description;
+   this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
+   this._allocated=PInfo.AllocatedHours;
+
+   this.PrjOwner=PInfo.OwnerEmpNo;
+   this.PrjResp=PInfo.ResponsibleEmpNo;
+   this.PrjAuth=PInfo.AuthorityEmpNo;
+   this.PrjCrdtr='';
+   this.PrjAuditor='';
+   this.PrjInformer='';
+   this.PrjSupport=[];
+   //  this.fileAttachment=new File()
+   
+
+    if(['001','002'].includes(this.Prjtype)){
+      const actions=JSON.parse(res[0].Action_Json);
+      console.log('*action we are gettings:',actions);
+      this.PrjTemplActions=actions.filter(action=>action.template);
+    }
+  
+
+
+
+  })
+  
+}
+
+
+
+
+
+
+
+openTemplateAction(templAction){
+  const taction = { name: templAction.Project_Name, description:templAction.Project_Description };
+  this.BsService.setSelectedTemplAction(taction);
+  this.showSideBar();                                                                 // opens the sidebar
+}
+
+
+
+
+
+
+
+
+
+//template open for new project creation end
+
 
 
 

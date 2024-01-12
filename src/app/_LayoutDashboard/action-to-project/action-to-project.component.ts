@@ -120,7 +120,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
-  
+
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -137,6 +137,7 @@ export class ActionToProjectComponent implements OnInit {
     this.GetAllEmployeesForAssignDropdown();
 
     this.gethierarchy();
+
     this.getRACISandNonRACIS();
     const input = document.getElementById("hour-input");
 
@@ -145,6 +146,16 @@ export class ActionToProjectComponent implements OnInit {
       input.addEventListener("wheel", function(event) {
         event.preventDefault();
       });
+
+
+      this.BsService.bs_templAction.subscribe(ta=>{
+        this.Sub_ProjectName=ta.name;
+        this._Description=ta.description;
+      })
+
+ 
+
+
   }
 
   GetAllEmployeesForAssignDropdown() {
@@ -207,7 +218,6 @@ export class ActionToProjectComponent implements OnInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
-
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
