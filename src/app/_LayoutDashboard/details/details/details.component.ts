@@ -1404,7 +1404,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
