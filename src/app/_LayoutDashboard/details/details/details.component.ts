@@ -103,7 +103,7 @@ export const MY_DATE_FORMATS = {
 })
 
 export class DetailsComponent implements OnInit, AfterViewInit {
- 
+
   userFound:boolean|undefined;     // initially undefined.
   myTime = new Date();
   projectInfo: any;
@@ -216,14 +216,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this._MasterCode = pcode;
     });
 
-   
+
 
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-    this.getProjectDetails(this.URL_ProjectCode); 
-    setTimeout(() => this.drawStatistics(), 5000); 
+    this.getProjectDetails(this.URL_ProjectCode);
+    setTimeout(() => this.drawStatistics(), 5000);
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -257,7 +257,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getResponsibleActions(); 
+    this.getResponsibleActions();
     this.GetActivityDetails();
 
   }
@@ -332,8 +332,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           }
         }).render();
         // chart js end ----------------
-        
-         
+
+
         var lang = {
           "javascript": "70%",
         };
@@ -473,9 +473,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   isrespactive:boolean=true;
 
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-    
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-     
+
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
       this.isDMS= this.projectInfo.isDMS;
@@ -515,25 +515,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         {   // if action Code is additional along with the project code then redirect to that action.
           const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
           if(Action)
-             { 
+             {
                 this.showActionDetails(Action.IndexId-1);
                 setTimeout(()=>{
                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
                   window.scrollTo(0,0);
                 },2000);
-            
+
             }
           else
            this.showActionDetails(undefined);
         }
-        else 
+        else
           this.showActionDetails(undefined);  // opens the main project.
     })
 
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
-    
+
 
     });
   }
@@ -546,7 +546,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   thirdRecords:any
   newArray:any
   uniqueSet :any
-  nonRacisList:any=[]; 
+  nonRacisList:any=[];
   GetPeopleDatils(){
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
@@ -566,7 +566,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-       
+
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
         // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
@@ -649,13 +649,28 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    
+
     if(index!=undefined){
-      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code); 
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-      
-    } 
+
+    }
   }
+
+
+  Usercomment: string = '';
+
+  sendRequest(): void {
+    Swal.fire('Request Send Successfully');
+    $('.Send-Request-Dialog').addClass('d-none');
+    $('.request-sent-msg').removeClass('d-none');
+    $('.user-not-found-msg').addClass('d-none');
+  }
+
+
+
+
+
 
 
 
@@ -1378,7 +1393,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  
+
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -1711,7 +1726,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.selectedFile = null;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();   
+              this.closeActCompSideBar();
               this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -2137,7 +2152,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
-  
+
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2283,9 +2298,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
-     
+
       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-      
+
       this.closeInfo();
     });
   }
@@ -5149,7 +5164,7 @@ removeSelectedDMSMemo(item){
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
-            
+
           if(this.currentActionView!==undefined)
           this._Message=this._Message.replace('Project','Action')
 
@@ -5204,7 +5219,7 @@ removeSelectedDMSMemo(item){
     }
     else{
         // action release
-        
+
         if ([
           this.projectInfo.OwnerEmpNo,
           this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
@@ -5214,7 +5229,7 @@ removeSelectedDMSMemo(item){
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
           this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-        
+
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
@@ -5233,7 +5248,7 @@ removeSelectedDMSMemo(item){
     }
 
 
-  
+
   }
 
   updateReleaseDate() {
@@ -5901,7 +5916,7 @@ getShorterName(name:string|undefined){
 
 
 
-// new project release code start 
+// new project release code start
 activity: any;
 lastactivity: any;
 send_from: any;

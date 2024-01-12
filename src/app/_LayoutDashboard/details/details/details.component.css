@@ -3840,7 +3840,7 @@ span.Rq_date_V {
   margin-bottom: 0px;
   color: #4f4f4f;
   font-weight: 500;
-  font-size: 12px;  
+  font-size: 12px;
     margin-top: -3px;
 }
 .ow_r {
@@ -3881,4 +3881,14 @@ span.Rq_date_V {
   color:#5867dd;
   font-weight: bold;
   font-family:lucida Sans unicode;
+}
+
+.kt-card-cmt {
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 3px 4px 8px #c2c2c2ba;
+  margin-bottom: -20rem;
+  margin-top: -1rem;
 }

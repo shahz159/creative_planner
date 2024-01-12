@@ -882,8 +882,9 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-success font-weight-400 " (click)="LoadDocument(item.iscloud,item.Filename,item.FileUrl,item.ContentType)">Completed <b class="fa fa-paperclip text-info"></b></span>
+                                                            <span class="text-success font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)">Completed  <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info"></b>
                                                             <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
+                                                          </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="text-warning font-weight-400">Forward

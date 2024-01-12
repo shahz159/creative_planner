@@ -814,12 +814,12 @@ $(document).ready(function(){
   Team_Autho:any
   Team_Res:any
   Project_Code:any
-  LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string) {
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
-    if (iscloud == false) {
+    if (Iscloud == false) {
       if (this.Team_Autho == this.Team_Res) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
         FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
@@ -834,22 +834,22 @@ $(document).ready(function(){
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-      filename = filename.replace(/#/g, "%23");
-      filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+      FileName = FileName.replace(/#/g, "%23");
+      FileName = FileName.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
 
-    else if (iscloud == true) {
+    else if (Iscloud == true) {
       let name = "ArchiveView/" + this.Project_Code;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(url1);
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
-      filename = filename.replace(/#/g, "%23");
-      filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      FileName = FileName.replace(/#/g, "%23");
+      FileName = FileName.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&" + "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
