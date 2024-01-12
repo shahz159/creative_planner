@@ -525,7 +525,7 @@ export class CreateProjectComponent implements OnInit {
   Move_to_Add_action_tab(){
     $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
-    $('.Project_details_tab,.add_tema_tab').hide();
+    $('.Project_details_tab,.add_tema_tab').hide(); 
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active');
@@ -747,20 +747,12 @@ setRACIS(){
 
 
 
-
-
-
      let arr=[];
      for(let i=0;i<this.RACIS.length;i++){
       if(!arr.includes(this.RACIS[i]))
          arr.push(this.RACIS[i]);
      }
      this.RACIS=arr;
-
-
-
-
-
 
       console.log("RACIS:",this.RACIS);
 
@@ -906,11 +898,6 @@ openTemplate(template:any){
 }
 
 
-
-
-
-
-
 openTemplateAction(templAction){
   const taction = { name: templAction.Project_Name, description:templAction.Project_Description };
   this.BsService.setSelectedTemplAction(taction);
@@ -918,15 +905,29 @@ openTemplateAction(templAction){
 }
 
 
-
-
-
-
-
-
-
 //template open for new project creation end
 
+
+
+// cancel project creation start
+cancelPrjCreation(){
+  Swal.fire({
+    title:'Cancel Project Creation',
+    text:"This action cannot be undo.",
+    showCancelButton:true,
+    showConfirmButton:true
+  }).then((choice:any)=>{
+        if(choice.isConfirmed){
+          this.Back_to_project_details_tab();
+          this.back_to_options();  
+          
+        }
+  })
+}
+
+
+
+// cancel project creation end
 
 
 
