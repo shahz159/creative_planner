@@ -56,4 +56,7 @@ export class ProjectDetailsDTO {
     WorkAchieved:any;
 
     filename:any;
+    isTemplate:boolean;
+    assignid:number;
+
 }

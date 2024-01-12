@@ -34,4 +34,19 @@ export class CreateprojectService {
        return this.http.post(this.rootUrl+'Notification/NewUpdateFileUploadsByProjectCode',formData);
   }
 
+
+
+  NewUpdateNewProjectApproval(prjDTO:ProjectDetailsDTO){
+       return this.http.post(this.rootUrl+'Projects/NewUpdateNewProjectApproval',prjDTO);
+  }
+
+  NewDeleteRejectAssignTask(prjDTO:ProjectDetailsDTO){
+    return this.http.post(this.rootUrl+'Projects/NewDeleteRejectAssignTask',prjDTO);
+  }
+
+
+  NewDeleteProjectTemplate(prjDTO:ProjectDetailsDTO){
+    return this.http.post(this.rootUrl+'Projects/NewDeleteProjectTemplate',prjDTO);
+  }
+
 }
