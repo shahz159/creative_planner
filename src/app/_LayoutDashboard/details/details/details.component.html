@@ -523,7 +523,14 @@
 
                                     </div>
                                     <div class="kt-project-desc">
-                                        <p>{{projectInfo&&projectInfo.Project_Description}}</p>
+                                        <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit_data}}
+                                         {{ isExpandeds ? (projectInfo&&projectInfo.Project_Description | slice:limit_data): ' ' }}
+                                               <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>60">
+                                                <a href="javascript:void(0)"
+                                                (click)="_toggleReadMore()" >{{ isExpandeds ? 'less' : 'more...' }}</a>
+                                            </ng-container>
+
+                                        </p>
                                     </div>
 
                                 </div>
@@ -2107,7 +2114,13 @@
 
                                         </div>
                                         <div class="kt-project-desc w-80">
-                                            <p>{{projectInfo&&projectInfo.Project_Description}}</p>
+                                         <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit}}
+                                            {{ isExpanded ? (projectInfo&&projectInfo.Project_Description | slice:limit): ' ' }}
+                                            <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>60">
+                                                <a href="javascript:void(0)"
+                                                (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
+                                            </ng-container> 
+                                        </p>
                                         </div>
 
 

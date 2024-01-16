@@ -2320,6 +2320,12 @@ check_allocation() {
   toggleReadMore() {
     this.isExpanded = !this.isExpanded;
   }
+
+  limit_data=60;
+  isExpandeds = false;
+  _toggleReadMore() {
+    this.isExpandeds = !this.isExpandeds;
+  }
   /// Action Edits End
 
 
