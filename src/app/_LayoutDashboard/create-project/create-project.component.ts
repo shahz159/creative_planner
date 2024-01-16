@@ -1,3 +1,4 @@
+import { object } from '@amcharts/amcharts4/core';
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
@@ -56,7 +57,7 @@ export class CreateProjectComponent implements OnInit {
   PrjAuditor:string;
   PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
   todayDate: Date = new Date();
-
+  EmpName:any
 
 
 
@@ -70,8 +71,8 @@ export class CreateProjectComponent implements OnInit {
   PrjCategory:string;
   PrjVersion:string;
   PrjLocation:string;
-  Prjstartdate:any 
-  Prjenddate:any 
+  Prjstartdate:any
+  Prjenddate:any
   Prjduration:number;
   _remarks:string;
   fileAttachment:any;
@@ -96,6 +97,7 @@ export class CreateProjectComponent implements OnInit {
   maxDate:any
   URL_ProjectCode: any;
   approvalObj: ApprovalDTO;
+  saveAsTemplate:boolean=false;
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -119,7 +121,7 @@ export class CreateProjectComponent implements OnInit {
     this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
-   
+
 
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -129,7 +131,7 @@ export class CreateProjectComponent implements OnInit {
 
       this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
       this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-     
+
   }
 
 
@@ -168,6 +170,10 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='003'?'Standard Tasks':
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
+
+
+          this.setRACIS();
+
       }
       this.getFindName()
      });
@@ -252,7 +258,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-    
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
@@ -332,18 +338,8 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
  createProject(){
-   debugger
+
 
    const d=new Date();
    d.setFullYear(d.getFullYear()+2);
@@ -365,7 +361,8 @@ export class CreateProjectComponent implements OnInit {
         Auditor:this.PrjAuditor,
         Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
         SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
-        Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+        // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+        Duration:'0',
         DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
         Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
         Remarks:this._remarks
@@ -373,9 +370,11 @@ export class CreateProjectComponent implements OnInit {
   console.log("PRJ INFORMATION :",projectInfo);
   this.ProjectDto.Status=JSON.stringify(projectInfo);
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
+  this.ProjectDto.isTemplate=this.saveAsTemplate;
+
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-    debugger
+
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
@@ -392,7 +391,7 @@ export class CreateProjectComponent implements OnInit {
             {    // when core, secondary
               this.Move_to_Add_action_tab();
             }
-          
+          this.BsService.ProjectCreatedEvent.emit();
         }
         else if(res&&res.message==='Success1'){
           this.PrjCode=res.Project_Code;
@@ -403,7 +402,7 @@ export class CreateProjectComponent implements OnInit {
 
               this.router.navigate(['./backend/ProjectsSummary']);
               this.closeInfo()
-
+         this.BsService.ProjectCreatedEvent.emit();
         }
         else
         {
@@ -526,6 +525,7 @@ export class CreateProjectComponent implements OnInit {
 
   Scratech_btn(){
     $('.Assigned-projects-list').addClass('d-none');
+    $('.Templates-list').addClass('d-none');
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
@@ -535,6 +535,7 @@ export class CreateProjectComponent implements OnInit {
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').addClass('d-none');
     $('.Assigned-projects-list').addClass('d-none');
+    $('.Templates-list').addClass('d-none');
   }
 
   Assigned_projects(){
@@ -574,7 +575,7 @@ export class CreateProjectComponent implements OnInit {
   Move_to_Add_action_tab(){
     $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
-    $('.Project_details_tab,.add_tema_tab').hide();
+    $('.Project_details_tab,.add_tema_tab').hide(); 
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active'); 
@@ -671,16 +672,16 @@ onProjectOwnerChanged(){
   rejectm:any
   conditional_List:any
   assigntask_json:any
-
+  template_json:any;
 
   GetAssignedTaskDetails(){
-
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{  
-      this.assigntask_json=JSON.parse(res[0].Assigntask_json)
-      this.conditional_List=JSON.parse(res[0].conditional_json)
+      this.assigntask_json=JSON.parse(res[0].Assigntask_json);
+      this.template_json=JSON.parse(res[0].templates_json);
+      this.conditional_List=JSON.parse(res[0].conditional_json);
       console.log(this.assigntask_json,'--------------->')
- })
+ });
   }
 
   notifyAssign(){
@@ -703,37 +704,26 @@ onProjectOwnerChanged(){
 
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
-    this._allocated=this.bind_Project[0].Duration
-    this.Prjstartdate=this.bind_Project[0].Start_Date
-    this.date_str = moment(this.start_Date).format("MM/DD/YYYY");
-    this.Prjenddate=this.bind_Project[0].End_Date
-    this.date_End = moment(this.end_Date).format("MM/DD/YYYY");
+    // this.duration=this.bind_Project[0].Duration;
+    this.Prjstartdate = this.bind_Project[0].Start_Date
+    this.Prjenddate = this.bind_Project[0].End_Date
+    console.log(this.Prjstartdate,this.Prjenddate,'+++++++++++>')
     this.PrjName=this.bind_Project[0].Task_Name;
-    this.PrjDes=this.bind_Project[0].Task_Description;
-    this.CreateName=this.bind_Project[0].Created_Name
-    this.unique_id=id
+    this.CreateName=this.bind_Project[0].Created_Name;
+    this.PrjDes=this.bind_Project[0].Task_Description
+    this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
-    if(this.Prjtype==''){
-      this.Prjtype='001';
-    }
-    // this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
-    //       this.Prjtype==='002'?'Secondary Tasks':
-    //       this.Prjtype==='003'?'Standard Tasks':
-    //       this.Prjtype==='008'?'Routine Tasks':
-    //       this.Prjtype==='011'?'To do List':'';
   }
+  
   conditionalList:any
 
   getConditional(value:any){
-    console.log(value,'========>')
     this.conditionalList = [value]
     this.PrjName=this.conditionalList[0].Project_Name;
     this.Prjstartdate=this.conditionalList[0].DPG;
     this.Prjenddate=this.conditionalList[0].DeadLine;
     this.PrjDes=this.conditionalList[0].Project_Description;
     this.Prjtype=this.conditionalList[0].ProjectType;
-    console.log(this.Prjtype,'+++++++++++>')
-
     
   }
 
@@ -743,7 +733,6 @@ onProjectOwnerChanged(){
 
 
   showSideBar() {
-   
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -1071,5 +1060,210 @@ projectEdit(val) {
  
 }
 // Project Edit End
+
+// RACIS CODE start
+RACIS:any=[];
+
+
+setRACIS(){
+    this.RACIS=[];
+
+     this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
+     this.RACIS.push(this.Responsible_json[0].OwnerEmpNo===this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
+     this.RACIS.push(this.Authority_json.find((item)=>item.EmpNo===this.PrjAuth).EmpName);
+      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
+      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
+
+      const au=this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor);
+      if(au)this.RACIS.push(au.Emp_Name);
+
+     const e=this.PrjSupport.map((item)=>item.Emp_Name);
+     this.RACIS=[...this.RACIS,...e];
+
+
+
+     let arr=[];
+     for(let i=0;i<this.RACIS.length;i++){
+      if(!arr.includes(this.RACIS[i]))
+         arr.push(this.RACIS[i]);
+     }
+     this.RACIS=arr;
+
+      console.log("RACIS:",this.RACIS);
+
+
+}
+
+
+// RACIS CODE end
+// send prj to project owner for approval start
+sendApproval(){
+  debugger
+  this.ProjectDto.Emp_No=this.Current_user_ID;
+  this.ProjectDto.isTemplate=this.saveAsTemplate;
+  this.ProjectDto.Project_Code=this.PrjCode;
+  this.ProjectDto.Remarks=this._remarks;
+  this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+     if(res&&res.message==='Success'){
+           this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+           this.router.navigate(['./backend/ProjectsSummary']);
+           this.closeInfo();
+      }
+     else{
+        this.notification.showError('something went wrong!','Failed');
+     }
+
+ })
+}
+// send prj to project owner for approval end
+
+
+
+// remove assigned/conditional project start
+removeACPrj(index:number){
+  // Emp_No, assignid ,Remarks
+  this.ProjectDto.Emp_No=this.Current_user_ID;
+  this.ProjectDto.assignid=+this.assigntask_json[index-1].Assign_Id;
+  this.ProjectDto.Remarks=' sample testing remarks';
+  // this.ProjectDto.assignid=
+  this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
+
+        if(res&&res.message==='Success'){
+             this.notification.showSuccess(this.assigntask_json[index-1].Task_Name+" removed","Success");
+             this.GetAssignedTaskDetails();
+             document.getElementById('ACPrjRemovalbtn').click();
+        }
+        else{
+           this.notification.showError("Something went wrong!","Failed");
+        }
+  });
+}
+// remove assigned/conditional project end
+
+
+// delete template code start
+onTmpRmvDialogOpen(index:number){
+  Swal.fire({
+    title: this.template_json[index].Project_Name,
+    text: 'Delete template permanently?',
+    showCancelButton: true,
+    confirmButtonText: 'Delete',
+    cancelButtonText: 'Cancel'
+  })
+    .then((option) => {
+      if (option.isConfirmed) {   // user said yes to add new action into a project which is already completed.
+        this.removeTemplate(this.template_json[index].Project_Code);
+      }
+      else {
+        // when the user said no
+        Swal.fire(
+          'Cancelled',
+          'Template Undisturbed',
+          'error'
+        )
+      }
+    })
+    .catch(e => console.log(e));
+}
+
+removeTemplate(templateCode:string){
+  this.ProjectDto.Project_Code=templateCode;
+  this.createProjectService.NewDeleteProjectTemplate(this.ProjectDto).subscribe((res:any)=>{
+        if(res&&res.message==='Success'){
+               this.notification.showSuccess('Template deleted.','Success');
+               this.GetAssignedTaskDetails();
+        }
+        else{
+                this.notification.showError('Something went Wrong!','Failed');
+        }
+  });
+}
+// delete template code end
+
+
+
+
+
+
+
+
+
+
+
+// template open for new project creation start
+PrjTemplActions:any=[];
+
+openTemplate(template:any){
+  console.log("template:",template);
+  this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
+
+    const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
+    console.log(res);
+   
+
+   this.PrjOfType=PInfo.Project_Type;
+   this.Prjtype=this.ProjectType_json.find((item)=>item.ProjectType.trim()===this.PrjOfType.trim()).Typeid;
+   this.PrjClient=PInfo.ClientNo;
+   this.PrjName=PInfo.Project_Name;
+   this.PrjDes=PInfo.Project_Description;
+   this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
+   this._allocated=PInfo.AllocatedHours;
+
+   this.PrjOwner=PInfo.OwnerEmpNo;
+   this.PrjResp=PInfo.ResponsibleEmpNo;
+   this.PrjAuth=PInfo.AuthorityEmpNo;
+   this.PrjCrdtr='';
+   this.PrjAuditor='';
+   this.PrjInformer='';
+   this.PrjSupport=[];
+   //  this.fileAttachment=new File()
+   
+
+    if(['001','002'].includes(this.Prjtype)){
+      const actions=JSON.parse(res[0].Action_Json);
+      console.log('*action we are gettings:',actions);
+      this.PrjTemplActions=actions.filter(action=>action.template);
+    }
+  
+
+
+
+  })
+  
+}
+
+
+openTemplateAction(templAction){
+  const taction = { name: templAction.Project_Name, description:templAction.Project_Description };
+  this.BsService.setSelectedTemplAction(taction);
+  this.showSideBar();                                                                 // opens the sidebar
+}
+
+
+//template open for new project creation end
+
+
+
+// cancel project creation start
+cancelPrjCreation(){
+  Swal.fire({
+    title:'Cancel Project Creation',
+    text:"This action cannot be undo.",
+    showCancelButton:true,
+    showConfirmButton:true
+  }).then((choice:any)=>{
+        if(choice.isConfirmed){
+          this.Back_to_project_details_tab();
+          this.back_to_options();  
+          
+        }
+  })
+}
+
+
+
+// cancel project creation end
+
+
 
 }

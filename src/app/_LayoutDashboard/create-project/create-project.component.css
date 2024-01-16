@@ -1695,24 +1695,25 @@ align-items: center;
 
 
 
-/*test*/
-.template-design{
-  box-shadow:0 0 2px lightgray; 
-  padding:1em;
-  width:300px;
+.save-as-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #6388e3;
 }
 
-.template-name{
-  color:#527ce2;
+
+
+
+
+
+svg.template-pin *{
+  fill:gray;
+}
+svg.template-pin:hover * {
+  fill:#6388e3;
 }
 
-.template-description{
-  color:white;
-}
-
-.template-design:hover .template-description{
-  color:gray;
-  transition-property: color;
-  transition-duration: 1s;
-  transition-timing-function: ease-out;
+.prj-template:hover{
+  background-image:linear-gradient(#fbfbfb,white);
+  
 }
