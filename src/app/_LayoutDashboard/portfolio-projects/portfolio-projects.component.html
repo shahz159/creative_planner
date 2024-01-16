@@ -306,7 +306,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
                                                             <span
-                                                                class="text-success font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b class="fa fa-paperclip text-info" ></b>
+                                                                class="text-success font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info" ></b>
 
                                                                 <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
                                                               </span>
