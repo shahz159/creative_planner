@@ -195,7 +195,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
     private renderer2: Renderer2,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    
   ) {
 
     this.ObjSubTaskDTO = new SubTaskDTO();
@@ -6000,4 +6001,17 @@ displaymessage(){
 displaymessagemain(){
   this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
 }
+
+formatTimes(time: string): string {
+  const [hours, minutes] = time.split(':');
+  const date = new Date();
+  date.setHours(parseInt(hours, 10));
+  date.setMinutes(parseInt(minutes, 10));
+
+  const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+  return date.toLocaleTimeString('en-US', options);
+}
+
+
+
 }
