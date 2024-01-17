@@ -4007,8 +4007,8 @@ export class DashboardComponent implements OnInit {
     window.open(Url);
   }
 
-  moreDetails(ProjectCode) {
-    let name: string = 'MoreDetails';
+  newDetails(ProjectCode) {
+    let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${ProjectCode}`;
     var myWindow = window.open(myurl, ProjectCode);

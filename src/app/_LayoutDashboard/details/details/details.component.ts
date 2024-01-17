@@ -103,7 +103,7 @@ export const MY_DATE_FORMATS = {
 })
 
 export class DetailsComponent implements OnInit, AfterViewInit {
- 
+
   userFound:boolean|undefined;     // initially undefined.
   myTime = new Date();
   projectInfo: any;
@@ -216,14 +216,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this._MasterCode = pcode;
     });
 
-   
+
 
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-    this.getProjectDetails(this.URL_ProjectCode); 
-    setTimeout(() => this.drawStatistics(), 5000); 
+    this.getProjectDetails(this.URL_ProjectCode);
+    setTimeout(() => this.drawStatistics(), 5000);
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -257,7 +257,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getResponsibleActions(); 
+    this.getResponsibleActions();
     this.GetActivityDetails();
 
   }
@@ -332,8 +332,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           }
         }).render();
         // chart js end ----------------
-        
-         
+
+
         var lang = {
           "javascript": "70%",
         };
@@ -472,8 +472,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   remark:any;
   isrespactive:boolean=true;
 
-  getProjectDetails(prjCode: string) {
+  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
       this.isDMS= this.projectInfo.isDMS;
@@ -513,22 +515,24 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         {   // if action Code is additional along with the project code then redirect to that action.
           const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
           if(Action)
-             { 
+             {
                 this.showActionDetails(Action.IndexId-1);
                 setTimeout(()=>{
                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
                   window.scrollTo(0,0);
                 },2000);
-            
+
             }
           else
            this.showActionDetails(undefined);
         }
-        else 
+        else
           this.showActionDetails(undefined);  // opens the main project.
     })
 
-
+    if(actionIndex!==undefined){
+      this.showActionDetails(actionIndex)
+    }
 
 
     });
@@ -542,7 +546,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   thirdRecords:any
   newArray:any
   uniqueSet :any
-  nonRacisList:any=[]; 
+  nonRacisList:any=[];
   GetPeopleDatils(){
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
@@ -562,7 +566,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
       (data) => {
-       
+
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
         // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
@@ -645,13 +649,28 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
     if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
-    
+
     if(index!=undefined){
-      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code); 
+      this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-      
-    } 
+
+    }
   }
+
+
+  Usercomment: string = '';
+
+  sendRequest(): void {
+    Swal.fire('Request Send Successfully');
+    $('.Send-Request-Dialog').addClass('d-none');
+    $('.request-sent-msg').removeClass('d-none');
+    $('.user-not-found-msg').addClass('d-none');
+  }
+
+
+
+
+
 
 
 
@@ -729,7 +748,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // ADDING NEW ACTIONS
   addNewAction() {
-
     if (this.projectInfo.Status === 'Completed') {
       Swal.fire({
         title: "Wait This Project is Already Completed",
@@ -1375,7 +1393,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  
+
 
   submitApproval() {
     if (this.selectedType == '1') {
@@ -1401,7 +1419,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.projectCode;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
@@ -1635,7 +1653,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.service._UpdateSubtaskByProjectCode(fd)
               .subscribe(data => {
                 this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
+                this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
                 this.getAttachments(1);
                 this.calculateProjectActions();
               });
@@ -1708,7 +1726,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.selectedFile = null;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();   
+              this.closeActCompSideBar();
               this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
@@ -1740,7 +1758,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this._remarks = "";
           this._inputAttachments = "";
           this.selectedFile = null;
-          this.getProjectDetails(this.URL_ProjectCode);
+          // this.getProjectDetails(this.URL_ProjectCode);
           this.calculateProjectActions();     // recalculate the project actions.
           this.closeActCompSideBar();
           this.getAttachments(1);        // close action completion sidebar.
@@ -2134,7 +2152,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   onAction_update() {
-    debugger
+
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2242,9 +2260,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
           }
-          
           this.getProjectDetails(this.URL_ProjectCode);
-
           this.closeInfo();
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -2282,7 +2298,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
       }
-      this.getProjectDetails(this.URL_ProjectCode);
+
+      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+
       this.closeInfo();
     });
   }
@@ -2316,6 +2334,12 @@ check_allocation() {
   isExpanded = false;
   toggleReadMore() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  limit_data=60;
+  isExpandeds = false;
+  _toggleReadMore() {
+    this.isExpandeds = !this.isExpandeds;
   }
   /// Action Edits End
 
@@ -2455,6 +2479,11 @@ check_allocation() {
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
     }
     else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+      this.objProjectDto.Master_code = this.URL_ProjectCode;
+      this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    }
+    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -5141,9 +5170,13 @@ removeSelectedDMSMemo(item){
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
+
+          if(this.currentActionView!==undefined)
+          this._Message=this._Message.replace('Project','Action')
+
           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.closePrjHoldSideBar();
-          this.getProjectDetails(Pcode);
+          this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
         }
       });
@@ -5161,30 +5194,67 @@ removeSelectedDMSMemo(item){
 
 
 
-
+// Project / Action release.
   holdreleaseProject() {
-    if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = 'Project Release';
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Remarks = this.hold_remarks;
-      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-        this.closePrjReleaseSideBar();
-        this._Message = (data['message']);
-        if (this._Message == '1') {
-          this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
-          this.getProjectDetails(this.URL_ProjectCode);
-        }
-        else if (this._Message == '2' || this._Message == '0') {
-          this.notifyService.showError("Project release failed", "Failed");
-        }
-      });
-      console.log(this.approvalObj, "cancel")
+    if(this.currentActionView===undefined){
+          // project release
+          if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+            this.approvalObj.Project_Code = this.URL_ProjectCode;
+            this.approvalObj.Request_type = 'Project Release';
+            this.approvalObj.Emp_no = this.Current_user_ID;
+            this.approvalObj.Remarks = this.hold_remarks;
+            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+              this.closePrjReleaseSideBar();
+              this._Message = (data['message']);
+              if (this._Message == '1') {
+                this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else if (this._Message == '2' || this._Message == '0') {
+                this.notifyService.showError("Project release failed", "Failed");
+              }
+            });
+            console.log(this.approvalObj, "cancel")
+          }
+          else {
+            this.closePrjReleaseSideBar();
+            this.notifyService.showError("Access denied", "Failed")
+          }
+
+
     }
-    else {
-      this.closePrjReleaseSideBar();
-      this.notifyService.showError("Access denied", "Failed")
+    else{
+        // action release
+
+        if ([
+          this.projectInfo.OwnerEmpNo,
+          this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
+        ].includes(this.Current_user_ID)){
+          this.approvalObj.Project_Code = this.projectActionInfo[this.currentActionView].Project_Code;
+          this.approvalObj.Request_type = 'Project Release';
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Remarks = this.hold_remarks;
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+
+            this.closePrjReleaseSideBar();
+            this._Message = (data['message']);
+            if (this._Message == '1') {
+              this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
+              this.getProjectDetails(this.URL_ProjectCode);
+            }
+            else if (this._Message == '2' || this._Message == '0') {
+              this.notifyService.showError("Action release failed", "Failed");
+            }
+          });
+        }
+        else {
+          this.closePrjReleaseSideBar();
+          this.notifyService.showError("Access denied", "Failed")
+        }
     }
+
+
+
   }
 
   updateReleaseDate() {
@@ -5852,7 +5922,7 @@ getShorterName(name:string|undefined){
 
 
 
-// new project release code start 
+// new project release code start
 activity: any;
 lastactivity: any;
 send_from: any;

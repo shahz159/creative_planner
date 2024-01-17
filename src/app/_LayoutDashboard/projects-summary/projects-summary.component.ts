@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -39,6 +39,7 @@ export class ProjectsSummaryComponent implements OnInit {
   searchResult: Boolean = false;
   _ObjCompletedProj: CompletedProjectsDTO;
 
+
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private ShareParameter: ParameterService,
@@ -52,7 +53,6 @@ export class ProjectsSummaryComponent implements OnInit {
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-
   }
 
   _subtaskDiv: boolean;
@@ -102,6 +102,14 @@ $(document).ready(function(){
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
     //this.portfolioName = localStorage.getItem('_PortfolioName');
+
+
+    this.BsService.ProjectCreatedEvent.subscribe(()=>{
+      this.GetProjectsByUserName(this.type1);
+    })
+  
+
+
   }
 
 
@@ -458,6 +466,7 @@ $(document).ready(function(){
         this.un_FilteredProjects = this.ActualDataList;
         if (this._ProjectDataList) {
           this._CurrentpageRecords = this._ProjectDataList.length;
+
         }
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
@@ -512,6 +521,7 @@ $(document).ready(function(){
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+
         }
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
@@ -784,6 +794,7 @@ $(document).ready(function(){
         .subscribe(data => {
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
+          console.log("Summary Data---->", this._ProjectDataList);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
             this._filtersMessage = "No more projects matched your search";
@@ -797,6 +808,50 @@ $(document).ready(function(){
           }
         });
     this.getDropdownsDataFromDB();
+    }
+  }
+
+  Team_Autho:any
+  Team_Res:any
+  Project_Code:any
+  LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string) {
+    let FileUrl: string;
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (Iscloud == false) {
+      if (this.Team_Autho == this.Team_Res) {
+        // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+        FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+
+      }
+      else if (this.Team_Autho !=  this.Team_Res) {
+        FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+      }
+
+      let name = "ArchiveView/" + this.Project_Code;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(FileUrl);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      FileName = FileName.replace(/#/g, "%23");
+      FileName = FileName.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
+    }
+
+    else if (Iscloud == true) {
+      let name = "ArchiveView/" + this.Project_Code;
+      var rurl = document.baseURI + name;
+      var encoder = new TextEncoder();
+      let url = encoder.encode(url1);
+      let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+      FileName = FileName.replace(/#/g, "%23");
+      FileName = FileName.replace(/&/g, "%26");
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&" + "type=" + type;
+      var myWindow = window.open(myurl, url.toString());
+      myWindow.focus();
     }
   }
 
@@ -1120,4 +1175,7 @@ $(document).ready(function(){
     this.selectedType = null;
     this.commentSelected = null;
   }
+
+
+  limit =  35;
 }

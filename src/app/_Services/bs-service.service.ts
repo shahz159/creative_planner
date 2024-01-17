@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { nextFrame } from '@amcharts/amcharts4/core';
 
@@ -28,6 +28,9 @@ export class BsServiceService {
 
   private _SummaryType = new BehaviorSubject<any>(null);
   private _portId = new BehaviorSubject<any>(null);
+  private _templAction = new BehaviorSubject<any>(null);
+  
+  ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
 
   
@@ -49,8 +52,8 @@ export class BsServiceService {
 
   bs_SummaryType = this._SummaryType.asObservable();
   bs_SelectedPortId = this._portId.asObservable();
-
-
+  bs_templAction = this._templAction.asObservable();
+ 
 
   SetNewPojectCode(NewPCode) {
     this._Pcode.next(NewPCode);
@@ -97,4 +100,10 @@ export class BsServiceService {
   setSelectedPortId(portid) {
     this._portId.next(portid);
   }
+
+  setSelectedTemplAction(tmAction:{name:string,description:string}) {
+    this._templAction.next(tmAction);
+  }
+
+
 }
