@@ -836,19 +836,7 @@ selectedclient:any
 
 
 initializeSelectedValue() {
-    // this.OGProjectTypeid=this.ProjectType_json[0].Typeid
-    // this.OGProjectType = this.ProjectType_json[0].ProjectType;
-    // this.ProjectName = this.PrjName;
-    // this.OGownerid = this.owner_dropdown[0].Emp_No
-    // this.OGowner = this.owner_dropdown[0].RACIS;
-    // this.OGresponsibleid = this.responsible_dropdown[0].Emp_No
-    // this.OGresponsible = this.responsible_dropdown[0].RACIS;
-    // this.OGselectedcategoryid = this.Category_List[0].ReportID;
-    // this.OGcategory = this.Category_List[0].ReportType;
-    // this.OGselectedclientid = this.Client_List[0].Com_No
-    // this.OGclient = this.Client_List[0].Com_Name  
-    // this.ProjectDescription = this.projectInfo.Project_Description
-
+   
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -877,55 +865,6 @@ initializeSelectedValue() {
 }
 
 projectEdit(val) {
-
-  // if (this.OGProjectType != this.Prjtype) {
-  //   var type = this.Prjtype
-  //   this.Prjtype = this.Prjtype;
-  // }
-  // else {
-  //   var type: string = this.OGProjectTypeid;
-  // }
-
-  // if (this.OGowner != this.Owner_Name) {
-  //   var owner = this.Owner_Name
-  //   this.Owner_Name = this.Owner_Name;
-  // }
-  // else {
-  //   var owner = this.OGownerid;
-    
-  // }
-
-  // if (this.OGresponsible != this.responsible) {
-  //   var resp = this.responsible;
-  //   this.responsible = this.responsible;
-  // }
-  // else {
-  //   var resp = this.OGresponsibleid;
-  // }
-
-  // if (this.OGcategory != this.Category_Name) {
-  //   var category = this.Category_Name;
-  //   this.Category_Name = this.Category_Name;
-  // }
-  // else {
-  //   var category = this.OGselectedcategoryid;
-  // }
-
-  // if (this.OGclient != this.Client) {
-  //   var client = this.Client;
-  //   this.Client = this.Client;
-  // }
-  // else {
-  //   var client: any = this.OGselectedclientid;
-  // }
-  
-
-  
-
-  //  var Remark= this.Remarks
-  //  var datestrStart = moment(this.Prjstartdate).format("MM/DD/YYYY");
-  //  var datestrEnd = moment(this.Prjenddate).format("MM/DD/YYYY");
-
 
   this._remarks = '';
   if (this.OGProjectType != this.ProjectType) {
