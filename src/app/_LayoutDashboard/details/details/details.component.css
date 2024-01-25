@@ -874,7 +874,7 @@ span.kt-dt-l {
 
 .bg-done {
   background-color: #62B134;
-  color: white;
+  color:#000;
 }
 
 .bg-rejected {
@@ -1450,9 +1450,9 @@ label.my-chosse-flv {
   color: #000;
 }
 
-.NewProjectRejected1 {
+.NewProjectRejected {
   background-color: #DFDFDF !important;
-  color: #000;
+  color:#000;
 }
 
 .Done {
@@ -1480,8 +1480,14 @@ label.my-chosse-flv {
   color: #000;
 }
 
+.Cancelled{
+  background-color:#DFDFDF !important;
+  }
 
-
+  .ForwardUnderApproval{
+    background-color: #B2D732 !important;
+    color:#000;
+  }
 
 
 

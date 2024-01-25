@@ -665,15 +665,15 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status " style="width:fit-content" [ngClass]="{
-
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
-                                                                    'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
-                                                                    'CompletionUnderApproval':(projectInfo.Status==='Forward Under Approval'||projectInfo.Status==='Completion Under Approval'),
-                                                                    'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
+                                                                    'NewProjectRejected':projectInfo.Status==='New Project Rejected',
+                                                                    'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
+                                                                    'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                                                    'Delay':projectInfo.Status==='Cancellation Under Approval',
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
-                                                                    'NewProjectRejected':projectInfo.Status==='Cancelled',
+                                                                    'Cancelled':projectInfo.Status==='Cancelled',
                                                                     'Hold':projectInfo.Status==='Project Hold',
                                                                     'UnderApproval':projectInfo.Status==='Under Approval'
 
@@ -2457,9 +2457,17 @@
                                                         </svg>
                                                     </span> Cost
                                                 </div>
-                                                <div class="kt-info-data-v">
-                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
+                                                <div class="kt-info-data-v" *ngIf="projectInfo&&projectInfo.Project_Cost; else SAR">
+                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}                                                    
+                                                </div>                                               
+                                                <ng-template  #SAR>
+                                                    <div class="kt-info-data-v">
+                                                    SAR 00.00
                                                 </div>
+                                                 </ng-template>
+                                                <!-- <div class="kt-info-data-v">
+                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
+                                                </div> -->
                                             </div>
                                             <div class="col text-center">
                                                 <div class="kt-info-lable-v">
