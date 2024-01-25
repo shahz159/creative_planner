@@ -558,8 +558,8 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
- 
-  
+
+
 
       });
     });

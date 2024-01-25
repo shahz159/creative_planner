@@ -27,7 +27,7 @@
                             <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear Responses</button>
                         </div>
                     </div>
-                   
+
 
                     <div class="kt-portlet__head-label mr-2">
                         <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
@@ -133,7 +133,7 @@
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
                                                             </ng-container>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -222,7 +222,7 @@
                                                 <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
                                                          rowspan="1" colspan="1" >
                                                     <input type="checkbox"  id="snocheck" title="Select All"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
-                                                   
+
                                                 </th>
                                                 <th style="width: 100px;" tabindex="0" aria-controls="project-4"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
@@ -282,8 +282,8 @@
                                                 aria-label="Category: activate to sort column ascending">
                                                 <i class="fas fa-sort"></i> RACIS
                                             </th>
-                                               
-                                                
+
+
                                                 <!-- <th data-order="desc" data-name="Status" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
@@ -296,14 +296,14 @@
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Comments
                                                 </th>
-                                               
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr role="row" class="odd project-list_AC" *ngFor="let item of _NotificationActivity" [class.active]="item.isActive">
                                                 <td  align="center">
                                                     <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"  (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
-            
+
                                                 </td>
                                                 <td align="center">
                                                     <a tabindex="0" class="btn px-0 mb-0" role="button" *ngIf="item.Req_Type!='Task Complete'"
@@ -342,7 +342,7 @@
                                                 <td>
                                                     <p class="kt-widget__title mb-0">
                                                     {{item.Project_Name}}
-                                                    
+
                                                     </p>
                                                     <span class="kt-widget__other d-block st-line" title="Main Project name" *ngIf="item.Master_Code">{{item.MainProjectName}}</span>
                                                 </td>
@@ -368,23 +368,23 @@
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                             <span class="kt-widget__other d-block st-line" title="Allocated hrs">{{item.Duration}} hrs</span>
                                                     </ng-template>
-                                                    
+
                                                 </td>
                                                 <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
                                                 <td>
-                                                    <span class="text-info font-weight-400" 
-                                                        *ngIf="item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
+                                                    <span class="text-info font-weight-400"
+                                                        *ngIf="item.Req_Type=='New Project' || item.Req_Type=='Request Access' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                                || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
-                                                    <span class="text-danger font-weight-400" 
+                                                    <span class="text-danger font-weight-400"
                                                         *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
-                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' 
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
                                                                || item.Req_Type=='New Action Rejected' || item.Req_Type=='Project Cancel'">{{item.Req_Type}}</span>
-                                                    <span class="text-success font-weight-400" 
+                                                    <span class="text-success font-weight-400"
                                                         *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
-                                                        || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span> 
-                                                    <span class="text-primary font-weight-400" 
-                                                        *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span> 
-                                                        <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line" title="Forward to">{{item.ForwardTo}}</span> 
+                                                        || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span>
+                                                    <span class="text-primary font-weight-400"
+                                                        *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span>
+                                                        <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line" title="Forward to">{{item.ForwardTo}}</span>
                                                 </td>
 
                                                   <td>
@@ -395,7 +395,7 @@
                                                           <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.Owner}}</span>
                                                           </a>
-                                                          
+
                                                           <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.Resp}}</span>
                                                             </a>
@@ -405,7 +405,7 @@
                                                           <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.Autho}}</span>
                                                             </a>
-                                                          
+
                                                             <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.Support}}</span>
                                                             </a>
@@ -415,9 +415,9 @@
                                                           <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>1+</span>
                                                             </a>
-                                                    
+
                                                 </div>
-                                                </td> 
+                                                </td>
 
                                                 <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
@@ -428,7 +428,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
-                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}} 
+                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}}
                                                     <p data-toggle="tooltip" title="Request date">{{item.Rec_Date | date:'dd-MM-yyyy' }}</p>
                                                 </td>
                                                 <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
@@ -446,14 +446,14 @@
                                                     </div>
                                                 </div>
                                                 <!-- <div class="hvr-item" *ngIf="item.Send_From=='WS'" data-toggle="tooltip" title="{{item.Req_Coments}}">
-                                                   
+
                                                         <div>
                                                             <button  class="btn btn-outline-success btn-sm mr-2 fs-7">Accept</button>
                                                             <button  class="btn btn-outline-danger btn-sm fd-7">Reject</button>
                                                         </div>
-                                                       
+
                                                 </div> -->
-                                               
+
                                             </tr>
                                         </tbody>
                                     </table>
@@ -499,7 +499,7 @@
                                 <span class="h6 tic-abt mb-0"> Request Type: {{item.Req_Type}}</span><br>
                                 <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments"> Comments:
                                     {{item.Req_Coments}}</span>
-                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments==null || 
+                                <span class="h6 tic-abt mb-0" *ngIf="item.Req_Coments==null ||
                                       item.Req_Coments=='' || item.Req_Coments==undefined"> Comments: NA</span>
                             </div>
                         </div>
@@ -535,9 +535,9 @@
                         Load More!</button>
                 </div>
             </div> -->
-            
+
         </div>
-       
+
     </div>
 
 </div>
@@ -560,7 +560,7 @@
             </a>
         </div>
         <div class="kt-portlet--body mb-0">
-            
+
             <div class="brb-1 pb-1">
 
                 <div class="card-body card-car">
@@ -570,11 +570,11 @@
                         <h5 clas="card-title"> Projects List  </h5>
                         </div>
                         <div class="card-body p-0">
-                            <div class=" cus-scroll scroll-y">                            
+                            <div class=" cus-scroll scroll-y">
                                 <div class="meetdt" *ngFor="let item of selectedItems">
 
                                     <div id="" class="eve-area">
-                                        <div class="">                                
+                                        <div class="">
                                             <div class="event-main">
                                                 <span class="event-color event-color--info"></span>
                                                 <span class="event-title mr-2">
@@ -582,12 +582,12 @@
                                                 </span>
                                             </div>
 
-                                            
+
                                         </div>
                                         <div class="btm-des">
-                                            
+
                                             <!-- <div class="desc-1">{{item.Project_Description}}</div> -->
-                                            
+
                                             <div class="ml-4 mr-2 status-d">
                                                     <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
                                                         'text-success mb-0':item.Status=='Completed',
@@ -602,22 +602,22 @@
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
                                                                 data-toggle="tooltip" title="Project Status!">
-                                                            {{item.Status}} 
+                                                            {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
                                                     </h6>
                                                     <h6 class=" text-danger mb-0"  data-toggle="tooltip"
                                                         title="Project Status!"
                                                         *ngIf="item.Status=='Delay'">
-                                                        {{item.Status}}
+                                                        {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
                                                         {{item.Delaydays}} days
                                                     </h6>
                                                 </div>
                                             <div>
-                                                
+
                                             </div>
                                             <span class="mr-2 showv">|</span>
                                             <div class="ml-1 mr-2 status-d">
                                                 <h6 [ngClass]="{
-                                                    'text-success mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' 
+                                                    'text-success mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'
                                                     || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project',
                                                     'text-primary mb-0':item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back',
                                                     'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
@@ -646,13 +646,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                                 <!-- <div class="meetdt">
 
                                     <div id="" class="eve-area">
-                                        <div class="d-flex-cen">                                
+                                        <div class="d-flex-cen">
                                             <div class="event-main">
                                                 <span class="event-color event-color--info"></span>
                                                 <span class="event-title mr-2">
@@ -667,16 +667,16 @@
                                                 </div>
                                             </div>
                                             <div class="">
-                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                <div class="d-flex-cen mr-2 showv">
                                                     <div class="initial-box color-7 b-50 mr-2">
                                                         <i class="far fa-user"></i>
                                                     </div>
-                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
-                                                </div>                            
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="btm-des">
-                                            
+
                                             <div class="desc-1">Description about Project</div>
                                             <span class="mr-2 showv">|</span>
                                             <div class="">
@@ -687,13 +687,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                                 <div class="meetdt">
 
                                     <div id="" class="eve-area">
-                                        <div class="d-flex-cen">                                
+                                        <div class="d-flex-cen">
                                             <div class="event-main">
                                                 <span class="event-color event-color--info"></span>
                                                 <span class="event-title mr-2">
@@ -708,16 +708,16 @@
                                                 </div>
                                             </div>
                                             <div class="">
-                                                <div class="d-flex-cen mr-2 showv">                                                                
+                                                <div class="d-flex-cen mr-2 showv">
                                                     <div class="initial-box color-7 b-50 mr-2">
                                                         <i class="far fa-user"></i>
                                                     </div>
-                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
-                                                </div>                            
+                                                    <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="btm-des">
-                                            
+
                                             <div class="desc-1">Description about Project</div>
                                             <span class="mr-2 showv">|</span>
                                             <div class="">
@@ -728,7 +728,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div> -->
                             </div>
                         </div>
@@ -737,13 +737,13 @@
                 </div>
             </div>
 
-            
 
-            <div class="">     
+
+            <div class="">
                 <div class="card-body" id="comts1">
                     <div class="crd-hdr">
                         <div class="crd-title"><h5>Reject Comments</h5></div>
-                    </div>           
+                    </div>
                     <div class="col-md-12 checked-rad pl-1 pt-3">
                         <div class="form-group">
                             <label class="mb-2">Reject Type</label><span style="color:red">*</span>
@@ -824,11 +824,11 @@
 
 
 <!--
-    
+
                 <div class="mb-3">
                     <a class="d-flex justify-content-between" role="button" aria-expanded="false" aria-controls="">
-                                                                                                                                                                    
-                                                        
+
+
                         <div class="d-flex-cen">
                             <div class="subtask-list-title text-hover-primary fs-5 mt-1">
                                 <span class="mr-2" id="" title="Project Name">
@@ -838,7 +838,7 @@
                             <div class="">
                                 <span class="showv mr-2 text-muted">
                                     <i class="far fa-calendar-alt mr-1"></i>
-                                    28-01-23 
+                                    28-01-23
                                 </span>
                             </div>
                             <span class="mr-2 showv">|</span>
@@ -861,18 +861,18 @@
                         </div>
 
                         <div class="">
-                            <div class="d-flex-cen mr-2 showv">                                                                
+                            <div class="d-flex-cen mr-2 showv">
                                 <div class="initial-box color-7 b-50 mr-2">
                                     <i class="far fa-user"></i>
                                 </div>
-                                <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>                                                                
-                            </div>                            
+                                <h5 class="mb-0" data-toggle="tooltip" title="Action Responsible!">Waseem Akram</h5>
+                            </div>
                         </div>
 
                     </a>
                 </div>
-                
-                
+
+
     <div class="card my-1 shadow-sm brdr notifi-list mb-2">
     <div class="card-body row">
         <div class="col">

@@ -11,6 +11,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {DatePipe} from '@angular/common';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 
@@ -137,7 +138,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   Project_Type:any
-  
+
   getProjectCreationDetails(){
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
@@ -202,11 +203,11 @@ export class CreateProjectComponent implements OnInit {
    let Emp_Name=Owner.EmpName
    let openParenIndex = Emp_Name.indexOf('(');
    this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
-   
+
    let res= this.Responsible_json[0].ResponsibleName
    let openParenIndex_res = res.indexOf('(');
    this.responsible = res.substring(0, openParenIndex_res).trim();
-  
+
   }
 
 
@@ -223,7 +224,7 @@ export class CreateProjectComponent implements OnInit {
       this.durationInDays = endDate.diff(startDate, 'days');
 
       console.log('Duration in days:', this.durationInDays);
-     
+
   }
 
 
@@ -239,7 +240,7 @@ export class CreateProjectComponent implements OnInit {
   //  let Emp_Name=Owner.EmpName
   //  let openParenIndex = Emp_Name.indexOf('(');
   //  this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
-   
+
   //  let res=  this.Responsible_json[0].ResponsibleName
   //  let openParenIndex_res = res.indexOf('(');
   //  this.responsible = res.substring(0, openParenIndex_res).trim();
@@ -508,7 +509,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   closeInfos(){
-    
+
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
   }
 
@@ -575,11 +576,11 @@ export class CreateProjectComponent implements OnInit {
   Move_to_Add_action_tab(){
     $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
-    $('.Project_details_tab,.add_tema_tab').hide(); 
+    $('.Project_details_tab,.add_tema_tab').hide();
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(3)').addClass('active'); 
-    
+    $('.sbs--basic li:nth-child(3)').addClass('active');
+
   }
 
   back_to_add_team(){
@@ -676,7 +677,7 @@ onProjectOwnerChanged(){
 
   GetAssignedTaskDetails(){
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
-    ((res)=>{  
+    ((res)=>{
       this.assigntask_json=JSON.parse(res[0].Assigntask_json);
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
@@ -714,7 +715,7 @@ onProjectOwnerChanged(){
     this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
   }
-  
+
   conditionalList:any
 
   getConditional(value:any){
@@ -724,7 +725,7 @@ onProjectOwnerChanged(){
     this.Prjenddate=this.conditionalList[0].DeadLine;
     this.PrjDes=this.conditionalList[0].Project_Description;
     this.Prjtype=this.conditionalList[0].ProjectType;
-    
+
   }
 
    /////////////////////////////////////////assign task End/////////////////////////////
@@ -836,7 +837,7 @@ selectedclient:any
 
 
 initializeSelectedValue() {
-   
+
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -861,7 +862,7 @@ initializeSelectedValue() {
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
     this.End_Date = this.projectInfo.EndDate;
- 
+
 }
 
 projectEdit(val) {
@@ -923,9 +924,9 @@ projectEdit(val) {
     var Submission: string = this.OGSubmission_Nameid;
   }
 
- 
+
     var allocation = this.Allocated;
-  
+
 
   var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
   var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
@@ -996,7 +997,7 @@ projectEdit(val) {
   //   //  this.closeInfos();
   //   });
   // }
- 
+
 }
 // Project Edit End
 
@@ -1034,6 +1035,59 @@ setRACIS(){
 }
 
 
+Addressurl: string = "";
+Locationfulladd: string;
+
+
+public handleAddressChange(address: Address) {
+
+  if (this.checkAddressURL(address.name.toString())) {
+    this.Addressurl = address.name;
+  }
+  else {
+    this.Addressurl = address.url;
+  }
+  this.PrjLocation = address.name;
+
+
+  console.log(address, "add11")
+  this.Locationfulladd = address.formatted_address;
+
+}
+
+
+
+checkAddressURL(str) {
+
+  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+  return regexp.test(str);
+}
+addreschange() {
+  //24.668213927924413, 46.74734971286595
+  //17.4333782,78.3664286
+  const isValidStrings = ["17.4333", "78.3664"];
+  // alert(validationLatitudeLongitude.latLong(...isValidStrings));
+
+  if (this.PrjLocation.includes(',')) {
+    // alert(111)
+    const loc = this.PrjLocation.split(',');
+    var lat = loc[0];
+    var long = loc[1];
+    var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+    if (reg.exec("40.6892")) {
+
+      // alert(lat);
+    } else {
+    }
+    if (reg.exec(long)) {
+      // alert(long);
+    }
+    else {
+    }
+
+
+  }
+}
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
@@ -1138,7 +1192,7 @@ openTemplate(template:any){
 
     const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
     console.log(res);
-   
+
 
    this.PrjOfType=PInfo.Project_Type;
    this.Prjtype=this.ProjectType_json.find((item)=>item.ProjectType.trim()===this.PrjOfType.trim()).Typeid;
@@ -1156,19 +1210,19 @@ openTemplate(template:any){
    this.PrjInformer='';
    this.PrjSupport=[];
    //  this.fileAttachment=new File()
-   
+
 
     if(['001','002'].includes(this.Prjtype)){
       const actions=JSON.parse(res[0].Action_Json);
       console.log('*action we are gettings:',actions);
       this.PrjTemplActions=actions.filter(action=>action.template);
     }
-  
+
 
 
 
   })
-  
+
 }
 
 
@@ -1193,8 +1247,8 @@ cancelPrjCreation(){
   }).then((choice:any)=>{
         if(choice.isConfirmed){
           this.Back_to_project_details_tab();
-          this.back_to_options();  
-          
+          this.back_to_options();
+
         }
   })
 }

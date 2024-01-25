@@ -97,7 +97,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
                                     <div class="Kt-Pd-Status Delay" *ngIf="item.Status=='Delay'">
-                                        {{item.Status}} {{item.Delaydays}} days
+                                        {{item.Status =='Under Approval'?'New Project Under Approval':item.Status}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
                                                         'UnderApproval': item.Status=='Under Approval',
@@ -107,13 +107,13 @@
                                                         'ToDo':item.Status=='ToDo Achieved',
                                                         'ToDoCompleted':item.Status=='ToDo Completed',
                                                         'EnactiveUnderApproval': item.Status=='Enactive Under Approval',
-                                                        'ForwardUnderApproval': item.Status=='Forward Under Approval',   
-                                                        'CompletionUnderApproval': item.Status=='Completion Under Approval',                                               
+                                                        'ForwardUnderApproval': item.Status=='Forward Under Approval',
+                                                        'CompletionUnderApproval': item.Status=='Completion Under Approval',
                                                         'Delay': item.Status=='Cancellation Under Approval',
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
-                                        <ng-container *ngIf="item.Status!='Project Hold'">{{item.Status}}</ng-container>
+                                        <ng-container *ngIf="item.Status!='Project Hold'">{{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</ng-container>
                                         <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                     <ng-container *ngIf="item.Project_Description.length>60">
                         <a href="javascript:void(0)"
                         (click)="toggleReadMores()">{{ isExpandeds ? 'less' : 'more...' }}</a>
-                    </ng-container> 
+                    </ng-container>
                 </p>
             </div>
 
@@ -152,16 +152,16 @@
                            </div> -->
                         <div class="kt-project-type">
                             <div class="Kt-Pd-Status Delay" *ngIf="item.Status=='Delay'">
-                                {{item.Status}} {{item.Delaydays}} days
+                                {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}} {{item.Delaydays}} days
                             </div>
                             <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'UnderApproval': item.Status=='Under Approval',
                                                 'Inprocess': item.Status=='InProcess' , 'NewProjectRejected': item.Status=='New Project Rejected',
-                                                'Done': item.Status=='Completed','ToDo':item.Status=='ToDo Achieved',   
+                                                'Done': item.Status=='Completed','ToDo':item.Status=='ToDo Achieved',
                                                 'ToDoCompleted':item.Status=='ToDo Completed','EnactiveUnderApproval': item.Status=='Enactive Under Approval',
                                                 'ForwardUnderApproval': item.Status=='Forward Under Approval', 'CompletionUnderApproval':item.Status=='Completion Under Approval',
                                                 'Delay': item.Status=='Cancellation Under Approval','Cancelled': item.Status=='Cancelled',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval', 'Hold': item.Status=='Project Hold'}">
-                                <ng-container *ngIf="item.Status!='Project Hold'">{{item.Status}}</ng-container>
+                                <ng-container *ngIf="item.Status!='Project Hold'">{{ item.Status === 'Under Approval' ? 'New Project Under Approval' : item.Status }}</ng-container>
                                 <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
                             </div>
                             <div class="Requested_user_info">
@@ -245,7 +245,7 @@
                                                 'Cancelled': item.Status=='Cancelled',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}">
-                            {{item.Status}}
+                            {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}
                         </div>
 
                         <div class="Requested_user_info">
@@ -1346,7 +1346,7 @@
                     <div class="col-lg-12">
                         <div class="kt-prg-progress">
                             <ul>
-                                <li *ngIf="Under_Approval>0"><span class="B-Bot P_Not_Started"></span> Under Approval
+                                <li *ngIf="Under_Approval>0"><span class="B-Bot P_Not_Started"></span> New Project Under Approval
                                     <b>({{Under_Approval}})</b> </li>
                                 <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In Processs
                                     <b>({{inprogress}})</b></li>

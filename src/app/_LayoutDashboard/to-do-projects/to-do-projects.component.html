@@ -129,7 +129,7 @@
                                                                 <label class="kt-checkbox mb-3">
                                                                     <input type="checkbox" (change)="isStatusChecked(item)"
                                                                         [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':item.Name}}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
@@ -188,7 +188,7 @@
                             <!-- </form> -->
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="sidebar scrollbar" >
                     <ul class="side-bar-box">
@@ -207,7 +207,7 @@
                                     <p class="mb-2">{{item.Exec_BlockName}}</p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <p   *ngIf="item.Status!='Delay' && item.Status!='Project Hold'" [ngClass]="{'text-danger':item.Status=='Project Hold',
+                                    <p   *ngIf="item.Status!='Delay'  && item.Status!='Project Hold'" [ngClass]="{'text-danger':item.Status=='Project Hold',
                                         'text-Completed':item.Status=='Completed',
                                         'text-warning':item.Status=='InProcess',
                                         'text-underApp':item.Status=='Under Approval',
@@ -217,10 +217,10 @@
                                         'text-underApproval':item.Status=='Enactive Under Approval',
                                         'text-underApproval':item.Status=='Forward Under Approval',
                                         'text-info':item.Status=='New Project',
-                                        
+
                                         'text-CompleteRejected':item.Status=='Project Complete Rejected',
                                         'text-Todo':item.Status=='ToDo Completed'}">
-                                        {{item.Status}}</p>
+                                        {{item.Status=='Under Approval' ? 'New Project Under Approval':item.Status}}</p>
                                         <p class="text-danger" *ngIf="item.Status=='Delay'">
                                         {{item.Status}} {{item.Delaydays}} days</p>
                                         <p class="text-danger" *ngIf="item.Status=='Project Hold'">
@@ -256,7 +256,7 @@
                                 (click)="sweetAlert()" title="Create New Action" >
                                 <i class="fas fa-plus mr-0"></i>
                             </button>
-                            
+
                             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
                                 <i class="fas fa-sort-alpha-up fa-lg mr-0"></i>
                             </button>
@@ -269,17 +269,17 @@
                         <div class="col-lg-12">
                             <label data-toggle="tooltip" title="Project Name!" id="SpanProjName_{{Pid}}"
                                 class="text-info strong h5"
-                                [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks') 
-                                    && (Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && Project_Status!='Cancellation Under Approval' && 
+                                [ngClass]="{'kt-checkbox kt-checkbox--bold kt-checkbox--brand' : (Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks')
+                                    && (Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && Project_Status!='Cancellation Under Approval' &&
                                     Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='New Project Rejected' && Project_Status!='Cancelled'
                                     && Project_Status!='Standardtask Enactive Hold')
                                     && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)}">
                                 <input type="checkbox" (click)="OnClickCheckboxProjectUpdate($event.target.checked)"
-                                    [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'" 
+                                    [disabled]="Checkbox_checked=='1'" [checked]="Checkbox_checked=='1'"
                                     *ngIf="(Proj_ExecBlck != 'Standard Tasks' && Proj_ExecBlck !='Routine Tasks' && Project_Status != 'Under Approval'  && Project_Status!='New Project Rejected'
                                     && Project_Status != 'Completed' && Project_Status != 'Under Approval' && Project_Status!='Completion Under Approval' && Project_Status!='Cancellation Under Approval' &&
                                     Project_Status!='Project Hold' && Project_Status!='Deadline Extend Under Approval' && Project_Status!='Cancelled'
-                                    && Project_Status!='Standardtask Enactive Hold') 
+                                    && Project_Status!='Standardtask Enactive Hold')
                                     && (CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)">
                                 {{_ProjectName}}
                                 <span></span>
@@ -339,14 +339,14 @@
                                         'text-underApproval':Project_Status=='Enactive Under Approval',
                                         'text-underApproval2':Project_Status=='Forward Under Approval',
                                         'text-info':Project_Status=='New Project',
-                                        
+
                                         'text-CompleteRejected':Project_Status=='Project Complete Rejected',
                                         'text-Todo':Project_Status=='ToDo Completed'}">
-                                    {{Project_Status}}
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval':Project_Status}}
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Delay'">
-                                    {{Project_Status}} {{delaydays}} days
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval':Project_Status}} {{delaydays}} days
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Project Hold'">
@@ -396,7 +396,7 @@
                             <p class="mb-1 pl-30px">
                                 <span data-toggle="tooltip" title="Uploaded Document!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="FileName != ''"><i
                                     class="fas fa-file-pdf text-muted mr-1" ></i>
-                                <a class="text-info curser-pointer" title="Click To Open File"  
+                                <a class="text-info curser-pointer" title="Click To Open File"
                                     (click)="LoadDocument(cloud,_ProjectCode,EmpNo_Res,Attachments)" ><b>{{FileName}}</b></a></span>
                                 <!-- <span class="mr-3 text-nowrap mb-2 d-inline-block">
                                     <i class="fas fa-paperclip text-muted mr-1"></i>
@@ -478,12 +478,12 @@
                                             <i class="fas fa-calendar-alt text-muted mr-1"></i>
                                             <b >{{item.SubProject_DeadLine |date:'dd-MM-yyyy'}}</b>
                                         </span>
-                                        
+
                                         <span data-toggle="tooltip" title="Action Duration!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                             <i class="fas fa-clock text-muted mr-1" *ngIf="item.SubtaskAllocated == 0 && CurrentUser_ID == EmpNo_Res; else allocated" >
                                                 <b><span class="mr-2" id="Span_DescName_all{{item.id}}">
                                                 {{item.SubtaskAllocated}} Hrs</span></b>
-                                            <span class="text-info" [hidden]="Editbutton" 
+                                            <span class="text-info" [hidden]="Editbutton"
                                                 (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
                                                 <i class="fas fa-edit" ></i>
                                         <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
@@ -507,8 +507,8 @@
                                             <ng-template #allocated>
                                                 <span data-toggle="tooltip" title="Action Duration!" class="mr-3 text-nowrap mb-2 d-inline-block">
                                                     <i class="fas fa-clock text-muted mr-1"></i>
-                                                    <b>{{item.SubtaskAllocated}} Hrs</b>      
-                                                </span>                                      
+                                                    <b>{{item.SubtaskAllocated}} Hrs</b>
+                                                </span>
                                             </ng-template>
                                         </span>
                                         <span data-toggle="tooltip" title="Action Cost!" class="mr-3 text-nowrap mb-2 d-inline-block">
@@ -534,12 +534,12 @@
                                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                     *ngIf="item.SubProject_Status != 'Delay'">
-                                        <p> {{item.SubProject_Status}}</p>
+                                        <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval ':item.SubProject_Status}}</p>
                                         </span>
 
                                     <span data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status == 'Delay'"
                                         class="mr-2 text-nowrap mb-2 d-inline-block text-danger">
-                                    <p> {{item.SubProject_Status}} {{item.Delaydays}} days</p>
+                                    <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval ':item.SubProject_Status}} {{item.Delaydays}} days</p>
                                     </span>
                                         <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                     </p>
@@ -594,17 +594,17 @@
                                                 </p>
                                                 <p class="mb-2">
                                                     <span  data-toggle="tooltip" title="Start Date!" class="mr-3 text-nowrap d-inline-block"><i
-                                                        class="fas fa-calendar-alt text-muted mr-1"></i>{{item.StartDate | 
-                                                    date}}</span>  
-                                                
+                                                        class="fas fa-calendar-alt text-muted mr-1"></i>{{item.StartDate |
+                                                    date}}</span>
+
                                                     <span  data-toggle="tooltip" title="End Date!" class="mr-3 text-nowrap d-inline-block"><i
-                                                        class="fas fa-calendar-alt text-muted mr-1"></i>{{item.SubProject_DeadLine | 
-                                                    date}}</span> 
+                                                        class="fas fa-calendar-alt text-muted mr-1"></i>{{item.SubProject_DeadLine |
+                                                    date}}</span>
 
                                                     <span data-toggle="tooltip" title="Completed Date!" class="mr-3 text-nowrap d-inline-block" *ngIf="item.SubProject_Status=='Completed' && item.CD"><i
                                                             class="fas fa-calendar-alt text-muted mr-1"></i>{{item.CD |
                                                         date}}</span>
-                                                                
+
 
                                                     <span data-toggle="tooltip" title="Action Duration!" class="mr-3  text-nowrap mb-2 d-inline-block">
                                                         <i class="fas fa-clock text-muted mr-1"></i>
@@ -621,7 +621,7 @@
                                                         <a class="text-info curser-pointer"
                                                             (click)="LoadDocument(item.IsCloud,item.Project_Code,item.Team_Res,item.CompleteProofDoc)"><b>{{item.Sourcefile}}</b></a></span>
 
-                                                    <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap  d-inline-block" 
+                                                    <span data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap  d-inline-block"
                                                         *ngIf="item.Remarks && item.Remarks!= 'undefined' && item.Remarks != ''">
                                                         <i class="fas fa-registered text-muted mr-1"></i>
                                                         <b>{{item.Remarks}}</b>
@@ -945,7 +945,7 @@
           </a>
         </div>
       </div>
-    <div class="px-4 pt-2">        
+    <div class="px-4 pt-2">
         <div class="">
             <div class="d-flex flex-column">
               <h5 class="fs-3 mb-2">{{this._Subtaskname}}</h5>
@@ -974,7 +974,7 @@
             </div>
             <span class="text-info"> *Accept only pdf files </span>
         </div>
-        
+
         <!-- <div class="form-group">
             <label>Attachments</label>
             <div></div>
@@ -1071,7 +1071,7 @@
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 
 <div id="Project_info_slider_bar" class="project-info-side-bar sideInfobar animate-right">
-    <router-outlet></router-outlet>    
+    <router-outlet></router-outlet>
 </div>
 
 <!-- <mat-form-field class="example-full-width">

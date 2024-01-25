@@ -753,7 +753,7 @@ span.kt-dt-l {
   letter-spacing: 0.5px;
 }
 
-.kt-info-box-tit { 
+.kt-info-box-tit {
   color: #6388e3 !important;
 }
 
@@ -3900,6 +3900,17 @@ span.Rq_date_V {
   margin-top: -1rem;
 }
 
+
+
+/*user request box css start*/
+.user-request-box{
+  box-shadow: 0 0 1px #dddddd;
+  padding: 1em;
+  background-color: white;
+}
+
+
+/*user requirest box css end*/
 .Kt-info-box-main {
   border: 1px solid #ededed;
   cursor: pointer;
