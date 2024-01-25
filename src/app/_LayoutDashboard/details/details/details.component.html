@@ -2816,7 +2816,7 @@
                                                                     | <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> </p>
                                                                 <span *ngIf="item.oldValue !==''">From :
                                                                     {{item.oldValue}}</span>
-                                                                <span *ngIf="item.oldValue !==''; else newActivity">To :
+                                                                <span *ngIf="item.oldValue !==''; else newActivity"> To :
                                                                     <!-- {{item.NewValue}}  -->
                                                                     {{item.NewValue | slice:0:limit}}{{ isExpanded ?
                                                                     (item.NewValue | slice:limit): ' ' }}
@@ -4401,7 +4401,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Date akheel<span class="text-danger">*</span></label>
+                    <label>Date<span class="text-danger">*</span></label>
 
                     <div class="input-group">
                         <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
@@ -9125,7 +9125,7 @@
                                 <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                     (click)="onAction_updateProject(0)">
                                     Update</button>
-                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval'">
+                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval' && Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID">
                                     <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                         (click)="onAction_updateProject(1)">
                                         Approve</button>

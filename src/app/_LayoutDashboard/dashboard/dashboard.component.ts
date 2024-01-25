@@ -1768,6 +1768,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitReSchedule(type: number) {
+    debugger
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type=type;
     var start = moment(this.minDate);
