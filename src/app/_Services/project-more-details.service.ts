@@ -13,13 +13,17 @@ export class ProjectMoreDetailsService {
   constructor(private http:HttpClient,private commonUrl: ApiurlService) {
     this.ObjSubTaskDTO = new SubTaskDTO();
    }
-  
+
   getProjectMoreDetails(projectcode:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
       return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
 
- 
+  getRequestAccessDetails(projectcode:string){
+    this.ObjSubTaskDTO.Project_Code=projectcode;
+      return this.http.post(this.rootUrl+'TestAPI/NewGetRequestAccessDetails',this.ObjSubTaskDTO);
+  }
+
   getProjectTimeLine(projectcode:string,sortOrder:string,Empno:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
     this.ObjSubTaskDTO.sort=sortOrder;
@@ -27,7 +31,12 @@ export class ProjectMoreDetailsService {
      return this.http.post(this.rootUrl+'TestAPI/NewGetProjectTimelineList',this.ObjSubTaskDTO)
   }
 
-
+  NewInsertProjectRequestAccesss(Project_Code:string,Remarks:string,Emp_No:string){
+    this.ObjSubTaskDTO.Project_Code=Project_Code;
+    this.ObjSubTaskDTO.Remarks=Remarks;
+    this.ObjSubTaskDTO.Emp_No=Emp_No;
+     return this.http.post(this.rootUrl+'Projects/NewInsertProjectRequestAccesss',this.ObjSubTaskDTO)
+  }
 
 
 }

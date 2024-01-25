@@ -156,7 +156,7 @@
                                                                     <input type="checkbox"
                                                                         (change)="isStatusChecked(item)"
                                                                         [(ngModel)]="item.checked">
-                                                                    {{item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':item.Name}}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
@@ -614,7 +614,7 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                                {{item.Status}}
+                                                                {{item.Status==='Under Approval'? "New Project Under Approval" : item.Status}}
                                                             </span>
                                                         </div>
                                                     </div>

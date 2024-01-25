@@ -21,8 +21,8 @@ import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
- 
 @NgModule({
   declarations: [CreateProjectComponent],
   imports: [
@@ -39,8 +39,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FormsModule
-
+    FormsModule,
+    GooglePlaceModule
   ],
   providers: [ProjectsSummaryComponent,MeetingReportComponent,DetailsComponent,DatePipe,ProjectUnplannedTaskComponent,ToDoProjectsComponent,MoreDetailsComponent   ]
 })

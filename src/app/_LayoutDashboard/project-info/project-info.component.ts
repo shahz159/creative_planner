@@ -2120,7 +2120,11 @@ GetRacisPeople(){
 
 
 
-
+   limit =  60; // Set the initial limit
+   isExpandeds = false;
+  toggleReadMores() {
+    this.isExpandeds = !this.isExpandeds;
+  }
 
 ///////////////////////////////////// RACIS end /////////////////////////
   

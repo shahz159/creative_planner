@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
   _ActualProjectList = [];
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
-  _calenderDto: CalenderDTO; 
+  _calenderDto: CalenderDTO;
   ProjectListArray: any;
   BlockNameProject1: any;
   Timeslab: any;
@@ -486,7 +486,7 @@ export class DashboardComponent implements OnInit {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
-      
+
       themeSystem: "solar",
       weekNumbers: true,
       eventClick: this.handleEventClick.bind(this),
@@ -521,7 +521,7 @@ export class DashboardComponent implements OnInit {
     this.GetDashboardSummary();
     this._objStatusDTO.Emp_No = this.Current_user_ID;
     this._objStatusDTO.PageNumber = 1;
-   
+
 
     //Get Schedule Json on calender
     this.GetScheduledJson();
@@ -578,11 +578,11 @@ export class DashboardComponent implements OnInit {
           myDiv.removeClass('d-block');
           $('.side_view').removeClass('position-fixed');
 
-          // document.getElementById("fltrs-drop").classList.remove("show-flts"); 
+          // document.getElementById("fltrs-drop").classList.remove("show-flts");
         }
       }
 
-      
+
 
       // hide search
       // if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
@@ -606,11 +606,11 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
-   
+
   }
-  
+
   // ngAfterViewInit() {
-    
+
   //   setTimeout(() => {
   //     this.startTour();
   //   }, 3000);
@@ -927,7 +927,7 @@ export class DashboardComponent implements OnInit {
       });
   }
 
- 
+
 
   Event_requests() {
 
@@ -1013,7 +1013,7 @@ export class DashboardComponent implements OnInit {
   // }
 
   DublicateTaskandEvent() {
-    
+
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     this.copyTask = true;
@@ -1491,7 +1491,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
-  
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1664,13 +1664,13 @@ export class DashboardComponent implements OnInit {
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
-    
-     
+
+
       console.log('_calenderDto obj:',JSON.parse(this._calenderDto.ScheduleJson));
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-          
+
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
@@ -1718,8 +1718,8 @@ export class DashboardComponent implements OnInit {
           else{
             this.notifyService.showError(this._Message, "Failed");
           }
-          
-          
+
+
           this.GetScheduledJson();
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
@@ -1757,7 +1757,7 @@ export class DashboardComponent implements OnInit {
           this.maxDate = null;
           this.calendar.updateTodaysDate();
           this.TImetable();
-          
+
         });
       this.closeschd();
     }
@@ -2658,7 +2658,7 @@ export class DashboardComponent implements OnInit {
   }
 
   addstarttime() {
-  
+
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -3434,7 +3434,7 @@ export class DashboardComponent implements OnInit {
     $('.bg-ovr1').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this.delayDetails = item;
-    
+
   }
 
   GetDelay_Actions() {
@@ -3444,7 +3444,7 @@ export class DashboardComponent implements OnInit {
       ((data) => {
         this.DelayActionsList = JSON.parse(data[0]['DelayActions_Json']);
         this.DelayActionscount = data[0]['Delayaction_Count'];
-        
+
         // if(this.DelayActionscount>0){
         //   $('.bg-ovr1').addClass('d-block');
         //   $('.side_view').addClass('position-fixed');
@@ -3493,7 +3493,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("online-add").style.display = "none";
 
     }
-    
+
     this.Title_Name=this.delayDetails['Project_Name'];
     this.MasterCode=this.delayDetails['Master_Code'];
     this.Subtask = this.delayDetails['Project_Code'];
@@ -3507,8 +3507,8 @@ export class DashboardComponent implements OnInit {
     this.GetSubtasklistfromProject(this.MasterCode);
     setTimeout(() => {
       this.getChangeSubtaskDetais(this.Subtask);
-    }, 2000); 
-   
+    }, 2000);
+
     // this.MasterCode = this.ProjectListArray.find(item => item.Project_Code === this.delayDetails['Master_Code']);
     // alert(this.MasterCode)
     // alert(this.Subtask)
@@ -3541,7 +3541,7 @@ export class DashboardComponent implements OnInit {
   compareFn(item1: any, item2: any): boolean {
     return item1 && item2 ? item1.Project_Code === item2.Project_Code : item1 === item2;
   }
-  
+
   openfooter1() {
     document.getElementById("ft_body1").classList.toggle("go-up");
     document.getElementById("secfootr1").classList.toggle("opend");
@@ -3558,7 +3558,7 @@ export class DashboardComponent implements OnInit {
   }
   _remarks:string;
   submitaction(){
-   
+
 
     const fd = new FormData();
       fd.append("Project_Code", this.delayDetails['Project_Code']);
@@ -3587,7 +3587,7 @@ export class DashboardComponent implements OnInit {
 
   onFileChange1(e) {
     this.selectedFile = <File>e.target.files[0];
-    console.log("--------------->",this.selectedFile) 
+    console.log("--------------->",this.selectedFile)
   }
 
   GetScheduledJson() {
@@ -4345,7 +4345,7 @@ export class DashboardComponent implements OnInit {
           this.draftcount = 0;
           this.penhide1();
         }
-        
+
         // alert(this.draftcount)
       });
 
@@ -4570,8 +4570,8 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-  
-  
+
+
   Pending_meeting() {
     // this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     //   ((data) => {
@@ -4584,9 +4584,9 @@ export class DashboardComponent implements OnInit {
       this.GetPending_Request();
       this.closeevearea();
     });
-  
+
   }
-  
+
   sweet_end(){
     Swal.fire({
       title: 'End Meeting',
@@ -4606,9 +4606,9 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-   
-  
-  
+
+
+
     End_meeting(){
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
       this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -4617,9 +4617,9 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.User_Type = 'Admin';
       this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
       (data => {
-     
+
       });
-       
+
       if (this.ScheduleType == 'Task') {
         this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
         this.MasterCode = (this.MasterCode[0].stringval);
@@ -4627,7 +4627,7 @@ export class DashboardComponent implements OnInit {
         // this._calenderDto.Dms = this.SelectDms;
         // this._calenderDto.Portfolio = this.Portfolio;
         this._calenderDto.Project = this.MasterCode;
-        
+
       this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
         (data => {
           // this.notifyService.showSuccess("Successfully", "Completed");
@@ -4651,7 +4651,7 @@ export class DashboardComponent implements OnInit {
         this.arr1.forEach(element => {
           this.Portfolio.push(element.numberval);
         });
-  
+
         this.ngEmployeeDropdown = [];
         this.ngEmployeeDropdown1 = [];
         this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
@@ -4674,7 +4674,7 @@ export class DashboardComponent implements OnInit {
         this._calenderDto.Dms = this.SelectDms.join(',');
         this._calenderDto.Portfolio = this.Portfolio.join(',');
         this._calenderDto.Project = this.MasterCode.join(',');
-      
+
       this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
         (data => {
           // this.notifyService.showSuccess("Successfully", "Completed");
@@ -4685,13 +4685,13 @@ export class DashboardComponent implements OnInit {
         console.log(this._calenderDto,"dto")
         this.notifyService.showSuccess("Meeting ended successfully.","Success");
       }
-       
-        
+
+
     }
-  
+
     uncomplete_task(){
       // alert(this.Schedule_ID)
-        
+
       this.CalenderService.NewTaskUncomplete(this.Schedule_ID).subscribe
         (data => {
           this.GetScheduledJson();
