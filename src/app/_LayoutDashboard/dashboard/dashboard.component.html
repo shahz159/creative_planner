@@ -909,7 +909,7 @@
                                     <div *ngIf="item.Status=='Under Approval'">
                                         <span
                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
-                                            {{item.Status}}</span>
+                                            {{item.Status =='Under Approval' ? 'New Project Under Approval':item.Status}}</span>
                                     </div>
                                     <div *ngIf="item.Status=='Completed'">
                                         <span
@@ -919,7 +919,7 @@
                                     <div *ngIf="item.Status=='New Todo'">
                                         <span
                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
-                                            {{item.Status}}</span>
+                                            {{item.Status }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -2760,7 +2760,7 @@
                         </div>
                     </div>
                     <div class="form-group section-1" id="Location_Name" style="display:none">
-                        <label class="cus-lbl">Location </label>
+                        <label class="cus-lbl">Location</label>
                         <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
                             (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
                     </div>

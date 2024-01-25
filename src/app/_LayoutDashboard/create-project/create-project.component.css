@@ -1715,6 +1715,13 @@ svg.template-pin:hover * {
 
 .prj-template:hover{
   background-image:linear-gradient(#fbfbfb,white);
+  
 }
 
+.tabs-view-dg {
+  padding: 5px 40px;
+}
 
+a.nav-link.active span {
+  color: #6d7be3;
+}

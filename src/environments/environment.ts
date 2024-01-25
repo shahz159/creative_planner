@@ -7,6 +7,7 @@ export const environment = {
   //localServer
   baseUrl:'http://localhost:1221/api/'
   // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
+  // baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
 //DMS Live Server
 //baseUrl:'http://localhost:1221/api/'
   //MyMachine Local IIS Server

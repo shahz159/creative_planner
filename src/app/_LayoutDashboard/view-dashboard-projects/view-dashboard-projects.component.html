@@ -9,7 +9,7 @@
                         <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
                              {{_Statustitle}}
                         </h3>
-                        <div class="dropdown"  *ngIf="Mode=='AssignedTask'">                            
+                        <div class="dropdown"  *ngIf="Mode=='AssignedTask'">
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                Projects {{Type}}
                             </h3>
@@ -134,7 +134,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Status}}
+                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :item.Status}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -208,7 +208,7 @@
             <div class="kt-portlet">
                 <!-- <div class="kt-portlet__head">
                     <div class="col-md-6 py-3">
-                        <input type="text" class="form-control" [(ngModel)]="portfolioName" 
+                        <input type="text" class="form-control" [(ngModel)]="portfolioName"
                             placeholder="Enter Portfolio Name..." (keypress)="_ontextChange($event.target.value)">
                         <div>
                             <strong>
@@ -398,7 +398,7 @@
                                                             {{item.Project_Name}}
                                                             <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
                                                         </p>
-                                                        
+
                                                     </td>
                                                     <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                                                     </td>
@@ -423,7 +423,7 @@
                                                     </td> -->
                                                     <td>
                                                         <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="text-info font-weight-400">Under
+                                                            <span class="text-info font-weight-400"> New Project Under
                                                                 Approval</span>
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
@@ -588,7 +588,7 @@
     </div>
     <!-- <app-project-info></app-project-info> -->
     <!-- <app-shared-projects-detail></app-shared-projects-detail> -->
-    
+
 <!-- dms memos sidebar-->
 <div id="MemosSideBar" class="sideInfobar animate-right">
     <div class="kt-portlet__head p-3 bg-primary">

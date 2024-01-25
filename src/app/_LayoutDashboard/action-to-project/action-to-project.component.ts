@@ -566,8 +566,8 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
- 
-  
+
+
 
       });
     });
@@ -657,7 +657,7 @@ export class ActionToProjectComponent implements OnInit {
     }
     else if(this._Urlid==5){
 
-    this.router.navigate(["./backend/ProjectsSummary/createproject"]);
+    this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
 
     }
