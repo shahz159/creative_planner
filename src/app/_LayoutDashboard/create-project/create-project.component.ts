@@ -1,5 +1,5 @@
 import { object } from '@amcharts/amcharts4/core';
-import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
@@ -30,6 +30,9 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 
 })
 export class CreateProjectComponent implements OnInit {
+  @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+
+
   Current_user_ID:string;
   ProjectDto:ProjectDetailsDTO|undefined;
 
@@ -95,6 +98,7 @@ export class CreateProjectComponent implements OnInit {
   maxDate:any
   URL_ProjectCode: any;
   saveAsTemplate:boolean=false;
+  notProvided:boolean=false;
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -116,7 +120,7 @@ export class CreateProjectComponent implements OnInit {
     this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
-
+    this.getPortfolios();
 
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -293,7 +297,7 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
-
+debugger
 
    const d=new Date();
    d.setFullYear(d.getFullYear()+2);
@@ -319,16 +323,19 @@ export class CreateProjectComponent implements OnInit {
         Duration:'0',
         DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
         Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
-        Remarks:this._remarks
+        Remarks:this._remarks,
+      
+
   };
   console.log("PRJ INFORMATION :",projectInfo);
   this.ProjectDto.Status=JSON.stringify(projectInfo);
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
   this.ProjectDto.isTemplate=this.saveAsTemplate;
-
+  this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
+  
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-
+debugger
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
@@ -548,22 +555,10 @@ export class CreateProjectComponent implements OnInit {
 
 
 // add Prj support mat autocomplete drpdwn code start here
-@ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
+
 isPrjSprtDrpDwnOpen:boolean=false;
 
-
-  openPrjSprtDrpDwn(){
-    this.isPrjSprtDrpDwnOpen = true;
-    requestAnimationFrame(() => this.customTrigger.openPanel()); // open the panel
-  }
-
-  closePrjSprtDrpDwn(){
-    this.isPrjSprtDrpDwnOpen = false;
-    requestAnimationFrame(() => this.customTrigger.closePanel()); // close the panel
-  }
-
   onPrjSprtSelected(e:any){
-
     const sprtChoosed=this.allUser_json.find((p:any)=>p.Emp_No===e.option.value);
     if(sprtChoosed){
          const index=this.PrjSupport.indexOf(sprtChoosed);
@@ -575,7 +570,7 @@ isPrjSprtDrpDwnOpen:boolean=false;
           this.PrjSupport.splice(index,1);
          }
     }
-    this.openPrjSprtDrpDwn();
+    this.openAutocompleteDrpDwn('PrjSprtDrpDwn');
   }
 
   removeSelectedPrjSprt(sprt:{Emp_No:string,Emp_Name:string}){
@@ -668,6 +663,9 @@ onProjectOwnerChanged(){
 
 
   showSideBar() {
+    if(this.PrjActionsInfo.length===0)
+    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:this.Current_user_ID});
+    
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/ProjectsSummary/createproject/ActionToProject/5"]);
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -709,6 +707,7 @@ PrjActionsInfo:any=[];
 currentActionView:number|undefined;
 getActionsDetails(){
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
+    console.log("LLL:",res);
     this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
   });
 }
@@ -763,22 +762,38 @@ setRACIS(){
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
-  debugger
-  this.ProjectDto.Emp_No=this.Current_user_ID;
-  this.ProjectDto.isTemplate=this.saveAsTemplate;
-  this.ProjectDto.Project_Code=this.PrjCode;
-  this.ProjectDto.Remarks=this._remarks;
-  this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
-     if(res&&res.message==='Success'){
-           this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
-           this.router.navigate(['./backend/ProjectsSummary']);
-           this.closeInfo();
-      }
-     else{
-        this.notification.showError('something went wrong!','Failed');
-     }
 
- })
+
+  if(this.PrjActionsInfo.length){
+  // atleast one action must be created.
+ 
+      this.ProjectDto.Emp_No=this.Current_user_ID;
+      this.ProjectDto.isTemplate=this.saveAsTemplate;
+      this.ProjectDto.Project_Code=this.PrjCode;
+      this.ProjectDto.Remarks=this._remarks;
+      this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+         if(res&&res.message==='Success'){
+               this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+               this.router.navigate(['./backend/ProjectsSummary']);
+               this.closeInfo();
+          }
+         else{
+            this.notification.showError('something went wrong!','Failed');
+         }
+     });
+
+   
+}
+else{
+  Swal.fire(
+    'Action Required',
+    'Please provide atleast one action to submit the project.',
+    'error'
+  );
+}
+
+
+
 }
 // send prj to project owner for approval end
 
@@ -899,7 +914,7 @@ openTemplate(template:any){
 
 
 openTemplateAction(templAction){
-  const taction = { name: templAction.Project_Name, description:templAction.Project_Description };
+  const taction = { name: templAction.Project_Name, description:templAction.Project_Description ,assignedTo:''};
   this.BsService.setSelectedTemplAction(taction);
   this.showSideBar();                                                                 // opens the sidebar
 }
@@ -924,10 +939,61 @@ cancelPrjCreation(){
         }
   })
 }
-
-
-
 // cancel project creation end
+
+
+
+
+
+
+// portfolio code start 
+
+_portfoliosList:any=[];
+ngDropdwonPort:any=[];
+isPortDrpDwnOpen:boolean=false;
+getPortfolios(){
+  this.service.GetPortfoliosBy_ProjectId(null).subscribe(res=>{
+    console.log("res+>",res);
+    this._portfoliosList=res;
+  });
+}
+
+onPortfolioSelected(e){
+    const prtf=this.ngDropdwonPort.find((item)=>item.Portfolio_ID==e.option.value);
+    if(prtf){
+         this.ngDropdwonPort.splice(this.ngDropdwonPort.indexOf(prtf),1);
+    }
+    else{
+       const portfolio=this._portfoliosList.find((item)=>item.Portfolio_ID==e.option.value)
+        if(portfolio)this.ngDropdwonPort.push(portfolio);
+    }  
+   this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+   console.log('PORTFOLIOS:',this.ngDropdwonPort)
+} 
+
+removePorfolioSelected(p){
+   const index=this.ngDropdwonPort.indexOf(p);
+   if(index!==-1){
+           this.ngDropdwonPort.splice(index,1);
+   }
+}
+
+openAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+}
+
+closeAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+}
+
+
+
+
+// portfolio code end
+
+
 
 
 

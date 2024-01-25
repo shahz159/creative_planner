@@ -49,13 +49,20 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // import 'moment/locale/ja';
 // import 'moment/locale/fr';
 
-
-import * as am4core from "@amcharts/amcharts4/core";
-am4core.useTheme(am4themes_animated);
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import * as am4charts from "@amcharts/amcharts4/charts";
 import tippy from 'tippy.js';
 declare var FusionCharts: any;
+
+declare const am5:any;
+declare const am5percent:any;
+declare const am5xy:any;
+declare const am5themes_Animated:any;
+
+
+
+declare const ApexCharts:any;
+
+
+
 
 
 declare var $: any;
@@ -173,14 +180,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   selectedcategory: any;
   EndDate1: any = new Date();
   currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
-
+  bothActTlSubm:boolean=false;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
   @ViewChild('fruitInput') fruitInput: ElementRef;
 
-
+  @ViewChild('FirstChart') firstchart:any;
 
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
@@ -223,7 +230,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);
-    setTimeout(() => this.drawStatistics(), 5000);
+  
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -234,6 +241,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
+   
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -259,7 +267,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getResponsibleActions();
     this.GetActivityDetails();
-
   }
 
   getusername() {
@@ -282,72 +289,306 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   RemainingHours: any;
   UsedInDAR: any;
 
+
+
+
+  prjBARCHART:any;
+  prjPIECHART:any;
+  
   drawStatistics() {
-    this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-      .subscribe(data1 => {
-        this.maxDuration = (data1[0]['ProjectMaxDuration']);
-        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
-        this.RemainingHours = (data1[0]['RemainingHours']);
 
-        this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
-        this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
-        this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+// 1. bar chart.
+var options = {
+  series: [{
+  data: [+this.projectInfo.AllocatedHours,this.tlTotalHours,(+this.projectInfo.AllocatedHours)-this.tlTotalHours]
+}],
+  chart: {
+  type: 'bar',
+  height: 350
+},
+plotOptions: {
+  bar: {
+    colors: {
+      ranges: [ 
+      
+       {
+         from:0,
+         to:((25*+this.projectInfo.AllocatedHours)/100),
+         color:'#ff7d7d'
+       },   //  0% - 25%   (red)
+
+       {
+         from:((25*+this.projectInfo.AllocatedHours)/100)+1,
+         to:+this.projectInfo.AllocatedHours,
+         color:'#7dbeff'
+       },   // 26%-100%  (blue)
+
+       {
+         from:((25*+this.projectInfo.AllocatedHours)/100)+1,
+         to:Infinity,
+         color:'#7da1ff'
+       },   // more than 100% (purple)
 
 
-        new FusionCharts({
+       {
+         from:-Infinity,
+         to:-1,
+         color:'#00000099'
+       }    // <0  (black)
+     
+    ]
+    },
+    columnWidth: '55%',
+  }
+},
+dataLabels: {
+  enabled: true,
+  formatter:function(v){
+      return v+' hrs';
+  }
+},
+yaxis: {
+  title: {
+    text:''
+  },
+  labels: {}
+},
+xaxis: {
+  categories: ['Allocated','Used','Remaining'],
+  labels: {
+    rotate: -90
+  }
+}
+};
+if(this.prjBARCHART)
+  this.prjBARCHART.destroy();
+this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options);
+this.prjBARCHART.render();
 
-          type: "radialbar",
-          width: "100%",
-          height: "100%",
-          renderAt: "chart-container",
-          dataSource: {
-            chart: {
-              theme: "fusion",
-              // caption: "7Hr 32M",
-              // subCaption: "January 2021",
-              showLegend: 1,
-              innerRadius: 30,
-              outerRadius: 105,
-              showLabels: 1,
-              labelText: "$label"
-            },
-            data: [
-              {
-                label: "Remaining hours",
-                value: this.RemainingHours,
-                color: "#5867dd" //Custom Color
-              },
 
-              {
-                label: "Used hours",
-                value: this.UsedInDAR,
-                color: "#b2beff" //Custom Color
-              },
-              {
-                label: "Total hours",
-                value: this.maxDuration,
-                color: "#985eff" //Custom Color
-              }
-            ]
+// 2. pie chart.
+
+let usedhr=this.tlTotalHours;
+let remaininghr=Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours;
+if(remaininghr<0){
+  remaininghr=0;
+  usedhr=this.projectInfo.AllocatedHours;
+}
+
+var options1 = {
+  series: [usedhr,remaininghr], 
+  chart: {
+    width: 480,
+    type: 'donut',
+    dropShadow: {
+      enabled: true,
+      color: '#b1b1b1',
+      top: 0,
+      left: 0,
+      blur: 1,
+      opacity: 0.5
+    }
+  },
+  stroke: {
+    width: 0,
+  },
+  plotOptions: {
+    pie: {
+      donut: {
+        labels: {
+          show: true,
+          total: {
+            showAlways: true,
+            show: true
           }
-        }).render();
-        // chart js end ----------------
+        }
+      }
+    }
+  },
+  labels: ["Used Hours", "Remaining Hours"],
+  dataLabels: {
+    dropShadow: {
+      blur: 3,
+      opacity: 0.8
+    }
+  },
+  states: {
+    hover: {
+      filter: 'none'
+    }
+  },
+  theme: {
+    palette: 'palette2'
+  },
+  colors: ['#8faeff', '#f0f0f0'], 
+  title: {
+    text: "Overall Utilization",
+    style: {
+      fontSize: '10px', 
+      color: '#333',     
+      fontFamily: 'Lucida Sans Unicode',  
+      fontWeight: 'bold'  
+     
+    }
+  },
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 200
+      },
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }]
+};
+if(this.prjPIECHART)
+this.prjPIECHART.destroy();
+this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
+this.prjPIECHART.render();
 
 
-        var lang = {
-          "javascript": "70%",
-        };
-        var multiply = 4;
-        $.each(lang, function (language, pourcent) {
-          var delay = 700;
-          setTimeout(function () {
-            $('#' + language + '-pourcent').html(pourcent);
-          }, delay * multiply);
-          multiply++;
-        });
+    // var options = {
+    //   series: [{
+    //   data: [
+    //     new Number(this.projectInfo.AllocatedHours).toFixed(1),
+    //     new Number(this.tlTotalHours).toFixed(1),
+    //     new Number(this.projectInfo.AllocatedHours-this.tlTotalHours).toFixed(1)]
+    // }],
+    //   chart: {
+    //   type: 'bar',
+    //   height: 350
+    // },
+    // plotOptions: {
+    //   bar: {
+    //     colors: {
+    //       ranges: [ 
+          
+    //        {
+    //          from:0,
+    //          to:((25*this.projectInfo.AllocatedHours)/100),
+    //          color:'#ff7d7d'
+    //        },   //  0% - 25%   (red)
+
+    //        {
+    //          from:((25*this.projectInfo.AllocatedHours)/100)+1,
+    //          to:this.projectInfo.AllocatedHours,
+    //          color:'#7dbeff'
+    //        },   // 26%-100%  (blue)
+
+    //        {
+    //          from:this.projectInfo.AllocatedHours+1,
+    //          to:Infinity,
+    //          color:'#7da1ff'
+    //        },   // more than 100% (purple)
 
 
-      });
+    //        {
+    //          from:-Infinity,
+    //          to:-1,
+    //          color:'#00000099'
+    //        }    // <0  (black)
+         
+    //     ]
+    //     },
+    //     columnWidth: '55%',
+    //   }
+    // },
+    // dataLabels: {
+    //   enabled: true,
+    //   formatter:function(v){
+    //       return v+' hrs';
+    //   },
+    //   style: {
+    //     colors: ['#000000'], // Set the font color to black
+    //   },
+    //   css:{
+    //     fontFamily:'sans-serif',
+    //     fontWeight:'bold'
+    //   }
+    // },
+    // yaxis: {
+    //   title: {
+    //     text:'hours'
+    //   },
+    //   labels: {}
+    // },
+    // xaxis: {
+    //   categories: ['Allocated','Used','Remaining'],
+    //   labels: {
+    //     rotate: -90
+    //   }
+      
+    // }
+    // };
+
+    // var chart = new ApexCharts(document.querySelector("#chart-container"), options);
+    // chart.render();
+
+
+    // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
+    //   .subscribe(data1 => {
+    //     this.maxDuration = (data1[0]['ProjectMaxDuration']);
+    //     this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+    //     this.RemainingHours = (data1[0]['RemainingHours']);
+
+    //     this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
+    //     this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
+    //     this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
+
+    //     // new FusionCharts({
+
+    //     //   type: "radialbar",
+    //     //   width: "100%",
+    //     //   height: "100%",
+    //     //   renderAt: "chart-container",
+    //     //   dataSource: {
+    //     //     chart: {
+    //     //       theme: "fusion",
+    //     //       // caption: "7Hr 32M",
+    //     //       // subCaption: "January 2021",
+    //     //       showLegend: 1,
+    //     //       innerRadius: 30,
+    //     //       outerRadius: 105,
+    //     //       showLabels: 1,
+    //     //       labelText: "$label"
+    //     //     },
+    //     //     data: [
+    //     //       {
+    //     //         label: "Remaining hours",
+    //     //         value: this.RemainingHours,
+    //     //         color: "#5867dd" //Custom Color
+    //     //       },
+
+    //     //       {
+    //     //         label: "Used hours",
+    //     //         value: this.UsedInDAR,
+    //     //         color: "#b2beff" //Custom Color
+    //     //       },
+    //     //       {
+    //     //         label: "Total hours",
+    //     //         value: this.maxDuration,
+    //     //         color: "#985eff" //Custom Color
+    //     //       }
+    //     //     ]
+    //     //   }
+    //     // }).render();
+    //     // // chart js end ----------------
+
+
+    //     // var lang = {
+    //     //   "javascript": "70%",
+    //     // };
+    //     // var multiply = 4;
+    //     // $.each(lang, function (language, pourcent) {
+    //     //   var delay = 700;
+    //     //   setTimeout(function () {
+    //     //     $('#' + language + '-pourcent').html(pourcent);
+    //     //   }, delay * multiply);
+    //     //   multiply++;
+    //     // });
+    //   });
   }
 
 
@@ -535,6 +776,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
 
 
+
+
+    this.onTLSrtOrdrChanged('Date');  // new added for graph.
+    setTimeout(() => this.drawStatistics(), 5000);  
+
+    
+
+
+
+
+
+
     });
   }
 
@@ -672,72 +925,140 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
-
+  BarChartOfAction:any;
   drawStatistics1(actionCode:string) {
 
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
-
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
-        this.RemainingHours = (data1[0]['RemainingHours']);
+        // this.RemainingHours = (data1[0]['RemainingHours']);
 
-        this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
-        this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
-        this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-
-
-        new FusionCharts({
-
-          type: "radialbar",
-          width: "100%",
-          height: "100%",
-          renderAt: "chart-container1",
-          dataSource: {
-            chart: {
-              theme: "fusion",
-              // caption: "7Hr 32M",
-              // subCaption: "January 2021",
-              showLegend: 1,
-              innerRadius: 30,
-              outerRadius: 105,
-              showLabels: 1,
-              labelText: "$label"
-            },
-            data: [
-              {
-                label: "Remaining hours",
-                value: this.RemainingHours,
-                color: "#5867dd" //Custom Color
-              },
-
-              {
-                label: "Used hours",
-                value: this.UsedInDAR,
-                color: "#b2beff" //Custom Color
-              },
-              {
-                label: "Total hours",
-                value: this.maxDuration,
-                color: "#985eff" //Custom Color
-              }
+        //  bar chart.
+        var options = {
+          series: [{
+          data: [
+            this.maxDuration,
+            this.UsedInDAR,
+            this.maxDuration-this.UsedInDAR
             ]
-          }
-        }).render();
-        // chart js end ----------------
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            colors: {
+              ranges: [ 
+              
+              {
+                from:0,
+                to:((25*this.maxDuration)/100),
+                color:'#ff7d7d'
+              },   //  0% - 25%   (red)
 
-        var lang = {
-          "javascript": "70%",
+              {
+                from:((25*this.maxDuration)/100)+1,
+                to:this.maxDuration,
+                color:'#7dbeff'
+              },   // 26%-100%  (blue)
+
+              {
+                from:this.maxDuration+1,
+                to:Infinity,
+                color:'#7da1ff'
+              },   // more than 100% (purple)
+
+
+              {
+                from:-Infinity,
+                to:-1,
+                color:'#00000099'
+              }    // <0  (black)
+            
+            ]
+            },
+            columnWidth: '55%',
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          formatter:function(v){
+              return v+' hrs';
+          }
+        },
+        yaxis: {
+          title: {
+            text:''
+          },
+          labels: {}
+        },
+        xaxis: {
+          categories: ['Allocated','Used','Remaining'],
+          labels: {
+            rotate: -90
+          }
+        }
         };
-        var multiply = 4;
-        $.each(lang, function (language, pourcent) {
-          var delay = 700;
-          setTimeout(function () {
-            $('#' + language + '-pourcent').html(pourcent);
-          }, delay * multiply);
-          multiply++;
-        });
+
+
+        if(this.BarChartOfAction)
+          this.BarChartOfAction.destroy();
+
+        this.BarChartOfAction = new ApexCharts(document.querySelector("#chart-container1"), options);
+        this.BarChartOfAction.render();
+
+        // new FusionCharts({
+
+        //   type: "radialbar",
+        //   width: "100%",
+        //   height: "100%",
+        //   renderAt: "chart-container1",
+        //   dataSource: {
+        //     chart: {
+        //       theme: "fusion",
+        //       // caption: "7Hr 32M",
+        //       // subCaption: "January 2021",
+        //       showLegend: 1,
+        //       innerRadius: 30,
+        //       outerRadius: 105,
+        //       showLabels: 1,
+        //       labelText: "$label"
+        //     },
+        //     data: [
+        //       {
+        //         label: "Remaining hours",
+        //         value: this.RemainingHours,
+        //         color: "#5867dd" //Custom Color
+        //       },
+
+        //       {
+        //         label: "Used hours",
+        //         value: this.UsedInDAR,
+        //         color: "#b2beff" //Custom Color
+        //       },
+        //       {
+        //         label: "Total hours",
+        //         value: this.maxDuration,
+        //         color: "#985eff" //Custom Color
+        //       }
+        //     ]
+        //   }
+        // }).render();
+        // // chart js end ----------------
+
+        // var lang = {
+        //   "javascript": "70%",
+        // };
+        // var multiply = 4;
+        // $.each(lang, function (language, pourcent) {
+        //   var delay = 700;
+        //   setTimeout(function () {
+        //     $('#' + language + '-pourcent').html(pourcent);
+        //   }, delay * multiply);
+        //   multiply++;
+        // });
 
       });
   }
@@ -898,6 +1219,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.isSelection=false;
     this.selectedEmployees=[];
     this.dateF=new FormControl(new Date());
+    this._remarks='';
+    this._inputAttachments='';
+    this.selectedFile=null;
+    this.notProvided=false;
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -1623,6 +1948,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   actionCompleted() {
+debugger
     if (this._remarks === "") { // when the user not provided the remark then .
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
@@ -1785,12 +2111,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalRecords: any;
   _CurrentpageRecords: any;
   showaction: boolean = true;
-  workdes: string;
+  workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   dateF = new FormControl(new Date());
   todayDate = new Date();
   disablePreviousDate = new Date();
-  starttime: any;
+  starttime: any=null;
   timedata: any = [];
   timedata1: any;
   objProjectDto: ProjectDetailsDTO;
@@ -1801,19 +2127,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   starttimearr: any = [];
   endtimearr: any = [];
   lastEndtime: any;
-  endtime: any;
+  endtime: any=null;
   coresecondary: boolean = true;
   Responsible_EmpNo: string;
   noact_msg: boolean = false;
   date = new Date();
-  actionCode: string;
+  actionCode: string='';
   timecount: any;
   minutes: any;
   hours: any;
   Comp_No: string;
   inProcessCount: number;
   delaycount: number;
-
+  notProvided:boolean=false;
 
 
   openDarSideBar() {
@@ -1841,7 +2167,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   getResponsibleActions() {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
       (data) => {
-        this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
+        this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
@@ -2438,6 +2764,10 @@ check_allocation() {
 
 
   submitDar() {
+   if((!(this.actionCode&&this.workdes&&this.starttime&&this.endtime))||(this.bothActTlSubm&&this._remarks===''))
+     this.notProvided=true;
+   else{
+
 
     if (this.starttime != null && this.endtime != null) {
       const [shours, sminutes] = this.starttime.split(":");
@@ -2492,20 +2822,38 @@ check_allocation() {
       .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
+
+// Timeline submitted
+// if action submission is also required 
+if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
+  this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
+  this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
+  this.Sub_Desc = this.projectActionInfo[this.currentActionView].Project_Description;
+  this.Sub_StartDT = this.projectActionInfo[this.currentActionView].StartDate;
+  this.Sub_EndDT = this.projectActionInfo[this.currentActionView].EndDate;
+  this.Sub_Autho = this.projectActionInfo[this.currentActionView].Team_Res;
+  this.Sub_Status = this.projectActionInfo[this.currentActionView].Status;
+  this.actionCompleted();
+  this.closeDarSideBar();
+
+  this.bothActTlSubm=false;
+  this._remarks='';
+  this._inputAttachments='';
+}
       });
     this.dar_details();
     this.getDarTime();
 
-
-
     this.workdes = "";
     this.starttime = null;
     this.endtime = null;
+    this.notProvided=false;
     // document.getElementById("newdetails").classList.remove("position-fixed");
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
     // this.Clear_Feilds();
 
+   }
   }
 
 
@@ -5994,4 +6342,47 @@ displaymessage(){
 displaymessagemain(){
   this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
 }
+
+// action cancel start
+actionCancel(index:number){
+  
 }
+
+
+
+// action cancel end
+
+
+// open Graph screen start
+
+openFullGraph(){
+  $('#recent-activities-section').addClass('d-none');
+
+  $('#bar-and-pie').removeClass('col-lg-6');
+  $('#bar-and-pie').addClass('col-lg');
+
+  $('#Pie-chart').removeClass('d-none');
+
+  $('.CHARTS').css('grid-template-columns', '1fr 1fr');
+
+}
+
+closeFullGraph(){
+  $('#recent-activities-section').removeClass('d-none');
+  $('#bar-and-pie').removeClass('col-lg');
+  $('#bar-and-pie').addClass('col-lg-6');
+  $('#Pie-chart').addClass('d-none');
+  $('.CHARTS').css('grid-template-columns','1fr');
+}
+// open Graph screen end
+
+
+
+
+
+
+
+}
+
+
+
