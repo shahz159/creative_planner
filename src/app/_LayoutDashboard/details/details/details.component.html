@@ -665,15 +665,15 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status " style="width:fit-content" [ngClass]="{
-
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
-                                                                    'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
-                                                                    'CompletionUnderApproval':(projectInfo.Status==='Forward Under Approval'||projectInfo.Status==='Completion Under Approval'),
-                                                                    'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
+                                                                    'NewProjectRejected':projectInfo.Status==='New Project Rejected',
+                                                                    'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
+                                                                    'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                                                    'Delay':projectInfo.Status==='Cancellation Under Approval',
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
-                                                                    'NewProjectRejected':projectInfo.Status==='Cancelled',
+                                                                    'Cancelled':projectInfo.Status==='Cancelled',
                                                                     'Hold':projectInfo.Status==='Project Hold',
                                                                     'UnderApproval':projectInfo.Status==='Under Approval'
 
@@ -1738,7 +1738,7 @@
 
                                 <!-- Notification start-->
 
-                                <div class="kt-Note-msg d-flex align-items-center"
+                                <!-- <div class="kt-Note-msg d-flex align-items-center"
                                     *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
                                     <div class="kt-note-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -1820,7 +1820,113 @@
                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                     </div>
-                                </div>
+                                </div> -->
+
+
+
+
+
+
+<!--my start-->
+
+<div class="kt-Note-msg d-flex align-items-center" style="background-color:#ffffffff;"  *ngIf="myUnderApprvActions.length||myDelayPrjActions.length||+ProjectPercentage>100"         >
+                                    <div class="kt-note-icon" style="align-self:flex-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
+                                            version="1.1" x="0px" y="0px" viewBox="0 0 66 65"
+                                            style="enable-background:new 0 0 66 66;" xml:space="preserve">
+                                            <path
+                                                d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z" />
+                                            <path
+                                                d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z" />
+                                            <path
+                                                d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z" />
+                                            <path
+                                                d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z" />
+                                            <path
+                                                d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z" />
+                                            <path
+                                                d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z" />
+                                            <path
+                                                d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z" />
+                                            <path
+                                                d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
+                                        </svg>
+                                    </div>
+                                    
+
+                                    <div class="notifications-list" >
+
+         
+                                     <ng-container *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
+                                        <div class="notification underapproval-notification " *ngIf="myUnderApprvActions.length>0" (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
+                                            <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="
+                                          fill: #00a2eb;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z"></path> <path d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z"></path> <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path> <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path> <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path> <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path> <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path> </g> </g></svg>
+                                            <span class="notif-msg fs-5"  style="color:#00a2eb">You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
+                                                actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
+                                            <!-- <span class="notif-date">1 day ago</span> -->
+                                        </div>
+
+                                        <div class="notification delay-notification" *ngIf="myDelayPrjActions.length>0" >
+                                            <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff2727"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                            <span class="notif-msg" style="color:#ff2727  "    > You have {{myDelayPrjActions.length}}
+                                                {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
+                                                of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
+                                                days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
+                                            <!-- <span class="notif-date">10 days ago</span> -->
+                                            
+                                        </div>
+                                    
+
+                                     </ng-container>
+                                        
+                                    
+                                    
+                                    
+                                
+                         
+                                        <div class="notification overutilization-notification"   *ngIf="+ProjectPercentage>100">
+                                            <svg width="24px" height="24px" viewBox="0 0 512 512"  fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <g id="Page-1" stroke="none" stroke-width="1"  fill-rule="evenodd"> <g id="add"  transform="translate(32.000000, 42.666667)"> <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
+                                            <span class="notif-msg" style="color:#c57a05"> 
+                                               This project is overutilized by {{ProjectPercentage}}%, surpassing allocated hours. 
+                                            </span>
+                                        </div>
+                               
+                                    
+                                    
+                                    </div>
+                                    
+                                    <div class="notifications-list"  *ngIf="projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length">
+                                        <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
+                                            <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                            <span class="notif-msg"> 
+                                                Project has {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max
+                                                {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
+                                                <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
+                                                    {{action.name}}
+                                                    ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
+                                                    days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
+                                                        *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
+                                            </span>
+                                            <!-- <span class="notif-date">10 days ago</span> -->
+                                        </div>
+                                    </div>
+
+
+
+                                </div> 
+
+
+
+
+
+
+
+
+
+
+
+<!--my end-->
 
 
                                 <!-- Notification end-->
@@ -1921,14 +2027,14 @@
                                                             </ng-template>
                                                             <button class="Ct-btn Bt-Submit ml-2"
                                                                 *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
-                                                                Submission</button>
+                                                                Completion</button>
 
                                                             <button class="Ct-btn Bt-Submit ml-2"
                                                                 *ngIf="
                                                  (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
                                                  (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
                                                                 (click)="OnClickCheckboxProjectUpdate()">Project
-                                                                Submission</button>
+                                                                Completion</button>
 
                                                             <button (click)="openDarSideBar()" class="Ct-btn ml-2"
                                                                 *ngIf="projectInfo.Status!=='New Project Rejected'">Add
@@ -1937,6 +2043,7 @@
                                                                 (click)="openNewPrjReleaseSideBar()"
                                                                 *ngIf="projectInfo.Status=='New Project Rejected' && Current_user_ID == projectInfo.ResponsibleEmpNo">New
                                                                 Project Release</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2457,9 +2564,17 @@
                                                         </svg>
                                                     </span> Cost
                                                 </div>
-                                                <div class="kt-info-data-v">
-                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
+                                                <div class="kt-info-data-v" *ngIf="projectInfo&&projectInfo.Project_Cost; else SAR">
+                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}                                                    
+                                                </div>                                               
+                                                <ng-template  #SAR>
+                                                    <div class="kt-info-data-v">
+                                                    SAR 00.00
                                                 </div>
+                                                 </ng-template>
+                                                <!-- <div class="kt-info-data-v">
+                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
+                                                </div> -->
                                             </div>
                                             <div class="col text-center">
                                                 <div class="kt-info-lable-v">
@@ -2709,7 +2824,10 @@
 
                                         <div class="Dividing-line"></div>
                                         <div class="row">
-                                            <div class="col-lg-6">
+
+
+                                            
+                                            <div class="col-lg-6 "  id="recent-activities-section"    >
                                                 <div class="kt-over-pd-in bd-right-x">
                                                     <div class="kt-ct-project">
                                                         <div class="kt-ct-sub-ttl">
@@ -2777,13 +2895,19 @@
 
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 Statistics">
+                                            <div class="col-lg-6"  id="bar-and-pie">
                                                 <div class="kt-ct-sub-ttl">
-                                                    <h6>Statistics</h6>
-                                                    <div class="d-flex flex-column ml-3 w-100"
+                                                    <h6>Analytics</h6>
+                                                     <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9991 19L9.83911 14C9.56672 13.7429 9.34974 13.433 9.20142 13.0891C9.0531 12.7452 8.97656 12.3745 8.97656 12C8.97656 11.6255 9.0531 11.2548 9.20142 10.9109C9.34974 10.567 9.56672 10.2571 9.83911 10L14.9991 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                     </button>
+                                                     <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                     </button>
+                                                    <!-- <div class="d-flex flex-column ml-3 w-100"
                                                         *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
                                                         <div class="lable-dv">
-                                                            <lable>Overall Performance </lable>
+                                                            <lable>Overall Utilization</lable>
                                                         </div>
                                                         <div *ngIf="ProjectStatus=='Not Started'">
                                                             <div class="d-flex align-items-center">
@@ -2791,7 +2915,7 @@
                                                                 <div class="progress h-6px w-100 bg-light-warning">
                                                                     <div class="progress-bar bg-warning"
                                                                         role="progressbar"
-                                                                        [ngStyle]='{ width : ProjectPercentage }'
+                                                                        [ngStyle]="{width:'100%'}"
                                                                         aria-valuenow="50" aria-valuemin="0"
                                                                         aria-valuemax="100">
                                                                     </div>
@@ -2871,11 +2995,28 @@
                                                                     class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage}}</span>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
-                                                <div id="chart-container" class="Chart">
+                                                <!-- <div id="chart-container" class="Chart">
+                                                </div> -->
+
+
+
+                                                <div class="CHARTS" style="  display:grid; grid-template-columns:1fr;">
+                                                <div id="Bar-chart"></div>
+                                                <div id="Pie-chart" class="d-none"></div>
                                                 </div>
+
+
+
+
+
                                             </div>
+
+
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -2884,7 +3025,7 @@
                                 <!--Action Content-->
                                 <ng-container *ngIf="projectActionInfo">
 
-                                    <div class="kt-Note-msg d-flex align-items-center"
+                                    <!-- <div class="kt-Note-msg d-flex align-items-center"
                                         *ngIf="projectActionInfo[currentActionView].Status==='Delay'">
                                         <div class="kt-note-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -2916,7 +3057,24 @@
                                             delay in the project will affect the project flow. take extra effect to
                                             catch up on the deadline.
                                         </div>
-                                    </div>
+                                    </div> -->
+
+                                    <div class="notifications-list pt-3"    *ngIf="projectActionInfo[currentActionView].Status==='Delay'">
+
+        
+                                        <div class="notification delay-notification">
+                                            <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff0000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                            <span class="notif-msg" style="color:red" >  
+                                                Your {{projectActionInfo&&projectActionInfo[currentActionView].Delaydays}} days
+                                                delay in the project will affect the project flow. take extra effect to
+                                                catch up on the deadline.</span>
+                                            <!-- <span class="notif-date">10 days ago</span> -->
+                                        </div>
+                                    
+                                    
+                                    
+                                       </div>
+
 
                                     <div class="kt-info-box kt-info-action-box mt-3 border-0">
                                         <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
@@ -3004,7 +3162,7 @@
                                                         )
                                                         "
                                                         (click)="markCompleted(projectActionInfo[currentActionView])">
-                                                        Action Submission</button>
+                                                        Action Completion</button>
 
 
 
@@ -3018,6 +3176,17 @@
                                                         projectInfo.ResponsibleEmpNo===Current_user_ID
                                                         )" (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
                                                         </button>
+
+
+
+
+                                                        <button class="Ct-btn Bt-cancel ml-2" *ngIf="
+                                                         (
+                                                        projectActionInfo[currentActionView].Team_Res===Current_user_ID||
+                                                        projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
+                                                        projectInfo.OwnerEmpNo===Current_user_ID||
+                                                        projectInfo.ResponsibleEmpNo===Current_user_ID
+                                                        )&&projectActionInfo[currentActionView].Status!='Completed'" (click)="actionCancel(currentActionView)"   >Action Cancel</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3613,7 +3782,7 @@
                                                     </div>
                                                     <div class="kt-clinet-img-x">
                                                         <div class="kt-info-data-v">
-                                                            {{projectActionInfo[currentActionView].Client?projectActionInfo[currentActionView].Client:ProjectInfo.Client}}
+                                                            {{projectActionInfo[currentActionView].Client?projectActionInfo[currentActionView].Client:projectInfo.Client}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3808,9 +3977,9 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 Statistics">
+                                                <div class="col-lg-6">
                                                     <div class="kt-ct-sub-ttl">
-                                                        <h6>Statistics</h6>
+                                                        <h6>Analytics</h6>
                                                     </div>
                                                     <div id="chart-container1" class="Chart">
                                                     </div>
@@ -4324,6 +4493,7 @@
                             {{item.Project_Name}}
                         </ng-option>
                     </ng-select>
+                    <span style="color:red" *ngIf="(!actionCode)&&notProvided" >Please select Action</span>
                     <span style="color:red" *ngIf="(noact_msg==true)">You do not have any action assigned, Please
                         create
                         atleast one action to submit timeline</span>
@@ -4332,6 +4502,7 @@
                     <label>Work Description<span class="text-danger">*</span></label>
                     <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"
                         placeholder="Define your achievement here."></textarea>
+                    <span style="color:red" *ngIf="workdes===''&&notProvided" >Please Provide Description.</span>
                 </div>
 
                 <div class="form-group">
@@ -4360,6 +4531,7 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
                             </ng-option>
                         </ng-select>
+                        <span style="color:red" *ngIf="starttime===null&&notProvided">Please Provided starttime</span>
                     </div>
 
                     <div class="form-group w-100">
@@ -4372,11 +4544,65 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                             </ng-option>
                         </ng-select>
+                        <span style="color:red" *ngIf="endtime===null&&notProvided">Please Provided endtime</span>
                         <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
                             Start
                             time!!</span>
                     </div>
                 </div>
+
+              
+                
+
+
+
+                  <ng-container *ngIf="bothActTlSubm">
+                    <div class="form-group mt-3">
+                        <label>Attachments</label>
+                        <div class="input-group mb-3" #uploadFile>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-upload" viewBox="0 0 16 16">
+                                        <path
+                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                        <path
+                                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="uploadFile" (change)="onFileChange($event)" />
+                                <label class="custom-file-label" id="_upload" for="uploadFile">
+                                    <ng-container *ngIf="_inputAttachments==='';else fileprovided">
+                                        Select a file
+                                    </ng-container>
+                                    <ng-template #fileprovided>
+                                        {{_inputAttachments}}
+                                    </ng-template>
+        
+                                </label>
+                            </div>
+                        </div>
+                        <span class="text-info"> *Accept only pdf files</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
+                        <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+                            [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
+                        <span style="color:red" *ngIf="_remarks===''&&notProvided">Please Provided Remarks.</span>
+                    </div>
+                 </ng-container>
+
+
+                   <ng-container *ngIf="projectActionInfo&&projectActionInfo[currentActionView]">
+                    <div class="d-flex align-items-center"   *ngIf="['Delay','InProcess'].includes(projectActionInfo[currentActionView].Status)">
+                            <input [(ngModel)]="bothActTlSubm" type="checkbox" id="actioncompl" class="mr-2"
+                                style="accent-color: green; width:15px; height:15px;"/>
+                            <label for="actioncompl" class="mb-0 font-weight-normal"> Complete this Action </label>
+                    </div>
+                  </ng-container>
+
 
                 <!-- <div class="form-group">
                 <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
@@ -4393,9 +4619,8 @@
                         <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
                             (click)="closedarBar()">Cancel</button>
                         <button type="reset" class="btn w-110 btn-secondary Bt-Close ml-2"
-                            (click)="starttime=null; endtime=null; workdes=''; actionCode=null;">Reset</button>
-                        <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="submitDar()">
-                            Submit</button>
+                            (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
+                        <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="submitDar()">Submit</button>
                     </div>
                 </div>
 
@@ -5553,7 +5778,8 @@
                     </div>
                 </div>
             </div>
-            <div class="kt-Attachament__body">
+            <div class="kt-Attachament__body  kt-portlet__body_scroll ">
+
                 <div class="kt-card-custom">
                     <div class="">
                         <div class="tab-content">
@@ -6063,7 +6289,7 @@
                 <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
                     <h4 class="m-0"
                         *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type!='Routine Tasks')">
-                        Project Submission</h4>
+                        Project Completion</h4>
                     <h4 class="m-0" *ngIf="(projectInfo.Project_Type=='Standard Tasks')">Task Submission</h4>
                     <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfoProject()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -9762,3 +9988,11 @@
                 </div>
             </div>
             <!--   New Project Release sidebar Area End-->
+
+
+
+
+
+
+
+            

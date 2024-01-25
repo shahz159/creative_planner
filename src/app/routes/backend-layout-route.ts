@@ -26,6 +26,11 @@ export const BACKEND_ROUTES: Routes = [
 
      },
      {
+          path: 'createproject',canActivate: [AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/create-project/create-project.module').then(m => m.CreateProjectModule),
+
+     },
+     {
           path: 'Timeline',canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/timeline/timeline.module').then(m => m.TimelineModule),
 
