@@ -1738,7 +1738,7 @@
 
                                 <!-- Notification start-->
 
-                                <!-- <div class="kt-Note-msg d-flex align-items-center"
+                              <div class="kt-Note-msg d-flex align-items-center"
                                     *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
                                     <div class="kt-note-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -1820,14 +1820,14 @@
                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                     </div>
-                                </div> -->
+                                </div> 
 
 
 
 
 
 
-<!--my start-->
+<!--my start  new notification desgin-->
 
         <div class="kt-Note-msg d-flex align-items-center" style="background-color:#ffffffff;"  *ngIf="myUnderApprvActions.length||myDelayPrjActions.length||+ProjectPercentage>100"         >
                                             <div class="kt-note-icon" style="align-self:flex-start">
@@ -1864,7 +1864,7 @@
                                                 fill: #00a2eb;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z"></path> <path d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z"></path> <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path> <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path> <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path> <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path> <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path> </g> </g></svg>
                                                     <span class="notif-msg fs-5"  style="color:#00a2eb">You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
                                                         actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
-                                                    <!-- <span class="notif-date">1 day ago</span> -->
+                                                    
                                                 </div>
 
                                                 <div class="notification delay-notification" *ngIf="myDelayPrjActions.length>0" >
@@ -1873,7 +1873,7 @@
                                                         {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
                                                         of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
                                                         days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
-                                                    <!-- <span class="notif-date">10 days ago</span> -->
+                                                 
                                                     
                                                 </div>
                                             
@@ -1908,17 +1908,17 @@
                                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                                     </span>
-                                                    <!-- <span class="notif-date">10 days ago</span> -->
+                                                  
                                                 </div>
                                             </div>
 
 
 
-            </div> 
+            </div>  
 
 
 
-<!--my end-->
+<!--my end   new  notification desgin-->
 
 
                                 <!-- Notification end-->
