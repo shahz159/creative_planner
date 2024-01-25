@@ -2714,36 +2714,37 @@
                                                         <div class="kt-ct-sub-ttl">
                                                             <h6>Recent activity</h6>
                                                         </div>
-                                                    </div>
+                                                    </div> 
                                                     <div class="timeline-label">
                                                         <!--begin::Item-->
                                                         <div class="timeline-item"
                                                             *ngFor="let item of firstFiveRecords">
                                                             <!--begin::Label-->
-                                                            <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                                                {{item.ModifiedDate |date:'dd MMM'}}
-                                                                <span
-                                                                    class="kt-dt-l">{{formatTime(item.ModifiedTime)}}</span>
+                                                            <div class=" timeline-label fw-bold text-gray-800 fs-7">
+                                                                {{item.ModifiedDate}}
+                                                                <p
+                                                                    class="kt-dt-l text-gray-400">{{formatTime(item.ModifiedTime)}}</p>
                                                             </div>
                                                             <!--end::Label-->
 
                                                             <!--begin::Badge-->
                                                             <div class="timeline-badge">
                                                                 <i class="fa fa-genderless text-primary fs-1"></i>
-                                                            </div>
+                                                            </div> 
                                                             <!--end::Badge-->
 
                                                             <!--begin::Text-->
                                                             <div class="fw-mormal timeline-content text-muted ps-3">
                                                                 <p class="kt-timeline-tl mb-0">
-                                                                    <span class="fw-bold text-gray-800"> {{item.Value}} </span>
-                                                                     </p> <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> |
-                                                                <span *ngIf="item.oldValue !==''">From :
-                                                                    {{item.oldValue}}</span>
-                                                                <span *ngIf="item.oldValue !==''; else newActivity">To :
-                                                                    <!-- {{item.NewValue}}  -->
-                                                                    {{item.NewValue | slice:0:limit}}{{ isExpanded ?
-                                                                    (item.NewValue | slice:limit): ' ' }}
+                                                                    <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
+                                                                    <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
+                                                                     </p>
+                                                                      <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
+                                                                      <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
+                                                                <p *ngIf="item.oldValue !==''"> from "{{item.oldValue}}"</p>
+                                                                <span *ngIf="item.oldValue !==''; else newActivity"> 
+                                                                    to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?
+                                                                    (item.NewValue | slice:limit): '' }}"
                                                                     <ng-container *ngIf="item.NewValue.length>60">
                                                                         <a href="javascript:void(0)"
                                                                             (click)="View_Activity()">more...</a>
@@ -2751,12 +2752,14 @@
                                                                 </span>
                                                                 <ng-template #newActivity>
                                                                     <!-- {{item.NewValue}}  -->
+                                                                    <p>
                                                                     {{item.NewValue | slice:0:limit}}{{ isExpanded ?
                                                                     (item.NewValue | slice:limit): ' ' }}
                                                                     <ng-container *ngIf="item.NewValue.length>60">
                                                                         <a href="javascript:void(0)"
                                                                             (click)="View_Activity()">more...</a>
                                                                     </ng-container>
+                                                                </p>
                                                                 </ng-template>
                                                             </div>
                                                             <!--end::Text-->
@@ -3174,16 +3177,16 @@
                                             </p>
                                         </div> -->
                                             <div class="kt-project-desc w-80">
-                                                <p>{{projectActionInfo[currentActionView].Project_Description |
+                                                <span>{{projectActionInfo[currentActionView].Project_Description |
                                                     slice:0:limit}}
                                                     {{ isExpanded ?
                                                     (projectActionInfo[currentActionView].Project_Description |
                                                     slice:limit): ' ' }}
-                                                </p>
+                                                </span>
                                                 <ng-container
-                                                    *ngIf="projectActionInfo[currentActionView].Project_Description.length>180">
+                                                    *ngIf="projectActionInfo[currentActionView].Project_Description.length>60">
                                                     <a href="javascript:void(0)" (click)="toggleReadMore()">{{
-                                                        isExpanded ? 'Read less' : 'Read more' }}</a>
+                                                        isExpanded ? ' less' : 'more...' }}</a>
                                                 </ng-container>
                                             </div>
                                             <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
@@ -4996,12 +4999,12 @@
 
             <div class="kt-Attachament__body">
 
-                <div class="pt-2 pb-2 mb-2">
+                <div class="pt-2 pb-2 ">
                     <div class="d-flex-center">
                         <div class="position-relative w-100">
                             <input type="text" autocomplete="off" name="search" placeholder="Search..."
                                 [(ngModel)]="filterText"
-                                class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
+                                class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">        
                             <span class="cancl-icon curser-pointer" *ngIf="filterSearch && filterText"
                                 (click)="filterSearch()">
                                 <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
@@ -5179,17 +5182,54 @@
                         </div>
                     </div>
                 </div>
+                <div  *ngIf="flSrtOrd==='Date' || flSrtOrd==='Project' || flSrtOrd==='Employee' || flSrtOrd==='me'" class="mb-2">            
+                    <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
+                        <li class="nav-item">
+                            <a  id="prj-attachments-tab-btn"  class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_7"  (click)="getProjectAttachments()" >    
+                                <span _ngcontent-jgy-c397="" class="svg-icv-hd"><svg _ngcontent-jgy-c397="" xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                    <path _ngcontent-jgy-c397="" d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 
+                                    3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path 
+                                    _ngcontent-jgy-c397="" d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 
+                                    7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
+                                    </path><path _ngcontent-jgy-c397="" d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 
+                                    3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path 
+                                    _ngcontent-jgy-c397="" d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323" 
+                                    stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                
+
+                                <span class="nav-text">Project</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="acts-attachments-tab-btn" class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_8"  (click)="getActionAttachments()"  >
+                                <span _ngcontent-ibo-c397="" class="svg-icv-hd"><svg _ngcontent-ibo-c397="" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                    stroke="#a3a3a3"><g _ngcontent-ibo-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-ibo-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" 
+                                    stroke-linejoin="round"></g><g _ngcontent-ibo-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-ibo-c397="" d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3" 
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ibo-c397="" d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 
+                                    19V20" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ibo-c397="" d="M8 12C10.2091 12 12 10.2091 12 8C12 
+                                    5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g></svg></span>
+                                <span class="nav-text">Actions</span>
+                            </a>
+                        </li>
+                    </ul>
+              </div>
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
                 <!--  Older Start-->
+          
+
                 <ng-container *ngIf="_TotalDocs>0">
                     <ng-container *ngIf="(AttachmentList|filter:filterText).length>0; else box">
-                        <div class="attachament-list-view"
-                            *ngFor="let item of AttachmentList  | filter :filterText;let i=index">
+                        <div class="attachament-list-view" *ngFor="let item of AttachmentListTemp  | filter :filterText;let i=index">
+                            
+                            <ng-container *ngIf="item.JsonData.length>0">
+                            
+                            
                             <div data-toggle="collapse" aria-expanded="true"
                                 class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
                                 [attr.data-target]="'#Div_attachments'+ i">
-                                <span class="kt-text-wrap "><i
-                                        class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
-                                <span class="Kt-replay-count">{{item.TotalFiles}}</span>
+                                <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
+                                <span class="Kt-replay-count">{{item.JsonData.length}}</span>
                             </div>
                             <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
                                 <div class="kt-notification__item no-after position-relative ng-star-inserted"
@@ -5203,57 +5243,46 @@
                                             </path>
                                         </svg>
                                     </div>
-
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='png' || file.contenttype=='jpg'">
-                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
-                                            class="asseticn prim-icn">
+                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn prim-icn">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
                                             </path>
                                         </svg>
                                     </div>
-
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='txt' ||file.contenttype=='html' || file.contenttype=='doc' || file.contenttype=='docx' || file.contenttype=='json' || file.contenttype=='xml'">
-                                        <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true"
-                                            focusable="false">
+                                        <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z">
                                             </path>
                                         </svg>
                                     </div>
-
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='ppt' || file.contenttype=='pptx'">
-                                        <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true"
-                                            focusable="false">
+                                        <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z">
                                             </path>
                                         </svg>
                                     </div>
-
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='xlsx' || file.contenttype=='xls'">
-                                        <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true"
-                                            focusable="false">
+                                        <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z">
                                             </path>
                                         </svg>
                                     </div>
-
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf=" file.contenttype!='application/pdf' && file.contenttype!='xlsx' && file.contenttype!='xls' && file.contenttype!='ppt' && file.contenttype!='pptx' && file.contenttype!='txt' && file.contenttype!='html' && file.contenttype!='doc' && file.contenttype!='docx' && file.contenttype!='png' && file.contenttype!='jpg' && file.contenttype!='pdf'">
-                                        <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true"
-                                            focusable="false">
+                                        <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z">
                                             </path>
                                         </svg>
                                     </div>
-
                                     <ng-container *ngIf="projectInfo.Project_Block=='003'">
                                         <div data-toggle="modal" class="kt-notification__item-details"
                                             (click)="openPDF_Standards(file.StandardId,file.Submitted_By_EmpNo,file.IsCloud,file.date,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
@@ -5272,7 +5301,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
+                                                <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
@@ -5295,18 +5324,15 @@
                                         <div data-toggle="modal" class="kt-notification__item-details"
                                             (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
                                             <div class="d-flex-center">
-                                                <div class="kt-notification__item-title fw-bold"
-                                                    title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44">
+                                                <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}"
+                                                    *ngIf="file.Sourcefile.length>44">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile | slice:0:28}}...
                                                 </div>
-                                                <div class="kt-notification__item-title fw-bold"
-                                                    *ngIf="file.Sourcefile.length<45">
+                                                <div class="kt-notification__item-title fw-bold" *ngIf="file.Sourcefile.length<45">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile}}
                                                 </div>
-
-
                                                 <div class="d-flex align-items-center">
                                                     <div data-toggle="tooltip" data-placement="top" title=""
                                                         class="symbol symbol-circle symbol-22px">
@@ -5317,7 +5343,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
+                                                <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
@@ -5338,6 +5364,10 @@
                                     </ng-container>
                                 </div>
                             </div>
+
+
+                             </ng-container>
+
                         </div>
                     </ng-container>
                 </ng-container>
@@ -8630,17 +8660,18 @@
                                     </svg>
                                 </span>
                             </div>
-                            <div class="input-icon Sub_In_ed" style="max-width: 140px;"
+                            <div class="input-icon Sub_In_ed  " style="max-width: 140px;"
                                 *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
-                                <input type="text" class="form-control readonly" [(ngModel)]="ProjectType" readonly />
+                                <input type="text" class="form-control kt-info-box-tit " [(ngModel)]="ProjectType" readonly />
                             </div>
-                            <div class="Project_type_DW curser-pointer"
+                            <div class="Project_type_DW curser-pointer "
                                 *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
-                                <ng-select [(ngModel)]="ProjectType" placeholder="Change task type">
-                                    <ng-option [value]="item.typeid" *ngFor="let item of type_list">{{item.typename}}
+                            
+                                <ng-select id="colorDropdown"  [(ngModel)]="ProjectType" placeholder="Change task type" >
+                                    <ng-option  [value]="item.typeid" *ngFor="let item of type_list"  >{{item.typename}}
                                         <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
                                     </ng-option>
-                                </ng-select>
+                                </ng-select>                        
                             </div>
                         </div>
                     </div>
@@ -8739,7 +8770,7 @@
                                    [(ngModel)]="selectedOwner" readonly />
                                 </ng-template> -->
                                 <ng-container
-                                    *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                                    *ngIf="(projectInfo.OwnerEmpNo === Current_user_ID || isHierarchy==true ) &&  ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                                      && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
                                     <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
@@ -9126,7 +9157,7 @@
                                 readonly />
                         </div> -->
                                 <div class="input-icon Sub_In_ed" style="max-width: 140px;">
-                                    <input type="text" class="form-control readonly" [(ngModel)]="ProjectType"
+                                    <input type="text" class="form-control kt-info-box-tit " [(ngModel)]="ProjectType"
                                         readonly />
                                 </div>
                             </div>
@@ -9227,7 +9258,7 @@
                                     [(ngModel)]="ActionOwner" readonly />
                                 </ng-template> -->
                                     <ng-container
-                                        *ngIf="Current_user_ID == projectActionInfo[currentActionView].Project_Owner && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
+                                        *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner || isHierarchy==true) && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
                                 projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval'
                                  &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
                                         <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">

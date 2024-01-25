@@ -641,7 +641,8 @@ span.kt-svg-ic svg {
 }
 
 .timeline-label .timeline-label {
-  width: 65px;
+  /* width: 80px; */
+  width: 75px;
   flex-shrink: 0;
   position: relative;
   color: #252f4a;
@@ -655,7 +656,8 @@ span.kt-svg-ic svg {
 .timeline-label:before {
   content: "";
   position: absolute;
-  left: 66px;
+  /* left: 81.5px; */
+  left: 75.5px;
   width: 3px;
   top: 0;
   bottom: 0;
@@ -750,6 +752,11 @@ span.kt-dt-l {
   font-weight: 400;
   letter-spacing: 0.5px;
 }
+
+.kt-info-box-tit { 
+  color: #6388e3 !important;
+}
+
 
 .kt-project-type {
   text-align: center;
@@ -3950,4 +3957,7 @@ span.Rq_date_V {
 }
 .info-card-body a.kt-inbox__icon:hover svg path {
   stroke: transparent;
+}
+.text-turquoise{
+  color:#17b4b7!important;
 }
