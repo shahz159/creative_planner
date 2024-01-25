@@ -172,7 +172,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
+                                                                {{item.Name==='Under Approval'?'New Project Under Approval':item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -545,7 +545,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">Under Approval</h5>
+                                <h5 class="mb-0">New Project Under Approval</h5>
                                 <h4 class="mb-0">5</h4>
                             </div>
                         </div>
@@ -825,7 +825,7 @@
                                                             <span class="text-danger font-weight-400">Delay</span>
                                                         </div> -->
                                                         <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="text-info font-weight-400">Under
+                                                            <span class="text-info font-weight-400">New Project Under
                                                                 Approval</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">

@@ -1,3 +1,4 @@
+import { forEach } from '@angular-devkit/schematics';
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, QueryList, Renderer2, ViewChild, ViewChildren, inject, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -471,6 +472,55 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   filteremployee: any;
   remark:any;
   isrespactive:boolean=true;
+  requestlist: any;
+  approverequestlist: any=[];
+  noapproverequestlist: any=[];
+
+  // getRequestAcessdetails(){
+  //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
+  //     this.requestlist=JSON.parse(res[0]['requestlist']);
+  //         this.requestlist.forEach(element => {
+  //           if(element.Emp_no==this.Current_user_ID){
+  //             this.approvalEmpId=this.Current_user_ID;
+  //             this.approverequestlist.push(element);
+  //           }
+  //           else{
+  //               this.noapproverequestlist.push(element);
+  //           }
+
+
+  //   });
+  //     if(this.approverequestlist.length==0){
+  //       alert(1)
+  //     }
+  //         console.log("requestlist", this.approverequestlist,this.noapproverequestlist)
+  //   });
+
+  // }
+
+  getRequestAcessdetails() {
+    this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
+      this.requestlist = JSON.parse(res[0]['requestlist']);
+
+      const uniqueNamesSet = new Set<string>(); // Use a Set to track unique names
+
+      this.requestlist.forEach(element => {
+        if (element.Emp_no == this.Current_user_ID) {
+          this.approvalEmpId = this.Current_user_ID;
+          this.approverequestlist.push(element);
+        } else {
+          if (uniqueNamesSet.size < 2 && !uniqueNamesSet.has(element.Submitted_By)) {
+            this.noapproverequestlist.push(element);
+            uniqueNamesSet.add(element.Submitted_By);
+          }
+        }
+      });
+
+      console.log("requestlist", this.approverequestlist, this.noapproverequestlist);
+    });
+  }
+
+  requestaccessList:any=[];
 
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
@@ -478,11 +528,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
       this.isDMS= this.projectInfo.isDMS;
+      this.requestaccessList.forEach(element => {
+        if(element.Submitted_By_EmpNo == this.Current_user_ID){
+                this.isRequestSent = true;
+          this.ishide=false
+          $('.hide-content').addClass('d-none')
+        }
+      });
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
-      console.log( res, "testtsfs")
+      console.log( this.requestaccessList, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
@@ -659,18 +717,32 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   Usercomment: string = '';
+  isRequestDialogOpen: boolean = false;
+  isRequestSent: boolean = false;
+  ishide:boolean=true
 
-  sendRequest(): void {
-    Swal.fire('Request Send Successfully');
-    $('.Send-Request-Dialog').addClass('d-none');
-    $('.request-sent-msg').removeClass('d-none');
-    $('.user-not-found-msg').addClass('d-none');
+  openRequestDialog() {
+    this.isRequestDialogOpen = true;
+    $('.hide-button').addClass('d-none');
+  }
+
+  closeRequestDialog() {
+    this.isRequestDialogOpen = false;
+    this.Usercomment = '';
+    $('.hide-button').removeClass('d-none');
   }
 
 
+  sendRequest(): void {
+    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+   console.log(res,'openRequestDialog')
+    })
+    Swal.fire('Request Sent Successfully');
+    this.isRequestSent = true;
+    this.ishide=false
+    $('.hide-content').addClass('d-none')
 
-
-
+  }
 
 
 
@@ -833,6 +905,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+
      //  add support close end here.
 
     document.getElementById("newdetails").classList.remove("position-fixed");
@@ -909,9 +982,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
-    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
+
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
+
+    document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
     // back to 1st 'People on the project' tab.
 
 
@@ -1286,7 +1363,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
       }
+      this.getRequestAcessdetails();
     });
+
     // console.log(this.requestDetails, 'transfer');
   }
 

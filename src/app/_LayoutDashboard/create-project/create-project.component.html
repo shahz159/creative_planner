@@ -940,8 +940,11 @@
                         <div class="col-lg-4 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                             <label>project location:</label>
-                            <input class="form-control ng-pristine" type="text" placeholder="add google map location.."
-                              [(ngModel)]="PrjLocation">
+                            <!-- <input ngx-google-places-autocomplete class="form-control ng-pristine" type="text" placeholder="add google map location.."
+                              [(ngModel)]="PrjLocation" (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" > -->
+
+                              <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="PrjLocation"
+                              (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
 
                           </div>
                         </div>

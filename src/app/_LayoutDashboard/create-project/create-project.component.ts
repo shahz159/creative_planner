@@ -11,7 +11,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {DatePipe} from '@angular/common';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
-
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 // import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -797,6 +797,59 @@ setRACIS(){
 }
 
 
+Addressurl: string = "";
+Locationfulladd: string;
+
+
+public handleAddressChange(address: Address) {
+
+  if (this.checkAddressURL(address.name.toString())) {
+    this.Addressurl = address.name;
+  }
+  else {
+    this.Addressurl = address.url;
+  }
+  this.PrjLocation = address.name;
+
+
+  console.log(address, "add11")
+  this.Locationfulladd = address.formatted_address;
+
+}
+
+
+
+checkAddressURL(str) {
+
+  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+  return regexp.test(str);
+}
+addreschange() {
+  //24.668213927924413, 46.74734971286595
+  //17.4333782,78.3664286
+  const isValidStrings = ["17.4333", "78.3664"];
+  // alert(validationLatitudeLongitude.latLong(...isValidStrings));
+
+  if (this.PrjLocation.includes(',')) {
+    // alert(111)
+    const loc = this.PrjLocation.split(',');
+    var lat = loc[0];
+    var long = loc[1];
+    var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+    if (reg.exec("40.6892")) {
+
+      // alert(lat);
+    } else {
+    }
+    if (reg.exec(long)) {
+      // alert(long);
+    }
+    else {
+    }
+
+
+  }
+}
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){

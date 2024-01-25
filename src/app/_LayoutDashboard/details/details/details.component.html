@@ -673,8 +673,7 @@
                                                         {{
                                                         (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
                                                         (projectInfo.Status==='Delay')?'Delay '+projectInfo.Delaydays+'
-                                                        days':
-                                                        projectInfo.Status
+                                                        days':(projectInfo.Status === 'Under Approval' ? 'New Project Under Approval' : projectInfo.Status)
                                                         }}
                                                     </div>
                                                     <div class="Requested_user_info"
@@ -830,7 +829,7 @@
                                                     <div class="kt-prg-progress">
                                                         <ul type="none">
                                                             <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                    class="B-Bot P_Not_Started"></span> Under Approval
+                                                                    class="B-Bot P_Not_Started"></span>New Project Under Approval
                                                                 <b>({{
                                                                     TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
                                                             <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
@@ -1178,7 +1177,7 @@
 
                                                                                 </ng-container>
 
-                                                                                <div class="fil-lbl">{{item.Status}}
+                                                                                <div class="fil-lbl">{{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}
                                                                                 </div>
                                                                                 <span
                                                                                     *ngIf="filterConfig.filterby===item.Status"
@@ -1445,6 +1444,8 @@
                                                                 <div class="kt-p-status">
                                                                     <div class="kt-p-action-No">
                                                                         Action {{action&&action.IndexId}}
+
+
                                                                     </div>
                                                                     <div class="kt-p-action-Status">
 
@@ -1462,9 +1463,9 @@
                                                                                 class="bg-rejected"
                                                                                 style="background-color: transparent;">Rejected</span>
                                                                             <span *ngSwitchDefault
-                                                                                class="Status-In-progress">{{action&&action.Status}}</span>
+                                                                                class="Status-In-progress">{{action&&action.Status==='Under Approval'?"New Action Under Approval":action&&action.Status}}</span>
                                                                         </span>
-
+                                                                        <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
 
                                                                     </div>
                                                                 </div>
@@ -1611,7 +1612,7 @@
                                         <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                            <ng-container *ngIf="isDMS>0">
                                                 <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                 height="29" title="Link DMS">
+                                                 height="29" title="Link DMS"  >
                                               </ng-container>
                                               <ng-container *ngIf="isDMS==0">
                                                 <img width="22px" class="black-white"
@@ -1719,9 +1720,9 @@
                                             </svg>
                                         </a>
 
-                                        <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity()">
+                                        <a class="kt-inbox__icon ac-activity"    [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"       (click)="View_Activity()">
                                             <svg width="17" height="17" viewBox="0 0 15 15" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                                xmlns="http://www.w3.org/2000/svg   ">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                                                     stroke-linejoin="round">
@@ -1774,7 +1775,7 @@
 
                                         <div class="br-line"></div>
 
-                                        <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            >
+                                        <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"             >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
                                                 viewBox="0 0 15 14" fill="none">
                                                 <path
@@ -1789,12 +1790,16 @@
                                                 <path
                                                     d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
                                                     stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
+                                            </svg><span>1</span>
                                         </a>
 
-                                        <a class="kt-inbox__icon" (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS'}"                    title="meetings">
+                                        <a class="kt-inbox__icon" (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS'}"     title="meetings">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
                                                 viewBox="0 0 15 14" fill="none">
+
+
+
+
                                                 <path
                                                     d="M13.2324 3.72534H2.23242C1.68014 3.72534 1.23242 4.17306 1.23242 4.72534V11.7253C1.23242 12.2776 1.68014 12.7253 2.23242 12.7253H13.2324C13.7847 12.7253 14.2324 12.2776 14.2324 11.7253V4.72534C14.2324 4.17306 13.7847 3.72534 13.2324 3.72534Z"
                                                     stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round" />
@@ -2062,7 +2067,7 @@
 
 
                                                 <div class="kt-project-type" *ngSwitchCase="'Under Approval'">
-                                                    <div class="Kt-Pd-Status UnderApproval"> Under Approval </div>
+                                                    <div class="Kt-Pd-Status UnderApproval"> New Project Under Approval </div>
                                                 </div>
 
                                                 <div class="kt-project-type"
@@ -2099,7 +2104,7 @@
 
 
                                                 <div class="kt-project-type" *ngSwitchDefault>
-                                                    <div class="Kt-Pd-Status"> {{projectInfo&&projectInfo.Status}}
+                                                    <div class="Kt-Pd-Status"> {{projectInfo&&projectInfo.Status=='Under Approval'?'New Project Under Approval':projectInfo&&projectInfo.Status}}
                                                     </div>
                                                 </div>
 
@@ -3149,7 +3154,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">Under Approval</div>
+                                                        <div class="Kt-Pd-Status   UnderApproval">New Project Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3180,7 +3185,7 @@
 
                                                     <div *ngSwitchDefault class="kt-project-type">
                                                         <div class="Kt-Pd-Status bg-inprogress ">
-                                                            {{projectActionInfo[currentActionView].Status}} </div>
+                                                            {{projectActionInfo[currentActionView].Status =='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
 
                                                 </div>
@@ -3208,7 +3213,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">Under Approval</div>
+                                                        <div class="Kt-Pd-Status   UnderApproval">New Project Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3239,7 +3244,7 @@
 
                                                     <div *ngSwitchDefault class="kt-project-type">
                                                         <div class="Kt-Pd-Status bg-inprogress ">
-                                                            {{projectActionInfo[currentActionView].Status}} </div>
+                                                            {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
 
                                                 </div>
@@ -3281,7 +3286,7 @@
                                                                     'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancelled',
                                                                     'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
                                                                     }">
-                                                                {{projectActionInfo[currentActionView].Status}}
+                                                                {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status}}
                                                             </div>
                                                             <div class="Requested_user_info">
                                                                 <span class="svg-Rq-icon"><svg
@@ -3914,7 +3919,7 @@
             <div class="kt-inbox__info">
                 <div class="kt-inbox__sender">
                     <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
-                font-weight:bold; font-family:Lucida Sans Unicode">{{getShorterName(projectInfo.Responsible)}}</span>
+                font-weight:bold; font-family:Lucida Sans Unicode">{{getShorterName(projectInfo.Owner)}}</span>
                 </div>
             </div>
             <div class="kt-inbox__details d-flex-center">
@@ -3938,10 +3943,13 @@
                             'Hold':projectInfo.Status==='Project Hold',
                             'UnderApproval':projectInfo.Status==='Under Approval'
                             }" style="color:white">{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
-                            days ':projectInfo.Status}}</span>
+                            days ':projectInfo.Status==='Under Approval'?'New Project Under Approval':projectInfo.Status}}</span>
+                        <!-- <span
+                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
+                            title="Responsible">{{projectInfo.Responsible}}</span> -->
                         <span
                             class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
-                            title="Responsible">{{projectInfo.Responsible}}</span>
+                            title="Owner">{{projectInfo.Owner}}</span>
                     </div>
                 </div>
             </div>
@@ -3952,26 +3960,29 @@
 
                 <div class="text-center acc-section">
                     <h1 class="text-primary main_acc">Access denied 503 !</h1>
-                    <h5 class="acc-desc  user-not-found-msg   ">
+                    <h5 class="acc-desc  user-not-found-msg  hide-content">
                         Unfortunately, we did not find you in this Project.
                     </h5>
+                    <div  class="mt-4"><button
+                        class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request Access</button>
+                       </div>
 
-                    <h5 class="acc-desc  request-sent-msg   d-none">The request has been sent to all members in this communication. Once it has been approved, you will
-                      be added. You can track the request in your inbox thru "Memo Request" section. Happy Communications!</h5>
+                    <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner in this project. Once it has been approved, you will
+                      be added. Happy Streaming!</h5>
 
 </div>
 <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
 
-<div class="row w-100  Send-Request-Dialog">
+<div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog">
   <div class="col-lg-7 m-auto">
       <div class="kt-card-cmt">
           <textarea [(ngModel)]="Usercomment"
               class="form-control form-control-solid kt-user-503-cmt" rows="4" name="application"
               value="" placeholder="Add Your comment"></textarea>
           <div class="text-end mb-1 mt-4">
-              <a (click)="this.Usercomment = '';" class="btn btn-sm btn-secondary mr-2">
+              <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
                   Clear</a>
-              <button (click)="sendRequest()" class="btn btn-sm btn-info mr-2"
+              <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2" [disabled]="!Usercomment"
                   data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
                   Send Request
               </button>
@@ -4401,7 +4412,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Date akheel<span class="text-danger">*</span></label>
+                    <label>Date<span class="text-danger">*</span></label>
 
                     <div class="input-group">
                         <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
@@ -5427,7 +5438,7 @@
             </div>
         </div>
     </div>
-    <!--  Files Working Area End-->
+      <!-- Files Working Area End -->
 
 
 
@@ -5435,70 +5446,136 @@
     <!-- | filter :actionsearch" -->
 
     <!-------- User list view and add user -->
-    <div id="User_list_View" class="sideInfobar animate-right bg-slide-br">
 
-        <div class="kt-portlet" id="Team_view_pr">
-            <div class="kt-portlet__head">
-                <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
-                    <div class="Kt-pp-list">
-                        <div class="card-header card-header-tabs-line pb-0 pl-0">
-                            <div class="card-toolbar">
-                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
-                                            <span class="svg-icv-hd">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
-                                                    viewBox="0 0 15 14" fill="none">
+
+    <div id="User_list_View" class="sideInfobar animate-right bg-slide-br">
+      <div class="kt-portlet" id="Team_view_pr">
+          <div class="kt-portlet__head">
+              <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
+                  <div class="Kt-pp-list">
+                      <div class="card-header card-header-tabs-line pb-0 pl-0">
+                          <div class="card-toolbar">
+                              <ul class="nav nav-tabs nav-bold nav-tabs-line">
+
+                                  <li class="nav-item">
+                                      <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                          <span class="svg-icv-hd">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
+                                                  viewBox="0 0 15 14" fill="none">
+                                                  <path
+                                                      d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z"
+                                                      stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                  </path>
+                                                  <path
+                                                      d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z"
+                                                      stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                  </path>
+                                                  <path
+                                                      d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464"
+                                                      stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                  </path>
+                                                  <path
+                                                      d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
+                                                      stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                  </path>
+                                              </svg>
+                                          </span>
+                                          <span class="nav-text">People on the project</span>
+                                      </a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                          <span class="svg-icv-hd">
+                                              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                                  xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
+                                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                      stroke-linejoin="round"></g>
+                                                  <g id="SVGRepo_iconCarrier">
+                                                      <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
+                                                          stroke-width="1.5" stroke-linecap="round"
+                                                          stroke-linejoin="round"></path>
+                                                      <path
+                                                          d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
+                                                          stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                          stroke-linejoin="round"></path>
+                                                      <path
+                                                          d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
+                                                          stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                          stroke-linejoin="round"></path>
+                                                  </g>
+                                              </svg> </span>
+                                          <span class="nav-text">Add support team</span>
+                                      </a>
+                                  </li>
+
+
+
+                                  <li class="nav-item"   *ngIf="approvalEmpId==Current_user_ID">
+                                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
+                                        <span class="svg-icv-hd">
+                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
+                                                        stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
                                                     <path
-                                                        d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z"
-                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
+                                                        d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
+                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
                                                     <path
-                                                        d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z"
-                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
+                                                        d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
+                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
+                                                </g>
+                                            </svg> </span>
+                                        <span class="nav-text">User Requests</span>
+                                    </a>
+                                  </li>
+
+                                  <li class="nav-item"  *ngIf="approvalEmpId!=Current_user_ID">
+                                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_notapprover">
+                                        <span class="svg-icv-hd">
+                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
+                                                        stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
                                                     <path
-                                                        d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464"
-                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
+                                                        d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
+                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
                                                     <path
-                                                        d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
-                                                        stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                            <span class="nav-text">People on the project</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
-                                            <span class="svg-icv-hd">
-                                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg" stroke="#a3a3a3">
-                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                        stroke-linejoin="round"></g>
-                                                    <g id="SVGRepo_iconCarrier">
-                                                        <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round"></path>
-                                                        <path
-                                                            d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
-                                                            stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round"></path>
-                                                        <path
-                                                            d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
-                                                            stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round"></path>
-                                                    </g>
-                                                </svg> </span>
-                                            <span class="nav-text">Add support team</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                                                        d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
+                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
+                                                </g>
+                                            </svg> </span>
+                                        <span class="nav-text">User Requests</span>
+                                    </a>
+                                  </li>
+
+
+
+
+
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+
+
+
+
 
                     <div class="rt-btn">
                         <!-- <button class="Ct-btn head-btn-right" (click)="add_support_team()">Add support team</button> -->
@@ -5516,11 +5593,11 @@
                 </div>
             </div>
             <div class="kt-Attachament__body">
-
                 <div class="kt-card-custom">
-
                     <div class="">
                         <div class="tab-content">
+
+
                             <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
                                 aria-labelledby="kt_tab_pane_1_4">
 
@@ -5668,14 +5745,9 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         </div> -->
                             </div>
+
                             <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel"
                                 aria-labelledby="kt_tab_pane_2_4">
-
-
-
-
-
-
                                 <div class="matchip-drp-dwn">
                                     <mat-form-field class="drp-dwn-field ">
                                         <mat-label>Add Support team</mat-label>
@@ -5718,80 +5790,7 @@
                                         (click)="onProject_updateSupport()">Submit</button>
 
                                 </div>
-
-
-
-                                <!-- <button class="Ct-btn" *ngIf="selectedEmployees.length>0" (click)="onProject_updateSupport()">Submit</button> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                <!--
-                                <form>
-
-                                    <mat-form-field class="example-chip-list">
-                                      <mat-label>Add Support team</mat-label>
-                                      <mat-chip-list #chipList aria-label="Fruit selection">
-                                        <mat-chip *ngFor="let item of selectedEmployees;" class="Data_chip_kt" (removed)="remove(item)">
-                                          {{item.NonRACIS}}
-                                          <button matChipRemove [attr.aria-label]="'remove ' + item.NonRACIS">
-                                            <mat-icon>cancel</mat-icon>
-                                          </button>
-                                        </mat-chip>
-                                      </mat-chip-list>
-                                      <div class="d-flex">
-                                                <input
-                                                placeholder="Select employee from here"
-                                                #fruitInput
-                                                [formControl]="fruitCtrl"
-                                                [matChipInputFor]="chipList"
-                                                [matAutocomplete]="auto"
-                                                (input)="filterEmployees($event.target.value)" />
-                                            <mat-icon class="curser-pointer" (click)="_keeppanelopen()"
-                                                *ngIf="isSelection==false">add_circle_outline</mat-icon>
-                                            <mat-icon class="curser-pointer" (click)="closePanel()"
-                                                *ngIf="isSelection==true">clear</mat-icon>
-                                        </div>
-
-                                        <mat-autocomplete #auto="matAutocomplete"
-                                            (optionSelected)="selectedChip($event)">
-                                            <mat-option class="mat-font" *ngFor="let item of filteredEmployees"
-                                                [value]="item.Emp_No">
-                                                <mat-checkbox color="primary" name="item" [checked]="isSelected(item)"
-                                                    (change)="selectedChip($event)">{{item.NonRACIS}}</mat-checkbox>
-                                            </mat-option>
-                                        </mat-autocomplete>
-
-                                    </mat-form-field>
-                                    <button class="Ct-btn" *ngIf="selectedEmployees.length>0" (click)="onProject_updateSupport()">Submit</button>
-
-
-                                </form> -->
-
-
-                                <!-- <div class="">
-                                    <div class="list-new-sp-team">
+                                    <!-- <div class="list-new-sp-team">
                                         <div class="user-list-card">
                                             <div class="add-check-box">
                                                 <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent"
@@ -5857,18 +5856,99 @@
                                         </div>
 
 
-                                    </div>
-                                </div> -->
+                                    </div> -->
                             </div>
+
+
+                              <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_approver">
+                                <div class="mx-3  user-request-box  "  *ngFor="let item of approverequestlist">
+                                  <div  class="mb-2"><span
+                                      class="text-dark fs-6 test1">{{item.Submitted_By}}</span><span
+                                      class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{item.Designation_Name}}</span></div>
+                                      <div  class="d-flex-center">
+                                        <div >
+                                          <div  class="text-muted fs-6 mb-1 svg-spn"><span ><svg
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                                                height="16" fill="currentColor">
+                                                <path _ngcontent-alp-c172=""
+                                                  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z">
+                                                </path>
+                                              </svg></span>{{item.Company_name}}</div>
+                                          <div  class="text-muted fs-6 svg-spn"><span ><svg
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                                                height="16" fill="currentColor">
+                                                <path
+                                                  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z">
+                                                </path>
+                                              </svg></span>{{item.Request_date}}</div>
+                                        </div>
+                                        <div  class="mb-2"><span
+                                          class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Approve</button></span><span
+                                          class="kt-badge kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Reject</button>
+                                          </span></div>
+                                      </div>
+
+                                    </div>
+
+
+
+                              </div>
+
+
+
+                              <div class="tab-pane fade" id="kt_tab_pane_user-request_notapprover" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_notapprover">
+                                <div class="mx-3  user-request-box  "  *ngFor="let item of noapproverequestlist">
+                                  <div  class="mb-2"><span
+                                      class="text-dark fs-6 test1">{{item.Submitted_By}}</span><span
+                                      class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{item.Designation_Name}}</span></div>
+                                      <div  class="d-flex-center">
+                                        <div >
+                                          <div  class="text-muted fs-6 mb-1 svg-spn"><span ><svg
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                                                height="16" fill="currentColor">
+                                                <path _ngcontent-alp-c172=""
+                                                  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z">
+                                                </path>
+                                              </svg></span>{{item.Company_name}}</div>
+                                          <div  class="text-muted fs-6 svg-spn"><span ><svg
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                                                height="16" fill="currentColor">
+                                                <path
+                                                  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z">
+                                                </path>
+                                              </svg></span>{{item.Request_date}}</div>
+                                        </div>
+                                        <div  class="mb-2"><span
+                                          class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><a href="javascript:void(0)">Pending approval</a></span>
+                                        </div>
+                                      </div>
+
+                                    </div>
+
+
+
+                              </div>
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+
+
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-
     </div>
 
+    </div>
     <!-------- User list view and add user end----->
 
 
@@ -7776,7 +7856,7 @@
                                     <span class="d-inline-flex align-items-center ml-2"><i
                                             class="fas fa-clock mr-2"></i>{{AllocatedHours}}</span>
                                     <span class="d-inline-flex align-items-center ml-2"><i
-                                            class="fas fa-star mr-2"></i>{{Status_project}}</span>
+                                            class="fas fa-star mr-2"></i>{{Status_project=='Under Approval'?'New Project Under Approval':Status_projec}}</span>
                                 </div>
                                 <span *ngIf="_subname == true" style="color:red">Please select project!</span>
                             </div>
@@ -7838,7 +7918,7 @@
                                         <span class="d-inline-flex align-items-center ml-2"><i
                                                 class="fas fa-clock mr-2"></i>{{Allocated_subtask}}</span>
                                         <span class="d-inline-flex align-items-center ml-2"><i
-                                                class="fas fa-star mr-2"></i>{{_status}}</span>
+                                                class="fas fa-star mr-2"></i>{{_status=='Under Approval'? 'New Project Under Approval':_status}}</span>
                                     </div>
                                 </div>
 
@@ -9125,7 +9205,7 @@
                                 <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                     (click)="onAction_updateProject(0)">
                                     Update</button>
-                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval'">
+                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval'?'New Project Under Approval':projectInfo&&projectInfo.Status">
                                     <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                         (click)="onAction_updateProject(1)">
                                         Approve</button>

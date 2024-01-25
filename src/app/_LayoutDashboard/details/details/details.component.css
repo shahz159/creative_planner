@@ -3892,3 +3892,15 @@ span.Rq_date_V {
   margin-bottom: -20rem;
   margin-top: -1rem;
 }
+
+
+
+/*user request box css start*/
+.user-request-box{
+  box-shadow: 0 0 1px #dddddd;
+  padding: 1em;
+  background-color: white;
+}
+
+
+/*user requirest box css end*/

@@ -107,7 +107,7 @@
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
-                            class="badge badge-info kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} Under
+                            class="badge badge-info kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
@@ -338,7 +338,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Under Approval'">
                                                             <span
-                                                                class="text-info font-weight-400">{{item1.Status}}</span>
+                                                                class="text-info font-weight-400">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
                                                             <br>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Todo'">

@@ -54,7 +54,7 @@ export class ProjectsChartComponent implements OnInit {
         //console.log("ColumnchartData", this.ColumnchartData);
         let chart1 = am4core.create("chartdiv", am4charts.XYChart3D);
         chart1.data = this.ColumnchartData;
-       
+
 
         // Create axes
         let categoryAxis = chart1.xAxes.push(new am4charts.CategoryAxis());
@@ -64,7 +64,7 @@ export class ProjectsChartComponent implements OnInit {
 
         let valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
         //valueAxis.adjustLabelPrecision = false;
-        // valueAxis.numberFormatter.numberFormat = "#1"; 
+        // valueAxis.numberFormatter.numberFormat = "#1";
         valueAxis.title.text = "[bold]Projects[/]";
         valueAxis.renderer.minGridDistance = 30;
         valueAxis.renderer.labels.template.adapter.add("text", function (text) {
@@ -115,7 +115,7 @@ export class ProjectsChartComponent implements OnInit {
         categoryAxis.renderer.minGridDistance = 30;
         let valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
         //valueAxis.adjustLabelPrecision = false;
-        // valueAxis.numberFormatter.numberFormat = "#1"; 
+        // valueAxis.numberFormatter.numberFormat = "#1";
         valueAxis.title.text = "[bold]Total Projects[/]";
         valueAxis.renderer.minGridDistance = 30;
         valueAxis.renderer.labels.template.adapter.add("text", function (text) {
@@ -696,7 +696,7 @@ export class ProjectsChartComponent implements OnInit {
         litres: 501.9
       },
       {
-        country: "Under Approval",
+        country: "New Project Under Approval",
         litres: 301.9
       },
       {
