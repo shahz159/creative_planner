@@ -928,6 +928,10 @@
                                                             <span class="ToDo_Achieved_color font-weight-400">ToDo Achieved
                                                             </span>
                                                         </div>
+                                                        <div *ngIf="item.Status=='Not Started'">
+                                                            <span class="Not_Started font-weight-400">Not Started
+                                                            </span>
+                                                        </div>
                                                         <div *ngIf="item.Status=='Standardtask Enactive Hold'">
                                                             <span class="text-danger font-weight-400">Standardtask Enactive Hold
                                                             </span>
