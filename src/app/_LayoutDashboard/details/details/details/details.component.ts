@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, OnInit, QueryList, Renderer2, ViewChild, ViewChildren, inject, } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
@@ -11,7 +11,11 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectsSummaryComponent } from '../../projects-summary/projects-summary.component';
-
+import { PortfolioProjectsComponent } from '../../portfolio-projects/portfolio-projects.component';
+import { ViewDashboardProjectsComponent } from '../../view-dashboard-projects/view-dashboard-projects.component';
+import { ProjectsAddComponent } from '../../projects-add/projects-add.component';
+import { ToDoProjectsComponent } from '../../to-do-projects/to-do-projects.component';
+import { NotificationComponent } from '../../notification/notification.component';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
@@ -21,11 +25,18 @@ import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+import { COMMA, ENTER, X } from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { map, startWith } from 'rxjs/operators';
+import { MatChipInput } from '@angular/material/chips';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { MatCalendar} from '@angular/material/datepicker';
+import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -40,6 +51,13 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 declare var FusionCharts: any;
+
+declare const am5:any;
+declare const am5percent:any;
+declare const am5xy:any;
+declare const am5themes_Animated:any;
+
+
 
 declare const ApexCharts:any;
 
@@ -183,7 +201,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
-
+    private renderer2: Renderer2,
+    private elementRef: ElementRef
   ) {
 
     this.ObjSubTaskDTO = new SubTaskDTO();
@@ -693,55 +712,6 @@ this.prjPIECHART.render();
   filteremployee: any;
   remark:any;
   isrespactive:boolean=true;
-  requestlist: any;
-  approverequestlist: any=[];
-  noapproverequestlist: any=[];
-
-  // getRequestAcessdetails(){
-  //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
-  //     this.requestlist=JSON.parse(res[0]['requestlist']);
-  //         this.requestlist.forEach(element => {
-  //           if(element.Emp_no==this.Current_user_ID){
-  //             this.approvalEmpId=this.Current_user_ID;
-  //             this.approverequestlist.push(element);
-  //           }
-  //           else{
-  //               this.noapproverequestlist.push(element);
-  //           }
-
-
-  //   });
-  //     if(this.approverequestlist.length==0){
-  //       alert(1)
-  //     }
-  //         console.log("requestlist", this.approverequestlist,this.noapproverequestlist)
-  //   });
-
-  // }
-
-  getRequestAcessdetails() {
-    this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
-      this.requestlist = JSON.parse(res[0]['requestlist']);
-
-      const uniqueNamesSet = new Set<string>(); // Use a Set to track unique names
-
-      this.requestlist.forEach(element => {
-        if (element.Emp_no == this.Current_user_ID) {
-          this.approvalEmpId = this.Current_user_ID;
-          this.approverequestlist.push(element);
-        } else {
-          if (uniqueNamesSet.size < 2 && !uniqueNamesSet.has(element.Submitted_By)) {
-            this.noapproverequestlist.push(element);
-            uniqueNamesSet.add(element.Submitted_By);
-          }
-        }
-      });
-
-      console.log("requestlist", this.approverequestlist, this.noapproverequestlist);
-    });
-  }
-
-  requestaccessList:any=[];
 
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
@@ -749,21 +719,11 @@ this.prjPIECHART.render();
 
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
-        this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
-        this.requestaccessList.forEach(element => {
-          if(element.Submitted_By_EmpNo == this.Current_user_ID){
-                  this.isRequestSent = true;
-            this.ishide=false
-            $('.hide-content').addClass('d-none')
-          }
-        });
-      }
       this.isDMS= this.projectInfo.isDMS;
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
-      console.log( this.requestaccessList, "testtsfs")
+      console.log( res, "testtsfs")
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
@@ -839,10 +799,6 @@ this.prjPIECHART.render();
   thirdRecords:any
   newArray:any
   uniqueSet :any
-  uniqueOwner:any
-  uniqueNamesArray1:any
-
-
   nonRacisList:any=[];
   GetPeopleDatils(){
 
@@ -853,12 +809,6 @@ this.prjPIECHART.render();
           this.Project_List = JSON.parse(data[0]['RacisList']);
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
-          // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
-          // this.uniqueNamesArray1 = [...this.uniqueOwner];
-
-          // console.log("===========>",this.uniqueNamesArray1[0].Emp_No);
-
-
            this.newArray = uniqueNamesArray.slice(3);
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
@@ -871,11 +821,11 @@ this.prjPIECHART.render();
       (data) => {
 
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
-
+        // console.log("all people:",this.nonRacisList);
         this.filteredEmployees = this.nonRacisList;
 
         const RACISList = (JSON.parse(data[0]['RacisList']));
-
+        console.log("RACISList",RACISList)
         if (RACISList && RACISList.length > 0) {
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
@@ -908,17 +858,6 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
           this.Activity_List = JSON.parse(data[0]['ActivityList'])
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-
-          this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
-           const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
-                 return {
-                  ...item,
-                  ModifiedDate:d===0?'Today':
-                  d===1?'Yesterday':
-                  [2,3].includes(d)?d+' days ago':
-                  this.datepipe.transform(item.ModifiedDate,'dd MMM')
-                };
-          })
         }
       })
   }
@@ -973,41 +912,24 @@ this.prjPIECHART.render();
 
 
   Usercomment: string = '';
-  isRequestDialogOpen: boolean = false;
-  isRequestSent: boolean = false;
-  ishide:boolean=true
-
-  openRequestDialog() {
-    this.isRequestDialogOpen = true;
-    $('.hide-button').addClass('d-none');
-  }
-
-  closeRequestDialog() {
-    this.isRequestDialogOpen = false;
-    this.Usercomment = '';
-    $('.hide-button').removeClass('d-none');
-  }
-
 
   sendRequest(): void {
-    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
-   console.log(res,'openRequestDialog')
-    })
-    Swal.fire('Request Sent Successfully');
-    this.isRequestSent = true;
-    this.ishide=false
-    $('.hide-content').addClass('d-none')
-
+    Swal.fire('Request Send Successfully');
+    $('.Send-Request-Dialog').addClass('d-none');
+    $('.request-sent-msg').removeClass('d-none');
+    $('.user-not-found-msg').addClass('d-none');
   }
+
+
+
+
+
 
   BarChartOfAction:any;
   drawStatistics1(actionCode:string) {
 
-
-
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
-        console.log("drawstatistics data1:",data1)
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         // this.RemainingHours = (data1[0]['RemainingHours']);
@@ -1139,10 +1061,6 @@ this.prjPIECHART.render();
         // });
 
       });
-
-
-
-
   }
 
 
@@ -1236,7 +1154,6 @@ this.prjPIECHART.render();
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
-
      //  add support close end here.
 
     document.getElementById("newdetails").classList.remove("position-fixed");
@@ -1317,13 +1234,9 @@ this.prjPIECHART.render();
 
 
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
-    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
-
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
-
-    document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
     // back to 1st 'People on the project' tab.
 
 
@@ -1698,9 +1611,7 @@ this.prjPIECHART.render();
 
 
       }
-      this.getRequestAcessdetails();
     });
-
     // console.log(this.requestDetails, 'transfer');
   }
 
@@ -1833,7 +1744,7 @@ this.prjPIECHART.render();
     }
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
@@ -2750,12 +2661,6 @@ check_allocation() {
   toggleReadMore() {
     this.isExpanded = !this.isExpanded;
   }
-
-  limit_data=60;
-  isExpandeds = false;
-  _toggleReadMore() {
-    this.isExpandeds = !this.isExpandeds;
-  }
   /// Action Edits End
 
 
@@ -3325,12 +3230,6 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
   flSrtOrd: string;
   AttachmentList: any;
   _TotalDocs: any;
-  _attachmentOf:'PROJECT'|'ACTIONS'='PROJECT';
-  SortBy:number;
-  projectatt: any;
-  Actionatt: any;
-
-  AttachmentListTemp:any=[];
   getAttachments(sorttype: number) {
     switch (sorttype) {
       case 1: this.flSrtOrd = "Date"; break;
@@ -3339,49 +3238,19 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       case 4: this.flSrtOrd = "me"; break;
       default: this.flSrtOrd = "none";
     }
-    this.SortBy=sorttype;
-    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, this.SortBy.toString())
+    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
-
-            this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-
-            this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
-           if (this.AttachmentList && this.AttachmentList.length) {
+        console.log(data, "Slider")
+        this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
+        this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+        if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
-          this.getProjectAttachments();
-
+          console.log('our new AttachmentList:', data, this.AttachmentList);
         }
       });
-
-  // by default project tab selected.
-$('#prj-attachments-tab-btn').addClass('active');
-$('#acts-attachments-tab-btn').removeClass('active');
-
-
-  }
-
-  getProjectAttachments(){
-
-   this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
-     }
-});
-    console.log("=>",this.AttachmentListTemp);
   }
 
 
-
-  getActionAttachments(){
-    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
-     }
-     });
-     console.log("a=>",this.AttachmentListTemp);
-  }
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
@@ -6476,21 +6345,8 @@ displaymessagemain(){
 
 // action cancel start
 actionCancel(index:number){
-}
   
-formatTimes(time: string): string {
-  const [hours, minutes] = time.split(':');
-  const date = new Date();
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-
-  const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-  return date.toLocaleTimeString('en-US', options);
 }
-
-
-
-
 
 
 
