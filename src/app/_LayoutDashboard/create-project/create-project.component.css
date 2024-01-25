@@ -801,7 +801,8 @@
     border-radius: 0.625rem;
     }
     .card-Scroll{
-      height: 334px;
+      /* height: 334px; */
+      height: calc(100vh - 310px);
       overflow-y: scroll;
       padding: 2rem 2.25rem;
     }
@@ -1133,7 +1134,7 @@ span.info-ic-guide svg {
 }
 .kt-prd-dtl {
   height: 100%;
-  min-height: calc(100vh - 99px);
+  /* min-height: calc(100vh - 99px); */
   overflow-x: auto;
   overflow: hidden;
   overflow-y: auto;
@@ -1724,4 +1725,33 @@ svg.template-pin:hover * {
 
 a.nav-link.active span {
   color: #6d7be3;
+}
+
+.Create_project_section {
+  min-height: 50vh;
+  min-height: calc(100vh - 135px);
+ 
+}
+.top_pading_view {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 135px);
+}
+.Assigned-projects-list{
+  width: 100%;
+  padding: 20px;
+  padding-bottom: 0px;
+}
+
+.Templates-list {
+  width: 100%;
+  padding: 20px;
+  padding-bottom: 0px;
+}
+.Templates-list .card-Scroll{
+  height: calc(100vh - 260px);}
+  .np-step-2 {
+    padding: 20px;
+    padding-bottom: 15px;
 }
