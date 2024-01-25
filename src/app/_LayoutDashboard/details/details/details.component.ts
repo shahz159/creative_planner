@@ -2288,6 +2288,8 @@ debugger
       });
   }
 
+  
+
   selectedOwner: any;
   ProjectType: string
   ProjectDescription: string
@@ -3387,7 +3389,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
     repDate = new Date(repDate);
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
 
     let Day = repDate.getDate();
     let Month = repDate.getMonth() + 1;

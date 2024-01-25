@@ -763,8 +763,8 @@ span.kt-dt-l {
 }
 
 .Kt-Pd-Status {
-  background-color: #000;
-  color: #fff;
+  background-color: #EE4137;
+  color:#000;
   font-weight: 600;
   padding: 0.1em;
   padding-left: 0.6em;
@@ -848,9 +848,7 @@ span.kt-dt-l {
   background-color: #eaf2fd !important;
 }
 
-.Delay {
-  background-color: #Ed6207 !important;
-}
+
 
 .kt-project-sts-data {
   margin-top: 5px;
@@ -868,8 +866,17 @@ span.kt-dt-l {
   background-color: #505050;
 }
 
+.P_Delay{
+  background-color: #EE4137 !important;
+}
+
+.Delay{
+  background-color: #EE4137 !important;
+  color:#000 !important;
+  }
+
 .bg-delay {
-  background-color: #Ed6207;
+  background-color: #Ed6207 !important;
 }
 
 .bg-done {
@@ -1432,9 +1439,7 @@ label.my-chosse-flv {
 
 
 /*color codes*/
-.Delay {
-  background-color: #EE4137 !important;
-}
+
 
 .UnderApproval {
   background-color: #888888 !important;
@@ -1444,10 +1449,6 @@ label.my-chosse-flv {
   background-color: #1B272D !important;
 }
 
-.NewProjectRejected {
-  background-color: #DFDFDF !important;
-  color: #000;
-}
 
 .NewProjectRejected {
   background-color: #DFDFDF !important;
@@ -1665,19 +1666,18 @@ span.B-Bot {
   background-color: #0089FB !important;
 }
 .P_Completion_under_Approval{
-  background-color: #B2d732 !important;
+  background-color: #B2D732 !important;
 }
 .P_Slow{
   background-color: #Fbcc61 !important;
 }
-.P_Delay{
-  background-color: #EE4137 !important;
-}
+
 .P_Hold{
-  background-color: #E2d9bc !important;
+  background-color: #E2D9BC !important;
 }
 .P_Done{
-  background-color: #62b134 !important;
+  background-color: #62B134  !important;
+ 
 }
 .P_Very_Slow{
   background-color: #E1a63d !important;
@@ -1686,8 +1686,13 @@ span.B-Bot {
   background-color: #0272d0 !important;
 }
 .P_Completion_under_Approval{
-  background-color: #b2d732 !important;
+  background-color: #B2D732 !important;
 }
+.P_ForwardUnderApproval{
+  background-color: #B2D732 !important;
+}
+
+
 .P_Deadline_Extend_Under_Approval{
   background-color: #F88282 !important;
 }
@@ -1695,7 +1700,7 @@ span.B-Bot {
   background-color: #C9c1e6 !important;
 }
 .P_New_Project_Rejected{
-  background-color: #Dfdfdf !important;
+  background-color: #DFDFDF !important;
 }
 .P_New_todo{
   background-color: #6e9bc4 !important;

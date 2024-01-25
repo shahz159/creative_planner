@@ -664,7 +664,8 @@
                                                 </div>
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
-                                                        <div *ngIf="projectInfo" class="Kt-Pd-Status " style="width:fit-content" [ngClass]="{
+                                                        <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
+                                                                    'UnderApproval':projectInfo.Status==='Under Approval',
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
@@ -674,9 +675,8 @@
                                                                     'Delay':projectInfo.Status==='Cancellation Under Approval',
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                                     'Cancelled':projectInfo.Status==='Cancelled',
-                                                                    'Hold':projectInfo.Status==='Project Hold',
-                                                                    'UnderApproval':projectInfo.Status==='Under Approval'
-
+                                                                    'Hold':projectInfo.Status==='Project Hold',                
+                                                                   'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'                                                                   
                                                                     }">
                                                             {{
                                                             (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
@@ -837,7 +837,7 @@
                                                         <div class="kt-prg-progress">
                                                             <ul type="none">
                                                                 <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                        class="B-Bot P_Not_Started"></span> New Project Under Approval
+                                                                        class="B-Bot P_Not-Started"></span> New Project Under Approval
                                                                     <b>({{
                                                                         TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
@@ -845,7 +845,7 @@
                                                                     <b>({{TOTAL_ACTIONS_IN_PROCESS}})</b>
                                                                 </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_DELAY"><span
-                                                                        class="B-Bot P_Delay"></span> Delay
+                                                                        class="B-Bot P_Delay"></span> Delay  
                                                                     <b>({{TOTAL_ACTIONS_IN_DELAY}})</b>
                                                                 </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_REJECTED" class="w-50P"><span
@@ -858,7 +858,7 @@
                                                                     Completion Under Approval
                                                                     <b>({{TOTAL_ACTIONS_IN_CUA}})</b></li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_FUA" class="w-50P"><span
-                                                                        class="B-Bot P_Completion_under_Approval w-50P"></span>
+                                                                        class="B-Bot P_ForwardUnderApproval w-50P"></span>
                                                                     Forward Under Approval <b>({{TOTAL_ACTIONS_IN_FUA}})</b>
                                                                 </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_DONE"><span
@@ -2065,7 +2065,7 @@
                                                 </div>
 
                                                 <div class="kt-project-type" *ngSwitchCase="'Completed'">
-                                                    <div class="Kt-Pd-Status Done "> Completed </div>
+                                                    <div class="Kt-Pd-Status Done"> Completed </div>
                                                 </div>
 
                                                 <div class="kt-project-type" *ngSwitchCase="'InProcess'">
@@ -2091,7 +2091,7 @@
                                                 </div>
 
                                                 <div class="kt-project-type" *ngSwitchCase="'Forward Under Approval'">
-                                                    <div class="Kt-Pd-Status CompletionUnderApproval"> Forward Under
+                                                    <div class="Kt-Pd-Status ForwardUnderApproval"> Forward Under
                                                         Approval
                                                     </div>
                                                 </div>
@@ -2102,8 +2102,13 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
+                                                    <div class="Kt-Pd-Status DeadlineExtend"> Deadline Extend Under Approval
+                                                    </div>
+                                                </div>
+
                                                 <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
-                                                    <div class="Kt-Pd-Status NewProjectRejected"> Cancelled </div>
+                                                    <div class="Kt-Pd-Status Cancelled"> Cancelled </div>
                                                 </div>
                                                 <div class="kt-project-type" *ngSwitchCase="'Project Hold'">
                                                     <div class="Kt-Pd-Status Hold"> Hold until {{hold_upto}}</div>
@@ -2494,7 +2499,7 @@
                                                                     d="M13.877 37.529a1 1 0 0 1-.564-.175l-2.623-1.8a1 1 0 0 1 1.13-1.651l2.623 1.8a1 1 0 0 1-.566 1.826Z">
                                                                 </path>
                                                             </g>
-                                                        </svg></span> Owner
+                                                        </svg></span> Owner  
                                                 </div>
                                                 <div class="kt-info-data-v">
                                                     {{projectInfo&&projectInfo.Owner}}
@@ -3263,15 +3268,10 @@
                                                         <div class="Kt-Pd-Status  Hold">Hold</div>
                                                     </div>
 
-
-
-
-
                                                     <div *ngSwitchDefault class="kt-project-type">
                                                         <div class="Kt-Pd-Status bg-inprogress ">
                                                             {{projectActionInfo[currentActionView].Status =='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
-
                                                 </div>
 
                                                 <div [ngSwitch]="projectActionInfo[currentActionView].Status"
@@ -4027,7 +4027,7 @@
                             'Hold':projectInfo.Status==='Project Hold',
                             'UnderApproval':projectInfo.Status==='Under Approval'
                             }" style="color:white">{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
-                            days ':projectInfo.Status==='Under Approval'?'New Project Under Approval':projectInfo.Status}}</span>
+                            days ':projectInfo.Status==='Under Approval'?'New Project Under Approval':projectInfo.Status}} </span>
                         <!-- <span
                             class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
                             title="Responsible">{{projectInfo.Responsible}}</span> -->
@@ -9385,7 +9385,7 @@
                                 <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                     (click)="onAction_updateProject(0)">
                                     Update</button>
-                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval'?'New Project Under Approval':projectInfo&&projectInfo.Status">
+                                <ng-container *ngIf="projectInfo&&projectInfo.Status==='Under Approval' && Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID">
                                     <button type="submit" class="btn w-110 Bt-Submit ml-2"
                                         (click)="onAction_updateProject(1)">
                                         Approve</button>
