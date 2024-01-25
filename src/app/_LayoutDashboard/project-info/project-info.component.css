@@ -587,35 +587,105 @@ margin-top: 10px;
 /* .bg-light-shade {
 background-color: #eaf2fd !important;
 } */
-.Delay{
-background-color: #EE4137 !important;
+.bg-done {
+  background-color: #62B134 ;
+  }
+
+  .P_Done{
+    background-color: #62B134 ;
+  }
+
+
+.Done{
+  background-color: #62B134 ;
+  color:#000;
 }
-.UnderApproval{
-  background-color: #888888 !important;
+.ToDoCompleted{
+  background-color:#000 !important;  
 }
 .Inprocess{
   background-color: #1B272D !important;
+  color:#ffffff;
 }
+
+.P_In_Progress{
+  background-color: #1B272D !important;
+}
+
+.bg-inprogress {
+  background-color: #1B272D !important;
+  }
+
+.ToDo{
+  background-color: #1B272D !important;
+}
+
+.P_Delay{
+  background-color: #EE4137 !important;
+}
+
+.bg-delay {
+  background-color: #EE4137 !important;
+  }
+
+.Delay{
+background-color: #EE4137 !important;
+color:#000;
+}
+.Cancelled{
+  background-color:#DFDFDF !important;
+  }
+
+  .P_Not_Started{
+    background-color: #888888 !important;
+  }
+
+
+.UnderApproval{
+  background-color: #888888 !important;
+}
+
+.P_New_Project_Rejected{
+  background-color: #DFDFDF !important;
+}
+
+
 .NewProjectRejected{
   background-color: #DFDFDF !important;
   color:#000;
 }
-.Done{
-  background-color: #62B134 !important;
-  color: #ffffff;
-}
+
 .EnactiveUnderApproval{
   background-color: #C9C1E6 !important;
-  color: #000;
+  color:#000;
 }
+
+.P_ForwardUnderApproval{
+  background-color: #B2D732 !important;
+}
+
+.ForwardUnderApproval{
+  background-color: #B2D732 !important;
+  color:#000;
+}
+
+.P_Completion_under_Approval{
+  background-color: #B2D732 !important;
+}
+
+
 .CompletionUnderApproval{
   background-color: #B2D732 !important;
-  color:#ffffff;
+  color:#000;
 }
 .DeadlineExtend{
   background-color: #F88282 !important;
-  color: #ffffff;
+  color:#000;
 }
+.P_Hold{
+  background-color: #E2D9BC !important;
+}
+
 .Hold{
   background-color: #E2D9BC;
   color:#000;
@@ -631,15 +701,9 @@ background-color: #EE4137 !important;
 border-radius: 50px;
 height: 10px;
 }
-.bg-inprogress {
-background-color: #505050;
-}
-.bg-delay {
-background-color: #EE4137;
-}
-.bg-done {
-background-color: #6aad3a;
-}
+
+
+
 .kt-prg-bar-info {
 font-size: 15px;
 font-weight: 600;
@@ -789,9 +853,7 @@ li.w-50P {
   padding-top: 12px;
 }
 
-.P_In_Progress{
-  background-color: #1B272D !important;
-}
+
 .P_Not-Started{
   background-color: #888888 !important;
 }
@@ -828,9 +890,7 @@ li.w-50P {
 .P_Enactive_Under_Approval{
   background-color: #C9c1e6 !important;
 }
-.P_New_Project_Rejected{
-  background-color: #Dfdfdf !important;
-}
+
 .P_New_todo{
   background-color: #6e9bc4 !important;
 }

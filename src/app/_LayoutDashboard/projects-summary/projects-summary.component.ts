@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -39,6 +39,7 @@ export class ProjectsSummaryComponent implements OnInit {
   searchResult: Boolean = false;
   _ObjCompletedProj: CompletedProjectsDTO;
 
+
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private ShareParameter: ParameterService,
@@ -52,7 +53,6 @@ export class ProjectsSummaryComponent implements OnInit {
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
-
   }
 
   _subtaskDiv: boolean;
@@ -102,6 +102,14 @@ $(document).ready(function(){
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.GetProjectsByUserName(this.type1);
     //this.portfolioName = localStorage.getItem('_PortfolioName');
+
+
+    this.BsService.ProjectCreatedEvent.subscribe(()=>{
+      this.GetProjectsByUserName(this.type1);
+    })
+  
+
+
   }
 
 
