@@ -100,7 +100,7 @@
                                         {{item.Status =='Under Approval'?'New Project Under Approval':item.Status}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
-                                                        'UnderApproval': item.Status=='Under Approval',
+                                                        'UnderApproval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                         'Inprocess': item.Status=='InProcess',
                                                         'NewProjectRejected': item.Status=='New Project Rejected',
                                                         'Done': item.Status=='Completed',
@@ -154,7 +154,7 @@
                             <div class="Kt-Pd-Status Delay" *ngIf="item.Status=='Delay'">
                                 {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}} {{item.Delaydays}} days
                             </div>
-                            <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'UnderApproval': item.Status=='Under Approval',
+                            <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'UnderApproval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess' , 'NewProjectRejected': item.Status=='New Project Rejected',
                                                 'Done': item.Status=='Completed','ToDo':item.Status=='ToDo Achieved',
                                                 'ToDoCompleted':item.Status=='ToDo Completed','EnactiveUnderApproval': item.Status=='Enactive Under Approval',
@@ -232,7 +232,7 @@
                     </div>
                     <div class="kt-project-type">
                         <!-- <div  class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">Completion Under Approval</div> -->
-                        <div *ngFor="let item of ProjectStatesJson" class="Kt-Pd-Status" [ngClass]="{'UnderApproval': item.Status=='Under Approval',
+                        <div *ngFor="let item of ProjectStatesJson" class="Kt-Pd-Status" [ngClass]="{'UnderApproval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess',
                                                 'NewProjectRejected': item.Status=='New Project Rejected',
                                                 'Done': item.Status=='Completed',

@@ -17,11 +17,11 @@ export const DEFAULT_ROUTES: Routes = [
           loadChildren: () => import('../_LayoutDashboard/more-details/more-details.module').then(m => m.MoreDetailsModule),
 
      },
-     {
-          path: 'MoreDetails/:projectcode', canActivate: [AuthGuard],
-          loadChildren: () => import('../_LayoutDashboard/more-details/more-details.module').then(m => m.MoreDetailsModule),
+     // {
+     //      path: 'MoreDetails/:projectcode', canActivate: [AuthGuard],
+     //      loadChildren: () => import('../_LayoutDashboard/more-details/more-details.module').then(m => m.MoreDetailsModule),
 
-     },
+     // },
      {
           path: 'ArchiveView/:projectcode/:url', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/fileview/fileview.module').then(m => m.FileviewModule),
