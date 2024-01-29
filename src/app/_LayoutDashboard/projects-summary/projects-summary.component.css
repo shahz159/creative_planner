@@ -2521,6 +2521,10 @@ tr.odd.project-list_AC.active{
 .ToDo_Achieved_color{
   color: #000 !important;
 }
+.Not_Started{
+  color: #888888 !important;
+}
+
 
 .Deadline_Extend_Under_Approval_color{
   color: #F88282 !important;

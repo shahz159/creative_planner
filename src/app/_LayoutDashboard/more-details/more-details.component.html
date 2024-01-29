@@ -1,7 +1,7 @@
 <div class="kt-container  kt-container--fluid p-0 kt-grid__item kt-grid__item--fluid text-dark project-info-page side_view"
     id="moredet" *ngIf="showContent; else loading">
 
-    <ng-container *ngIf="isHierarchy== true || userFound==true; else accessdenied">
+    <ng-container *ngIf="isHierarchy== true || isHierarchy==true; else accessdenied">
         <ng-container
             *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
         (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') ||
@@ -6635,10 +6635,10 @@
     <div class="d-flex align-items-md-center flex-column h-100-vh">
         <div class="text-center acc-section">
             <h1 class="text-primary main_acc">Access denied 503 !</h1>
-            <h5 class="acc-desc ng-star-inserted">Unfortunately, we did not find you in this Project.</h5>
-            <!-- <div class="mt-4"><button class="btn btn-info mr-3">
+            <h5 class="acc-desc ng-star-inserted">Unfortunately, this page is not in use.</h5>
+            <div class="mt-4"><button class="btn btn-info mr-3">
                 Login to Stream Planner</button>
-            </div> -->
+            </div>
         </div>
     </div>
 </ng-template>

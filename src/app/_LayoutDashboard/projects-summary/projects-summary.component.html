@@ -25,7 +25,7 @@
                          </a> -->
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="New project!"> -->
-                                <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button>
+                                <!-- <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button> -->
                          <!-- </a> -->
                         <!-- <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
@@ -926,6 +926,10 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Achieved'">
                                                             <span class="ToDo_Achieved_color font-weight-400">ToDo Achieved
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Not Started'">
+                                                            <span class="Not_Started font-weight-400">Not Started
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Standardtask Enactive Hold'">

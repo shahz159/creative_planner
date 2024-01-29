@@ -14,6 +14,7 @@ import {
 import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
+import Swal from 'sweetalert2';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -366,7 +367,10 @@ clear(){
   this.endtime = null;
   this.starttimearr = [];
   this.endtimearr = [];
-  
+  this._remarks='';
+  this.selectedFile=null;
+  this._inputAttachments='';
+  this.bothActTlSubm=false;
 }
 
 
@@ -411,7 +415,7 @@ getDarTime() {
 
   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
     .subscribe(data => {
-      debugger
+      
       this.timeList = JSON.parse(data[0]['time_json']);
       if (this.timeList.length != 0) {
         this.bol = false;
@@ -440,6 +444,7 @@ diff_minutes(dt2, dt1) {
 }
 
 submitDar() {
+ 
   if (this.starttime != null && this.endtime != null) {
     const [shours, sminutes] = this.starttime.split(":");
     const [ehours, eminutes] = this.endtime.split(":");
@@ -483,15 +488,45 @@ submitDar() {
     .subscribe(data => {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
+       
+      
+      
+      // after timeline submission success then complete the action also if needed. start
+        if(this.bothActTlSubm){
+          const fd = new FormData();
+          fd.append("Project_Name", this.actionList.find(item => item.Project_Code == this.project_code).Project_Name);  // ACTION NAME
+          fd.append("Project_Code", this.project_code);                                                             // ACTION CODE.
+          fd.append("Master_Code", this.master_code);                                                               // MAIN PROJECT CODE.
+          fd.append("Team_Autho", this.Current_user_ID);                                                            // USER ID.
+          fd.append("Projectblock", this.project_type);                                                             //  prj type (optional)
+          fd.append("Remarks", this._remarks);                                                                  // REMARKS 
+          fd.append('file', this.selectedFile);                                                                // FILE ATTACHMENT.
+          this.service._UpdateSubtaskByProjectCode(fd)
+            .subscribe(data => {});
+          this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+        }
+        // after timeline submission success then complete the action also if needed.  end
+      
+      
+      
+      
+      
+      
+      
+        this.clear();   // clear all fields. project_code, master_code, .... 
     });
+
   this.timelineLog(this.Type);
   this.getDarTime();
   document.getElementById("timepage").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-  this.clear();
+  
 }
-// Timeline submission ends
+//Timeline submission ends
+
+
+
 
   darcreate() {
     document.getElementById("timepage").classList.add("position-fixed");
@@ -535,4 +570,21 @@ submitDar() {
   notinAction() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
+
+
+
+// complete action with timeline start
+_inputAttachments:string='';
+bothActTlSubm:boolean=false;
+selectedFile:any;  
+_remarks:string='';
+onFileChange(e) {
+  this._inputAttachments = e.target.files[0].name;
+  this.selectedFile = <File>e.target.files[0];
+}
+
+
+
+// complete action with timeline end
+
 }

@@ -58,5 +58,6 @@ export class ProjectDetailsDTO {
     filename:any;
     isTemplate:boolean;
     assignid:number;
+    portfolioids:string;
 
 }

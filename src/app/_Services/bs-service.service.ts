@@ -101,7 +101,7 @@ export class BsServiceService {
     this._portId.next(portid);
   }
 
-  setSelectedTemplAction(tmAction:{name:string,description:string}) {
+  setSelectedTemplAction(tmAction:{name:string,description:string,assignedTo:string}) {
     this._templAction.next(tmAction);
   }
 
