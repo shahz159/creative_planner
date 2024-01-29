@@ -132,7 +132,7 @@
                             </div>
                         </div>
 
-                        <div class="kt-btn-left" *ngIf="Previousdata_meeting.length>1">
+                        <div class="kt-btn-left" *ngIf="Previousdata_meeting.length>0">
                             <button class="kt-met-notes-v" type="button" (click)="Slide_meeting()"><span
                                     class="svg-met-note"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                         viewBox="0 0 100 125" x="0px" y="0px">
@@ -766,9 +766,9 @@
                                                     </div>
                                                 </div> -->
                                                 <ng-container *ngFor="let note of _meetingNotesAry">
-                                                    <div *ngIf="CurrentUser_ID != note.Emp_no" class="kt-card N-user-2">
+                                                    <div class="kt-card N-user-2">
                                                         <div class="kt-user-dt">
-                                                            <div class="kt-user-2lt kt-clr-2">GD</div>
+                                                            <div class="kt-user-2lt kt-clr-2">{{getInitials(note.Emp_Name)}}</div>
                                                             <div class="kt-user-name">{{note.Emp_Name}}
                                                                 <!-- <span class="kt-met-time-date">05:34</span> -->
                                                             </div>

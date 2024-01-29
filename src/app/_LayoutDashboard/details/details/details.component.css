@@ -1443,10 +1443,12 @@ label.my-chosse-flv {
 
 .UnderApproval {
   background-color: #888888 !important;
+  color:#fff;
 }
 
 .Inprocess {
   background-color: #1B272D !important;
+  color:#fff;
 }
 
 
@@ -1916,7 +1918,10 @@ a.kt-inbox__icon:hover svg path {
   box-shadow: none !important;
 }
 .kt-quick-panel--on {
-  width: 40% !important;
+  width: 60% !important;
+}
+.kt-timeline-panel--on {
+  width: 55% !important;
 }
 .kt-quick-active--on{
   width: 40% !important;
@@ -3034,13 +3039,13 @@ span.user-ft-ltr {
   margin-left: 15px;
 }
 span.Running {
-  color: #37ad3b;
+  color: #fff;
   font-weight: 500;
   font-size: 10px;
   padding: 1px 6px;
-  background-color: #e9ffea;
+  background-color: #3e97ff;
   border-radius: 5px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   position: relative;
   top: -2px;
 }

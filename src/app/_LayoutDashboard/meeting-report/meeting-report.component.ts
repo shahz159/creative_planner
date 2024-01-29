@@ -1160,7 +1160,7 @@ export class MeetingReportComponent implements OnInit {
         this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
 
         // Assuming Previousdata_meeting is an array of objects with a Previous_meeting property
-        // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+        this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
 
         //  this.Notes = this.Previousdata_meeting.filter(element => !element.Previous_meeting);
 

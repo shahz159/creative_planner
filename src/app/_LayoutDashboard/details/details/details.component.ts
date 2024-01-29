@@ -789,7 +789,8 @@ this.prjPIECHART.render();
           delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
           this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
         }
-      })
+      });
+      console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
         if(actionCode)
@@ -1221,7 +1222,7 @@ this.prjPIECHART.render();
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("View_comments").classList.remove("kt-quick-View_comments--on");
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
-    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("Timeline_view").classList.remove("kt-timeline-panel--on");
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -1310,7 +1311,7 @@ this.prjPIECHART.render();
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+    document.getElementById("Timeline_view").classList.remove("kt-timeline-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
 
@@ -1322,8 +1323,8 @@ this.prjPIECHART.render();
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
 
-    document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
+    // document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
     // back to 1st 'People on the project' tab.
 
 
@@ -1333,7 +1334,7 @@ this.prjPIECHART.render();
   tmlSrtOrd: "Date" | "Action" | "Employee" | "Me" | undefined;
 
   View_timeline() {
-    document.getElementById("Timeline_view").classList.add("kt-quick-panel--on");
+    document.getElementById("Timeline_view").classList.add("kt-timeline-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.currentSidebarOpened='TIMELINE_VIEW';
@@ -2461,7 +2462,8 @@ debugger
       StartDate: datestrStart,
       EndDate: datestrEnd,
       SubmissionName: Submission,
-      AllocatedHours: allocation
+      AllocatedHours: allocation,
+      Recurrence:this.Annual_date
     }
     const jsonvalue = JSON.stringify(jsonobj)
     console.log(jsonvalue, 'json');
@@ -2519,7 +2521,7 @@ debugger
 
 
   }
-  // Recurrence:this.Annual_date,
+ 
 
   ActionCode: any
   ActionDescription: any
@@ -3390,7 +3392,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     repDate = new Date(repDate);
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
 
 
     let Day = repDate.getDate();
@@ -3492,6 +3494,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (iscloud == false) {
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
         FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
@@ -6261,15 +6264,17 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
   if (iscloud == false) {
-    if (this.EmpNo_Autho == this.EmpNo_Res) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+
+    if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
       // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-      FileUrl = (FileUrl +  this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+      FileUrl = (FileUrl +  this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
     }
-    else if (this.EmpNo_Autho !=  this.EmpNo_Res) {
-      FileUrl = (FileUrl + this.EmpNo_Res + "/" + this.projectCode + "/" + url1);
+    else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+      FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
     }
 
-    let name = "ArchiveView/" + this.projectCode;
+    let name = "ArchiveView/" + this.URL_ProjectCode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
@@ -6303,7 +6308,8 @@ openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Da
 debugger
   repDate = new Date(repDate);
   let FileUrl: string;
-  FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
 
   let Day = repDate.getDate();
   let Month = repDate.getMonth() + 1;
