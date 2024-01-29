@@ -3909,6 +3909,30 @@ span.Rq_date_V {
   background-color: white;
 }
 
+/* Span power */
+span.Kt-m-count {
+  margin-left: 5px;
+  background-color: #9886eb;
+  color: #fff;
+  border-radius: 100px;
+  padding: 2px;
+  font-size: 9px;
+  position: absolute;
+  letter-spacing: 1px;
+  top: 1px;
+  min-width: 17px;
+  height: 17px;
+  right: 0;
+  text-align: center;
+}
+
+
+/*end*/
+
+
+
+
+
 
 /*user requirest box css end*/
 .Kt-info-box-main {

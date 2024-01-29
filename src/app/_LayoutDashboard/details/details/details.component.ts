@@ -499,6 +499,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // }
 
+  userRequestCount: number = 0;
+
+
   getRequestAcessdetails() {
     this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
       this.requestlist = JSON.parse(res[0]['requestlist']);
@@ -509,10 +512,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         if (element.Emp_no == this.Current_user_ID) {
           this.approvalEmpId = this.Current_user_ID;
           this.approverequestlist.push(element);
+          this.userRequestCount = this.approverequestlist.length;
         } else {
           if (uniqueNamesSet.size < 2 && !uniqueNamesSet.has(element.Submitted_By)) {
             this.noapproverequestlist.push(element);
             uniqueNamesSet.add(element.Submitted_By);
+
+
           }
         }
       });
@@ -529,17 +535,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
-        this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
-        this.requestaccessList.forEach(element => {
-          if(element.Submitted_By_EmpNo == this.Current_user_ID){
-                  this.isRequestSent = true;
-            this.ishide=false
-            $('.hide-content').addClass('d-none')
-          }
-        });
-      }
+      this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
       this.isDMS= this.projectInfo.isDMS;
+      this.requestaccessList.forEach(element => {
+        if(element.Submitted_By_EmpNo == this.Current_user_ID){
+                this.isRequestSent = true;
+          this.ishide=false
+          $('.hide-content').addClass('d-none')
+        }
+      });
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
