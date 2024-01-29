@@ -3332,7 +3332,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
   projectatt: any;
   Actionatt: any;
 
-  AttachmentListTemp:any=[];
+
   getAttachments(sorttype: number) {
     switch (sorttype) {
       case 1: this.flSrtOrd = "Date"; break;
@@ -3350,8 +3350,6 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
-          this.getProjectAttachments();
-
         }
       });
 
@@ -3360,29 +3358,6 @@ $('#prj-attachments-tab-btn').addClass('active');
 $('#acts-attachments-tab-btn').removeClass('active');
 
 
-  }
-
-  getProjectAttachments(){
-
-   this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
-     }
-});
-    console.log("=>",this.AttachmentListTemp);
-  }
-
-
-
-  getActionAttachments(){
-    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
-     }
-     });
-     console.log("a=>",this.AttachmentListTemp);
   }
 
 

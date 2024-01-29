@@ -1738,7 +1738,7 @@
 
                                 <!-- Notification start-->
 
-                              <div class="kt-Note-msg d-flex align-items-center"
+                              <!-- <div class="kt-Note-msg d-flex align-items-center"
                                     *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
                                     <div class="kt-note-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -1820,7 +1820,7 @@
                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                     </div>
-                                </div> 
+                                </div>  -->
 
 
 
@@ -1828,102 +1828,104 @@
 
 
 <!--my start  new notification desgin-->
+<ng-container 
+      *ngIf="myUnderApprvActions.length||
+             myDelayPrjActions.length||
+             +ProjectPercentage>100||
+             (projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length)
+             ">
 
-        <div class="kt-Note-msg d-flex align-items-center" style="background-color:#ffffffff;"  *ngIf="myUnderApprvActions.length||myDelayPrjActions.length||+ProjectPercentage>100"         >
-                                            <div class="kt-note-icon" style="align-self:flex-start">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
-                                                    version="1.1" x="0px" y="0px" viewBox="0 0 66 65"
-                                                    style="enable-background:new 0 0 66 66;" xml:space="preserve">
-                                                    <path
-                                                        d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z" />
-                                                    <path
-                                                        d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z" />
-                                                    <path
-                                                        d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z" />
-                                                    <path
-                                                        d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z" />
-                                                    <path
-                                                        d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z" />
-                                                    <path
-                                                        d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z" />
-                                                    <path
-                                                        d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z" />
-                                                    <path
-                                                        d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
-                                                </svg>
-                                            </div>
-                                            
-
-                                            <div class="notifications-list" >
-
+            <div class="kt-Note-msg d-flex align-items-center" style="background-color:#ffffffff;">
+                <div class="kt-note-icon" style="align-self:flex-start">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
+                        version="1.1" x="0px" y="0px" viewBox="0 0 66 65"
+                        style="enable-background:new 0 0 66 66;" xml:space="preserve">
+                        <path
+                            d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z" />
+                        <path
+                            d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z" />
+                        <path
+                            d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z" />
+                        <path
+                            d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z" />
+                        <path
+                            d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z" />
+                        <path
+                            d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z" />
+                        <path
+                            d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z" />
+                        <path
+                            d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
+                    </svg>
+                </div>
                 
-                                            <ng-container *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
-                                                <div class="notification underapproval-notification " *ngIf="myUnderApprvActions.length>0" (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
-                                                    <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="
-                                                fill: #00a2eb;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z"></path> <path d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z"></path> <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path> <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path> <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path> <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path> <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path> </g> </g></svg>
-                                                    <span class="notif-msg fs-5"  style="color:#00a2eb">You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
-                                                        actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
-                                                    
-                                                </div>
 
-                                                <div class="notification delay-notification" *ngIf="myDelayPrjActions.length>0" >
-                                                    <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff2727"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
-                                                    <span class="notif-msg" style="color:#ff2727  "    > You have {{myDelayPrjActions.length}}
-                                                        {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
-                                                        of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
-                                                        days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
-                                                 
-                                                    
-                                                </div>
-                                            
+                <div class="notifications-list" >
 
-                                            </ng-container>
-                                                
-                                            
-                                            
-                                            
-                                        
-                                
-                                                <div class="notification overutilization-notification"   *ngIf="+ProjectPercentage>100">
-                                                    <svg width="24px" height="24px" viewBox="0 0 512 512"  fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <g id="Page-1" stroke="none" stroke-width="1"  fill-rule="evenodd"> <g id="add"  transform="translate(32.000000, 42.666667)"> <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
-                                                    <span class="notif-msg" style="color:#c57a05"> 
-                                                    This project is overutilized by {{ProjectPercentage}}%, surpassing allocated hours. 
-                                                    </span>
-                                                </div>
-                                    
-                                            
-                                            
-                                            </div>
-                                            
-                                            <div class="notifications-list"  *ngIf="projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length">
-                                                <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
-                                                    <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
-                                                    <span class="notif-msg"> 
-                                                        Project has {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max
-                                                        {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
-                                                        <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
-                                                            {{action.name}}
-                                                            ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
-                                                            days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
-                                                                *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
-                                                    </span>
-                                                  
-                                                </div>
-                                            </div>
+
+                <ng-container *ngIf="myUnderApprvActions.length||myDelayPrjActions.length">
+                    <div class="notification underapproval-notification " *ngIf="myUnderApprvActions.length>0" (click)="showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
+                        <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="
+                    fill: #00a2eb;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z"></path> <path d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z"></path> <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path> <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path> <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path> <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path> <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path> </g> </g></svg>
+                        <span class="notif-msg fs-5"  style="color:#00a2eb">You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
+                            actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
+                        
+                    </div>
+
+                    <div class="notification delay-notification" *ngIf="myDelayPrjActions.length>0" >
+                        <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff2727"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                        <span class="notif-msg" style="color:#ff2727  "    > You have {{myDelayPrjActions.length}}
+                            {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
+                            of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
+                            days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
+                    
+                        
+                    </div>
+                
+
+                </ng-container>
+                    
+                
+                
+                
+                <div class="notification overutilization-notification"   *ngIf="+ProjectPercentage>100">
+                        <svg width="24px" height="24px" viewBox="0 0 512 512"  fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <g id="Page-1" stroke="none" stroke-width="1"  fill-rule="evenodd"> <g id="add"  transform="translate(32.000000, 42.666667)"> <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
+                        <span class="notif-msg" style="color:#c57a05"> 
+                        This project is overutilized by {{ProjectPercentage}}%, surpassing allocated hours. 
+                        </span>
+                </div>
+
+                <ng-container *ngIf="projectInfo&&(Current_user_ID===projectInfo.OwnerEmpNo)&&delayActionsOfEmps.length">
+                    <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
+                        <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                        <span class="notif-msg"> 
+                            Project has {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max
+                            {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
+                            <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
+                                {{action.name}}
+                                ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
+                                days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
+                                    *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
+                        </span>
+                    
+                    </div>
+                </ng-container>
+                
+                </div>
+                
+               
 
 
 
             </div>  
 
-
-
+</ng-container>
+          
 <!--my end   new  notification desgin-->
 
 
                                 <!-- Notification end-->
-
-
 
                                 <div class="kt-info-box kt-info-project-box mt-3 border-0" *ngIf="projectInfo">
 
@@ -5184,7 +5186,7 @@
             <div class="kt-portlet__head">
                 <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
                     <h4 class="m-0"><span class="svg-icv-hd">
-                            <!-- <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                            <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17" height="17"
                                 viewBox="0 0 15 15" fill="none">
                                 <path _ngcontent-vqh-c391=""
                                     d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
@@ -5195,18 +5197,7 @@
                                 <path _ngcontent-vqh-c391=""
                                     d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                                     stroke="#a3a3a3"></path>
-                            </svg> -->
-                            <svg _ngcontent-fxg-c172="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path
-                                _ngcontent-fxg-c172="" d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429
-                                 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337
-                                 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374
-                                 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287
-                                 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
-
-
-
-                         </span>
-                         <span class="kt-chat__title"> List of Attachments </span> <span
+                            </svg> </span><span class="kt-chat__title"> List of Attachments</span> <span
                             class="kt-at-count" *ngIf="_TotalDocs>0">{{_TotalDocs}}</span> </h4>
                     <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                         (click)="closedarBar()">
@@ -5223,7 +5214,7 @@
 
             <div class="kt-Attachament__body">
 
-                <div class="pt-2 pb-2 ">
+                <div class="pt-2 pb-2 mb-2">
                     <div class="d-flex-center">
                         <div class="position-relative w-100">
                             <input type="text" autocomplete="off" name="search" placeholder="Search..."
@@ -5406,54 +5397,17 @@
                         </div>
                     </div>
                 </div>
-                <div  *ngIf="flSrtOrd==='Date' || flSrtOrd==='Project' || flSrtOrd==='Employee' || flSrtOrd==='me'" class="mb-2">
-                    <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
-                        <li class="nav-item">
-                            <a  id="prj-attachments-tab-btn"  class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_7"  (click)="getProjectAttachments()" >
-                                <span _ngcontent-jgy-c397="" class="svg-icv-hd"><svg _ngcontent-jgy-c397="" xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
-                                    <path _ngcontent-jgy-c397="" d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639
-                                    3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path
-                                    _ngcontent-jgy-c397="" d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259
-                                    7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round">
-                                    </path><path _ngcontent-jgy-c397="" d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824
-                                    3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464" stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path><path
-                                    _ngcontent-jgy-c397="" d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
-                                    stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
-
-
-                                <span class="nav-text">Project</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="acts-attachments-tab-btn" class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_8"  (click)="getActionAttachments()"  >
-                                <span _ngcontent-ibo-c397="" class="svg-icv-hd"><svg _ngcontent-ibo-c397="" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    stroke="#a3a3a3"><g _ngcontent-ibo-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-ibo-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                    stroke-linejoin="round"></g><g _ngcontent-ibo-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-ibo-c397="" d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#a3a3a3"
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ibo-c397="" d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15
-                                    19V20" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ibo-c397="" d="M8 12C10.2091 12 12 10.2091 12 8C12
-                                    5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </g></svg></span>
-                                <span class="nav-text">Actions</span>
-                            </a>
-                        </li>
-                    </ul>
-              </div>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
                 <!--  Older Start-->
-
-
                 <ng-container *ngIf="_TotalDocs>0">
                     <ng-container *ngIf="(AttachmentList|filter:filterText).length>0; else box">
-                        <div class="attachament-list-view" *ngFor="let item of AttachmentListTemp  | filter :filterText;let i=index">
-
-                            <ng-container *ngIf="item.JsonData.length>0">
-
-
+                        <div class="attachament-list-view"
+                            *ngFor="let item of AttachmentList  | filter :filterText;let i=index">
                             <div data-toggle="collapse" aria-expanded="true"
                                 class="mb-0 titlediv d-flex w-100 align-items-baseline justify-content-between me-0 p-2"
                                 [attr.data-target]="'#Div_attachments'+ i">
-                                <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
-                                <span class="Kt-replay-count">{{item.JsonData.length}}</span>
+                                <span class="kt-text-wrap "><i
+                                        class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
+                                <span class="Kt-replay-count">{{item.TotalFiles}}</span>
                             </div>
                             <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
                                 <div class="kt-notification__item no-after position-relative ng-star-inserted"
@@ -5467,46 +5421,57 @@
                                             </path>
                                         </svg>
                                     </div>
+
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='png' || file.contenttype=='jpg'">
-                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="asseticn prim-icn">
+                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
+                                            class="asseticn prim-icn">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
                                             </path>
                                         </svg>
                                     </div>
+
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='txt' ||file.contenttype=='html' || file.contenttype=='doc' || file.contenttype=='docx' || file.contenttype=='json' || file.contenttype=='xml'">
-                                        <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                        <svg class="asseticn info-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8zm0 5a1 1 0 0 0 0 2h11.91a1 1 0 1 0 0-2H8zm0 5a1 1 0 0 0 0 2h15a1 1 0 0 0 0-2H8z">
                                             </path>
                                         </svg>
                                     </div>
+
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='ppt' || file.contenttype=='pptx'">
-                                        <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                        <svg class="asseticn warn-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm15.024 3H15a8 8 0 1 0 8 8c-4.267.028-.037.048-7.977.033-.003-.992-.05-2.545.001-8.033zM25 14.976A7.976 7.976 0 0 0 17.024 7c-.052 5.472-.004 7.02 0 8.009 7.93.014 3.682-.005 7.976-.033z">
                                             </path>
                                         </svg>
                                     </div>
+
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='xlsx' || file.contenttype=='xls'">
-                                        <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                        <svg class="asseticn suc-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm7.6 4.111a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9zm-9.9 8a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6H7.6zm9.9 0a.6.6 0 0 0-.6.6v3.8a.6.6 0 0 0 .6.6h6.9a.6.6 0 0 0 .6-.6v-3.8a.6.6 0 0 0-.6-.6h-6.9z">
                                             </path>
                                         </svg>
                                     </div>
+
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf=" file.contenttype!='application/pdf' && file.contenttype!='xlsx' && file.contenttype!='xls' && file.contenttype!='ppt' && file.contenttype!='pptx' && file.contenttype!='txt' && file.contenttype!='html' && file.contenttype!='doc' && file.contenttype!='docx' && file.contenttype!='png' && file.contenttype!='jpg' && file.contenttype!='pdf'">
-                                        <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                        <svg class="asseticn dark-icn" viewBox="0 0 32 32" aria-hidden="true"
+                                            focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z">
                                             </path>
                                         </svg>
                                     </div>
+
                                     <ng-container *ngIf="projectInfo.Project_Block=='003'">
                                         <div data-toggle="modal" class="kt-notification__item-details"
                                             (click)="openPDF_Standards(file.StandardId,file.Submitted_By_EmpNo,file.IsCloud,file.date,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
@@ -5525,7 +5490,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
+                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
@@ -5548,15 +5513,18 @@
                                         <div data-toggle="modal" class="kt-notification__item-details"
                                             (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
                                             <div class="d-flex-center">
-                                                <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}"
-                                                    *ngIf="file.Sourcefile.length>44">
+                                                <div class="kt-notification__item-title fw-bold"
+                                                    title="{{file.Sourcefile}}" *ngIf="file.Sourcefile.length>44">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile | slice:0:28}}...
                                                 </div>
-                                                <div class="kt-notification__item-title fw-bold" *ngIf="file.Sourcefile.length<45">
+                                                <div class="kt-notification__item-title fw-bold"
+                                                    *ngIf="file.Sourcefile.length<45">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile}}
                                                 </div>
+
+
                                                 <div class="d-flex align-items-center">
                                                     <div data-toggle="tooltip" data-placement="top" title=""
                                                         class="symbol symbol-circle symbol-22px">
@@ -5567,7 +5535,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex-center mt-1">
-                                                <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
+                                                <div class="text-muted fs-7 d-flex"  *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                     <span class="mr-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                             fill="currentColor" viewBox="0 0 16 16" class="cate-icns">
@@ -5588,10 +5556,6 @@
                                     </ng-container>
                                 </div>
                             </div>
-
-
-                             </ng-container>
-
                         </div>
                     </ng-container>
                 </ng-container>
@@ -5616,7 +5580,7 @@
             </div>
         </div>
     </div>
-      <!-- Files Working Area End -->
+    <!--  Files Working Area End-->
 
 
 
