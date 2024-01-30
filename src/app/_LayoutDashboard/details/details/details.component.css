@@ -1178,7 +1178,7 @@ span.Status-Delay {
   width: 100%;
   padding: 10px;
   background-color: #fd7e7a38;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .kt-note-icon svg {
@@ -3933,7 +3933,7 @@ span.Rq_date_V {
 }
 .info-card-body .kt-info-project-box, .info-card-body .kt-info-action-box{
   background: #fff;
-  height: 94%;
+  height: 100%;
   padding: 10px 10px!important;
   box-shadow: 0 2px 16px #cccccc80;
   border-radius: 4px;
@@ -3950,4 +3950,27 @@ span.Rq_date_V {
 }
 .info-card-body a.kt-inbox__icon:hover svg path {
   stroke: transparent;
+}
+.kt-ct-sub-ttl {
+  margin-right: 20px;
+}
+.View_more_act {
+  bottom: 0;
+}
+.bd-right-x::after {
+  right: 0;
+  top: 0;
+}
+.kt-project-action-list-view {
+  max-height: 440px;
+}
+.kt-projcect-act-list.Active {
+  border: 2px solid #3e97ff;
+  border-radius: 4px;
+}
+.Active .kt-p-box {
+  background-color: rgb(255 255 255);
+}
+.kt-project-action-list-view {
+  padding: 10px 0px;
 }

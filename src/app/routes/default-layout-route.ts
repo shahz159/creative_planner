@@ -38,6 +38,11 @@ export const DEFAULT_ROUTES: Routes = [
 
      },
      {
+          path: 'Meeting-Details', canActivate: [AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/meeting-details/meeting-details.module').then(m => m.MeetingDetailsModule),
+
+     },
+     {
           path: 'portfolioprojects/:portfolioId', canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/portfolio-projects/portfolio-projects.module').then(m => m.PortfolioProjectsModule)
 
