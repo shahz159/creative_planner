@@ -516,19 +516,23 @@ debugger
 
 
   closeInfos(){
-
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   closeInfo() {
-
-    document.getElementById("New_project_Add").classList.remove("open_sidebar");
-    document.getElementById("rightbar-overlay-create").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("sumdet").classList.remove("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
+
+
+    // document.getElementById("New_project_Add").classList.remove("open_sidebar");
+   
+   
+    // document.getElementById("sumdet").classList.remove("position-fixed");
+ 
+ 
   }
 
   Scratech_btn(){
@@ -728,17 +732,30 @@ onProjectOwnerChanged(){
   /////////////////////////////////////////add Project End/////////////////////////////
 
 
-  showSideBar() {
+  openActionSideBar() {
+
     if(this.PrjActionsInfo.length===0)
-    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:this.Current_user_ID});
+      this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
     
+
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
+   
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("rightbar-overlay-create").style.display = "block";
+    document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
+
   }
+
+
+  closeActionSideBar(){
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
+    this.router.navigate(["/backend/createproject/"]);
+  }
+
   /////////////////////////////////////////add Project End/////////////////////////////
 
    ///////////////////////////////////////// Project Edit start /////////////////////////////
@@ -1103,7 +1120,7 @@ sendApproval(){
          if(res&&res.message==='Success'){
                this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
                this.router.navigate(['./backend/ProjectsSummary']);
-               this.closeInfo();
+              //  this.closeInfo();
           }
          else{
             this.notification.showError('something went wrong!','Failed');
@@ -1244,7 +1261,7 @@ openTemplate(template:any){
 openTemplateAction(templAction){
   const taction = { name: templAction.Project_Name, description:templAction.Project_Description ,assignedTo:''};
   this.BsService.setSelectedTemplAction(taction);
-  this.showSideBar();                                                                 // opens the sidebar
+  this.openActionSideBar();                                                                 // opens the sidebar
 }
 
 
