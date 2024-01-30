@@ -2119,7 +2119,7 @@
                                                 </div>
                                                 <div class="kt-project-type "
                                                     *ngSwitchCase="'Cancelled Under Approval'">
-                                                    <div class="Kt-Pd-Status NewProjectRejected"> Cancelled Under
+                                                    <div class="Kt-Pd-Status Delay"> Cancelled Under
                                                         Approval
                                                     </div>
                                                 </div>
@@ -3261,13 +3261,13 @@
 
                                                     <div *ngSwitchCase="'Forward Under Approval'"
                                                         class="kt-project-type">
-                                                        <div class="Kt-Pd-Status  CompletionUnderApproval">Forward Under
+                                                        <div class="Kt-Pd-Status  ForwardUnderApproval">Forward Under
                                                             Approval
                                                         </div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Cancelled'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status  Delay">Cancelled</div>
+                                                        <div class="Kt-Pd-Status  Cancelled">Cancelled</div>
                                                     </div>
                                                     <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
                                                         <div class="Kt-Pd-Status  Hold">Hold</div>
@@ -3315,13 +3315,13 @@
 
                                                     <div *ngSwitchCase="'Forward Under Approval'"
                                                         class="kt-project-type">
-                                                        <div class="Kt-Pd-Status  CompletionUnderApproval">Forward Under
+                                                        <div class="Kt-Pd-Status  ForwardUnderApproval">Forward Under
                                                             Approval
                                                         </div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Cancelled'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status  Delay">Cancelled</div>
+                                                        <div class="Kt-Pd-Status Cancelled">Cancelled</div>
                                                     </div>
                                                     <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
                                                         <div class="Kt-Pd-Status  Hold">Hold</div>
@@ -3367,12 +3367,12 @@
                                                                     'Delay':projectActionInfo[currentActionView].Status==='Delay',
                                                                     'Inprocess':projectActionInfo[currentActionView].Status==='InProcess',
                                                                     'Done':projectActionInfo[currentActionView].Status==='Completed',
-                                                                    'NewProjectRejected1':projectActionInfo[currentActionView].Status==='New Project Rejected',
-                                                                    'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Forward Under Approval',
-                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancellation Under Approval',
+                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='New Project Rejected',
+                                                                    'ForwardUnderApproval':projectActionInfo[currentActionView].Status==='Forward Under Approval',
+                                                                    'Delay':projectActionInfo[currentActionView].Status==='Cancellation Under Approval',
                                                                     'CompletionUnderApproval':projectActionInfo[currentActionView].Status==='Completion Under Approval',
                                                                     'EnactiveUnderApproval':projectActionInfo[currentActionView].Status==='Enactive Under Approval',
-                                                                    'NewProjectRejected':projectActionInfo[currentActionView].Status==='Cancelled',
+                                                                    'Cancelled':projectActionInfo[currentActionView].Status==='Cancelled',
                                                                     'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
                                                                     }">
                                                                 {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':
@@ -4026,12 +4026,12 @@
                             'Delay':projectInfo.Status==='Delay',
                             'Inprocess':projectInfo.Status==='InProcess',
                             'Done':projectInfo.Status==='Completed',
-                            'NewProjectRejected1':projectInfo.Status==='New Project Rejected',
-                            'CompletionUnderApproval':projectInfo.Status==='Forward Under Approval',
-                            'NewProjectRejected':projectInfo.Status==='Cancellation Under Approval',
+                            'NewProjectRejected':projectInfo.Status==='New Project Rejected',
+                            'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
+                            'Delay':projectInfo.Status==='Cancellation Under Approval',
                             'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
                             'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
-                            'NewProjectRejected':projectInfo.Status==='Cancelled',
+                            'Cancelled':projectInfo.Status==='Cancelled',
                             'Hold':projectInfo.Status==='Project Hold',
                             'UnderApproval':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started'
                             }" style="color:white">{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
