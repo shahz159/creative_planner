@@ -1191,7 +1191,7 @@ span.Status-Delay {
   width: 100%;
   padding: 10px;
   background-color: #fd7e7a38;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .kt-note-icon svg {
@@ -4054,6 +4054,30 @@ span.Rq_date_V {
   background-color: white;
 }
 
+/* Span power */
+span.Kt-m-count {
+  margin-left: 5px;
+  background-color: #9886eb;
+  color: #fff;
+  border-radius: 100px;
+  padding: 2px;
+  font-size: 9px;
+  position: absolute;
+  letter-spacing: 1px;
+  top: 1px;
+  min-width: 17px;
+  height: 17px;
+  right: 0;
+  text-align: center;
+}
+
+
+/*end*/
+
+
+
+
+
 
 /*user requirest box css end*/
 .Kt-info-box-main {
@@ -4113,6 +4137,29 @@ span.Rq_date_V {
 }
 .info-card-body a.kt-inbox__icon:hover svg path {
   stroke: transparent;
+}
+.kt-ct-sub-ttl {
+  margin-right: 20px;
+}
+.View_more_act {
+  bottom: 0;
+}
+.bd-right-x::after {
+  right: 0;
+  top: 0;
+}
+.kt-project-action-list-view {
+  max-height: 440px;
+}
+.kt-projcect-act-list.Active {
+  border: 2px solid #3e97ff;
+  border-radius: 4px;
+}
+.Active .kt-p-box {
+  background-color: rgb(255 255 255);
+}
+.kt-project-action-list-view {
+  padding: 10px 0px;
 }
 .text-turquoise{
   color:#17b4b7!important;

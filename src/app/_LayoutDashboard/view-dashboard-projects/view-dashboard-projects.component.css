@@ -1110,3 +1110,42 @@ span.count2 {
 tr.odd.project-list_AC.active{
   background-color: #e0f1ff;
 }
+.Delay_color{
+  color: #EE4137 !important;  
+}
+.InProcess_color{
+  color:#1B272D !important;
+}
+.Under_Approval_color{
+  color: #888888 !important;
+}
+.Hold_color{
+  color:#E2D9BC  !important;
+}
+.New_Project_Rejected_color{
+  color: #DFDFDF !important;
+}
+.ToDo_Completed_color{
+  color:#000 !important;  
+}
+.New_Todo_color{
+  color: #6E9BC4 !important;
+}
+.Completion_Under_Approval_color{
+  color: #B2D732 !important;  
+}
+.ToDo_Completed_color{
+  color:#000 !important;  
+}
+.Forward_Under_Approval_color{
+  color: #B2D732 !important;
+}
+.Project_Complete_Rejected_color{
+  color: #FAF065 !important;
+}
+.Enactive_Under_Approval_color{
+  color: #C9C1E6 !important;
+}
+.Deadline_Extend_Under_Approval_color{
+  color: #F88282 !important;
+}
