@@ -8,3 +8,6 @@
 .side-btn {
     position: relative;
 }
+li.kt-menu__item:hover a svg path {
+    fill: #5867dd  !important;
+}

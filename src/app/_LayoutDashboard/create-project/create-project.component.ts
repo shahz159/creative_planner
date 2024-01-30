@@ -520,6 +520,7 @@ debugger
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
   }
 
+  
   closeInfo() {
 
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
@@ -603,7 +604,10 @@ debugger
     $('.sbs--basic li:nth-child(3)').removeClass('active');
   }
 
-
+new_project_guidelines(){
+  alert('hi');
+  $('#Project_guidelines_view').addClass('open_sidebar_guide');
+}
 
 
 // add Prj support mat autocomplete drpdwn code start here
