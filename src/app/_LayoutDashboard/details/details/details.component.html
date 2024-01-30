@@ -1436,7 +1436,7 @@
                                                             <div class="kt-p-box border-r-0">
                                                                 <div class="kt-action-p-tittle">
                                                                     <h4>{{action&&action.Project_Name}}</h4>
-                                                                </div>
+                                                                </div> 
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-between">
                                                                     <div class="kt-info-lable-v">
@@ -1614,7 +1614,7 @@
                 <script src="https://unpkg.com/tippy.js@6"></script>
                 <div class="col-lg-7 pl-1">
                     <div class="card info-card-body scroller h-100">
-                        <div class="card-body p-0">
+                        <div class="card-header p-0">
                             <div class="kt-info-box">
                                 <div class="kt-project-tool-bar">
                                     <div class="d-flex flex-grow-1 align-items-center gap_ic">
@@ -1720,7 +1720,9 @@
 
                                         <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add Users">
                                             <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
-                                        </a>
+                                            <span   class="Kt-m-count" >{{userRequestCount}}</span>
+
+                                          </a>
 
                                         <a class="kt-inbox__icon" (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS'}"                    title="meetings">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
@@ -1731,6 +1733,9 @@
 
 
                             </div>
+                        </div>
+                        <div class="card-body p-0 pt-3 h-100">
+                            
 
                             <ng-container *ngIf="currentActionView===undefined;else ActionContent">
                                 <!--Default Content-->
@@ -1929,7 +1934,7 @@
 
 
 
-                                <div class="kt-info-box kt-info-project-box mt-3 border-0" *ngIf="projectInfo">
+                                <div class="kt-info-box kt-info-project-box border-0" *ngIf="projectInfo">
 
                                     <div class="kt-project-info-body">
                                         <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
@@ -3078,7 +3083,7 @@
                                        </div>
 
 
-                                    <div class="kt-info-box kt-info-action-box mt-3 border-0">
+                                    <div class="kt-info-box kt-info-action-box border-0">
                                         <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                             <div class="PA_title">
                                                 <span>Action {{projectActionInfo[currentActionView].IndexId}}</span>
@@ -6085,11 +6090,33 @@
                                                 </path>
                                               </svg></span>{{item.Request_date}}</div>
                                         </div>
-                                        <div  class="mb-2"><span
+                                        <!-- <div  class="mb-2"><span
                                           class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Approve</button></span><span
                                           class="kt-badge kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Reject</button>
                                           </span></div>
-                                      </div>
+                                      </div> -->
+                                      <div>
+                                        <button
+                                            [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
+                                            (click)="approvalClick('ACCEPT')">Accept</button>
+                                    </div>
+                                    <!-- <div class="col" id="editaccept">
+                                <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
+                                    (click)="approvalClick('EDIT')">Edit & Accept</button>
+                            </div> -->
+                                    <div *ngIf="requestType=='Project Complete'">
+                                        <button
+                                            [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
+                                            (click)="approvalClick('CONDITIONAL')">Conditional
+                                            Accept</button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
+                                            (click)="approvalClick('REJECT')">Reject</button>
+                                    </div>
+
+
 
                                     </div>
 

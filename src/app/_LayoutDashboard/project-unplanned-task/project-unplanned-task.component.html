@@ -1,17 +1,112 @@
 <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid margin-height side_view">
     <div class="row">
         <div class="col-lg-12">
-            <div class="kt-portlet kt-portlet--bordered-semi mt-3 mb-2">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title" id="tippy1">
-                            <i class="fas fa-registered mr-2 text-primary"></i>
-                            <strong>Runway Tasks</strong>
-                        </h3>
+            <div class="kt-portlet__head-label mt-3">
+                <h3 class="kt-portlet__head-title">
+                    <i class="fas fa-registered mr-2 text-primary"></i>
+                    <strong  id="tippy1">Runway Tasks</strong>
+                </h3>
 
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row runway-actions mt-3">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Categories</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{catcount}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-th-list fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Tasks</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{procount}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-left-suc shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-suc text-uppercase mb-1">
+                                        Accepted</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <span *ngIf="acceptCount">{{acceptCount}}</span> 
+                                        <span *ngIf="!acceptCount">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-left-pen shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-pen text-uppercase mb-1">
+                                        Pending</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <span *ngIf="pendingCount">{{pendingCount}}</span>
+                                        <span *ngIf="!pendingCount">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-left-rej shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-rej text-uppercase mb-1">
+                                        Rejected</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <span *ngIf="rejectCount">{{rejectCount}}</span>
+                                        <span *ngIf="!rejectCount">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-times fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet kt-portlet--bordered-semi mt-1 mb-2">
+                <div class="kt-portlet__head">
+
                     <div class="count-list count-header">
                         <div class="kt-portlet__head-toolbar">
+
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
                             <span class="count">{{catcount}}</span> Total Categories </label>
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">

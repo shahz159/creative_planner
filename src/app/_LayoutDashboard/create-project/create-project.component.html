@@ -15,26 +15,26 @@
     </div>
     <div class="col-lg-12">
         <div class="kt-portlet mb-1">
-          
+
       <div class="Create_project_section">
           <div class="np-step-1 w-100 top_pading_view">
             <div class="container">
               <div class="row">
-      
+
                 <div class="col-lg-12">
                   <div class="title-view-md">
                     <h2>Let’s get started!</h2>
                     <p>What type of project do you want to create?</p>
                   </div>
                 </div>
-      
+
                 <div class="option-section">
-      
+
                   <div (click)="Scratech_btn();timearrays()">
                     <div class="op-card Scratech">
-      
+
                       <div class="op-svg-ic">
-      
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                           <path d="M40.9326 29.9658V51.1851" stroke="#838383" stroke-width="3" stroke-linecap="round"
                             stroke-linejoin="round" />
@@ -43,20 +43,20 @@
                           <circle cx="40.9336" cy="40.5752" r="27.4414" stroke="#B8B8B8" stroke-width="4"
                             stroke-dasharray="4 4" />
                         </svg>
-      
+
                       </div>
                       <div class="op-title-ic">
                         <p>Start From Scratech</p>
                       </div>
-      
+
                     </div>
                   </div>
                   <ng-container *ngIf="assigntask_json&&assigntask_json.length>0">
                     <div (click)="Assigned_projects()">
                       <div class="op-card projects">
-      
+
                         <div class="op-svg-ic">
-      
+
                           <svg xmlns="http://www.w3.org/2000/svg" width="74" height="75" viewBox="0 0 74 75" fill="none">
                             <g clip-path="url(#clip0_237_573)">
                               <path class="dtv"
@@ -88,21 +88,21 @@
                               </clipPath>
                             </defs>
                           </svg>
-      
+
                         </div>
                         <div class="op-title-ic">
                           <p>Assigned / Conditional projects</p>
                         </div>
-      
+
                       </div>
                     </div>
                   </ng-container>
                   <ng-container *ngIf="assigntask_json&&assigntask_json.length<=0">
                     <div>
                       <div class="op-card projects" (click)="notifyAssign()">
-      
+
                         <div class="op-svg-ic">
-      
+
                           <svg xmlns="http://www.w3.org/2000/svg" width="74" height="75" viewBox="0 0 74 75" fill="none">
                             <g clip-path="url(#clip0_237_573)">
                               <path class="dtv"
@@ -134,20 +134,20 @@
                               </clipPath>
                             </defs>
                           </svg>
-      
+
                         </div>
                         <div class="op-title-ic">
                           <p>Assigned projects</p>
                         </div>
-      
+
                                   </div>
                               </div>
                           </ng-container>
                               <div>
                                   <div class="op-card template" (click)="templateProjects()" >
-      
+
                       <div class="op-svg-ic">
-      
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                           <path
                             d="M33.1939 21.8619C32.6185 21.8619 32.1523 21.3952 32.1523 20.8204V13.3214C32.1523 12.7465 32.6185 12.2798 33.1939 12.2798C33.7693 12.2798 34.2355 12.7465 34.2355 13.3214V20.8204C34.2355 21.3952 33.7693 21.8619 33.1939 21.8619Z"
@@ -234,44 +234,44 @@
                             d="M61.3758 67.9869H55.2418C54.6669 67.9869 54.2002 67.5207 54.2002 66.9459C54.2002 66.3705 54.6669 65.9043 55.2418 65.9043H61.3758C61.9507 65.9043 62.4174 66.3705 62.4174 66.9459C62.4174 67.5207 61.9507 67.9869 61.3758 67.9869Z"
                             fill="#838383" />
                         </svg>
-      
+
                       </div>
                       <div class="op-title-ic">
                         <p>Templates</p>
                       </div>
-      
+
                     </div>
                   </div>
-      
+
                 </div>
-      
+
               </div>
             </div>
           </div>
 
           <div class="Assigned-projects-list d-none">
-            
+
               <div class="m-auto">
-      
+
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="d-flex align-items-center justify-content-between w-100">
                       <div class="title-view-md">
-                        <p class="mb-0">Assigned / conditional projects</p>             
-                       
+                        <p class="mb-0">Assigned / conditional projects</p>
+
                       </div>
                       <div class="kt-ctv-btn mt-0" >
                         <button type="button" (click)="back_to_options()"
                           class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back To options</button>
                       </div>
                     </div>
-     
+
                     <div class="card mt-3">
                       <div class="tabs-view-dg">
                         <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
                           <li class="nav-item">
                               <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
-                                
+
                                   <span class="nav-text">Assigned</span>
                               </a>
                           </li>
@@ -284,11 +284,11 @@
                           </li>
                       </ul>
                       </div>
-              
-              
+
+
                             <div class="tab-content" id="myTabContent">
                               <div class="mt-3" id="kt_tab_pane_1_4"   aria-labelledby="kt_tab_pane_1_4" class="tab-pane fade show active" >
-                            
+
                                 <div class="card-body p-3" >
                                   <div class="col-lg-12  card-Scroll pt-0" >
                                     <div class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;" >
@@ -382,7 +382,7 @@
                                     </div>
                                   </div>
                                 </div>
-                              
+
                             </div>
                             <!-- Assigned End -->
               <!-- conditional projects Start -->
@@ -408,7 +408,7 @@
                                                     d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                                                     fill="#5F6379"></path>
                                                 </svg></span><span class="kt-act-ic-info">{{item.DPG|date:'dd-MM-YYYY' }} -
-                                                {{item.DeadLine |date:'dd-MM-YYYY' }}</span></div>                              
+                                                {{item.DeadLine |date:'dd-MM-YYYY' }}</span></div>
                                           </div>
                                         </div>
                                         <div class="kt-act-btns">
@@ -428,25 +428,25 @@
                                           </div>
                                         </div>
                                       </div>
-                                    </div>                   
-                                  </div>   
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
               <!-- conditional projects End -->
-              
+
                             </div>
-                          
+
                     </div>
                   </div>
                 </div>
               </div>
-            
+
           </div>
 
 
           <div class="Templates-list w-100 d-none">
-           
+
               <div class="m-auto">
                 <div class="row">
                   <div class="col-lg-12">
@@ -513,7 +513,7 @@
                   </div>
                 </div>
               </div>
-           
+
           </div>
 
           <div class="np-step-2 w-100 d-none">
@@ -638,25 +638,25 @@
                                     <div class="kt-project-info-body  pl-3 ">
                                         <div class="d-flex">
                                             <div class="kt-project-name">
-                                                <h4>                                       
+                                                <h4>
                                                   <ng-container *ngIf="projectInfo&&projectInfo.Project_Name !=''; else Project_Name">
                                                     {{projectInfo&&projectInfo.Project_Name}}
                                                   </ng-container>
                                                   <ng-template #Project_Name>
                                                     <p>{{PrjName}}</p>
-                                                  </ng-template>                                                                                        
+                                                  </ng-template>
                                                 </h4>
                                             </div>
 
                                         </div>
                                         <div class="kt-project-desc">
-                                            <p>                                                                                                                           
+                                            <p>
                                               <ng-container *ngIf="projectInfo&&projectInfo.Project_Description !=''; else Project_Description">
                                                 {{projectInfo&&projectInfo.Project_Description}}
                                               </ng-container>
                                               <ng-template #Project_Description>
                                                 <p>{{PrjDes}}</p>
-                                              </ng-template>                                                                                                                         
+                                              </ng-template>
                                             </p>
                                         </div>
 
@@ -739,18 +739,18 @@
                                                     <div  class="kt-info-lable-v"> Start date</div>
                                                     <div  class="kt-project-sts-data">
                                                       <ng-container *ngIf="projectInfo&&projectInfo.StartDate !=''; else Start">
-                                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}} 
+                                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                                     </ng-container>
 
                                                     <ng-template #Start>
-                                                      {{Prjstartdate|date:'dd-MM-YYYY'}}   
+                                                      {{Prjstartdate|date:'dd-MM-YYYY'}}
                                                     </ng-template>
-                                                    
+
                                                     </div>
                                                 </div>
                                                 <div  class="col text-center ng-star-inserted">
                                                     <div  class="kt-info-lable-v"> Deadline </div>
-                                                    <div  class="kt-project-sts-data"> 
+                                                    <div  class="kt-project-sts-data">
                                                       <ng-container *ngIf="projectInfo&&projectInfo.EndDate !=''; else Deadline">
                                                       {{projectInfo&&projectInfo.EndDate | date:'dd-MM-YYYY'}}
                                                     </ng-container>
@@ -761,28 +761,28 @@
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Duration </div>
-                                                    <div  class="kt-project-sts-data ng-star-inserted"> 
-                                                    
+                                                    <div  class="kt-project-sts-data ng-star-inserted">
+
                                                       <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
-                                                        {{projectInfo&&projectInfo.Duration}} days 
+                                                        {{projectInfo&&projectInfo.Duration}} days
                                                       </ng-container>
                                                       <ng-template  #days >
-                                                        {{durationInDays}} days 
+                                                        {{durationInDays}} days
                                                       </ng-template>
-                                                    
-                                                    
+
+
                                                     </div>
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Allocated </div>
-                                                    <div  class="kt-project-sts-data ng-star-inserted"> 
+                                                    <div  class="kt-project-sts-data ng-star-inserted">
 
 
                                                       <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours !=''; else Hrs">
-                                                        {{projectInfo&&projectInfo.AllocatedHours}} Hrs 
+                                                        {{projectInfo&&projectInfo.AllocatedHours}} Hrs
                                                       </ng-container>
                                                       <ng-template  #Hrs >
-                                                        {{_allocated}} Hrs 
+                                                        {{_allocated}} Hrs
                                                       </ng-template>
                                                     </div>
                                                 </div>
@@ -880,7 +880,7 @@
                                           <div  class="col-lg-4 pl-2">
                                             <div class="kt-p-box text-center" style="background-color:#f3fbff;" >
                                               <div class="kt-p-status">
-                                                <div class="kt-p-action-No"   
+                                                <div class="kt-p-action-No"
                                                  style=" color: #626262;font-family: lucida sans unicode;font-weight: bold; padding:0.8em; display:flex; justify-content: space-between;    "> Action {{i+1}}
                                                 <svg  (click)="openTemplateAction(tempact)"    class="template-pin"     height="19px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                                                   xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#000000"
@@ -888,14 +888,14 @@
                                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                                   <g id="SVGRepo_iconCarrier">
-                                                    <polygon 
+                                                    <polygon
                                                       points="474.962,117.094 394.906,37.038 235.88,179.284 242.345,269.657 332.717,276.121 "></polygon>
                                                     <path
                                                       d="M491.743,150.658l-130.4-130.401c-4.634-4.634-4.634-12.148,0-16.781 c4.634-4.634,12.147-4.634,16.781,0l130.401,130.401c4.634,4.634,4.634,12.147,0,16.781 C503.891,155.292,496.378,155.292,491.743,150.658z">
                                                     </path>
                                                     <polygon  points="188.018,297.133 11.746,473.404 0,512 38.597,500.254 214.867,323.984 ">
                                                     </polygon>
-                                                    <path 
+                                                    <path
                                                       d="M332.717,276.121l-96.837-96.837c-59.731-22.719-129.85-10.026-177.966,38.09l236.712,236.713 C342.743,405.972,355.436,335.851,332.717,276.121z">
                                                     </path>
                                                   </g>
@@ -1110,7 +1110,7 @@
                        <!-- <div class="col-lg-4 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                             <label>project location:</label>
-                            
+
 
                               <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="PrjLocation"
                               (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
@@ -1226,14 +1226,14 @@
 
                               <div class="d-flex ">
 
-                                  <input 
-                                  class="form-control ng-pristine" 
+                                  <input
+                                  class="form-control ng-pristine"
                                   name="date"
                                   [(ngModel)]="Prjstartdate" id="d-date"
-                                  placeholder="Select Date" [matDatepicker]="picker2" 
-                                  (click)="picker2.open()" 
+                                  placeholder="Select Date" [matDatepicker]="picker2"
+                                  (click)="picker2.open()"
                                   [min]="todayDate"
-                                  (dateChange)="setMaxDate()" 
+                                  (dateChange)="setMaxDate()"
                                   #SrtDate="ngModel"
                                    />
 
@@ -1270,7 +1270,7 @@
 
                         <div class="col-lg-12 mb-3">
                           <div class="d-flex align-items-end" style="column-gap:10px">
-                          
+
 
                             <mat-form-field class="drp-dwn-field w-100">
                               <mat-label>Select Portfolios </mat-label>
@@ -1308,7 +1308,7 @@
 
 
 
-                        
+
                           </div>
                         </div>
 
@@ -1316,7 +1316,7 @@
 
                           <!-- <div class="col-lg-4 mb-3">
                             <label>Allocated Hours<span class="text-danger">*</span></label>
-                          
+
                             <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                               [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
                             <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
@@ -1588,15 +1588,15 @@
                               <div class="d-flex">
                                 <input class="border-gray" [matChipInputFor]="selectedProjSprt"
                                   [matAutocomplete]="ProjSprtDrpDwn" #PrjSprtSelectTF />
-                            
+
                                     <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
                                       color="primary"   class="close-icon"
                                       (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">cancel</mat-icon></button>
                               <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon
                                       class="add-icon"
                                       (click)="this.isPrjSprtDrpDwnOpen=true; openAutocompleteDrpDwn('PrjSprtDrpDwn');">add</mat-icon></button>
-                            
-                           
+
+
                                   </div>
 
                               <mat-autocomplete  aria-label="PrjSprtDrpDwn"    #ProjSprtDrpDwn="matAutocomplete"
@@ -1650,21 +1650,21 @@
                       <input [(ngModel)]="saveAsTemplate" class="save-as-checkbox" id="SaveAstempl" type="checkbox">
                       <label class="curser-pointer m-0" for="SaveAstempl">Save as Template</label>
                      </div>
-               
+
                              </div>
 
                        </div>
 
                   </div>
 
-                
+
 
                     </div>
 
                     <div class="tb-ftv mt-1">
                       <div class="kt-ctv-btn mt-0">
 
-          
+
                          <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev" (click)="cancelPrjCreation()">Cancel</button>
                           <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev" (click)="Back_to_project_details_tab()">
                             Previous Step</button>
@@ -2150,7 +2150,7 @@
                 </div>
       </div>
     </div>
- 
+
   </div>
 
                     </div>
@@ -2437,8 +2437,8 @@
             <div class="col-lg-12">
               <div class="d-flex align-items-center justify-content-between w-100">
                 <div class="title-view-md">
-                  <p class="mb-0">Assigned / conditional projects</p>             
-                 
+                  <p class="mb-0">Assigned / conditional projects</p>
+
                 </div>
                 <div class="kt-ctv-btn mt-0" >
                   <button type="button" (click)="back_to_options()"
@@ -2451,7 +2451,7 @@
           <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
-                   
+
                     <span class="nav-text">Assigned</span>
                 </a>
             </li>
@@ -2468,7 +2468,7 @@
 
               <div class="tab-content" id="myTabContent">
                 <div class="mt-3" id="kt_tab_pane_1_4"   aria-labelledby="kt_tab_pane_1_4" class="tab-pane fade show active" >
-               
+
                   <div class="card-body p-3" >
                     <div class="col-lg-12  card-Scroll pt-0" >
                       <div class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;" >
@@ -2562,7 +2562,7 @@
                       </div>
                     </div>
                   </div>
-                
+
               </div>
               <!-- Assigned End -->
 <!-- conditional projects Start -->
@@ -2588,7 +2588,7 @@
                                       d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                                       fill="#5F6379"></path>
                                   </svg></span><span class="kt-act-ic-info">{{item.DPG|date:'dd-MM-YYYY' }} -
-                                  {{item.DeadLine |date:'dd-MM-YYYY' }}</span></div>                              
+                                  {{item.DeadLine |date:'dd-MM-YYYY' }}</span></div>
                             </div>
                           </div>
                           <div class="kt-act-btns">
@@ -2608,15 +2608,15 @@
                             </div>
                           </div>
                         </div>
-                      </div>                   
-                    </div>   
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 <!-- conditional projects End -->
 
               </div>
-             
+
       </div>
             </div>
           </div>
@@ -2821,25 +2821,25 @@
                                     <div class="kt-project-info-body  pl-3 ">
                                         <div class="d-flex">
                                             <div class="kt-project-name">
-                                                <h4>                                       
+                                                <h4>
                                                   <ng-container *ngIf="projectInfo&&projectInfo.Project_Name !=''; else Project_Name">
                                                     {{projectInfo&&projectInfo.Project_Name}}
                                                   </ng-container>
                                                   <ng-template #Project_Name>
                                                     <p>{{PrjName}}</p>
-                                                  </ng-template>                                                                                        
+                                                  </ng-template>
                                                 </h4>
                                             </div>
 
                                         </div>
                                         <div class="kt-project-desc">
-                                            <p>                                                                                                                           
+                                            <p>
                                               <ng-container *ngIf="projectInfo&&projectInfo.Project_Description !=''; else Project_Description">
                                                 {{projectInfo&&projectInfo.Project_Description}}
                                               </ng-container>
                                               <ng-template #Project_Description>
                                                 <p>{{PrjDes}}</p>
-                                              </ng-template>                                                                                                                         
+                                              </ng-template>
                                             </p>
                                         </div>
 
@@ -2922,18 +2922,18 @@
                                                     <div  class="kt-info-lable-v"> Start date</div>
                                                     <div  class="kt-project-sts-data">
                                                       <ng-container *ngIf="projectInfo&&projectInfo.StartDate !=''; else Start">
-                                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}} 
+                                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                                     </ng-container>
 
                                                     <ng-template #Start>
-                                                      {{Prjstartdate|date:'dd-MM-YYYY'}}   
+                                                      {{Prjstartdate|date:'dd-MM-YYYY'}}
                                                     </ng-template>
-                                                    
+
                                                     </div>
                                                 </div>
                                                 <div  class="col text-center ng-star-inserted">
                                                     <div  class="kt-info-lable-v"> Deadline </div>
-                                                    <div  class="kt-project-sts-data"> 
+                                                    <div  class="kt-project-sts-data">
                                                       <ng-container *ngIf="projectInfo&&projectInfo.EndDate !=''; else Deadline">
                                                       {{projectInfo&&projectInfo.EndDate | date:'dd-MM-YYYY'}}
                                                     </ng-container>
@@ -2944,28 +2944,28 @@
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Duration </div>
-                                                    <div  class="kt-project-sts-data ng-star-inserted"> 
-                                                    
+                                                    <div  class="kt-project-sts-data ng-star-inserted">
+
                                                       <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
-                                                        {{projectInfo&&projectInfo.Duration}} days 
+                                                        {{projectInfo&&projectInfo.Duration}} days
                                                       </ng-container>
                                                       <ng-template  #days >
-                                                        {{durationInDays}} days 
+                                                        {{durationInDays}} days
                                                       </ng-template>
-                                                    
-                                                    
+
+
                                                     </div>
                                                 </div>
                                                 <div  class="col text-center">
                                                     <div  class="kt-info-lable-v"> Allocated </div>
-                                                    <div  class="kt-project-sts-data ng-star-inserted"> 
+                                                    <div  class="kt-project-sts-data ng-star-inserted">
 
 
                                                       <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours !=''; else Hrs">
-                                                        {{projectInfo&&projectInfo.AllocatedHours}} Hrs 
+                                                        {{projectInfo&&projectInfo.AllocatedHours}} Hrs
                                                       </ng-container>
                                                       <ng-template  #Hrs >
-                                                        {{_allocated}} Hrs 
+                                                        {{_allocated}} Hrs
                                                       </ng-template>
                                                     </div>
                                                 </div>
@@ -3063,7 +3063,7 @@
                                           <div  class="col-lg-4 pl-2">
                                             <div class="kt-p-box text-center" style="background-color:#f3fbff;" >
                                               <div class="kt-p-status">
-                                                <div class="kt-p-action-No"   
+                                                <div class="kt-p-action-No"
                                                  style=" color: #626262;font-family: lucida sans unicode;font-weight: bold; padding:0.8em; display:flex; justify-content: space-between;    "> Action {{i+1}}
                                                 <svg  (click)="openTemplateAction(tempact)"    class="template-pin"     height="19px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                                                   xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#000000"
@@ -3071,14 +3071,14 @@
                                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                                   <g id="SVGRepo_iconCarrier">
-                                                    <polygon 
+                                                    <polygon
                                                       points="474.962,117.094 394.906,37.038 235.88,179.284 242.345,269.657 332.717,276.121 "></polygon>
                                                     <path
                                                       d="M491.743,150.658l-130.4-130.401c-4.634-4.634-4.634-12.148,0-16.781 c4.634-4.634,12.147-4.634,16.781,0l130.401,130.401c4.634,4.634,4.634,12.147,0,16.781 C503.891,155.292,496.378,155.292,491.743,150.658z">
                                                     </path>
                                                     <polygon  points="188.018,297.133 11.746,473.404 0,512 38.597,500.254 214.867,323.984 ">
                                                     </polygon>
-                                                    <path 
+                                                    <path
                                                       d="M332.717,276.121l-96.837-96.837c-59.731-22.719-129.85-10.026-177.966,38.09l236.712,236.713 C342.743,405.972,355.436,335.851,332.717,276.121z">
                                                     </path>
                                                   </g>
@@ -3293,7 +3293,7 @@
                        <!-- <div class="col-lg-4 mb-3">
                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                             <label>project location:</label>
-                            
+
 
                               <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="PrjLocation"
                               (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
@@ -3409,14 +3409,14 @@
 
                               <div class="d-flex ">
 
-                                  <input 
-                                  class="form-control ng-pristine" 
+                                  <input
+                                  class="form-control ng-pristine"
                                   name="date"
                                   [(ngModel)]="Prjstartdate" id="d-date"
-                                  placeholder="Select Date" [matDatepicker]="picker2" 
-                                  (click)="picker2.open()" 
+                                  placeholder="Select Date" [matDatepicker]="picker2"
+                                  (click)="picker2.open()"
                                   [min]="todayDate"
-                                  (dateChange)="setMaxDate()" 
+                                  (dateChange)="setMaxDate()"
                                   #SrtDate="ngModel"
                                    />
 
@@ -3453,7 +3453,7 @@
 
                         <div class="col-lg-12 mb-3">
                           <div class="d-flex align-items-end" style="column-gap:10px">
-                          
+
 
                             <mat-form-field class="drp-dwn-field w-100">
                               <mat-label>Select Portfolios </mat-label>
@@ -3491,7 +3491,7 @@
 
 
 
-                        
+
                           </div>
                         </div>
 
@@ -3499,7 +3499,7 @@
 
                           <!-- <div class="col-lg-4 mb-3">
                             <label>Allocated Hours<span class="text-danger">*</span></label>
-                          
+
                             <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                               [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
                             <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
@@ -3771,15 +3771,15 @@
                               <div class="d-flex">
                                 <input class="border-gray" [matChipInputFor]="selectedProjSprt"
                                   [matAutocomplete]="ProjSprtDrpDwn" #PrjSprtSelectTF />
-                            
+
                                     <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
                                       color="primary"   class="close-icon"
                                       (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">cancel</mat-icon></button>
                               <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon
                                       class="add-icon"
                                       (click)="this.isPrjSprtDrpDwnOpen=true; openAutocompleteDrpDwn('PrjSprtDrpDwn');">add</mat-icon></button>
-                            
-                           
+
+
                                   </div>
 
                               <mat-autocomplete  aria-label="PrjSprtDrpDwn"    #ProjSprtDrpDwn="matAutocomplete"
@@ -3833,21 +3833,21 @@
                       <input [(ngModel)]="saveAsTemplate" class="save-as-checkbox" id="SaveAstempl" type="checkbox">
                       <label class="curser-pointer m-0" for="SaveAstempl">Save as Template</label>
                      </div>
-               
+
                              </div>
 
                        </div>
 
                   </div>
 
-                
+
 
                     </div>
 
                     <div class="tb-ftv mt-1">
                       <div class="kt-ctv-btn mt-0">
 
-          
+
                          <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev" (click)="cancelPrjCreation()">Cancel</button>
                           <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev" (click)="Back_to_project_details_tab()">
                             Previous Step</button>
@@ -4333,7 +4333,7 @@
                 </div>
       </div>
     </div>
- 
+
   </div>
 
                     </div>
@@ -4353,7 +4353,7 @@
                           <div class="row">
                             <div class="col-lg-12">
                               <div class="kt-action-list">
-                              
+
                                 <div class="kt-act-card d-flex align-items-center">
                                   <div class="kt-act-no">
                                     <p>{{unique_id}}</p><span>Project</span>
@@ -4410,7 +4410,7 @@
                                   </div>
                                 </div>
 
-                              </div> 
+                              </div>
                             </div>
                           </div>
                           <div class="project_reject_msg">
@@ -4484,7 +4484,7 @@
                         <div class="Project_type_DW curser-pointer">
                           <!-- <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="Prjtype">
                             <ng-option *ngFor="let item of ProjectType_json"
-                              [value]="item.Typeid">{{item.ProjectType}} 
+                              [value]="item.Typeid">{{item.ProjectType}}
                             </ng-option>
                           </ng-select> -->
 
@@ -4499,7 +4499,7 @@
                                   <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
                               </ng-option>
                           </ng-select>
-                      </div>        
+                      </div>
                     </div>
                     </div>
                 </div>
@@ -4524,7 +4524,7 @@
                         <div class="form-group mb-2">
                             <label class="pe-label">Project Name</label>
                             <div class="input-icon project-name_ed curser-pointer">
-                                <!-- <input type="text" class="form-control"  [(ngModel)]="PrjName" 
+                                <!-- <input type="text" class="form-control"  [(ngModel)]="PrjName"
                                     placeholder="Search..." /> -->
                                     <input type="text" class="form-control" [(ngModel)]="ProjectName"
                                     placeholder="Search..." />
@@ -4632,7 +4632,7 @@
                                     </path>
                                 </svg></span> Responsible</div>
 
-                              <div class="input-icon Sub_In_ed" *ngIf="projectInfo">                     
+                              <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
                                       <!-- <ng-container *ngIf="projectInfo.isRespActive=='1'">
                                         <ng-container
                                             *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
@@ -4641,7 +4641,7 @@
                                             <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                                 <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                     [disabled]="item.Emp_No==selectedOwner">
-                                                  
+
                                                     {{item.RACIS}}
                                                 </ng-option>
                                             </ng-select>
@@ -4657,7 +4657,7 @@
                                             <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                                 <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                     [disabled]="item.Emp_No==selectedOwner">
-                                                   
+
                                                     {{item.RACIS}}
                                                 </ng-option>
                                             </ng-select>
@@ -4677,7 +4677,7 @@
                                       <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                           <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                               [disabled]="item.Emp_No==selectedOwner">
-                                              
+
                                               {{item.RACIS}}
                                           </ng-option>
                                       </ng-select>
@@ -4687,13 +4687,13 @@
                                               [(ngModel)]="selectedOwnResp" readonly />
                                       </ng-template>
                               </ng-container>
-                              
+
                               <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                 <ng-container>
                                     <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                             [disabled]="item.Emp_No==selectedOwner">
-                                           
+
                                             {{item.RACIS}}
                                         </ng-option>
                                     </ng-select>
@@ -4703,7 +4703,7 @@
                                     </ng-template>
                                 </ng-container>
                             </ng-container>
-                            
+
                           </div>
                     </div>
                 </div>
@@ -4735,7 +4735,7 @@
                                         {{item.ReportType}}
                                     </ng-option>
                                 </ng-select>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -4801,7 +4801,7 @@
                                 </ng-option>
                             </ng-select>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -4811,7 +4811,7 @@
                     <div class="form-group mb-2 Ic_ed">
                        <div class="kt-info-lable-v"> Start date</div>
                           <div class="input-icon Sub_In_ed">
-                             <!-- <input type="text"                  
+                             <!-- <input type="text"
                              [ngModel]="Prjstartdate|date:'dd-MM-YYYY'"
                              class="form-control readonly" readonly /> -->
                              <input type="text" class="form-control readonly"
@@ -4833,7 +4833,7 @@
                                         class="btn-secondary border-0">
                                     </mat-datepicker-toggle>
                                   <mat-datepicker class="form-group " #strtEditsPickers></mat-datepicker>
-                                </div> 
+                                </div>
                                </div>
                               -->
                                 <div class="input-icon Sub_In_ed date-border-v d-flex">
@@ -4847,7 +4847,7 @@
                                       </mat-datepicker-toggle>
                                       <mat-datepicker class="form-group " #strtEditsPicker></mat-datepicker>
                                   </div>
-                              </div>                     
+                              </div>
                         </div>
                     </div>
                     <div class="col-lg-4 text-left">
@@ -4894,7 +4894,7 @@
                     <div class="form-group ">
                         <label for="exampleFormControlFile1">Remarks</label>
                         <!-- <textarea class="form-control curser-pointer" [(ngModel)]="Remarks" aria-label="With textarea"
-                            placeholder="Define your exact reason here." 
+                            placeholder="Define your exact reason here."
                             style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea> -->
 
 
