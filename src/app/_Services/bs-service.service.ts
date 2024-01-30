@@ -28,7 +28,7 @@ export class BsServiceService {
 
   private _SummaryType = new BehaviorSubject<any>(null);
   private _portId = new BehaviorSubject<any>(null);
-  private _templAction = new BehaviorSubject<any>(null);
+  public _templAction = new BehaviorSubject<{name:string,description:string,assignedTo:string}>({name:'',description:'',assignedTo:''});
   
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 

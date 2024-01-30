@@ -1,0 +1,933 @@
+/* .kt-meeting-box {} */
+
+.kt-meeting-title {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #6388e3;
+    letter-spacing: 0.5px;
+}
+
+.kt-meeting-title-icon {
+    background-color: #527ce2;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    display: flex;
+    margin-right: 7px;
+    justify-content: center;
+    align-items: center;
+}
+
+.kt-meeting-title-name {
+    color: #8B8B8B;
+    font-size: 14px;
+}
+
+.kt-meeting-status {
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 3px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kt-meeting-status.started {
+    background: #D0EDFF;
+    color: #1EA7FF;
+}
+
+.kt-meeting-status.hold {
+    background: #FFF6DF;
+    color: #FFC01E;
+}
+
+.kt-meeting-status.completed {
+    background: #CAFFD9;
+    color: #0B9B33;
+}
+
+.kt-meeting-status-time {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.kt-meeting-content {
+    border-radius: 5px;
+    background: #F3F8FF;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.kt-meeting-content.active {
+    border: 2px solid #527CE2;
+}
+
+.kt-meeting-content h2 {
+    color: #000;
+    font-size: 16px;
+}
+
+.kt-meeting-content p {
+    color: #949494;
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+.kt-metric-info {
+    border-radius: 10px;
+    background: #F3F8FF;
+    padding: 10px;
+    display: flex;
+    align-items: self-start;
+    justify-content: space-between;
+}
+
+.kt-sub-label {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.kt-sub-name {
+    color: #969696;
+    font-size: 14px;
+}
+
+.kt-metric-app {
+    border-radius: 10px;
+    background: #F3F8FF;
+    padding: 10px;
+    text-align: center;
+}
+
+.app-title {
+    color: #000;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.kt-metric-info-day {
+    border-radius: 10px;
+    background: #F3F8FF;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.kt-metric-day .dark-title,
+.kt-metric-time .dark-title {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.kt-metric-day .muted-title,
+.kt-metric-time .muted-title {
+    color: #969696;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.kt-metric-duration {
+    border-radius: 5px;
+    background: #FFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 6px;
+}
+
+.l-h-0{
+    line-height: 0;
+}
+
+.kt-metric-duration .duration {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.kt-metric-duration-time {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.timeline-up {
+    color: #5E5E5E;
+    font-size: 10px;
+}
+
+.timeline-down {
+    color: #9B9B9B;
+    font-size: 8px;
+    line-height: 14px;
+}
+
+.kt-metric-timeline {
+    position: relative;
+}
+
+.kt-metric-timeline::after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    border: 1px dashed #ccc;
+    height: 2px;
+    width: 100%;
+    z-index: 0;
+}
+
+.kt-metric-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.kt-metric-time {
+    width: 20%;
+    margin-left: 15px;
+}
+
+.kt-metric-time.start {
+    margin-left: 0px;
+    width: 35%;
+}
+
+.kt-metric-time.end {
+    width: 30%;
+}
+
+.z-index-1 {
+    z-index: 1;
+}
+
+.kt-meeting-agenda {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #527ce2;
+    font-size: 13px !important;
+    padding: 0.3em 0.6em 0.3em 0.6em;
+    border-radius: 4px !important;
+    border-width: 1px !important;
+    font-weight: 400 !important;
+    color: #527ce2;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.kt-meeting-agenda:hover {
+    background-color: #527ce2;
+    color: #ffffff;
+}
+
+.kt-meeting-agenda .title {
+    font-size: 12px;
+    text-transform: capitalize;
+    margin-left: 5px;
+}
+
+.kt-agenda-list {
+    list-style: none;
+    padding: 5px;
+}
+
+.kt-agenda-item {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #F3F8FF;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.kt-agenda-item.active{
+    border-radius: 5px;
+    border: 2px solid #527CE2;
+}
+.item-number {
+    color: #2B85BF;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 20px;
+    position: relative;
+}
+
+.item-info::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 49px;
+    background-color: #fff;
+    left: -12px;
+    top: -5px;
+}
+
+.item-label {
+    color: #838383;
+    font-size: 11px;
+    text-transform: capitalize;
+}
+
+.item-title {
+    color: #535353;
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.item-count {
+    width: 30px;
+    height: 30px;
+    color: #6772FE;
+    font-size: 15px;
+    background: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 2;
+}
+
+.info-card-body {
+    background: transparent;
+    border: 0;
+}
+
+.info-card-body .kt-info-box {
+    padding: 0px;
+    border-bottom: 1px solid #ededed;
+    border: 0;
+}
+
+.info-card-body .kt-project-tool-bar {
+    background-color: #fff;
+    box-shadow: 0 2px 8px #ccccccbd;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.gap_ic {
+    gap: 1px;
+}
+
+.kt-inbox__icon {
+    border: 0;
+    background: none;
+    box-shadow: none;
+    outline: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 35px;
+    transition: all .3s ease;
+    cursor: pointer;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.kt-inbox__icon {
+    position: relative;
+}
+
+.iconify--mdi {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    color: #a0a0a1;
+    color: #858190;
+    fill: #858190;
+}
+
+.info-card-body .kt-inbox__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.info-card-body .kt-inbox__icon:hover {
+    background-color: #f2f3f7 !important;
+    transition: all .3s ease;
+    color: inherit;
+    text-decoration: none;
+}
+
+.info-card-body .kt-info-meeting-box {
+    background: #fff;
+    height: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 2px 16px #cccccc80;
+    border-radius: 4px;
+}
+
+
+.fl-star-icon {
+    color: #858190;
+    font-size: 16px !important;
+}
+
+.kt-project-name h4 {
+    color: #000;
+    font-size: 17px;
+    margin-bottom: 0px;
+}
+
+.kt-project-name h6 {
+    color: #717171;
+    font-size: 12px;
+}
+
+.kt-project-option {
+    display: flex;
+    gap: 15px;
+}
+
+.v-line {
+    width: 1px;
+    height: 23.13px;
+    background: #ABABAB;
+}
+
+.options {
+    background: #1ea7ff1a;
+    color: #1EA7FF;
+    font-weight: 600;
+    padding: 0.1em;
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+    line-height: 20px;
+    border-radius: 3px;
+    font-size: 13px;
+    min-height: 24px;
+}
+
+.edit svg {
+    width: 16px;
+    height: 16px;
+}
+
+.edit {
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    transition: all 0.25s ease-in;
+}
+
+.edit:hover{
+    background: #ede7e7;
+}
+
+.kt-meeting-details {
+    padding: 0rem 0.74rem;
+}
+
+.details-bg {
+    padding: 5px 20px;
+    background: #eef2f878;
+}
+
+.details-bg.top-rl {
+    border-radius: 8px 8px 0px 0px;
+}
+
+.details-bg.bottom-rl {
+    border-radius: 0px 0px 8px 8px;
+}
+
+.details-form-control-bg {
+    padding: 5px 20px;
+}
+
+.details-label {
+    display: flex;
+    align-items: center;
+}
+
+.details-label .label-icon {
+    display: flex;
+}
+
+.details-label .label-name {
+    color: #787878;
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+.details-form-control .dark-title {
+    color: #000;
+    font-size: 14px;
+}
+
+.details-form-control .muted-title {
+    color: #888;
+    font-size: 13px;
+}
+
+.meeting-link {
+    border-radius: 4px;
+    background: #EEF2F8;
+    margin-left: 10px;
+    padding: 3px 5px;
+
+}
+
+.meeting-link .link {
+    color: #227AE1;
+    font-size: 12px;
+    border-radius: 5px;
+    background: #FFF;
+    padding: 0px 4px;
+    margin-left: 5px;
+}
+
+ul.muted-title {
+    padding-left: 18px;
+}
+
+.project {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+.project span.icon {
+    display: flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    background: #BDBDBD66;
+    padding: 2px;
+    border-radius: 4px;
+    justify-content: center;
+}
+
+.details-form-control .project .title {
+    color: #227AE1;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.black-white {
+    filter: grayscale(100%);
+}
+
+.project .title-muted {
+    color: #6A6A6A;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.project .user-name {
+    color: #4F4F4F;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.attendess {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.attendess .user-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #E9E9E9;
+    color: #6D6D6D;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+span.kt-meeting-status-icon {
+    display: flex;
+}
+
+.kt-project-notes {
+    border-radius: 3px;
+    background: #F5F5FF;
+    padding: 4px;
+    color: #527CE2;
+    font-size: 12px;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.kt-project-notes:hover {
+    background-color: #527ce2;
+    color: #ffffff;
+}
+
+.kt-project-notes .icon {
+    margin-left: 8px;
+}
+
+hr.dotted {
+    border-top: 1px dashed #A0A0A0;
+}
+
+.kt-quick-active--on {
+    width: 30% !important;
+}
+
+.sideInfobar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    border-left: 1px solid #edeae9;
+    box-shadow: 0 1px 9px -3px rgb(0 0 0 / 75%);
+    transition: transform 0.2s ease-in;
+    overflow-x: hidden;
+    color: #212529;
+}
+
+.kt-portlet .kt-portlet__body {
+    flex-direction: column !important;
+}
+
+.Private_Notes_vh {
+    height: calc(100vh - 50px) !important;
+    overflow-y: hidden;
+}
+
+.private-notes h4 {
+    color: #000;
+    font-size: 16px;
+}
+
+.private-notes .head-muted {
+    color: #989898;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.private-notes.sideInfobar .kt-portlet__head {
+    background-color: #ffffff;
+}
+
+.private-notes .btn-hover-info:hover {
+    color: #ffffff;
+    background-color: #d8dadb;
+    border-color: #e7e7e7;
+}
+.private-notes .kt-portlet__body {
+    padding: 0px;
+}
+.meeting-notes {
+    /* border: 1px solid #e9e9e9; */
+    background-color: transparent;
+    border-radius: 5px;
+}
+.meeting-notes ::ng-deep .angular-editor .angular-editor-wrapper .angular-editor-textarea {
+    margin-top: 0px;
+    border: 0!important;
+    height: 50vh!important;
+    border-radius: 5px;
+    outline: 0!important;
+    padding-top: 20px!important;
+
+}
+.meeting-notes ::ng-deep .angular-editor-toolbar {
+    background-color: #f3f3f3!important;
+    border: 0!important;
+    padding-top: 0.5rem;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid #f3f3f3!important;
+}
+
+.meeting-notes ::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button {
+    background-color: #f3f3f3!important;
+    border: 0px solid #f3f3f3!important;
+    color: #777272;
+    font-size: 14px;
+    margin-right: 5px;
+}
+.meeting-notes ::ng-deep .ae-font .ae-picker-label {
+    background-color: #f3f3f3!important;
+    border: 1px solid #dbdbdb!important;
+    border-radius: 5px;
+    color: #777272;
+    font-size: 14px;
+}
+.meeting-notes ::ng-deep .ae-font .ae-picker-label:before {
+    background: linear-gradient(90deg,#f3f3f3,#f3f3f3)!important;
+}
+.meeting-notes ::ng-deep .ae-font .ae-picker-label svg .ae-stroke {
+    stroke: #777272!important;
+}
+/* angular-editor color picker position fix */
+::ng-deep .angular-editor-toolbar {
+    input[type=color]:not(.color-picker) { /* added :not(.color-picker) so that this will be ignored when the package is updated */
+      display: initial !important;
+      position: absolute;
+      visibility: hidden;
+      border: none;
+      margin: 0;
+      padding: 0;  
+      height: 0;
+      width: 0;
+    }
+}
+::ng-deep .suggestion-heading {
+    color: #a6a6a6;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    margin-top: 42px;
+}
+::ng-deep .suggestion-btn {
+    fill: #a6a6a6;
+    align-items: center;
+    background-color: #f8f8f8;
+    border: 0;
+    border-radius: 4px;
+    color: #a6a6a6;
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    height: 32px;
+    margin: 7px 14px 7px 0;
+    padding: 8px 14px 8px 8px;
+    pointer-events: all;
+}
+::ng-deep .suggestion-svg {
+    display: inline-block;
+    height: 20px;
+    margin-right: 0.2em;
+    vertical-align: top;
+    width: 20px;
+}
+::ng-deep .suggestion-name {
+    margin-left: 6px;
+}
+::ng-deep .todo{
+    position: relative;
+    cursor: pointer;
+}
+::ng-deep .todo .iframe{
+    position: absolute;
+    top: 40px;
+    left: 0;
+    display: none;
+    z-index: 1;
+}
+::ng-deep .todo .iframe img{
+    width: 100%;
+}
+::ng-deep .todo:hover .iframe{
+    display: block!important;
+    width: 250px;
+    height: 250px;
+    box-shadow: 0px 0px 5px 2px #bfbfbf;
+}
+::ng-deep .main-sug-opt{
+    width: 100%;
+}
+::ng-deep .sug-opt{
+    position: relative;
+    margin-left: 5rem;
+    /* background: #e7e7e7; */
+    padding: 2px;
+}
+::ng-deep .sug-hov-opt{
+    position: absolute;
+    top: 0;
+    left: -60px;
+    display: none;
+}
+::ng-deep .main-sug-opt:hover .sug-hov-opt{
+    display: block;
+}
+::ng-deep .opt-btn {
+    background: transparent;
+    border: none;
+    width: 25px;
+    height: 25px;
+    padding: 0px 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+::ng-deep .opt-btn:hover {
+    background-color: #d2ebfa;
+    border-radius: 4px;
+}
+::ng-deep .opt-btn svg {
+    width: 20px;
+    height: 20px;
+}
+::ng-deep .main-sug-opt .dropdown-menu.show {
+    max-height: 260px;
+    overflow: auto;
+    min-width: 320px;
+}
+::ng-deep .main-sug-opt .dropdown-menu.show::-webkit-scrollbar {
+    width: 5px;
+    background-color: #e4e1e1;
+}
+::ng-deep .main-sug-opt .dropdown-menu.show::-webkit-scrollbar-thumb {
+    background-color: #57a7ff;
+    border-radius: 5px;
+}
+::ng-deep .main-sug-opt .dropdown-menu .heading{
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #664a72;
+    padding: 0.5rem 1rem;
+}
+::ng-deep .main-sug-opt .dropdown-menu .list-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+::ng-deep .main-sug-opt .dropdown-menu .list-item .list-icon{
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+::ng-deep .main-sug-opt .dropdown-menu .list-item .list-icon .list-icon-svg{
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: middle;
+    color: #44474c;
+    fill: none;
+}
+::ng-deep .main-sug-opt .dropdown-menu .list-item .list-title .list-name{
+    font-size: 14px;
+    color: #111231;
+}
+::ng-deep .main-sug-opt .dropdown-menu .list-item .list-title .list-name .list-sub-name{
+    font-size: 12px;
+    color: #664a72;
+}
+::ng-deep  .main-sug-opt .form-check {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 0;
+}
+::ng-deep .main-sug-opt .form-check-label {
+    margin-bottom: 0;
+    padding-left: 5px;
+}
+::ng-deep .todolist .todoheading, ::ng-deep .meeting-note-heading, ::ng-deep .project-plan-heading{
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
+}
+::ng-deep .todolist .todotitle, ::ng-deep .meeting-note-title, ::ng-deep .project-plan-title{
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+::ng-deep .todolist .form-check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px 10px;
+    padding: 5px 10px;
+    transition: all 0.25s ease-in-out;
+}
+::ng-deep .todolist .form-check:hover {
+    background-color: #f8f8f8;
+}
+::ng-deep .todolist .todo-check{
+    display: flex;
+    align-items: center;
+}
+::ng-deep .todolist .todo-check .form-check-label {
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+::ng-deep .todolist .todoopt-action {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+    transition: all 0.25s ease-in-out;
+}
+::ng-deep .todolist .form-check:hover .todoopt-action{
+    display: flex;
+}
+::ng-deep .todolist .todoopt-action .todoopt-icon-svg{
+    width: 18px;
+    height: 18px;
+    color: #737373;
+}
+::ng-deep .todolist .todoopt-action .todoopt-icon {
+    height: 24px;
+    width: 24px;
+    text-align: center;
+    border-radius: 4px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+::ng-deep .todolist .todoopt-action .todoopt-icon:hover{
+    background-color: #e6e6e6;
+}
+::ng-deep .meeting-note .meeting-note-table, ::ng-deep .project-plan-table{
+    margin: 0px 10px;
+}
+::ng-deep .meeting-note table{
+    width: 100%;
+}
+::ng-deep .meeting-note table, ::ng-deep .meeting-note th, ::ng-deep .meeting-note td {
+    border: 1px solid #bbbbbb;
+    border-collapse: collapse;
+}
+::ng-deep .meeting-note th, ::ng-deep .meeting-note td, ::ng-deep .project-plan th, ::ng-deep .project-plan td {
+    padding: 5px;
+    text-align: left;
+}
+::ng-deep .meeting-note .col-h{
+    width: 20%;
+    background-color: #eaeaea;
+    color: #333;
+  }
+::ng-deep .meeting-note th, ::ng-deep .project-plan th{
+  background-color: #eaeaea;
+  color: #333;
+}
+::ng-deep .project-plan table{
+    width: 100%;
+}
+::ng-deep .project-plan table, ::ng-deep .project-plan th, ::ng-deep .project-plan td {
+    border: 1px solid #bbbbbb;
+    border-collapse: collapse;
+}
+::ng-deep .meeting-note li, ::ng-deep .project-plan li{
+    color: #333;
+}
+::ng-deep .angular-editor-textarea::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f3efef;
+}
+::ng-deep .angular-editor-textarea::-webkit-scrollbar-thumb {
+    background-color: #777272;
+    border-radius: 5px;
+}
