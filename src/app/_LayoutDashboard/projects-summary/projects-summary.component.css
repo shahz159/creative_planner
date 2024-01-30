@@ -2502,3 +2502,72 @@ tr.odd.project-list_AC.active{
 .Add_new_project_btn {
   font-size: 14px;
 }
+
+.InProcess_color{
+  color:#1B272D !important;
+}
+
+.Delay_color{
+  color: #EE4137 !important;  
+}
+
+.ToDo_Completed_color{
+  color:#000 !important;  
+}
+.Forward_Under_Approval_color{
+  color: #B2D732 !important;
+}
+
+.ToDo_Achieved_color{
+  color: #000 !important;
+}
+.Not_Started{
+  color: #888888 !important;
+}
+
+
+.Deadline_Extend_Under_Approval_color{
+  color: #F88282 !important;
+}
+
+.Cancellation_Under_Approval_color{
+  color: #000 !important;
+}
+
+.Completion_Under_Approval_color{
+  color: #B2D732 !important;  
+}
+
+.Hold_color{
+  color:#E2D9BC  !important;
+}
+
+.Completed_color{
+  color: #62B134 !important;  
+}
+
+.Under_Approval_color{
+  color: #888888 !important;
+}
+
+.New_Project_Rejected_color{
+  color: #DFDFDF !important;
+}
+
+.Not_Started_color{
+  color: #000000 !important;
+}
+
+.Cancelled_color{
+  color: #DFDFDF !important;
+}
+.Enactive_Under_Approval_color{
+  color: #C9C1E6 !important;
+}
+.New_Todo_color{
+  color: #6E9BC4 !important;
+}
+
+.Project_Complete_Rejected_color{
+  color: #FAF065 !important;
+}

@@ -9,6 +9,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NotificationService } from 'src/app/_Services/notification.service';
 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [ActionToProjectComponent],
@@ -18,7 +23,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgMultiSelectDropDownModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule,NgSelectModule
+    MatDatepickerModule,NgSelectModule,
+    Ng2SearchPipeModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
   ],
   exports:[
     ActionToProjectComponent

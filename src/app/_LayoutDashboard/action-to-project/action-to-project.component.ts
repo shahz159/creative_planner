@@ -19,6 +19,7 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { DetailsComponent } from '../details/details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -43,6 +44,7 @@ export class ActionToProjectComponent implements OnInit {
   //selected_Employee: any[];
   dropdownSettings_EMP = {};
   disablePreviousDate = new Date();
+  disableAssignedField:boolean=false;
   public task_id: number = null;
   public _taskName: string;
   ProjectsDropdownBoolean: boolean = false;
@@ -148,14 +150,21 @@ export class ActionToProjectComponent implements OnInit {
       });
 
 
+    
+
       this.BsService.bs_templAction.subscribe(ta=>{
-        this.Sub_ProjectName=ta.name;
-        this._Description=ta.description;
-      })
+           this.Sub_ProjectName=ta.name;
+           this._Description=ta.description;
+            if(ta.assignedTo!==''){
+                   this.selectedEmpNo=ta.assignedTo;
+                   this.disableAssignedField=true;
+            }
+     
+          
+         })
 
- 
-
-
+     
+     
   }
 
   GetAllEmployeesForAssignDropdown() {
@@ -222,9 +231,7 @@ export class ActionToProjectComponent implements OnInit {
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
-
       });
-
   }
 
   onOptionClick(item) {
@@ -547,6 +554,7 @@ export class ActionToProjectComponent implements OnInit {
         else if(this._Urlid == 5){
       //    this.createproject.getProjectCreationDetails();
           this.createproject.getActionsDetails();
+          this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection 
           this.closeInfo();
         }
         else {
@@ -558,8 +566,8 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
           this._inputAttachments = [];
         }
- 
-  
+
+
 
       });
     });
@@ -649,7 +657,7 @@ export class ActionToProjectComponent implements OnInit {
     }
     else if(this._Urlid==5){
 
-    this.router.navigate(["./backend/ProjectsSummary/createproject"]);
+    this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
 
     }
@@ -705,4 +713,43 @@ export class ActionToProjectComponent implements OnInit {
       return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
     };
   }
+
+
+
+// action dependent start
+// isActionIndependent:boolean=true;
+
+
+// selectedActions:any[]=[];
+// isActionsDrpDwnOpen:boolean=false;
+// allactions:[]=[];
+
+// removeSelectedAction(action){
+
+// }
+
+// closeAutocompleteDrpDwn(x){
+
+// }
+
+// openAutocompleteDrpDwn(x){
+
+// }
+
+
+// action dependent end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

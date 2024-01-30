@@ -1,7 +1,7 @@
 <div class="kt-container  kt-container--fluid p-0 kt-grid__item kt-grid__item--fluid text-dark project-info-page side_view"
     id="moredet" *ngIf="showContent; else loading">
 
-    <ng-container *ngIf="isHierarchy== true || userFound==true; else accessdenied">
+    <ng-container *ngIf="isHierarchy== true || isHierarchy==true; else accessdenied">
         <ng-container
             *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
         (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') ||
@@ -150,7 +150,7 @@
                                 'bg-cancel':Status=='Cancellation Under Approval' || Status=='Cancelled',
                                 'bg-warning':Status=='InProcess'  || Status=='Forward Under Approval',
                                 'bg-danger':Status == 'Project Hold' || Status=='Standardtask Enactive Hold' }">
-                                    {{Status}}</label>
+                                    {{Status==='Under Approval'?'New Project Under Approval':Status}}</label>
                             </ng-container>
 
                             <!--progress bar start-->
@@ -1310,7 +1310,7 @@
                                 </li>
                                 <li class="nav-item" *ngIf="underapprovalcount!=0 ">
                                     <a class="nav-link" id="tasks-5" data-toggle="tab" href="#tasks_5">
-                                        <span class="nav-text">Under approval</span>
+                                        <span class="nav-text">New Project Under Approval</span>
                                     </a>
                                 </li>
                                 <li class="nav-item" *ngIf="inProcessCount!=0 ">
@@ -1499,7 +1499,7 @@
                                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                                                 data-toggle="tooltip"
                                                                                 title="Action Status!">
-                                                                                {{item.SubProject_Status}} </h5>
+                                                                                {{item.SubProject_Status==='Under Approval'?'New Project Under Approval':item.SubProject_Status}} </h5>
                                                                             <span *ngIf="item.Approver_Name"
                                                                                 data-toggle="tooltip"
                                                                                 title="approval pending with {{item.Approver_Name}}">
@@ -1509,7 +1509,7 @@
                                                                                 data-toggle="tooltip"
                                                                                 title="Action Status!"
                                                                                 *ngIf="item.SubProject_Status=='Delay'">
-                                                                                {{item.SubProject_Status}}
+                                                                                {{item.SubProject_Status==='Under Approval'?'New Project Under Approval':item.SubProject_Status}}
                                                                                 {{item.Delaydays}} days</h5>
                                                                             <h5 data-toggle="tooltip"
                                                                                 class=" text-danger"
@@ -6635,10 +6635,10 @@
     <div class="d-flex align-items-md-center flex-column h-100-vh">
         <div class="text-center acc-section">
             <h1 class="text-primary main_acc">Access denied 503 !</h1>
-            <h5 class="acc-desc ng-star-inserted">Unfortunately, we did not find you in this Project.</h5>
-            <!-- <div class="mt-4"><button class="btn btn-info mr-3">
+            <h5 class="acc-desc ng-star-inserted">Unfortunately, this page is not in use.</h5>
+            <div class="mt-4"><button class="btn btn-info mr-3">
                 Login to Stream Planner</button>
-            </div> -->
+            </div>
         </div>
     </div>
 </ng-template>
@@ -7823,7 +7823,7 @@
                 <div class="height-scroll h-scr">
                     <div class="px-4 py-3">
                         <div class="form-group">
-                            <label> Add new support <span class="text-danger">*</span> : <strong></strong></label>
+                            <label> Add new support<span class="text-danger">*</span> : <strong></strong></label>
                             <ng-select [(ngModel)]="selectedsupport" placeholder="Select new support">
                                 <ng-option [value]="item.Emp_No" *ngFor="let item of nonRacisList">
                                     <a data-toggle="tooltip" title="{{item.NonRACIS}}">{{item.NonRACIS}}</a>

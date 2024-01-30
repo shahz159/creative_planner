@@ -47,19 +47,21 @@
 
         </ng-multiselect-dropdown>
     </div> -->
-    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"   id="AssignedToEmp"     >
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
         <!-- <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
             <ng-option [value]="item.Emp_No" [disabled]="item.Emp_No==Owner_Empno" *ngFor="let item of _EmployeeListForDropdown">
                 {{item.DisplayName}}
             </ng-option>
         </ng-select> -->
-        <ng-select [items]="allUsers" bindLabel="RACIS"
+        <ng-select id='AssignedToEmp'  [items]="allUsers" bindLabel="RACIS"
             bindValue="Emp_No" groupBy="usergroup"
             (change)="EmployeeOnSelect($event)" placeholder="Select employee"
             [searchable]="true" name="RACIS"
             [(ngModel)]="selectedEmpNo"
-            required>
+            required
+            [disabled]="disableAssignedField"
+            >
             <!-- <ng-template ng-option-tmp let-item="item">
                 <ng-container *ngIf="item.Emp_No === Owner_Empno">
                   <ng-option [value]="item.Emp_No">
@@ -148,6 +150,67 @@
         <textarea class="form-control" aria-label="With textarea" placeholder="Enter action remarks if any" [(ngModel)]="_remarks"
             style="height: 111px;"></textarea>
     </div>
+
+
+
+<!-- 
+    <div>
+        <div class="form-group d-flex align-items-start">
+        <input type="checkbox" id="actionDep" [checked]="isActionIndependent" style=" width: 18px;height: 18px;" (change)="isActionIndependent=$event.target.checked"/>
+            <label for="actionDep" class="ml-2">Independent</label>
+       </div>
+      <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"   *ngIf="!isActionIndependent">
+
+        <mat-form-field class="drp-dwn-field   w-100 ">
+            <mat-label>Select Actions</mat-label>
+            <mat-chip-list #selectedactionslist>
+                <mat-chip *ngFor="let action of selectedActions" class="Data_chip_kt"
+                    (removed)="removeSelectedAction(action)">
+                    {{action.Project_Name}}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip>
+            </mat-chip-list>
+            <div class="d-flex">
+                <input class="border-gray" [matChipInputFor]="selectedactionslist" [matAutocomplete]="actionDrpDown"
+                    #actionSelectTF />
+                    <button *ngIf="isActionsDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
+                        (click)="closeAutocompleteDrpDwn('Actionsdrpdwn')">cancel</mat-icon> </button>
+                <button *ngIf="!isActionsDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
+                        (click)="openAutocompleteDrpDwn('Actionsdrpdwn')">add</mat-icon> </button>
+            </div>
+            <mat-autocomplete aria-label="Actionsdrpdwn"   #actionDrpDown="matAutocomplete"
+                (optionSelected)="actionSelectTF.value=''; "
+                (closed)="isActionsDrpDwnOpen=false;" (opened)="isActionsDrpDwnOpen=true">
+                <mat-option *ngFor="let action of allactions|filter:actionSelectTF.value" [value]="action.Project_Code">
+                    <mat-checkbox color="primary" [checked]="(selectedActions.indexOf(action)!==-1)"></mat-checkbox>
+                    {{action.Project_Name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div> -->
+
+
+
 
     <div class="form-group">
         <div class="custom-file pl-1">

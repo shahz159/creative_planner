@@ -25,7 +25,7 @@
                          </a> -->
                         <!-- <a tabindex="0" class="btn px-0 mr-2" role="button" placement="right"
                                 data-trigger="focus" data-toggle="tooltip" title="New project!"> -->
-                                <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button>
+                                <!-- <button type="button" class="btn btn-info btn-sm mb-0 mr-2 Add_new_project_btn"  (click)="OpenProject()">Add New Project</button> -->
                          <!-- </a> -->
                         <!-- <div class="dropdown">
                             <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
@@ -172,7 +172,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
+                                                                {{item.Name==='Under Approval'?'New Project Under Approval':item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -545,7 +545,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">Under Approval</h5>
+                                <h5 class="mb-0">New Project Under Approval</h5>
                                 <h4 class="mb-0">5</h4>
                             </div>
                         </div>
@@ -825,19 +825,19 @@
                                                             <span class="text-danger font-weight-400">Delay</span>
                                                         </div> -->
                                                         <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="text-info font-weight-400">Under
+                                                            <span class="Under_Approval_color font-weight-400">New Project Under
                                                                 Approval</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
-                                                            <span class="text-danger font-weight-400">Delay </span>
+                                                            <span class="Delay_color font-weight-400">Delay </span>
                                                             <span *ngIf="item.Delaydays>0"
-                                                                class="text-danger delayDays">
+                                                                class="Delay_color delayDays">
                                                                 <strong>{{item.Delaydays}} days</strong>
                                                             </span>
                                                         </div>
                                                         <!-- Other Status -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="text-warning font-weight-400">InProcess</span>
+                                                            <span class="InProcess_color font-weight-400">InProcess</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="text-primary font-weight-400">ToDo
@@ -848,58 +848,58 @@
                                                                 Project</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project Rejected'">
-                                                            <span class="text-danger font-weight-400">New
+                                                            <span class="New_Project_Rejected_color font-weight-400">New
                                                                 Project
                                                                 Rejected</span>
                                                         </div>
 
                                                         <div *ngIf="item.Status=='Project Hold'">
-                                                            <span class="text-danger font-weight-400">
+                                                            <span class="Hold_color font-weight-400">
                                                                 Hold</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
-                                                            <span class="text-primary font-weight-400">ToDo
+                                                            <span class="ToDo_Completed_color font-weight-400">ToDo
                                                                 Completed</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Todo'">
-                                                            <span class="text-primary font-weight-400">New Todo
+                                                            <span class="New_Todo_color font-weight-400">New Todo
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="text-primary font-weight-400">Completion
+                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion
                                                                 Under
                                                                 Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancellation Under Approval'">
-                                                            <span class="text-cancel font-weight-400">Cancellation
+                                                            <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation
                                                                 Under
                                                                 Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancelled'">
-                                                            <span class="text-cancel font-weight-400">Cancelled
+                                                            <span class="Cancelled_color font-weight-400">Cancelled
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="text-success font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)">Completed  <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info"></b>
+                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)">Completed  <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info"></b>
                                                             <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
                                                           </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="text-warning font-weight-400">Forward
+                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward
                                                                 Under
                                                                 Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
-                                                            <span class="text-danger font-weight-400">Project
+                                                            <span class="Project_Complete_Rejected_color font-weight-400">Project
                                                                 Complete
                                                                 Rejected
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="text-danger font-weight-400">Enactive
+                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive
                                                                 Under
                                                                 Approval
                                                             </span>
@@ -910,13 +910,13 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="text-info font-weight-400">Deadline Extend
+                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend
                                                                 Under Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #c0b5dc;">Hold
+                                                            <span class="Hold_color   font-weight-400"
+                                                                  >Hold
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
@@ -925,7 +925,11 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Achieved'">
-                                                            <span class="text-info font-weight-400">ToDo Achieved
+                                                            <span class="ToDo_Achieved_color font-weight-400">ToDo Achieved
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="item.Status=='Not Started'">
+                                                            <span class="Not_Started font-weight-400">Not Started
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Standardtask Enactive Hold'">

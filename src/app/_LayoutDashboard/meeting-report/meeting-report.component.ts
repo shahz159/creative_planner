@@ -204,7 +204,7 @@ export class MeetingReportComponent implements OnInit {
 
   _meetingNotesAry: any = [];
   _userfullname: string;
-  interval = 0;
+  interval:any = 0;
 
 
   ngOnInit(): void {
@@ -393,7 +393,7 @@ export class MeetingReportComponent implements OnInit {
   leavemeet(event: any) {
     this.StatusType=true;
     if(this.StatusType==true){
-      this.stopTimer();
+      // this.stopTimer();
       this.leave = true;
 
     this.addBulletPointsOnEnter(event)
@@ -401,7 +401,7 @@ export class MeetingReportComponent implements OnInit {
       this.delayedFunction();
     }, 2000);
     this.notifyService.showSuccess("Meeting left", "Success");
-    this.InsertstartandendTimerMeeting('Leave');
+    // this.InsertstartandendTimerMeeting('Leave');
     }
     else{
       this.notifyService.showInfo("Something went wrong","");
@@ -487,37 +487,37 @@ export class MeetingReportComponent implements OnInit {
   display:any;
   interval1: number = 0;
 
-  InsertstartandendTimerMeeting(_val: string) {
-    this._calenderDto.Schedule_ID = this.Schedule_ID;
-    this._calenderDto.Emp_No = this.CurrentUser_ID;
-    this._calenderDto.Status = _val;
-    // alert(this.Isadmin);
-    if(this.Isadmin==true){
-      this._calenderDto.User_Type = 'Admin';
-    }
-    else{
-      this._calenderDto.User_Type = 'User';
-    }
+  // InsertstartandendTimerMeeting(_val: string) {
+  //   this._calenderDto.Schedule_ID = this.Schedule_ID;
+  //   this._calenderDto.Emp_No = this.CurrentUser_ID;
+  //   this._calenderDto.Status = _val;
+  //   // alert(this.Isadmin);
+  //   if(this.Isadmin==true){
+  //     this._calenderDto.User_Type = 'Admin';
+  //   }
+  //   else{
+  //     this._calenderDto.User_Type = 'User';
+  //   }
 
-    if (_val == "Start") {
-      this.startTimer();
-      this.StatusType = false;
-    }
-    else if (_val == "Pause") {
-      this.AdminMeeting_Status=_val;
-      clearInterval(this.interval1);
-      this.StatusType = true;
-    }
-    else if (_val == "End") {
-      clearInterval(this.interval1);
-    }
-    this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
-      (data => {
+  //   if (_val == "Start") {
+  //     this.startTimer();
+  //     this.StatusType = false;
+  //   }
+  //   else if (_val == "Pause") {
+  //     this.AdminMeeting_Status=_val;
+  //     clearInterval(this.interval1);
+  //     this.StatusType = true;
+  //   }
+  //   else if (_val == "End") {
+  //     clearInterval(this.interval1);
+  //   }
+  //   this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
+  //     (data => {
 
-        // this.startTimer();
+  //       // this.startTimer();
 
-      });
-  }
+  //     });
+  // }
   // startTimer() {
   //   this.timer = setInterval(() => {
   //     this.time++;
@@ -982,21 +982,21 @@ export class MeetingReportComponent implements OnInit {
   }
 
 
-  startTimer() {
-    console.log("=====>");
-    this.interval1 = setInterval(() => {
-      if (this.time === 0) {
-        this.time++;
-      } else {
-        this.time++;
-      }
-      this.display = this.transform(this.time)
-    }, 1000);
-  }
-  stopTimer() {
-    // Clear the interval to stop the timer.
-    clearInterval(this.interval1);
-  }
+  // startTimer() {
+  //   console.log("=====>");
+  //   this.interval1 = setInterval(() => {
+  //     if (this.time === 0) {
+  //       this.time++;
+  //     } else {
+  //       this.time++;
+  //     }
+  //     this.display = this.transform(this.time)
+  //   }, 1000);
+  // }
+  // stopTimer() {
+  //   // Clear the interval to stop the timer.
+  //   clearInterval(this.interval1);
+  // }
 
 
   transform(value: number): string {
@@ -1160,7 +1160,7 @@ export class MeetingReportComponent implements OnInit {
         this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
 
         // Assuming Previousdata_meeting is an array of objects with a Previous_meeting property
-        // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+        this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
 
         //  this.Notes = this.Previousdata_meeting.filter(element => !element.Previous_meeting);
 
