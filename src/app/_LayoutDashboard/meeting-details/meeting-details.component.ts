@@ -203,7 +203,7 @@ export class MeetingDetailsComponent implements OnInit {
     </div>
     <div class="suggestion-heading">SUGGESTED TEMPLATES</div>
     <div style="display: flex; flex-flow: wrap; margin-right: 70px;">
-        <span class="todo">
+        <span class="todo sugg-img">
             <button class="suggestion-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
                     <path
@@ -212,11 +212,10 @@ export class MeetingDetailsComponent implements OnInit {
                 <span class="suggestion-name">To-do list</span>
             </button>
             <div class="iframe">
-                <img
-                    src="https://img.freepik.com/premium-vector/list-icon-with-hand-drawn-text-checklist-task-list-vector-illustration-flat-style-white-background_157943-819.jpg">
+                <img src="../assets/images/todo.PNG">
             </div>
         </span>
-        <span>
+        <span class="meeting sugg-img">
             <button class="suggestion-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
                     <path
@@ -224,8 +223,11 @@ export class MeetingDetailsComponent implements OnInit {
                 </svg>
                 <span class="suggestion-name">Meeting note</span>
             </button>
+            <div class="iframe">
+                <img src="../assets/images/meeting.PNG">
+            </div>
         </span>
-        <span>
+        <span class="project sugg-img">
             <button class="suggestion-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
                     <path
@@ -233,6 +235,9 @@ export class MeetingDetailsComponent implements OnInit {
                 </svg>
                 <span class="suggestion-name">Project plan</span>
             </button>
+            <div class="iframe">
+                <img src="../assets/images/project.PNG">
+            </div>
         </span>
     </div>
     
@@ -417,12 +422,25 @@ export class MeetingDetailsComponent implements OnInit {
     </div>
 </div>`
   }
+  View_Attendees_Notes() {
+    document.getElementById("Attendees_Notes").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  close_attendeesnotes_sideBar() {
+    document.getElementById("Attendees_Notes").classList.remove("kt-quick-active--on");
+  }
   View_Private_Notes() {
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    this.currentSidebarOpened = 'Private_Notes';
   }
-  closesideBar() {
+  close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
+  }
+  View_Meeting_Attendees() {
+    document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+  close_meetingattendees_sideBar() {
+    document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
   }
 }

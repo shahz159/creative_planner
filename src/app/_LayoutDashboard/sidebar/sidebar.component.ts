@@ -78,6 +78,15 @@ export class SidebarComponent implements OnInit {
       inertia: true,
       placement:'right'
     });
+    tippy('#createproject', {
+      content: "Create Project",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right'
+    });
     tippy('#moredetpage', {
       content: "MoreInfo",
       arrow: true,
