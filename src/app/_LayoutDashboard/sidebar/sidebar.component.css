@@ -28,3 +28,6 @@ a.kt-menu__link svg {
 a.kt-menu__link.kt-menu__toggle.active svg {
     fill: #fff;
 }
+li.kt-menu__item:hover a svg path {
+    fill: #5867dd  !important;
+}

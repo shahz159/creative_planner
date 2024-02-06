@@ -1140,10 +1140,10 @@ span.info-ic-guide svg {
   overflow-y: auto;
 }
 .kt-project-sts-data {
-  margin-top: 17px;
+  margin-top: 6px;
   color: #3b3b3b;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
 }
 .UnderApproval{
   background-color: #888888 !important;
@@ -1664,7 +1664,7 @@ align-items: center;
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: #fff;
+  background-color: #f5f5f5;
   margin: 0px 4px;
   padding: 1px 2px;
   border-radius: 5px;
@@ -1754,4 +1754,38 @@ a.nav-link.active span {
   .np-step-2 {
     padding: 20px;
     padding-bottom: 15px;
+}
+
+
+.Kt-info-box-main {
+  border: 1px solid #ededed;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.Kt-info-box-main.active {
+  border: 2px solid #3e97ff;
+  border-radius: 4px;
+}
+.Kt-info-box-main hr{
+  margin: 1rem 1rem;
+  border: 0;
+  border-top: 1px dashed #dbdbdb;
+}
+.kt-project-name h4 {
+  margin-bottom: 0px;
+}
+.kt-info-box-tittle p {
+  margin-bottom: 0px;
+}
+/* .kt-prd-dtl{
+  height: calc(100vh - 365px);
+} */
+.New_guidelines-view:hover {
+  color: #567edf;
+}
+.New_guidelines-view {
+  cursor: pointer;
+}
+.open_sidebar_guide{
+  width: 80%;
 }
