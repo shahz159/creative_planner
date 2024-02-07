@@ -554,6 +554,12 @@ export class ActionToProjectComponent implements OnInit {
         else if(this._Urlid == 5){
       //    this.createproject.getProjectCreationDetails();
           this.createproject.getActionsDetails();
+      // check action deadline and main project deadline. if action deadline > main proj deadline then need to call: newProjectDetails for deadline update.
+      const dateOne = new Date(this._EndDate);
+      const dateTwo = new Date(this.ProjectDeadLineDate);
+      if (dateTwo < dateOne) 
+      this.createproject.newProjectDetails(this._MasterCode);
+
           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection 
           this.closeInfo();
         }

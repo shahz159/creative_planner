@@ -197,11 +197,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-
     this.route.paramMap.subscribe(params => {
-      var pcode = params.get('projectcode');
-      this.URL_ProjectCode = pcode;
-      this._MasterCode = pcode;
+      var pcode = params.get('ProjectCode');
+      if(pcode){
+        this.URL_ProjectCode = pcode;
+        this._MasterCode = pcode;
+      }
+       else {
+        this.router.navigate(["../backend/ProjectsSummary"]);
+      }  
     });
 
 
@@ -748,22 +752,22 @@ this.prjPIECHART.render();
   }
 
   requestaccessList:any=[];
-
+  
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+      if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
+        this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+        this.requestaccessList.forEach(element => {
+          if(element.Submitted_By_EmpNo == this.Current_user_ID){
+                  this.isRequestSent = true;
+            this.ishide=false
+            $('.hide-content').addClass('d-none')
+          }
+        });
+      }
       this.isDMS= this.projectInfo.isDMS;
-      this.requestaccessList.forEach(element => {
-        if(element.Submitted_By_EmpNo == this.Current_user_ID){
-                this.isRequestSent = true;
-          this.ishide=false
-          $('.hide-content').addClass('d-none')
-        }
-      });
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
@@ -786,7 +790,6 @@ this.prjPIECHART.render();
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
-
       this.filteremployee.forEach((emp)=>{
        let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
         if(delayActionsOfEmp.length>0){
@@ -807,7 +810,6 @@ this.prjPIECHART.render();
                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
                   window.scrollTo(0,0);
                 },2000);
-
             }
           else
            this.showActionDetails(undefined);
@@ -815,24 +817,11 @@ this.prjPIECHART.render();
         else
           this.showActionDetails(undefined);  // opens the main project.
     })
-
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
-
-
-
-
     this.onTLSrtOrdrChanged('Date');  // new added for graph.
-    setTimeout(() => this.drawStatistics(), 5000);  
-
-    
-
-
-
-
-
-
+    setTimeout(() => this.drawStatistics(), 5000);
     });
   }
 
@@ -936,7 +925,17 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
-          console.log(this.ActionActivity_List, "testing action activity")
+          console.log(this.ActionActivity_List,"testing action activity");
+          this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
+            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
+                  return {
+                   ...item,
+                   ModifiedDate:d===0?'Today':
+                   d===1?'Yesterday':
+                   [2,3].includes(d)?d+' days ago':
+                   this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                 };
+           })
         }
       })
   }
@@ -2501,6 +2500,7 @@ debugger
       });
     }
     else if (val == 1) {
+      debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2508,9 +2508,11 @@ debugger
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+        debugger
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
+          this.Close_Approval();
         }
         else if (data['message'] == '2') {
           this.notifyService.showError("Not updated", "Failed");
@@ -3162,6 +3164,20 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
 
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 
   // this is main project submission code start here
@@ -3352,11 +3368,12 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       .subscribe((data) => {
 
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-
+            console.log(this.AttachmentList,'AttachmentList')
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
-          this.getProjectAttachments();
+          console.log(this.AttachmentList,'AttachmentList')
+          // this.getProjectAttachments();
 
         }
       });
@@ -3368,28 +3385,28 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
   }
 
-  getProjectAttachments(){
+//   getProjectAttachments(){
 
-   this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
-     }
-});
-    console.log("=>",this.AttachmentListTemp);
-  }
+//    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
+//       return {
+//        ...item,
+//        JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
+//      }
+// });
+//     console.log("=>",this.AttachmentListTemp);
+//   }
 
 
 
-  getActionAttachments(){
-    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
-     }
-     });
-     console.log("a=>",this.AttachmentListTemp);
-  }
+//   getActionAttachments(){
+//     this.AttachmentListTemp=this.AttachmentList.map((item)=>{
+//       return {
+//        ...item,
+//        JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
+//      }
+//      });
+//      console.log("a=>",this.AttachmentListTemp);
+//   }
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {

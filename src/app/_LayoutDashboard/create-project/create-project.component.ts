@@ -14,9 +14,21 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 // import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 // import { CalendarOptions } from '@fullcalendar/angular';
 // import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -30,6 +42,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.css'],
+  providers:[ { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }]
 
 })
 export class CreateProjectComponent implements OnInit {
@@ -162,7 +175,7 @@ export class CreateProjectComponent implements OnInit {
           this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
           this.PrjInformer=this.Team_json[0].InformerNo.trim();
-          this.SubmissionType=JSON.parse(res[0].SubmissionType);
+          this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
@@ -344,7 +357,7 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
-debugger
+
 
    const d=new Date();
    d.setFullYear(d.getFullYear()+2);
@@ -516,19 +529,23 @@ debugger
 
 
   closeInfos(){
-
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   closeInfo() {
-
-    document.getElementById("New_project_Add").classList.remove("open_sidebar");
-    document.getElementById("rightbar-overlay-create").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("sumdet").classList.remove("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
+
+
+    // document.getElementById("New_project_Add").classList.remove("open_sidebar");
+   
+   
+    // document.getElementById("sumdet").classList.remove("position-fixed");
+ 
+ 
   }
 
   Scratech_btn(){
@@ -681,7 +698,12 @@ onProjectOwnerChanged(){
   }
 
   notifyAssign(){
-    this.notification.showInfo("You don't have any assigned project", "Please add a project!");
+    this.notification.showInfo("","You do not have any assigned project");
+
+  }
+
+  notifytemp(){
+    this.notification.showInfo("","You do not have any Templates");
 
   }
 
@@ -728,17 +750,30 @@ onProjectOwnerChanged(){
   /////////////////////////////////////////add Project End/////////////////////////////
 
 
-  showSideBar() {
+  openActionSideBar() {
+
     if(this.PrjActionsInfo.length===0)
-    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:this.Current_user_ID});
+      this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
     
+
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
+   
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("rightbar-overlay-create").style.display = "block";
+    document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
+
   }
+
+
+  closeActionSideBar(){
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
+    this.router.navigate(["/backend/createproject/"]);
+  }
+
   /////////////////////////////////////////add Project End/////////////////////////////
 
    ///////////////////////////////////////// Project Edit start /////////////////////////////
@@ -774,7 +809,7 @@ currentActionView:number|undefined;
 getActionsDetails(){
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
     console.log("LLL:",res);
-    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);   console.log("after action date:",this.PrjActionsInfo)
   });
 }
 
@@ -1103,7 +1138,7 @@ sendApproval(){
          if(res&&res.message==='Success'){
                this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
                this.router.navigate(['./backend/ProjectsSummary']);
-               this.closeInfo();
+              //  this.closeInfo();
           }
          else{
             this.notification.showError('something went wrong!','Failed');
@@ -1244,7 +1279,7 @@ openTemplate(template:any){
 openTemplateAction(templAction){
   const taction = { name: templAction.Project_Name, description:templAction.Project_Description ,assignedTo:''};
   this.BsService.setSelectedTemplAction(taction);
-  this.showSideBar();                                                                 // opens the sidebar
+  this.openActionSideBar();                                                                 // opens the sidebar
 }
 
 

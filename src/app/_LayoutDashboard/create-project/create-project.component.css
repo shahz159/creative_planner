@@ -1755,3 +1755,6 @@ a.nav-link.active span {
     padding: 20px;
     padding-bottom: 15px;
 }
+.step-third .symbol-group {
+  margin-left: 0px;
+}

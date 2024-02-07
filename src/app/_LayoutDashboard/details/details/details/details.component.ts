@@ -3058,6 +3058,16 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
   }
 
 
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 
 

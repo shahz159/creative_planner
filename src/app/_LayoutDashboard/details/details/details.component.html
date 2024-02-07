@@ -665,7 +665,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
-                                                                    'UnderApproval':projectInfo.Status==='Under Approval' ||projectInfo.Status==='Not Started',
+                                                                    'UnderApproval':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started',
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
@@ -676,7 +676,7 @@
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                                     'Cancelled':projectInfo.Status==='Cancelled',
                                                                     'Hold':projectInfo.Status==='Project Hold',                
-                                                                   'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'                                                                   
+                                                                    'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'                                                                   
                                                                     }">
                                                             {{
                                                             (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
@@ -3756,7 +3756,7 @@
                                                     </div>
                                                     <div class="kt-info-data-v"
                                                         *ngIf="(projectActionInfo[currentActionView].Project_Cost)">
-                                                        {{(projectActionInfo[currentActionView].Project_Cost|currency:'SAR')}}
+                                                        {{(projectActionInfo[currentActionView].Project_Cost|currency:'SAR ')}}
                                                     </div>
                                                     <div class="kt-info-data-v"
                                                         *ngIf="!(projectActionInfo[currentActionView].Project_Cost)">
@@ -3923,7 +3923,7 @@
                                                         <div class="timeline-label">
                                                             <!--begin::Item-->
                                                             <div class="timeline-item"
-                                                                *ngFor="let item of firstFiveRecords">
+                                                                *ngFor="let item of ActionfirstFiveRecords">
                                                                 <!--begin::Label-->
                                                                 <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                     {{item.ModifiedDate}}
@@ -5565,12 +5565,13 @@
                                             </div>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="projectInfo.Project_Block!='003'">
+                                 
+                                    <ng-container *ngIf="projectInfo.Project_Block!='003'" >
                                         <div data-toggle="modal" class="kt-notification__item-details"
-                                            (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
+                                            (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile&&file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
                                             <div class="d-flex-center">
                                                 <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}"
-                                                    *ngIf="file.Sourcefile.length>=28">
+                                                    *ngIf="file.Sourcefile&&file.Sourcefile.length>=28">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile | slice:0:24}}...
                                                     <!-- <div class="kt-met-status"> -->
@@ -5578,7 +5579,7 @@
                                                         <span class="Running" *ngIf="file.Project_Code!=URL_ProjectCode">Action</span>
                                                     <!-- </div> -->
                                                 </div>
-                                                <div class="kt-notification__item-title fw-bold" *ngIf="file.Sourcefile.length<28">
+                                                <div class="kt-notification__item-title fw-bold" *ngIf="file.Sourcefile&&file.Sourcefile.length<28">
                                                     <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                     {{file.Sourcefile}}
                                                     <span class="Running" *ngIf="file.Project_Code==URL_ProjectCode">Project</span>
@@ -5614,7 +5615,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </ng-container>
+                                    </ng-container>                     
                                 </div>
                             </div>
 
@@ -9016,14 +9017,15 @@
                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
                                     <input type="text" class="form-control kt-info-box-tit " [(ngModel)]="ProjectType" readonly />
                                 </div>
-                                <div class="Project_type_DW curser-pointer "
-                                    *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
-    
-                                    <ng-select id="colorDropdown"  [(ngModel)]="ProjectType" placeholder="Change task type" >
-                                        <ng-option  [value]="item.typeid" *ngFor="let item of type_list"  >{{item.typename}}
-                                            <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
+                                <div class="Project_type_DW curser-pointer ">
+                                <ng-container *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
+                                    <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType" placeholder="Change task type" >
+                                        <ng-option  [value]="item.typeid" *ngFor="let item of type_list"  >
+                                             <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a>  -->
+                                            <a>{{item.typename}}</a>
                                         </ng-option>
                                     </ng-select>
+                                </ng-container>
                                 </div>
                             </div>
                         </div>

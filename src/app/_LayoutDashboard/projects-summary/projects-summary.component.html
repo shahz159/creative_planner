@@ -143,7 +143,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
-                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"  
                                                         style="width: 100%;">
                                                 </div>
                                             </div>
@@ -177,14 +177,17 @@
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
                                                         </div>
+                                                        <ng-container *ngFor="let item of Cancelled |filter:txtSearch">
                                                         <div class="d-flex justify-content-between" *ngIf="cancelcheck=='1' && canceledit==false">
-                                                            <label class="kt-checkbox mb-3">
+                                                            <label class="kt-checkbox mb-3">                          
                                                                 <input type="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
-                                                                <p>Cancelled</p>
+                                                                <p>{{item.name}}</p>
                                                                 <span></span>
-                                                            </label>
+                                                            </label>                           
                                                             <span class="count-btn">{{cancelcount}}</span>
                                                         </div>
+                                                    </ng-container>
+
                                                         <!-- <div>
                                                             <input type="checkbox" id="cancelcheck" class="form-check-input ps-1 btn" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
                                                             <label *ngIf="Type==type1 && isChecked==false" class="text-dark-50"> check to view RACIS cancelled projects</label>
@@ -219,7 +222,7 @@
                                             <div class="col-md-10">
                                                 <button
                                                     class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown">Submit</button>
+                                                    data-toggle="dropdown" (click)="submit_Data()">Submit</button>
                                                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
                                                     (click)="resetAll()">Reset
                                                 </button>
@@ -829,10 +832,10 @@
                                                                 Approval</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
-                                                            <span class="Delay_color font-weight-400">Delay </span>
+                                                            <span class="Delay_color font-weight-400"></span>
                                                             <span *ngIf="item.Delaydays>0"
                                                                 class="Delay_color delayDays">
-                                                                <strong>{{item.Delaydays}} days</strong>
+                                                                <strong>{{item.Delaydays}} days Delay </strong>
                                                             </span>
                                                         </div>
                                                         <!-- Other Status -->
