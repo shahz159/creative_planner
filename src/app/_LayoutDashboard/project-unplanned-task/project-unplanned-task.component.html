@@ -2,17 +2,16 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="kt-portlet__head-label mt-3">
-                <h3 class="kt-portlet__head-title">
-                    <i class="fas fa-registered mr-2 text-primary"></i>
+                <h4 class="kt-portlet__head-title">
                     <strong  id="tippy1">Runway Tasks</strong>
-                </h3>
+                </h4>
 
             </div>
         </div>
         <div class="col-lg-12">
             <div class="row runway-actions mt-3">
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-left-primary r-shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -28,7 +27,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-left-primary r-shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -44,7 +43,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-suc shadow h-100 py-2">
+                    <div class="card border-left-suc r-shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -63,7 +62,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-pen shadow h-100 py-2">
+                    <div class="card border-left-pen r-shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -82,7 +81,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-rej shadow h-100 py-2">
+                    <div class="card border-left-rej r-shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -101,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <div class="kt-portlet kt-portlet--bordered-semi mt-1 mb-2">
+            <div class="kt-portlet kt-portlet--bordered-semi mt-1 mb-2 d-none">
                 <div class="kt-portlet__head">
 
                     <div class="count-list count-header">
@@ -217,86 +216,88 @@
     <div class="row">
         <!-- Block 1 -->
         <div class="col-lg-3">
-            <div class="sidebar scrollbar">
-                <ul class="side-bar-box">
-                    <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
-                    <li *ngFor="let item of CategoryList" [ngClass]="{'bg-secondary': item.Category_ID==_Categoryid}">
-                        <a>
-                            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                <!--Textbox Category Rename -->
-                                <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
-                                    style="display: none;">
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control" [(ngModel)]="Cat_Name"
-                                            (keydown.enter)="OnCategoryRename(item.Category_ID)">
-                                        <div class="d-flex ml-3" id="button-addon4">
-                                            <button class=" btn btn-secondary btn btn-sm py-0 px-2 mr-2"
-                                                (click)="OnCategoryRename(item.Category_ID)"><i
-                                                    class="fas fa-check text-info"></i></button>
-                                            <button class=" btn btn-secondary btn btn-sm py-0 px-2"
-                                                (click)="OnCat_Cancel(item.Category_ID)"><i
-                                                    class="fas fa-times text-dark"></i></button>
+            <div class="card r-shadow px-2 pt-2">
+                <div class=" p-2 sidebar scrollbar">
+                    <ul class="side-bar-box">
+                        <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
+                        <li *ngFor="let item of CategoryList" [ngClass]="{'bg-secondary': item.Category_ID==_Categoryid}">
+                            <a>
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <!--Textbox Category Rename -->
+                                    <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
+                                        style="display: none;">
+                                        <div class="d-flex">
+                                            <input type="text" class="form-control" [(ngModel)]="Cat_Name"
+                                                (keydown.enter)="OnCategoryRename(item.Category_ID)">
+                                            <div class="d-flex ml-3" id="button-addon4">
+                                                <button class=" btn btn-secondary btn btn-sm py-0 px-2 mr-2"
+                                                    (click)="OnCategoryRename(item.Category_ID)"><i
+                                                        class="fas fa-check text-info"></i></button>
+                                                <button class=" btn btn-secondary btn btn-sm py-0 px-2"
+                                                    (click)="OnCat_Cancel(item.Category_ID)"><i
+                                                        class="fas fa-times text-dark"></i></button>
+                                            </div>
                                         </div>
+                                    </span>
+                                    <div class="d-flex flex-column align-items-cente py-2 w-90">
+                                        <div id="LabelCat_{{item.Category_ID}}"
+                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
+                                            <span >
+                                                <p 
+                                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg project-title mb-2" > 
+                                                    {{item.Category_Name}}
+                                                </p>
+                                            </span>
+                                            <span class="kt-badge kt-badge--dark  kt-badge--inline w-content">
+                                                <div class=""> {{item.Created_DT|date}}</div>
+                                            </span>
+                                            <!-- <span class="kt-badge kt-badge--primary  kt-badge--inline w-content">
+                                                {{item.Created_DT|taskDateAgo}}
+                                            </span> -->
+                                            <span class="kt-badge kt-badge--info  kt-badge--inline w-content">
+                                                <div class="">{{item.TaskCount}}</div>
+                                            </span>
+                                            <!-- Venkat Class For Count 
+                                                <span class="kt-badge kt-badge--primary kt-badge--inline w-content b-r-20">33</span> -->
+                                        </div>
+                                        <!-- End -->
                                     </div>
-                                </span>
-                                <div class="d-flex flex-column align-items-cente py-2 w-90">
-                                    <div id="LabelCat_{{item.Category_ID}}"
-                                        (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                        <span >
-                                            <p 
-                                                class="text-dark-75 font-weight-bold text-hover-primary font-size-lg project-title mb-2" > 
-                                                {{item.Category_Name}}
-                                            </p>
-                                        </span>
-                                        <span class="kt-badge kt-badge--dark  kt-badge--inline w-content">
-                                            <div class=""> {{item.Created_DT|date}}</div>
-                                        </span>
-                                        <!-- <span class="kt-badge kt-badge--primary  kt-badge--inline w-content">
-                                            {{item.Created_DT|taskDateAgo}}
-                                        </span> -->
-                                        <span class="kt-badge kt-badge--info  kt-badge--inline w-content">
-                                            <div class="">{{item.TaskCount}}</div>
-                                        </span>
-                                        <!-- Venkat Class For Count 
-                                            <span class="kt-badge kt-badge--primary kt-badge--inline w-content b-r-20">33</span> -->
-                                    </div>
-                                    <!-- End -->
+                                    <!-- <div class="d-flex flex-wrap align-items-center py-lg-0 py-2"> -->
+                                    <span mat-icon-button [matMenuTriggerFor]="menuCat" [hidden]="hideMenuOfCategory"
+                                        aria-label="Example icon-button with a menu" matTooltip="More">
+                                        <mat-icon color="primary">more_vert</mat-icon>
+                                    </span>
+                                    <mat-menu #menuCat="matMenu" xPosition="after">
+                                        <button mat-menu-item mat
+                                            (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
+                                            <mat-icon class="mr-2" color='primary'>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+    
+                                        <button mat-menu-item mat
+                                            (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
+                                            <mat-icon class="mr-2" color='primary'>delete</mat-icon>
+                                            <span>Delete</span>
+                                        </button>
+                                    </mat-menu>
+                                    <!-- </div> -->
                                 </div>
-                                <!-- <div class="d-flex flex-wrap align-items-center py-lg-0 py-2"> -->
-                                <span mat-icon-button [matMenuTriggerFor]="menuCat" [hidden]="hideMenuOfCategory"
-                                    aria-label="Example icon-button with a menu" matTooltip="More">
-                                    <mat-icon color="primary">more_vert</mat-icon>
-                                </span>
-                                <mat-menu #menuCat="matMenu" xPosition="after">
-                                    <button mat-menu-item mat
-                                        (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
-                                        <mat-icon class="mr-2" color='primary'>edit</mat-icon>
-                                        <span>Edit</span>
-                                    </button>
-
-                                    <button mat-menu-item mat
-                                        (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
-                                        <mat-icon class="mr-2" color='primary'>delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </mat-menu>
-                                <!-- </div> -->
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="add_assigned_task1 p-2">
+                    <div class="form-group mb-0">
+                        <div class="input-group">
+                            <div class="input-group-prepend w-100">
+                                <button class="btn btn-primary btn-sm lh-25" id="basic-addon2" (click)="OnSubmitCategory(Mdl_CategoryName)" primary="true" id="tippy2">
+                                    <i class="la la-plus text-white mr-0"></i>
+                                </button>
+                                <input type="text"  [(ngModel)]="Mdl_CategoryName" class="form-control add_assign_task_input brdr-gr"
+                                    placeholder="Add category and press enter to submit"
+                                    (keyup.enter)="OnSubmitCategory(Mdl_CategoryName)"
+                                    aria-describedby="basic-addon2" primary="true">
                             </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="add_assigned_task1 mt-2">
-                <div class="form-group mb-0">
-                    <div class="input-group">
-                        <div class="input-group-prepend w-100">
-                            <button class="btn btn-primary btn-sm lh-25" id="basic-addon2" (click)="OnSubmitCategory(Mdl_CategoryName)" primary="true" id="tippy2">
-                                <i class="la la-plus text-white mr-0"></i>
-                            </button>
-                            <input type="text"  [(ngModel)]="Mdl_CategoryName" class="form-control add_assign_task_input brdr-gr"
-                                placeholder="Add category and press enter to submit"
-                                (keyup.enter)="OnSubmitCategory(Mdl_CategoryName)"
-                                aria-describedby="basic-addon2" primary="true">
                         </div>
                     </div>
                 </div>
@@ -304,10 +305,12 @@
         </div>
         <!-- Block 2  -->
         <div class="col-lg-9">
+            <div class="card r-shadow p-2" [hidden]="ShowTaskList_Div">
+
             <!-- Messages If Not Found -->
             <h4 style="color:lightgray">{{IfNoTaskFound}}</h4>
             <!-- Messages End -->
-            <div [hidden]="ShowTaskList_Div">
+
                 <div class="row">
                     <div class="col-lg-12">
                         <h3>{{_CategoryName}}</h3>
@@ -356,374 +359,241 @@
                     <div id="kt_inbox" class=" kt-inbox">
                         <!-- Inprocess -->
                         <div class="row">
-                            <div class="col-lg-12 scrollbar1">
-                                <h5 *ngIf="_TodoList.length>0">Task</h5>
-                                <div data-type="inbox" class="kt-inbox__items">
-                                    <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
-                                        <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
-                                            <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-                                                <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
-                                                    <div class="kt-inbox__actions">
-                                                        <input type="radio" name="Subtask" class="subtask-radio mx-4"
-                                                            (click)="OnRadioClick(item.Assign_Id)"
-                                                            [disabled]="item.TypeOfTask=='SUBTASK'" />
-                                                    </div>
-                                                </div>
-                                                <!-- Working Now -->
-                                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                    <div
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
-                                                        <span class="kt-inbox__subject"
-                                                            id="spnLabel_{{item.Assign_Id}}">
-                                                            {{item.Task_Name}}</span>
-                                                        <span class="kt-inbox__subject" style="display:none;"
-                                                            id="spanTextbox_{{item.Assign_Id}}">
-                                                            <div class="d-flex">
-                                                                <input type="text" autofocus class="form-control"
-                                                                    [(ngModel)]="_taskName"
-                                                                    style="width: 78%;height: 32px;"
-                                                                    (keydown.enter)="OnTask_Rename()">
-                                                                <div class="d-inline-block ml-3" id="button-addon4">
-                                                                    <button (click)="OnTask_Rename()"
-                                                                        class=" btn btn-primary btn btn-sm mr-2">Done</button>
-                                                                    <button class=" btn btn-secondary btn btn-sm"
-                                                                        (click)="onCancel(item.Assign_Id)">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </span>
-                                                    </div>
-
-                                                    <!-- Rename Model -->
-                                                    <div class="mt-2">
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
-                                                            {{item.Creation_Date|date:'medium'}}
-                                                        </span>
-                                                        <!-- <span
-                                                            class="kt-badge kt-badge--dark  kt-badge--inline w-content">
-                                                            {{item.Creation_Date|date:'medium'}}
-                                                        </span> -->
-                                                        <!-- Act Fiber Care --- 7288 9999 99 , 91 21 21 21 21 -->
-                                                        <!-- <span
-                                                            class="kt-badge kt-badge--primary  kt-badge--inline w-content">
-                                                            {{item.Creation_Date|taskDateAgo}}
-                                                        </span> -->
-                                                        <!-- <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            {{item.Creation_Date|taskDateAgo}}
-                                                        </span> -->
-                                                        <span *ngIf="item.TypeOfTask=='SUBTASK'"
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            Action Added To
-                                                            <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex align-items-center py-lg-0 py-2"
-                                                    id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
-                                                    <span matTooltip="Action Re-Name"
-                                                        (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
-                                                        class="mr-2 cursor-pointer">
-                                                        <mat-icon class="mr-2" color="primary">edit</mat-icon>
-                                                    </span>
-                                                    <!-- <span class="mr-2" matTooltip="Create New Project">
-                                                        <mat-icon color="primary">add</mat-icon>
-                                                    </span> -->
-                                                    <span matTooltip="Delete Task"
-                                                        (click)="_Deletetask(item.Assign_Id,item.Task_Name)"
-                                                        class="mr-2 cursor-pointer">
-                                                        <mat-icon color='primary'>delete</mat-icon>
-                                                    </span>
-                                                    <span mat-icon-button [matMenuTriggerFor]="menu"
-                                                        aria-label="Example icon-button with a menu" matTooltip="More"
-                                                        class="cursor-pointer">
-                                                        <mat-icon color="primary">more_vert</mat-icon>
-                                                    </span>
-                                                    <mat-menu #menu="matMenu" xPosition="after">
-
-                                                        <button mat-menu-item mat
-                                                            (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                            <mat-icon class="mr-2" color='primary'>group</mat-icon>
-                                                            <span>Assign Task/Project</span>
-                                                        </button>
-
-                                                        <button mat-menu-item mat
-                                                            (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
-                                                            <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                            <span>Add Action To Project</span>
-                                                        </button>
-                                                    </mat-menu>
-                                                    <mat-menu #AssignTo="matMenu">
-                                                        <span *ngFor="let item1 of EmployeeList">
-                                                            <button mat-menu-item
-                                                                (click)="OnEmployeeSelect(item1.Emp_No,item.Assign_Id)">{{item1.Tm_DisplayName}}</button>
-                                                        </span>
-                                                    </mat-menu>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Completed -->
-                                <h5 *ngIf="_CompletedList.length>0">Completed</h5>
-                                <div data-type="inbox" class="kt-inbox__items">
-                                    <!-- Completed  -->
-                                    <div class="card mb-2" *ngFor="let item of _CompletedList">
-                                        <div class="card-body p-2 Replied_border_left_true_success mr-2">
-                                            <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-                                                <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
-                                                    <div class="kt-inbox__actions">
-                                                        <input type="radio" class="subtask-radio mx-4"
-                                                            (click)="On_Uncheck(item.Assign_Id)" checked>
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                    <div
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
-                                                        <span
-                                                            class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
-                                                    </div>
-                                                    <div class="mt-2">
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
-                                                            <div>
-                                                                {{item.Modified_DT|date:'medium'}}
-                                                            </div>
-                                                        </span>
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
-                                                            {{item.ToDo_Status}}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="kt-inbox__datetime">
-                                                </div>
-                                                <div class="delete-btn">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 *ngIf="((ActionedSubtask_Json.length) > 0)">Action To Projects</h5>
-                                <div data-type="inbox" class="kt-inbox__items">
-                                    <!-- Action Subtask -->
-                                    <div class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
-                                        <div class="card-body p-2 Replied_border_left_true_underApprovals mr-2">
-                                            <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-
-                                                <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
-                                                    <div class="kt-inbox__actions">
-                                                        <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                    <div
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
-                                                        <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
-                                                    </div>
-                                                    <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
-                                                    <div class="my-2">
-                                                        
-                                                        <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> Delay</div>
-                                                        </span> -->
-                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
-                                                            <div>
-                                                                {{item.Creation_Date|date}}
-                                                            </div>
-                                                        </span>
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            Action Added To
-                                                            <mat-icon color='primary' class="ml-2 mr-2">task_alt
-                                                            </mat-icon>
-                                                            <b>{{item.Project_Name}}</b>
-                                                        </span>
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            Assigned To
-                                                            <mat-icon color='primary' class="ml-2 mr-2">task_alt
-                                                            </mat-icon>
-                                                            <b>{{item.Assigned_Name}}</b>
-                                                        </span>
-                                                        <span data-toggle="tooltip" title="Assigned Date!"
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div>
-                                                                {{item.Modified_DT|date}}
-                                                            </div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="">
-                                                        <label  data-toggle="tooltip" title="Project Type!"
-                                                        class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
-                                                        <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label>
-
-                                                        <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                                [ngClass]="{'kt-badge--unified-success':item.Status=='Completed',
-                                                                            'kt-badge--unified-warning1':item.Status=='InProcess',
-                                                                            'kt-badge--unified-danger':item.Status=='Project Hold',
-                                                                            'kt-badge--unified-info':item.Status=='Completion Under Approval'}">
-                                                            <div> {{item.Status}}</div>
-                                                         </span>
-                                                         <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
-                                                            <div> {{item.Status}} {{item.Delaydays}} days</div>
-                                                         </span>
-                                                         <!-- <span  data-toggle="tooltip" title="Action Status!"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline 'kt-badge--unified-danger'">
-                                                            <div> {{item.Status}}</div>
-                                                         </span> -->
-                                                        <!-- <span
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
-                                                            data-tippy-content="Another Tooltip">
-                                                            <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Status}}</div>
-                                                        </span> -->
-                                                        <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div ><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
-                                                            <div > {{item.Start_Date|date}}</div>
-                                                        </span>
-                                                        <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.End_Date|date}}</div>
-                                                        </span>
-                                                        <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> Jun 29, 2022</div>
-                                                        </span> -->
-                                                    </div>
-                                                    <div class="mt-1 pl-2">
-                                                        <!-- <span  *ngIf="item.FileName !==''" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer"  (click)="LoadDocument(item.Reference)">
-                                                            <div ><i class="fas fa-link mr-2"></i></div>
-                                                            <div >{{item.FileName}}
-                                                            </div>
-                                                        </span> -->
-                                                        <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
-                                                            class="fas fa-file-pdf text-muted mr-1"></i>
-                                                        <a class="text-info curser-pointer" title="Click To Open File"
-                                                            ><b>{{item.FileName}}</b></a></span>
-                                                        <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
-                                                        <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
-                                                            <i class="fas fa-registered text-muted mr-1"></i>
-                                                            <b>{{item.Remarks}}</b>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="kt-inbox__datetime">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
-                                <div data-type="inbox" class="kt-inbox__items">
-                                    <!-- Action Assigned Tasks -->
-                                    <div class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
-                                        <!-- <div class="overlay-card"   ></div> -->
-                                        <div class="card-body p-2 Replied_border_left_true_warning mr-2">
-                                            <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-                                                <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
-                                                    <div class="kt-inbox__actions">
-                                                        <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
-                                                    </div>
-                                                </div>
-                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                     <!--more details-->                                             
-                                                        <div>
-                                                            <a data-toggle="tooltip" title="Project Details!" class="curser-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
-                                                            (click)="openInfo(item.Project_Code,item.Project_Name)"> 
-                                                                <i class="fa fa-info-circle info-icon-cir"></i>      
-                                                            </a>
-                                                            <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)"
-                                                                role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
-                                                                <i class="fa fa-chart-bar info-icon-cir"></i>
-                                                            </a>
-                                                        </div>&nbsp;                                                 
-                                                        <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
-                                                            <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                            <div class="col-lg-12">
+                                <div class="p-2 scrollbar1">
+                                    <h5 *ngIf="_TodoList.length>0">Task</h5>
+                                    <div data-type="inbox" class="kt-inbox__items">
+                                        <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
+                                            <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
+                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                        <div class="kt-inbox__actions">
+                                                            <input type="radio" name="Subtask" class="subtask-radio mx-4"
+                                                                (click)="OnRadioClick(item.Assign_Id)"
+                                                                [disabled]="item.TypeOfTask=='SUBTASK'" />
                                                         </div>
                                                     </div>
-                                                    <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
-                                                    <div class="my-2">
-                                                        <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Creation_Date}}</div>
-                                                        </span> -->
-                                                        <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
-                                                            <div>
-                                                                {{item.Creation_Date|date}}
-                                                            </div>
-                                                        </span>
-                                                        <span
-                                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                            Assigned Task/Project
-                                                            <mat-icon color='success' class="ml-2 mr-2">task_alt
-                                                            </mat-icon>
-                                                            <b> {{item.AssignedTo}}</b>
-                                                        </span>
-
-                                                        <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                            <div><img src="../creativeplanner/assets/icons/create1.png" alt="actiondate" class="badge-img"></div>
-                                                            <div>
-                                                                {{item.Modified_DT|date}}
-                                                            </div>
-                                                        </span>
-                                                        <span  data-toggle="tooltip" title="Assigned Status!"
-                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                        [ngClass]="{'kt-badge--unified-danger':item.Status=='Rejected',
-                                                            'kt-badge--unified-success':item.Status=='Accepted',
-                                                             'kt-badge--unified-warning':item.Status=='Pending'}">
-                                                        <div> {{item.Status}}</div>
-                                                         </span>
-                                                        <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status =='Pending'">
-                                                        Assigned Task/Project
-                                                        <mat-icon style="cursor:none;" color='success' class="ml-2 mr-2">task_alt
-                                                        </mat-icon>
-                                                        <b> {{item.AssignedTo}}</b>
-                                                    </span> -->
-                                                    </div>
-                                                    <div class="my-1" >
-                                                        <label data-toggle="tooltip" title="Project Type!" *ngIf="item.Project_type"
-                                                        class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
-                                                            class="fa fa-clone mr-2"></i>
-                                                        {{item.Project_type}}</label>
-                                                        <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                                [ngClass]="{
-                                                                    'kt-badge--unified-success':item.Project_status=='Completed',
-                                                                    'kt-badge--unified-warning':item.Project_status=='InProcess',
-                                                                    'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
-                                                                    'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval',
-                                                                    'kt-badge--unified-cancel':item.Project_status=='Cancellation Under Approval' || item.Project_status=='Cancelled'}">
-                                                                <div> {{item.Project_status}}</div>
-                                                         </span>
-                                                         <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
-                                                                <div> {{item.Project_status}} {{item.Delaydays}} days</div>
-                                                         </span>
-                                                         <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
-                                                                <div> Hold </div>
-                                                         </span>
-                                                        <!-- <span 
-                                                            class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
-                                                            data-tippy-content="Another Tooltip">
-                                                            <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                            <div> {{item.Status}}</div>
-                                                        </span> -->
-                                                            <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                <div><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
-                                                                <div> {{item.Start_Date|date}}</div>
+                                                    <!-- Working Now -->
+                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div
+                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
+                                                            <span class="kt-inbox__subject"
+                                                                id="spnLabel_{{item.Assign_Id}}">
+                                                                {{item.Task_Name}}</span>
+                                                            <span class="kt-inbox__subject" style="display:none;"
+                                                                id="spanTextbox_{{item.Assign_Id}}">
+                                                                <div class="d-flex">
+                                                                    <input type="text" autofocus class="form-control"
+                                                                        [(ngModel)]="_taskName"
+                                                                        style="width: 78%;height: 32px;"
+                                                                        (keydown.enter)="OnTask_Rename()">
+                                                                    <div class="d-inline-block ml-3" id="button-addon4">
+                                                                        <button (click)="OnTask_Rename()"
+                                                                            class=" btn btn-primary btn btn-sm mr-2">Done</button>
+                                                                        <button class=" btn btn-secondary btn btn-sm"
+                                                                            (click)="onCancel(item.Assign_Id)">Cancel</button>
+                                                                    </div>
+                                                                </div>
                                                             </span>
-                                                            <span *ngIf="item.End_Date" data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        </div>
+    
+                                                        <!-- Rename Model -->
+                                                        <div class="mt-2">
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
+                                                                {{item.Creation_Date|date:'medium'}}
+                                                            </span>
+                                                            <!-- <span
+                                                                class="kt-badge kt-badge--dark  kt-badge--inline w-content">
+                                                                {{item.Creation_Date|date:'medium'}}
+                                                            </span> -->
+                                                            <!-- Act Fiber Care --- 7288 9999 99 , 91 21 21 21 21 -->
+                                                            <!-- <span
+                                                                class="kt-badge kt-badge--primary  kt-badge--inline w-content">
+                                                                {{item.Creation_Date|taskDateAgo}}
+                                                            </span> -->
+                                                            <!-- <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                {{item.Creation_Date|taskDateAgo}}
+                                                            </span> -->
+                                                            <span *ngIf="item.TypeOfTask=='SUBTASK'"
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                Action Added To
+                                                                <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="d-flex align-items-center py-lg-0 py-2"
+                                                        id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
+                                                        <span matTooltip="Action Re-Name"
+                                                            (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
+                                                            class="mr-2 cursor-pointer">
+                                                            <mat-icon class="mr-2" color="primary">edit</mat-icon>
+                                                        </span>
+                                                        <!-- <span class="mr-2" matTooltip="Create New Project">
+                                                            <mat-icon color="primary">add</mat-icon>
+                                                        </span> -->
+                                                        <span matTooltip="Delete Task"
+                                                            (click)="_Deletetask(item.Assign_Id,item.Task_Name)"
+                                                            class="mr-2 cursor-pointer">
+                                                            <mat-icon color='primary'>delete</mat-icon>
+                                                        </span>
+                                                        <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                            aria-label="Example icon-button with a menu" matTooltip="More"
+                                                            class="cursor-pointer">
+                                                            <mat-icon color="primary">more_vert</mat-icon>
+                                                        </span>
+                                                        <mat-menu #menu="matMenu" xPosition="after">
+    
+                                                            <button mat-menu-item mat
+                                                                (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                                <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                                <span>Assign Task/Project</span>
+                                                            </button>
+    
+                                                            <button mat-menu-item mat
+                                                                (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                                <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                                <span>Add Action To Project</span>
+                                                            </button>
+                                                        </mat-menu>
+                                                        <mat-menu #AssignTo="matMenu">
+                                                            <span *ngFor="let item1 of EmployeeList">
+                                                                <button mat-menu-item
+                                                                    (click)="OnEmployeeSelect(item1.Emp_No,item.Assign_Id)">{{item1.Tm_DisplayName}}</button>
+                                                            </span>
+                                                        </mat-menu>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Completed -->
+                                    <h5 *ngIf="_CompletedList.length>0">Completed</h5>
+                                    <div data-type="inbox" class="kt-inbox__items">
+                                        <!-- Completed  -->
+                                        <div class="card mb-2" *ngFor="let item of _CompletedList">
+                                            <div class="card-body p-2 Replied_border_left_true_success mr-2">
+                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                        <div class="kt-inbox__actions">
+                                                            <input type="radio" class="subtask-radio mx-4"
+                                                                (click)="On_Uncheck(item.Assign_Id)" checked>
+                                                            <span></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div
+                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
+                                                            <span
+                                                                class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
+                                                                <div>
+                                                                    {{item.Modified_DT|date:'medium'}}
+                                                                </div>
+                                                            </span>
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
+                                                                {{item.ToDo_Status}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-inbox__datetime">
+                                                    </div>
+                                                    <div class="delete-btn">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 *ngIf="((ActionedSubtask_Json.length) > 0)">Action To Projects</h5>
+                                    <div data-type="inbox" class="kt-inbox__items">
+                                        <!-- Action Subtask -->
+                                        <div class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
+                                            <div class="card-body p-2 Replied_border_left_true_underApprovals mr-2">
+                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+    
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                        <div class="kt-inbox__actions">
+                                                            <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
+                                                            <span></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div
+                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
+                                                            <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
+                                                        </div>
+                                                        <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
+                                                        <div class="my-2">
+                                                            
+                                                            <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> Delay</div>
+                                                            </span> -->
+                                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                                <div>
+                                                                    {{item.Creation_Date|date}}
+                                                                </div>
+                                                            </span>
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                Action Added To
+                                                                <mat-icon color='primary' class="ml-2 mr-2">task_alt
+                                                                </mat-icon>
+                                                                <b>{{item.Project_Name}}</b>
+                                                            </span>
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                Assigned To
+                                                                <mat-icon color='primary' class="ml-2 mr-2">task_alt
+                                                                </mat-icon>
+                                                                <b>{{item.Assigned_Name}}</b>
+                                                            </span>
+                                                            <span data-toggle="tooltip" title="Assigned Date!"
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                <div>
+                                                                    {{item.Modified_DT|date}}
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                        <div class="">
+                                                            <label  data-toggle="tooltip" title="Project Type!"
+                                                            class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
+                                                            <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label>
+    
+                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                    [ngClass]="{'kt-badge--unified-success':item.Status=='Completed',
+                                                                                'kt-badge--unified-warning1':item.Status=='InProcess',
+                                                                                'kt-badge--unified-danger':item.Status=='Project Hold',
+                                                                                'kt-badge--unified-info':item.Status=='Completion Under Approval'}">
+                                                                <div> {{item.Status}}</div>
+                                                             </span>
+                                                             <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                <div> {{item.Status}} {{item.Delaydays}} days</div>
+                                                             </span>
+                                                             <!-- <span  data-toggle="tooltip" title="Action Status!"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline 'kt-badge--unified-danger'">
+                                                                <div> {{item.Status}}</div>
+                                                             </span> -->
+                                                            <!-- <span
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
+                                                                data-tippy-content="Another Tooltip">
+                                                                <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> {{item.Status}}</div>
+                                                            </span> -->
+                                                            <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                <div ><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                <div > {{item.Start_Date|date}}</div>
+                                                            </span>
+                                                            <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.End_Date|date}}</div>
                                                             </span>
@@ -731,32 +601,167 @@
                                                                 <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> Jun 29, 2022</div>
                                                             </span> -->
-                                                          <!--status-->
-                                                            <!-- <span class="kt-inbox__label kt-badge text-white kt-badge-light-bold bg-coral kt-badge--inline cursor-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="openInfo(item.Project_Code,item.Project_Name)">
-                                                                <div><i class="fas fa-code-branch mr-2"></i></div>
-                                                                <div>{{item.Project_Code}}
+                                                        </div>
+                                                        <div class="mt-1 pl-2">
+                                                            <!-- <span  *ngIf="item.FileName !==''" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer"  (click)="LoadDocument(item.Reference)">
+                                                                <div ><i class="fas fa-link mr-2"></i></div>
+                                                                <div >{{item.FileName}}
                                                                 </div>
                                                             </span> -->
-                                                          <!--status end-->
+                                                            <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
+                                                                class="fas fa-file-pdf text-muted mr-1"></i>
+                                                            <a class="text-info curser-pointer" title="Click To Open File"
+                                                                ><b>{{item.FileName}}</b></a></span>
+                                                            <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
+                                                            <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                <i class="fas fa-registered text-muted mr-1"></i>
+                                                                <b>{{item.Remarks}}</b>
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div class="mt-2">
-                                                        <!-- <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" *ngIf="item.FileName != ''"  (click)="LoadDocument(item.Reference)">
-                                                            <div ><i class="fas fa-link mr-2"></i></div>
-                                                            <div >{{item.FileName}}
-                                                            </div>
-                                                        </span> -->
-                                                        <span data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
-                                                            class="fas fa-file-pdf text-muted mr-1"></i>
-                                                        <a class="text-info curser-pointer" title="Click To Open File"
-                                                            (click)="LoadDocument(item.Reference)"><b>{{item.FileName}}</b></a></span>
-                                                        <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
-                                                        <span  data-toggle="tooltip" title="Remarks!" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
-                                                            <i class="fas fa-registered text-muted mr-1"></i>
-                                                            <b>{{item.Remarks}}</b>
-                                                        </span>
+                                                    <div class="kt-inbox__datetime">
                                                     </div>
                                                 </div>
-                                                <div class="kt-inbox__datetime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
+                                    <div data-type="inbox" class="kt-inbox__items">
+                                        <!-- Action Assigned Tasks -->
+                                        <div class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
+                                            <!-- <div class="overlay-card"   ></div> -->
+                                            <div class="card-body p-2 Replied_border_left_true_warning mr-2">
+                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                        <div class="kt-inbox__actions">
+                                                            <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
+                                                        </div>
+                                                    </div>
+                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                         <!--more details-->                                             
+                                                            <div>
+                                                                <a data-toggle="tooltip" title="Project Details!" class="curser-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" 
+                                                                (click)="openInfo(item.Project_Code,item.Project_Name)"> 
+                                                                    <i class="fa fa-info-circle info-icon-cir"></i>      
+                                                                </a>
+                                                                <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)"
+                                                                    role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
+                                                                    <i class="fa fa-chart-bar info-icon-cir"></i>
+                                                                </a>
+                                                            </div>&nbsp;                                                 
+                                                            <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                                                <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
+                                                        <div class="my-2">
+                                                            <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> {{item.Creation_Date}}</div>
+                                                            </span> -->
+                                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                                <div>
+                                                                    {{item.Creation_Date|date}}
+                                                                </div>
+                                                            </span>
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                                Assigned Task/Project
+                                                                <mat-icon color='success' class="ml-2 mr-2">task_alt
+                                                                </mat-icon>
+                                                                <b> {{item.AssignedTo}}</b>
+                                                            </span>
+    
+                                                            <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                                <div><img src="../creativeplanner/assets/icons/create1.png" alt="actiondate" class="badge-img"></div>
+                                                                <div>
+                                                                    {{item.Modified_DT|date}}
+                                                                </div>
+                                                            </span>
+                                                            <span  data-toggle="tooltip" title="Assigned Status!"
+                                                            class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                            [ngClass]="{'kt-badge--unified-danger':item.Status=='Rejected',
+                                                                'kt-badge--unified-success':item.Status=='Accepted',
+                                                                 'kt-badge--unified-warning':item.Status=='Pending'}">
+                                                            <div> {{item.Status}}</div>
+                                                             </span>
+                                                            <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status =='Pending'">
+                                                            Assigned Task/Project
+                                                            <mat-icon style="cursor:none;" color='success' class="ml-2 mr-2">task_alt
+                                                            </mat-icon>
+                                                            <b> {{item.AssignedTo}}</b>
+                                                        </span> -->
+                                                        </div>
+                                                        <div class="my-1" >
+                                                            <label data-toggle="tooltip" title="Project Type!" *ngIf="item.Project_type"
+                                                            class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
+                                                                class="fa fa-clone mr-2"></i>
+                                                            {{item.Project_type}}</label>
+                                                            <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                    [ngClass]="{
+                                                                        'kt-badge--unified-success':item.Project_status=='Completed',
+                                                                        'kt-badge--unified-warning':item.Project_status=='InProcess',
+                                                                        'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
+                                                                        'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval',
+                                                                        'kt-badge--unified-cancel':item.Project_status=='Cancellation Under Approval' || item.Project_status=='Cancelled'}">
+                                                                    <div> {{item.Project_status}}</div>
+                                                             </span>
+                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                    <div> {{item.Project_status}} {{item.Delaydays}} days</div>
+                                                             </span>
+                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                    <div> Hold </div>
+                                                             </span>
+                                                            <!-- <span 
+                                                                class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
+                                                                data-tippy-content="Another Tooltip">
+                                                                <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
+                                                                <div> {{item.Status}}</div>
+                                                            </span> -->
+                                                                <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                    <div><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                    <div> {{item.Start_Date|date}}</div>
+                                                                </span>
+                                                                <span *ngIf="item.End_Date" data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                    <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                    <div> {{item.End_Date|date}}</div>
+                                                                </span>
+                                                                <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
+                                                                    <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
+                                                                    <div> Jun 29, 2022</div>
+                                                                </span> -->
+                                                              <!--status-->
+                                                                <!-- <span class="kt-inbox__label kt-badge text-white kt-badge-light-bold bg-coral kt-badge--inline cursor-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="openInfo(item.Project_Code,item.Project_Name)">
+                                                                    <div><i class="fas fa-code-branch mr-2"></i></div>
+                                                                    <div>{{item.Project_Code}}
+                                                                    </div>
+                                                                </span> -->
+                                                              <!--status end-->
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <!-- <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" *ngIf="item.FileName != ''"  (click)="LoadDocument(item.Reference)">
+                                                                <div ><i class="fas fa-link mr-2"></i></div>
+                                                                <div >{{item.FileName}}
+                                                                </div>
+                                                            </span> -->
+                                                            <span data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
+                                                                class="fas fa-file-pdf text-muted mr-1"></i>
+                                                            <a class="text-info curser-pointer" title="Click To Open File"
+                                                                (click)="LoadDocument(item.Reference)"><b>{{item.FileName}}</b></a></span>
+                                                            <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
+                                                            <span  data-toggle="tooltip" title="Remarks!" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
+                                                                <i class="fas fa-registered text-muted mr-1"></i>
+                                                                <b>{{item.Remarks}}</b>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-inbox__datetime">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

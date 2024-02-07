@@ -1,6 +1,6 @@
 <ng-container *ngIf="userFound!==undefined&&isHierarchy!==undefined;else pleasewait">
     <ng-container *ngIf="(userFound===true||isHierarchy===true)else accessdenied">
-        <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0; mt-2 p-3 w-100"
+        <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 pt-3 p-3 w-100"
             id="newdetails">
             <div class="card mb-6 mb-xl-9 d-none">
                 <div class="card-body pt-9 pb-0">
@@ -1420,67 +1420,69 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="kt-project-action-list-view">
+                                        <div class="kt-project-action-list-view flipped">
                                             <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
-                                            <ng-container *ngFor="let action of filteredPrjAction; let i=index;">
-                                                <div *ngIf="action.Project_Name.toLowerCase().trim().includes(ActionSearchTF.value.toLowerCase().trim());"
-                                                    class="kt-projcect-act-list"
-                                                    (click)="showActionDetails(action.IndexId-1)"
-                                                    [ngClass]="{'Active':currentActionView===action.IndexId-1}"
-
-                                                    >
-                                                    <div class="row curser-pointer">
-                                                        <div class="col-lg-8 pl-0 pr-1">
-                                                            <div class="kt-p-box border-r-0">
-                                                                <div class="kt-action-p-tittle">
-                                                                    <h4>{{action&&action.Project_Name}}</h4>
-                                                                </div> 
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-between">
-                                                                    <div class="kt-info-lable-v">
-                                                                        By {{action&&action.Responsible}}
-                                                                    </div>
-                                                                    <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/>
-                                                                    <div class="kt-info-lable-v">
-                                                                        {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
+                                            <div class="kt-project-acion-content">
+                                                <ng-container *ngFor="let action of filteredPrjAction; let i=index;">
+                                                    <div *ngIf="action.Project_Name.toLowerCase().trim().includes(ActionSearchTF.value.toLowerCase().trim());"
+                                                        class="kt-projcect-act-list"
+                                                        (click)="showActionDetails(action.IndexId-1)"
+                                                        [ngClass]="{'Active':currentActionView===action.IndexId-1}"
+    
+                                                        >
+                                                        <div class="row curser-pointer">
+                                                            <div class="col-lg-8 pl-0 pr-1">
+                                                                <div class="kt-p-box border-r-0">
+                                                                    <div class="kt-action-p-tittle">
+                                                                        <h4>{{action&&action.Project_Name}}</h4>
+                                                                    </div> 
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-between">
+                                                                        <div class="kt-info-lable-v">
+                                                                            By {{action&&action.Responsible}}
+                                                                        </div>
+                                                                        <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/>
+                                                                        <div class="kt-info-lable-v">
+                                                                            {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-lg-4 pl-2">
-                                                            <div class="kt-p-box border-l-0 text-center">
-                                                                <div class="kt-p-status">
-                                                                    <div class="kt-p-action-No">
-                                                                        Action {{action&&action.IndexId}}
-
-
-                                                                    </div>
-                                                                    <div class="kt-p-action-Status">
-
-
-                                                                        <span [ngSwitch]="action.Status">
-                                                                            <span *ngSwitchCase="'Completed'"
-                                                                                class="Status-done">Completed</span>
-                                                                            <span *ngSwitchCase="'Delay'"
-                                                                                class="Status-Delay">Delay
-                                                                                {{action&&action.Delaydays}} days</span>
-                                                                            <span *ngSwitchCase="'InProcess'"
-                                                                                class="Status-In-progress">In-Process</span>
-                                                                            <span *ngSwitchCase="'New Project Rejected'"
-                                                                                class="bg-rejected"
-                                                                                style="background-color: transparent;">Rejected</span>
-                                                                            <span *ngSwitchDefault
-                                                                                class="Status-In-progress">{{action&&action.Status==='Under Approval'?"New Action Under Approval":action&&action.Status}}</span>
-                                                                        </span>
-                                                                        <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
-
+                                                            <div class="col-lg-4 pl-2">
+                                                                <div class="kt-p-box border-l-0 text-center">
+                                                                    <div class="kt-p-status">
+                                                                        <div class="kt-p-action-No">
+                                                                            Action {{action&&action.IndexId}}
+    
+    
+                                                                        </div>
+                                                                        <div class="kt-p-action-Status">
+    
+    
+                                                                            <span [ngSwitch]="action.Status">
+                                                                                <span *ngSwitchCase="'Completed'"
+                                                                                    class="Status-done">Completed</span>
+                                                                                <span *ngSwitchCase="'Delay'"
+                                                                                    class="Status-Delay">Delay
+                                                                                    {{action&&action.Delaydays}} days</span>
+                                                                                <span *ngSwitchCase="'InProcess'"
+                                                                                    class="Status-In-progress">In-Process</span>
+                                                                                <span *ngSwitchCase="'New Project Rejected'"
+                                                                                    class="bg-rejected"
+                                                                                    style="background-color: transparent;">Rejected</span>
+                                                                                <span *ngSwitchDefault
+                                                                                    class="Status-In-progress">{{action&&action.Status==='Under Approval'?"New Action Under Approval":action&&action.Status}}</span>
+                                                                            </span>
+                                                                            <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
+    
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </ng-container>
+                                                </ng-container>
+                                            </div>
                                             <ng-container *ngIf="filteredPrjAction.length===0">
                                                 <div class="no-prjact-found  ">
                                                     <div
@@ -1718,7 +1720,7 @@
 
                                         <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add Users">
                                             <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
-                                            <span   class="Kt-m-count" >{{userRequestCount}}</span>
+                                            <!-- <span   class="Kt-m-count" >{{userRequestCount}}</span> -->
 
                                           </a>
 
@@ -1832,7 +1834,7 @@
 
 <!--my start  new notification desgin-->
 
-        <div class="kt-Note-msg  d-flex" style="background-color:#ffffffff;"  *ngIf="myUnderApprvActions.length>0||myDelayPrjActions.length>0||+ProjectPercentage>100||delayActionsOfEmps.length>0"         >
+        <div class="kt-Note-msg  d-flex"   *ngIf="myUnderApprvActions.length>0||myDelayPrjActions.length>0||+ProjectPercentage>100||delayActionsOfEmps.length>0"         >
                                             <div class="kt-note-icon" style="align-self:flex-start">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -4296,20 +4298,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-bold m-0 d-flex">
                 <a class="kt-inbox__icon  pb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.8448 8.73376C10.542 8.73376 10.1143 8.77561 9.66899 8.83659C9.46096 8.86508 9.30234 9.02371 9.27385 9.23174C9.21286 9.67703 9.17102 10.1048 9.17102 10.4075C9.17102 10.7102 9.21286 11.138 9.27385 11.5833C9.30234 11.7913 9.46096 11.9499 9.66899 11.9784C10.1143 12.0394 10.542 12.0812 10.8448 12.0812C11.1475 12.0812 11.5752 12.0394 12.0205 11.9784C12.2285 11.9499 12.3872 11.7913 12.4157 11.5833C12.4766 11.138 12.5185 10.7102 12.5185 10.4075C12.5185 10.1048 12.4766 9.67703 12.4157 9.23174C12.3872 9.02371 12.2285 8.86508 12.0205 8.83659C11.5752 8.77561 11.1475 8.73376 10.8448 8.73376ZM9.48731 7.50999C8.68398 7.62001 8.05726 8.24673 7.94725 9.05005C7.88414 9.51081 7.83203 10.0113 7.83203 10.4075C7.83203 10.8037 7.88414 11.3042 7.94725 11.7649C8.05726 12.5683 8.68398 13.195 9.48731 13.305C9.94806 13.3681 10.4485 13.4202 10.8448 13.4202C11.241 13.4202 11.7414 13.3681 12.2022 13.305C13.0055 13.195 13.6322 12.5683 13.7423 11.7649C13.8054 11.3042 13.8575 10.8037 13.8575 10.4075C13.8575 10.0113 13.8054 9.51081 13.7423 9.05005C13.6322 8.24673 13.0055 7.62001 12.2022 7.50999C11.7414 7.44689 11.241 7.39478 10.8448 7.39478C10.4485 7.39478 9.94806 7.44689 9.48731 7.50999Z"
-                            fill="#a3a3a3" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M3.48025 8.73376C3.17752 8.73376 2.74978 8.77561 2.30449 8.83659C2.09646 8.86508 1.93784 9.02371 1.90935 9.23174C1.84836 9.67703 1.80652 10.1048 1.80652 10.4075C1.80652 10.7102 1.84836 11.138 1.90935 11.5833C1.93784 11.7913 2.09646 11.9499 2.30449 11.9784C2.74978 12.0394 3.17752 12.0812 3.48025 12.0812C3.78298 12.0812 4.21072 12.0394 4.65601 11.9784C4.86404 11.9499 5.02266 11.7913 5.05115 11.5833C5.11214 11.138 5.15398 10.7102 5.15398 10.4075C5.15398 10.1048 5.11214 9.67703 5.05115 9.23174C5.02266 9.02371 4.86404 8.86508 4.65601 8.83659C4.21072 8.77561 3.78298 8.73376 3.48025 8.73376ZM2.12281 7.50999C1.31948 7.62001 0.692762 8.24673 0.582744 9.05005C0.519642 9.51081 0.467529 10.0113 0.467529 10.4075C0.467529 10.8037 0.519642 11.3042 0.582744 11.7649C0.692762 12.5683 1.31948 13.195 2.12281 13.305C2.58356 13.3681 3.08402 13.4202 3.48025 13.4202C3.87648 13.4202 4.37694 13.3681 4.83769 13.305C5.64102 13.195 6.26774 12.5683 6.37776 11.7649C6.44086 11.3042 6.49297 10.8037 6.49297 10.4075C6.49297 10.0113 6.44086 9.51081 6.37776 9.05005C6.26774 8.24673 5.64102 7.62001 4.83769 7.50999C4.37694 7.44689 3.87648 7.39478 3.48025 7.39478C3.08402 7.39478 2.58356 7.44689 2.12281 7.50999Z"
-                            fill="#a3a3a3" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.8445 1.36926C10.5418 1.36926 10.114 1.41111 9.66875 1.47209C9.46072 1.50058 9.3021 1.65921 9.2736 1.86724C9.21262 2.31253 9.17077 2.74026 9.17077 3.04299C9.17077 3.34573 9.21262 3.77346 9.2736 4.21875C9.3021 4.42678 9.46072 4.58541 9.66875 4.6139C10.114 4.67488 10.5418 4.71673 10.8445 4.71673C11.1472 4.71673 11.575 4.67488 12.0203 4.6139C12.2283 4.58541 12.3869 4.42678 12.4154 4.21875C12.4764 3.77346 12.5182 3.34573 12.5182 3.04299C12.5182 2.74026 12.4764 2.31253 12.4154 1.86724C12.3869 1.65921 12.2283 1.50058 12.0203 1.47209C11.575 1.41111 11.1472 1.36926 10.8445 1.36926ZM9.48707 0.145488C8.68374 0.255507 8.05702 0.882227 7.947 1.68555C7.8839 2.1463 7.83179 2.64676 7.83179 3.04299C7.83179 3.43923 7.8839 3.93968 7.947 4.40043C8.05702 5.20376 8.68374 5.83048 9.48707 5.9405C9.94782 6.0036 10.4483 6.05571 10.8445 6.05571C11.2407 6.05571 11.7412 6.0036 12.2019 5.9405C13.0053 5.83048 13.632 5.20376 13.742 4.40043C13.8051 3.93968 13.8572 3.43923 13.8572 3.04299C13.8572 2.64676 13.8051 2.1463 13.742 1.68555C13.632 0.882227 13.0053 0.255507 12.2019 0.145488C11.7412 0.0823858 11.2407 0.0302734 10.8445 0.0302734C10.4483 0.0302734 9.94782 0.0823858 9.48707 0.145488Z"
-                            fill="#a3a3a3" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M3.48001 1.36926C3.17727 1.36926 2.74954 1.41111 2.30425 1.47209C2.09622 1.50058 1.93759 1.65921 1.9091 1.86724C1.84812 2.31253 1.80627 2.74026 1.80627 3.04299C1.80627 3.34573 1.84812 3.77346 1.9091 4.21875C1.93759 4.42678 2.09622 4.58541 2.30425 4.6139C2.74954 4.67488 3.17727 4.71673 3.48001 4.71673C3.78274 4.71673 4.21047 4.67488 4.65576 4.6139C4.86379 4.58541 5.02242 4.42678 5.05091 4.21875C5.11189 3.77346 5.15374 3.34573 5.15374 3.04299C5.15374 2.74026 5.11189 2.31253 5.05091 1.86724C5.02242 1.65921 4.86379 1.50058 4.65576 1.47209C4.21047 1.41111 3.78274 1.36926 3.48001 1.36926ZM2.12256 0.145488C1.31924 0.255507 0.692518 0.882227 0.582499 1.68555C0.519398 2.1463 0.467285 2.64676 0.467285 3.04299C0.467285 3.43923 0.519398 3.93968 0.582499 4.40043C0.692518 5.20376 1.31924 5.83048 2.12256 5.9405C2.58332 6.0036 3.08377 6.05571 3.48001 6.05571C3.87624 6.05571 4.37669 6.0036 4.83745 5.9405C5.64077 5.83048 6.26749 5.20376 6.37751 4.40043C6.44061 3.93968 6.49273 3.43923 6.49273 3.04299C6.49273 2.64676 6.44061 2.1463 6.37751 1.68555C6.26749 0.882227 5.64077 0.255507 4.83745 0.145488C4.37669 0.0823858 3.87624 0.0302734 3.48001 0.0302734C3.08377 0.0302734 2.58332 0.0823858 2.12256 0.145488Z"
-                            fill="#a3a3a3" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
                 </a>Link Portfolio
             </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -4457,7 +4446,7 @@
 
 
 
-<div class="tab-pane fade" id="Portfolio" role="tabpanel" aria-labelledby="Portfolio1">
+<div class="tab-pane fade d-none" id="Portfolio" role="tabpanel" aria-labelledby="Portfolio1">
     <div class="bg-white p-3 mb-2">
 
         <div class="text-right">
@@ -5855,7 +5844,7 @@
                                 aria-labelledby="kt_tab_pane_1_4">
 
                                 <ng-container *ngIf="PeopleOnProject">
-                                    <div class="position-relative w-100 mb-5">
+                                    <div class="position-relative w-100 mb-2">
                                         <input type="text" autocomplete="off" name="search" placeholder="Search..."
                                             class="form-control right-flter-bd ng-untouched ng-pristine ng-valid"
                                             [(ngModel)]="SearchItem">
@@ -5871,6 +5860,43 @@
                                         </span>
 
                                     </div>
+                                    <!-- <div class="project-users">
+                                        <div class="user-list">
+                                                <div class="user-info">
+                                                    <div class="user-icon">
+                                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
+                                                    </div>
+                                                    <div class="w-100">
+                                                        <div class="user-details">
+                                                            <h6>Mohammed Mateen</h6>
+                                                            <p>Dot Net Developer/Devbox Software Pvt Ltd</p>
+                                                        </div>
+                                                        <div class="user-type">
+                                                            <span>Owner</span>
+                                                            <span>Support</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div> -->
+                                        <!-- <div class="user-list">
+                                            <div class="user-info">
+                                                <div class="user-icon">
+                                                    <span class="user-initial bg-primary text-inverse-warning fw-bold">M</span>
+                                                </div>
+                                                <div class="w-100">
+                                                    <div class="user-details">
+                                                        <h6>Mohammed Mateen</h6>
+                                                        <p>Dot Net Developer/Devbox Software Pvt Ltd</p>
+                                                    </div>
+                                                    <div class="user-type">
+                                                        <span>Owner</span>
+                                                        <span>Responsible</span>
+                                                        <span>Support</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    </div> -->
                                     <ng-container
                                         *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
                                         <div class="user-list-card"
@@ -9919,8 +9945,13 @@
             <div class="sideInfobar animate-right" id="View_comments">
                 <div class="kt-portlet">
                     <div class="kt-portlet__head">
-                        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-                            <h4 class="m-0">Comments</h4>
+                        <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                            <h4 class="font-weight-bold m-0 d-flex align-items-center">
+                                <a class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16" height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M767.424 130.032 256.576 130.032c-70.4 0-128 57.6-128 128l0 335.632c0 70.4 57.6 128 128 128l118.352 0 0 172.288 213.328-172.288 179.152 0c70.4 0 128-57.6 128-128L895.408 258.032C895.424 187.632 837.824 130.032 767.424 130.032zM815.424 593.664c0 26.016-21.984 48-48 48L588.272 641.664 560 641.664l-22 17.76-83.056 67.088 0-4.848 0-80-80 0-118.352 0c-26.016 0-48-21.984-48-48L208.592 258.032c0-26.016 21.984-48 48-48l510.848 0c26.016 0 48 21.984 48 48L815.44 593.664z"/><path d="M347.888 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M512 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/></svg>
+                                </a>
+                                <span class="kt-chat__title ml-2">Comments</span>
+                            </h4>
                             <a href="javascript:void(0)" class="abs-btn closebtn btn btn-xs btn-icon btn-hover-info"
                                 (click)="closeInfo()">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
