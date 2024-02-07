@@ -14,9 +14,22 @@ import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 // import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 // import { CalendarOptions } from '@fullcalendar/angular';
 // import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -30,6 +43,20 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 
 })
 export class CreateProjectComponent implements OnInit {
@@ -162,7 +189,7 @@ export class CreateProjectComponent implements OnInit {
           this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
           this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
           this.PrjInformer=this.Team_json[0].InformerNo.trim();
-          this.SubmissionType=JSON.parse(res[0].SubmissionType);
+          this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
@@ -694,7 +721,12 @@ onProjectOwnerChanged(){
   }
 
   notifyAssign(){
-    this.notification.showInfo("You don't have any assigned project", "Please add a project!");
+    this.notification.showInfo("","You do not have any assigned project");
+
+  }
+
+  notifytemp(){
+    this.notification.showInfo("","You do not have any Templates");
 
   }
 
@@ -762,7 +794,6 @@ onProjectOwnerChanged(){
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -1353,4 +1384,3 @@ closeAutocompleteDrpDwn(Acomp:string){
 
 
 }
-

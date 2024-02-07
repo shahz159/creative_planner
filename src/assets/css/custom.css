@@ -1542,3 +1542,6 @@ margin-bottom: 0;
         box-shadow: none !important;
     }
    
+    .Project_type_DW .ng-value-container .ng-value .ng-value-label {
+        color: #527ce2;
+      }

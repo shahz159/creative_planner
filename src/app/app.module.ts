@@ -36,6 +36,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
 
 
 
+
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
 //  import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
@@ -53,7 +54,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
     SidebarComponent,
     ConfirmDialogComponent,
     TimelineComponent,
-   
+    
     // MeetingReportComponent
    
     // NotificationComponent    

@@ -824,7 +824,7 @@ export class MeetingReportComponent implements OnInit {
 
 
   meeting_details() {
-
+   
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -841,7 +841,7 @@ export class MeetingReportComponent implements OnInit {
         // else if(this.AdminMeeting_Status == 'Pause'){
         //   clearInterval(this.interval1);
         // }
-         console.log(this.EventScheduledjson,data, "111111")
+         console.log(this.EventScheduledjson, "111111")
         this.Startts = this.EventScheduledjson[0]['St_Time']
         this.Endtms = this.EventScheduledjson[0]['Ed_Time']
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -1166,7 +1166,7 @@ export class MeetingReportComponent implements OnInit {
 
         //  this.Notes= this.Previousdata_meeting;
 
-        console.log(this.Previousdata_meeting, "wassssss1111")
+       // console.log(this.Previousdata_meeting, "wassssss1111")
         //  console.log(this.Notes,"wassssss")
       });
   }
@@ -1257,7 +1257,7 @@ export class MeetingReportComponent implements OnInit {
 
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        debugger
+     
         // console.log("Data---->", data);
         // this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);

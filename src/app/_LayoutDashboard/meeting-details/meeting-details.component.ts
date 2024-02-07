@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { CalenderDTO } from 'src/app/_Models/calender-dto';
+import { CalenderService } from 'src/app/_Services/calender.service';
 
 @Component({
   selector: 'app-meeting-details',
@@ -7,6 +10,14 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
   styleUrls: ['./meeting-details.component.css']
 })
 export class MeetingDetailsComponent implements OnInit {
+
+  allTodos:any=[];
+  todosVisible:boolean=false;
+
+
+
+ _calenderDto: CalenderDTO;
+
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
   config: AngularEditorConfig = {
@@ -66,10 +77,19 @@ export class MeetingDetailsComponent implements OnInit {
       },
     ],
   };
-  constructor() { }
+  constructor(
+    private CalenderService:CalenderService,
+    private route:ActivatedRoute
+  ) {
+    this._calenderDto=new CalenderDTO;
+  }
 
   ngOnInit(): void {
-    this.notesContent = `<div>
+
+    this.meeting_details();
+
+    this.notesContent = 
+    `<div>
     <div>
         <h3>Title</h3>
         <p>Start writing</p>
@@ -241,10 +261,10 @@ export class MeetingDetailsComponent implements OnInit {
         </span>
     </div>
     
-    <div class="todolist">
+    <div class="todolist" >
         <div class="todoheading mb-3">To-do list</div>
         <div class="mb-3">
-            <div class="todotitle">Do now</div>
+            <div class="todotitle">Do now</div>   <app-todo></app-todo>
             <div class="form-check todoopt">
                 <span class="todo-check">
                     <input class="form-input" type="checkbox" value="" id="flexCheckDefault1">
@@ -421,6 +441,7 @@ export class MeetingDetailsComponent implements OnInit {
         </div>
     </div>
 </div>`
+
   }
   View_Attendees_Notes() {
     document.getElementById("Attendees_Notes").classList.add("kt-quick-active--on");
@@ -436,6 +457,23 @@ export class MeetingDetailsComponent implements OnInit {
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
   }
+
+  EventScheduledjson: any = [];
+  Schedule_ID: any;
+  Scheduleid: any='218303'
+  User_Scheduledjson: any = [];
+
+
+meeting_details(){
+    this.Schedule_ID=this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
+    console.log(data,'9999999999999')    
+    this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
+    console.log(this.EventScheduledjson,'----------->')
+   })
+}
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
