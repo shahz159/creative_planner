@@ -607,9 +607,15 @@ debugger
     $('.sbs--basic li:nth-child(3)').removeClass('active');
   }
 
+  New_project_guideline(){
+    $('#Guidelines_view_list').addClass('open_sidebar_guide');
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
 
-
-
+  closeI_guidelines(){
+    $('#Guidelines_view_list').removeClass('open_sidebar_guide');
+    document.getElementById("rightbar-overlay").style.display = "none";
+  }
 // add Prj support mat autocomplete drpdwn code start here
 
 isPrjSprtDrpDwnOpen:boolean=false;
@@ -743,16 +749,17 @@ onProjectOwnerChanged(){
    
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("project-creation-page").classList.add("position-fixed");
+    // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
   }
 
 
   closeActionSideBar(){
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("project-creation-page").classList.remove("position-fixed");
+    
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -764,7 +771,7 @@ onProjectOwnerChanged(){
   Project_details_edit() {
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();

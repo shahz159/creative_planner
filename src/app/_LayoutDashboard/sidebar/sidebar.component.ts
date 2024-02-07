@@ -78,8 +78,8 @@ export class SidebarComponent implements OnInit {
       inertia: true,
       placement:'right'
     });
-    tippy('#createproject', {
-      content: "Create Project",
+    tippy('#New_Project', {
+      content: "New Project",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
