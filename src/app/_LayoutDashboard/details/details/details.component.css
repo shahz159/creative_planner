@@ -4141,10 +4141,6 @@ span.Kt-m-count {
 .kt-ct-sub-ttl {
   margin-right: 20px;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 2ee6c0466305dd57688bc36d52c53e20b9449dc9
 .bd-right-x::after {
   right: 0;
   top: 0;
@@ -4192,12 +4188,10 @@ span.Kt-m-count {
 .fw-mormal.timeline-content p {
   margin-bottom: 0px;
 }
-<<<<<<< HEAD
 p.kt-dt-l {
   margin-bottom: 0px;
   padding-top: 2px;
-=======
-
+}
 .project-users .user-list {
   -webkit-tap-highlight-color: transparent;
   background-color: transparent;
@@ -4288,5 +4282,4 @@ p.kt-dt-l {
 }
 .kt-inbox__icon {
   margin-left: 0.5rem;
->>>>>>> 2ee6c0466305dd57688bc36d52c53e20b9449dc9
 }
