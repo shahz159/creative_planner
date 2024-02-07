@@ -844,10 +844,10 @@
                                             'text-Rejected':item.Status=='New Project Rejected',
                                             'text-underApproval':item.Status=='Enactive Under Approval',
                                             'text-underApproval':item.Status=='Forward Under Approval',
-                                            'text-primary':item.Status=='New Project',
+                                            'New-project':item.Status=='New Project',
                                             'text-success':item.Status=='Completion Under Approval',
                                             'text-CompleteRejected':item.Status=='Project Complete Rejected',
-                                            'text-Todo':item.Status=='ToDo Completed',
+                                            'todo-completed':item.Status=='ToDo Completed',
                                             'text-info':item.Status=='New Todo'}">
                                                 </i>
                                                 <a role="button"
@@ -908,7 +908,7 @@
                                     </div>
                                     <div *ngIf="item.Status=='Under Approval'">
                                         <span
-                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            class="kt-inbox__label kt-badge new-project kt-badge.kt-badge-light-bold kt-badge--inline ">
                                             {{item.Status =='Under Approval' ? 'New Project Under Approval':item.Status}}</span>
                                     </div>
                                     <div *ngIf="item.Status=='Completed'">

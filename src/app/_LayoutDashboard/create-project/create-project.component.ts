@@ -103,6 +103,10 @@ export class CreateProjectComponent implements OnInit {
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
+  isStartDateEditable:boolean=false;
+
+
+
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -309,6 +313,21 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
+  // currentDate: Date = new Date();
+  // Start__Date: Date = new Date(); // Initialize with a default value or set it based on your logic
+
+  // isEditable(): boolean {
+  //   return this.currentDate <=this.Start__Date;
+  // }
+  // isStartDateDisabled(): boolean {
+  //   // Convert Start_Date to Date object for comparison
+  //   const startDate = new Date(this.Start_Date);
+
+  //   // Compare current date with start date
+  //   return this.todayDate <= startDate;
+  // }
+
+
 
 
 
@@ -371,7 +390,7 @@ debugger
         DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
         Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
         Remarks:this._remarks,
-      
+
 
   };
   console.log("PRJ INFORMATION :",projectInfo);
@@ -379,7 +398,7 @@ debugger
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
   this.ProjectDto.isTemplate=this.saveAsTemplate;
   this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
-  
+
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
 debugger
@@ -516,19 +535,23 @@ debugger
 
 
   closeInfos(){
-
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
   }
 
   closeInfo() {
-
-    document.getElementById("New_project_Add").classList.remove("open_sidebar");
-    document.getElementById("rightbar-overlay-create").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("sumdet").classList.remove("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
+
+
+    // document.getElementById("New_project_Add").classList.remove("open_sidebar");
+
+
+    // document.getElementById("sumdet").classList.remove("position-fixed");
+
+
   }
 
   Scratech_btn(){
@@ -728,17 +751,30 @@ onProjectOwnerChanged(){
   /////////////////////////////////////////add Project End/////////////////////////////
 
 
-  showSideBar() {
+  openActionSideBar() {
+
     if(this.PrjActionsInfo.length===0)
-    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:this.Current_user_ID});
-    
+      this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
+
+
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
+
+    document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("rightbar-overlay-create").style.display = "block";
+    document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
+
   }
+
+
+  closeActionSideBar(){
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
+    this.router.navigate(["/backend/createproject/"]);
+  }
+
   /////////////////////////////////////////add Project End/////////////////////////////
 
    ///////////////////////////////////////// Project Edit start /////////////////////////////
@@ -811,7 +847,7 @@ showActionDetails(index: number | undefined) {
 selectedOwner: any;
 //ProjectType: string
 ProjectDescription: string
-Start_Date: string;
+Start_Date: any;
 OGowner: any;
 OGresponsible: any;
 OGownerid: any;
@@ -861,6 +897,10 @@ initializeSelectedValue() {
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
     this.End_Date = this.projectInfo.EndDate;
+
+
+    this.isStartDateEditable=this.todayDate<=new Date(this.projectInfo.StartDate);
+
 
 }
 
@@ -1094,7 +1134,7 @@ sendApproval(){
 
   if(this.PrjActionsInfo.length){
   // atleast one action must be created.
- 
+
       this.ProjectDto.Emp_No=this.Current_user_ID;
       this.ProjectDto.isTemplate=this.saveAsTemplate;
       this.ProjectDto.Project_Code=this.PrjCode;
@@ -1103,14 +1143,14 @@ sendApproval(){
          if(res&&res.message==='Success'){
                this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
                this.router.navigate(['./backend/ProjectsSummary']);
-               this.closeInfo();
+              //  this.closeInfo();
           }
          else{
             this.notification.showError('something went wrong!','Failed');
          }
      });
 
-   
+
 }
 else{
   Swal.fire(
@@ -1244,7 +1284,7 @@ openTemplate(template:any){
 openTemplateAction(templAction){
   const taction = { name: templAction.Project_Name, description:templAction.Project_Description ,assignedTo:''};
   this.BsService.setSelectedTemplAction(taction);
-  this.showSideBar();                                                                 // opens the sidebar
+  this.openActionSideBar();                                                                 // opens the sidebar
 }
 
 
@@ -1274,7 +1314,7 @@ cancelPrjCreation(){
 
 
 
-// portfolio code start 
+// portfolio code start
 
 _portfoliosList:any=[];
 ngDropdwonPort:any=[];
@@ -1294,10 +1334,10 @@ onPortfolioSelected(e){
     else{
        const portfolio=this._portfoliosList.find((item)=>item.Portfolio_ID==e.option.value)
         if(portfolio)this.ngDropdwonPort.push(portfolio);
-    }  
+    }
    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
    console.log('PORTFOLIOS:',this.ngDropdwonPort)
-} 
+}
 
 removePorfolioSelected(p){
    const index=this.ngDropdwonPort.indexOf(p);
@@ -1320,6 +1360,10 @@ closeAutocompleteDrpDwn(Acomp:string){
 
 
 // portfolio code end
+
+
+
+
 
 
 

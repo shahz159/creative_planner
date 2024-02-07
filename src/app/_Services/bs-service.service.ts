@@ -28,12 +28,12 @@ export class BsServiceService {
 
   private _SummaryType = new BehaviorSubject<any>(null);
   private _portId = new BehaviorSubject<any>(null);
-  private _templAction = new BehaviorSubject<any>(null);
-  
+  public _templAction = new BehaviorSubject<any>(null);
+
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
 
-  
+
   bs_projectCode = this._Pcode.asObservable();
   bs_ProjectName = this._PName.asObservable();
 
@@ -53,7 +53,7 @@ export class BsServiceService {
   bs_SummaryType = this._SummaryType.asObservable();
   bs_SelectedPortId = this._portId.asObservable();
   bs_templAction = this._templAction.asObservable();
- 
+
 
   SetNewPojectCode(NewPCode) {
     this._Pcode.next(NewPCode);

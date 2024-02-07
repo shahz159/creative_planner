@@ -913,7 +913,7 @@ export class HomeComponent implements OnInit {
   }
 
   dummy_function(name, id) {
-    var url = document.baseURI + name;  
+    var url = document.baseURI + name;
     var myurl = `${url}/${id}`;
     var myWindow = window.open(myurl, id);
     myWindow.focus();
@@ -1268,11 +1268,11 @@ export class HomeComponent implements OnInit {
   messagefav: string;
 
   AddFavourites(portfolioId, isfav) {
-    
+
     // this.LoadingBar_state.start();
     this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
       //  console.log("retrun Data----->",data1)
-     
+
       this._objStatusDTO.Emp_No = this.Current_user_ID;
       this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
         (data) => {
@@ -1899,7 +1899,7 @@ export class HomeComponent implements OnInit {
           this._MemosNotFound = "No memos linked";
         }
       });
-    //Displaying Right Side Bar... 
+    //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
   }
 

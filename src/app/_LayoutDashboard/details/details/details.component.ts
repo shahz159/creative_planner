@@ -211,7 +211,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);
-  
+
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -222,7 +222,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
-   
+
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -275,7 +275,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   prjBARCHART:any;
   prjPIECHART:any;
-  
+
   drawStatistics() {
 
 // 1. bar chart.
@@ -290,8 +290,8 @@ var options = {
 plotOptions: {
   bar: {
     colors: {
-      ranges: [ 
-      
+      ranges: [
+
        {
          from:0,
          to:((25*+this.projectInfo.AllocatedHours)/100),
@@ -316,7 +316,7 @@ plotOptions: {
          to:-1,
          color:'#00000099'
        }    // <0  (black)
-     
+
     ]
     },
     columnWidth: '55%',
@@ -357,7 +357,7 @@ if(remaininghr<0){
 }
 
 var options1 = {
-  series: [usedhr,remaininghr], 
+  series: [usedhr,remaininghr],
   chart: {
     width: 480,
     type: 'donut',
@@ -401,15 +401,15 @@ var options1 = {
   theme: {
     palette: 'palette2'
   },
-  colors: ['#8faeff', '#f0f0f0'], 
+  colors: ['#8faeff', '#f0f0f0'],
   title: {
     text: "Overall Utilization",
     style: {
-      fontSize: '10px', 
-      color: '#333',     
-      fontFamily: 'Lucida Sans Unicode',  
-      fontWeight: 'bold'  
-     
+      fontSize: '10px',
+      color: '#333',
+      fontFamily: 'Lucida Sans Unicode',
+      fontWeight: 'bold'
+
     }
   },
   responsive: [{
@@ -444,8 +444,8 @@ this.prjPIECHART.render();
     // plotOptions: {
     //   bar: {
     //     colors: {
-    //       ranges: [ 
-          
+    //       ranges: [
+
     //        {
     //          from:0,
     //          to:((25*this.projectInfo.AllocatedHours)/100),
@@ -470,7 +470,7 @@ this.prjPIECHART.render();
     //          to:-1,
     //          color:'#00000099'
     //        }    // <0  (black)
-         
+
     //     ]
     //     },
     //     columnWidth: '55%',
@@ -500,7 +500,7 @@ this.prjPIECHART.render();
     //   labels: {
     //     rotate: -90
     //   }
-      
+
     // }
     // };
 
@@ -743,7 +743,7 @@ this.prjPIECHART.render();
         }
       });
 
-      console.log("requestlist", this.approverequestlist, this.noapproverequestlist);
+      console.log("requestlist", this.approverequestlist, 'noaprrequest-list',this.noapproverequestlist);
     });
   }
 
@@ -755,15 +755,17 @@ this.prjPIECHART.render();
 
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+      if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
+        this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+        this.requestaccessList.forEach(element => {
+          if(element.Submitted_By_EmpNo == this.Current_user_ID){
+                  this.isRequestSent = true;
+            this.ishide=false
+            $('.hide-content').addClass('d-none')
+          }
+        });
+      }
       this.isDMS= this.projectInfo.isDMS;
-      this.requestaccessList.forEach(element => {
-        if(element.Submitted_By_EmpNo == this.Current_user_ID){
-                this.isRequestSent = true;
-          this.ishide=false
-          $('.hide-content').addClass('d-none')
-        }
-      });
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
@@ -824,9 +826,9 @@ this.prjPIECHART.render();
 
 
     this.onTLSrtOrdrChanged('Date');  // new added for graph.
-    setTimeout(() => this.drawStatistics(), 5000);  
+    setTimeout(() => this.drawStatistics(), 5000);
 
-    
+
 
 
 
@@ -1033,8 +1035,8 @@ this.prjPIECHART.render();
         plotOptions: {
           bar: {
             colors: {
-              ranges: [ 
-              
+              ranges: [
+
               {
                 from:0,
                 to:((25*this.maxDuration)/100),
@@ -1059,7 +1061,7 @@ this.prjPIECHART.render();
                 to:-1,
                 color:'#00000099'
               }    // <0  (black)
-            
+
             ]
             },
             columnWidth: '55%',
@@ -1327,8 +1329,15 @@ this.prjPIECHART.render();
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
 
-    // document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
-    // document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
+    document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
+
+
+    // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
+
+
+    // USER REQUESTS TAB.
     // back to 1st 'People on the project' tab.
 
 
@@ -2293,7 +2302,7 @@ debugger
       });
   }
 
-  
+
 
   selectedOwner: any;
   ProjectType: string
@@ -2525,7 +2534,7 @@ debugger
 
 
   }
- 
+
 
   ActionCode: any
   ActionDescription: any
@@ -2927,7 +2936,7 @@ check_allocation() {
         this.notifyService.showSuccess(this._Message, "Success");
 
 // Timeline submitted
-// if action submission is also required 
+// if action submission is also required
 if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
   this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
   this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
@@ -6491,7 +6500,7 @@ displaymessagemain(){
 // action cancel start
 actionCancel(index:number){
 }
-  
+
 formatTimes(time: string): string {
   const [hours, minutes] = time.split(':');
   const date = new Date();
@@ -6533,6 +6542,63 @@ closeFullGraph(){
   $('.CHARTS').css('grid-template-columns','1fr');
 }
 // open Graph screen end
+
+
+
+
+
+
+// People Approve request  start
+approveUserRequest(requestNo:number){
+  const {Submitted_By,Remarks,Request_type,Request_date}=this.approverequestlist[requestNo];
+
+
+
+  const userReqObj={
+    Project_Code:this.projectInfo.Project_Code,
+    Project_Code1:this.projectInfo.Project_Code,
+    Category:this.projectInfo.Category,
+    Duration: this.projectInfo.Duration,
+    DurationTime: "0",
+    Project_Owner:this.projectInfo.Owner,
+    Team_Res: this.projectInfo.Responsible,
+    Delaydays:this.projectInfo.Delaydays,
+    DeadLine:this.projectInfo.EndDate,
+    Project_Description:this.projectInfo.Project_Description,
+    Responsible:this.projectInfo.Responsible,
+    Exec_BlockName:this.projectInfo.Project_Type,
+    Project_Block:this.projectInfo.Project_Block,
+    RejectType: " ",
+    Project_Name:this.projectInfo.Project_Name,
+
+
+
+
+    Req_Coments:Remarks,
+    Remarks:Remarks,
+    SubmittedTo: this.projectInfo.Owner,
+    SubmittedBy:Submitted_By,
+    Emp_No: '',
+    Req_Type: Request_type,
+    Type: Request_type,
+    Rec_Date:Request_date,
+
+  }
+  this.approvalservice.NewUpdateAcceptApprovalsService([userReqObj]).subscribe(res=>{
+         console.log("+>",res);
+  });
+}
+
+
+// People Approve request end
+
+
+
+
+
+
+
+
 
 
 

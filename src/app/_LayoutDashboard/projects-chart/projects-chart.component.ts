@@ -675,7 +675,7 @@ export class ProjectsChartComponent implements OnInit {
 
     createSeries("negative2", "Hold", negativeColor.lighten(0.5));
     createSeries("negative1", "Delay", negativeColor);
-    createSeries("positive1", "InProcess", positiveColor.lighten(0.5));
+    createSeries("positive1", "In-Process", positiveColor.lighten(0.5));
     createSeries("positive2", "Completed", positiveColor);
 
     chart3.legend.events.on("layoutvalidated", function (event) {
@@ -708,7 +708,7 @@ export class ProjectsChartComponent implements OnInit {
         litres: 165.8
       },
       {
-        country: "InProcess",
+        country: "In-Process",
         litres: 139.9
       },
       {

@@ -814,12 +814,12 @@
     .card-Scroll::-webkit-scrollbar {
       width: 5px;
     }
-    
+
     .card-Scroll::-webkit-scrollbar-thumb {
       background-color: #8cabfa;
       border-radius: 50px;
     }
-    
+
     .card-Scroll::-webkit-scrollbar-track {
       /* background-color: #e9ebee; */
       background-color: #ffffff;
@@ -1322,7 +1322,7 @@ span.info-ic-guide svg {
   color: #000;
   font-weight: 400;
   padding: 5px;
-  
+
 }
 .input-icon.Sub_In_ed input {
   border: 1px solid #ccc;
@@ -1519,7 +1519,7 @@ button.Ct-btn.head-btn-right {
   padding: 5px 5px !important;
 }
 .Ic_ed input {
-  height: 36px;
+  /* height: 36px; */
   margin-top: 5px;
 }
 .Ic_ed {
@@ -1690,7 +1690,7 @@ align-items: center;
   margin-bottom: 0px;
   color: #4f4f4f;
   font-weight: 500;
-  font-size: 12px;  
+  font-size: 12px;
     margin-top: -3px;
 }
 
@@ -1716,7 +1716,7 @@ svg.template-pin:hover * {
 
 .prj-template:hover{
   background-image:linear-gradient(#fbfbfb,white);
-  
+
 }
 
 .tabs-view-dg {
@@ -1730,7 +1730,7 @@ a.nav-link.active span {
 .Create_project_section {
   min-height: 50vh;
   min-height: calc(100vh - 135px);
- 
+
 }
 .top_pading_view {
   width: 100%;
