@@ -30,7 +30,6 @@
 
 .scrollbar::-webkit-scrollbar-thumb {
     background: #ccc;
-    border-radius: 10px;
 }
 
 .py-8px {
@@ -1925,4 +1924,13 @@ span.count {
 }
 .text-gray-300 {
     color: #dddfeb!important;
+}
+.r-shadow{
+    box-shadow: 0 2px 16px #cccccc80;
+}
+.scrollbar {
+    height: calc(100vh - 360px);
+}
+.scrollbar1 {
+    height: calc(100vh - 460px);
 }
