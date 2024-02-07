@@ -1049,6 +1049,7 @@ span.Status-Delay {
 }
 
 .kt-projcect-act-list {
+  margin: 0px 10px;
   margin-bottom: 10px;
 }
 
@@ -1190,8 +1191,10 @@ span.Status-Delay {
 .kt-Note-msg {
   width: 100%;
   padding: 10px;
-  background-color: #fd7e7a38;
-  margin-bottom: 10px;
+  background-color:#fff;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+    box-shadow: 0 2px 16px #cccccc80;
 }
 
 .kt-note-icon svg {
@@ -4146,11 +4149,7 @@ span.Kt-m-count {
   top: 0;
 }
 .kt-project-action-list-view {
-  max-height: 440px;
-}
-.kt-projcect-act-list.Active {
-  border: 2px solid #3e97ff;
-  border-radius: 4px;
+  max-height: 428px;
 }
 .Active .kt-p-box {
   background-color: rgb(255 255 255);
@@ -4281,4 +4280,78 @@ span.Kt-m-count {
 }
 .kt-inbox__icon {
   margin-left: 0.5rem;
+}
+.kt-project-acion-content{
+  direction: ltr; 
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.flipped{
+  direction: rtl;
+}
+.kt-projcect-act-list.Active {
+  position: relative;
+  border: 2px solid #527ce2;
+  border-radius: 4px;
+  padding-left: 10px;
+ }
+ .kt-projcect-act-list.Active:after, .kt-projcect-act-list.Active:before {
+  border: solid transparent;
+  content: " ";
+  display: block;
+  height: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 0;
+  left: 100%;
+}
+.kt-projcect-act-list.Active:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #ffffff;
+  top: 50%;
+  margin-top: -10px;
+  border-width: 10px;
+}
+.kt-projcect-act-list.Active:before {
+  border-color: rgb(255 255 255 / 0%);
+  border-left-color: #527ce2;
+  top: 50%;
+  margin-top: -13px;
+  border-width: 13px;
+}
+.Active .kt-p-box {
+  border: none;
+}
+.kt-quick-Mettings--on.sideInfobar .kt-portlet {
+  height: 94vh;
+}
+.Kt-info-box-main.active {
+  position: relative;
+  border: 2px solid #527ce2;
+  border-radius: 4px;
+  padding-left: 10px;
+}
+.Kt-info-box-main.active:after, .Kt-info-box-main.active:before {
+  border: solid transparent;
+  content: " ";
+  display: block;
+  height: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 0;
+  left: 100%;
+}
+.Kt-info-box-main.active:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #ffffff;
+  top: 50%;
+  margin-top: -10px;
+  border-width: 10px;
+}
+.Kt-info-box-main.active:before {
+  border-color: rgb(255 255 255 / 0%);
+  border-left-color: #527ce2;
+  top: 50%;
+  margin-top: -13px;
+  border-width: 13px;
 }
