@@ -1755,3 +1755,21 @@ a.nav-link.active span {
     padding: 20px;
     padding-bottom: 15px;
 }
+
+
+
+.prj-status {
+  color:#000;
+  font-weight: 600;
+  padding: 0.1em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  line-height: 20px;
+  border-radius: 2px;
+  font-size: 13px;
+  min-height: 24px;
+}
+.not-started-project {
+  background-color: #888888 !important;
+  color:#fff !important;
+}

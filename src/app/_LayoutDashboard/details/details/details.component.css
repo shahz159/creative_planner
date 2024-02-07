@@ -4141,9 +4141,7 @@ span.Kt-m-count {
 .kt-ct-sub-ttl {
   margin-right: 20px;
 }
-.View_more_act {
-  bottom: 0;
-}
+
 .bd-right-x::after {
   right: 0;
   top: 0;
@@ -4193,3 +4191,71 @@ span.Kt-m-count {
 .fw-mormal.timeline-content p {
   margin-bottom: 0px;
 }
+
+
+/*recent activity graph css start*/
+.View_graph_act {
+  position: absolute; 
+  top: -38px;
+  right: 100px;
+  background-color: #ecefff;
+  padding: 1px 10px;
+  border-radius: 5px;
+}
+
+::ng-deep .modal-backdrop.show {
+  z-index: 1;
+}
+.graphmodal .header-act{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+.graphmodal .kt-flter{
+  box-shadow: 0 0 1px #a39b9b;
+  border-radius: 3px;
+  padding: 4.5px;
+  background-color: #f9f7f7;
+}
+.graphmodal .kt-flter:hover{
+  background-color: #ebebeb;
+}
+.graphmodal .kt-graph-close{
+  box-shadow: 0 0 1px #a39b9b;
+  border-radius: 3px;
+  padding: 4px;
+  background-color: #f9f7f7;
+
+}
+
+.graphmodal .kt-graph-close:hover{
+   background-color: #ebebeb;
+}
+.graphmodal .kt-graph-close:active{
+   transform:scale(0.95);
+}
+
+.less-hrs-allocated{
+     background-color: #ff7d7d !important;
+}
+
+.allocated-hrs{
+    background-color: #7dbeff !important;
+}
+
+.extra-hrs-allocated{
+    background-color: #7da1ff !important;
+}
+
+.remaining-hrs-allocated{
+   background-color: #00000099 !important;
+}
+
+.full-graph{
+  min-height:600px;
+  max-height:600px;
+  overflow-y: hidden;
+}
+
+/*recent activity graph css start*/

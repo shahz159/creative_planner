@@ -52,7 +52,8 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
     HeaderComponent,
     SidebarComponent,
     ConfirmDialogComponent,
-    TimelineComponent
+    TimelineComponent,
+   
     // MeetingReportComponent
    
     // NotificationComponent    
@@ -85,8 +86,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
     NgxDocViewerModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatFormFieldModule
-    
+    MatFormFieldModule,
   ],
   providers:
     [AuthGuard

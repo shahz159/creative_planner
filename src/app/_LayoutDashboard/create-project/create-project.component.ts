@@ -72,7 +72,7 @@ export class CreateProjectComponent implements OnInit {
   PrjOfType:string;
   PrjClient:string;
   PrjDes:string;
-  PrjCategory:string;
+  PrjCategory:string|undefined;
   PrjVersion:string;
   PrjLocation:string;
   Prjstartdate:any
@@ -226,7 +226,6 @@ export class CreateProjectComponent implements OnInit {
       var startDate = moment(this.Prjstartdate);
       var endDate = moment(this.Prjenddate);
       this.durationInDays = endDate.diff(startDate, 'days');
-
       console.log('Duration in days:', this.durationInDays);
 
   }
@@ -344,7 +343,7 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
-debugger
+
 
    const d=new Date();
    d.setFullYear(d.getFullYear()+2);
@@ -382,7 +381,7 @@ debugger
   
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-debugger
+
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
@@ -402,6 +401,7 @@ debugger
           this.BsService.ProjectCreatedEvent.emit();
         }
         else if(res&&res.message==='Success1'){
+       
           this.PrjCode=res.Project_Code;
             this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
             //2. file attachment uploading  if present
@@ -409,7 +409,7 @@ debugger
             this.uploadFileAttachment()
 
               this.router.navigate(['./backend/ProjectsSummary']);
-              this.closeInfo()
+              // this.closeInfo()
          this.BsService.ProjectCreatedEvent.emit();
         }
         else
@@ -562,7 +562,7 @@ debugger
 
 
   Move_to_add_team(){
-    $('.right-side-dv').removeClass('d-none');
+    $('.right-side-dv').removeClass('d-none'); 
     $('.add_tema_tab').show();
     $('.Project_details_tab').hide();
     $('.sbs--basic .active').addClass('finished');
@@ -570,6 +570,9 @@ debugger
     $('.sbs--basic li:nth-child(2)').addClass('active');
 
     this.findProjectType()
+    if(['003','008'].includes(this.Prjtype))
+    this.Prjstartdate=new Date();
+
   }
 
   Back_to_project_details_tab(){
@@ -791,7 +794,7 @@ currentActionView:number|undefined;
 getActionsDetails(){
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
     console.log("LLL:",res);
-    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);   console.log("after action date:",this.PrjActionsInfo)
   });
 }
 

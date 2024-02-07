@@ -2,9 +2,9 @@ export const environment = {
   production: true,
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
   //----Test Server----
-//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
+ baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
   //-----Live Server----
- baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
+//  baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
 };
   //Devbox Server
   //baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
@@ -15,7 +15,7 @@ export const environment = {
   //Creative Solutions Local Host
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
 
-  //CReative Solutions 2
+  //CReative Solutions 2 
   //baseUrl: 'http://192.9.210.31/EPnewAPI/api/'
   //baseUrl:'http://localhost/EPNewAPI/api/'
   //http://cswebapps.com/PortfolioAPI/
