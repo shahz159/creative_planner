@@ -29,6 +29,7 @@ import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
@@ -309,7 +310,7 @@ plotOptions: {
        },   // 26%-100%  (blue)
 
        {
-         from:((25*+this.projectInfo.AllocatedHours)/100)+1,
+         from:(+this.projectInfo.AllocatedHours)+1,
          to:Infinity,
          color:'#7da1ff'
        },   // more than 100% (purple)
@@ -752,8 +753,8 @@ this.prjPIECHART.render();
   }
 
   requestaccessList:any=[];
-  
-  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+
+ getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -824,7 +825,6 @@ this.prjPIECHART.render();
     setTimeout(() => this.drawStatistics(), 5000);
     });
   }
-
   uniqueName:any
   uniqueNamesArray:any
   firstthreeRecords:any
@@ -835,7 +835,7 @@ this.prjPIECHART.render();
   uniqueSet :any
   uniqueOwner:any
   uniqueNamesArray1:any
-
+  PeopleOnProject:any;
 
   nonRacisList:any=[];
   GetPeopleDatils(){
@@ -844,7 +844,13 @@ this.prjPIECHART.render();
       (data) => {
 
         if (data != null && data != undefined) {
-          this.Project_List = JSON.parse(data[0]['RacisList']);
+          this.Project_List = JSON.parse(data[0]['RacisList']);   
+          
+          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
+            const result=this.Project_List.filter(item=>item.Emp_No===emp);
+            return {Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+          });
+          
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
           // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
@@ -900,7 +906,7 @@ this.prjPIECHART.render();
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data !== null && data !== undefined) {
-          this.Activity_List = JSON.parse(data[0]['ActivityList'])
+          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
 
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
@@ -1206,6 +1212,7 @@ this.prjPIECHART.render();
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValue()
+    // this.isStartDateEditable=new Date().getTime()<=new Date(this.projectInfo.StartDate).getTime();
   }
 
   Action_details_edit() {
@@ -2386,6 +2393,7 @@ debugger
     this.End_Date = this.projectInfo.EndDate;
   }
 
+  // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -2537,7 +2545,7 @@ debugger
   ActionClient: any
   ActionstartDate: any
   ActionendDate: any
-  ActionDuration: any
+  ActionDuration: any 
   ActionAllocatedHours: any
   editAllocatedhours: any=0;
   ActionOwnerid: any
@@ -3270,6 +3278,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
   updateMainProject() {
+    
     if (this.projectInfo.Project_Type == 'To do List') {
       this.selectedFile = null;
     }
@@ -3349,12 +3358,12 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
   flSrtOrd: string;
   AttachmentList: any;
   _TotalDocs: any;
-  _attachmentOf:'PROJECT'|'ACTIONS'='PROJECT';
-  SortBy:number;
-  projectatt: any;
-  Actionatt: any;
+  // _attachmentOf:'PROJECT'|'ACTIONS'='PROJECT';
+  // SortBy:number;
+  // projectatt: any;
+  // Actionatt: any;
 
-  AttachmentListTemp:any=[];
+  // AttachmentListTemp:any=[];
   getAttachments(sorttype: number) {
     switch (sorttype) {
       case 1: this.flSrtOrd = "Date"; break;
@@ -3363,10 +3372,9 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       case 4: this.flSrtOrd = "me"; break;
       default: this.flSrtOrd = "none";
     }
-    this.SortBy=sorttype;
-    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, this.SortBy.toString())
+  
+    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
-
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
             console.log(this.AttachmentList,'AttachmentList')
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
@@ -4435,6 +4443,12 @@ Task_type(value:number){
       ((data) => {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+      
+        const racisPeople=this.Project_List.map(item=>item.Emp_No);
+        this._EmployeeListForDropdown.sort((el:any)=>{
+        return racisPeople.includes(el.Emp_No)?-1:+1
+         });    // to change the order : first racis people and then rest 
+     
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
 
@@ -5522,19 +5536,18 @@ isParticipantDrpDwnOpen:boolean=false;
 isDMSMemoDrpDwnOpen:boolean=false;
 isPortfolioDrpDwnOpen:boolean=false;
 isProjectDrpDwnOpen:boolean=false;
-openAutocompleteDrpDwn(Acomp:string){
+ openAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
 }
 
-closeAutocompleteDrpDwn(Acomp:string){
+ closeAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
 
 
 onPrjSelected(e:any){
-
   const prjChoosed=this.ProjectListArray.find((p:any)=>p.Project_Code===e.option.value);
   if(prjChoosed){
        const index=this.MasterCode.indexOf(prjChoosed.Project_Code);
@@ -5542,31 +5555,27 @@ onPrjSelected(e:any){
           // if not present then add it
           this.MasterCode.push(prjChoosed.Project_Code);
        }
-       else{ //  if item choosed is already selected then remove it.
+       else if(this.MasterCode[index]!=this.projectInfo.Project_Code){ //  if item choosed is already selected then remove it. but it should not be the default project.
         this.MasterCode.splice(index,1);
        }
   }
   this.openAutocompleteDrpDwn('ProjectDrpDwn');
 }
-removeSelectedPrj(item){
-  const index=this.MasterCode.indexOf(item);
-  if(index!==-1){
-    this.MasterCode.splice(index,1);
-  }
+ removeSelectedPrj(item){
+  if(this.projectInfo.Project_Code!=item){   // cannot remove the default selected project.
+    const index=this.MasterCode.indexOf(item);
+    if(index!==-1)
+      this.MasterCode.splice(index,1);
+  }   
 }
 
-getPrjName(projectCode:string){
+ getPrjName(projectCode:string){
   if(this.ProjectListArray){
    const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
    return P?P.BlockNameProject:'';
   }
    return [];
 }
-
-
-
-
-
 
 
 
@@ -6550,6 +6559,116 @@ closeFullGraph(){
   $('.CHARTS').css('grid-template-columns','1fr');
 }
 // open Graph screen end
+
+
+
+
+
+
+
+
+
+
+//  Full Graph code start
+
+graphOption:string='PROJECT';
+graphOptionChanged:boolean=false;
+getActivitiesOfDates(emp,...dates){
+// input date format must be: 'yyyy-MM-dd'
+ const result=dates.map((date)=>({date:this.datepipe.transform(date,'dd-MM-yyyy'),total:0}));
+ this.Activity_List.forEach((actv)=>{
+          const index=dates.indexOf(actv.ModifiedDate);
+          if(index!==-1){
+            if(emp==='PROJECT')
+            result[index].total+=1;
+            else if(emp===actv.Modifiedby)
+            result[index].total+=1;    
+          }
+    });
+  return result;  
+}
+
+showFullGraph(){
+  let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
+  alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
+ 
+  const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
+  console.log("all graph line points :",actvies);
+
+ 
+
+  const dataSource = {
+    chart: {
+      caption: "Activities Over Time",
+      compactdatamode: "1",
+      dataseparator: "|",
+      pyaxisname: "Activities",
+      snumberprefix: "",
+      setadaptiveymin: "0",
+      formatnumberscale: "0",
+      sformatnumberscale: "1",
+      linethickness: "4",
+      showsecondarylimits: "0",
+      bgcolor: "#ffffff",  // white background color
+      basefontcolor: "#333", // Base font color
+      canvasbgalpha: "0", // Make the canvas background fully transparent
+      showplotborder: "1", // Show plot border
+      plotbordercolor: "#ddd", // Plot border color
+      showalternatehgridcolor: "0", // Disable alternate horizontal grid color
+      showplotshadow: "0", // Disable plot shadow
+      showvalues: "0", // Hide data values on the plot
+      theme: "fusion", // Use Fusion theme for modern styling
+      scrollheight: "4",
+      scrollColor: "#f9f9f9",
+      
+    },
+    categories: [
+      {
+        category: alldates.join('|')     // '2022-01-20'|'2021-05-01'|'2024-08-11'....
+      }
+    ],
+    dataset: [
+      {
+        seriesname: this.graphOption,
+        data: actvies.map(n => n.total).join('|'),  // 2|5|8|2|3|4|5|5|5|8 ....
+        color: "#6388e3" // Set line color 
+      }
+    
+    ]
+  };
+  
+  FusionCharts.ready(function() {
+    var myChart = new FusionCharts({
+      type: "zoomlinedy",
+      renderAt: "full-graph",
+      width: "100%",
+      height: "100%",
+      dataFormat: "json",
+      dataSource
+    }).render();
+  });
+  
+}
+
+onGraphOptionChanged(option:string){
+    this.graphOption=option;
+    this.showFullGraph();
+    this.graphOptionChanged=true;
+}
+
+
+
+
+//  Full Graph code end
+
+
+
+
+
+
+
+
+
 
 
 

@@ -87,8 +87,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
     NgxDocViewerModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatFormFieldModule
-    
+    MatFormFieldModule,
   ],
   providers:
     [AuthGuard

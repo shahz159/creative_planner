@@ -497,7 +497,7 @@
 
                                     <!-- <div class="br-line"></div> -->
 
-                                    <a class="kt-inbox__icon" title="Add Users">
+                                    <a class="kt-inbox__icon" title="Add Users" (click)="View_Meeting_Attendees()">
                                         <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"
                                             xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi">
                                             <path
@@ -1006,25 +1006,41 @@
                                     <h4>Website Development static</h4>
                                     <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6>
                                 </div>
-                                <div class="kt-project-notes" (click)="View_Private_Notes()">
-                                    <span class="title">Private Notes</span>
-                                    <span class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                            viewBox="0 0 22 22" fill="currentcolor">
-                                            <path
-                                                d="M21.2731 10.8727L21.0535 10.7208L21.4443 10.1849C21.5898 9.98651 21.6941 9.76166 21.7515 9.52329C21.8088 9.28492 21.8179 9.03771 21.7784 8.79584C21.7388 8.55397 21.6513 8.32219 21.5209 8.11381C21.3905 7.90543 21.2197 7.72455 21.0184 7.58153L20.5706 7.26695C20.3699 7.12293 20.1424 7.01955 19.9011 6.96274C19.6599 6.90593 19.4096 6.89682 19.1648 6.93594C18.92 6.97506 18.6854 7.06162 18.4745 7.19066C18.2637 7.3197 18.0807 7.48866 17.9362 7.68783L11.0231 17.1772C10.9699 17.2503 10.936 17.3353 10.9243 17.4245L10.4852 20.7569C10.4726 20.8539 10.4866 20.9525 10.526 21.0422C10.5654 21.1319 10.6286 21.2095 10.7089 21.2666C10.7892 21.3237 10.8837 21.3583 10.9823 21.3668C11.0809 21.3752 11.1799 21.3571 11.269 21.3145L14.3249 19.85C14.407 19.8108 14.4779 19.7519 14.5312 19.6787L20.4169 11.6059L20.6364 11.7578C20.7366 11.8311 20.8038 11.9401 20.8239 12.0617C20.844 12.1832 20.8153 12.3077 20.744 12.4087L18.6101 15.3288C18.5251 15.4456 18.4906 15.591 18.514 15.733C18.5375 15.875 18.6171 16.002 18.7353 16.086C18.8535 16.17 19.0006 16.2041 19.1443 16.1809C19.288 16.1578 19.4164 16.0791 19.5014 15.9623L21.6287 13.0465C21.8725 12.7114 21.972 12.2944 21.9053 11.887C21.8387 11.4795 21.6113 11.1148 21.2731 10.8727ZM18.8341 8.31916C18.8942 8.23612 18.9705 8.16567 19.0583 8.11186C19.1461 8.05804 19.2439 8.02193 19.3459 8.0056C19.4479 7.98926 19.5522 7.99303 19.6527 8.01669C19.7533 8.04034 19.8481 8.08342 19.9317 8.14343L20.384 8.46668C20.468 8.52615 20.5393 8.60146 20.5937 8.68827C20.6482 8.77508 20.6847 8.87167 20.7013 8.97249C20.7178 9.07332 20.714 9.17637 20.69 9.27573C20.6661 9.37509 20.6225 9.46879 20.5618 9.55143L14.158 18.3314C13.7597 17.7207 13.1426 17.2814 12.4303 17.1013L18.8341 8.31916ZM11.9407 18.1144C12.2399 18.1538 12.5246 18.2657 12.7694 18.4402C13.0141 18.6148 13.2114 18.8464 13.3436 19.1146L11.7015 19.9021L11.9407 18.1144Z"
-                                                fill="currentcolor" fill-opacity="65%" />
-                                            <path
-                                                d="M9.03198 18.0362H2.51186C2.33253 18.0362 2.16055 17.9658 2.03374 17.8405C1.90694 17.7151 1.8357 17.5452 1.8357 17.368V6.08656H15.6663V7.10406C15.6663 7.2479 15.7241 7.38586 15.827 7.48757C15.9299 7.58929 16.0695 7.64643 16.2151 7.64643C16.3606 7.64643 16.5002 7.58929 16.6032 7.48757C16.7061 7.38586 16.7639 7.2479 16.7639 7.10406V3.65672C16.7633 3.19199 16.5763 2.74645 16.2437 2.41783C15.9112 2.08921 15.4604 1.90434 14.9901 1.90377H13.9144V0.649797C13.9144 0.50595 13.8566 0.367995 13.7536 0.26628C13.6507 0.164565 13.5111 0.107422 13.3656 0.107422C13.22 0.107422 13.0804 0.164565 12.9775 0.26628C12.8745 0.367995 12.8167 0.50595 12.8167 0.649797V1.90377H10.8409V0.649797C10.8409 0.50595 10.7831 0.367995 10.6802 0.26628C10.5773 0.164565 10.4377 0.107422 10.2921 0.107422C10.1465 0.107422 10.0069 0.164565 9.90402 0.26628C9.80109 0.367995 9.74327 0.50595 9.74327 0.649797V1.90377H7.76747V0.649797C7.76747 0.50595 7.70965 0.367995 7.60672 0.26628C7.5038 0.164565 7.3642 0.107422 7.21864 0.107422C7.07308 0.107422 6.93349 0.164565 6.83056 0.26628C6.72763 0.367995 6.66981 0.50595 6.66981 0.649797V1.90377H4.69402V0.649797C4.69402 0.50595 4.63619 0.367995 4.53327 0.26628C4.43034 0.164565 4.29074 0.107422 4.14518 0.107422C3.99962 0.107422 3.86003 0.164565 3.7571 0.26628C3.65418 0.367995 3.59635 0.50595 3.59635 0.649797V1.90377H2.51186C2.04159 1.90434 1.59075 2.08921 1.25822 2.41783C0.925689 2.74645 0.738618 3.19199 0.738037 3.65672V17.368C0.738618 17.8327 0.925689 18.2782 1.25822 18.6069C1.59075 18.9355 2.04159 19.1203 2.51186 19.1209H9.03198C9.17754 19.1209 9.31714 19.0638 9.42006 18.9621C9.52299 18.8603 9.58081 18.7224 9.58081 18.5785C9.58081 18.4347 9.52299 18.2967 9.42006 18.195C9.31714 18.0933 9.17754 18.0362 9.03198 18.0362ZM2.51186 2.98852H15.0011C15.1804 2.98852 15.3524 3.05892 15.4792 3.18423C15.606 3.30954 15.6772 3.4795 15.6772 3.65672V5.00181H1.84668V3.65672C1.84665 3.48137 1.91638 3.31303 2.04082 3.18802C2.16526 3.06302 2.33444 2.99136 2.51186 2.98852Z"
-                                                fill="currentcolor" />
-                                            <path
-                                                d="M8.89786 7.13089H8.60808C8.10171 7.13146 7.61625 7.33051 7.25819 7.68435C6.90014 8.03819 6.69873 8.51794 6.69815 9.01836V10.1226C6.36178 10.1692 6.05373 10.3342 5.83067 10.5873C5.60762 10.8404 5.48455 11.1646 5.48413 11.5003V13.5266C5.48413 13.896 5.63262 14.2502 5.89693 14.5114C6.16125 14.7727 6.51973 14.9194 6.89353 14.9194H10.6256C10.8107 14.9194 10.9939 14.8834 11.1649 14.8134C11.3359 14.7434 11.4913 14.6408 11.6222 14.5114C11.7531 14.3821 11.8569 14.2286 11.9277 14.0596C11.9985 13.8906 12.035 13.7095 12.035 13.5266V11.5003C12.0346 11.1646 11.9115 10.8404 11.6884 10.5873C11.4654 10.3342 11.1573 10.1692 10.821 10.1226V9.01836C10.8207 8.76947 10.7707 8.5231 10.6737 8.29338C10.5768 8.06366 10.435 7.85512 10.2563 7.67974C10.0776 7.50436 9.86558 7.36559 9.63247 7.2714C9.39935 7.17721 9.14971 7.12946 8.89786 7.13089ZM8.60808 8.21564H8.89786C9.11311 8.21621 9.31938 8.30097 9.47159 8.45138C9.62379 8.6018 9.70956 8.80564 9.71013 9.01836V10.1031H7.79581V9.01836C7.79639 8.80564 7.88215 8.6018 8.03436 8.45138C8.18656 8.30097 8.39283 8.21621 8.60808 8.21564ZM10.9241 11.5003V13.5266C10.9241 13.6083 10.8913 13.6866 10.8328 13.7444C10.7744 13.8022 10.6951 13.8346 10.6124 13.8346H6.88036C6.79768 13.8346 6.71839 13.8022 6.65993 13.7444C6.60147 13.6866 6.56862 13.6083 6.56862 13.5266V11.5003C6.56862 11.4186 6.60147 11.3402 6.65993 11.2824C6.71839 11.2247 6.79768 11.1922 6.88036 11.1922H10.6124C10.6951 11.1922 10.7744 11.2247 10.8328 11.2824C10.8913 11.3402 10.9241 11.4186 10.9241 11.5003Z"
-                                                fill="currentcolor" />
-                                            <path
-                                                d="M8.75074 11.9707C8.60518 11.9707 8.46558 12.0278 8.36265 12.1296C8.25973 12.2313 8.2019 12.3692 8.2019 12.5131C8.2019 12.6569 8.25973 12.7949 8.36265 12.8966C8.46558 12.9983 8.60518 13.0555 8.75074 13.0555C8.8963 13.0555 9.03589 12.9983 9.13882 12.8966C9.24174 12.7949 9.29957 12.6569 9.29957 12.5131C9.29957 12.3692 9.24174 12.2313 9.13882 12.1296C9.03589 12.0278 8.8963 11.9707 8.75074 11.9707Z"
-                                                fill="currentcolor" />
-                                        </svg>
-                                    </span>
+                                <div class="kt-btn-notes-div">
+                                    <div class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
+                                        <span class="title">Attendees Notes</span>
+                                        <span class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                viewBox="0 0 22 22" fill="currentcolor">
+                                                <path
+                                                    d="M21.2731 10.8727L21.0535 10.7208L21.4443 10.1849C21.5898 9.98651 21.6941 9.76166 21.7515 9.52329C21.8088 9.28492 21.8179 9.03771 21.7784 8.79584C21.7388 8.55397 21.6513 8.32219 21.5209 8.11381C21.3905 7.90543 21.2197 7.72455 21.0184 7.58153L20.5706 7.26695C20.3699 7.12293 20.1424 7.01955 19.9011 6.96274C19.6599 6.90593 19.4096 6.89682 19.1648 6.93594C18.92 6.97506 18.6854 7.06162 18.4745 7.19066C18.2637 7.3197 18.0807 7.48866 17.9362 7.68783L11.0231 17.1772C10.9699 17.2503 10.936 17.3353 10.9243 17.4245L10.4852 20.7569C10.4726 20.8539 10.4866 20.9525 10.526 21.0422C10.5654 21.1319 10.6286 21.2095 10.7089 21.2666C10.7892 21.3237 10.8837 21.3583 10.9823 21.3668C11.0809 21.3752 11.1799 21.3571 11.269 21.3145L14.3249 19.85C14.407 19.8108 14.4779 19.7519 14.5312 19.6787L20.4169 11.6059L20.6364 11.7578C20.7366 11.8311 20.8038 11.9401 20.8239 12.0617C20.844 12.1832 20.8153 12.3077 20.744 12.4087L18.6101 15.3288C18.5251 15.4456 18.4906 15.591 18.514 15.733C18.5375 15.875 18.6171 16.002 18.7353 16.086C18.8535 16.17 19.0006 16.2041 19.1443 16.1809C19.288 16.1578 19.4164 16.0791 19.5014 15.9623L21.6287 13.0465C21.8725 12.7114 21.972 12.2944 21.9053 11.887C21.8387 11.4795 21.6113 11.1148 21.2731 10.8727ZM18.8341 8.31916C18.8942 8.23612 18.9705 8.16567 19.0583 8.11186C19.1461 8.05804 19.2439 8.02193 19.3459 8.0056C19.4479 7.98926 19.5522 7.99303 19.6527 8.01669C19.7533 8.04034 19.8481 8.08342 19.9317 8.14343L20.384 8.46668C20.468 8.52615 20.5393 8.60146 20.5937 8.68827C20.6482 8.77508 20.6847 8.87167 20.7013 8.97249C20.7178 9.07332 20.714 9.17637 20.69 9.27573C20.6661 9.37509 20.6225 9.46879 20.5618 9.55143L14.158 18.3314C13.7597 17.7207 13.1426 17.2814 12.4303 17.1013L18.8341 8.31916ZM11.9407 18.1144C12.2399 18.1538 12.5246 18.2657 12.7694 18.4402C13.0141 18.6148 13.2114 18.8464 13.3436 19.1146L11.7015 19.9021L11.9407 18.1144Z"
+                                                    fill="currentcolor" fill-opacity="65%" />
+                                                <path
+                                                    d="M9.03198 18.0362H2.51186C2.33253 18.0362 2.16055 17.9658 2.03374 17.8405C1.90694 17.7151 1.8357 17.5452 1.8357 17.368V6.08656H15.6663V7.10406C15.6663 7.2479 15.7241 7.38586 15.827 7.48757C15.9299 7.58929 16.0695 7.64643 16.2151 7.64643C16.3606 7.64643 16.5002 7.58929 16.6032 7.48757C16.7061 7.38586 16.7639 7.2479 16.7639 7.10406V3.65672C16.7633 3.19199 16.5763 2.74645 16.2437 2.41783C15.9112 2.08921 15.4604 1.90434 14.9901 1.90377H13.9144V0.649797C13.9144 0.50595 13.8566 0.367995 13.7536 0.26628C13.6507 0.164565 13.5111 0.107422 13.3656 0.107422C13.22 0.107422 13.0804 0.164565 12.9775 0.26628C12.8745 0.367995 12.8167 0.50595 12.8167 0.649797V1.90377H10.8409V0.649797C10.8409 0.50595 10.7831 0.367995 10.6802 0.26628C10.5773 0.164565 10.4377 0.107422 10.2921 0.107422C10.1465 0.107422 10.0069 0.164565 9.90402 0.26628C9.80109 0.367995 9.74327 0.50595 9.74327 0.649797V1.90377H7.76747V0.649797C7.76747 0.50595 7.70965 0.367995 7.60672 0.26628C7.5038 0.164565 7.3642 0.107422 7.21864 0.107422C7.07308 0.107422 6.93349 0.164565 6.83056 0.26628C6.72763 0.367995 6.66981 0.50595 6.66981 0.649797V1.90377H4.69402V0.649797C4.69402 0.50595 4.63619 0.367995 4.53327 0.26628C4.43034 0.164565 4.29074 0.107422 4.14518 0.107422C3.99962 0.107422 3.86003 0.164565 3.7571 0.26628C3.65418 0.367995 3.59635 0.50595 3.59635 0.649797V1.90377H2.51186C2.04159 1.90434 1.59075 2.08921 1.25822 2.41783C0.925689 2.74645 0.738618 3.19199 0.738037 3.65672V17.368C0.738618 17.8327 0.925689 18.2782 1.25822 18.6069C1.59075 18.9355 2.04159 19.1203 2.51186 19.1209H9.03198C9.17754 19.1209 9.31714 19.0638 9.42006 18.9621C9.52299 18.8603 9.58081 18.7224 9.58081 18.5785C9.58081 18.4347 9.52299 18.2967 9.42006 18.195C9.31714 18.0933 9.17754 18.0362 9.03198 18.0362ZM2.51186 2.98852H15.0011C15.1804 2.98852 15.3524 3.05892 15.4792 3.18423C15.606 3.30954 15.6772 3.4795 15.6772 3.65672V5.00181H1.84668V3.65672C1.84665 3.48137 1.91638 3.31303 2.04082 3.18802C2.16526 3.06302 2.33444 2.99136 2.51186 2.98852Z"
+                                                    fill="currentcolor" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="kt-project-notes" (click)="View_Private_Notes()">
+                                        <span class="title">Private Notes</span>
+                                        <span class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                viewBox="0 0 22 22" fill="currentcolor">
+                                                <path
+                                                    d="M21.2731 10.8727L21.0535 10.7208L21.4443 10.1849C21.5898 9.98651 21.6941 9.76166 21.7515 9.52329C21.8088 9.28492 21.8179 9.03771 21.7784 8.79584C21.7388 8.55397 21.6513 8.32219 21.5209 8.11381C21.3905 7.90543 21.2197 7.72455 21.0184 7.58153L20.5706 7.26695C20.3699 7.12293 20.1424 7.01955 19.9011 6.96274C19.6599 6.90593 19.4096 6.89682 19.1648 6.93594C18.92 6.97506 18.6854 7.06162 18.4745 7.19066C18.2637 7.3197 18.0807 7.48866 17.9362 7.68783L11.0231 17.1772C10.9699 17.2503 10.936 17.3353 10.9243 17.4245L10.4852 20.7569C10.4726 20.8539 10.4866 20.9525 10.526 21.0422C10.5654 21.1319 10.6286 21.2095 10.7089 21.2666C10.7892 21.3237 10.8837 21.3583 10.9823 21.3668C11.0809 21.3752 11.1799 21.3571 11.269 21.3145L14.3249 19.85C14.407 19.8108 14.4779 19.7519 14.5312 19.6787L20.4169 11.6059L20.6364 11.7578C20.7366 11.8311 20.8038 11.9401 20.8239 12.0617C20.844 12.1832 20.8153 12.3077 20.744 12.4087L18.6101 15.3288C18.5251 15.4456 18.4906 15.591 18.514 15.733C18.5375 15.875 18.6171 16.002 18.7353 16.086C18.8535 16.17 19.0006 16.2041 19.1443 16.1809C19.288 16.1578 19.4164 16.0791 19.5014 15.9623L21.6287 13.0465C21.8725 12.7114 21.972 12.2944 21.9053 11.887C21.8387 11.4795 21.6113 11.1148 21.2731 10.8727ZM18.8341 8.31916C18.8942 8.23612 18.9705 8.16567 19.0583 8.11186C19.1461 8.05804 19.2439 8.02193 19.3459 8.0056C19.4479 7.98926 19.5522 7.99303 19.6527 8.01669C19.7533 8.04034 19.8481 8.08342 19.9317 8.14343L20.384 8.46668C20.468 8.52615 20.5393 8.60146 20.5937 8.68827C20.6482 8.77508 20.6847 8.87167 20.7013 8.97249C20.7178 9.07332 20.714 9.17637 20.69 9.27573C20.6661 9.37509 20.6225 9.46879 20.5618 9.55143L14.158 18.3314C13.7597 17.7207 13.1426 17.2814 12.4303 17.1013L18.8341 8.31916ZM11.9407 18.1144C12.2399 18.1538 12.5246 18.2657 12.7694 18.4402C13.0141 18.6148 13.2114 18.8464 13.3436 19.1146L11.7015 19.9021L11.9407 18.1144Z"
+                                                    fill="currentcolor" fill-opacity="65%" />
+                                                <path
+                                                    d="M9.03198 18.0362H2.51186C2.33253 18.0362 2.16055 17.9658 2.03374 17.8405C1.90694 17.7151 1.8357 17.5452 1.8357 17.368V6.08656H15.6663V7.10406C15.6663 7.2479 15.7241 7.38586 15.827 7.48757C15.9299 7.58929 16.0695 7.64643 16.2151 7.64643C16.3606 7.64643 16.5002 7.58929 16.6032 7.48757C16.7061 7.38586 16.7639 7.2479 16.7639 7.10406V3.65672C16.7633 3.19199 16.5763 2.74645 16.2437 2.41783C15.9112 2.08921 15.4604 1.90434 14.9901 1.90377H13.9144V0.649797C13.9144 0.50595 13.8566 0.367995 13.7536 0.26628C13.6507 0.164565 13.5111 0.107422 13.3656 0.107422C13.22 0.107422 13.0804 0.164565 12.9775 0.26628C12.8745 0.367995 12.8167 0.50595 12.8167 0.649797V1.90377H10.8409V0.649797C10.8409 0.50595 10.7831 0.367995 10.6802 0.26628C10.5773 0.164565 10.4377 0.107422 10.2921 0.107422C10.1465 0.107422 10.0069 0.164565 9.90402 0.26628C9.80109 0.367995 9.74327 0.50595 9.74327 0.649797V1.90377H7.76747V0.649797C7.76747 0.50595 7.70965 0.367995 7.60672 0.26628C7.5038 0.164565 7.3642 0.107422 7.21864 0.107422C7.07308 0.107422 6.93349 0.164565 6.83056 0.26628C6.72763 0.367995 6.66981 0.50595 6.66981 0.649797V1.90377H4.69402V0.649797C4.69402 0.50595 4.63619 0.367995 4.53327 0.26628C4.43034 0.164565 4.29074 0.107422 4.14518 0.107422C3.99962 0.107422 3.86003 0.164565 3.7571 0.26628C3.65418 0.367995 3.59635 0.50595 3.59635 0.649797V1.90377H2.51186C2.04159 1.90434 1.59075 2.08921 1.25822 2.41783C0.925689 2.74645 0.738618 3.19199 0.738037 3.65672V17.368C0.738618 17.8327 0.925689 18.2782 1.25822 18.6069C1.59075 18.9355 2.04159 19.1203 2.51186 19.1209H9.03198C9.17754 19.1209 9.31714 19.0638 9.42006 18.9621C9.52299 18.8603 9.58081 18.7224 9.58081 18.5785C9.58081 18.4347 9.52299 18.2967 9.42006 18.195C9.31714 18.0933 9.17754 18.0362 9.03198 18.0362ZM2.51186 2.98852H15.0011C15.1804 2.98852 15.3524 3.05892 15.4792 3.18423C15.606 3.30954 15.6772 3.4795 15.6772 3.65672V5.00181H1.84668V3.65672C1.84665 3.48137 1.91638 3.31303 2.04082 3.18802C2.16526 3.06302 2.33444 2.99136 2.51186 2.98852Z"
+                                                    fill="currentcolor" />
+                                                <path
+                                                    d="M8.89786 7.13089H8.60808C8.10171 7.13146 7.61625 7.33051 7.25819 7.68435C6.90014 8.03819 6.69873 8.51794 6.69815 9.01836V10.1226C6.36178 10.1692 6.05373 10.3342 5.83067 10.5873C5.60762 10.8404 5.48455 11.1646 5.48413 11.5003V13.5266C5.48413 13.896 5.63262 14.2502 5.89693 14.5114C6.16125 14.7727 6.51973 14.9194 6.89353 14.9194H10.6256C10.8107 14.9194 10.9939 14.8834 11.1649 14.8134C11.3359 14.7434 11.4913 14.6408 11.6222 14.5114C11.7531 14.3821 11.8569 14.2286 11.9277 14.0596C11.9985 13.8906 12.035 13.7095 12.035 13.5266V11.5003C12.0346 11.1646 11.9115 10.8404 11.6884 10.5873C11.4654 10.3342 11.1573 10.1692 10.821 10.1226V9.01836C10.8207 8.76947 10.7707 8.5231 10.6737 8.29338C10.5768 8.06366 10.435 7.85512 10.2563 7.67974C10.0776 7.50436 9.86558 7.36559 9.63247 7.2714C9.39935 7.17721 9.14971 7.12946 8.89786 7.13089ZM8.60808 8.21564H8.89786C9.11311 8.21621 9.31938 8.30097 9.47159 8.45138C9.62379 8.6018 9.70956 8.80564 9.71013 9.01836V10.1031H7.79581V9.01836C7.79639 8.80564 7.88215 8.6018 8.03436 8.45138C8.18656 8.30097 8.39283 8.21621 8.60808 8.21564ZM10.9241 11.5003V13.5266C10.9241 13.6083 10.8913 13.6866 10.8328 13.7444C10.7744 13.8022 10.6951 13.8346 10.6124 13.8346H6.88036C6.79768 13.8346 6.71839 13.8022 6.65993 13.7444C6.60147 13.6866 6.56862 13.6083 6.56862 13.5266V11.5003C6.56862 11.4186 6.60147 11.3402 6.65993 11.2824C6.71839 11.2247 6.79768 11.1922 6.88036 11.1922H10.6124C10.6951 11.1922 10.7744 11.2247 10.8328 11.2824C10.8913 11.3402 10.9241 11.4186 10.9241 11.5003Z"
+                                                    fill="currentcolor" />
+                                                <path
+                                                    d="M8.75074 11.9707C8.60518 11.9707 8.46558 12.0278 8.36265 12.1296C8.25973 12.2313 8.2019 12.3692 8.2019 12.5131C8.2019 12.6569 8.25973 12.7949 8.36265 12.8966C8.46558 12.9983 8.60518 13.0555 8.75074 13.0555C8.8963 13.0555 9.03589 12.9983 9.13882 12.8966C9.24174 12.7949 9.29957 12.6569 9.29957 12.5131C9.29957 12.3692 9.24174 12.2313 9.13882 12.1296C9.03589 12.0278 8.8963 11.9707 8.75074 11.9707Z"
+                                                    fill="currentcolor" />
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <hr class="dotted">
@@ -1089,6 +1105,7 @@
     </div>
 </div>
 
+<!-- Private Note Start-->
 <div id="Private_Notes" class="private-notes sideInfobar animate-right">
     <div class="kt-portlet">
         <div class="kt-portlet__head">
@@ -1108,7 +1125,7 @@
                     </span>
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                    (click)="closesideBar()">
+                    (click)="close_privatenote_sideBar()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
                         <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
                             stroke-linejoin="round" />
@@ -1118,12 +1135,296 @@
                 </a>
             </div>
         </div>
-        <div class="Private_Notes_vh kt-portlet__body kt-portlet__body_scroll">
+        <div class="private_notes_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="kt-chat__messages">
                 <angular-editor [config]="config"></angular-editor>
             </div>
         </div>
     </div>
 </div>
+<!-- Private Note End-->
 
+<!--Attendees Notes Start-->
+<div id="Attendees_Notes" class="attendees-notes sideInfobar animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <h4 class="m-0">All Attendees Notes
+                </h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                    (click)="close_attendeesnotes_sideBar()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll">
+            <div class="kt-chat__messages">
+                <ul class="attendees-note-userlist">
+                    <li class="attendees-note-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-notes">
+                            <p>How likely are you to recommend our company to your friends and family ?</p>
+                            <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that’s not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+
+                    </li>
+                    <li class="attendees-note-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
+                                <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-notes">
+                            <p>How likely are you to recommend our company to your friends and family ?</p>
+                            <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that’s not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Attendees Notes End-->
+
+<!-- Meeting Attendees Start-->
+<div id="Meeting_Attendees" class="meeting-attendes sideInfobar animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <h4 class="m-0">Meeting Attendees 
+                    <span class="head-muted">(14)
+                    </span>
+                </h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                    (click)="close_meetingattendees_sideBar()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
+            <div class="meeting-search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Add by name, email">
+                    <div class="input-group-append">
+                      <button class="btn btn-secondary" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                            <path d="M7.65103 13.3919C11.0875 13.3919 13.8734 10.6061 13.8734 7.16959C13.8734 3.73309 11.0875 0.947266 7.65103 0.947266C4.21454 0.947266 1.42871 3.73309 1.42871 7.16959C1.42871 10.6061 4.21454 13.3919 7.65103 13.3919Z" stroke="#818181" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15.4283 14.9478L12.0449 11.5645" stroke="#818181" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="meeting-button">invite</button>
+                  </div>
+            </div>
+            <div class="kt-chat__messages">
+                <ul class="meeting-attendees-userlist">
+                    <li class="meeting-attendees-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-status-info">
+                            <div class="user-status online">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Online </span>
+                            </div>
+                            <div class="user-status-action">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10" fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z" stroke="#999999"/>
+                                      </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
+                                        <path d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z" fill="#999999"/>
+                                        <path d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z" fill="#999999"/>
+                                        <path d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z" fill="#999999"/>
+                                      </svg>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="meeting-attendees-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-status-info">
+                            <div class="user-status guest">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Guest </span>
+                            </div>
+                            <div class="user-status-action">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10" fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z" stroke="#999999"/>
+                                      </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
+                                        <path d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z" fill="#999999"/>
+                                        <path d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z" fill="#999999"/>
+                                        <path d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z" fill="#999999"/>
+                                      </svg>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="meeting-attendees-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-status-info">
+                            <div class="user-status offline">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Offline </span>
+                            </div>
+                            <div class="user-status-action">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10" fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z" stroke="#999999"/>
+                                      </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
+                                        <path d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z" fill="#999999"/>
+                                        <path d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z" fill="#999999"/>
+                                        <path d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z" fill="#999999"/>
+                                      </svg>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="meeting-attendees-user">
+                        <div class="user-info">
+                            <span class="user-icon">
+                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                            </span>
+                            <span>
+                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                            </span>
+                        </div>
+                        <div class="user-status-info">
+                            <div class="user-status absent">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Absent </span>
+                            </div>
+                            <div class="user-status-action">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10" fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257" stroke="#999999" stroke-linecap="round"/>
+                                        <path d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z" stroke="#999999"/>
+                                      </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
+                                        <path d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z" fill="#999999"/>
+                                        <path d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z" fill="#999999"/>
+                                        <path d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z" fill="#999999"/>
+                                      </svg>
+                                </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Meeting Attendees End-->
 

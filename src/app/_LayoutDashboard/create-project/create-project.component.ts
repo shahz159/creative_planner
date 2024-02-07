@@ -15,6 +15,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 
@@ -42,7 +43,20 @@ export const MY_DATE_FORMATS = {
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.css'],
-  providers:[ { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }]
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 
 })
 export class CreateProjectComponent implements OnInit {
@@ -85,7 +99,7 @@ export class CreateProjectComponent implements OnInit {
   PrjOfType:string;
   PrjClient:string;
   PrjDes:string;
-  PrjCategory:string;
+  PrjCategory:string|undefined;
   PrjVersion:string;
   PrjLocation:string;
   Prjstartdate:any
@@ -239,7 +253,6 @@ export class CreateProjectComponent implements OnInit {
       var startDate = moment(this.Prjstartdate);
       var endDate = moment(this.Prjenddate);
       this.durationInDays = endDate.diff(startDate, 'days');
-
       console.log('Duration in days:', this.durationInDays);
 
   }
@@ -395,7 +408,7 @@ export class CreateProjectComponent implements OnInit {
   
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-debugger
+
         console.log("res after project creation:",res);
 
         if(res&&res.message==='Success'){
@@ -415,6 +428,7 @@ debugger
           this.BsService.ProjectCreatedEvent.emit();
         }
         else if(res&&res.message==='Success1'){
+       
           this.PrjCode=res.Project_Code;
             this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
             //2. file attachment uploading  if present
@@ -422,7 +436,7 @@ debugger
             this.uploadFileAttachment()
 
               this.router.navigate(['./backend/ProjectsSummary']);
-              this.closeInfo()
+              // this.closeInfo()
          this.BsService.ProjectCreatedEvent.emit();
         }
         else
@@ -575,7 +589,7 @@ debugger
 
 
   Move_to_add_team(){
-    $('.right-side-dv').removeClass('d-none');
+    $('.right-side-dv').removeClass('d-none'); 
     $('.add_tema_tab').show();
     $('.Project_details_tab').hide();
     $('.sbs--basic .active').addClass('finished');
@@ -583,6 +597,9 @@ debugger
     $('.sbs--basic li:nth-child(2)').addClass('active');
 
     this.findProjectType()
+    if(['003','008'].includes(this.Prjtype))
+    this.Prjstartdate=new Date();
+
   }
 
   Back_to_project_details_tab(){
@@ -620,9 +637,15 @@ debugger
     $('.sbs--basic li:nth-child(3)').removeClass('active');
   }
 
+  New_project_guideline(){
+    $('#Guidelines_view_list').addClass('open_sidebar_guide');
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
 
-
-
+  closeI_guidelines(){
+    $('#Guidelines_view_list').removeClass('open_sidebar_guide');
+    document.getElementById("rightbar-overlay").style.display = "none";
+  }
 // add Prj support mat autocomplete drpdwn code start here
 
 isPrjSprtDrpDwnOpen:boolean=false;
@@ -761,16 +784,16 @@ onProjectOwnerChanged(){
    
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("project-creation-page").classList.add("position-fixed");
+    // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
   }
 
 
   closeActionSideBar(){
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("project-creation-page").classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -782,7 +805,7 @@ onProjectOwnerChanged(){
   Project_details_edit() {
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();
