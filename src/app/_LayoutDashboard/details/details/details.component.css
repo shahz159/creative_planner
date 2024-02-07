@@ -1074,7 +1074,7 @@ span.Status-Delay {
 
 .Active .kt-p-box {
   background-color: rgb(82 124 226 / 11%);
-  border: 2px solid #527ce2;
+  border: 2px solid #3e97ff;
   transition-duration: 0.4s;
   transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
 }
@@ -4141,9 +4141,7 @@ span.Kt-m-count {
 .kt-ct-sub-ttl {
   margin-right: 20px;
 }
-.View_more_act {
-  bottom: 0;
-}
+
 .bd-right-x::after {
   right: 0;
   top: 0;
@@ -4151,15 +4149,13 @@ span.Kt-m-count {
 .kt-project-action-list-view {
   max-height: 440px;
 }
-.kt-projcect-act-list.Active {
-  border: 2px solid #3e97ff;
-  border-radius: 4px;
-}
+
 .Active .kt-p-box {
   background-color: rgb(255 255 255);
 }
 .kt-project-action-list-view {
   padding: 10px 0px;
+  padding-right: 10px;
 }
 .text-turquoise{
   color:#17b4b7!important;
@@ -4192,4 +4188,8 @@ span.Kt-m-count {
 }
 .fw-mormal.timeline-content p {
   margin-bottom: 0px;
+}
+p.kt-dt-l {
+  margin-bottom: 0px;
+  padding-top: 2px;
 }

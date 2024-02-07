@@ -750,20 +750,20 @@ this.prjPIECHART.render();
   requestaccessList:any=[];
 
   getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
-      this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+      if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
+        this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+        this.requestaccessList.forEach(element => {
+          if(element.Submitted_By_EmpNo == this.Current_user_ID){
+                  this.isRequestSent = true;
+            this.ishide=false
+            $('.hide-content').addClass('d-none')
+          }
+        });
+      }
       this.isDMS= this.projectInfo.isDMS;
-      this.requestaccessList.forEach(element => {
-        if(element.Submitted_By_EmpNo == this.Current_user_ID){
-                this.isRequestSent = true;
-          this.ishide=false
-          $('.hide-content').addClass('d-none')
-        }
-      });
       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
       this.type_list = this.projectInfo.typelist;
@@ -786,7 +786,6 @@ this.prjPIECHART.render();
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
-
       this.filteremployee.forEach((emp)=>{
        let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
         if(delayActionsOfEmp.length>0){
@@ -807,7 +806,6 @@ this.prjPIECHART.render();
                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
                   window.scrollTo(0,0);
                 },2000);
-
             }
           else
            this.showActionDetails(undefined);
@@ -815,24 +813,11 @@ this.prjPIECHART.render();
         else
           this.showActionDetails(undefined);  // opens the main project.
     })
-
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
-
-
-
-
     this.onTLSrtOrdrChanged('Date');  // new added for graph.
-    setTimeout(() => this.drawStatistics(), 5000);  
-
-    
-
-
-
-   
-
-
+    setTimeout(() => this.drawStatistics(), 5000);
     });
   }
 
