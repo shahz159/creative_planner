@@ -15,5 +15,6 @@ export class LinkDTO {
     MemoId:string;
     Message:string;
     MemosJSON:string;
+    EmpNo:any;
 
 }

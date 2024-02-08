@@ -1924,7 +1924,8 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     
     repDate = new Date(repDate);
     let FileUrl: string;
-    FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    
 
     let Day = repDate.getDate();
     let Month = repDate.getMonth() + 1;
@@ -1944,6 +1945,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
 
     if (cloud == false) {
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       FileUrl = (FileUrl + emp_no + "/" + this.projectCode + "/" + date + "/" + proofDoc);
 
       let name = "ArchiveView/" + standardid;
