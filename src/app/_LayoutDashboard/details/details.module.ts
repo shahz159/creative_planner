@@ -26,6 +26,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 
 
 
@@ -54,6 +56,8 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
     ReactiveFormsModule,
     AsyncPipe,
     MatCheckboxModule,
+    ScrollingModule
+   
     ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent, CreateProjectComponent

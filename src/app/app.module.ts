@@ -32,6 +32,8 @@ import { CreateProjectComponent } from './_LayoutDashboard/create-project/create
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meeting-details.component';
+
 
 
 
@@ -52,7 +54,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     SidebarComponent,
     ConfirmDialogComponent,
     TimelineComponent,
-     // MeetingReportComponent
+    
+    // MeetingReportComponent
    
     // NotificationComponent    
     
@@ -84,8 +87,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     NgxDocViewerModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatFormFieldModule
-    
+    MatFormFieldModule,
   ],
   providers:
     [AuthGuard

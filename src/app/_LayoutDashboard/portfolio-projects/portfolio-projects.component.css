@@ -1219,3 +1219,78 @@ span.count2 {
   background-color: #35A79C;
   color:black;
 }
+.Delay_color{
+  color: #EE4137 !important;
+}
+.Completed_color{
+  color: #62B134 !important;
+}
+.InProcess_color{
+  color:#1B272D !important;
+}
+.Project_Complete_Rejected_color{
+  color: #FAF065 !important;
+}
+.Hold_color{
+  color:#E2D9BC  !important;
+}
+
+.Under_Approval_color{
+  color: #888888 !important;
+}
+.New_Todo_color{
+  color: #6E9BC4 !important;
+}
+.Completion_Under_Approval_color{
+  color: #B2D732 !important;
+}
+
+.Cancellation_Under_Approval_color{
+  color: #000 !important;
+}
+
+.Cancelled_color{
+  color: #DFDFDF !important;
+}
+
+.Forward_Under_Approval_color{
+  color: #B2D732 !important;
+}
+
+.New_Project_Rejected_color{
+  color: #DFDFDF !important;
+}
+.Deadline_Extend_Under_Approval_color{
+  color: #F88282 !important;
+}
+.Enactive_Under_Approval_color{
+  color: #C9C1E6 !important;
+}
+.ToDo_Achieved_color{
+  color: #000 !important;
+}
+.ToDo_Completed_color{
+  color:#000 !important;
+}
+
+.Delay{
+  background-color: #EE4137 !important;
+  color:#000;
+  }
+
+  .complteed_color{
+    background-color: #62B134 !important;
+    color:#000;
+  }
+  .Inprocess_color{
+    background-color: #1B272D !important;
+    color: #fff;
+  }
+
+  .Hold_color{
+    background-color: #E2D9BC;
+    color:#000 !important;
+  }
+  .Hold{
+    color:#E2D9BC !important;
+  }
