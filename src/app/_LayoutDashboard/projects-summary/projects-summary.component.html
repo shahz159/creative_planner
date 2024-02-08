@@ -172,7 +172,8 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name==='Under Approval'?'New Project Under Approval':item.Name}}
+                                                                {{item.Name==='Under Approval'?'New Project Under Approval':( item.Name==='InProcess'?'In-Process':item.Name)}}
+
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -362,7 +363,7 @@
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        InProcess
+                                                        In-Process
                                                         <span></span>
                                                     </label>
 
@@ -396,7 +397,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                InProcess
+                                                                In-Process
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -530,7 +531,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">Inprocess</h5>
+                                <h5 class="mb-0">In-process</h5>
                                 <h4 class="mb-0">15</h4>
                             </div>
                         </div>
@@ -853,7 +854,7 @@
                                                         </div>
                                                         <!-- Other Status -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="InProcess_color font-weight-400">InProcess</span>
+                                                            <span class="InProcess_color font-weight-400">In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="text-primary font-weight-400">ToDo

@@ -13,12 +13,12 @@
     line-height: 30px;
     margin-right: 5px;
   }
-  
+
   .names-response{
     display :inline-block;
     text-align: left;
   }
-  
+
   .names-response span:first-child{
     display: block;
     font-size: 10px;
@@ -27,7 +27,7 @@
   .names-response span:last-child{
     font-weight: 600;
   }
-  
+
   .head-btn{
     background-color: rgba(88, 103, 221, 0.1);
       padding: 3px 10px 3px 5px;
@@ -46,52 +46,52 @@
       border-radius: 50%;
       margin-right: 3px;
   }
-  
+
   .devider{
     height: 1px;
     width: 100%;
     background-color: #f1f1f1;
   }
-  
+
   .pricevalues {
     padding-top: 30px;
     padding-bottom: 10px;
     /* border-right: 1px solid #f1f1f1;
     border-bottom: 1px solid #f1f1f1; */
   }
-  
+
   .top-border .pricevalues:nth-child(1), .top-border .pricevalues:nth-child(2)  {
     border-top: 1px solid #f1f1f1;
   }
   .top-border .pricevalues:nth-child(3), .top-border .pricevalues:nth-child(4)  {
     border-bottom: none
   }
-  
+
   /* .pricevalues:nth-child(2),  */
   /* .pricevalues:nth-child(4) {
     border-right: none;
   } */
-  
+
   .w-60{
     width: 60px;
   }
-  
+
   .dms-links{
     list-style-type: disc;
   }
-  
+
   .dms-links li a{
     display: block;
     text-decoration: underline;
     font-weight: 600;
     margin-bottom: 5px;
   }
-  
+
   .py-10px{
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  
+
   .dropdown-item:active{
     background-color: #dedee0;
   }
@@ -103,12 +103,12 @@
     box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1) inset;
     height: 4px;
     margin-bottom: 20px;
-    margin-top: 30px;    
+    margin-top: 30px;
     margin-left: 10px;
     position: relative;
     text-align: left;
   }
-  
+
   .progress_bar .progress_bar_title {
     color: hsl(218, 4%, 50%);
     font-size: 12px;
@@ -117,11 +117,11 @@
     top: -28px;
     z-index: 1;
   }
-  
+
   .progress_bar .progress_number {
     float: right;
   }
-  
+
   .progress_bar .progress-bar-inner {
     background-color: hsl(0, 0%, 88%);
     display: block;
@@ -132,7 +132,7 @@
     left: 0;
     transition: width 1s linear 0s;
   }
-  
+
   .progress_bar .progress-bar-inner:before {
     content: "";
     background-color: hsl(0, 0%, 100%);
@@ -144,7 +144,7 @@
     top: 0;
     z-index: 1;
   }
-  
+
   .progress_bar .progress-bar-inner:after {
     content: "";
     width: 14px;
@@ -155,7 +155,7 @@
     right: -4px;
     top: -5px;
   }
-  
+
   .bg-today {
     background-color: #342bf0 !important;
   }
@@ -247,7 +247,7 @@
 }
 .prv-cmts{
  max-height: 200px;
- overflow: auto; 
+ overflow: auto;
 }
 .s1{
   display: none;
@@ -322,7 +322,7 @@ left: 0;
   background-color: rgb(255 255 255);
 }
 /* input[type="checkbox"]:checked ~ .spacer-tab{
-display: block;    
+display: block;
 } */
 .spacer--body {
   margin-left: 0;
@@ -368,7 +368,7 @@ display: block;
   margin-bottom: 10px;
   color: #4b4343;
 }
-.exs-cmts .crd-bdy{  
+.exs-cmts .crd-bdy{
   overflow: auto;
   max-height: 200px;
 }
@@ -601,7 +601,7 @@ background-color: #eaf2fd !important;
   color:#000;
 }
 .ToDoCompleted{
-  background-color:#000 !important;  
+  background-color:#000 !important;
 }
 .Inprocess{
   background-color: #1B272D !important;
@@ -732,7 +732,7 @@ button.Kt-Approval-btns {
   font-size: 13px;
   letter-spacing: 0;
   font-weight: 500;
-  border-radius: 3px; 
+  border-radius: 3px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .Btn_Accpet {
@@ -834,7 +834,7 @@ span.B-Bot {
   border-radius: 2px;
   /* background-color: #e5e5e5; */
   background-color:  #888888;
- 
+
 }
 .kt-prg-progress ul {
   padding: 0;
@@ -988,12 +988,12 @@ span.Dote_red {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
- 
+
   cursor: pointer;
 }
 .attachment-view span {
   font-weight: 600;
- 
+
 }
 .attachment-view:hover{
   box-shadow: 0px 1px 6px #ccc;
@@ -1202,4 +1202,9 @@ span.Rq_date_V {
 .bg-primary {
   --bs-bg-rgb-color: rgba(62, 151, 255);
   background-color: #3e97ff !important;
+}
+
+.new-project-under-approval{
+background-color:#B2D732 ;
+color:#000 !important;
 }

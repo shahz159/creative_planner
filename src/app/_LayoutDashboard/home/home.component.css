@@ -1,22 +1,22 @@
-/* #loading{ 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  z-index: 1; 
-  width: 150px; 
-  height: 150px; 
-  margin: -75px 0 0 -75px; 
-  border: 16px solid #f3f3f3; 
-  border-radius: 50%; 
-  border-top: 16px solid #3498db; 
-  width: 120px; 
-  height: 120px; 
-  animation: spin 2s linear infinite; 
-  } 
-    
-  @keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+/* #loading{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   } */
 
   .list-icon-color{
@@ -91,7 +91,7 @@
   .modal .modal-content {
     border-radius: 2px;
 }
-/* 
+/*
   table, th, td {
     padding: 5px;
   }
@@ -133,7 +133,7 @@
 }
 #backBtn:hover{
  background-color:#0073e6 ;
- color: white; 
+ color: white;
 }
 #Mdl_closebtn:hover{
   background-color: #dc3545;
@@ -231,7 +231,7 @@
     background-color: #3699FF;
     color: #fff;
     box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%) !important;
-    
+
   }
   .card-title .favourite i{
     font-size: 18px;
@@ -269,7 +269,7 @@
 }
 .dataTables_wrapper .dataTable .plist-details tr.ForwardUnderApproval {
   /* border-left: 5px solid #E0B1D7; */
-  box-shadow: -5px 0px 1px #E0B1D7 
+  box-shadow: -5px 0px 1px #E0B1D7
 }
 .dataTables_wrapper .dataTable .plist-details tr.completeUnderApproval {
   /* border-left: 5px solid #98c7bf;  */
@@ -835,7 +835,7 @@ body{
   position: absolute;
   top: 3px;
   background-color: #fff;
- 
+
 }
 .show_entries select{
   /* width: 100px; */
@@ -1181,7 +1181,7 @@ color:#000;
   font-size: 16px;
   background-color: white;
   background-image: url('/assets/images/searchicon.png');
-  background-position: right center; 
+  background-position: right center;
   background-repeat: no-repeat;
   padding: 12px 0px 12px 0px;
   -webkit-transition: width 0.4s ease-in-out;
@@ -1202,4 +1202,7 @@ color:#000;
 }
 
 
-
+.new-project {
+  background-color: #B2D732;
+  color:black;
+}

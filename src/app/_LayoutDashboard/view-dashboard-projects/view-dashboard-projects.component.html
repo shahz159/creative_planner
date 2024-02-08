@@ -134,7 +134,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :item.Status}}
+                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :(item.Status=='InProcess'?'In-Process':item.Status)}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -267,11 +267,19 @@
                                                         |date:'dd-MM-yyyy'}}</td>
                                                     <td class="kt-widget__title mb-0">
                                                         {{item.Creation_Date|dateAgo1}}</td>
-                                                    <td class="kt-widget__title mb-0" [ngClass]="{'text-danger font-weight-400':item.Status=='Rejected',
-                                                            'text-success font-weight-400':item.Status=='Accepted',
-                                                             'text-warning font-weight-400':item.Status=='Pending'}">
-                                                        {{item.Status}}
-                                                    </td>
+                                                        <td class="kt-widget__title mb-0">
+                                                          <span [ngClass]="{
+                                                            'rejected font-weight-400': item.Status === 'Rejected',
+                                                            'accepted font-weight-400': item.Status === 'Accepted',
+                                                            'pending font-weight-400': item.Status === 'Pending'
+                                                        }">
+
+                                                        {{ item.Status }}
+                                                    </span>
+
+                                                      </td>
+
+
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -422,8 +430,8 @@
                                                             {{item.Creation_Date}}</span>
                                                     </td> -->
                                                     <td>
-                                                        <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="Under_Approval_color font-weight-400"> New Project Under
+                                                        <div *ngIf="item.Status=='Under Approval'" >
+                                                            <span class="new-project  font-weight-400" > New Project Under
                                                                 Approval</span>
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
@@ -433,14 +441,14 @@
                                                         </div>
                                                         <!-- Other Status #ed6b75 -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="InProcess_color font-weight-400">InProcess</span>
+                                                            <span class="text-warning font-weight-400">In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="text-primary font-weight-400">ToDo
                                                                 InProcess</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project'">
-                                                            <span class="text-primary font-weight-400">New
+                                                            <span class="New-project font-weight-400">New
                                                                 Project</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project Rejected'">

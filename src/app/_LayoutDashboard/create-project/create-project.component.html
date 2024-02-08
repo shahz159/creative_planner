@@ -22,26 +22,26 @@
         <div class="col-lg-12">
           <div class="kt-portlet mb-1">
             <div class="Create_project_section">
-            
-            
+
+
               <div class="np-step-1 w-100 top_pading_view">
                 <div class="container">
                   <div class="row">
-        
+
                     <div class="col-lg-12">
                       <div class="title-view-md">
                         <h2>Let’s get started!</h2>
                         <p>Please select from the below options to create project.</p>
                       </div>
                     </div>
-        
+
                     <div class="option-section">
-        
+
                       <div (click)="Scratech_btn();timearrays()">
                         <div class="op-card Scratech">
-        
+
                           <div class="op-svg-ic">
-        
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                               <path d="M40.9326 29.9658V51.1851" stroke="#838383" stroke-width="3" stroke-linecap="round"
                                 stroke-linejoin="round" />
@@ -50,22 +50,22 @@
                               <circle cx="40.9336" cy="40.5752" r="27.4414" stroke="#B8B8B8" stroke-width="4"
                                 stroke-dasharray="4 4" />
                             </svg>
-        
+
                           </div>
                           <div class="op-title-ic">
                             <p>Start from scratch</p>
                           </div>
-        
+
                         </div>
                       </div>
-        
-        
+
+
                       <ng-container *ngIf="assigntask_json&&assigntask_json.length>0">
                         <div (click)="Assigned_projects()">
                           <div class="op-card projects">
-        
+
                             <div class="op-svg-ic">
-        
+
                               <svg xmlns="http://www.w3.org/2000/svg" width="74" height="75" viewBox="0 0 74 75" fill="none">
                                 <g clip-path="url(#clip0_237_573)">
                                   <path class="dtv"
@@ -97,21 +97,21 @@
                                   </clipPath>
                                 </defs>
                               </svg>
-        
+
                             </div>
                             <div class="op-title-ic">
                               <p>Assigned / Conditional projects</p>
                             </div>
-        
+
                           </div>
                         </div>
                       </ng-container>
                       <ng-container *ngIf="assigntask_json&&assigntask_json.length<=0">
                         <div>
                           <div class="op-card projects" (click)="notifyAssign()">
-        
+
                             <div class="op-svg-ic">
-        
+
                               <svg xmlns="http://www.w3.org/2000/svg" width="74" height="75" viewBox="0 0 74 75" fill="none">
                                 <g clip-path="url(#clip0_237_573)">
                                   <path class="dtv"
@@ -143,23 +143,23 @@
                                   </clipPath>
                                 </defs>
                               </svg>
-        
+
                             </div>
                             <div class="op-title-ic">
                               <p>Assigned projects</p>
                             </div>
-        
+
                           </div>
                         </div>
                       </ng-container>
-                     
+
 
                       <ng-container  *ngIf="template_json&&template_json.length>0">
                       <div>
                         <div class="op-card template" (click)="templateProjects()">
-        
+
                           <div class="op-svg-ic">
-        
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                               <path
                                 d="M33.1939 21.8619C32.6185 21.8619 32.1523 21.3952 32.1523 20.8204V13.3214C32.1523 12.7465 32.6185 12.2798 33.1939 12.2798C33.7693 12.2798 34.2355 12.7465 34.2355 13.3214V20.8204C34.2355 21.3952 33.7693 21.8619 33.1939 21.8619Z"
@@ -246,12 +246,12 @@
                                 d="M61.3758 67.9869H55.2418C54.6669 67.9869 54.2002 67.5207 54.2002 66.9459C54.2002 66.3705 54.6669 65.9043 55.2418 65.9043H61.3758C61.9507 65.9043 62.4174 66.3705 62.4174 66.9459C62.4174 67.5207 61.9507 67.9869 61.3758 67.9869Z"
                                 fill="#838383" />
                             </svg>
-        
+
                           </div>
                           <div class="op-title-ic">
                             <p>Templates</p>
                           </div>
-        
+
                         </div>
                       </div>
                     </ng-container>
@@ -261,9 +261,9 @@
                     <ng-container  *ngIf="template_json&&template_json.length<=0">
                       <div>
                         <div class="op-card template" (click)="notifytemp()">
-        
+
                           <div class="op-svg-ic">
-        
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                               <path
                                 d="M33.1939 21.8619C32.6185 21.8619 32.1523 21.3952 32.1523 20.8204V13.3214C32.1523 12.7465 32.6185 12.2798 33.1939 12.2798C33.7693 12.2798 34.2355 12.7465 34.2355 13.3214V20.8204C34.2355 21.3952 33.7693 21.8619 33.1939 21.8619Z"
@@ -350,12 +350,12 @@
                                 d="M61.3758 67.9869H55.2418C54.6669 67.9869 54.2002 67.5207 54.2002 66.9459C54.2002 66.3705 54.6669 65.9043 55.2418 65.9043H61.3758C61.9507 65.9043 62.4174 66.3705 62.4174 66.9459C62.4174 67.5207 61.9507 67.9869 61.3758 67.9869Z"
                                 fill="#838383" />
                             </svg>
-        
+
                           </div>
                           <div class="op-title-ic">
                             <p>Templates</p>
                           </div>
-        
+
                         </div>
                       </div>
                     </ng-container>
@@ -384,34 +384,34 @@
 
 
                     </div>
-        
+
                   </div>
                 </div>
               </div>
-        
+
               <div class="Assigned-projects-list d-none">
-        
+
                 <div class="m-auto">
-        
+
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="d-flex align-items-center justify-content-between w-100">
                         <div class="title-view-md">
                           <p class="mb-0">Assigned / conditional projects</p>
-        
+
                         </div>
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
                             class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back To options</button>
                         </div>
                       </div>
-        
+
                       <div class="card mt-3">
                         <div class="tabs-view-dg">
                           <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
                             <li class="nav-item">
                               <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
-        
+
                                 <span class="nav-text">Assigned</span>
                               </a>
                             </li>
@@ -424,12 +424,12 @@
                             </li>
                           </ul>
                         </div>
-        
-        
+
+
                         <div class="tab-content" id="myTabContent">
                           <div class="mt-3" id="kt_tab_pane_1_4" aria-labelledby="kt_tab_pane_1_4"
                             class="tab-pane fade show active">
-        
+
                             <div class="card-body p-3">
                               <div class="col-lg-12  card-Scroll pt-0">
                                 <div class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;">
@@ -529,7 +529,7 @@
                                 </div>
                               </div>
                             </div>
-        
+
                           </div>
                           <!-- Assigned End -->
                           <!-- conditional projects Start -->
@@ -583,17 +583,17 @@
                             </div>
                           </div>
                           <!-- conditional projects End -->
-        
+
                         </div>
-        
+
                       </div>
                     </div>
                   </div>
                 </div>
-        
+
               </div>
-        
-        
+
+
               <div class="Templates-list w-100 d-none" >
                 <div class="m-auto">
                   <div class="row">
@@ -669,9 +669,9 @@
                     </div>
                   </div>
                 </div>
-        
+
               </div>
-        
+
               <div class="np-step-2 w-100 d-none">
                 <div class="kt-container p-0">
                   <div class="row">
@@ -975,7 +975,7 @@
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
                                   <div class="kt-project-sts-data ng-star-inserted">
-      
+
                                     <ng-container *ngIf="['001','002','011'].includes(Prjtype);else DuraDiv">
 
                                             <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
@@ -984,18 +984,18 @@
                                             <ng-template #days>
                                               {{durationInDays + 1}} days
                                             </ng-template>
-                                  
+
                                   </ng-container>
                                   <ng-template  #DuraDiv>
                                      Continous
                                   </ng-template>
-      
+
                                   </div>
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Allocated </div>
                                   <div class="kt-project-sts-data ng-star-inserted">
-                                     
+
                                     <ng-container *ngIf="['001','002','011'].includes(Prjtype);else AllcDiv">
                                               <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours !=''; else Hrs">
                                                 {{projectInfo&&projectInfo.AllocatedHours}} Hrs
@@ -1007,8 +1007,8 @@
                                     <ng-template #AllcDiv>
                                       {{Allocated_Hours}} Hrs
                                     </ng-template>
-                                  
-                                    
+
+
                                   </div>
                                 </div>
                                 <!-- <div  class="col-lg-12 mt-4">
@@ -1371,18 +1371,18 @@
                                             <label>Project Version:</label>
                                             <input class="form-control ng-pristine" type="text" placeholder="Enter Version number"
                                               [(ngModel)]="PrjVersion">
-        
+
                                           </div>
                                         </div> -->
                               <!-- Project location section -->
                               <!-- <div class="col-lg-4 mb-3">
                                           <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                             <label>project location:</label>
-                                            
-        
+
+
                                               <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="PrjLocation"
                                               (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
-        
+
                                           </div>
                                         </div>  -->
                               <!-- Project location section end-->
@@ -1581,7 +1581,7 @@
 
                                 <!-- <div class="col-lg-4 mb-3">
                                             <label>Allocated Hours<span class="text-danger">*</span></label>
-                                          
+
                                             <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                               [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
                                             <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
@@ -1761,7 +1761,7 @@
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back To options</button>
                               <button type="button" (click)="Move_to_add_team()"
                               [disabled]="!(Prjtype&&PrjClient&&PrjCategory&&(PrjName&&PrjName.trim().split(' ').length>=3)&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&
-                              (['001','002','011'].includes(Prjtype)&&Prjstartdate&&Prjenddate)|| 
+                              (['001','002','011'].includes(Prjtype)&&Prjstartdate&&Prjenddate)||
                               ( ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours.length) || (prjsubmission==6&&Allocated_Hours.length&&Annual_date) ))
                               )"
                                 class="btn btn-move-fw my-ct-v-btn btn-next">Next Step
@@ -1947,8 +1947,8 @@
                             <div class="kt-ctv-btn mt-0">
 
 
-                              <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"
-                                (click)="cancelPrjCreation()">Cancel</button>
+                              <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"
+                                (click)="cancelPrjCreation()">Cancel</button> -->
                               <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"
                                 (click)="Back_to_project_details_tab()">
                                 Previous Step</button>
@@ -2084,7 +2084,7 @@
                                      <div class="kt-info-data-v">
                                      SAR 00.00
                                    </div>
-                                   </ng-template> 
+                                   </ng-template>
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -2146,10 +2146,10 @@
                                           [ngClass]="{'bg-primary':i===0,'bg-danger':i===1,'bg-warning':i===2,'bg-dark':i>=3}">
                                           {{item[0]}} </span>
                                           <!-- <img alt="Pic"
-                                            src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg"> -->                     
-                                        </div> 
+                                            src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg"> -->
+                                        </div>
 
-                                       
+
                                         <!-- <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                           data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                           class="symbol symbol-35px symbol-circle"><img alt="Pic"
@@ -2161,14 +2161,14 @@
                                             src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-12.jpg">
                                         </div> -->
 
-                                       
+
                                       </div>
                                       <div class="symbol-group symbol-hover flex-nowrap">
                                         <a data-bs-toggle="modal" data-bs-target="#kt_modal_view_users"
                                       class="symbol symbol-35px symbol-circle"><span
                                         class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span></a>
                                       </div>
-                                      
+
                                     </div>
                                   </div>
                                 </div>
@@ -2483,7 +2483,7 @@
 
 
                           <div class="kt-ctv-btn-two mt-1">
-                            <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button>
+                            <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
                             <button type="button" class="btn btn-move-fw my-ct-v-btn btn-next"
                               (click)="sendApproval()">Submit</button>
                             </div>
@@ -2517,7 +2517,7 @@
 <!-------- Project Details edit view Start --------->
 <div class="sideInfobar animate-right" id="Project_Details_Edit_forms">
   <div class="kt-info-body">
-  
+
   <div class="modal-header p-3">
       <div class="d-flex justify-content-between align-items-center w-100">
           <div class="d-flex align-items-center">
@@ -2561,14 +2561,14 @@
                           </svg>
                       </span>
                   </div>
-  
+
                   <div class="Project_type_DW curser-pointer">
                     <!-- <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="Prjtype">
                       <ng-option *ngFor="let item of ProjectType_json"
-                        [value]="item.Typeid">{{item.ProjectType}} 
+                        [value]="item.Typeid">{{item.ProjectType}}
                       </ng-option>
                     </ng-select> -->
-  
+
                     <div class="input-icon Sub_In_ed" style="max-width: 140px;"
                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
                     <input type="text" class="form-control kt-info-box-tit  readonly" [(ngModel)]="ProjectType" readonly />
@@ -2580,7 +2580,7 @@
                             <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
                         </ng-option>
                     </ng-select>
-                </div>        
+                </div>
               </div>
               </div>
           </div>
@@ -2605,7 +2605,7 @@
                   <div class="form-group mb-2">
                       <label class="pe-label">Project Name</label>
                       <div class="input-icon project-name_ed curser-pointer">
-                          <!-- <input type="text" class="form-control"  [(ngModel)]="PrjName" 
+                          <!-- <input type="text" class="form-control"  [(ngModel)]="PrjName"
                               placeholder="Search..." /> -->
                               <input type="text" class="form-control" [(ngModel)]="ProjectName"
                               placeholder="Search..." />
@@ -2685,7 +2685,7 @@
                       <input type="text" (click)="displaymessagemain()" class="form-control readonly"
                           [(ngModel)]="Owner_Name" readonly />
                   </ng-template> -->
-  
+
                   <ng-container
                   *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                   && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
@@ -2712,17 +2712,17 @@
                                   d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                               </path>
                           </svg></span> Responsible</div>
-  
-                        <div class="input-icon Sub_In_ed" *ngIf="projectInfo">                     
+
+                        <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
                                 <!-- <ng-container *ngIf="projectInfo.isRespActive=='1'">
                                   <ng-container
                                       *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                                       && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
-  
+
                                       <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                           <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                               [disabled]="item.Emp_No==selectedOwner">
-                                            
+
                                               {{item.RACIS}}
                                           </ng-option>
                                       </ng-select>
@@ -2732,13 +2732,13 @@
                                               [(ngModel)]="responsible" readonly />
                                       </ng-template>
                               </ng-container>
-  
+
                               <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                   <ng-container>
                                       <ng-select [(ngModel)]="responsible" placeholder="Select new responsible">
                                           <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                               [disabled]="item.Emp_No==selectedOwner">
-                                            
+
                                               {{item.RACIS}}
                                           </ng-option>
                                       </ng-select>
@@ -2749,16 +2749,16 @@
                                   </ng-container>
                               </ng-container>
                           </div> -->
-  
+
                           <ng-container *ngIf="projectInfo.isRespActive=='1'">
                             <ng-container
                                 *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                                 && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
-  
+
                                 <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                     <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                         [disabled]="item.Emp_No==selectedOwner">
-                                        
+
                                         {{item.RACIS}}
                                     </ng-option>
                                 </ng-select>
@@ -2768,13 +2768,13 @@
                                         [(ngModel)]="selectedOwnResp" readonly />
                                 </ng-template>
                         </ng-container>
-                        
+
                         <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                           <ng-container>
                               <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                       [disabled]="item.Emp_No==selectedOwner">
-                                    
+
                                       {{item.RACIS}}
                                   </ng-option>
                               </ng-select>
@@ -2784,11 +2784,11 @@
                               </ng-template>
                           </ng-container>
                       </ng-container>
-                      
+
                     </div>
               </div>
           </div>
-  
+
           <div class="col-lg-4 text-left">
               <div class="form-group Ic_ed">
                   <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -2800,7 +2800,7 @@
                           </svg>
                       </span> Category </div>
                   <div class="input-icon Sub_In_ed">
-  
+
                       <!-- <ng-select class="curser-pointer" [(ngModel)]="Category_Name"
                       placeholder="Select Category">
                       <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
@@ -2808,7 +2808,7 @@
                           {{item.ReportType}}
                       </ng-option>
                   </ng-select> -->
-  
+
                   <ng-select class="curser-pointer" [(ngModel)]="selectedcategory"
                               placeholder="Select Category">
                               <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
@@ -2816,11 +2816,11 @@
                                   {{item.ReportType}}
                               </ng-option>
                           </ng-select>
-                    
+
                   </div>
               </div>
           </div>
-  
+
           <div class="col-lg-4 text-left">
               <div class="form-group Ic_ed">
                   <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -2864,7 +2864,7 @@
                           </svg>
                       </span> Client </div>
                   <div class="input-icon Sub_In_ed">
-  
+
                       <div class="input-icon Sub_In_ed">
                         <!-- <ng-select class="curser-pointer" [(ngModel)]="Client"
                               placeholder="Select client">
@@ -2873,7 +2873,7 @@
                                   <a>{{item.Com_Name}}</a>
                               </ng-option>
                           </ng-select> -->
-  
+
                           <ng-select class="curser-pointer" [(ngModel)]="selectedclient"
                           placeholder="Select client">
                           <ng-option [value]="item.Com_No" *ngFor="let item of Client_List"
@@ -2882,7 +2882,7 @@
                           </ng-option>
                       </ng-select>
                       </div>
-                    
+
                   </div>
               </div>
           </div>
@@ -2892,7 +2892,7 @@
               <div class="form-group mb-2 Ic_ed">
                 <div class="kt-info-lable-v"> Start date</div>
                     <div class="input-icon Sub_In_ed">
-                      <!-- <input type="text"                  
+                      <!-- <input type="text"
                       [ngModel]="Prjstartdate|date:'dd-MM-YYYY'"
                       class="form-control readonly" readonly /> -->
                       <input type="text" class="form-control readonly"
@@ -2903,7 +2903,7 @@
               <div class="col-lg-4 text-left">
                   <div class="form-group mb-2  Ic_ed">
                       <div class="kt-info-lable-v"> Deadline</div>
-  
+
                         <!-- <div class="input-icon Sub_In_ed date-border-v d-flex">
                           <input class="form-control curser-pointer" [ngModel]="Prjenddate"
                               [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="strtEditsPickers"
@@ -2914,7 +2914,7 @@
                                   class="btn-secondary border-0">
                               </mat-datepicker-toggle>
                             <mat-datepicker class="form-group " #strtEditsPickers></mat-datepicker>
-                          </div> 
+                          </div>
                         </div>
                         -->
                           <div class="input-icon Sub_In_ed date-border-v d-flex">
@@ -2928,7 +2928,7 @@
                                 </mat-datepicker-toggle>
                                 <mat-datepicker class="form-group " #strtEditsPicker></mat-datepicker>
                             </div>
-                        </div>                     
+                        </div>
                   </div>
               </div>
               <div class="col-lg-4 text-left">
@@ -2962,9 +2962,9 @@
                   <div class="kt-info-lable-v"> Allocated hours
                       <div class="input-icon Sub_In_ed">
                           <!-- <input type="text"  [(ngModel)]="Allocateds" class="form-control readonly" readonly/> -->
-  
+
                           <input type="text" class="form-control readonly" [(ngModel)]="Allocated" readonly />
-  
+
                       </div>
                   </div>
               </div>
@@ -2975,10 +2975,10 @@
               <div class="form-group ">
                   <label for="exampleFormControlFile1">Remarks</label>
                   <!-- <textarea class="form-control curser-pointer" [(ngModel)]="Remarks" aria-label="With textarea"
-                      placeholder="Define your exact reason here." 
+                      placeholder="Define your exact reason here."
                       style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea> -->
-  
-  
+
+
                       <textarea class="form-control curser-pointer" aria-label="With textarea"
                       placeholder="Define your exact reason here." [(ngModel)]="_remarks"
                       style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
@@ -2989,8 +2989,8 @@
           <div class="row pt-2 pb-2">
               <div class="col-lg-12 mt-3">
                   <div class="form-group text-end">
-                      <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
-                          (click)="closeInfos()">Cancel</button>
+                      <!-- <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
+                          (click)="closeInfos()">Cancel</button> -->
                       <button type="submit"  (click)="projectEdit(0);closeInfos()" class="btn w-110 Bt-Submit ml-2" >
                           Update</button>
                   </div>

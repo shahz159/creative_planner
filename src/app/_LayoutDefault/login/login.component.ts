@@ -82,121 +82,121 @@ export class LoginComponent implements OnInit {
   OrganizationId: any;
   IsPolicy: number;
 
-  // login_DMS() {
+  login_DMS() {
 
-  //   this.submitted = true;
-  //   if (this.loginForm.invalid) {
-  //     return;
-  //   }
-  //   else {
-  //     // this.Sendlogin_Credentials();
-  //     // debugger
-  //     this.UserDetails_List.UserName = this.f.userid.value;
-  //     this.UserDetails_List.Password = this.f.password.value;
-  //     //alert("One");
-  //     this.service.login(this.UserDetails_List)
-  //       .subscribe(
-  //         (data) => {
-  //           if (data[0]['CredentialsIsValid']) {
-  //             localStorage.setItem('isLoggedIn', "true");
-  //             this.EmpNo = data[0]['EmployeeCode'];
-  //             this.IsCommunicationDownload = data[0]['IsCommunicationDownload'];
-  //             const Isdownload: string = `${this.IsCommunicationDownload}`;
-  //             localStorage.setItem('EmpNo', this.EmpNo);
-  //             localStorage.setItem('IsCommunicationDownload',Isdownload);
-  //             this.User_FullName = data[0]['FirstName'] + " " + data[0]['LastName'];
-  //             // this.IsPolicy = data[0]['IsPolicy'];
-  //             // this.router.navigate([this.policyUrl]);
-  //             // this.InValidPassword = false;
-  //             // this.cd.detectChanges();
-  //             this.router.navigate([this.dashboardUrl]);
-  //             this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-  //             this.notifyService.showSuccess("Successfully", "Logged In");
-  //             this.InValidPassword = false;
-  //             this.cd.detectChanges();
-  //           }
-  //           else {
-  //             this.InValidPassword = true;
-  //             console.log("Invalid Login");
-  //             this.authService.logout();
-  //             localStorage.removeItem('EmpNo');
-  //             this.cd.detectChanges();
-  //             // alert("Invalid");
-  //             this.message = "Please check your UserName and Password";
-  //           }
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+    else {
+      // this.Sendlogin_Credentials();
+      // debugger
+      this.Obj_ILoginDTO.UserName = this.f.userid.value;
+      this.Obj_ILoginDTO.Password = this.f.password.value;
+      //alert("One");
+      this.service.login(this.Obj_ILoginDTO)
+        .subscribe(
+          (data) => {
+            if (data[0]['CredentialsIsValid']) {
+              localStorage.setItem('isLoggedIn', "true");
+              this.EmpNo = data[0]['EmployeeCode'];
+              this.IsCommunicationDownload = data[0]['IsCommunicationDownload'];
+              const Isdownload: string = `${this.IsCommunicationDownload}`;
+              localStorage.setItem('EmpNo', this.EmpNo);
+              localStorage.setItem('IsCommunicationDownload',Isdownload);
+              this.User_FullName = data[0]['FirstName'] + " " + data[0]['LastName'];
+              // this.IsPolicy = data[0]['IsPolicy'];
+              // this.router.navigate([this.policyUrl]);
+              // this.InValidPassword = false;
+              // this.cd.detectChanges();
+              this.router.navigate([this.dashboardUrl]);
+              this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
+              this.notifyService.showSuccess("Successfully", "Logged In");
+              this.InValidPassword = false;
+              this.cd.detectChanges();
+            }
+            else {
+              this.InValidPassword = true;
+              console.log("Invalid Login");
+              this.authService.logout();
+              localStorage.removeItem('EmpNo');
+              this.cd.detectChanges();
+              // alert("Invalid");
+              this.message = "Please check your UserName and Password";
+            }
 
-  //           // if (this.IsPolicy == 1) {
-  //           //   this.router.navigate([this.dashboardUrl]);
-  //           //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-  //           //   this.notifyService.showSuccess("Successfully", "Logged In");
-  //           //   this.InValidPassword = false;
-  //           //   this.cd.detectChanges();
-  //           // }
-  //           // else if (this.IsPolicy == 0) {
-  //           //   this.router.navigate([this.policyUrl]);
-  //           //   this.InValidPassword = false;
-  //           //   this.cd.detectChanges();
-  //           // }
+            // if (this.IsPolicy == 1) {
+            //   this.router.navigate([this.dashboardUrl]);
+            //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
+            //   this.notifyService.showSuccess("Successfully", "Logged In");
+            //   this.InValidPassword = false;
+            //   this.cd.detectChanges();
+            // }
+            // else if (this.IsPolicy == 0) {
+            //   this.router.navigate([this.policyUrl]);
+            //   this.InValidPassword = false;
+            //   this.cd.detectChanges();
+            // }
 
-  //           // this.UserDetails_List1 = data as UserDetailsDTO[];
-  //           // console.log("Data---->", this.UserDetails_List1);
-  //           // this.message = this.UserDetails_List1[0]['Message'];
-  //           // this.DB_username = this.UserDetails_List1[0]['UserName'].toLowerCase();
-  //           // this.DB_password = this.UserDetails_List1[0]['Password'];
-  //           // this.User_FullName = this.UserDetails_List1[0]['TM_DisplayName']
-  //           // this.IsPolicy = this.UserDetails_List1[0]['IsPolicy'];
-  //           // // console.log("Policy Test---->",this.IsPolicy);
-  //           // if (this.f.userid.value.toLowerCase() == this.DB_username && this.f.password.value == this.DB_password) {
-  //           //   //console.log("Login successful");
-  //           //   // alert("successful Login");
-  //           //   localStorage.setItem('isLoggedIn', "true");
-  //           //   this.InValidPassword = false;
-  //           //   this.cd.detectChanges();
-  //           //   this.EmpNo = data[0]['Emp_No'];
-  //           //   localStorage.setItem('EmpNo', this.EmpNo);
-  //           //   this.EmpCompNo = data[0]['Emp_Comp_No'].replace(/\s/g, "");
-  //           //   this.SystemRole = data[0]['Emp_SystemRole'];
-  //           //   this.OrganizationId = data[0]['OrganizationId'];
-  //           //   sessionStorage.setItem('Emp_Email', data[0]['Emp_Email']);
+            // this.UserDetails_List1 = data as UserDetailsDTO[];
+            // console.log("Data---->", this.UserDetails_List1);
+            // this.message = this.UserDetails_List1[0]['Message'];
+            // this.DB_username = this.UserDetails_List1[0]['UserName'].toLowerCase();
+            // this.DB_password = this.UserDetails_List1[0]['Password'];
+            // this.User_FullName = this.UserDetails_List1[0]['TM_DisplayName']
+            // this.IsPolicy = this.UserDetails_List1[0]['IsPolicy'];
+            // // console.log("Policy Test---->",this.IsPolicy);
+            // if (this.f.userid.value.toLowerCase() == this.DB_username && this.f.password.value == this.DB_password) {
+            //   //console.log("Login successful");
+            //   // alert("successful Login");
+            //   localStorage.setItem('isLoggedIn', "true");
+            //   this.InValidPassword = false;
+            //   this.cd.detectChanges();
+            //   this.EmpNo = data[0]['Emp_No'];
+            //   localStorage.setItem('EmpNo', this.EmpNo);
+            //   this.EmpCompNo = data[0]['Emp_Comp_No'].replace(/\s/g, "");
+            //   this.SystemRole = data[0]['Emp_SystemRole'];
+            //   this.OrganizationId = data[0]['OrganizationId'];
+            //   sessionStorage.setItem('Emp_Email', data[0]['Emp_Email']);
 
-  //           //   sessionStorage.setItem('Session_EmpNo', this.EmpNo);
-  //           //   sessionStorage.setItem('EmpCompNo', this.EmpCompNo);
-  //           //   // sessionStorage.setItem('SystemRole', this.SystemRole);
-  //           //   localStorage.setItem("UserfullName", this.User_FullName);
-  //           //   localStorage.setItem('_Currentuser', this.DB_username);
-  //           //   localStorage.setItem('OrganizationId', this.OrganizationId);
+            //   sessionStorage.setItem('Session_EmpNo', this.EmpNo);
+            //   sessionStorage.setItem('EmpCompNo', this.EmpCompNo);
+            //   // sessionStorage.setItem('SystemRole', this.SystemRole);
+            //   localStorage.setItem("UserfullName", this.User_FullName);
+            //   localStorage.setItem('_Currentuser', this.DB_username);
+            //   localStorage.setItem('OrganizationId', this.OrganizationId);
 
-  //           //   //debugger
-  //           //   if (this.IsPolicy == 1) {
-  //           //     this.router.navigate([this.dashboardUrl]);
-  //           //     this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-  //           //     this.notifyService.showSuccess("Successfully", "Logged In");
-  //           //     this.InValidPassword = false;
-  //           //     this.cd.detectChanges();
-  //           //   }
-  //           //   else if (this.IsPolicy == 0) {
-  //           //     this.router.navigate([this.policyUrl]);
-  //           //     this.InValidPassword = false;
-  //           //     this.cd.detectChanges();
-  //           //   }
+            //   //debugger
+            //   if (this.IsPolicy == 1) {
+            //     this.router.navigate([this.dashboardUrl]);
+            //     this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
+            //     this.notifyService.showSuccess("Successfully", "Logged In");
+            //     this.InValidPassword = false;
+            //     this.cd.detectChanges();
+            //   }
+            //   else if (this.IsPolicy == 0) {
+            //     this.router.navigate([this.policyUrl]);
+            //     this.InValidPassword = false;
+            //     this.cd.detectChanges();
+            //   }
 
-  //           //   //this.router.navigate([this.policyUrl]);
-  //           //   // alert(this.returnUrl);
-  //           //   // this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-  //           //   // this.notifyService.showSuccess("Successfully", "Logged In");
-  //           // }
-  //           // else {
-  //           //   this.InValidPassword = true;
-  //           //   console.log("Invalid Login");
-  //           //   this.authService.logout();
-  //           //   localStorage.removeItem('EmpNo');
-  //           //   this.cd.detectChanges();
-  //           //   // alert("Invalid");
-  //           //   // this.message = "Please check your UserName and Password";
-  //           // }
-  //         });
-  //   }
-  // }
+            //   //this.router.navigate([this.policyUrl]);
+            //   // alert(this.returnUrl);
+            //   // this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
+            //   // this.notifyService.showSuccess("Successfully", "Logged In");
+            // }
+            // else {
+            //   this.InValidPassword = true;
+            //   console.log("Invalid Login");
+            //   this.authService.logout();
+            //   localStorage.removeItem('EmpNo');
+            //   this.cd.detectChanges();
+            //   // alert("Invalid");
+            //   // this.message = "Please check your UserName and Password";
+            // }
+          });
+    }
+  }
 
   login() {
     this.submitted = true;

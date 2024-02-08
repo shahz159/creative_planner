@@ -129,7 +129,7 @@
                                                                 <label class="kt-checkbox mb-3">
                                                                     <input type="checkbox" (change)="isStatusChecked(item)"
                                                                         [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':(item.Name=='InProcess'?'In-Process':item.Name) }}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
@@ -220,7 +220,7 @@
 
                                         'text-CompleteRejected':item.Status=='Project Complete Rejected',
                                         'text-Todo':item.Status=='ToDo Completed'}">
-                                        {{item.Status=='Under Approval' ? 'New Project Under Approval':item.Status}}</p>
+                                        {{item.Status=='Under Approval' ? 'New Project Under Approval':(item.Status=='InProcess'?'In-Process':item.Status)}}</p>
                                         <p class="text-danger" *ngIf="item.Status=='Delay'">
                                         {{item.Status}} {{item.Delaydays}} days</p>
                                         <p class="text-danger" *ngIf="item.Status=='Project Hold'">
@@ -342,11 +342,11 @@
 
                                         'text-CompleteRejected':Project_Status=='Project Complete Rejected',
                                         'text-Todo':Project_Status=='ToDo Completed'}">
-                                    {{Project_Status =='Under Approval'?'New Project Under Approval':Project_Status}}
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval':(Project_Status=='InProcess'?'In-Process':Project_Status)}}
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Delay'">
-                                    {{Project_Status =='Under Approval'?'New Project Under Approval':Project_Status}} {{delaydays}} days
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval':(Project_Status=='InProcess'?'In-Process':Project_Status)}} {{delaydays}} days
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Project Hold'">
@@ -534,7 +534,7 @@
                                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                     *ngIf="item.SubProject_Status != 'Delay'">
-                                        <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval ':item.SubProject_Status}}</p>
+                                        <p> {{item.SubProject_Status  =='Under Approval'?'New Project Under Approval ':(item.SubProject_Status=='InProcess' ? 'In-Process':item.SubProject_Status)}}</p>
                                         </span>
 
                                     <span data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status == 'Delay'"
@@ -559,7 +559,7 @@
                         </div>
                         <div [hidden]="_projectDetails">
                             <div class="subtask-list">
-                                <h5 style="color: lightgray;"> No Action found in <b>InProcess</b> State </h5>
+                                <h5 style="color: lightgray;"> No Action found in <b>In-Process</b> State </h5>
                             </div>
                         </div>
                         <div class="w-100"></div>
