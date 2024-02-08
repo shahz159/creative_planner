@@ -3738,7 +3738,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
-          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']); 
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
